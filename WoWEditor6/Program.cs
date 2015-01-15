@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WoWEditor6
 {
@@ -10,8 +11,19 @@ namespace WoWEditor6
     {
         static void Main(string[] args)
         {
-            var mgr = new IO.CASC.FileManager();
-            mgr.Initialize(@"E:\Save_Deskt_24_9_14\Program Files (x86)\World of Warcraft");
+            var window = new UI.MainWindow();
+            var context = new Graphics.GxContext(window);
+            context.InitContext();
+            var isClosed = false;
+            window.FormClosed += (s, e) => isClosed = true;
+            window.Show();
+
+            while(isClosed == false)
+            {
+                context.BeginFrame();
+                context.EndFrame();
+                Application.DoEvents();
+            }
         }
     }
 }
