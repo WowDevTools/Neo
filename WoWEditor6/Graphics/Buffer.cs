@@ -1,14 +1,15 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
 {
-    abstract class Buffer
+    abstract class Buffer : IDisposable
     {
         private BufferDescription mDescription;
         private readonly GxContext mContext;
 
-        public SharpDX.Direct3D11.Buffer Native { get; protected set; }
+        public SharpDX.Direct3D11.Buffer Native { get; private set; }
 
         protected Buffer(GxContext context, BindFlags binding)
         {
@@ -23,6 +24,11 @@ namespace WoWEditor6.Graphics
                 StructureByteStride = 0,
                 Usage = ResourceUsage.Default
             };
+        }
+
+        public void Dispose()
+        {
+            Native?.Dispose();
         }
 
         public void UpdateData<T>(T[] data) where T : struct

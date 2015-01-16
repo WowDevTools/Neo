@@ -38,6 +38,9 @@
     <Reference Include="SharpDX">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX.D3DCompiler">
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX.Direct2D1">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
@@ -61,9 +64,16 @@
   <ItemGroup>
     <Compile Include="Graphics\Buffer.cs" />
     <Compile Include="Graphics\ConstantBuffer.cs" />
+    <Compile Include="Graphics\DepthState.cs" />
     <Compile Include="Graphics\GxContext.cs" />
     <Compile Include="Graphics\IndexBuffer.cs" />
+    <Compile Include="Graphics\InputLayoutCache.cs" />
+    <Compile Include="Graphics\Mesh.cs" />
+    <Compile Include="Graphics\Sampler.cs" />
+    <Compile Include="Graphics\ShaderProgram.cs" />
+    <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Graphics\VertexBuffer.cs" />
+    <Compile Include="Graphics\VertexElement.cs" />
     <Compile Include="IO\CASC\DataStream.cs" />
     <Compile Include="IO\CASC\FileManager.cs" />
     <Compile Include="IO\CASC\JenkinsHash.cs" />

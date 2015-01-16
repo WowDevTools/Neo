@@ -88,6 +88,8 @@ namespace WoWEditor6.Graphics
             Context.OutputMerger.SetRenderTargets(mDepthBuffer, mRenderTarget);
             Context.Rasterizer.SetViewport(new ViewportF(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height,
                 0.0f, 1.0f));
+
+            Texture.InitDefaultTexture(this);
         }
 
         private void BuildMultisample()
