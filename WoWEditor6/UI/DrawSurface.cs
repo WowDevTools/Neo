@@ -4,6 +4,7 @@ using SharpDX.Direct2D1;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
 using WoWEditor6.Graphics;
+using WoWEditor6.UI.Components;
 using Device1 = SharpDX.Direct3D10.Device1;
 using Factory = SharpDX.Direct2D1.Factory;
 
@@ -19,12 +20,10 @@ namespace WoWEditor6.UI
         private readonly GxContext mDevice;
         private KeyedMutex mMutex10, mMutex11;
 
-        private readonly SharpDX.DirectWrite.Factory mDwFactory =
-            new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Isolated);
-
         private const long Key11 = 0xFF110000;
 
         public SharpDX.Direct3D11.ShaderResourceView NativeView { get; private set; }
+        public SharpDX.DirectWrite.Factory DirectWriteFactory { get; } = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Isolated);
 
         public DrawSurface(GxContext context)
         {
@@ -91,7 +90,10 @@ namespace WoWEditor6.UI
             mMutex11 = mRealTexture.QueryInterface<KeyedMutex>();
 
             Brushes.Initialize(mRenderTarget);
-            Fonts.Initialize(mDwFactory);
+            Fonts.Initialize(DirectWriteFactory);
+
+            Button.Initialize();
+            Frame.Initialize();
 
             // right now the texture is unowned and only a key of 0 will succeed.
             // after releasing it with a specific key said key then can be used for
@@ -107,9 +109,7 @@ namespace WoWEditor6.UI
             try
             {
                 mRenderTarget.BeginDraw();
-                mRenderTarget.Clear(new Color4(0, 0, 0, 0));
-                mRenderTarget.DrawText("TEST", Fonts.Cache["Segoe UI", 18.0f, SharpDX.DirectWrite.FontWeight.Bold], new RectangleF(30, 30, 300, 50),
-                    Brushes.Solid[System.Drawing.Color.Aqua]);
+                mRenderTarget.Clear(new Color4(0.8f, 0.8f, 0.8f, 1));
                 renderAction?.Invoke(mRenderTarget);
                 mRenderTarget.EndDraw();
             }

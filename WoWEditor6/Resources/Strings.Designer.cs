@@ -68,5 +68,23 @@ namespace WoWEditor6.Resources {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DAS IST EIN TEST.
+        /// </summary>
+        internal static string SplashView_AppDescription {
+            get {
+                return ResourceManager.GetString("SplashView_AppDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to World of Warcraft Editor.
+        /// </summary>
+        internal static string SplashView_AppTitle {
+            get {
+                return ResourceManager.GetString("SplashView_AppTitle", resourceCulture);
+            }
+        }
     }
 }

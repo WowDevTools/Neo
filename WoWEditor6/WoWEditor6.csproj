@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WoWEditor6</RootNamespace>
     <AssemblyName>WoWEditor6</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.3</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>cb329697</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -86,6 +87,7 @@
     <Compile Include="IO\CASC\KeyValueConfig.cs" />
     <Compile Include="IO\CASC\TokenConfig.cs" />
     <Compile Include="IO\Extensions.cs" />
+    <Compile Include="IO\FileManager.cs" />
     <Compile Include="IO\IFileProvider.cs" />
     <Compile Include="IO\SizeCache.cs" />
     <Compile Include="Program.cs" />
@@ -100,9 +102,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Scene\AppState.cs" />
     <Compile Include="UI\Brushes.cs" />
+    <Compile Include="UI\ComponentRoot.cs" />
+    <Compile Include="UI\Components\Button.cs" />
+    <Compile Include="UI\Components\EditBox.cs" />
+    <Compile Include="UI\Components\Frame.cs" />
+    <Compile Include="UI\Components\KeyboardMessage.cs" />
+    <Compile Include="UI\Components\Label.cs" />
+    <Compile Include="UI\Components\Message.cs" />
+    <Compile Include="UI\Components\MouseMessage.cs" />
     <Compile Include="UI\DrawSurface.cs" />
     <Compile Include="UI\FontCollection.cs" />
+    <Compile Include="UI\IComponent.cs" />
     <Compile Include="UI\InterfaceManager.cs" />
     <Compile Include="UI\MainWindow.cs">
       <SubType>Form</SubType>
@@ -111,6 +123,9 @@
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\SolidBrush.cs" />
+    <Compile Include="UI\StaticText.cs" />
+    <Compile Include="UI\Views\IView.cs" />
+    <Compile Include="UI\Views\SplashView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
   </ItemGroup>
   <ItemGroup>

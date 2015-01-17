@@ -47,10 +47,27 @@ namespace WoWEditor6.UI
     static class Brushes
     {
         public static readonly BrushCollection Solid = new BrushCollection();
+        public static SolidBrush White { get; private set; }
+        public static SolidBrush Black { get; private set; }
+        public static SolidBrush Blue { get; private set; }
+        public static SolidBrush Red { get; private set; }
+        public static SolidBrush Green { get; private set; }
+        public static SolidBrush Yellow { get; private set; }
+
 
         public static void Initialize(RenderTarget target)
         {
             Solid.OnUpdateTarget(target);
+
+            if(White == null)
+            {
+                White = Solid[0xFFFFFFFF];
+                Black = Solid[0xFF000000];
+                Blue = Solid[0xFFFF0000];
+                Red = Solid[0xFF0000FF];
+                Green = Solid[0xFF00FF00];
+                Yellow = Solid[System.Drawing.Color.Yellow];
+            }
         }
     }
 }

@@ -1,5 +1,10 @@
-﻿using WoWEditor6.Graphics;
+﻿using System.Linq;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using WoWEditor6.Graphics;
 using WoWEditor6.Resources;
+using WoWEditor6.UI.Components;
+using WoWEditor6.UI.Views;
 
 namespace WoWEditor6.UI
 {
@@ -7,19 +12,24 @@ namespace WoWEditor6.UI
     {
         public static InterfaceManager Instance { get; } = new InterfaceManager();
 
-        private DrawSurface mSurface;
         private MainWindow mWindow;
         private Mesh mMesh;
         private GxContext mContext;
         private Sampler mQuadSampler;
+        private IView mActiveView;
+
+        private readonly Dictionary<Scene.AppState, IView> mViews = new Dictionary<Scene.AppState, IView>(); 
+
+        public ComponentRoot Root { get; } = new ComponentRoot();
+        public DrawSurface Surface { get; private set; }
 
         public void Initialize(MainWindow window, GxContext context)
         {
             mContext = context;
             mWindow = window;
-            mSurface = new DrawSurface(context);
-            mSurface.GraphicsInit();
-            mSurface.OnResize(window.ClientSize.Width, window.ClientSize.Height);
+            Surface = new DrawSurface(context);
+            Surface.GraphicsInit();
+            Surface.OnResize(window.ClientSize.Width, window.ClientSize.Height);
             mQuadSampler = new Sampler(context)
             {
                 AddressMode = SharpDX.Direct3D11.TextureAddressMode.Clamp,
@@ -28,19 +38,88 @@ namespace WoWEditor6.UI
 
             mWindow.Text = Strings.MainWindowTitle;
 
+            mViews.Add(Scene.AppState.Splash, new SplashView());
+            mActiveView = mViews[Scene.AppState.Splash];
+
             InitMesh();
+            InitMessages();
+
+            foreach(var pair in mViews)
+                pair.Value.OnResize(new SharpDX.Vector2(mWindow.Width, mWindow.Height));
         }
 
         public void OnFrame()
         {
-            mSurface.RenderFrame(null);
-            mMesh.Program.SetPixelTexture(0, mSurface.NativeView);
+            Surface.RenderFrame(rt =>
+            {
+                Root.OnRender(rt);
+                mActiveView?.OnRender(rt);
+            });
+            mMesh.Program.SetPixelTexture(0, Surface.NativeView);
             mMesh.Program.SetPixelSampler(0, mQuadSampler);
 
             mMesh.BeginDraw();
             mMesh.Draw();
 
-            mSurface.EndFrame();
+            Surface.EndFrame();
+        }
+
+        private void InitMessages()
+        {
+            mWindow.MouseMove += (sender, args) =>
+            {
+                var msg = new MouseMessage(MessageType.MouseMove, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
+                Root.OnMessage(msg);
+                mActiveView?.OnMessage(msg);
+            };
+
+            mWindow.MouseDown += (sender, args) =>
+            {
+                var msg = new MouseMessage(MessageType.MouseDown, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
+                Root.OnMessage(msg);
+                mActiveView?.OnMessage(msg);
+            };
+
+            mWindow.MouseUp += (sender, args) =>
+            {
+                var msg = new MouseMessage(MessageType.MouseUp, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
+                Root.OnMessage(msg);
+                mActiveView?.OnMessage(msg);
+            };
+
+            mWindow.KeyDown += (sender, args) =>
+            {
+                var c = KeyboardMessage.GetCharacter(args);
+                var msg = new KeyboardMessage(MessageType.KeyDown, c, args.KeyCode);
+                Root.OnMessage(msg);
+                mActiveView?.OnMessage(msg);
+            };
+
+            mWindow.KeyUp += (sender, args) =>
+            {
+                var c = KeyboardMessage.GetCharacter(args);
+                var msg = new KeyboardMessage(MessageType.KeyUp, c, args.KeyCode);
+                Root.OnMessage(msg);
+                mActiveView?.OnMessage(msg);
+            };
+        }
+
+        private static MouseButton GetButton(MouseButtons button)
+        {
+            switch(button)
+            {
+                case MouseButtons.Left:
+                    return MouseButton.Left;
+
+                case MouseButtons.Right:
+                    return MouseButton.Right;
+
+                case MouseButtons.Middle:
+                    return MouseButton.Middle;
+
+                default:
+                    return MouseButton.Left;
+            }
         }
 
         private void InitMesh()

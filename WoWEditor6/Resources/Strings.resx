@@ -101,4 +101,10 @@
   <data name="MainWindowTitle" xml:space="preserve">
     <value>Render Window</value>
   </data>
+  <data name="SplashView_AppTitle" xml:space="preserve">
+    <value>World of Warcraft Editor</value>
+  </data>
+  <data name="SplashView_AppDescription" xml:space="preserve">
+    <value>DAS IST EIN TEST</value>
+  </data>
 </root>

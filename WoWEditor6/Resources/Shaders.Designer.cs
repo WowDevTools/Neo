@@ -94,8 +94,11 @@ namespace WoWEditor6.Resources {
         ///	float2 texCoord : TEXCOORD0;
         ///};
         ///
+        ///Texture2D quadTexture : register(t0);
+        ///SamplerState quadSampler : register(s0);
+        ///
         ///float4 main(PixelInput input) : SV_Target {
-        ///	return float4(input.texCoord, 0.0, 1.0);
+        ///	return quadTexture.Sample(quadSampler, input.texCoord);
         ///}.
         /// </summary>
         internal static string TextureQuadPixel {
