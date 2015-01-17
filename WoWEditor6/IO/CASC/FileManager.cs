@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Linq;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -33,23 +32,23 @@ namespace WoWEditor6.IO.CASC
 
     class IndexEntry
     {
-        public uint mIndex;
-        public uint mOffset;
-        public uint mSize;
+        public uint Index;
+        public uint Offset;
+        public uint Size;
     }
 
     class BlteChunk
     {
-        public long mSizeCompressed;
-        public long mSizeUncompressed;
+        public long SizeCompressed;
+        public long SizeUncompressed;
     }
 
     class EncodingEntry
     {
 #pragma warning disable 414
-        public long mSize;
+        public long Size;
 #pragma warning restore 414
-        public Binary[] mKeys;
+        public Binary[] Keys;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -62,8 +61,8 @@ namespace WoWEditor6.IO.CASC
     class RootEntry
     {
 #pragma warning disable 414
-        internal Binary mMd5;
-        internal ulong mHash;
+        internal Binary Md5;
+        internal ulong Hash;
 #pragma warning restore 414
     }
 
@@ -101,25 +100,25 @@ namespace WoWEditor6.IO.CASC
             foreach(var root in roots)
             {
                 EncodingEntry enc;
-                if (mEncodingData.TryGetValue(root.mMd5, out enc) == false)
+                if (mEncodingData.TryGetValue(root.Md5, out enc) == false)
                     continue;
 
-                if (enc.mKeys.Length == 0)
+                if (enc.Keys.Length == 0)
                     continue;
 
                 IndexEntry indexKey = null;
-                var found = enc.mKeys.Any(key => mIndexData.TryGetValue(new Binary(key.ToArray().Take(9).ToArray()), out indexKey));
+                var found = enc.Keys.Any(key => mIndexData.TryGetValue(new Binary(key.ToArray().Take(9).ToArray()), out indexKey));
 
                 if (found == false)
                     continue;
 
-                var strm = GetDataStream(indexKey.mIndex);
+                var strm = GetDataStream(indexKey.Index);
                 lock(strm)
                 {
                     using (var reader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
                     {
                         strm.Stream.Position = 30;
-                        return BlteGetData(reader, indexKey.mSize);
+                        return BlteGetData(reader, indexKey.Size);
                     }
                 }
             }
@@ -175,9 +174,9 @@ namespace WoWEditor6.IO.CASC
 
                         mIndexData.Add(key, new IndexEntry()
                         {
-                            mIndex = (((byte)(idxHigh << 2)) | ((idxLow & 0xC0000000) >> 30)),
-                            mOffset = (idxLow & 0x3FFFFFFF),
-                            mSize = block.size
+                            Index = (((byte)(idxHigh << 2)) | ((idxLow & 0xC0000000) >> 30)),
+                            Offset = (idxLow & 0x3FFFFFFF),
+                            Size = block.size
                         });
                     }
                 }
@@ -191,18 +190,18 @@ namespace WoWEditor6.IO.CASC
             var encodingKey = encKeyStr.HexToBytes().ToArray();
 
             EncodingEntry encEntry;
-            if (mEncodingData.TryGetValue(new Binary(encodingKey), out encEntry) == false || encEntry.mKeys.Length == 0)
+            if (mEncodingData.TryGetValue(new Binary(encodingKey), out encEntry) == false || encEntry.Keys.Length == 0)
                 throw new InvalidOperationException("Unable to find encoding value for root file");
 
             IndexEntry entry;
-            if (mIndexData.TryGetValue(new Binary(encEntry.mKeys[0].ToArray().Take(9).ToArray()), out entry) == false)
+            if (mIndexData.TryGetValue(new Binary(encEntry.Keys[0].ToArray().Take(9).ToArray()), out entry) == false)
                 throw new InvalidOperationException("Unable to locate root file in index table");
 
-            var strm = GetDataStream(entry.mIndex);
+            var strm = GetDataStream(entry.Index);
             using (var fileReader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
             {
-                fileReader.BaseStream.Position = entry.mOffset + 30;
-                using (var reader = new BinaryReader(BlteGetData(fileReader, entry.mSize)))
+                fileReader.BaseStream.Position = entry.Offset + 30;
+                using (var reader = new BinaryReader(BlteGetData(fileReader, entry.Size)))
                 {
                     try
                     {
@@ -216,8 +215,8 @@ namespace WoWEditor6.IO.CASC
                                 var b = e.md5;
                                 var rootEntry = new RootEntry
                                 {
-                                    mHash = e.hash,
-                                    mMd5 = new Binary(new[]
+                                    Hash = e.hash,
+                                    Md5 = new Binary(new[]
                                     {
                                         b.v1, b.v2, b.v3, b.v4, b.v5, b.v6, b.v7, b.v8, b.v9, b.v10, b.v11,
                                         b.v12, b.v13, b.v14, b.v15, b.v16
@@ -248,16 +247,16 @@ namespace WoWEditor6.IO.CASC
                 throw new InvalidOperationException("Encoding file not found");
 
             var entry = mIndexData[encodingKey];
-            var strm = GetDataStream(entry.mIndex);
+            var strm = GetDataStream(entry.Index);
             using (var fileReader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
             {
-                fileReader.BaseStream.Position = entry.mOffset + 30;
-                using (var reader = new BinaryReader(BlteGetData(fileReader, entry.mSize)))
+                fileReader.BaseStream.Position = entry.Offset + 30;
+                using (var reader = new BinaryReader(BlteGetData(fileReader, entry.Size)))
                 {
                     reader.BaseStream.Position = 9;
-                    var numEntries = reader.ReadUInt32BE();
+                    var numEntries = reader.ReadUInt32Be();
                     reader.BaseStream.Position += 5;
-                    var ofsEntries = reader.ReadUInt32BE();
+                    var ofsEntries = reader.ReadUInt32Be();
                     reader.BaseStream.Position += ofsEntries + 32 * numEntries;
 
                     for (var i = 0; i < numEntries; ++i)
@@ -265,19 +264,19 @@ namespace WoWEditor6.IO.CASC
                         var keys = reader.ReadUInt16();
                         while (keys != 0)
                         {
-                            var size = reader.ReadUInt32BE();
+                            var size = reader.ReadUInt32Be();
                             var md5 = reader.ReadBytes(16);
                             var keyValues = reader.ReadBytes(keys * 16);
                             var e = new EncodingEntry()
                             {
-                                mSize = size,
-                                mKeys = new Binary[keys]
+                                Size = size,
+                                Keys = new Binary[keys]
                             };
 
                             for (var j = 0; j < keys; ++j)
                             {
                                 var b = j * 16;
-                                e.mKeys[j] = new Binary(new[]
+                                e.Keys[j] = new Binary(new[]
                                 {
                                     keyValues[b], keyValues[b + 1], keyValues[b + 2], keyValues[b + 3],keyValues[b + 4],keyValues[b + 5],keyValues[b + 6],keyValues[b + 7],
                                     keyValues[b + 8],keyValues[b + 9],keyValues[b + 10],keyValues[b + 11],keyValues[b + 12],keyValues[b + 13],keyValues[b + 14],keyValues[b + 15]
@@ -333,7 +332,7 @@ namespace WoWEditor6.IO.CASC
             if (reader.ReadUInt32() != 0x45544C42)
                 throw new InvalidOperationException("Invalid file in archive. Invalid BLTE header");
 
-            var sizeFrameHeader = reader.ReadUInt32BE();
+            var sizeFrameHeader = reader.ReadUInt32Be();
             uint numChunks;
             var totalSize = 0L;
             if(sizeFrameHeader == 0)
@@ -360,14 +359,14 @@ namespace WoWEditor6.IO.CASC
                 chunks[i] = chunk;
                 if(sizeFrameHeader != 0)
                 {
-                    chunk.mSizeCompressed = reader.ReadUInt32BE();
-                    chunk.mSizeUncompressed = reader.ReadUInt32BE();
+                    chunk.SizeCompressed = reader.ReadUInt32Be();
+                    chunk.SizeUncompressed = reader.ReadUInt32Be();
                     reader.BaseStream.Position += 16;
                 }
                 else
                 {
-                    chunk.mSizeCompressed = totalSize;
-                    chunk.mSizeUncompressed = totalSize - 1;
+                    chunk.SizeCompressed = totalSize;
+                    chunk.SizeUncompressed = totalSize - 1;
                 }
             }
 
@@ -379,7 +378,7 @@ namespace WoWEditor6.IO.CASC
                 switch (code)
                 {
                     case 0x4E:
-                        data.AddRange(reader.ReadBytes((int)(chunks[i].mSizeCompressed - 1)));
+                        data.AddRange(reader.ReadBytes((int)(chunks[i].SizeCompressed - 1)));
                         break;
 
                     case 0x5A:
@@ -390,7 +389,7 @@ namespace WoWEditor6.IO.CASC
                                 reader.BaseStream.Position += 2;
                                 using (var strm = new DeflateStream(reader.BaseStream, CompressionMode.Decompress, true))
                                 {
-                                    var content = new byte[(int)chunks[i].mSizeUncompressed];
+                                    var content = new byte[(int)chunks[i].SizeUncompressed];
                                     var numRead = 0;
                                     while (numRead < content.Length)
                                     {
@@ -399,11 +398,11 @@ namespace WoWEditor6.IO.CASC
 
                                     data.AddRange(content);
                                 }
-                                reader.BaseStream.Position = curPos + (chunks[i].mSizeCompressed - 1);
+                                reader.BaseStream.Position = curPos + (chunks[i].SizeCompressed - 1);
                             }
                             else
                             {
-                                var content = reader.ReadBytes((int)(chunks[i].mSizeCompressed - 1));
+                                var content = reader.ReadBytes((int)(chunks[i].SizeCompressed - 1));
                                 using (var inStrm = new MemoryStream(content))
                                 {
                                     inStrm.Position = 2;

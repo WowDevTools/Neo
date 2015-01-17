@@ -13,7 +13,6 @@ namespace WoWEditor6.Graphics
         private readonly MainWindow mWindow;
         private SwapChainDescription mSwapChainDesc;
         private SwapChain mSwapChain;
-        private readonly Adapter1 mAdapter;
         private readonly Output mOutput;
         private RenderTargetView mRenderTarget;
         private DepthStencilView mDepthBuffer;
@@ -22,6 +21,7 @@ namespace WoWEditor6.Graphics
 
         public Device Device { get; private set; }
         public DeviceContext Context { get; private set; }
+        public Adapter1 Adapter { get; }
 
         public GxContext(MainWindow window)
         {
@@ -31,63 +31,74 @@ namespace WoWEditor6.Graphics
                 throw new InvalidOperationException(
                     "Sorry, but DirectX returned that there is no graphics card installed on your system. Please check if all your drivers are up to date!");
 
-            mAdapter = mFactory.GetAdapter1(0);
-            if (mAdapter.Outputs.Length == 0)
+            Adapter = mFactory.GetAdapter1(0);
+            if (Adapter.Outputs.Length == 0)
                 throw new InvalidOperationException(
                     "Sorry, but DirectX returned that there is no output (monitor) assigned to the graphics card: \"" +
-                    mAdapter.Description1.Description
+                    Adapter.Description.Description
                     +
                     "\". Please check if your drivers are OK and if your graphics card and monitor show up in the device manager.");
 
-            mOutput = mAdapter.Outputs[0];
+            mOutput = Adapter.Outputs[0];
         }
 
         public void BeginFrame()
         {
-            Context.ClearRenderTargetView(mRenderTarget, SharpDX.Color4.Black);
+            Context.ClearDepthStencilView(mDepthBuffer, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil,
+               1.0f, 0);
+            Context.ClearRenderTargetView(mRenderTarget, Color4.Black);
         }
 
         public void EndFrame()
         {
-            mSwapChain.Present(0, PresentFlags.None);
+            mSwapChain.Present(1, PresentFlags.None);
         }
 
         public void InitContext()
         {
+            var modeDesc = new ModeDescription
+            {
+                Format = Format.R8G8B8A8_UNorm,
+                Height = mWindow.ClientSize.Height,
+                Width = mWindow.ClientSize.Width,
+                RefreshRate = new Rational(60, 1),
+                Scaling = DisplayModeScaling.Unspecified,
+                ScanlineOrdering = DisplayModeScanlineOrder.Unspecified
+            };
+
             mSwapChainDesc = new SwapChainDescription()
             {
                 BufferCount = 1,
                 Flags = SwapChainFlags.None,
                 IsWindowed = true,
-                ModeDescription = new ModeDescription(mWindow.ClientSize.Width, mWindow.ClientSize.Height, new Rational(60, 1), Format.R8G8B8A8_UNorm),
                 OutputHandle = mWindow.Handle,
                 SampleDescription = new SampleDescription(1, 0),
                 SwapEffect = SwapEffect.Discard,
                 Usage = Usage.RenderTargetOutput
             };
 
-            mOutput.GetClosestMatchingMode(null, mSwapChainDesc.ModeDescription, out mSwapChainDesc.ModeDescription);
-            mSwapChainDesc.ModeDescription.Height = mWindow.ClientSize.Height;
-            mSwapChainDesc.ModeDescription.Width = mWindow.ClientSize.Width;
+            mOutput.GetClosestMatchingMode(null, modeDesc, out modeDesc);
+            modeDesc.Width = mWindow.ClientSize.Width;
+            modeDesc.Height = mWindow.ClientSize.Height;
+            mSwapChainDesc.ModeDescription = modeDesc;
 
 #if DEBUG
-            Device = new Device(mAdapter, DeviceCreationFlags.Debug);
+            Device = new Device(Adapter, DeviceCreationFlags.Debug);
 #else
-            mDevice = new Device(mAdapter);
+            mDevice = new Device(Adapter);
 #endif
-
-            Context = Device.ImmediateContext;
 
             BuildMultisample();
 
             mSwapChain = new SwapChain(mFactory, Device, mSwapChainDesc);
 
+            Context = Device.ImmediateContext;
+
             InitRenderTarget();
             InitDepthBuffer();
 
             Context.OutputMerger.SetRenderTargets(mDepthBuffer, mRenderTarget);
-            Context.Rasterizer.SetViewport(new ViewportF(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height,
-                0.0f, 1.0f));
+            Context.Rasterizer.SetViewport(new Viewport(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height));
 
             Texture.InitDefaultTexture(this);
         }
@@ -106,7 +117,7 @@ namespace WoWEditor6.Graphics
             }
 
             mSwapChainDesc.SampleDescription = new SampleDescription(maxCount, maxQuality);
-            mHasMultisample = maxQuality > 0 && maxCount > 1;
+            mHasMultisample = maxQuality > 0 || maxCount > 1;
         }
 
         private void InitRenderTarget()
@@ -146,7 +157,7 @@ namespace WoWEditor6.Graphics
 
             mDepthTexture = new Texture2D(Device, texDesc);
 
-            var dsvd = new DepthStencilViewDescription()
+            var dsvd = new DepthStencilViewDescription
             {
                 Dimension =
                     mHasMultisample

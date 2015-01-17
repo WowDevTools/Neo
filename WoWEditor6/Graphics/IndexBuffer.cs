@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX.DXGI;
+﻿using SharpDX.DXGI;
 
 namespace WoWEditor6.Graphics
 {

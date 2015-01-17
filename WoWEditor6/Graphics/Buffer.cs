@@ -33,7 +33,7 @@ namespace WoWEditor6.Graphics
 
         public void UpdateData<T>(T[] data) where T : struct
         {
-            Resize(data.Length, data);
+            Resize(data.Length * IO.SizeCache<T>.Size, data);
         }
 
         private void Resize<T>(int length, T[] data) where T : struct
@@ -47,6 +47,7 @@ namespace WoWEditor6.Graphics
                     using (var strm = new DataStream(length, true, true))
                     {
                         strm.WriteRange(data);
+                        strm.Position = 0;
                         Native = new SharpDX.Direct3D11.Buffer(mContext.Device, strm, mDescription);
                     }
                 }

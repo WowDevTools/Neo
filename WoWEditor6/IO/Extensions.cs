@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WoWEditor6.IO
 {
@@ -34,7 +31,7 @@ namespace WoWEditor6.IO
             }
         }
 
-        public static uint ReadUInt32BE(this BinaryReader br)
+        public static uint ReadUInt32Be(this BinaryReader br)
         {
             var be = br.ReadUInt32();
             return (be >> 24) | (((be >> 16) & 0xFF) << 8) | (((be >> 8) & 0xFF) << 16) | ((be & 0xFF) << 24);
@@ -68,7 +65,7 @@ namespace WoWEditor6.IO
                 if (numAvailable == 0)
                     throw new EndOfStreamException();
 
-                numAvailable = System.Math.Min(numAvailable, 30);
+                numAvailable = Math.Min(numAvailable, 30);
 
                 var chunk = br.ReadArray<ushort>((int)numAvailable);
                 var isDone = false;
@@ -80,7 +77,7 @@ namespace WoWEditor6.IO
                         isDone = true;
                         break;
                     }
-                    chars += (char)c;
+                    chars += c;
                 }
 
                 if (isDone)

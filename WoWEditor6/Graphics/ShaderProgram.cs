@@ -39,9 +39,19 @@ namespace WoWEditor6.Graphics
             mContext.Context.VertexShader.SetShaderResources(slot, textures.Select(t => t.NativeView).ToArray());
         }
 
+        public void SetVertexTexture(int slot, ShaderResourceView view)
+        {
+            mContext.Context.VertexShader.SetShaderResource(slot, view);
+        }
+
         public void SetPixelTexture(int slot, Texture texture)
         {
             mContext.Context.PixelShader.SetShaderResource(slot, texture.NativeView);
+        }
+
+        public void SetPixelTexture(int slot, ShaderResourceView view)
+        {
+            mContext.Context.PixelShader.SetShaderResource(slot, view);
         }
 
         public void SetPixelTextures(int slot, params Texture[] textures)
@@ -71,7 +81,7 @@ namespace WoWEditor6.Graphics
 
         public void SetVertexShader(string code, string entry)
         {
-            var result = ShaderBytecode.Compile(Encoding.UTF8.GetBytes(code), entry, "vs_4_0", ShaderFlags.OptimizationLevel3);
+            var result = ShaderBytecode.Compile(Encoding.UTF8.GetBytes(code), entry, "vs_5_0", ShaderFlags.OptimizationLevel3);
             if (result.HasErrors)
                 throw new ArgumentException(result.Message, "code");
 
@@ -81,7 +91,7 @@ namespace WoWEditor6.Graphics
 
         public void SetPixelShader(string code, string entry)
         {
-            using (var result = ShaderBytecode.Compile(Encoding.UTF8.GetBytes(code), entry, "ps_4_0",
+            using (var result = ShaderBytecode.Compile(Encoding.UTF8.GetBytes(code), entry, "ps_5_0",
                 ShaderFlags.OptimizationLevel3))
             {
                 if (result.HasErrors)

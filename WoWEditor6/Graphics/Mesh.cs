@@ -17,21 +17,30 @@ namespace WoWEditor6.Graphics
         public int IndexCount { get; set; }
         public int StartIndex { get; set; }
         public int StartVertex { get; set; }
+        public DepthState DepthState { get; set; }
+        public RasterState RasterizerState { get; set; }
+        public BlendState BlendState { get; set; }
 
         public Mesh(GxContext context)
         {
             mContext = context;
             VertexBuffer = new VertexBuffer(context);
             IndexBuffer = new IndexBuffer(context);
+            DepthState = new DepthState(context);
+            RasterizerState = new RasterState(context);
+            BlendState = new BlendState(context);
         }
 
         public void BeginDraw()
         {
             var ctx = mContext.Context;
-            ctx.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Native, Stride, 0));
+            ctx.InputAssembler.SetVertexBuffers(0, new[] { VertexBuffer?.Native }, new[] { Stride }, new[] { 0 });
             ctx.InputAssembler.SetIndexBuffer(IndexBuffer.Native, IndexBuffer.IndexFormat, 0);
             ctx.InputAssembler.InputLayout = mLayout;
             ctx.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
+            ctx.OutputMerger.DepthStencilState = DepthState.State;
+            ctx.Rasterizer.State = RasterizerState.Native;
+            ctx.OutputMerger.BlendState = BlendState.Native;
             mProgram.Bind();
         }
 
