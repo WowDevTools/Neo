@@ -70,7 +70,11 @@ namespace WoWEditor6.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DAS IST EIN TEST.
+        ///   Looks up a localized string similar to Welcome to the newest version of the world of warcraft map editor.
+        ///
+        ///Before you can start please make sure you select the path to your world of warcraft directory. Right now all that is supported is CASC based installations of the game. Basically this means its Warlords of Draenor only. There is already a basic layout set up for MPQ. 
+        ///
+        ///Please do not select the data folder or the wow.exe itself, just select the directory your wow is installed in. If you wanna let it be loaded from the registry (this usual [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SplashView_AppDescription {
             get {

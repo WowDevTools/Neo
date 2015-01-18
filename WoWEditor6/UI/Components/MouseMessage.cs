@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 
 namespace WoWEditor6.UI.Components
@@ -19,6 +15,7 @@ namespace WoWEditor6.UI.Components
     {
         public Vector2 Position { get; }
         public MouseButton Buttons { get; }
+        public int Delta { get; set; }
 
         public MouseMessage(MessageType type, Vector2 position, MouseButton buttons)
             : base(type)

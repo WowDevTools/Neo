@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct2D1;
+using SharpDX.DirectWrite;
 
 namespace WoWEditor6.UI.Components
 {
@@ -20,6 +16,19 @@ namespace WoWEditor6.UI.Components
         public SolidBrush Color { get; set; } = Brushes.Solid[0xFFFFFFFF];
         public float FontSize { get { return mTextDraw.FontSize; } set { mTextDraw.FontSize = value; } }
         public bool Multiline { get { return mMultiline; } set { MultilineChanged(value); } }
+        public TextAlignment HorizontalAlignment
+        {
+            get { return mTextDraw.HorizontalAlignment; }
+            set { mTextDraw.HorizontalAlignment = value; }
+        }
+
+        public ParagraphAlignment VerticalAlignment
+        {
+            get { return mTextDraw.VerticalAlignment; }
+            set { mTextDraw.VerticalAlignment = value; }
+        }
+
+        public float TextHeight => ((TextLayout) mTextDraw).Metrics.Height;
 
         public Label()
         {
@@ -27,11 +36,11 @@ namespace WoWEditor6.UI.Components
             {
                 FontFamily = "Segoe UI",
                 FontSize = 14.0f,
-                HorizontalAlignment = SharpDX.DirectWrite.TextAlignment.Leading,
+                HorizontalAlignment = TextAlignment.Leading,
                 Size = new Size2F(float.MaxValue, 100.0f),
                 Text = "",
-                VerticalAlignment = SharpDX.DirectWrite.ParagraphAlignment.Near,
-                Weight = SharpDX.DirectWrite.FontWeight.Bold
+                VerticalAlignment = ParagraphAlignment.Near,
+                Weight = FontWeight.Bold
             };
         }
 

@@ -88,6 +88,7 @@
     <Compile Include="IO\CASC\TokenConfig.cs" />
     <Compile Include="IO\Extensions.cs" />
     <Compile Include="IO\FileManager.cs" />
+    <Compile Include="IO\Files\DBCFile.cs" />
     <Compile Include="IO\IFileProvider.cs" />
     <Compile Include="IO\SizeCache.cs" />
     <Compile Include="Program.cs" />
@@ -103,6 +104,8 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Scene\AppState.cs" />
+    <Compile Include="Storage\DBCStorage.cs" />
+    <Compile Include="Storage\MapFormatGuess.cs" />
     <Compile Include="UI\Brushes.cs" />
     <Compile Include="UI\ComponentRoot.cs" />
     <Compile Include="UI\Components\Button.cs" />
@@ -110,8 +113,10 @@
     <Compile Include="UI\Components\Frame.cs" />
     <Compile Include="UI\Components\KeyboardMessage.cs" />
     <Compile Include="UI\Components\Label.cs" />
+    <Compile Include="UI\Components\MapSelectQuad.cs" />
     <Compile Include="UI\Components\Message.cs" />
     <Compile Include="UI\Components\MouseMessage.cs" />
+    <Compile Include="UI\Components\Scrollbar.cs" />
     <Compile Include="UI\DrawSurface.cs" />
     <Compile Include="UI\FontCollection.cs" />
     <Compile Include="UI\IComponent.cs" />
@@ -124,9 +129,15 @@
     </Compile>
     <Compile Include="UI\SolidBrush.cs" />
     <Compile Include="UI\StaticText.cs" />
+    <Compile Include="UI\Views\FileSystemInitView.cs" />
     <Compile Include="UI\Views\IView.cs" />
+    <Compile Include="UI\Views\MapSelectView.cs" />
     <Compile Include="UI\Views\SplashView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
+    <Compile Include="Win32\Fos.cs" />
+    <Compile Include="Win32\IFileOpenDialog.cs" />
+    <Compile Include="Win32\IShellItem.cs" />
+    <Compile Include="Win32\IShellItemArray.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

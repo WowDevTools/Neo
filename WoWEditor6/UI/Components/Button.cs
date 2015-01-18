@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using SharpDX.Direct2D1;
 
 namespace WoWEditor6.UI.Components
@@ -18,6 +19,8 @@ namespace WoWEditor6.UI.Components
         private bool mIsHovered;
         private bool mIsClicked;
         private readonly StaticText mTextDraw;
+
+        public event Action<Button> OnClick;
 
         public string Text { get { return mTextDraw.Text; } set { mTextDraw.Text = value; } }
 
@@ -100,9 +103,7 @@ namespace WoWEditor6.UI.Components
                         if(msg.IsHandled == false)
                         {
                             if (mClientRectangle.Contains(msg.Position) && mIsClicked)
-                            {
-                                // TODO: OnClick
-                            }
+                                OnClick?.Invoke(this);
                         }
 
                         mIsClicked = false;

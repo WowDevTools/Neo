@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace WoWEditor6.IO.CASC
 {
@@ -76,17 +77,53 @@ namespace WoWEditor6.IO.CASC
         private readonly Dictionary<Binary, EncodingEntry> mEncodingData = new Dictionary<Binary, EncodingEntry>();
         private readonly Dictionary<ulong, List<RootEntry>> mRootData = new Dictionary<ulong, List<RootEntry>>();
 
-        public void Initialize(string dataDirectory)
+        public event Action LoadComplete;
+
+        public async void Initialize(string dataDirectory)
         {
-            mDataDir = dataDirectory;
-            mDataDir = Path.Combine(mDataDir, "Data\\data");
+            await Task.Factory.StartNew(() =>
+            {
+                mDataDir = dataDirectory;
+                mDataDir = Path.Combine(mDataDir, "Data\\data");
 
-            InitConfigs();
+                InitConfigs();
 
-            FindIdexFiles().ForEach(LoadIndexFile);
+                FindIdexFiles().ForEach(LoadIndexFile);
 
-            LoadEncodingFile();
-            LoadRootFile();
+                LoadEncodingFile();
+                LoadRootFile();
+
+                LoadComplete?.Invoke();
+            });
+        }
+
+        public bool Exists(string path)
+        {
+            path = path.ToUpperInvariant();
+            var hash = (new JenkinsHash()).Compute(path);
+            List<RootEntry> roots;
+            if (mRootData.TryGetValue(hash, out roots) == false)
+                return false;
+
+            foreach (var root in roots)
+            {
+                EncodingEntry enc;
+                if (mEncodingData.TryGetValue(root.Md5, out enc) == false)
+                    continue;
+
+                if (enc.Keys.Length == 0)
+                    continue;
+
+                IndexEntry indexKey;
+                var found = enc.Keys.Any(key => mIndexData.TryGetValue(new Binary(key.ToArray().Take(9).ToArray()), out indexKey));
+
+                if (found == false)
+                    continue;
+
+                return true;
+            }
+
+            return false;
         }
 
         public Stream OpenFile(string path)
@@ -117,8 +154,8 @@ namespace WoWEditor6.IO.CASC
                 {
                     using (var reader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
                     {
-                        strm.Stream.Position = 30;
-                        return BlteGetData(reader, indexKey.Size);
+                        strm.Stream.Position = indexKey.Offset + 30;
+                        return BlteGetData(reader, indexKey.Size - 30);
                     }
                 }
             }
@@ -201,7 +238,7 @@ namespace WoWEditor6.IO.CASC
             using (var fileReader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
             {
                 fileReader.BaseStream.Position = entry.Offset + 30;
-                using (var reader = new BinaryReader(BlteGetData(fileReader, entry.Size)))
+                using (var reader = new BinaryReader(BlteGetData(fileReader, entry.Size - 30)))
                 {
                     try
                     {
@@ -251,7 +288,7 @@ namespace WoWEditor6.IO.CASC
             using (var fileReader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
             {
                 fileReader.BaseStream.Position = entry.Offset + 30;
-                using (var reader = new BinaryReader(BlteGetData(fileReader, entry.Size)))
+                using (var reader = new BinaryReader(BlteGetData(fileReader, entry.Size - 30)))
                 {
                     reader.BaseStream.Position = 9;
                     var numEntries = reader.ReadUInt32Be();

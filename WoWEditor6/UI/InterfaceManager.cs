@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using WoWEditor6.Graphics;
 using WoWEditor6.Resources;
@@ -12,7 +11,6 @@ namespace WoWEditor6.UI
     {
         public static InterfaceManager Instance { get; } = new InterfaceManager();
 
-        private MainWindow mWindow;
         private Mesh mMesh;
         private GxContext mContext;
         private Sampler mQuadSampler;
@@ -22,11 +20,12 @@ namespace WoWEditor6.UI
 
         public ComponentRoot Root { get; } = new ComponentRoot();
         public DrawSurface Surface { get; private set; }
+        public MainWindow Window { get; private set; }
 
         public void Initialize(MainWindow window, GxContext context)
         {
             mContext = context;
-            mWindow = window;
+            Window = window;
             Surface = new DrawSurface(context);
             Surface.GraphicsInit();
             Surface.OnResize(window.ClientSize.Width, window.ClientSize.Height);
@@ -36,16 +35,27 @@ namespace WoWEditor6.UI
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipPoint
             };
 
-            mWindow.Text = Strings.MainWindowTitle;
+            Window.Text = Strings.MainWindowTitle;
 
             mViews.Add(Scene.AppState.Splash, new SplashView());
+            mViews.Add(Scene.AppState.FileSystemInit, new FileSystemInitView());
+            mViews.Add(Scene.AppState.MapSelect, new MapSelectView());
             mActiveView = mViews[Scene.AppState.Splash];
 
             InitMesh();
             InitMessages();
 
             foreach(var pair in mViews)
-                pair.Value.OnResize(new SharpDX.Vector2(mWindow.Width, mWindow.Height));
+                pair.Value.OnResize(new SharpDX.Vector2(Window.ClientSize.Width, Window.ClientSize.Height));
+        }
+
+        public void UpdateState(Scene.AppState state)
+        {
+            lock(mViews)
+            {
+                mViews.TryGetValue(state, out mActiveView);
+                mActiveView?.OnShow();
+            }
         }
 
         public void OnFrame()
@@ -53,7 +63,8 @@ namespace WoWEditor6.UI
             Surface.RenderFrame(rt =>
             {
                 Root.OnRender(rt);
-                mActiveView?.OnRender(rt);
+                lock (mViews)
+                    mActiveView?.OnRender(rt);
             });
             mMesh.Program.SetPixelTexture(0, Surface.NativeView);
             mMesh.Program.SetPixelSampler(0, mQuadSampler);
@@ -66,28 +77,36 @@ namespace WoWEditor6.UI
 
         private void InitMessages()
         {
-            mWindow.MouseMove += (sender, args) =>
+            Window.MouseMove += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseMove, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
                 mActiveView?.OnMessage(msg);
             };
 
-            mWindow.MouseDown += (sender, args) =>
+            Window.MouseDown += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseDown, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
                 mActiveView?.OnMessage(msg);
             };
 
-            mWindow.MouseUp += (sender, args) =>
+            Window.MouseUp += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseUp, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
                 mActiveView?.OnMessage(msg);
             };
 
-            mWindow.KeyDown += (sender, args) =>
+            Window.MouseWheel += (sender, args) =>
+            {
+                var msg = new MouseMessage(MessageType.MouseWheel, new SharpDX.Vector2(args.X, args.Y),
+                    GetButton(args.Button)) { Delta = -args.Delta / 120 };
+                Root.OnMessage(msg);
+                mActiveView?.OnMessage(msg);
+            };
+
+            Window.KeyDown += (sender, args) =>
             {
                 var c = KeyboardMessage.GetCharacter(args);
                 var msg = new KeyboardMessage(MessageType.KeyDown, c, args.KeyCode);
@@ -95,7 +114,7 @@ namespace WoWEditor6.UI
                 mActiveView?.OnMessage(msg);
             };
 
-            mWindow.KeyUp += (sender, args) =>
+            Window.KeyUp += (sender, args) =>
             {
                 var c = KeyboardMessage.GetCharacter(args);
                 var msg = new KeyboardMessage(MessageType.KeyUp, c, args.KeyCode);

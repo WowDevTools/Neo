@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WoWEditor6.IO
 {
@@ -12,13 +8,26 @@ namespace WoWEditor6.IO
         public static FileManager Instance { get; } = new FileManager();
 
         public IFileProvider Provider { get; private set; }
+        public string DataPath { get; set; }
+        public bool Initialized { get; private set; }
 
-        public void InitFromPath(string wowDir)
+        public event Action LoadComplete;
+
+        public void InitFromPath()
         {
-            if (File.Exists(Path.Combine(wowDir, ".build.info")))
+            if(string.IsNullOrEmpty(DataPath))
+                throw new InvalidOperationException("Cannot initialize file system without a path");
+
+            if (File.Exists(Path.Combine(DataPath, ".build.info")))
             {
                 var mgr = new CASC.FileManager();
-                mgr.Initialize(wowDir);
+                mgr.LoadComplete += () =>
+                {
+                    Initialized = true;
+                    LoadComplete?.Invoke();
+                };
+
+                mgr.Initialize(DataPath);
                 Provider = mgr;
             }
             else

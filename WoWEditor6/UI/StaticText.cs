@@ -16,7 +16,7 @@ namespace WoWEditor6.UI
         private TextAlignment mHorizontalAlignment = TextAlignment.Leading;
         private ParagraphAlignment mVerticalAlignment = ParagraphAlignment.Near;
         private FontWeight mWeight = FontWeight.Normal;
-        private bool mAlignmentChanged = false;
+        private bool mAlignmentChanged;
 
         public string Text { get { return mText; } set { mText = value; mChanged = true; } }
         public Size2F Size { get { return mSize; } set { mSize = value; mChanged = true; } }
@@ -67,8 +67,9 @@ namespace WoWEditor6.UI
                 mSize.Height)
             {
                 TextAlignment = mHorizontalAlignment,
-                ParagraphAlignment = mVerticalAlignment
+                ParagraphAlignment = mVerticalAlignment,
             };
+
             mChanged = false;
             mAlignmentChanged = false;
             return mLayout;

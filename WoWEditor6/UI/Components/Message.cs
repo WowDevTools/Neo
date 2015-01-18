@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX;
+﻿using SharpDX;
 
 namespace WoWEditor6.UI.Components
 {
@@ -12,6 +7,7 @@ namespace WoWEditor6.UI.Components
         MouseUp,
         MouseDown,
         MouseMove,
+        MouseWheel,
         KeyDown,
         KeyUp
     }
