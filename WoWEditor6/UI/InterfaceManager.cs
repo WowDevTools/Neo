@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using WoWEditor6.Graphics;
 using WoWEditor6.Resources;
@@ -15,6 +16,7 @@ namespace WoWEditor6.UI
         private GxContext mContext;
         private Sampler mQuadSampler;
         private IView mActiveView;
+        private bool mIsResizing;
 
         private readonly Dictionary<Scene.AppState, IView> mViews = new Dictionary<Scene.AppState, IView>(); 
 
@@ -40,6 +42,7 @@ namespace WoWEditor6.UI
             mViews.Add(Scene.AppState.Splash, new SplashView());
             mViews.Add(Scene.AppState.FileSystemInit, new FileSystemInitView());
             mViews.Add(Scene.AppState.MapSelect, new MapSelectView());
+            mViews.Add(Scene.AppState.EntrySelect, new EntrySelectView());
             mActiveView = mViews[Scene.AppState.Splash];
 
             InitMesh();
@@ -55,6 +58,18 @@ namespace WoWEditor6.UI
             {
                 mViews.TryGetValue(state, out mActiveView);
                 mActiveView?.OnShow();
+            }
+        }
+
+        public T GetViewForState<T>(Scene.AppState state) where T : class, IView
+        {
+            lock(mViews)
+            {
+                IView activeView;
+                if (mViews.TryGetValue(state, out activeView) == false)
+                    return default(T);
+
+                return activeView as T;
             }
         }
 
@@ -121,6 +136,28 @@ namespace WoWEditor6.UI
                 Root.OnMessage(msg);
                 mActiveView?.OnMessage(msg);
             };
+
+            Window.ResizeBegin += (sender, args) => mIsResizing = true;
+            Window.Resize += OnResize;
+            Window.ResizeEnd += (sender, args) =>
+            {
+                mIsResizing = false;
+                OnResize(sender, args);
+            };
+        }
+
+        private void OnResize(object sender, EventArgs args)
+        {
+            if (mIsResizing)
+                return;
+
+            if (Window.WindowState == FormWindowState.Minimized)
+                return;
+
+            Surface.OnResize(Window.ClientSize.Width, Window.ClientSize.Height);
+            lock(mViews)
+                foreach (var pair in mViews)
+                    pair.Value.OnResize(new SharpDX.Vector2(Window.ClientSize.Width, Window.ClientSize.Height));
         }
 
         private static MouseButton GetButton(MouseButtons button)

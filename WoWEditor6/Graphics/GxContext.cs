@@ -18,6 +18,7 @@ namespace WoWEditor6.Graphics
         private DepthStencilView mDepthBuffer;
         private Texture2D mDepthTexture;
         private bool mHasMultisample;
+        private bool mIsResizing;
 
         public Device Device { get; private set; }
         public DeviceContext Context { get; private set; }
@@ -101,6 +102,35 @@ namespace WoWEditor6.Graphics
             Context.Rasterizer.SetViewport(new Viewport(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height));
 
             Texture.InitDefaultTexture(this);
+
+            mWindow.ResizeBegin += (sender, args) => mIsResizing = true;
+            mWindow.Resize += OnResize;
+            mWindow.ResizeEnd += (sender, args) =>
+            {
+                mIsResizing = false;
+                OnResize(sender, args);
+            };
+        }
+
+        private void OnResize(object sender, EventArgs args)
+        {
+            if (mIsResizing)
+                return;
+
+            if (Device == null)
+                return;
+
+            Context.OutputMerger.SetRenderTargets(null, (RenderTargetView)null);
+            mRenderTarget.Dispose();
+            mDepthBuffer.Dispose();
+            mDepthTexture.Dispose();
+
+            mSwapChain.ResizeBuffers(0, 0, 0, Format.Unknown, SwapChainFlags.None);
+            InitRenderTarget();
+            InitDepthBuffer();
+
+            Context.OutputMerger.SetRenderTargets(mDepthBuffer, mRenderTarget);
+            Context.Rasterizer.SetViewport(new Viewport(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height));
         }
 
         private void BuildMultisample()

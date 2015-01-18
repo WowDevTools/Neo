@@ -70,7 +70,7 @@ namespace WoWEditor6.UI.Views
             {
                 var label = mMapLabels[i];
                 // ReSharper disable once PossibleLossOfFraction
-                label.Position = new Vector2((i % numHoriz) * 103.0f + 30.0f, (i / numHoriz) * 103.0f + 100);
+                label.Position = new Vector2((i % numHoriz) * 103.0f + 30.0f, (i / numHoriz) * 103.0f + 103);
             }
 
             var numRows = mMapLabels.Count / numHoriz;
@@ -86,6 +86,9 @@ namespace WoWEditor6.UI.Views
 
         public void OnShow()
         {
+            if (mMapLabels.Count > 0)
+                return;
+
             Storage.DbcStorage.Initialize();
 
             var numHoriz = (int) Math.Floor((mSize.X - 60.0f) / 103.0f);
@@ -99,8 +102,11 @@ namespace WoWEditor6.UI.Views
                     // ReSharper disable once PossibleLossOfFraction
                     Position = new Vector2((i % numHoriz) * 103.0f + 30.0f, (i / numHoriz) * 103.0f + 103),
                     Size = new Vector2(96.0f, 96.0f),
-                    Text = title
+                    Text = title,
+                    Tag = row
                 });
+
+                mMapLabels[i].Clicked += MapSelected;
             }
 
             var numRows = mMapLabels.Count / numHoriz;
@@ -121,6 +127,17 @@ namespace WoWEditor6.UI.Views
                 // ReSharper disable once PossibleLossOfFraction
                 label.Position = new Vector2((i % numHoriz) * 103.0f + 30.0f, (i / numHoriz) * 103.0f + 103 - offset);
             }
+        }
+
+        private void MapSelected(MapSelectQuad quad)
+        {
+            var row = quad.Tag as IO.Files.DbcRecord;
+            if (row == null)
+                return;
+
+            var esView = InterfaceManager.Instance.GetViewForState<EntrySelectView>(Scene.AppState.EntrySelect);
+            esView?.SetSelectedMap(row);
+            InterfaceManager.Instance.UpdateState(Scene.AppState.EntrySelect);
         }
     }
 }

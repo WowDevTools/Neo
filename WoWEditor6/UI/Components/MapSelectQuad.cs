@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using SharpDX.Direct2D1;
 
 namespace WoWEditor6.UI.Components
@@ -13,6 +14,9 @@ namespace WoWEditor6.UI.Components
         private bool mIsClicked;
         private readonly SolidBrush mColor = Brushes.Solid[0xFF777777];
         private readonly SolidBrush mColorHover = Brushes.Solid[0xFFAAAAAA];
+
+        public event Action<MapSelectQuad> Clicked;
+        public object Tag { get; set; }
 
         public Vector2 Position { get { return mPosition; } set { ClientAreaUpdate(value, mSize); } }
         public Vector2 Size { get { return mSize; } set { ClientAreaUpdate(mPosition, value); } }
@@ -40,7 +44,10 @@ namespace WoWEditor6.UI.Components
                     : new RectangleF(Position.X + offset.X, Position.Y + offset.Y, mSize.X - 2 * offset.X, mSize.Y - 2 * offset.Y),
                 mIsHovered ? mColorHover : mColor);
 
+            target.PushAxisAlignedClip(new RectangleF(Position.X + 2, Position.Y + 2, mSize.X - 4, mSize.Y - 4),
+                AntialiasMode.Aliased);
             target.DrawTextLayout(new Vector2(Position.X + 2 + offset.X, Position.Y + 2 + offset.Y), mTextDraw, mIsHovered ? Brushes.Black :  Brushes.White);
+            target.PopAxisAlignedClip();
         }
 
         public void OnMessage(Message message)
@@ -64,6 +71,9 @@ namespace WoWEditor6.UI.Components
                     break;
 
                 case MessageType.MouseUp:
+                    if (mIsClicked && mIsHovered)
+                        Clicked?.Invoke(this);
+
                     mIsClicked = false;
                     break;
             }

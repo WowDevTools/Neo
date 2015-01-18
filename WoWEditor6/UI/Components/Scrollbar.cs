@@ -10,6 +10,7 @@ namespace WoWEditor6.UI.Components
         private float mSize;
         private float mScrollOffset;
         private bool mIsKnobDown;
+        private bool mIsKnobHovered;
         private Vector2 mKnobOffset;
 
         public float TotalSize { get; set; }
@@ -25,12 +26,18 @@ namespace WoWEditor6.UI.Components
 
         public void OnRender(RenderTarget target)
         {
+            var color = Brushes.Solid[0xFFAAAAAA];
+            if (mIsKnobDown)
+                color = Brushes.White;
+            else if (mIsKnobHovered)
+                color = Brushes.Solid[0xFFDDDDDD];
+
             var fact = VisibleSize / TotalSize;
             var scrollStart = (mScrollOffset / TotalSize) * Size;
 
             target.FillRectangle(
                 new RectangleF(Position.X + (Vertical ? 0 : scrollStart), Position.Y  + (Vertical ? scrollStart : 0), Vertical ? Thickness : (Size * fact),
-                    Vertical ? (Size * fact) : Thickness), Brushes.White);
+                    Vertical ? (Size * fact) : Thickness), color);
         }
 
         public void OnScroll(int delta)
@@ -71,6 +78,14 @@ namespace WoWEditor6.UI.Components
 
         private void HandleMouseMove(MouseMessage msg)
         {
+            var fact = VisibleSize / TotalSize;
+            var scrollStart = (mScrollOffset / TotalSize) * Size;
+            var knobRect = new RectangleF(Position.X + (Vertical ? 0 : scrollStart),
+                Position.Y + (Vertical ? scrollStart : 0), Vertical ? Thickness : (Size * fact),
+                Vertical ? (Size * fact) : Thickness);
+
+            mIsKnobHovered = knobRect.Contains(msg.Position);
+
             if (mIsKnobDown == false)
                 return;
 
@@ -78,7 +93,7 @@ namespace WoWEditor6.UI.Components
             if (knoby < 0)
                 knoby = 0;
 
-            var scrollStart = knoby;
+            scrollStart = knoby;
             scrollStart /= Size;
             scrollStart *= TotalSize;
             mScrollOffset = scrollStart;

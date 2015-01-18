@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpDX;
 using SharpDX.DirectWrite;
+using Factory = SharpDX.DirectWrite.Factory;
 
 namespace WoWEditor6.UI
 {
@@ -47,7 +48,7 @@ namespace WoWEditor6.UI
             mFactory = InterfaceManager.Instance.Surface.DirectWriteFactory;
         }
 
-        private TextLayout GetLayout()
+        public TextLayout GetLayout()
         {
             if(mAlignmentChanged)
             {
@@ -62,8 +63,10 @@ namespace WoWEditor6.UI
             if (mChanged == false)
                 return mLayout;
 
+            var font = Fonts.Cache[mFontFamily, mFontSize, mWeight];
+
             mLayout?.Dispose();
-            mLayout = new TextLayout(mFactory, mText, Fonts.Cache[mFontFamily, mFontSize, mWeight], mSize.Width,
+            mLayout = new TextLayout(mFactory, mText, font, mSize.Width,
                 mSize.Height)
             {
                 TextAlignment = mHorizontalAlignment,

@@ -12,8 +12,6 @@ namespace WoWEditor6.UI
 {
     class DrawSurface
     {
-        private RenderTarget mRenderTarget;
-        private readonly Factory mFactory = new Factory();
         private Device1 mTmpDevice;
         private Texture2D mTmpTexture;
         private SharpDX.Direct3D11.Texture2D mRealTexture;
@@ -24,6 +22,8 @@ namespace WoWEditor6.UI
 
         public SharpDX.Direct3D11.ShaderResourceView NativeView { get; private set; }
         public SharpDX.DirectWrite.Factory DirectWriteFactory { get; } = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Isolated);
+        public RenderTarget RenderTarget { get; private set; }
+        public Factory Direct2DFactory { get; } = new Factory();
 
         public DrawSurface(GxContext context)
         {
@@ -71,9 +71,9 @@ namespace WoWEditor6.UI
                     }
                 });
 
-            mRenderTarget?.Dispose();
+            RenderTarget?.Dispose();
             using (var surface = mTmpTexture.QueryInterface<Surface>())
-                mRenderTarget = new RenderTarget(mFactory, surface, new RenderTargetProperties()
+                RenderTarget = new RenderTarget(Direct2DFactory, surface, new RenderTargetProperties()
                 {
                     DpiX = 0.0f,
                     DpiY = 0.0f,
@@ -89,8 +89,9 @@ namespace WoWEditor6.UI
             mMutex10 = mTmpTexture.QueryInterface<KeyedMutex>();
             mMutex11 = mRealTexture.QueryInterface<KeyedMutex>();
 
-            Brushes.Initialize(mRenderTarget);
+            Brushes.Initialize(RenderTarget);
             Fonts.Initialize(DirectWriteFactory);
+            BitmapImage.UpdateRenderTarget();
 
             Button.Initialize();
             Frame.Initialize();
@@ -108,10 +109,10 @@ namespace WoWEditor6.UI
 
             try
             {
-                mRenderTarget.BeginDraw();
-                mRenderTarget.Clear(new Color4(0.8f, 0.8f, 0.8f, 1));
-                renderAction?.Invoke(mRenderTarget);
-                mRenderTarget.EndDraw();
+                RenderTarget.BeginDraw();
+                RenderTarget.Clear(new Color4(0.8f, 0.8f, 0.8f, 1));
+                renderAction?.Invoke(RenderTarget);
+                RenderTarget.EndDraw();
             }
             finally
             {
