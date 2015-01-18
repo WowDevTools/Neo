@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 using SharpDX.Direct2D1;
 using WoWEditor6.UI.Components;
@@ -25,6 +21,7 @@ namespace WoWEditor6.UI.Views
             };
 
             mBackButton.OnClick += OnBackButtonClick;
+            mWdlControl.LocationSelected += OnLocationSelected;
         }
 
         public void SetSelectedMap(IO.Files.DbcRecord record)
@@ -61,9 +58,14 @@ namespace WoWEditor6.UI.Views
             mWdlControl.Position = new Vector2(20, 50);
         }
 
-        private void OnBackButtonClick(Button button)
+        private static void OnBackButtonClick(Button button)
         {
             InterfaceManager.Instance.UpdateState(Scene.AppState.MapSelect);
+        }
+
+        private void OnLocationSelected(Vector2 location)
+        {
+            Console.WriteLine(location);
         }
     }
 }

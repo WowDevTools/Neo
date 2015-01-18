@@ -20,10 +20,13 @@ namespace WoWEditor6.UI.Components
         private bool mIsClicked;
         private Vector2 mLastMousePos;
         private readonly StaticText mIndexDraw;
-        private int mIndexLocation = 0;
+        private int mIndexLocation;
+        private bool mIsLeftClick;
 
         public Vector2 Position { get { return mPosition; } set { ClientAreaChanged(value, mSize); } }
         public Vector2 Size { get { return mSize; } set { ClientAreaChanged(mPosition, value); } }
+
+        public event Action<Vector2> LocationSelected;
 
         public WdlControl()
         {
@@ -127,6 +130,12 @@ namespace WoWEditor6.UI.Components
 
         private void HandleMouseDown(MouseMessage msg)
         {
+            if(msg.Buttons == MouseButton.Left)
+            {
+                mIsLeftClick = mTargetRectangle.Contains(msg.Position);
+                return;
+            }
+
             if (msg.Buttons != MouseButton.Right)
                 return;
 
@@ -136,6 +145,33 @@ namespace WoWEditor6.UI.Components
 
         private void HandleMouseUp(MouseMessage msg)
         {
+            if(msg.Buttons == MouseButton.Left)
+            {
+                if(mIsLeftClick && mTargetRectangle.Contains(msg.Position))
+                {
+                    var facx = (msg.Position.X - mTargetRectangle.X) / mTargetRectangle.Width;
+                    var facy = (msg.Position.Y - mTargetRectangle.Y) / mTargetRectangle.Height;
+
+                    var sourcex = mSourceRectangle.Left + facx * mSourceRectangle.Width;
+                    var sourcey = mSourceRectangle.Top + facy * mSourceRectangle.Height;
+
+                    sourcex /= Width;
+                    sourcey /= Height;
+
+                    sourcex *= 64.0f;
+                    sourcey *= 64.0f;
+                    sourcex = Math.Max(0, Math.Min(64, sourcex));
+                    sourcey = Math.Max(0, Math.Min(64, sourcey));
+                    sourcex *= Metrics.TileSize;
+                    sourcey *= Metrics.TileSize;
+
+                    LocationSelected?.Invoke(new Vector2(sourcex, sourcey));
+                }
+
+                mIsLeftClick = false;
+                return;
+            }
+
             if (msg.Buttons != MouseButton.Right)
                 return;
 

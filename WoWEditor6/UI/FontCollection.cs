@@ -8,13 +8,10 @@ namespace WoWEditor6.UI
     class Font
     {
         private TextFormat mFormat;
-        private SharpDX.DirectWrite.Font mFont;
         public readonly string Family;
         private readonly FontStyle mStyle;
         public readonly FontWeight Weight;
         public readonly float Size;
-
-        public FontFace Face { get; private set; }
 
         public Font(string family, FontStyle style, FontWeight weight, float size)
         {
@@ -27,14 +24,6 @@ namespace WoWEditor6.UI
         public void OnUpdateTarget(Factory factory)
         {
             mFormat = new TextFormat(factory, Family, Weight, mStyle, Size);
-            var f = factory.GetSystemFontCollection(new SharpDX.Bool(false));
-            int index;
-            if (f.FindFamilyName("Segoe UI", out index) == false)
-                return;
-
-            var fam = f.GetFontFamily(index);
-            mFont = fam.GetFirstMatchingFont(Weight, FontStretch.Normal, mStyle);
-            Face = new FontFace(mFont);
         }
 
         public static implicit operator TextFormat(Font font)
