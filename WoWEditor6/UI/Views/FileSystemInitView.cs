@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpDX;
 using SharpDX.Direct2D1;
+using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
 
 namespace WoWEditor6.UI.Views
@@ -29,13 +30,14 @@ namespace WoWEditor6.UI.Views
         {
             if(IO.FileManager.Instance.Initialized)
             {
-                InterfaceManager.Instance.UpdateState(Scene.AppState.MapSelect);
+                WorldFrame.Instance.State = AppState.MapSelect;
                 return;
             }
 
             mAnimTime = DateTime.Now;
             IO.FileManager.Instance.LoadComplete += () =>
-                InterfaceManager.Instance.UpdateState(Scene.AppState.MapSelect);
+                WorldFrame.Instance.State = AppState.MapSelect;
+
             IO.FileManager.Instance.InitFromPath();
         }
 

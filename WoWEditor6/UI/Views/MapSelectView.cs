@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct2D1;
+using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
 
 namespace WoWEditor6.UI.Views
@@ -137,7 +138,7 @@ namespace WoWEditor6.UI.Views
 
             var esView = InterfaceManager.Instance.GetViewForState<EntrySelectView>(Scene.AppState.EntrySelect);
             esView?.SetSelectedMap(row);
-            InterfaceManager.Instance.UpdateState(Scene.AppState.EntrySelect);
+            WorldFrame.Instance.State = AppState.EntrySelect;
         }
     }
 }

@@ -12,7 +12,6 @@ namespace WoWEditor6.UI
 {
     class DrawSurface
     {
-        private Device1 mTmpDevice;
         private Texture2D mTmpTexture;
         private SharpDX.Direct3D11.Texture2D mRealTexture;
         private readonly GxContext mDevice;
@@ -24,6 +23,7 @@ namespace WoWEditor6.UI
         public SharpDX.DirectWrite.Factory DirectWriteFactory { get; } = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Isolated);
         public RenderTarget RenderTarget { get; private set; }
         public Factory Direct2DFactory { get; } = new Factory();
+        public Device1 D2DDevice { get; private set; }
 
         public DrawSurface(GxContext context)
         {
@@ -32,7 +32,7 @@ namespace WoWEditor6.UI
 
         public void GraphicsInit()
         {
-            mTmpDevice = new Device1(mDevice.Adapter, DeviceCreationFlags.BgraSupport,
+            D2DDevice = new Device1(mDevice.Adapter, DeviceCreationFlags.BgraSupport,
                 SharpDX.Direct3D10.FeatureLevel.Level_10_1);
         }
 
@@ -56,7 +56,7 @@ namespace WoWEditor6.UI
             });
 
             using (var resource = mRealTexture.QueryInterface<SharpDX.DXGI.Resource>())
-                mTmpTexture = mTmpDevice.OpenSharedResource<Texture2D>(resource.SharedHandle);
+                mTmpTexture = D2DDevice.OpenSharedResource<Texture2D>(resource.SharedHandle);
 
             NativeView?.Dispose();
             NativeView = new SharpDX.Direct3D11.ShaderResourceView(mDevice.Device, mRealTexture,

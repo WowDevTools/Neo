@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using WoWEditor6.Graphics;
 using WoWEditor6.Resources;
 using WoWEditor6.UI.Components;
@@ -24,8 +25,12 @@ namespace WoWEditor6.UI
         public DrawSurface Surface { get; private set; }
         public MainWindow Window { get; private set; }
 
+        public Dispatcher Dispatcher { get; private set; }
+
         public void Initialize(MainWindow window, GxContext context)
         {
+            Dispatcher = Dispatcher.CurrentDispatcher;
+
             mContext = context;
             Window = window;
             Surface = new DrawSurface(context);
@@ -43,6 +48,7 @@ namespace WoWEditor6.UI
             mViews.Add(Scene.AppState.FileSystemInit, new FileSystemInitView());
             mViews.Add(Scene.AppState.MapSelect, new MapSelectView());
             mViews.Add(Scene.AppState.EntrySelect, new EntrySelectView());
+            mViews.Add(Scene.AppState.LoadingScreen, new LoadingScreenView());
             mActiveView = mViews[Scene.AppState.Splash];
 
             InitMesh();

@@ -69,6 +69,7 @@ namespace WoWEditor6.IO.Files
         private Stream mStream;
         private BinaryReader mReader;
         private readonly Dictionary<int, string> mStringTable = new Dictionary<int, string>();
+        private readonly Dictionary<int, int> mIdLookup = new Dictionary<int, int>();
 
         public int NumRows { get; private set; }
         public int NumFields { get; private set; }
@@ -102,11 +103,20 @@ namespace WoWEditor6.IO.Files
                 curBytes.Clear();
                 curOffset = i + 1;
             }
+
+            for(var i = 0; i < NumRows; ++i)
+                mIdLookup.Add(GetRow(i).GetInt32(0), i);
         }
 
         public DbcRecord GetRow(int index)
         {
             return new DbcRecord(mRecordSize, 20 + index * mRecordSize, mReader, mStringTable);
+        }
+
+        public DbcRecord GetRowById(int id)
+        {
+            int index;
+            return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
         }
 
         public void Dispose()

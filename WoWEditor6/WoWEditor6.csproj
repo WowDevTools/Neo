@@ -65,6 +65,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Graphics\BlendState.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="IO\FileManager.cs" />
     <Compile Include="IO\Files\DBCFile.cs" />
     <Compile Include="IO\Files\Terrain\WdlFile.cs" />
+    <Compile Include="IO\Files\Texture\TextureLoader.cs" />
     <Compile Include="IO\IFileProvider.cs" />
     <Compile Include="IO\SizeCache.cs" />
     <Compile Include="Metrics.cs" />
@@ -106,6 +108,11 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Scene\AppState.cs" />
+    <Compile Include="Scene\Camera.cs" />
+    <Compile Include="Scene\OrthoCamera.cs" />
+    <Compile Include="Scene\PerspectiveCamera.cs" />
+    <Compile Include="Scene\Terrain\MapManager.cs" />
+    <Compile Include="Scene\WorldFrame.cs" />
     <Compile Include="Storage\DBCStorage.cs" />
     <Compile Include="Storage\MapFormatGuess.cs" />
     <Compile Include="UI\BitmapImage.cs" />
@@ -133,9 +140,11 @@
     </Compile>
     <Compile Include="UI\StaticText.cs" />
     <Compile Include="UI\SolidBrush.cs" />
+    <Compile Include="UI\TextureBitmap.cs" />
     <Compile Include="UI\Views\EntrySelectView.cs" />
     <Compile Include="UI\Views\FileSystemInitView.cs" />
     <Compile Include="UI\Views\IView.cs" />
+    <Compile Include="UI\Views\LoadingScreenView.cs" />
     <Compile Include="UI\Views\MapSelectView.cs" />
     <Compile Include="UI\Views\SplashView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />

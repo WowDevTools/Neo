@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpDX;
 using SharpDX.Direct2D1;
+using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
 
 namespace WoWEditor6.UI.Views
@@ -60,12 +61,15 @@ namespace WoWEditor6.UI.Views
 
         private static void OnBackButtonClick(Button button)
         {
-            InterfaceManager.Instance.UpdateState(Scene.AppState.MapSelect);
+            WorldFrame.Instance.State = AppState.MapSelect;
         }
 
         private void OnLocationSelected(Vector2 location)
         {
-            Console.WriteLine(location);
+            var continent = mMapRecord.GetString(Storage.MapFormatGuess.FieldMapName);
+            var mapId = mMapRecord.GetInt32(0);
+
+            WorldFrame.Instance.MapManager.EnterWorld(mapId, continent);
         }
     }
 }

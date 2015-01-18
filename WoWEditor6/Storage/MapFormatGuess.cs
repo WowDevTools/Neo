@@ -9,6 +9,8 @@ namespace WoWEditor6.Storage
     {  
         public static int FieldMapName { get; private set; }
         public static int FieldMapTitle { get; private set; }
+        public static int FieldLoadingScreenPath { get; private set; }
+        public static int FieldMapLoadingScreen { get; private set; }
 
         public static void Initialize()
         {
@@ -80,6 +82,101 @@ namespace WoWEditor6.Storage
                 throw new InvalidOperationException("Unable to find the title field in Map.dbc");
 
             FieldMapTitle = idx;
+
+            InitLoadingScreen();
+            FindLoadingScreenLink();
+        }
+
+        private static void InitLoadingScreen()
+        {
+            var loadingScreenFields = new List<bool>();
+            for (var i = 0; i < DbcStorage.LoadingScreen.NumFields; ++i)
+                loadingScreenFields.Add(i != 0);
+
+            for(var i = 0; i < DbcStorage.LoadingScreen.NumRows; ++i)
+            {
+                var row = DbcStorage.LoadingScreen.GetRow(i);
+                for(var j = 0; j < loadingScreenFields.Count; ++j)
+                {
+                    if (loadingScreenFields[j] == false)
+                        continue;
+
+                    var str = row.GetString(j);
+                    if(str == null)
+                    {
+                        loadingScreenFields[j] = false;
+                        continue;
+                    }
+
+                    if (FileManager.Instance.Provider.Exists(str) == false)
+                        loadingScreenFields[j] = false;
+                }
+
+                if (loadingScreenFields.Count(f => f) == 1)
+                    break;
+            }
+
+            FieldLoadingScreenPath = -1;
+            for (var i = 0; i < loadingScreenFields.Count; ++i)
+            {
+                if (!loadingScreenFields[i]) continue;
+
+                FieldLoadingScreenPath = i;
+                break;
+            }
+
+            if (FieldLoadingScreenPath < 0)
+                throw new InvalidOperationException("Unable to find the loading screen asset path");
+        }
+
+        private static void FindLoadingScreenLink()
+        {
+            var mapLoadScreenFields = new List<bool>();
+            var mapLoadNumZeros = new List<int>();
+            for (var i = 0; i < DbcStorage.Map.NumFields; ++i)
+            {
+                mapLoadNumZeros.Add(0);
+                mapLoadScreenFields.Add(i != 0);
+            }
+
+            for(var i = 0; i < Math.Min(100, DbcStorage.Map.NumRows); ++i)
+            {
+                var row = DbcStorage.Map.GetRow(i);
+
+                for(var j = 0; j < mapLoadScreenFields.Count; ++j)
+                {
+                    if (mapLoadScreenFields[j] == false)
+                        continue;
+
+                    if(j == FieldMapName || j == FieldMapTitle)
+                    {
+                        mapLoadScreenFields[j] = false;
+                        continue;
+                    }
+
+                    var id = row.GetInt32(j);
+                    if (id == 0)
+                        mapLoadNumZeros[j]++;
+
+                    if (DbcStorage.LoadingScreen.GetRowById(id) != null || id == 0) continue;
+
+                    mapLoadScreenFields[j] = false;
+                }
+            }
+
+            FieldMapLoadingScreen = -1;
+            var minZeros = int.MaxValue;
+
+            for(var i = 0; i < mapLoadScreenFields.Count; ++i)
+            {
+                if (!mapLoadScreenFields[i]) continue;
+
+                if (mapLoadNumZeros[i] >= minZeros)
+                    continue;
+
+                minZeros = mapLoadNumZeros[i];
+                FieldMapLoadingScreen = i;
+            }
         }
     }
 }

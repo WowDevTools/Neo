@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using SharpDX;
 using SharpDX.Direct2D1;
 using WoWEditor6.Resources;
+using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
 using WoWEditor6.Win32;
 
@@ -180,7 +181,7 @@ namespace WoWEditor6.UI.Views
                 return;
 
             IO.FileManager.Instance.DataPath = mInputPath.Text;
-            InterfaceManager.Instance.UpdateState(Scene.AppState.FileSystemInit);
+            WorldFrame.Instance.State = AppState.FileSystemInit;
         }
     }
 }
