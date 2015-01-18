@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 using SharpDX.Direct2D1;
 using WoWEditor6.Scene;
-using WoWEditor6.Scene.Terrain;
 using WoWEditor6.UI.Components;
 
 namespace WoWEditor6.UI.Views
@@ -15,7 +10,10 @@ namespace WoWEditor6.UI.Views
     {
         private Vector2 mSize;
         private TextureBitmap mLoadingImage;
+        private TextureBitmap mLoadingBarBackground;
+        private TextureBitmap mLoadingBarFill;
         private RectangleF mTargetRectangle;
+        private float mProgress;
 
         public void OnRender(RenderTarget target)
         {
@@ -24,6 +22,20 @@ namespace WoWEditor6.UI.Views
                 return;
 
             target.DrawBitmap(mLoadingImage, mTargetRectangle, 1.0f, BitmapInterpolationMode.Linear);
+
+            if (mLoadingBarBackground == null || !mLoadingBarBackground.IsLoaded) return;
+
+            var startPosY = mTargetRectangle.Y + mTargetRectangle.Height * 0.8f + 13;
+            var startPosX = mTargetRectangle.X + (mTargetRectangle.Width - mLoadingBarBackground.Width * 1.2f + 80) / 2.0f;
+            target.DrawBitmap(mLoadingBarFill,
+                new RectangleF(startPosX, startPosY, (mLoadingBarBackground.Width * 1.2f + 80) * mProgress, 40),
+                1.0f, BitmapInterpolationMode.Linear);
+
+            startPosY = mTargetRectangle.Y + mTargetRectangle.Height * 0.8f;
+            startPosX = mTargetRectangle.X + (mTargetRectangle.Width  - mLoadingBarBackground.Width * 1.2f) / 2.0f;
+            target.DrawBitmap(mLoadingBarBackground,
+                new RectangleF(startPosX, startPosY, mLoadingBarBackground.Width * 1.2f, mLoadingBarBackground.Height),
+                1.0f, BitmapInterpolationMode.Linear);
         }
 
         public void OnMessage(Message message)
@@ -37,6 +49,11 @@ namespace WoWEditor6.UI.Views
             if (mLoadingImage != null && mLoadingImage.IsLoaded)
                 ImageLoaded(mLoadingImage);
 
+        }
+
+        public void UpdateProgress(float progress)
+        {
+            mProgress = progress;
         }
 
         public void OnShow()
@@ -66,6 +83,14 @@ namespace WoWEditor6.UI.Views
             mLoadingImage = new TextureBitmap();
             mLoadingImage.LoadComplete += ImageLoaded;
             mLoadingImage.LoadFromFile(loadScreenPath);
+
+            if(mLoadingBarBackground == null)
+            {
+                mLoadingBarBackground = new TextureBitmap();
+                mLoadingBarBackground.LoadFromFile(@"Interface\Glues\LoadingBar\Loading-BarBorder.blp");
+                mLoadingBarFill = new TextureBitmap();
+                mLoadingBarFill.LoadFromFile(@"Interface\Glues\LoadingBar\Loading-BarFill.blp");
+            }
         }
 
         private void ImageLoaded(TextureBitmap bmp)
