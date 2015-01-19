@@ -27,6 +27,8 @@ namespace WoWEditor6
                 context.EndFrame();
                 Application.DoEvents();
             }
+
+            WorldFrame.Instance.Shutdown();
         }
     }
 }

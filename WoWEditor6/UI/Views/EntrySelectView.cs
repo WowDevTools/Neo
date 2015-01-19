@@ -69,7 +69,7 @@ namespace WoWEditor6.UI.Views
             var continent = mMapRecord.GetString(Storage.MapFormatGuess.FieldMapName);
             var mapId = mMapRecord.GetInt32(0);
 
-            WorldFrame.Instance.MapManager.EnterWorld(mapId, continent);
+            WorldFrame.Instance.MapManager.EnterWorld(location, mapId, continent);
         }
     }
 }

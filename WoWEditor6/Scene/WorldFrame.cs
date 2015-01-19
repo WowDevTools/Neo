@@ -29,6 +29,12 @@ namespace WoWEditor6.Scene
             mContext = context;
 
             SetActiveCamera(mMainCamera);
+            TextureManager.Instance.Initialize(context);
+        }
+
+        public void Shutdown()
+        {
+            TextureManager.Instance.Shutdown();
         }
 
         public void OnFrame()

@@ -68,7 +68,7 @@ namespace WoWEditor6.IO.Files.Texture
                 var header = reader.Read<BlpHeader>();
                 var loadInfo = ParseHeader(ref header);
                 var palette = new uint[0];
-                for (var i = 0; i < header.MipLevels; ++i)
+                for (var i = 0; i < 16; ++i)
                     ParseLayer(i, ref palette, reader, header, loadInfo);
 
                 return loadInfo;

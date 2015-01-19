@@ -22,6 +22,56 @@ namespace WoWEditor6.Graphics
             mTexture = gDefaultTexture;
         }
 
+        public void LoadFromLoadInfo(IO.Files.Texture.TextureLoadInfo loadInfo)
+        {
+            var texDesc = new Texture2DDescription
+            {
+                ArraySize = 1,
+                BindFlags = BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                Format = loadInfo.Format,
+                Height = loadInfo.Height,
+                Width = loadInfo.Width,
+                MipLevels = loadInfo.Layers.Count,
+                OptionFlags = ResourceOptionFlags.None,
+                SampleDescription = new SampleDescription(1, 0),
+                Usage = ResourceUsage.Default
+            };
+
+            if (mTexture != gDefaultTexture)
+            {
+                mTexture?.Dispose();
+                NativeView?.Dispose();
+            }
+
+            var boxes = new DataBox[texDesc.MipLevels];
+            var streams = new DataStream[texDesc.MipLevels];
+            try
+            {
+                for(var i = 0; i < texDesc.MipLevels; ++i)
+                {
+                    streams[i] = new DataStream(loadInfo.Layers[i].Length, true, true);
+                    streams[i].WriteRange(loadInfo.Layers[i]);
+                    streams[i].Position = 0;
+                    boxes[i] = new DataBox(streams[i].DataPointer, loadInfo.RowPitchs[i], 0);
+                }
+
+                mTexture = new Texture2D(mContext.Device, texDesc, boxes);
+                var srvd = new ShaderResourceViewDescription
+                {
+                    Dimension = SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
+                    Format = loadInfo.Format,
+                    Texture2D = new ShaderResourceViewDescription.Texture2DResource { MipLevels = boxes.Length, MostDetailedMip = 0 }
+                };
+
+                NativeView = new ShaderResourceView(mContext.Device, mTexture, srvd);
+            }
+            finally
+            {
+                foreach (var stream in streams) stream?.Dispose();
+            }
+        }
+
         public void UpdateTexture(int width, int height, Format format, List<byte[]> layers, List<int> rowSizes)
         {
             var boxes = new DataBox[layers.Count];
@@ -32,6 +82,7 @@ namespace WoWEditor6.Graphics
                 {
                     streams[i] = new DataStream(layers[i].Length, true, true);
                     streams[i].WriteRange(layers[i]);
+                    streams[i].Position = 0;
                     boxes[i] = new DataBox(streams[i].DataPointer, rowSizes[i], 0);
                 }
 
