@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Terrain.WoD
@@ -19,7 +14,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct MCNK
+    struct Mcnk
     {
         public readonly int Flags;
         public readonly int IndexX;
@@ -52,7 +47,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct MCLY
+    struct Mcly
     {
         public readonly int TextureId;
         public readonly int Flags;

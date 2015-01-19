@@ -11,6 +11,7 @@ namespace WoWEditor6.IO.Files
         private readonly byte[] mData;
         private readonly Dictionary<int, string> mStringTable;
 
+        // ReSharper disable UnusedParameter.Local
         private void AssertValid(int offset, int size)
         {
             if (offset + size * 4 > mSize)

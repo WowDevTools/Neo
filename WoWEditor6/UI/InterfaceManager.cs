@@ -20,7 +20,7 @@ namespace WoWEditor6.UI
         private IView mActiveView;
         private bool mIsResizing;
 
-        private readonly Dictionary<Scene.AppState, IView> mViews = new Dictionary<Scene.AppState, IView>(); 
+        private readonly Dictionary<AppState, IView> mViews = new Dictionary<AppState, IView>(); 
 
         public ComponentRoot Root { get; } = new ComponentRoot();
         public DrawSurface Surface { get; private set; }
@@ -45,13 +45,13 @@ namespace WoWEditor6.UI
 
             Window.Text = Strings.MainWindowTitle;
 
-            mViews.Add(Scene.AppState.Splash, new SplashView());
-            mViews.Add(Scene.AppState.FileSystemInit, new FileSystemInitView());
-            mViews.Add(Scene.AppState.MapSelect, new MapSelectView());
-            mViews.Add(Scene.AppState.EntrySelect, new EntrySelectView());
-            mViews.Add(Scene.AppState.LoadingScreen, new LoadingScreenView());
-            mViews.Add(Scene.AppState.World, new WorldView());
-            mActiveView = mViews[Scene.AppState.Splash];
+            mViews.Add(AppState.Splash, new SplashView());
+            mViews.Add(AppState.FileSystemInit, new FileSystemInitView());
+            mViews.Add(AppState.MapSelect, new MapSelectView());
+            mViews.Add(AppState.EntrySelect, new EntrySelectView());
+            mViews.Add(AppState.LoadingScreen, new LoadingScreenView());
+            mViews.Add(AppState.World, new WorldView());
+            mActiveView = mViews[AppState.Splash];
 
             InitMesh();
             InitMessages();
@@ -60,7 +60,7 @@ namespace WoWEditor6.UI
                 pair.Value.OnResize(new SharpDX.Vector2(Window.ClientSize.Width, Window.ClientSize.Height));
         }
 
-        public void UpdateState(Scene.AppState state)
+        public void UpdateState(AppState state)
         {
             lock(mViews)
             {
@@ -69,7 +69,7 @@ namespace WoWEditor6.UI
             }
         }
 
-        public T GetViewForState<T>(Scene.AppState state) where T : class, IView
+        public T GetViewForState<T>(AppState state) where T : class, IView
         {
             lock(mViews)
             {

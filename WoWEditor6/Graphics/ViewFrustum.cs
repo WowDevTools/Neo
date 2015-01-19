@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX;
+﻿using SharpDX;
 
 namespace WoWEditor6.Graphics
 {
@@ -39,6 +34,7 @@ namespace WoWEditor6.Graphics
             return result;
         }
 
+        // ReSharper disable once FunctionComplexityOverflow
         public void Update(Matrix matView, Matrix matProj)
         {
             Clip[0] = matView[0] * matProj[0] + matView[1] * matProj[4] + matView[2] * matProj[8]

@@ -4,7 +4,6 @@ using System.Threading;
 using SharpDX;
 using WoWEditor6.UI;
 using WoWEditor6.UI.Views;
-using System.Linq;
 
 namespace WoWEditor6.Scene.Terrain
 {
@@ -14,8 +13,8 @@ namespace WoWEditor6.Scene.Terrain
         private int mTotalLoadSteps;
         private int mLoadStepsDone;
         private readonly List<IO.Files.Terrain.WoD.MapArea> mDataToLoad = new List<IO.Files.Terrain.WoD.MapArea>();
-        private List<IO.Files.Terrain.WoD.MapArea> mLoadedData = new List<IO.Files.Terrain.WoD.MapArea>();
-        private Dictionary<int, MapAreaRender> mAreas = new Dictionary<int, MapAreaRender>();
+        private readonly List<IO.Files.Terrain.WoD.MapArea> mLoadedData = new List<IO.Files.Terrain.WoD.MapArea>();
+        private readonly Dictionary<int, MapAreaRender> mAreas = new Dictionary<int, MapAreaRender>();
         private Thread mLoadThread;
         private bool mIsRunning;
 
@@ -46,6 +45,7 @@ namespace WoWEditor6.Scene.Terrain
             MapChunkRender.ChunkMesh.Program.SetPixelSampler(0, MapChunkRender.ColorSampler);
             MapChunkRender.ChunkMesh.Program.SetPixelSampler(1, MapChunkRender.AlphaSampler);
 
+            // ReSharper disable once InconsistentlySynchronizedField
             foreach (var pair in mAreas)
                 pair.Value.OnFrame();
         }

@@ -23,6 +23,7 @@ namespace WoWEditor6.UI.Components
 
         public string Text { get { return mCaptionText.Text; } set { mCaptionText.Text = value; } }
 
+        // ReSharper disable once CollectionNeverUpdated.Global
         public List<IComponent> Children { get; } = new List<IComponent>();
 
         public Vector2 Position

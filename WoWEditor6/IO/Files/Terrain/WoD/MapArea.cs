@@ -40,6 +40,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public AdtVertex[] FullVertices { get; } = new AdtVertex[145 * 256];
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public BoundingBox BoundingBox { get; private set; }
 
         public MapArea(string continent, int ix, int iy)

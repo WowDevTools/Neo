@@ -136,7 +136,7 @@ namespace WoWEditor6.UI.Views
             if (row == null)
                 return;
 
-            var esView = InterfaceManager.Instance.GetViewForState<EntrySelectView>(Scene.AppState.EntrySelect);
+            var esView = InterfaceManager.Instance.GetViewForState<EntrySelectView>(AppState.EntrySelect);
             esView?.SetSelectedMap(row);
             WorldFrame.Instance.State = AppState.EntrySelect;
         }

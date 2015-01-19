@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using SharpDX.Direct2D1;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace WoWEditor6.UI
 {
@@ -59,15 +61,14 @@ namespace WoWEditor6.UI
         {
             Solid.OnUpdateTarget(target);
 
-            if(White == null)
-            {
-                White = Solid[0xFFFFFFFF];
-                Black = Solid[0xFF000000];
-                Blue = Solid[0xFFFF0000];
-                Red = Solid[0xFF0000FF];
-                Green = Solid[0xFF00FF00];
-                Yellow = Solid[System.Drawing.Color.Yellow];
-            }
+            if (White != null) return;
+
+            White = Solid[0xFFFFFFFF];
+            Black = Solid[0xFF000000];
+            Blue = Solid[0xFFFF0000];
+            Red = Solid[0xFF0000FF];
+            Green = Solid[0xFF00FF00];
+            Yellow = Solid[System.Drawing.Color.Yellow];
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using SharpDX;
 using WoWEditor6.Scene;
-using WoWEditor6.Scene.Terrain;
 
 namespace WoWEditor6.IO.Files.Terrain.WoD
 {
@@ -11,19 +10,21 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
     {
         private readonly ChunkStreamInfo mMainInfo;
         private readonly ChunkStreamInfo mTexInfo;
+        // ReSharper disable once NotAccessedField.Local
         private ChunkStreamInfo mObjInfo;
 
         private readonly BinaryReader mReader;
         private readonly BinaryReader mTexReader;
+        // ReSharper disable once NotAccessedField.Local
         private BinaryReader mObjReader;
 
-        private MCNK mHeader;
+        private Mcnk mHeader;
 
         private byte[] mAlphaDataCompressed;
 
-        private WeakReference<MapArea> mParent;
+        private readonly WeakReference<MapArea> mParent;
 
-        private readonly List<MCLY> mLayerInfos = new List<MCLY>();
+        private readonly List<Mcly> mLayerInfos = new List<Mcly>();
 
         public int IndexX { get; }
         public int IndexY { get; }
@@ -54,7 +55,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         {
             mReader.BaseStream.Position = mMainInfo.PosStart;
             var chunkSize = mReader.ReadInt32();
-            mHeader = mReader.Read<MCNK>();
+            mHeader = mReader.Read<Mcnk>();
             var hasMccv = false;
 
             while (mReader.BaseStream.Position + 8 <= mMainInfo.PosStart + 8 + chunkSize)
@@ -131,6 +132,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var textures = new List<Graphics.Texture>();
             MapArea parent;
             mParent.TryGetTarget(out parent);
+            if (parent == null)
+                throw new InvalidOperationException("Parent got disposed but loading was still invoked");
+
             for (var i = 0; i < mLayerInfos.Count; ++i)
                 textures.Add(parent.GetTexture(mLayerInfos[i].TextureId));
 
@@ -161,14 +165,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mAlphaDataCompressed = null;
         }
 
-        private void LoadUncompressed(MCLY layerInfo, int layer)
+        private void LoadUncompressed(Mcly layerInfo, int layer)
         {
             var startPos = layerInfo.OfsMcal;
             for (var i = 0; i < 4096; ++i)
                 AlphaValues[i] |= (uint) mAlphaDataCompressed[startPos++] << (8 * layer);
         }
 
-        private void LoadLayerCompressed(MCLY layerInfo, int layer)
+        private void LoadLayerCompressed(Mcly layerInfo, int layer)
         {
             var startPos = layerInfo.OfsMcal;
             var counter = 0;
@@ -188,7 +192,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
         }
 
-        private void LoadLayerRle(MCLY layerInfo, int layer)
+        private void LoadLayerRle(Mcly layerInfo, int layer)
         {
             var counterOut = 0;
             var startPos = layerInfo.OfsMcal;
@@ -286,7 +290,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void LoadMcly(int size)
         {
-            mLayerInfos.AddRange(mTexReader.ReadArray<MCLY>(size / SizeCache<MCLY>.Size));
+            mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
         }
     }
 }

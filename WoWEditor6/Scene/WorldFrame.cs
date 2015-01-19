@@ -14,7 +14,6 @@ namespace WoWEditor6.Scene
         public MapManager MapManager { get; } = new MapManager();
 
         private AppState mState;
-        private MainWindow mWindow;
         private readonly PerspectiveCamera mMainCamera = new PerspectiveCamera();
         public Camera ActiveCamera { get; private set; }
         private ConstantBuffer mGlobalBuffer;
@@ -40,7 +39,6 @@ namespace WoWEditor6.Scene
             Dispatcher = Dispatcher.CurrentDispatcher;
             MapChunkRender.Initialize(context);
 
-            mWindow = window;
             GraphicsContext = context;
 
             SetActiveCamera(mMainCamera);

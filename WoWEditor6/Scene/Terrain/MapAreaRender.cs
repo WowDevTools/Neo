@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WoWEditor6.Graphics;
+﻿using WoWEditor6.Graphics;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace WoWEditor6.Scene.Terrain
 {

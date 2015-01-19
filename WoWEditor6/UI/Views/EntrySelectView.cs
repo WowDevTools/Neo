@@ -1,5 +1,4 @@
-﻿using System;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct2D1;
 using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
