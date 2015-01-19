@@ -94,7 +94,7 @@
     <Compile Include="IO\Files\Terrain\WoD\MapArea.cs" />
     <Compile Include="IO\Files\Terrain\WoD\MapChunk.cs" />
     <Compile Include="IO\Files\Terrain\WoD\MapStructs.cs" />
-    <Compile Include="IO\Files\Terrain\WoD\WdtFile.cs" />
+    <Compile Include="IO\Files\Terrain\WdtFile.cs" />
     <Compile Include="IO\Files\Texture\TextureLoader.cs" />
     <Compile Include="IO\IFileProvider.cs" />
     <Compile Include="IO\SizeCache.cs" />

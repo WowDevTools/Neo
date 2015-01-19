@@ -8,7 +8,7 @@ namespace WoWEditor6.Scene.Terrain
 
         public string Continent { get; private set; }
         public int MapId { get; private set; }
-        public IO.Files.Terrain.WoD.WdtFile CurrentWdt { get; private set; }
+        public IO.Files.Terrain.WdtFile CurrentWdt { get; private set; }
         public bool HasNewBlend { get; private set; }
 
         public void Initialize()
@@ -23,7 +23,7 @@ namespace WoWEditor6.Scene.Terrain
             Continent = continent;
             WorldFrame.Instance.State = AppState.LoadingScreen;
 
-            CurrentWdt = new IO.Files.Terrain.WoD.WdtFile();
+            CurrentWdt = new IO.Files.Terrain.WdtFile();
             CurrentWdt.Load(continent);
             HasNewBlend = (CurrentWdt.Flags & 0x84) != 0;
         }

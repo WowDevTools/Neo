@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WoWEditor6.IO.Files.Terrain.WoD
+namespace WoWEditor6.IO.Files.Terrain
 {
     class WdtFile
     {
