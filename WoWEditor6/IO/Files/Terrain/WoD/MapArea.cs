@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using WoWEditor6.Scene;
+using SharpDX;
+using WoWEditor6.Scene.Texture;
 
 namespace WoWEditor6.IO.Files.Terrain.WoD
 {
@@ -37,11 +38,31 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public int IndexY { get; }
         public string Continent { get; }
 
+        public AdtVertex[] FullVertices { get; } = new AdtVertex[145 * 256];
+
+        public BoundingBox BoundingBox { get; private set; }
+
         public MapArea(string continent, int ix, int iy)
         {
             Continent = continent;
             IndexX = ix;
             IndexY = iy;
+        }
+
+        public Graphics.Texture GetTexture(int index)
+        {
+            if (index >= mTextures.Count)
+                throw new IndexOutOfRangeException();
+
+            return mTextures[index];
+        }
+
+        public MapChunk GetChunk(int index)
+        {
+            if (index >= mChunks.Count)
+                throw new IndexOutOfRangeException();
+
+            return mChunks[index];
         }
 
         public void AsyncLoad()
@@ -121,14 +142,23 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void InitChunks()
         {
+            var minHeight = float.MaxValue;
+            var maxHeight = float.MinValue;
             for (var i = 0; i < 256; ++i)
             {
-                var chunk = new MapChunk(mReader, mTexReader, mObjReader, mMainChunks[i], mTexChunks[i], mObjChunks[i],
-                    i % 16, i / 16);
-
+                var chunk = new MapChunk(mMainChunks[i], mTexChunks[i], mObjChunks[i], i % 16, i / 16, this);
                 chunk.AsyncLoad();
+                if (chunk.BoundingBox.Minimum.Z > minHeight)
+                    minHeight = chunk.BoundingBox.Minimum.Z;
+                if (chunk.BoundingBox.Maximum.Z > maxHeight)
+                    maxHeight = chunk.BoundingBox.Maximum.Z;
+
                 mChunks.Add(chunk);
+                Array.Copy(chunk.Vertices, 0, FullVertices, i * 145, 145);
             }
+
+            BoundingBox = new BoundingBox(new Vector3(IndexX * Metrics.TileSize, IndexY * Metrics.TileSize, minHeight),
+                new Vector3((IndexX + 1) * Metrics.TileSize, (IndexY + 1) * Metrics.TileSize, maxHeight));
         }
 
         private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B);

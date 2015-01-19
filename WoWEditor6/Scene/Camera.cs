@@ -1,5 +1,6 @@
 ﻿using System;
 using SharpDX;
+using WoWEditor6.Graphics;
 
 namespace WoWEditor6.Scene
 {
@@ -8,6 +9,8 @@ namespace WoWEditor6.Scene
         private Matrix mMatView;
         // ReSharper disable once InconsistentNaming
         protected Matrix mMatProjection;
+        private Matrix mViewNoTranspose;
+        private Matrix mProjNoTranspose;
         private Matrix mViewInverted;
         private Matrix mProjInverted;
 
@@ -16,8 +19,12 @@ namespace WoWEditor6.Scene
         private Vector3 mUp;
         private Vector3 mRight;
         private Vector3 mForward;
+        private ViewFrustum mFrustum = new ViewFrustum();
 
         public event Action<Camera, Matrix> ViewChanged , ProjectionChanged;
+
+        public Matrix View => mMatView;
+        public Matrix Projection => mMatProjection;
 
         protected Camera()
         {
@@ -30,19 +37,31 @@ namespace WoWEditor6.Scene
             UpdateView();
         }
 
+        public bool Contains(BoundingBox box)
+        {
+            return mFrustum.Contains(ref box) != ContainmentType.Disjoint;
+        }
+
         private void UpdateView()
         {
             mForward = mTarget - mPosition;
             mForward.Normalize();
-            mMatView = Matrix.LookAtLH(mPosition, mTarget, mUp);
+            mViewNoTranspose = Matrix.LookAtLH(mPosition, mTarget, mUp);
+            Matrix.Transpose(ref mViewNoTranspose, out mMatView);
             Matrix.Invert(ref mMatView, out mViewInverted);
             ViewChanged?.Invoke(this, mMatView);
+
+            mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
         }
 
         protected void OnProjectionChanged()
         {
+            mProjNoTranspose = mMatProjection;
+            Matrix.Transpose(ref mMatProjection, out mMatProjection);
             Matrix.Invert(ref mMatProjection, out mProjInverted);
             ProjectionChanged?.Invoke(this, mMatProjection);
+
+            mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
         }
 
         public void SetPosition(Vector3 position)

@@ -18,6 +18,7 @@ namespace WoWEditor6
 
             InterfaceManager.Instance.Initialize(window, context);
             WorldFrame.Instance.Initialize(window, context);
+            WorldFrame.Instance.OnResize(window.ClientSize.Width, window.ClientSize.Height);
 
             while (isClosed == false)
             {

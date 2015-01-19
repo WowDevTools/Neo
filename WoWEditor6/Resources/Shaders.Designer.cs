@@ -61,6 +61,68 @@ namespace WoWEditor6.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to struct PixelInput
+        ///{
+        ///	float4 position : SV_Position;
+        ///	float3 normal : NORMAL0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///	float2 texCoordAlpha : TEXCOORD1;
+        ///	float4 color : COLOR0;
+        ///};
+        ///
+        ///SamplerState alphaSampler;
+        ///SamplerState colorSampler;
+        ///
+        ///Texture2D alphaTexture : register(t0);
+        ///Texture2D texture0 : register(t1);
+        ///Texture2D texture1 : register(t2);
+        ///Texture2D texture2 : register(t3);
+        ///Texture2D texture3 : register(t4);
+        ///
+        ///const float3 sunDirection = float3(1, 1, -1);
+        ///const float3 diffuseLight = float3(1, 1,  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TerrainPixel {
+            get {
+                return ResourceManager.GetString("TerrainPixel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to struct VertexInput
+        ///{
+        ///	float3 position : POSITION0;
+        ///	float3 normal : NORMAL0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///	float2 texCoordAlpha : TEXCOORD1;
+        ///	float4 color : COLOR0;
+        ///};
+        ///
+        ///struct VertexOutput
+        ///{
+        ///	float4 position : SV_Position;
+        ///	float3 normal : NORMAL0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///	float2 texCoordAlpha : TEXCOORD1;
+        ///	float4 color : COLOR0;
+        ///};
+        ///
+        ///cbuffer GlobalParams : register(b0)
+        ///{
+        ///	float4x4 matView;
+        ///	float4x4 matProj;
+        ///};
+        ///
+        ///VertexOutput main(VertexInput input) {
+        ///	VertexOutput output = (V [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TerrainVertex {
+            get {
+                return ResourceManager.GetString("TerrainVertex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to struct VertexInput
         ///{
         ///	float2 position : POSITION0;

@@ -124,4 +124,10 @@
   <data name="TextureQuadPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\TextureQuadPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="TerrainPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\TerrainPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="TerrainVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\TerrainVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

@@ -18,27 +18,33 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private BinaryReader mObjReader;
 
         private MCNK mHeader;
-        private readonly AdtVertex[] mVertices = new AdtVertex[145];
 
         private byte[] mAlphaDataCompressed;
 
+        private WeakReference<MapArea> mParent;
+
         private readonly List<MCLY> mLayerInfos = new List<MCLY>();
-        private readonly uint[] mAlphaData = new uint[4096];
 
         public int IndexX { get; }
         public int IndexY { get; }
 
-        public MapChunk(BinaryReader reader, BinaryReader texReader, BinaryReader objReader, 
-            ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo, 
-            int indexX, int indexY)
+        public int StartVertex => (IndexX + IndexY * 16) * 145;
+
+        public AdtVertex[] Vertices { get; } = new AdtVertex[145];
+        public uint[] AlphaValues { get; } = new uint[4096];
+        public IList<Graphics.Texture> Textures { get; private set; }
+        public BoundingBox BoundingBox { get; private set; }
+
+        public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
+            mParent = new WeakReference<MapArea>(parent);
             mMainInfo = mainInfo;
             mTexInfo = texInfo;
             mObjInfo = objInfo;
 
-            mReader = reader;
-            mTexReader = texReader;
-            mObjReader = objReader;
+            mReader = mainInfo.Stream;
+            mTexReader = texInfo.Stream;
+            mObjReader = objInfo.Stream;
 
             IndexX = indexX;
             IndexY = indexY;
@@ -83,10 +89,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             if (hasMccv == false)
             {
                 for (var i = 0; i < 145; ++i)
-                    mVertices[i].Color = 0x7F7F7F7F;
+                    Vertices[i].Color = 0x7F7F7F7F;
             }
 
             LoadTexData();
+
+            WorldFrame.Instance.MapManager.OnLoadProgress();
         }
 
         private void LoadTexData()
@@ -119,6 +127,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
 
             LoadAlpha();
+
+            var textures = new List<Graphics.Texture>();
+            MapArea parent;
+            mParent.TryGetTarget(out parent);
+            for (var i = 0; i < mLayerInfos.Count; ++i)
+                textures.Add(parent.GetTexture(mLayerInfos[i].TextureId));
+
+            Textures = textures.AsReadOnly();
         }
 
         private void LoadAlpha()
@@ -138,7 +154,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 else
                 {
                     for (var j = 0; j < 4096; ++j)
-                        mAlphaData[j] |= 0xFFu << (8 * i);
+                        AlphaValues[j] |= 0xFFu << (8 * i);
                 }
             }
 
@@ -149,7 +165,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         {
             var startPos = layerInfo.OfsMcal;
             for (var i = 0; i < 4096; ++i)
-                mAlphaData[i] |= (uint) mAlphaDataCompressed[startPos++] << (8 * layer);
+                AlphaValues[i] |= (uint) mAlphaDataCompressed[startPos++] << (8 * layer);
         }
 
         private void LoadLayerCompressed(MCLY layerInfo, int layer)
@@ -166,8 +182,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     val2 = j == 31 ? val1 : val2;
                     val1 = (byte)((val1 / 15.0f) * 255.0f);
                     val2 = (byte)((val2 / 15.0f) * 255.0f);
-                    mAlphaData[counter++] |= (uint)val1 << (8 * layer);
-                    mAlphaData[counter++] |= (uint)val2 << (8 * layer);
+                    AlphaValues[counter++] |= (uint)val1 << (8 * layer);
+                    AlphaValues[counter++] |= (uint)val2 << (8 * layer);
                 }
             }
         }
@@ -184,12 +200,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     var value = mAlphaDataCompressed[startPos++];
                     var repeat = indicator & 0x7F;
                     for (var k = 0; k < repeat && counterOut < 4096; ++k)
-                        mAlphaData[counterOut++] |= (uint)value << (layer * 8);
+                        AlphaValues[counterOut++] |= (uint)value << (layer * 8);
                 }
                 else
                 {
                     for (var k = 0; k < (indicator & 0x7F) && counterOut < 4096; ++k)
-                        mAlphaData[counterOut++] |= (uint)mAlphaDataCompressed[startPos++] << (8 * layer);
+                        AlphaValues[counterOut++] |= (uint)mAlphaDataCompressed[startPos++] << (8 * layer);
                 }
             }
         }
@@ -204,18 +220,42 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             var counter = 0;
 
+            var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
             for(var i = 0; i < 17; ++i)
             {
                 for(var j = 0; j < (((i % 2) != 0) ? 8 : 9); ++j)
                 {
-                    mVertices[counter].Position = new Vector3(posx + j * Metrics.UnitSize,
-                        posy - i * Metrics.UnitSize * 0.5f, posz + heights[counter]);
+                    var height = posz + heights[counter];
+                    var x = posx + j * Metrics.UnitSize;
+                    if ((i % 2) != 0)
+                        x += 0.5f * Metrics.UnitSize;
+                    var y = posy - i * Metrics.UnitSize * 0.5f;
 
-                    mVertices[counter].TexCoordAlpha = new Vector2(j / 8.0f, i / 16.0f);
-                    mVertices[counter].TexCoord = new Vector2(j, i * 0.5f + ((i % 2) != 0 ? 0.5f : 0.0f));
+                    Vertices[counter].Position = new Vector3(x, y, height);
+
+                    if (height < minPos.Z)
+                        minPos.Z = height;
+                    if (height > maxPos.Z)
+                        maxPos.Z = height;
+
+                    if (x < minPos.X)
+                        minPos.X = x;
+                    if (x > maxPos.X)
+                        maxPos.X = x;
+                    if (y < minPos.Y)
+                        minPos.Y = y;
+                    if (y > maxPos.Y)
+                        maxPos.Y = y;
+
+                    Vertices[counter].TexCoordAlpha = new Vector2(j / 8.0f + ((i % 2) != 0 ? (0.5f / 8.0f) : 0), i / 16.0f);
+                    Vertices[counter].TexCoord = new Vector2(j + ((i % 2) != 0 ? 0.5f : 0.0f), i * 0.5f);
                     ++counter;
                 }
             }
+
+            BoundingBox = new BoundingBox(minPos, maxPos);
         }
 
         private void LoadMcnr()
@@ -231,7 +271,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     var ny = normals[counter * 3 + 1] / -127.0f;
                     var nz = normals[counter * 3 + 2] / 127.0f;
 
-                    mVertices[counter].Normal = new Vector3(nx, ny, nz);
+                    Vertices[counter].Normal = new Vector3(nx, ny, nz);
                     ++counter;
                 }
             }
@@ -241,7 +281,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         {
             var colors = mReader.ReadArray<uint>(145);
             for (var i = 0; i < 145; ++i)
-                mVertices[i].Color = colors[i];
+                Vertices[i].Color = colors[i];
         }
 
         private void LoadMcly(int size)

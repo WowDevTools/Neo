@@ -110,7 +110,7 @@ namespace WoWEditor6.UI
             try
             {
                 RenderTarget.BeginDraw();
-                RenderTarget.Clear(new Color4(0.8f, 0.8f, 0.8f, 1));
+                RenderTarget.Clear(new Color4(0, 0, 0, 0));
                 renderAction?.Invoke(RenderTarget);
                 RenderTarget.EndDraw();
             }

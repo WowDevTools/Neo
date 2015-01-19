@@ -9,6 +9,11 @@ namespace WoWEditor6.Scene
         private float mNear = 0.2f;
         private float mFar = 5000.0f;
 
+        public PerspectiveCamera()
+        {
+            UpdateProjection();
+        }
+
         private void UpdateProjection()
         {
             mMatProjection = Matrix.PerspectiveFovLH(MathUtil.DegreesToRadians(mFov), mAspect, mNear, mFar);

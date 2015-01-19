@@ -24,7 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -80,8 +80,10 @@
     <Compile Include="Graphics\Sampler.cs" />
     <Compile Include="Graphics\ShaderProgram.cs" />
     <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="Graphics\TextureArray.cs" />
     <Compile Include="Graphics\VertexBuffer.cs" />
     <Compile Include="Graphics\VertexElement.cs" />
+    <Compile Include="Graphics\ViewFrustum.cs" />
     <Compile Include="IO\CASC\DataStream.cs" />
     <Compile Include="IO\CASC\FileManager.cs" />
     <Compile Include="IO\CASC\JenkinsHash.cs" />
@@ -115,8 +117,11 @@
     <Compile Include="Scene\Camera.cs" />
     <Compile Include="Scene\OrthoCamera.cs" />
     <Compile Include="Scene\PerspectiveCamera.cs" />
+    <Compile Include="Scene\Terrain\MapAreaRender.cs" />
+    <Compile Include="Scene\Terrain\MapChunkRender.cs" />
     <Compile Include="Scene\Terrain\MapManager.cs" />
-    <Compile Include="Scene\TextureManager.cs" />
+    <Compile Include="Scene\Texture\TextureArrayManager.cs" />
+    <Compile Include="Scene\Texture\TextureManager.cs" />
     <Compile Include="Scene\WorldFrame.cs" />
     <Compile Include="Storage\DBCStorage.cs" />
     <Compile Include="Storage\MapFormatGuess.cs" />
@@ -152,6 +157,7 @@
     <Compile Include="UI\Views\LoadingScreenView.cs" />
     <Compile Include="UI\Views\MapSelectView.cs" />
     <Compile Include="UI\Views\SplashView.cs" />
+    <Compile Include="UI\Views\WorldView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Win32\Fos.cs" />
     <Compile Include="Win32\IFileOpenDialog.cs" />
@@ -179,6 +185,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Shaders\TerrainPixel.hlsl" />
+    <Content Include="Resources\Shaders\TerrainVertex.hlsl" />
     <Content Include="Resources\Shaders\TexturedQuadVertex.hlsl" />
     <Content Include="Resources\Shaders\TextureQuadPixel.hlsl" />
   </ItemGroup>

@@ -5,14 +5,14 @@ using System.Windows.Threading;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Texture;
 
-namespace WoWEditor6.Scene
+namespace WoWEditor6.Scene.Texture
 {
     class TextureWorkItem
     {
-        public Texture Texture { get; private set; }
+        public Graphics.Texture Texture { get; private set; }
         public string FileName { get; }
 
-        public TextureWorkItem(string file, Texture tex)
+        public TextureWorkItem(string file, Graphics.Texture tex)
         {
             Texture = tex;
             FileName = file;
@@ -24,7 +24,7 @@ namespace WoWEditor6.Scene
         public static TextureManager Instance { get; } = new TextureManager();
 
         private GxContext mContext;
-        private readonly Dictionary<int, WeakReference<Texture>> mCache = new Dictionary<int, WeakReference<Texture>>();
+        private readonly Dictionary<int, WeakReference<Graphics.Texture>> mCache = new Dictionary<int, WeakReference<Graphics.Texture>>();
         private readonly List<TextureWorkItem> mWorkItems = new List<TextureWorkItem>();
         private readonly object mWorkEvent = new object();
         private bool mIsRunning = true;
@@ -57,14 +57,14 @@ namespace WoWEditor6.Scene
             mThreads.ForEach(t => t.Join());
         }
 
-        public Texture GetTexture(string path)
+        public Graphics.Texture GetTexture(string path)
         {
             var hash = path.ToUpperInvariant().GetHashCode();
             TextureWorkItem workItem;
-            Texture retTexture;
+            Graphics.Texture retTexture;
             lock (mCache)
             {
-                WeakReference<Texture> ret;
+                WeakReference<Graphics.Texture> ret;
                 if(mCache.TryGetValue(hash, out ret))
                 {
                     if (ret.TryGetTarget(out retTexture))
@@ -73,8 +73,8 @@ namespace WoWEditor6.Scene
                     mCache.Remove(hash);
                 }
 
-                retTexture = new Texture(mContext);
-                mCache.Add(hash, new WeakReference<Texture>(retTexture));
+                retTexture = new Graphics.Texture(mContext);
+                mCache.Add(hash, new WeakReference<Graphics.Texture>(retTexture));
                 workItem = new TextureWorkItem(path, retTexture);
             }
 

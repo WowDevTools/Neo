@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using WoWEditor6.Graphics;
 using WoWEditor6.Resources;
+using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
 using WoWEditor6.UI.Views;
 
@@ -49,6 +50,7 @@ namespace WoWEditor6.UI
             mViews.Add(Scene.AppState.MapSelect, new MapSelectView());
             mViews.Add(Scene.AppState.EntrySelect, new EntrySelectView());
             mViews.Add(Scene.AppState.LoadingScreen, new LoadingScreenView());
+            mViews.Add(Scene.AppState.World, new WorldView());
             mActiveView = mViews[Scene.AppState.Splash];
 
             InitMesh();
@@ -81,6 +83,9 @@ namespace WoWEditor6.UI
 
         public void OnFrame()
         {
+            if (mActiveView is WorldView)
+                return;
+
             Surface.RenderFrame(rt =>
             {
                 Root.OnRender(rt);
@@ -164,6 +169,8 @@ namespace WoWEditor6.UI
             lock(mViews)
                 foreach (var pair in mViews)
                     pair.Value.OnResize(new SharpDX.Vector2(Window.ClientSize.Width, Window.ClientSize.Height));
+
+            WorldFrame.Instance.OnResize(Window.ClientSize.Width, Window.ClientSize.Height);
         }
 
         private static MouseButton GetButton(MouseButtons button)

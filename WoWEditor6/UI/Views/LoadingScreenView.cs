@@ -28,7 +28,7 @@ namespace WoWEditor6.UI.Views
             var startPosY = mTargetRectangle.Y + mTargetRectangle.Height * 0.8f + 13;
             var startPosX = mTargetRectangle.X + (mTargetRectangle.Width - mLoadingBarBackground.Width * 1.2f + 80) / 2.0f;
             target.DrawBitmap(mLoadingBarFill,
-                new RectangleF(startPosX, startPosY, (mLoadingBarBackground.Width * 1.2f + 80) * mProgress, 40),
+                new RectangleF(startPosX, startPosY, (mLoadingBarBackground.Width * 1.2f - 80.0f) * mProgress, 40),
                 1.0f, BitmapInterpolationMode.Linear);
 
             startPosY = mTargetRectangle.Y + mTargetRectangle.Height * 0.8f;

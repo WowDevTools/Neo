@@ -164,6 +164,7 @@ namespace WoWEditor6.UI.Components
                     sourcey = Math.Max(0, Math.Min(64, sourcey));
                     sourcex *= Metrics.TileSize;
                     sourcey *= Metrics.TileSize;
+                    sourcey = 64.0f * Metrics.TileSize - sourcey;
 
                     LocationSelected?.Invoke(new Vector2(sourcex, sourcey));
                 }

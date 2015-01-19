@@ -72,6 +72,44 @@ namespace WoWEditor6.Graphics
             }
         }
 
+        public void UpdateMemory(int width, int height, Format format, byte[] data, int pitch)
+        {
+            using (var stream = new DataStream(data.Length, true, true))
+            {
+                stream.WriteRange(data);
+                stream.Position = 0;
+                var box = new DataBox(stream.DataPointer, pitch, 0);
+
+                if (width != mTexture.Description.Width || height != mTexture.Description.Height ||
+                    format != mTexture.Description.Format || mTexture.Description.MipLevels != 1 ||
+                    mTexture == gDefaultTexture)
+                {
+                    CreateNew(width, height, format, new[] {box});
+                }
+                else
+                    mContext.Context.UpdateSubresource(box, mTexture);
+            }
+        }
+
+        public void UpdateMemory(int width, int height, Format format, uint[] data, int pitch)
+        {
+            using (var stream = new DataStream(data.Length * 4, true, true))
+            {
+                stream.WriteRange(data);
+                stream.Position = 0;
+                var box = new DataBox(stream.DataPointer, pitch, 0);
+
+                if (width != mTexture.Description.Width || height != mTexture.Description.Height ||
+                    format != mTexture.Description.Format || mTexture.Description.MipLevels != 1 ||
+                    mTexture == gDefaultTexture)
+                {
+                    CreateNew(width, height, format, new[] { box });
+                }
+                else
+                    mContext.Context.UpdateSubresource(box, mTexture);
+            }
+        }
+
         public void UpdateTexture(int width, int height, Format format, List<byte[]> layers, List<int> rowSizes)
         {
             var boxes = new DataBox[layers.Count];

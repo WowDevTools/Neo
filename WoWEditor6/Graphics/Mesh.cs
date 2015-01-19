@@ -34,7 +34,9 @@ namespace WoWEditor6.Graphics
         public void BeginDraw()
         {
             var ctx = mContext.Context;
-            ctx.InputAssembler.SetVertexBuffers(0, new[] { VertexBuffer?.Native }, new[] { Stride }, new[] { 0 });
+            if (VertexBuffer != null)
+                ctx.InputAssembler.SetVertexBuffers(0, new[] {VertexBuffer.Native}, new[] {Stride}, new[] {0});
+
             ctx.InputAssembler.SetIndexBuffer(IndexBuffer.Native, IndexBuffer.IndexFormat, 0);
             ctx.InputAssembler.InputLayout = mLayout;
             ctx.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
@@ -47,6 +49,11 @@ namespace WoWEditor6.Graphics
         public void Draw()
         {
             mContext.Context.DrawIndexed(IndexCount, StartIndex, StartVertex);
+        }
+
+        public void UpdateVertexBuffer(VertexBuffer vb)
+        {
+            mContext.Context.InputAssembler.SetVertexBuffers(0, new[] {vb.Native}, new[] {Stride}, new[] {0});
         }
 
         public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }
