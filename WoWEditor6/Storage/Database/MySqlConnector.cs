@@ -15,7 +15,7 @@ namespace WoWEditor6.Storage.Database
         public string MySqlPassword { get; set; }
         public string MySqlDatabase { get; set; }
 
-        private MySqlConnector()
+        public MySqlConnector()
         {
             mIsConfigured = false;
         }

@@ -7,7 +7,7 @@ using SharpDX;
 
 namespace WoWEditor6.Storage.Database
 {
-    public interface ISpawnedCreature
+    interface ISpawnedCreature
     {
         int SpawnGUID { get; set; }
         // Also known as the field "id"
