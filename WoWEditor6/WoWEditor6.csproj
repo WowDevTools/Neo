@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WoWEditor6</RootNamespace>
     <AssemblyName>WoWEditor6</AssemblyName>
-    <TargetFrameworkVersion>v4.5.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>cb329697</NuGetPackageImportStamp>
     <TargetFrameworkProfile />
@@ -136,6 +136,15 @@
     <Compile Include="Scene\Texture\TextureArrayManager.cs" />
     <Compile Include="Scene\Texture\TextureManager.cs" />
     <Compile Include="Scene\WorldFrame.cs" />
+    <Compile Include="Singleton.cs" />
+    <Compile Include="Storage\Database\Creature.cs" />
+    <Compile Include="Storage\Database\CreatureManager.cs" />
+    <Compile Include="Storage\Database\ICreature.cs" />
+    <Compile Include="Storage\Database\ICreatureManager.cs" />
+    <Compile Include="Storage\Database\IMySqlConnector.cs" />
+    <Compile Include="Storage\Database\ISpawnedCreature.cs" />
+    <Compile Include="Storage\Database\MySqlConnector.cs" />
+    <Compile Include="Storage\Database\SpawnedCreature.cs" />
     <Compile Include="Storage\DBCStorage.cs" />
     <Compile Include="Storage\MapFormatGuess.cs" />
     <Compile Include="UI\BitmapImage.cs" />
