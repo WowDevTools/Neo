@@ -91,7 +91,7 @@ namespace WoWEditor6.IO.Files.Sky.WoD
                     outer *= outer;
 
                     var dx = pos.X - mLastPosition.X;
-                    var dy = pos.Z - mLastPosition.Z;
+                    var dy = pos.Z - mLastPosition.Y;
                     var diff = dx * dx + dy * dy;
                     if(diff <= inner)
                     {

@@ -16,7 +16,7 @@ namespace WoWEditor6.Scene
 
         private void UpdateProjection()
         {
-            mMatProjection = Matrix.PerspectiveFovLH(MathUtil.DegreesToRadians(mFov), mAspect, mNear, mFar);
+            mMatProjection = Matrix.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, mNear, mFar);
             OnProjectionChanged();
         }
 

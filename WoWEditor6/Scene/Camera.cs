@@ -14,7 +14,6 @@ namespace WoWEditor6.Scene
         private Matrix mViewInverted;
         private Matrix mProjInverted;
 
-        private Vector3 mPosition;
         private Vector3 mTarget;
         private Vector3 mUp;
         private Vector3 mRight;
@@ -26,12 +25,14 @@ namespace WoWEditor6.Scene
         public Matrix View => mMatView;
         public Matrix Projection => mMatProjection;
 
+        public Vector3 Position { get; private set; }
+
         protected Camera()
         {
             mUp = Vector3.UnitZ;
-            mPosition = new Vector3();
+            Position = new Vector3();
             mTarget = Vector3.UnitX;
-            mRight = Vector3.UnitY;
+            mRight = -Vector3.UnitY;
             mForward = Vector3.UnitX;
 
             UpdateView();
@@ -44,9 +45,9 @@ namespace WoWEditor6.Scene
 
         private void UpdateView()
         {
-            mForward = mTarget - mPosition;
+            mForward = mTarget - Position;
             mForward.Normalize();
-            mViewNoTranspose = Matrix.LookAtLH(mPosition, mTarget, mUp);
+            mViewNoTranspose = Matrix.LookAtRH(Position, mTarget, mUp);
             Matrix.Transpose(ref mViewNoTranspose, out mMatView);
             Matrix.Invert(ref mMatView, out mViewInverted);
             ViewChanged?.Invoke(this, mMatView);
@@ -66,7 +67,7 @@ namespace WoWEditor6.Scene
 
         public void SetPosition(Vector3 position)
         {
-            mPosition = position;
+            Position = position;
             UpdateView();
         }
 
@@ -79,7 +80,7 @@ namespace WoWEditor6.Scene
         public void SetParameters(Vector3 eye, Vector3 target, Vector3 up, Vector3 right)
         {
             mTarget = target;
-            mPosition = eye;
+            Position = eye;
             mUp = up;
             mRight = right;
 
@@ -88,7 +89,7 @@ namespace WoWEditor6.Scene
 
         public void Move(Vector3 amount)
         {
-            mPosition += amount;
+            Position += amount;
             mTarget += amount;
             UpdateView();
         }
@@ -124,7 +125,7 @@ namespace WoWEditor6.Scene
             mForward = Vector3.TransformCoordinate(mForward, matRot);
             mForward.Normalize();
 
-            mTarget = mPosition + mForward;
+            mTarget = Position + mForward;
             mUp = Vector3.TransformCoordinate(mUp, matRot);
             mUp.Normalize();
 
@@ -137,7 +138,7 @@ namespace WoWEditor6.Scene
             mForward = Vector3.TransformCoordinate(mForward, matRot);
             mForward.Normalize();
 
-            mTarget = mPosition + mForward;
+            mTarget = Position + mForward;
             mUp = Vector3.TransformCoordinate(mUp, matRot);
             mUp.Normalize();
 

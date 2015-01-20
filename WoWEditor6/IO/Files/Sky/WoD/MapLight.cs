@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Sky.WoD
 {
     class MapLight
     {
-        private LightEntryData mEntry;
+        private readonly LightEntryData mEntry;
         private LightParamsEntry mParams;
 
         private readonly List<LightDataEntry> mDataEntries = new List<LightDataEntry>();

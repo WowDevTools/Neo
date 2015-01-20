@@ -126,6 +126,7 @@
     </Compile>
     <Compile Include="Scene\AppState.cs" />
     <Compile Include="Scene\Camera.cs" />
+    <Compile Include="Scene\CameraControl.cs" />
     <Compile Include="Scene\OrthoCamera.cs" />
     <Compile Include="Scene\PerspectiveCamera.cs" />
     <Compile Include="Scene\Terrain\MapAreaRender.cs" />

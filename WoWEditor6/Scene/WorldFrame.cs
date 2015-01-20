@@ -40,6 +40,7 @@ namespace WoWEditor6.Scene
         private GlobalBuffer mGlobalBufferStore;
         private bool mGlobalParamsChanged;
         private bool mGlobalChanged;
+        private CameraControl mCamControl;
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
@@ -102,13 +103,15 @@ namespace WoWEditor6.Scene
 
             ViewChanged(mMainCamera, mMainCamera.View);
             ProjectionChanged(mMainCamera, mMainCamera.Projection);
+
+            mCamControl = new CameraControl(window);
         }
 
         public void OnEnterWorld(Vector3 position)
         {
             State = AppState.World;
             Utils.TimeManager.Instance.Reset();
-            mMainCamera.SetParameters(position, position + Vector3.UnitX, Vector3.UnitZ, Vector3.UnitY);
+            mMainCamera.SetParameters(position, position + Vector3.UnitX, Vector3.UnitZ, -Vector3.UnitY);
             UpdatePosition(position);
         }
 
@@ -120,23 +123,9 @@ namespace WoWEditor6.Scene
 
         public void OnFrame()
         {
-            if(mGlobalParamsChanged)
-            {
-                lock (mGlobalParamsBuffer)
-                {
-                    mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
-                    mGlobalParamsChanged = false;
-                }
-            }
+            mCamControl.Update();
 
-            if(mGlobalChanged)
-            {
-                lock(mGlobalBuffer)
-                {
-                    mGlobalBuffer.UpdateData(mGlobalBufferStore);
-                    mGlobalChanged = false;
-                }
-            }
+            UpdateBuffers();
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
             GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalParamsBuffer.Native);
@@ -198,6 +187,27 @@ namespace WoWEditor6.Scene
 
             mGlobalBufferStore.matProj = matProj;
             mGlobalChanged = true;
+        }
+
+        private void UpdateBuffers()
+        {
+            if (mGlobalParamsChanged)
+            {
+                lock (mGlobalParamsBuffer)
+                {
+                    mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
+                    mGlobalParamsChanged = false;
+                }
+            }
+
+            if (mGlobalChanged)
+            {
+                lock (mGlobalBuffer)
+                {
+                    mGlobalBuffer.UpdateData(mGlobalBufferStore);
+                    mGlobalChanged = false;
+                }
+            }
         }
     }
 }

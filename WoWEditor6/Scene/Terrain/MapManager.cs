@@ -95,6 +95,15 @@ namespace WoWEditor6.Scene.Terrain
             OnInitialLoadDone();
         }
 
+        public void UpdatePosition(Vector3 position, bool updateTerrain)
+        {
+            WorldFrame.Instance.UpdatePosition(position);
+            if(updateTerrain)
+            {
+                IO.Files.Sky.SkyManager.Instance.UpdatePosition(position);
+            }
+        }
+
         public bool GetLandHeight(float x, float y, out float z)
         {
             z = 0.0f;
