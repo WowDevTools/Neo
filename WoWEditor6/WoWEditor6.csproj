@@ -90,8 +90,19 @@
     <Compile Include="IO\CASC\KeyValueConfig.cs" />
     <Compile Include="IO\CASC\TokenConfig.cs" />
     <Compile Include="IO\Extensions.cs" />
+    <Compile Include="IO\FileDataVersion.cs" />
     <Compile Include="IO\FileManager.cs" />
     <Compile Include="IO\Files\DBCFile.cs" />
+    <Compile Include="IO\Files\Sky\SkyManager.cs" />
+    <Compile Include="IO\Files\Sky\WoD\LightManager.cs" />
+    <Compile Include="IO\Files\Sky\WoD\LightStructs.cs" />
+    <Compile Include="IO\Files\Sky\WoD\MapLight.cs" />
+    <Compile Include="IO\Files\Sky\WoD\MapLightCollection.cs" />
+    <Compile Include="IO\Files\Sky\WoD\ZoneLight.cs" />
+    <Compile Include="IO\Files\Terrain\AdtFactory.cs" />
+    <Compile Include="IO\Files\Terrain\CommonMapStructs.cs" />
+    <Compile Include="IO\Files\Terrain\MapArea.cs" />
+    <Compile Include="IO\Files\Terrain\MapChunk.cs" />
     <Compile Include="IO\Files\Terrain\WdlFile.cs" />
     <Compile Include="IO\Files\Terrain\WoD\MapArea.cs" />
     <Compile Include="IO\Files\Terrain\WoD\MapChunk.cs" />
@@ -120,6 +131,7 @@
     <Compile Include="Scene\Terrain\MapAreaRender.cs" />
     <Compile Include="Scene\Terrain\MapChunkRender.cs" />
     <Compile Include="Scene\Terrain\MapManager.cs" />
+    <Compile Include="Scene\Terrain\SkySphere.cs" />
     <Compile Include="Scene\Texture\TextureArrayManager.cs" />
     <Compile Include="Scene\Texture\TextureManager.cs" />
     <Compile Include="Scene\WorldFrame.cs" />
@@ -159,6 +171,8 @@
     <Compile Include="UI\Views\SplashView.cs" />
     <Compile Include="UI\Views\WorldView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
+    <Compile Include="Utils\Polygon.cs" />
+    <Compile Include="Utils\TimeManager.cs" />
     <Compile Include="Win32\Fos.cs" />
     <Compile Include="Win32\IFileOpenDialog.cs" />
     <Compile Include="Win32\IShellItem.cs" />
@@ -185,7 +199,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Shaders\SkyPixel.hlsl" />
+    <Content Include="Resources\Shaders\SkyVertex.hlsl" />
     <Content Include="Resources\Shaders\TerrainPixel.hlsl" />
+    <Content Include="Resources\Shaders\TerrainPixelNew.hlsl" />
     <Content Include="Resources\Shaders\TerrainVertex.hlsl" />
     <Content Include="Resources\Shaders\TexturedQuadVertex.hlsl" />
     <Content Include="Resources\Shaders\TextureQuadPixel.hlsl" />

@@ -6,7 +6,7 @@ using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Terrain.WoD
 {
-    class MapChunk
+    class MapChunk : Terrain.MapChunk
     {
         private readonly ChunkStreamInfo mMainInfo;
         private readonly ChunkStreamInfo mTexInfo;
@@ -26,16 +26,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly List<Mcly> mLayerInfos = new List<Mcly>();
 
-        public int IndexX { get; }
-        public int IndexY { get; }
-
-        public int StartVertex => (IndexX + IndexY * 16) * 145;
-
-        public AdtVertex[] Vertices { get; } = new AdtVertex[145];
-        public uint[] AlphaValues { get; } = new uint[4096];
-        public IList<Graphics.Texture> Textures { get; private set; }
-        public BoundingBox BoundingBox { get; private set; }
-
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
             mParent = new WeakReference<MapArea>(parent);
@@ -51,7 +41,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             IndexY = indexY;
         }
 
-        public void AsyncLoad()
+        public override void AsyncLoad()
         {
             mReader.BaseStream.Position = mMainInfo.PosStart;
             var chunkSize = mReader.ReadInt32();

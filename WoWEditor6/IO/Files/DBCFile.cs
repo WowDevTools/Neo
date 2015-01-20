@@ -14,7 +14,7 @@ namespace WoWEditor6.IO.Files
         // ReSharper disable UnusedParameter.Local
         private void AssertValid(int offset, int size)
         {
-            if (offset + size * 4 > mSize)
+            if (offset + size > mSize)
                 throw new IndexOutOfRangeException("Trying to read past the end of a dbc record");
         }
 
@@ -27,29 +27,41 @@ namespace WoWEditor6.IO.Files
             mStringTable = stringTable;
         }
 
+        public T Get<T>(int offset) where T : struct
+        {
+            AssertValid(offset, SizeCache<T>.Size);
+            var ret = new T();
+            var ptr = SizeCache<T>.GetUnsafePtr(ref ret);
+            fixed (byte* data = mData)
+                UnsafeNativeMethods.CopyMemory((byte*)ptr, data, SizeCache<T>.Size);
+
+            return ret;
+        }
+
         public int GetInt32(int field)
         {
-            AssertValid(field * 4, 1);
+            AssertValid(field * 4, 4);
             fixed(byte* ptr = mData)
                 return *(int*) (ptr + field * 4);
         }
 
         public uint GetUint32(int field)
         {
-            AssertValid(field * 4, 1);
+            AssertValid(field * 4, 4);
             fixed (byte* ptr = mData)
                 return *(uint*) (ptr + field * 4);
         }
 
         public float GetFloat(int field)
         {
-            AssertValid(field * 4, 1);
+            AssertValid(field * 4, 4);
             fixed (byte* ptr = mData)
                 return *(float*)(ptr + field * 4);
         }
 
         public string GetString(int field)
         {
+            AssertValid(field * 4, 4);
             int offset;
             fixed (byte* ptr = mData)
                 offset = *(int*) (ptr + field * 4);

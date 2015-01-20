@@ -19,7 +19,7 @@ namespace WoWEditor6.Scene
         private Vector3 mUp;
         private Vector3 mRight;
         private Vector3 mForward;
-        private ViewFrustum mFrustum = new ViewFrustum();
+        private readonly ViewFrustum mFrustum = new ViewFrustum();
 
         public event Action<Camera, Matrix> ViewChanged , ProjectionChanged;
 

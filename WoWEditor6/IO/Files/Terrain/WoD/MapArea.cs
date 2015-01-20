@@ -15,7 +15,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public int Size;
     }
 
-    class MapArea : IDisposable
+    class MapArea : Terrain.MapArea, IDisposable
     {
         private Stream mMainStream;
         private Stream mTexStream;
@@ -34,15 +34,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly List<MapChunk> mChunks = new List<MapChunk>();
 
-        public int IndexX { get; }
-        public int IndexY { get; }
-        public string Continent { get; }
-
-        public AdtVertex[] FullVertices { get; } = new AdtVertex[145 * 256];
-
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public BoundingBox BoundingBox { get; private set; }
-
         public MapArea(string continent, int ix, int iy)
         {
             Continent = continent;
@@ -50,7 +41,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             IndexY = iy;
         }
 
-        public Graphics.Texture GetTexture(int index)
+        public override Graphics.Texture GetTexture(int index)
         {
             if (index >= mTextures.Count)
                 throw new IndexOutOfRangeException();
@@ -58,7 +49,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             return mTextures[index];
         }
 
-        public MapChunk GetChunk(int index)
+        public override Terrain.MapChunk GetChunk(int index)
         {
             if (index >= mChunks.Count)
                 throw new IndexOutOfRangeException();
@@ -66,7 +57,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             return mChunks[index];
         }
 
-        public void AsyncLoad()
+        public override void AsyncLoad()
         {
             mMainStream =
                 FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1:D2}_{2:D2}.adt", Continent,

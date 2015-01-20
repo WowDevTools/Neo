@@ -12,10 +12,11 @@ namespace WoWEditor6.Scene.Terrain
         private Vector2 mEntryPoint;
         private int mTotalLoadSteps;
         private int mLoadStepsDone;
-        private readonly List<IO.Files.Terrain.WoD.MapArea> mDataToLoad = new List<IO.Files.Terrain.WoD.MapArea>();
-        private readonly List<IO.Files.Terrain.WoD.MapArea> mLoadedData = new List<IO.Files.Terrain.WoD.MapArea>();
+        private readonly List<IO.Files.Terrain.MapArea> mDataToLoad = new List<IO.Files.Terrain.MapArea>();
+        private readonly List<IO.Files.Terrain.MapArea> mLoadedData = new List<IO.Files.Terrain.MapArea>();
         private readonly Dictionary<int, MapAreaRender> mAreas = new Dictionary<int, MapAreaRender>();
         private Thread mLoadThread;
+        private Thread mLightUpdateThread;
         private bool mIsRunning;
 
         public string Continent { get; private set; }
@@ -23,23 +24,34 @@ namespace WoWEditor6.Scene.Terrain
         public IO.Files.Terrain.WdtFile CurrentWdt { get; private set; }
         public bool HasNewBlend { get; private set; }
         public bool IsInitialLoad { get; private set; }
+        public SkySphere SkySphere { get; private set; }
 
         public void Initialize()
         {
+            SkySphere = new SkySphere(999.0f, 25, 25, WorldFrame.Instance.GraphicsContext);
             mIsRunning = true;
             mLoadThread = new Thread(LoadProc);
             mLoadThread.Start();
+            mLightUpdateThread = new Thread(LightUpdateProc);
+            mLightUpdateThread.Start();
         }
 
         public void Shutdown()
         {
             mIsRunning = false;
             mLoadThread.Join();
+            mLightUpdateThread.Join();
         }
 
         public void OnFrame()
         {
             ProcessLoadedTiles();
+
+            if (WorldFrame.Instance.State == AppState.World)
+            {
+                IO.Files.Sky.SkyManager.Instance.SyncUpdate();
+                SkySphere.Render();
+            }
 
             MapChunkRender.ChunkMesh.BeginDraw();
             MapChunkRender.ChunkMesh.Program.SetPixelSampler(0, MapChunkRender.ColorSampler);
@@ -61,7 +73,11 @@ namespace WoWEditor6.Scene.Terrain
             CurrentWdt.Load(continent);
             HasNewBlend = (CurrentWdt.Flags & 0x84) != 0;
 
+            MapChunkRender.ChunkMesh.Program = HasNewBlend ? MapChunkRender.BlendNew : MapChunkRender.BlendOld;
+
             IsInitialLoad = true;
+
+            IO.Files.Sky.SkyManager.Instance.OnEnterWorld(mapId);
 
             LoadInitial();
         }
@@ -123,8 +139,7 @@ namespace WoWEditor6.Scene.Terrain
         private void LoadInitial()
         {
             var ix = (int) Math.Floor(mEntryPoint.X / Metrics.TileSize);
-            var iy = (int) Math.Floor(mEntryPoint.Y / Metrics.TileSize);
-            iy = 64 - iy;
+            var iy = (int) Math.Floor((64.0f * Metrics.TileSize - mEntryPoint.Y) / Metrics.TileSize);
 
             mTotalLoadSteps = 0;
             mLoadStepsDone = 0;
@@ -142,7 +157,7 @@ namespace WoWEditor6.Scene.Terrain
                         if (x < 0 || y < 0 || x > 63 || y > 63)
                             continue;
 
-                        var tile = new IO.Files.Terrain.WoD.MapArea(Continent, x, y);
+                        var tile = IO.Files.Terrain.AdtFactory.Instance.CreateArea(Continent, x, y);
                         mDataToLoad.Add(tile);
                         mTotalLoadSteps += 2 * 256;
                     }
@@ -152,20 +167,22 @@ namespace WoWEditor6.Scene.Terrain
 
         private void OnInitialLoadDone()
         {
-            InterfaceManager.Instance.UpdateState(AppState.World);
             float height;
             if (GetLandHeight(mEntryPoint.X, 64.0f * Metrics.TileSize - mEntryPoint.Y, out height) == false)
                 return;
 
             height += 50.0f;
+            IO.Files.Sky.SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint, height));
             WorldFrame.Instance.OnEnterWorld(new Vector3(mEntryPoint, height));
+            WorldFrame.Instance.Dispatcher.BeginInvoke(
+                new Action(() => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height))));
         }
 
         private void LoadProc()
         {
             while(mIsRunning)
             {
-                IO.Files.Terrain.WoD.MapArea loadTile = null;
+                IO.Files.Terrain.MapArea loadTile = null;
                 lock(mDataToLoad)
                 {
                     if (mDataToLoad.Count > 0)
@@ -198,6 +215,17 @@ namespace WoWEditor6.Scene.Terrain
                 }
 
                 mLoadedData.Clear();
+            }
+        }
+
+        private void LightUpdateProc()
+        {
+            while(mIsRunning)
+            {
+                if (IO.Files.Sky.SkyManager.Instance != null)
+                    IO.Files.Sky.SkyManager.Instance.AsyncUpdate();
+
+                Thread.Sleep(100);
             }
         }
     }

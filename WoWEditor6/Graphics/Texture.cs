@@ -84,10 +84,21 @@ namespace WoWEditor6.Graphics
                     format != mTexture.Description.Format || mTexture.Description.MipLevels != 1 ||
                     mTexture == gDefaultTexture)
                 {
-                    CreateNew(width, height, format, new[] {box});
+                    CreateNew(width, height, format, new[] { box });
                 }
                 else
-                    mContext.Context.UpdateSubresource(box, mTexture);
+                {
+                    var region = new ResourceRegion
+                    {
+                        Back = 1,
+                        Bottom = height,
+                        Front = 0,
+                        Left = 0,
+                        Right = width,
+                        Top = 0
+                    };
+                    mContext.Context.UpdateSubresource(mTexture, 0, region, box.DataPointer, width * 4, 0);
+                }
             }
         }
 
@@ -106,7 +117,18 @@ namespace WoWEditor6.Graphics
                     CreateNew(width, height, format, new[] { box });
                 }
                 else
-                    mContext.Context.UpdateSubresource(box, mTexture);
+                {
+                    var region = new ResourceRegion
+                    {
+                        Back = 1,
+                        Bottom = height,
+                        Front = 0,
+                        Left = 0,
+                        Right = width,
+                        Top = 0
+                    };
+                    mContext.Context.UpdateSubresource(mTexture, 0, region, box.DataPointer, width * 4, 0);
+                }
             }
         }
 
@@ -156,6 +178,7 @@ namespace WoWEditor6.Graphics
             desc.Width = width;
             desc.Height = height;
             desc.Format = format;
+            desc.Usage = ResourceUsage.Default;
             mTexture = new Texture2D(mContext.Device, desc, boxes);
 
             var srvd = new ShaderResourceViewDescription

@@ -14,12 +14,11 @@ namespace WoWEditor6.Scene.Terrain
         public int IndexX { get; private set; }
         public int IndexY { get; private set; }
 
-        public IO.Files.Terrain.WoD.MapArea AreaFile { get; private set; }
+        public IO.Files.Terrain.MapArea AreaFile { get; private set; }
 
         public MapAreaRender(int indexX, int indexY)
         {
             IndexX = indexX;
-            mAsyncLoaded = false;
             IndexY = indexY;
         }
 
@@ -41,7 +40,7 @@ namespace WoWEditor6.Scene.Terrain
                 chunk.OnFrame();
         }
 
-        public void AsyncLoaded(IO.Files.Terrain.WoD.MapArea area)
+        public void AsyncLoaded(IO.Files.Terrain.MapArea area)
         {
             AreaFile = area;
             for(var i = 0; i < 256; ++i)
@@ -50,6 +49,7 @@ namespace WoWEditor6.Scene.Terrain
                 chunk.OnAsyncLoad(area.GetChunk(i));
                 mChunks[i] = chunk;
             }
+
 
             mAsyncLoaded = true;
         }

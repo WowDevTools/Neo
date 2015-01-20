@@ -86,7 +86,7 @@ namespace WoWEditor6.Graphics
 #if DEBUG
             Device = new Device(Adapter, DeviceCreationFlags.Debug);
 #else
-            mDevice = new Device(Adapter);
+            Device = new Device(Adapter);
 #endif
 
             BuildMultisample();

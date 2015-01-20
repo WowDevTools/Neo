@@ -124,10 +124,19 @@
   <data name="TextureQuadPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\TextureQuadPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="TerrainVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\TerrainVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="TerrainPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\TerrainPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="TerrainVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\TerrainVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="TerrainPixelNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\TerrainPixelNew.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="SkyPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\SkyPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="SkyVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\SkyVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

@@ -9,8 +9,10 @@ namespace WoWEditor6.Scene.Terrain
     {
         public static Sampler ColorSampler { get; private set; }
         public static Sampler AlphaSampler { get; private set; }
+        public static ShaderProgram BlendNew { get; private set; }
+        public static ShaderProgram BlendOld { get; private set; }
 
-        private IO.Files.Terrain.WoD.MapChunk mData;
+        private IO.Files.Terrain.MapChunk mData;
         private bool mAsyncLoaded;
         private bool mSyncLoaded;
         private bool mSyncLoadRequested;
@@ -56,7 +58,7 @@ namespace WoWEditor6.Scene.Terrain
             ChunkMesh.Draw();
         }
 
-        public void OnAsyncLoad(IO.Files.Terrain.WoD.MapChunk chunk)
+        public void OnAsyncLoad(IO.Files.Terrain.MapChunk chunk)
         {
             mData = chunk;
             mBoundingBox = chunk.BoundingBox;
@@ -89,15 +91,19 @@ namespace WoWEditor6.Scene.Terrain
             ChunkMesh.AddElement("COLOR", 0, 4, DataType.Byte, true);
 
             ChunkMesh.IndexCount = 768;
-            ChunkMesh.Stride = IO.SizeCache<IO.Files.Terrain.WoD.AdtVertex>.Size;
+            ChunkMesh.Stride = IO.SizeCache<IO.Files.Terrain.AdtVertex>.Size;
             ChunkMesh.BlendState.BlendEnabled = false;
             ChunkMesh.DepthState.DepthEnabled = true;
 
-            var program = new ShaderProgram(context);
-            program.SetVertexShader(Resources.Shaders.TerrainVertex, "main");
-            program.SetPixelShader(Resources.Shaders.TerrainPixel, "main");
+            BlendNew = new ShaderProgram(context);
+            BlendNew.SetVertexShader(Resources.Shaders.TerrainVertex, "main");
+            BlendNew.SetPixelShader(Resources.Shaders.TerrainPixelNew, "main");
 
-            ChunkMesh.Program = program;
+            ChunkMesh.Program = BlendNew;
+
+            BlendOld = new ShaderProgram(context);
+            BlendOld.SetVertexShader(Resources.Shaders.TerrainVertex, "main");
+            BlendOld.SetPixelShader(Resources.Shaders.TerrainPixel, "main");
 
             ColorSampler = new Sampler(context)
             {

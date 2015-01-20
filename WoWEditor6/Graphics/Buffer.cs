@@ -31,9 +31,31 @@ namespace WoWEditor6.Graphics
             Native?.Dispose();
         }
 
+        public void UpdateData<T>(T data) where T : struct
+        {
+            Resize(IO.SizeCache<T>.Size, data);
+        }
+
         public void UpdateData<T>(T[] data) where T : struct
         {
             Resize(data.Length * IO.SizeCache<T>.Size, data);
+        }
+
+        private void Resize<T>(int length, T value) where T : struct
+        {
+            if (length > mDescription.SizeInBytes)
+            {
+                mDescription.SizeInBytes = length;
+                Native?.Dispose();
+                using (var strm = new DataStream(length, true, true))
+                {
+                    strm.Write(value);
+                    strm.Position = 0;
+                    Native = new SharpDX.Direct3D11.Buffer(mContext.Device, strm, mDescription);
+                }
+            }
+            else
+                mContext.Context.UpdateSubresource(ref value, Native);
         }
 
         private void Resize<T>(int length, T[] data) where T : struct

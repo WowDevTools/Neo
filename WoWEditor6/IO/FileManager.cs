@@ -20,6 +20,9 @@ namespace WoWEditor6.IO
 
             if (File.Exists(Path.Combine(DataPath, ".build.info")))
             {
+                Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Warlords;
+                Files.Sky.SkyManager.InitVersion(FileDataVersion.Warlords);
+
                 var mgr = new CASC.FileManager();
                 mgr.LoadComplete += () =>
                 {

@@ -44,12 +44,13 @@ float4 main(PixelInput input) : SV_Target{
 	float4 c2 = texture2.Sample(colorSampler, input.texCoord);
 	float4 c3 = texture3.Sample(colorSampler, input.texCoord);
 
-	float4 color = c0 * alpha.r;
-	color = c1 * alpha.g + (1.0 - alpha.g) * color;
-	color = c2 * alpha.b + (1.0 - alpha.b) * color;
-	color = c3 * alpha.a + (1.0 - alpha.a) * color;
+	float4 color = (1.0 - (alpha.g + alpha.b + alpha.a)) * c0;
+	color += alpha.g * c1;
+	color += alpha.b * c2;
+	color += alpha.a * c3;
 
 	color.rgb *= input.color.bgr * 2;
+
 	color.rgb *= getDiffuseLight(input.normal);
 
 	return color;

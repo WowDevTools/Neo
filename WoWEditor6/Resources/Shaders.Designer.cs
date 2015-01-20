@@ -61,6 +61,61 @@ namespace WoWEditor6.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Texture2D skyTexture : register(t0);
+        ///SamplerState skySampler : register(s0);
+        ///
+        ///struct PSInput
+        ///{
+        ///	float4 position : SV_Position;
+        ///	float2 texCoord : TEXCOORD0;
+        ///};
+        ///
+        ///float4 main(PSInput input) : SV_Target {
+        ///	return skyTexture.Sample(skySampler, input.texCoord);
+        ///}.
+        /// </summary>
+        internal static string SkyPixel {
+            get {
+                return ResourceManager.GetString("SkyPixel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cbuffer GlobalBuffer : register(b0)
+        ///{
+        ///	float4x4 matView;
+        ///	float4x4 matProj;
+        ///};
+        ///
+        ///cbuffer MatrixBuffer : register(b1)
+        ///{
+        ///	float4x4 matTranslation;
+        ///};
+        ///
+        ///struct VertexInput
+        ///{
+        ///	float3 position : POSITION0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///};
+        ///
+        ///struct VertexOutput
+        ///{
+        ///	float4 position : SV_Position;
+        ///	float2 texCoord : TEXCOORD0;
+        ///};
+        ///
+        ///VertexOutput main(VertexInput input) {
+        ///	float4 position = float4(input.position, 1.0);
+        ///	position = mul(matTranslation, position);
+        ///	position = mul(matView, position); [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SkyVertex {
+            get {
+                return ResourceManager.GetString("SkyVertex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to struct PixelInput
         ///{
         ///	float4 position : SV_Position;
@@ -70,8 +125,8 @@ namespace WoWEditor6.Resources {
         ///	float4 color : COLOR0;
         ///};
         ///
-        ///SamplerState alphaSampler;
-        ///SamplerState colorSampler;
+        ///SamplerState alphaSampler : register(s1);
+        ///SamplerState colorSampler : register(s0);
         ///
         ///Texture2D alphaTexture : register(t0);
         ///Texture2D texture0 : register(t1);
@@ -79,12 +134,42 @@ namespace WoWEditor6.Resources {
         ///Texture2D texture2 : register(t3);
         ///Texture2D texture3 : register(t4);
         ///
-        ///const float3 sunDirection = float3(1, 1, -1);
-        ///const float3 diffuseLight = float3(1, 1,  [rest of string was truncated]&quot;;.
+        ///float3 sunDirection = float3(1, 1, -1);
+        ///
+        ///cbuffer GlobalP [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TerrainPixel {
             get {
                 return ResourceManager.GetString("TerrainPixel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to struct PixelInput
+        ///{
+        ///	float4 position : SV_Position;
+        ///	float3 normal : NORMAL0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///	float2 texCoordAlpha : TEXCOORD1;
+        ///	float4 color : COLOR0;
+        ///};
+        ///
+        ///SamplerState alphaSampler : register(s1);
+        ///SamplerState colorSampler : register(s0);
+        ///
+        ///Texture2D alphaTexture : register(t0);
+        ///Texture2D texture0 : register(t1);
+        ///Texture2D texture1 : register(t2);
+        ///Texture2D texture2 : register(t3);
+        ///Texture2D texture3 : register(t4);
+        ///
+        ///float3 sunDirection = float3(1, 1, -1);
+        ///
+        ///cbuffer GlobalP [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TerrainPixelNew {
+            get {
+                return ResourceManager.GetString("TerrainPixelNew", resourceCulture);
             }
         }
         
