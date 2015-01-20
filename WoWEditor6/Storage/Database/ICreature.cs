@@ -2,7 +2,7 @@
 
 namespace WoWEditor6.Storage.Database
 {
-    interface ICreature
+    public interface ICreature
     {
         int EntryID { get; set; }
         int DifficultyEntry1 { get; set; }
@@ -15,8 +15,8 @@ namespace WoWEditor6.Storage.Database
         int ModelID3 { get; set; }
         int ModelID4 { get; set; }
         string Name { get; set; }
-        int SubName { get; set; }
-        int IconName { get; set; }
+        string SubName { get; set; }
+        string IconName { get; set; }
         int GossipMenuID { get; set; }
         int MinLevel { get; set; }
         int MaxLevel { get; set; }

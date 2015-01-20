@@ -7,7 +7,7 @@ namespace WoWEditor6.Storage.Database
     class MySqlConnector : Singleton<MySqlConnector>, IMySqlConnector
     {
 
-        private MySql.Data.MySqlClient.MySqlConnection m_MySqlConn = new MySql.Data.MySqlClient.MySqlConnection();
+        private MySql.Data.MySqlClient.MySqlConnection mMySqlConn = new MySql.Data.MySqlClient.MySqlConnection();
         private bool mIsConfigured;
 
         public string MySqlServer { get; set; }
@@ -25,12 +25,12 @@ namespace WoWEditor6.Storage.Database
             if (string.IsNullOrEmpty(MySqlServer) || string.IsNullOrEmpty(MySqlUser) || string.IsNullOrEmpty(MySqlPassword) || string.IsNullOrEmpty(MySqlDatabase))
                 throw new ArgumentException();
 
-            if (!mIsConfigured && !(m_MySqlConn.State == System.Data.ConnectionState.Open))
-                m_MySqlConn.ConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", MySqlServer, MySqlUser, MySqlPassword, MySqlDatabase);
+            if (!mIsConfigured && mMySqlConn.State != System.Data.ConnectionState.Open)
+                mMySqlConn.ConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", MySqlServer, MySqlUser, MySqlPassword, MySqlDatabase);
 
-            m_MySqlConn.Open();
+            mMySqlConn.Open();
 
-            if (!(m_MySqlConn.State == System.Data.ConnectionState.Open))
+            if (mMySqlConn.State != System.Data.ConnectionState.Open)
                 throw new TimeoutException("Can't connect to the server.");
         }
 
@@ -48,17 +48,17 @@ namespace WoWEditor6.Storage.Database
 
         public void CloseConnection()
         {
-            if (m_MySqlConn.State == ConnectionState.Open)
-                m_MySqlConn.Close();
+            if (mMySqlConn.State == ConnectionState.Open)
+                mMySqlConn.Close();
         }
 
         public DataTable QueryToDataTable(string pQuery)
         {
-            if(m_MySqlConn.State == System.Data.ConnectionState.Open)
+            if(mMySqlConn.State == System.Data.ConnectionState.Open)
             {
                 DataTable retVal = new DataTable();
 
-                MySql.Data.MySqlClient.MySqlDataAdapter mySqlDataAdapter = new MySql.Data.MySqlClient.MySqlDataAdapter(pQuery, m_MySqlConn);
+                MySql.Data.MySqlClient.MySqlDataAdapter mySqlDataAdapter = new MySql.Data.MySqlClient.MySqlDataAdapter(pQuery, mMySqlConn);
                 mySqlDataAdapter.Fill(retVal);
                 mySqlDataAdapter.Dispose();
 
