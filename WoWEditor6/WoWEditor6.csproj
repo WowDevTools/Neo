@@ -75,6 +75,7 @@
     <Compile Include="Graphics\Buffer.cs" />
     <Compile Include="Graphics\ConstantBuffer.cs" />
     <Compile Include="Graphics\DepthState.cs" />
+    <Compile Include="Graphics\GraphicsDispatcher.cs" />
     <Compile Include="Graphics\GxContext.cs" />
     <Compile Include="Graphics\IndexBuffer.cs" />
     <Compile Include="Graphics\InputLayoutCache.cs" />
@@ -132,8 +133,11 @@
     <Compile Include="Scene\CameraControl.cs" />
     <Compile Include="Scene\OrthoCamera.cs" />
     <Compile Include="Scene\PerspectiveCamera.cs" />
+    <Compile Include="Scene\Terrain\MapAreaLowRender.cs" />
+    <Compile Include="Scene\Terrain\MapAreaQuadTree.cs" />
     <Compile Include="Scene\Terrain\MapAreaRender.cs" />
     <Compile Include="Scene\Terrain\MapChunkRender.cs" />
+    <Compile Include="Scene\Terrain\MapLowManager.cs" />
     <Compile Include="Scene\Terrain\MapManager.cs" />
     <Compile Include="Scene\Terrain\SkySphere.cs" />
     <Compile Include="Scene\Texture\TextureArrayManager.cs" />
@@ -212,6 +216,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Shaders\MapLowPixel.hlsl" />
+    <Content Include="Resources\Shaders\MapLowVertex.hlsl" />
     <Content Include="Resources\Shaders\SkyPixel.hlsl" />
     <Content Include="Resources\Shaders\SkyVertex.hlsl" />
     <Content Include="Resources\Shaders\TerrainPixel.hlsl" />

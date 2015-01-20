@@ -15,7 +15,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public int Size;
     }
 
-    class MapArea : Terrain.MapArea, IDisposable
+    class MapArea : Terrain.MapArea
     {
         private Stream mMainStream;
         private Stream mTexStream;
@@ -208,11 +208,17 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             mMainStream?.Dispose();
             mTexStream?.Dispose();
             mObjStream?.Dispose();
+
+            foreach (var chunk in mChunks)
+                chunk.Dispose();
+
+            mChunks.Clear();
+            mTextures.Clear();
         }
     }
 }

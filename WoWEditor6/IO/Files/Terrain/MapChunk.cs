@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Terrain
 {
-    abstract class MapChunk
+    abstract class MapChunk : IDisposable
     {
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
@@ -17,5 +18,6 @@ namespace WoWEditor6.IO.Files.Terrain
         public float[] TextureScales { get; protected set; }
 
         public abstract void AsyncLoad();
+        public abstract void Dispose();
     }
 }

@@ -132,7 +132,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 TextureScales[i] = parent.GetTextureScale(mLayerInfos[i].TextureId);
             }
 
-            Textures = textures.AsReadOnly();
+            Textures = textures;
             
         }
 
@@ -286,6 +286,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private void LoadMcly(int size)
         {
             mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
+        }
+
+        public override void Dispose()
+        {
+            Textures.Clear();
         }
     }
 }

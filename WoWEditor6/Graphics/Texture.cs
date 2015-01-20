@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 
 namespace WoWEditor6.Graphics
 {
-    class Texture
+    class Texture : IDisposable
     {
         private static Texture2D gDefaultTexture;
         private static ShaderResourceView gDefaultView;
@@ -20,6 +21,14 @@ namespace WoWEditor6.Graphics
             mContext = context;
             NativeView = gDefaultView;
             mTexture = gDefaultTexture;
+        }
+
+        public void Dispose()
+        {
+            if (mTexture == gDefaultTexture) return;
+
+            mTexture?.Dispose();
+            NativeView?.Dispose();
         }
 
         public void LoadFromLoadInfo(IO.Files.Texture.TextureLoadInfo loadInfo)

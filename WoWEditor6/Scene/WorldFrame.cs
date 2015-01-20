@@ -44,7 +44,7 @@ namespace WoWEditor6.Scene
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
-        public Dispatcher Dispatcher { get; private set; }
+        public GraphicsDispatcher Dispatcher { get; private set; }
 
         private WorldFrame()
         {
@@ -88,8 +88,9 @@ namespace WoWEditor6.Scene
 
             mGlobalBuffer.UpdateData(mGlobalBufferStore);
 
-            Dispatcher = Dispatcher.CurrentDispatcher;
+            Dispatcher = new GraphicsDispatcher();
             MapChunkRender.Initialize(context);
+            MapAreaLowRender.Initialize(context);
 
             GraphicsContext = context;
 
@@ -123,6 +124,8 @@ namespace WoWEditor6.Scene
 
         public void OnFrame()
         {
+            Dispatcher.ProcessFrame();
+
             mCamControl.Update();
 
             UpdateBuffers();

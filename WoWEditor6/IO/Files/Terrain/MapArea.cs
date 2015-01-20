@@ -7,7 +7,7 @@ using SharpDX;
 
 namespace WoWEditor6.IO.Files.Terrain
 {
-    abstract class MapArea
+    abstract class MapArea : IDisposable
     {
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
@@ -21,5 +21,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public abstract Graphics.Texture GetTexture(int index);
         public abstract void AsyncLoad();
         public abstract MapChunk GetChunk(int index);
+
+        public abstract void Dispose();
     }
 }

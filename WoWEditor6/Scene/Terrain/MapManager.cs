@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using SharpDX;
 using WoWEditor6.UI;
@@ -9,15 +10,21 @@ namespace WoWEditor6.Scene.Terrain
 {
     class MapManager
     {
+        private const int MapRadius = 2;
+
         private Vector2 mEntryPoint;
         private int mTotalLoadSteps;
         private int mLoadStepsDone;
         private readonly List<IO.Files.Terrain.MapArea> mDataToLoad = new List<IO.Files.Terrain.MapArea>();
         private readonly List<IO.Files.Terrain.MapArea> mLoadedData = new List<IO.Files.Terrain.MapArea>();
+        private readonly List<MapAreaRender> mUnloadList = new List<MapAreaRender>();
         private readonly Dictionary<int, MapAreaRender> mAreas = new Dictionary<int, MapAreaRender>();
         private Thread mLoadThread;
+        private Thread mUnloadThread;
         private Thread mLightUpdateThread;
         private bool mIsRunning;
+        private readonly MapLowManager mAreaLowManager = new MapLowManager();
+        private readonly List<int> mCurrentValidLinks = new List<int>();
 
         public string Continent { get; private set; }
         public int MapId { get; private set; }
@@ -34,6 +41,8 @@ namespace WoWEditor6.Scene.Terrain
             mLoadThread.Start();
             mLightUpdateThread = new Thread(LightUpdateProc);
             mLightUpdateThread.Start();
+            mUnloadThread = new Thread(UnloadProc);
+            mUnloadThread.Start();
         }
 
         public void Shutdown()
@@ -41,6 +50,8 @@ namespace WoWEditor6.Scene.Terrain
             mIsRunning = false;
             mLoadThread.Join();
             mLightUpdateThread.Join();
+            mUnloadThread.Join();
+            mAreaLowManager.Shutdown();
         }
 
         public void OnFrame()
@@ -51,6 +62,7 @@ namespace WoWEditor6.Scene.Terrain
             {
                 IO.Files.Sky.SkyManager.Instance.SyncUpdate();
                 SkySphere.Render();
+                mAreaLowManager.OnFrame();
             }
 
             MapChunkRender.ChunkMesh.BeginDraw();
@@ -78,6 +90,7 @@ namespace WoWEditor6.Scene.Terrain
             IsInitialLoad = true;
 
             IO.Files.Sky.SkyManager.Instance.OnEnterWorld(mapId);
+            mAreaLowManager.OnEnterWorld(Continent, ref entryPoint);
 
             LoadInitial();
         }
@@ -98,9 +111,14 @@ namespace WoWEditor6.Scene.Terrain
         public void UpdatePosition(Vector3 position, bool updateTerrain)
         {
             WorldFrame.Instance.UpdatePosition(position);
+            SkySphere.UpdatePosition(position);
+
             if(updateTerrain)
             {
                 IO.Files.Sky.SkyManager.Instance.UpdatePosition(position);
+                var pos2D = new Vector2(position.X, position.Y);
+                mAreaLowManager.UpdatePosition(ref pos2D);
+                UpdateVisibility(ref position);
             }
         }
 
@@ -159,9 +177,9 @@ namespace WoWEditor6.Scene.Terrain
                 mLoadedData.Clear();
                 mAreas.Clear();
 
-                for (var x = ix - 1; x < ix + 2; ++x)
+                for (var x = ix - MapRadius; x <= ix + MapRadius; ++x)
                 {
-                    for (var y = iy - 1; y < iy + 2; ++y)
+                    for (var y = iy - MapRadius; y <= iy + MapRadius; ++y)
                     {
                         if (x < 0 || y < 0 || x > 63 || y > 63)
                             continue;
@@ -169,6 +187,7 @@ namespace WoWEditor6.Scene.Terrain
                         var tile = IO.Files.Terrain.AdtFactory.Instance.CreateArea(Continent, x, y);
                         mDataToLoad.Add(tile);
                         mTotalLoadSteps += 2 * 256;
+                        mCurrentValidLinks.Add(x + y * 64);
                     }
                 }
             }
@@ -235,6 +254,107 @@ namespace WoWEditor6.Scene.Terrain
                     IO.Files.Sky.SkyManager.Instance.AsyncUpdate();
 
                 Thread.Sleep(100);
+            }
+        }
+
+        private void UpdateVisibility(ref Vector3 position)
+        {
+            var cx = position.X;
+            var cy = position.Y;
+            cy = 64.0f * Metrics.TileSize - cy;
+
+            var ix = (int) Math.Floor(cx / Metrics.TileSize);
+            var iy = (int) Math.Floor(cy / Metrics.TileSize);
+
+            var countPref = mCurrentValidLinks.Count;
+            mCurrentValidLinks.RemoveAll(index =>
+            {
+                var x = index % 64;
+                var y = index / 64;
+                return (x > ix + 2 || x < ix - 2 || y > iy + 2 || y < iy - 2);
+            });
+
+            if (countPref == mCurrentValidLinks.Count)
+                return;
+
+            mCurrentValidLinks.Clear();
+            for (var x = ix - MapRadius; x <= ix + MapRadius; ++x)
+            {
+                for (var y = iy - MapRadius; y <= iy + MapRadius; ++y)
+                {
+                    if (x < 0 || y < 0 || x > 63 || y > 63)
+                        continue;
+
+                    mCurrentValidLinks.Add(y * 64 + x);
+                }
+            }
+
+            var loadMask = new Dictionary<int, bool>();
+            var invalidList = new List<MapAreaRender>();
+            foreach(var pair in mAreas)
+            {
+                var tile = pair.Value;
+                var index = tile.IndexX + tile.IndexY * 64;
+                var indexX = tile.IndexX;
+                var indexY = tile.IndexY;
+                if (indexX < ix - 2 || indexX > ix + 2 || indexY < iy - 2 || indexY > iy + 2)
+                {
+                    invalidList.Add(tile);
+                    continue;
+                }
+
+                loadMask.Add(index, true);
+            }
+
+            lock(mUnloadList)
+            {
+                foreach(var tile in invalidList)
+                {
+                    mUnloadList.Add(tile);
+                    mAreas.Remove(tile.IndexX + tile.IndexY * 0xFF);
+                }
+            }
+
+            invalidList.Clear();
+
+            lock(mDataToLoad)
+            {
+                foreach (var index in mDataToLoad.Select(tile => tile.IndexX + tile.IndexY * 64))
+                    loadMask.Add(index, true);
+            }
+
+            lock(mLoadedData)
+            {
+                foreach (var index in mLoadedData.Select(tile => tile.IndexX + tile.IndexY * 64))
+                    loadMask.Add(index, true);
+            }
+
+            foreach(var link in mCurrentValidLinks)
+            {
+                if (loadMask.ContainsKey(link))
+                    continue;
+
+                var x = link % 64;
+                var y = link / 64;
+
+                var area = IO.Files.Terrain.AdtFactory.Instance.CreateArea(Continent, x, y);
+                lock (mDataToLoad)
+                    mDataToLoad.Add(area);
+            }
+        }
+
+        private void UnloadProc()
+        {
+            while(mIsRunning)
+            {
+                lock(mUnloadList)
+                {
+                    foreach (var tile in mUnloadList)
+                        tile.Dispose();
+
+                    mUnloadList.Clear();
+                }
+                Thread.Sleep(500);
             }
         }
     }

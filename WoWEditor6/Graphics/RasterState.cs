@@ -9,6 +9,16 @@ namespace WoWEditor6.Graphics
         private bool mChanged;
         private readonly GxContext mContext;
 
+        public bool FarClipEnabled
+        {
+            get { return mDescription.IsDepthClipEnabled; }
+            set
+            {
+                mDescription.IsDepthClipEnabled = value;
+                mChanged = true;
+            }
+        }
+
         public RasterizerState Native
         {
             get
@@ -22,6 +32,7 @@ namespace WoWEditor6.Graphics
                 return mState;
             }
         }
+
         public RasterState(GxContext context)
         {
             mContext = context;

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Threading;
 using SharpDX;
 using WoWEditor6.Graphics;
 
 namespace WoWEditor6.Scene.Terrain
 {
-    class MapChunkRender
+    class MapChunkRender : IDisposable
     {
         public static Sampler ColorSampler { get; private set; }
         public static Sampler AlphaSampler { get; private set; }
@@ -19,8 +20,21 @@ namespace WoWEditor6.Scene.Terrain
         private Graphics.Texture mAlphaTexture;
         private BoundingBox mBoundingBox;
         private ConstantBuffer mScaleBuffer;
+        private Graphics.Texture[] mShaderTextures;
 
         public static Mesh ChunkMesh { get; private set; }
+
+        public void Dispose()
+        {
+            mShaderTextures = null;
+            var alphaTex = mAlphaTexture;
+            var constBuffer = mScaleBuffer;
+            WorldFrame.Instance.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                constBuffer?.Dispose();
+                alphaTex?.Dispose();
+            }));
+        }
 
         public void OnFrame()
         {
@@ -45,7 +59,7 @@ namespace WoWEditor6.Scene.Terrain
                 }
                 else
                 {
-                    WorldFrame.Instance.Dispatcher.BeginInvoke(new Action(SyncLoad), DispatcherPriority.Input);
+                    WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
                     mSyncLoadRequested = true;
                     return;
                 }
@@ -53,8 +67,7 @@ namespace WoWEditor6.Scene.Terrain
 
             ChunkMesh.StartVertex = mData.StartVertex;
             ChunkMesh.Program.SetPixelTexture(0, mAlphaTexture);
-            for (var i = 0; i < 4 && i < mData.Textures.Count; ++i)
-                ChunkMesh.Program.SetPixelTexture(1 + i, mData.Textures[i]);
+            ChunkMesh.Program.SetPixelTextures(1, mShaderTextures);
 
             ChunkMesh.Program.SetPixelConstantBuffer(2, mScaleBuffer);
 
@@ -74,6 +87,7 @@ namespace WoWEditor6.Scene.Terrain
             mAlphaTexture.UpdateMemory(64, 64, SharpDX.DXGI.Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
             mScaleBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
             mScaleBuffer.UpdateData(mData.TextureScales);
+            mShaderTextures = mData.Textures.ToArray();
             mSyncLoaded = true;
         }
 

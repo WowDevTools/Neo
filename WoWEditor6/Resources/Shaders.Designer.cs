@@ -61,6 +61,59 @@ namespace WoWEditor6.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
+        ///{
+        ///	float4 ambientLight;
+        ///	float4 diffuseLight;
+        ///	float4 fogColor;
+        ///	float4 fogParams;
+        ///};
+        ///
+        ///float4 main(float4 position : SV_Position) : SV_Target{
+        ///	clip((position.z &lt; (fogParams.y / 1800.0) || position.z &gt; 1.0) ? -1 : 1);
+        ///	return float4(fogColor, 1.0);
+        ///}.
+        /// </summary>
+        internal static string MapLowPixel {
+            get {
+                return ResourceManager.GetString("MapLowPixel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
+        ///{
+        ///	float4x4 matView;
+        ///	float4x4 matProj;
+        ///	float4 eyePosition;
+        ///};
+        ///
+        ///struct VSInput
+        ///{
+        ///	float3 position : POSITION0;
+        ///};
+        ///
+        ///struct VSOutput
+        ///{
+        ///	float4 position : SV_Position;
+        ///};
+        ///
+        ///VSOutput main(VSInput input) {
+        ///	VSOutput output = (VSOutput) 0;
+        ///	output.position = float4(input.position, 1.0);
+        ///	output.position = mul(output.position, matView);
+        ///	output.position = mul(output.position, matProj);
+        ///
+        ///	return output;
+        ///}.
+        /// </summary>
+        internal static string MapLowVertex {
+            get {
+                return ResourceManager.GetString("MapLowVertex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Texture2D skyTexture : register(t0);
         ///SamplerState skySampler : register(s0);
         ///

@@ -59,6 +59,11 @@ namespace WoWEditor6.Graphics
             mContext.Context.PixelShader.SetShaderResources(slot, textures.Select(t => t.NativeView).ToArray());
         }
 
+        public void SetPixelTextures(int slot, params ShaderResourceView[] textures)
+        {
+            mContext.Context.PixelShader.SetShaderResources(slot, textures);
+        }
+
         public void SetVertexConstantBuffer(int slot, ConstantBuffer buffer)
         {
             mContext.Context.VertexShader.SetConstantBuffer(slot, buffer.Native);

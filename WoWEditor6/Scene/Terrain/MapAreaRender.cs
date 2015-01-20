@@ -1,10 +1,11 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using WoWEditor6.Graphics;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace WoWEditor6.Scene.Terrain
 {
-    class MapAreaRender
+    class MapAreaRender : IDisposable
     {
         private bool mAsyncLoaded;
         private bool mSyncLoaded;
@@ -60,6 +61,23 @@ namespace WoWEditor6.Scene.Terrain
 
             mBoundingBox = area.BoundingBox;
             mAsyncLoaded = true;
+        }
+
+        public void Dispose()
+        {
+            AreaFile?.Dispose();
+            AreaFile = null;
+
+            mAsyncLoaded = false;
+            var vertexBuffer = mVertexBuffer;
+            mVertexBuffer = null;
+            WorldFrame.Instance.Dispatcher.BeginInvoke(new Action(() => vertexBuffer.Dispose()));
+
+            for(var i = 0; i < 256; ++i)
+            {
+                mChunks[i].Dispose();
+                mChunks[i] = null;
+            }
         }
     }
 }
