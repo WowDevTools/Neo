@@ -89,7 +89,7 @@ namespace WoWEditor6.Resources {
         ///
         ///cbuffer MatrixBuffer : register(b1)
         ///{
-        ///	float4x4 matTranslation;
+        ///	float4 translation;
         ///};
         ///
         ///struct VertexInput
@@ -105,9 +105,9 @@ namespace WoWEditor6.Resources {
         ///};
         ///
         ///VertexOutput main(VertexInput input) {
-        ///	float4 position = float4(input.position, 1.0);
-        ///	position = mul(matTranslation, position);
-        ///	position = mul(matView, position); [rest of string was truncated]&quot;;.
+        ///	float4 position = float4(input.position + translation.xyz, 1.0);
+        ///	position = mul(position, matView);
+        ///	position = mul(position, mat [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SkyVertex {
             get {
@@ -123,6 +123,7 @@ namespace WoWEditor6.Resources {
         ///	float2 texCoord : TEXCOORD0;
         ///	float2 texCoordAlpha : TEXCOORD1;
         ///	float4 color : COLOR0;
+        ///	float depth : TEXCOORD2;
         ///};
         ///
         ///SamplerState alphaSampler : register(s1);
@@ -134,9 +135,7 @@ namespace WoWEditor6.Resources {
         ///Texture2D texture2 : register(t3);
         ///Texture2D texture3 : register(t4);
         ///
-        ///float3 sunDirection = float3(1, 1, -1);
-        ///
-        ///cbuffer GlobalP [rest of string was truncated]&quot;;.
+        ///float3 sunDirection = float3(1, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TerrainPixel {
             get {
@@ -152,6 +151,7 @@ namespace WoWEditor6.Resources {
         ///	float2 texCoord : TEXCOORD0;
         ///	float2 texCoordAlpha : TEXCOORD1;
         ///	float4 color : COLOR0;
+        ///	float depth : TEXCOORD2;
         ///};
         ///
         ///SamplerState alphaSampler : register(s1);
@@ -163,9 +163,7 @@ namespace WoWEditor6.Resources {
         ///Texture2D texture2 : register(t3);
         ///Texture2D texture3 : register(t4);
         ///
-        ///float3 sunDirection = float3(1, 1, -1);
-        ///
-        ///cbuffer GlobalP [rest of string was truncated]&quot;;.
+        ///float3 sunDirection = float3(1, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TerrainPixelNew {
             get {
@@ -190,16 +188,17 @@ namespace WoWEditor6.Resources {
         ///	float2 texCoord : TEXCOORD0;
         ///	float2 texCoordAlpha : TEXCOORD1;
         ///	float4 color : COLOR0;
+        ///	float depth : TEXCOORD2;
         ///};
         ///
         ///cbuffer GlobalParams : register(b0)
         ///{
         ///	float4x4 matView;
         ///	float4x4 matProj;
+        ///	float4 eyePosition;
         ///};
         ///
-        ///VertexOutput main(VertexInput input) {
-        ///	VertexOutput output = (V [rest of string was truncated]&quot;;.
+        ///VertexOutput mai [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TerrainVertex {
             get {

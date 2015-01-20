@@ -4,92 +4,92 @@ namespace WoWEditor6.Storage.Database
 {
     interface ICreature
     {
-        public int EntryID { get; set; }
-        public int DifficultyEntry1 { get; set; }
-        public int DifficultyEntry2 { get; set; }
-        public int DifficultyEntry3 { get; set; }
-        public int KillCredit1{ get; set; }
-        public int KillCredit2{ get; set; }
-        public int ModelID1 { get; set; }
-        public int ModelID2 { get; set; }
-        public int ModelID3 { get; set; }
-        public int ModelID4 { get; set; }
-        public string Name { get; set; }
-        public int SubName { get; set; }
-        public int IconName { get; set; }
-        public int GossipMenuID { get; set; }
-        public int MinLevel { get; set; }
-        public int MaxLevel { get; set; }
-        public int Experience { get; set; }
-        public int Faction{ get; set; }
-        public NPCFlag NPCFlag { get; set; }
-        public float SpeedWalk { get; set; }
-        public float SpeedRun { get; set; }
-        public float Scale { get; set; }
-        public Rank Rank { get; set; }
-        public float MinDamage { get; set; }
-        public float MaxDamage { get; set; }
-        public DamageSchool DamageSchool{ get; set; }
-        public int AttackPower{ get; set; }
-        public float DamageMultiplier { get; set; }
-        public int BaseAttackTime { get; set; }
-        public int RangeAttackTime { get; set; }
-        public UnitClass UnitClass { get; set; }
-        public UnitFlags UnitFlags { get; set; }
-        public UnitFlags2 UnitFlags2 { get; set; }
-        public DynamicFlags DynamicFlags { get; set; }
-        public Family Family { get; set; }
-        public TrainerType TrainerType { get; set; }
-        public int TrainerSpell { get; set; }
-        public int TrainerClass { get; set; }
-        public int TrainerRace { get; set; }
-        public float MinRangedDamage { get; set; }
-        public float MaxRangedDamage { get; set; }
-        public int RangedAttackPower { get; set; }
-        public enumType Type { get; set; }
-        public TypeFlags TypeFlags { get; set; }
-        public int LootID { get; set; }
-        public int PickPocketLoot { get; set; }
-        public int SkinLoot { get; set; }
-        public int Resistance1 { get; set; }
-        public int Resistance2 { get; set; }
-        public int Resistance3 { get; set; }
-        public int Resistance4 { get; set; }
-        public int Resistance5 { get; set; }
-        public int Resistance6 { get; set; }
-        public int Spell1 { get; set; }
-        public int Spell2 { get; set; }
-        public int Spell3 { get; set; }
-        public int Spell4 { get; set; }
-        public int Spell5 { get; set; }
-        public int Spell6 { get; set; }
-        public int Spell7 { get; set; }
-        public int Spell8 { get; set; }
-        public int PetSpellDataID { get; set; }
-        public int VehicleID { get; set; }
-        public int MinGold { get; set; }
-        public int MaxGold { get; set; }
-        public AIName AIName { get; set; }
-        public MovementType MovementType { get; set; }
-        public InhabitType InhabitType { get; set; }
-        public float HoverHeight { get; set; }
-        public float HealthMod { get; set; }
-        public float ManaMod { get; set; }
-        public float ArmorMod { get; set; }
-        public int RacialLeader{ get; set; }
-        public int QuestItem1 { get; set; }
-        public int QuestItem2 { get; set; }
-        public int QuestItem3 { get; set; }
-        public int QuestItem4 { get; set; }
-        public int QuestItem5 { get; set; }
-        public int QuestItem6 { get; set; }
-        public int MovementID { get; set; }
-        public int RegenHealth { get; set; }
-        public MechanicImmuneMask MechanicImmuneMask { get; set; }
-        public FlagsExtra FlagsExtra { get; set; }
-        public string ScriptName{ get; set; }
-        public int WDBVerified { get; set; }
-        public string GetUpdateSQLQuery();
+        int EntryID { get; set; }
+        int DifficultyEntry1 { get; set; }
+        int DifficultyEntry2 { get; set; }
+        int DifficultyEntry3 { get; set; }
+        int KillCredit1{ get; set; }
+        int KillCredit2{ get; set; }
+        int ModelID1 { get; set; }
+        int ModelID2 { get; set; }
+        int ModelID3 { get; set; }
+        int ModelID4 { get; set; }
+        string Name { get; set; }
+        int SubName { get; set; }
+        int IconName { get; set; }
+        int GossipMenuID { get; set; }
+        int MinLevel { get; set; }
+        int MaxLevel { get; set; }
+        int Experience { get; set; }
+        int Faction{ get; set; }
+        NPCFlag NPCFlag { get; set; }
+        float SpeedWalk { get; set; }
+        float SpeedRun { get; set; }
+        float Scale { get; set; }
+        Rank Rank { get; set; }
+        float MinDamage { get; set; }
+        float MaxDamage { get; set; }
+        DamageSchool DamageSchool{ get; set; }
+        int AttackPower{ get; set; }
+        float DamageMultiplier { get; set; }
+        int BaseAttackTime { get; set; }
+        int RangeAttackTime { get; set; }
+        UnitClass UnitClass { get; set; }
+        UnitFlags UnitFlags { get; set; }
+        UnitFlags2 UnitFlags2 { get; set; }
+        DynamicFlags DynamicFlags { get; set; }
+        Family Family { get; set; }
+        TrainerType TrainerType { get; set; }
+        int TrainerSpell { get; set; }
+        int TrainerClass { get; set; }
+        int TrainerRace { get; set; }
+        float MinRangedDamage { get; set; }
+        float MaxRangedDamage { get; set; }
+        int RangedAttackPower { get; set; }
+        enumType Type { get; set; }
+        TypeFlags TypeFlags { get; set; }
+        int LootID { get; set; }
+        int PickPocketLoot { get; set; }
+        int SkinLoot { get; set; }
+        int Resistance1 { get; set; }
+        int Resistance2 { get; set; }
+        int Resistance3 { get; set; }
+        int Resistance4 { get; set; }
+        int Resistance5 { get; set; }
+        int Resistance6 { get; set; }
+        int Spell1 { get; set; }
+        int Spell2 { get; set; }
+        int Spell3 { get; set; }
+        int Spell4 { get; set; }
+        int Spell5 { get; set; }
+        int Spell6 { get; set; }
+        int Spell7 { get; set; }
+        int Spell8 { get; set; }
+        int PetSpellDataID { get; set; }
+        int VehicleID { get; set; }
+        int MinGold { get; set; }
+        int MaxGold { get; set; }
+        AIName AIName { get; set; }
+        MovementType MovementType { get; set; }
+        InhabitType InhabitType { get; set; }
+        float HoverHeight { get; set; }
+        float HealthMod { get; set; }
+        float ManaMod { get; set; }
+        float ArmorMod { get; set; }
+        int RacialLeader{ get; set; }
+        int QuestItem1 { get; set; }
+        int QuestItem2 { get; set; }
+        int QuestItem3 { get; set; }
+        int QuestItem4 { get; set; }
+        int QuestItem5 { get; set; }
+        int QuestItem6 { get; set; }
+        int MovementID { get; set; }
+        int RegenHealth { get; set; }
+        MechanicImmuneMask MechanicImmuneMask { get; set; }
+        FlagsExtra FlagsExtra { get; set; }
+        string ScriptName{ get; set; }
+        int WDBVerified { get; set; }
+        string GetUpdateSQLQuery();
     }
 
     public enum MovementType
@@ -99,7 +99,7 @@ namespace WoWEditor6.Storage.Database
         Path = 2
     }
 
-    public enum NPCFlag
+    public enum NPCFlag : uint
     {
         Gossip = 0x1,
         QuestGiver = 0x2,
@@ -127,7 +127,7 @@ namespace WoWEditor6.Storage.Database
         Mailbox = 0x4000000
     }
 
-    public enum UnitFlags
+    public enum UnitFlags : uint
     {
         ServerControlled = 0x1,
         NonAttackable = 0x2,
@@ -319,14 +319,14 @@ namespace WoWEditor6.Storage.Database
 
     public enum AIName
     {
-        NullAI = "NullAI",
-        AggressorAI = "AggressorAI",
-        ReactorAI = "ReactorAI",
-        GuardAI = "GuardAI",
-        PetAI = "PetAI",
-        TotemAI = "TotemAI",
-        EventAI = "EventAI",
-        SmartAI = "SmartAI"
+        NullAI,
+        AggressorAI,
+        ReactorAI,
+        GuardAI,
+        PetAI,
+        TotemAI,
+        EventAI,
+        SmartAI
     }
 
     public enum InhabitType

@@ -94,6 +94,32 @@ namespace WoWEditor6.Storage.Database
         public string ScriptName { get; set; }
         public int WDBVerified { get; set; }
 
+        int ICreature.SubName
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        int ICreature.IconName
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public string GetUpdateSQLQuery()
         {
             // TODO
