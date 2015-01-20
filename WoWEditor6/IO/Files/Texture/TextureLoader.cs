@@ -40,6 +40,20 @@ namespace WoWEditor6.IO.Files.Texture
             0xBB, 0xCC, 0xDD, 0xEE, 0xFF
         };
 
+        public static TextureLoadInfo LoadHeaderOnly(string file)
+        {
+            using (var strm = FileManager.Instance.Provider.OpenFile(file))
+            {
+                if (strm == null)
+                    return null;
+
+                var reader = new BinaryReader(strm);
+                var header = reader.Read<BlpHeader>();
+                var loadInfo = ParseHeader(ref header);
+                return loadInfo;
+            }
+        }
+
         public static TextureLoadInfo LoadFirstLayer(string file)
         {
             using (var strm = FileManager.Instance.Provider.OpenFile(file))

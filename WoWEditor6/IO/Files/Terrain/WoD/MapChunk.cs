@@ -125,10 +125,15 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             if (parent == null)
                 throw new InvalidOperationException("Parent got disposed but loading was still invoked");
 
-            for (var i = 0; i < mLayerInfos.Count; ++i)
+            TextureScales = new[] {1.0f, 1.0f, 1.0f, 1.0f};
+            for (var i = 0; i < mLayerInfos.Count && i < 4; ++i)
+            {
                 textures.Add(parent.GetTexture(mLayerInfos[i].TextureId));
+                TextureScales[i] = parent.GetTextureScale(mLayerInfos[i].TextureId);
+            }
 
             Textures = textures.AsReadOnly();
+            
         }
 
         private void LoadAlpha()

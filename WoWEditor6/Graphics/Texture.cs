@@ -110,12 +110,8 @@ namespace WoWEditor6.Graphics
                 stream.Position = 0;
                 var box = new DataBox(stream.DataPointer, pitch, 0);
 
-                if (width != mTexture.Description.Width || height != mTexture.Description.Height ||
-                    format != mTexture.Description.Format || mTexture.Description.MipLevels != 1 ||
-                    mTexture == gDefaultTexture)
-                {
+                if (IsDirty(width, height, format, 1))
                     CreateNew(width, height, format, new[] { box });
-                }
                 else
                 {
                     var region = new ResourceRegion
@@ -146,12 +142,8 @@ namespace WoWEditor6.Graphics
                     boxes[i] = new DataBox(streams[i].DataPointer, rowSizes[i], 0);
                 }
 
-                if (width != mTexture.Description.Width || height != mTexture.Description.Height ||
-                    format != mTexture.Description.Format || mTexture.Description.MipLevels != layers.Count ||
-                    mTexture == gDefaultTexture)
-                {
+                if (IsDirty(width, height, format, layers.Count))
                     CreateNew(width, height, format, boxes);
-                }
                 else
                 {
                     for (var i = 0; i < layers.Count; ++i)
@@ -164,6 +156,13 @@ namespace WoWEditor6.Graphics
             {
                 foreach (var strm in streams) strm?.Dispose();
             }
+        }
+
+        private bool IsDirty(int width, int height, Format format, int layers)
+        {
+            return width != mTexture.Description.Width || height != mTexture.Description.Height ||
+                   format != mTexture.Description.Format || mTexture.Description.MipLevels != layers ||
+                   mTexture == gDefaultTexture;
         }
 
         private void CreateNew(int width, int height, Format format, DataBox[] boxes)

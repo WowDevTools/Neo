@@ -18,6 +18,7 @@ namespace WoWEditor6.Scene.Terrain
         private bool mSyncLoadRequested;
         private Graphics.Texture mAlphaTexture;
         private BoundingBox mBoundingBox;
+        private ConstantBuffer mScaleBuffer;
 
         public static Mesh ChunkMesh { get; private set; }
 
@@ -55,6 +56,8 @@ namespace WoWEditor6.Scene.Terrain
             for (var i = 0; i < 4 && i < mData.Textures.Count; ++i)
                 ChunkMesh.Program.SetPixelTexture(1 + i, mData.Textures[i]);
 
+            ChunkMesh.Program.SetPixelConstantBuffer(2, mScaleBuffer);
+
             ChunkMesh.Draw();
         }
 
@@ -69,6 +72,8 @@ namespace WoWEditor6.Scene.Terrain
         {
             mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
             mAlphaTexture.UpdateMemory(64, 64, SharpDX.DXGI.Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
+            mScaleBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
+            mScaleBuffer.UpdateData(mData.TextureScales);
             mSyncLoaded = true;
         }
 

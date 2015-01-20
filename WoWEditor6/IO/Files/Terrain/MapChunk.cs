@@ -14,6 +14,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public uint[] AlphaValues { get; } = new uint[4096];
         public IList<Graphics.Texture> Textures { get; protected set; }
         public BoundingBox BoundingBox { get; protected set; }
+        public float[] TextureScales { get; protected set; }
 
         public abstract void AsyncLoad();
     }

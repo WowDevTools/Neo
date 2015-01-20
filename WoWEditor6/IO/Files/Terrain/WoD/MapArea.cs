@@ -27,6 +27,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly List<string> mTextureNames = new List<string>();
         private readonly List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
+        private readonly List<float> mTextureScales = new List<float>();
 
         private readonly List<ChunkStreamInfo> mMainChunks = new List<ChunkStreamInfo>();
         private readonly List<ChunkStreamInfo> mTexChunks = new List<ChunkStreamInfo>();
@@ -39,6 +40,22 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             Continent = continent;
             IndexX = ix;
             IndexY = iy;
+        }
+
+        public string GetTextureName(int index)
+        {
+            if (index >= mTextureNames.Count)
+                throw new IndexOutOfRangeException();
+
+            return mTextureNames[index];
+        }
+
+        public float GetTextureScale(int index)
+        {
+            if (index >= mTextureScales.Count)
+                throw new IndexOutOfRangeException();
+
+            return mTextureScales[index];
         }
 
         public override Graphics.Texture GetTexture(int index)
@@ -130,6 +147,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var fullString = Encoding.ASCII.GetString(bytes);
             mTextureNames.AddRange(fullString.Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries));
             mTextureNames.ForEach(t => mTextures.Add(TextureManager.Instance.GetTexture(t)));
+
+            mTextureNames.ForEach(t =>
+            {
+                var loadInfo = Texture.TextureLoader.LoadHeaderOnly(t);
+                mTextureScales.Add(256.0f / loadInfo?.Width ?? 1);
+            });
         }
 
         private void InitChunks()

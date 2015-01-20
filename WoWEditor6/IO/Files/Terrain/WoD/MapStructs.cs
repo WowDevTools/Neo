@@ -44,6 +44,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public readonly int TextureId;
         public readonly int Flags;
         public readonly int OfsMcal;
-        public readonly int EffectId;
+        public readonly short EffectId;
+        public readonly short Padding;
     }
 }
