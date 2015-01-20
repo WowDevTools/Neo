@@ -14,12 +14,14 @@ struct VertexOutput
 	float2 texCoord : TEXCOORD0;
 	float2 texCoordAlpha : TEXCOORD1;
 	float4 color : COLOR0;
+	float depth : TEXCOORD2;
 };
 
 cbuffer GlobalParams : register(b0)
 {
 	float4x4 matView;
 	float4x4 matProj;
+	float4 eyePosition;
 };
 
 VertexOutput main(VertexInput input) {
@@ -34,6 +36,7 @@ VertexOutput main(VertexInput input) {
 	output.texCoord = input.texCoord;
 	output.texCoordAlpha = input.texCoordAlpha;
 	output.color = input.color;
+	output.depth = length(input.position - eyePosition.xyz);
 
 	return output;
 }

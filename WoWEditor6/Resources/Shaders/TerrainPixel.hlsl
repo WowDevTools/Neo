@@ -5,6 +5,7 @@
 	float2 texCoord : TEXCOORD0;
 	float2 texCoordAlpha : TEXCOORD1;
 	float4 color : COLOR0;
+	float depth : TEXCOORD2;
 };
 
 SamplerState alphaSampler : register(s1);
@@ -22,6 +23,8 @@ cbuffer GlobalParamsBuffer : register(b0)
 {
 	float4 ambientLight;
 	float4 diffuseLight;
+	float4 fogColor;
+	float4 fogParams;
 };
 
 float3 getDiffuseLight(float3 normal) {
@@ -51,6 +54,12 @@ float4 main(PixelInput input) : SV_Target{
 
 	color.rgb *= input.color.bgr * 2;
 	color.rgb *= getDiffuseLight(input.normal);
+
+	float fogDepth = input.depth - fogParams.x;
+	fogDepth /= (fogParams.y - fogParams.x);
+	float fog = 1.0f - pow(saturate(fogDepth), 1.5);
+
+	color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
 
 	return color;
 }

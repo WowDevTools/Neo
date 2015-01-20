@@ -37,7 +37,7 @@ namespace WoWEditor6.Scene
             UpdateView();
         }
 
-        public bool Contains(BoundingBox box)
+        public bool Contains(ref BoundingBox box)
         {
             return mFrustum.Contains(ref box) != ContainmentType.Disjoint;
         }

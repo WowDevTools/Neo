@@ -28,7 +28,7 @@ namespace WoWEditor6.Scene.Terrain
 
             if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
             {
-                if (WorldFrame.Instance.ActiveCamera.Contains(mBoundingBox) == false)
+                if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
                     return;
             }
 

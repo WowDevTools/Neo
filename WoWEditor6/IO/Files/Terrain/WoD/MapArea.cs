@@ -134,23 +134,33 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void InitChunks()
         {
-            var minHeight = float.MaxValue;
-            var maxHeight = float.MinValue;
+            var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
             for (var i = 0; i < 256; ++i)
             {
                 var chunk = new MapChunk(mMainChunks[i], mTexChunks[i], mObjChunks[i], i % 16, i / 16, this);
                 chunk.AsyncLoad();
-                if (chunk.BoundingBox.Minimum.Z > minHeight)
-                    minHeight = chunk.BoundingBox.Minimum.Z;
-                if (chunk.BoundingBox.Maximum.Z > maxHeight)
-                    maxHeight = chunk.BoundingBox.Maximum.Z;
+                var bbmin = chunk.BoundingBox.Minimum;
+                var bbmax = chunk.BoundingBox.Maximum;
+                if (bbmin.X < minPos.X)
+                    minPos.X = bbmin.X;
+                if (bbmax.X > maxPos.X)
+                    maxPos.X = bbmax.X;
+                if (bbmin.Y < minPos.Y)
+                    minPos.Y = bbmin.Y;
+                if (bbmax.Y > maxPos.Y)
+                    maxPos.Y = bbmax.Y;
+                if (bbmin.Z < minPos.Z)
+                    minPos.Z = bbmin.Z;
+                if (bbmax.Z > maxPos.Z)
+                    maxPos.Z = bbmax.Z;
 
                 mChunks.Add(chunk);
                 Array.Copy(chunk.Vertices, 0, FullVertices, i * 145, 145);
             }
 
-            BoundingBox = new BoundingBox(new Vector3(IndexX * Metrics.TileSize, IndexY * Metrics.TileSize, minHeight),
-                new Vector3((IndexX + 1) * Metrics.TileSize, (IndexY + 1) * Metrics.TileSize, maxHeight));
+            BoundingBox = new BoundingBox(minPos, maxPos);
         }
 
         private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B);

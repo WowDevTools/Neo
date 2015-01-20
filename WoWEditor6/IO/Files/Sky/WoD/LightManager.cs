@@ -286,8 +286,12 @@ namespace WoWEditor6.IO.Files.Sky.WoD
 
             UpdateSkyTexture();
 
+            var fogStart = mFloatValues[(int) LightFloat.FogScale] * mFloatValues[(int) LightFloat.FogEnd];
+            fogStart /= 72.0f;
+
             WorldFrame.Instance.UpdateMapAmbient(mColorValues[(int) LightColor.Ambient]);
             WorldFrame.Instance.UpdateMapDiffuse(mColorValues[(int) LightColor.Diffuse]);
+            WorldFrame.Instance.UpdateFogParams(mColorValues[(int) LightColor.Fog], fogStart);
         }
 
         private void UpdateSkyTexture()

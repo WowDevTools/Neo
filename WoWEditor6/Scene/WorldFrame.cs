@@ -15,6 +15,16 @@ namespace WoWEditor6.Scene
         {
             public Vector4 mapAmbient;
             public Vector4 mapDiffuse;
+            public Vector4 fogColor;
+            public Vector4 fogParams;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct GlobalBuffer
+        {
+            public Matrix matView;
+            public Matrix matProj;
+            public Vector4 eyePosition;
         }
 
         public static WorldFrame Instance { get; } = new WorldFrame();
@@ -27,7 +37,9 @@ namespace WoWEditor6.Scene
         private ConstantBuffer mGlobalBuffer;
         private ConstantBuffer mGlobalParamsBuffer;
         private GlobalParamsBuffer mGlobalParamsBufferStore;
+        private GlobalBuffer mGlobalBufferStore;
         private bool mGlobalParamsChanged;
+        private bool mGlobalChanged;
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
@@ -43,6 +55,15 @@ namespace WoWEditor6.Scene
             mMainCamera.SetAspect((float) width / height);
         }
 
+        public void UpdatePosition(Vector3 position)
+        {
+            lock (mGlobalBuffer)
+            {
+                mGlobalBufferStore.eyePosition = new Vector4(position, 1.0f);
+                mGlobalChanged = true;
+            }
+        }
+
         public void Initialize(MainWindow window, GxContext context)
         {
             mGlobalBuffer = new ConstantBuffer(context);
@@ -50,10 +71,21 @@ namespace WoWEditor6.Scene
             mGlobalParamsBufferStore = new GlobalParamsBuffer
             {
                 mapAmbient = new Vector4(0.5f, 0.5f, 0.5f, 1.0f),
-                mapDiffuse = new Vector4(0.25f, 0.5f, 1.0f, 2.0f)
+                mapDiffuse = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
+                fogColor = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
+                fogParams = new Vector4(500.0f, 900.0f, 0.0f, 0.0f)
             };
 
             mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
+
+            mGlobalBufferStore = new GlobalBuffer
+            {
+                eyePosition = Vector4.Zero,
+                matProj = Matrix.Identity,
+                matView = Matrix.Identity
+            };
+
+            mGlobalBuffer.UpdateData(mGlobalBufferStore);
 
             Dispatcher = Dispatcher.CurrentDispatcher;
             MapChunkRender.Initialize(context);
@@ -77,6 +109,7 @@ namespace WoWEditor6.Scene
             State = AppState.World;
             Utils.TimeManager.Instance.Reset();
             mMainCamera.SetParameters(position, position + Vector3.UnitX, Vector3.UnitZ, Vector3.UnitY);
+            UpdatePosition(position);
         }
 
         public void Shutdown()
@@ -93,6 +126,15 @@ namespace WoWEditor6.Scene
                 {
                     mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
                     mGlobalParamsChanged = false;
+                }
+            }
+
+            if(mGlobalChanged)
+            {
+                lock(mGlobalBuffer)
+                {
+                    mGlobalBuffer.UpdateData(mGlobalBufferStore);
+                    mGlobalChanged = false;
                 }
             }
 
@@ -119,6 +161,16 @@ namespace WoWEditor6.Scene
             }
         }
 
+        public void UpdateFogParams(Vector3 fogColor, float fogStart)
+        {
+            lock(mGlobalParamsBuffer)
+            {
+                mGlobalParamsBufferStore.fogColor = new Vector4(fogColor, 1.0f);
+                mGlobalParamsBufferStore.fogParams = new Vector4(fogStart, 900.0f, 0.0f, 0.0f);
+                mGlobalParamsChanged = true;
+            }
+        }
+
         private void UpdateAppState(AppState newState)
         {
             mState = newState;
@@ -135,7 +187,8 @@ namespace WoWEditor6.Scene
             if (camera != ActiveCamera)
                 return;
 
-            mGlobalBuffer.UpdateData(new[] {ActiveCamera.View, ActiveCamera.Projection});
+            mGlobalBufferStore.matView = matView;
+            mGlobalChanged = true;
         }
 
         private void ProjectionChanged(Camera camera, Matrix matProj)
@@ -143,7 +196,8 @@ namespace WoWEditor6.Scene
             if (camera != ActiveCamera)
                 return;
 
-            mGlobalBuffer.UpdateData(new[] { ActiveCamera.View, ActiveCamera.Projection });
+            mGlobalBufferStore.matProj = matProj;
+            mGlobalChanged = true;
         }
     }
 }
