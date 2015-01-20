@@ -7,7 +7,7 @@ namespace WoWEditor6.Storage.Database
     interface IMySqlConnector
     {
         private MySql.Data.MySqlClient.MySqlConnection m_MySqlConn;
-        private bool m_IsConfigured;
+        private bool mIsConfigured;
         public string MySqlServer { get; set; }
         public string MySqlUser { get; set; }
         public string MySqlPassword { get; set; }
