@@ -90,26 +90,20 @@ namespace WoWEditor6.Storage.Database
                         case "rank":
                             creature.Rank = (Rank)Enum.Parse(typeof(Rank), dRow[dColumn].ToString());
                             break;
-                        case "mindmg":
-                            creature.MinDamage = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "maxdmg":
-                            creature.MaxDamage = int.Parse(dRow[dColumn].ToString());
-                            break;
                         case "dmgschool":
                             creature.DamageSchool = (DamageSchool)Enum.Parse(typeof(DamageSchool), dRow[dColumn].ToString());
-                            break;
-                        case "attackpower":
-                            creature.AttackPower = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "dmg_multiplier":
-                            creature.DamageMultiplier = float.Parse(dRow[dColumn].ToString());
                             break;
                         case "baseattacktime":
                             creature.BaseAttackTime = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "rangeattacktime":
                             creature.RangeAttackTime = int.Parse(dRow[dColumn].ToString());
+                            break;
+                        case "BaseVariance":
+                            creature.BaseVariance = float.Parse(dRow[dColumn].ToString());
+                            break;
+                        case "RangeVariance":
+                            creature.RangeVariance = float.Parse(dRow[dColumn].ToString());
                             break;
                         case "unit_class":
                             creature.UnitClass = (UnitClass)Enum.Parse(typeof(UnitClass), dRow[dColumn].ToString());
@@ -137,12 +131,6 @@ namespace WoWEditor6.Storage.Database
                             break;
                         case "trainer_race":
                             creature.TrainerRace = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "minrangedmg":
-                            creature.MinRangedDamage = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "maxrangedmg":
-                            creature.MaxRangedDamage = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "rangedattackpower":
                             creature.RangedAttackPower = int.Parse(dRow[dColumn].ToString());
@@ -228,14 +216,20 @@ namespace WoWEditor6.Storage.Database
                         case "HoverHeight":
                             creature.HoverHeight = float.Parse(dRow[dColumn].ToString());
                             break;
-                        case "Health_mod":
-                            creature.HealthMod = float.Parse(dRow[dColumn].ToString());
+                        case "HealthModifier":
+                            creature.HealthModifier = float.Parse(dRow[dColumn].ToString());
                             break;
-                        case "Mana_mod":
-                            creature.ManaMod = float.Parse(dRow[dColumn].ToString());
+                        case "ManaModifier":
+                            creature.ManaModifier = float.Parse(dRow[dColumn].ToString());
                             break;
-                        case "Armor_mod":
-                            creature.ArmorMod = float.Parse(dRow[dColumn].ToString());
+                        case "ArmorModifier":
+                            creature.ArmorModifier = float.Parse(dRow[dColumn].ToString());
+                            break;
+                        case "DamageModifier":
+                            creature.DamageModifier = float.Parse(dRow[dColumn].ToString());
+                            break;
+                        case "ExperienceModifier":
+                            creature.ExperienceModifier = float.Parse(dRow[dColumn].ToString());
                             break;
                         case "RacialLeader":
                             creature.RacialLeader = int.Parse(dRow[dColumn].ToString());
@@ -273,8 +267,8 @@ namespace WoWEditor6.Storage.Database
                         case "ScriptName":
                             creature.ScriptName = dRow[dColumn].ToString();
                             break;
-                        case "WDBVerified":
-                            creature.WdbVerified = int.Parse(dRow[dColumn].ToString());
+                        case "VerifiedBuild":
+                            creature.VerifiedBuild = int.Parse(dRow[dColumn].ToString());
                             break;
                     }
                 mCreatures.Add(creature);
@@ -309,7 +303,7 @@ namespace WoWEditor6.Storage.Database
                                 creature.PhaseMask = int.Parse(dRow[dColumn].ToString());
                                 break;
                             case "modelid":
-                                creature.ModellId = int.Parse(dRow[dColumn].ToString());
+                                creature.ModelId = int.Parse(dRow[dColumn].ToString());
                                 break;
                             case "equipment_id":
                                 creature.EquipmentId = int.Parse(dRow[dColumn].ToString());
