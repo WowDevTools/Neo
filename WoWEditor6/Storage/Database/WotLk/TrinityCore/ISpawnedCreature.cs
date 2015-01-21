@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace WoWEditor6.Storage.Database
+namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
     interface ISpawnedCreature
     {
@@ -12,7 +12,7 @@ namespace WoWEditor6.Storage.Database
         int AreaId{ get; set; }
         SpawnMask SpawnMask { get; set; }
         int PhaseMask { get; set; }
-        int ModellId { get; set; }
+        int ModelId { get; set; }
         int EquipmentId { get; set; }
         Vector3 Position{ get; set; }
         float Orientation { get; set; }
@@ -27,6 +27,7 @@ namespace WoWEditor6.Storage.Database
         DynamicFlags DynamicFlags{ get; set; }
         int VerifiedBuild{ get; set; }
         string GetUpdateSqlQuery();
+        string GetInsertSqlQuery();
     }
 
     public enum SpawnMask

@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.Storage.Database
+﻿namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
     public interface ICreature
     {
@@ -25,13 +25,11 @@
         float SpeedRun { get; set; }
         float Scale { get; set; }
         Rank Rank { get; set; }
-        float MinDamage { get; set; }
-        float MaxDamage { get; set; }
         DamageSchool DamageSchool{ get; set; }
-        int AttackPower{ get; set; }
-        float DamageMultiplier { get; set; }
         int BaseAttackTime { get; set; }
         int RangeAttackTime { get; set; }
+        float BaseVariance { get; set; }
+        float RangeVariance { get; set; }
         UnitClass UnitClass { get; set; }
         UnitFlags UnitFlags { get; set; }
         UnitFlags2 UnitFlags2 { get; set; }
@@ -41,8 +39,6 @@
         int TrainerSpell { get; set; }
         int TrainerClass { get; set; }
         int TrainerRace { get; set; }
-        float MinRangedDamage { get; set; }
-        float MaxRangedDamage { get; set; }
         int RangedAttackPower { get; set; }
         EnumType Type { get; set; }
         TypeFlags TypeFlags { get; set; }
@@ -71,9 +67,11 @@
         MovementType MovementType { get; set; }
         InhabitType InhabitType { get; set; }
         float HoverHeight { get; set; }
-        float HealthMod { get; set; }
-        float ManaMod { get; set; }
-        float ArmorMod { get; set; }
+        float HealthModifier { get; set; }
+        float ManaModifier { get; set; }
+        float ArmorModifier { get; set; }
+        float DamageModifier { get; set; }
+        float ExperienceModifier { get; set; }
         int RacialLeader{ get; set; }
         int QuestItem1 { get; set; }
         int QuestItem2 { get; set; }
@@ -86,8 +84,9 @@
         MechanicImmuneMask MechanicImmuneMask { get; set; }
         FlagsExtra FlagsExtra { get; set; }
         string ScriptName{ get; set; }
-        int WdbVerified { get; set; }
+        int VerifiedBuild { get; set; }
         string GetUpdateSqlQuery();
+        string GetInsertSqlQuery();
     }
 
     public enum MovementType
