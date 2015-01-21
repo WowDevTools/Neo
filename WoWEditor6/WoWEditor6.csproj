@@ -97,6 +97,10 @@
     <Compile Include="IO\FileDataVersion.cs" />
     <Compile Include="IO\FileManager.cs" />
     <Compile Include="IO\Files\DBCFile.cs" />
+    <Compile Include="IO\Files\Models\CommonWmoStructures.cs" />
+    <Compile Include="IO\Files\Models\WoD\WmoGroup.cs" />
+    <Compile Include="IO\Files\Models\WoD\WmoRoot.cs" />
+    <Compile Include="IO\Files\Models\WoD\WmoStructures.cs" />
     <Compile Include="IO\Files\Sky\SkyManager.cs" />
     <Compile Include="IO\Files\Sky\WoD\LightManager.cs" />
     <Compile Include="IO\Files\Sky\WoD\LightStructs.cs" />
@@ -115,6 +119,7 @@
     <Compile Include="IO\Files\Texture\TextureLoader.cs" />
     <Compile Include="IO\IFileProvider.cs" />
     <Compile Include="IO\SizeCache.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Metrics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
