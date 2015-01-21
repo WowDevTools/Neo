@@ -10,27 +10,27 @@ namespace WoWEditor6.IO.Files.Models.WoD
 {
     class WmoMaterial
     {
-        private Momt mMaterial;
+        public Momt Material { get; }
 
         public List<Graphics.Texture> Textures { get; } = new List<Graphics.Texture>();
-        public int ShaderType => mMaterial.shader;
+        public int ShaderType => Material.shader;
 
         public WmoMaterial(WmoRoot root, Momt material)
         {
-            mMaterial = material;
+            Material = material;
             LoadTextures(root);
         }
 
         private void LoadTextures(WmoRoot root)
         {
-            switch(mMaterial.shader)
+            switch(Material.shader)
             {
                 case 11:
                 case 12:
                 case 7:
-                    Textures.Add(root.GetTexture(mMaterial.texture1));
-                    Textures.Add(root.GetTexture(mMaterial.texture2));
-                    Textures.Add(root.GetTexture(mMaterial.texture3));
+                    Textures.Add(root.GetTexture(Material.texture1));
+                    Textures.Add(root.GetTexture(Material.texture2));
+                    Textures.Add(root.GetTexture(Material.texture3));
                     break;
 
                 case 5:
@@ -40,12 +40,12 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 case 13:
                 case 15:
                 case 3:
-                    Textures.Add(root.GetTexture(mMaterial.texture1));
-                    Textures.Add(root.GetTexture(mMaterial.texture2));
+                    Textures.Add(root.GetTexture(Material.texture1));
+                    Textures.Add(root.GetTexture(Material.texture2));
                     break;
 
                 default:
-                    Textures.Add(root.GetTexture(mMaterial.texture1));
+                    Textures.Add(root.GetTexture(Material.texture1));
                     break;
             }
         }
@@ -54,10 +54,13 @@ namespace WoWEditor6.IO.Files.Models.WoD
     class WmoRoot
     {
         private Mohd mHeader;
-        private Dictionary<int, string> mTextureNames = new Dictionary<int, string>();
+        // ReSharper disable once CollectionNeverQueried.Local
+        private readonly Dictionary<int, string> mTextureNames = new Dictionary<int, string>();
         private readonly Dictionary<int, Graphics.Texture> mTextures = new Dictionary<int, Graphics.Texture>();
         private List<WmoMaterial> mMaterials = new List<WmoMaterial>();
         private string mFileName;
+        private readonly List<WmoGroup> mGroups = new List<WmoGroup>();
+        private BoundingBox mBoundingBox;
 
         public Graphics.Texture GetTexture(int index)
         {
@@ -65,6 +68,14 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 throw new IndexOutOfRangeException();
 
             return mTextures[index];
+        }
+
+        public WmoMaterial GetMaterial(int index)
+        {
+            if (index >= mMaterials.Count)
+                throw new IndexOutOfRangeException();
+
+            return mMaterials[index];
         }
 
         public void Load(string fileName)
@@ -119,9 +130,23 @@ namespace WoWEditor6.IO.Files.Models.WoD
             for(var i = 0; i < mHeader.nGroups; ++i)
             {
                 var groupName = string.Format("{0}_{1:D3}.wmo", rootPath, i);
+                var group = new WmoGroup(groupName, this);
+                if (group.Load())
+                {
+                    mGroups.Add(group);
+                    var gmin = group.MinPosition;
+                    var gmax = group.MaxPosition;
 
+                    if (gmin.X < minPos.X) minPos.X = gmin.X;
+                    if (gmin.Y < minPos.Y) minPos.Y = gmin.Y;
+                    if (gmin.Z < minPos.Z) minPos.Z = gmin.Z;
+                    if (gmax.X > maxPos.X) maxPos.X = gmax.X;
+                    if (gmax.Y > maxPos.Y) maxPos.Y = gmax.Y;
+                    if (gmax.Z > maxPos.Z) maxPos.Z = gmax.Z;
+                }
             }
 
+            mBoundingBox = new BoundingBox(minPos, maxPos);
             return true;
         }
 

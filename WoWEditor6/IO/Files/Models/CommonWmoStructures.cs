@@ -19,10 +19,10 @@ namespace WoWEditor6.IO.Files.Models
 
     class WmoBatch
     {
-        public readonly int StartIndex;
-        public readonly int NumIndices;
-        public readonly int MaterialInt;
-        public readonly int BlendMode;
-        public readonly int MaterialFlags;
+        public int StartIndex;
+        public int NumIndices;
+        public int MaterialId;
+        public int BlendMode;
+        public uint MaterialFlags;
     }
 }
