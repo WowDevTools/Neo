@@ -165,6 +165,7 @@
     <Compile Include="UI\Components\MapSelectQuad.cs" />
     <Compile Include="UI\Components\Message.cs" />
     <Compile Include="UI\Components\MouseMessage.cs" />
+    <Compile Include="UI\Components\PerformanceControl.cs" />
     <Compile Include="UI\Components\Scrollbar.cs" />
     <Compile Include="UI\Components\WdlControl.cs" />
     <Compile Include="UI\DrawSurface.cs" />

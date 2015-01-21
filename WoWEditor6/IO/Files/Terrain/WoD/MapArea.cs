@@ -151,7 +151,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mTextureNames.ForEach(t =>
             {
                 var loadInfo = Texture.TextureLoader.LoadHeaderOnly(t);
-                mTextureScales.Add(256.0f / loadInfo?.Width ?? 1);
+                var width = loadInfo?.Width ?? 256;
+                var height = loadInfo?.Height ?? 256;
+                if (width <= 256 || height <= 256 || loadInfo == null)
+                    mTextureScales.Add(1.0f);
+                else
+                    mTextureScales.Add(256.0f / (2 * loadInfo.Width));
             });
         }
 

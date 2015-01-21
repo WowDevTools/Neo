@@ -47,10 +47,10 @@ float3 getDiffuseLight(float3 normal) {
 
 float4 main(PixelInput input) : SV_Target{
 	float4 alpha = alphaTexture.Sample(alphaSampler, input.texCoordAlpha);
-	float4 c0 = texture0.Sample(colorSampler, input.texCoord * texScales.x);
-	float4 c1 = texture1.Sample(colorSampler, input.texCoord * texScales.y);
-	float4 c2 = texture2.Sample(colorSampler, input.texCoord * texScales.z);
-	float4 c3 = texture3.Sample(colorSampler, input.texCoord * texScales.a);
+	float4 c0 = texture0.Sample(colorSampler, input.texCoord.yx * texScales.x);
+	float4 c1 = texture1.Sample(colorSampler, input.texCoord.yx * texScales.y);
+	float4 c2 = texture2.Sample(colorSampler, input.texCoord.yx * texScales.z);
+	float4 c3 = texture3.Sample(colorSampler, input.texCoord.yx * texScales.a);
 
 	float4 color = (1.0 - (alpha.g + alpha.b + alpha.a)) * c0;
 	color += alpha.g * c1;

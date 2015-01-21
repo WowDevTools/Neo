@@ -19,7 +19,7 @@ namespace WoWEditor6.UI
         private FontWeight mWeight = FontWeight.Normal;
         private bool mAlignmentChanged;
 
-        public string Text { get { return mText; } set { mText = value; mChanged = true; } }
+        public string Text { get { return mText; } set { if(mText == value) return; mText = value; mChanged = true; } }
         public Size2F Size { get { return mSize; } set { mSize = value; mChanged = true; } }
         public string FontFamily { get { return mFontFamily; } set { mFontFamily = value; mChanged = true; } }
         public float FontSize { get { return mFontSize; } set { mFontSize = value; mChanged = true; } }
