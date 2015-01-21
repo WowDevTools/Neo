@@ -22,7 +22,7 @@ VSOutput main(VSInput input) {
 	output.position = mul(output.position, matView);
 	output.position = mul(output.position, matProj);
 
-	output.depth = length(input.position - eyePosition.xyz);
+	output.depth = output.position.z / output.position.w;
 
 	return output;
 }

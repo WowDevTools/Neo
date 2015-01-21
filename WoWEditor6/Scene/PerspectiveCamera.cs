@@ -6,8 +6,10 @@ namespace WoWEditor6.Scene
     {
         private float mAspect = 1.0f;
         private float mFov = 45.0f;
-        private float mNear = 0.2f;
-        private float mFar = 5000.0f;
+
+        public float NearClip { get; private set; } = 0.2f;
+
+        public float FarClip { get; private set; } = 2000.0f;
 
         public PerspectiveCamera()
         {
@@ -16,26 +18,26 @@ namespace WoWEditor6.Scene
 
         private void UpdateProjection()
         {
-            mMatProjection = Matrix.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, mNear, mFar);
+            mMatProjection = Matrix.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
             OnProjectionChanged();
         }
 
         public void SetFarClip(float clip)
         {
-            mFar = clip;
+            FarClip = clip;
             UpdateProjection();
         }
 
         public void SetNearClip(float clip)
         {
-            mNear = clip;
+            NearClip = clip;
             UpdateProjection();
         }
 
         public void SetClip(float near, float far)
         {
-            mNear = near;
-            mFar = far;
+            NearClip = near;
+            FarClip = far;
             UpdateProjection();
         }
 

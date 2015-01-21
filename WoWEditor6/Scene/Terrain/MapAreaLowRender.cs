@@ -97,8 +97,7 @@ namespace WoWEditor6.Scene.Terrain
             {
                 IndexCount = 16 * 16 * 4 * 3,
                 Stride = IO.SizeCache<Vector3>.Size,
-                DepthState = {DepthEnabled = false},
-                RasterizerState = {FarClipEnabled = false}
+                DepthState = {DepthEnabled = false}
             };
 
             Mesh.AddElement("POSITION", 0, 3);

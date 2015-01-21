@@ -73,7 +73,7 @@ namespace WoWEditor6.Scene
                 mapAmbient = new Vector4(0.5f, 0.5f, 0.5f, 1.0f),
                 mapDiffuse = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
                 fogColor = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
-                fogParams = new Vector4(500.0f, 900.0f, 0.0f, 0.0f)
+                fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f)
             };
 
             mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
@@ -157,7 +157,7 @@ namespace WoWEditor6.Scene
             lock(mGlobalParamsBuffer)
             {
                 mGlobalParamsBufferStore.fogColor = new Vector4(fogColor, 1.0f);
-                mGlobalParamsBufferStore.fogParams = new Vector4(fogStart, 900.0f, 0.0f, 0.0f);
+                mGlobalParamsBufferStore.fogParams = new Vector4(fogStart, 900.0f, mMainCamera.FarClip, 0.0f);
                 mGlobalParamsChanged = true;
             }
         }
@@ -189,6 +189,12 @@ namespace WoWEditor6.Scene
 
             mGlobalBufferStore.matProj = matProj;
             mGlobalChanged = true;
+
+            var perspectiveCamera = camera as PerspectiveCamera;
+            if (perspectiveCamera == null) return;
+
+            mGlobalParamsBufferStore.fogParams.Z = perspectiveCamera.FarClip;
+            mGlobalParamsChanged = true;
         }
 
         private void UpdateBuffers()

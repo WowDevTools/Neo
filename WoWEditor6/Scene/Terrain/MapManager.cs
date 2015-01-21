@@ -236,9 +236,16 @@ namespace WoWEditor6.Scene.Terrain
             {
                 foreach (var data in mLoadedData)
                 {
+                    var index = data.IndexX + data.IndexY * 0xFF;
+                    if (mAreas.ContainsKey(index))
+                    {
+                        data.Dispose();
+                        continue;
+                    }
+
                     var tile = new MapAreaRender(data.IndexX, data.IndexY);
                     tile.AsyncLoaded(data);
-                    mAreas.Add(data.IndexX + data.IndexY * 0xFF, tile);
+                    mAreas.Add(index, tile);
                 }
 
                 mLoadedData.Clear();
