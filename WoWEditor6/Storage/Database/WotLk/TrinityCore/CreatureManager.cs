@@ -4,7 +4,7 @@ using System.Linq;
 using System.Data;
 using SharpDX;
 
-namespace WoWEditor6.Storage.Database
+namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
     class CreatureManager : Singleton<CreatureManager>, ICreatureManager
     {

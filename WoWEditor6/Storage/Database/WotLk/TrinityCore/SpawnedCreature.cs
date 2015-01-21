@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpDX;
 
-namespace WoWEditor6.Storage.Database
+namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
     class SpawnedCreature : ISpawnedCreature
     {
