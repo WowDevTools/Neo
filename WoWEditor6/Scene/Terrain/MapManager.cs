@@ -97,7 +97,7 @@ namespace WoWEditor6.Scene.Terrain
 
         public void OnLoadProgress()
         {
-            ++mLoadStepsDone;
+            Interlocked.Increment(ref mLoadStepsDone);
             var pct = (float) mLoadStepsDone / mTotalLoadSteps;
             if (IsInitialLoad)
                 InterfaceManager.Instance.GetViewForState<LoadingScreenView>(AppState.LoadingScreen).UpdateProgress(pct);
@@ -202,8 +202,7 @@ namespace WoWEditor6.Scene.Terrain
             height += 50.0f;
             IO.Files.Sky.SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint, height));
             WorldFrame.Instance.OnEnterWorld(new Vector3(mEntryPoint, height));
-            WorldFrame.Instance.Dispatcher.BeginInvoke(
-                new Action(() => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height))));
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height)));
         }
 
         private void LoadProc()
@@ -291,6 +290,7 @@ namespace WoWEditor6.Scene.Terrain
 
             var loadMask = new Dictionary<int, bool>();
             var invalidList = new List<MapAreaRender>();
+            // ReSharper disable once InconsistentlySynchronizedField
             foreach(var pair in mAreas)
             {
                 var tile = pair.Value;

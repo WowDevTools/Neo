@@ -1,28 +1,26 @@
-﻿using System;
-
-namespace WoWEditor6.Storage.Database
+﻿namespace WoWEditor6.Storage.Database
 {
     public interface ICreature
     {
-        int EntryID { get; set; }
+        int EntryId { get; set; }
         int DifficultyEntry1 { get; set; }
         int DifficultyEntry2 { get; set; }
         int DifficultyEntry3 { get; set; }
         int KillCredit1{ get; set; }
         int KillCredit2{ get; set; }
-        int ModelID1 { get; set; }
-        int ModelID2 { get; set; }
-        int ModelID3 { get; set; }
-        int ModelID4 { get; set; }
+        int ModelId1 { get; set; }
+        int ModelId2 { get; set; }
+        int ModelId3 { get; set; }
+        int ModelId4 { get; set; }
         string Name { get; set; }
         string SubName { get; set; }
         string IconName { get; set; }
-        int GossipMenuID { get; set; }
+        int GossipMenuId { get; set; }
         int MinLevel { get; set; }
         int MaxLevel { get; set; }
         int Experience { get; set; }
         int Faction{ get; set; }
-        NPCFlag NPCFlag { get; set; }
+        NpcFlag NpcFlag { get; set; }
         float SpeedWalk { get; set; }
         float SpeedRun { get; set; }
         float Scale { get; set; }
@@ -46,9 +44,9 @@ namespace WoWEditor6.Storage.Database
         float MinRangedDamage { get; set; }
         float MaxRangedDamage { get; set; }
         int RangedAttackPower { get; set; }
-        enumType Type { get; set; }
+        EnumType Type { get; set; }
         TypeFlags TypeFlags { get; set; }
-        int LootID { get; set; }
+        int LootId { get; set; }
         int PickPocketLoot { get; set; }
         int SkinLoot { get; set; }
         int Resistance1 { get; set; }
@@ -65,11 +63,11 @@ namespace WoWEditor6.Storage.Database
         int Spell6 { get; set; }
         int Spell7 { get; set; }
         int Spell8 { get; set; }
-        int PetSpellDataID { get; set; }
-        int VehicleID { get; set; }
+        int PetSpellDataId { get; set; }
+        int VehicleId { get; set; }
         int MinGold { get; set; }
         int MaxGold { get; set; }
-        AIName AIName { get; set; }
+        AiName AiName { get; set; }
         MovementType MovementType { get; set; }
         InhabitType InhabitType { get; set; }
         float HoverHeight { get; set; }
@@ -83,13 +81,13 @@ namespace WoWEditor6.Storage.Database
         int QuestItem4 { get; set; }
         int QuestItem5 { get; set; }
         int QuestItem6 { get; set; }
-        int MovementID { get; set; }
+        int MovementId { get; set; }
         int RegenHealth { get; set; }
         MechanicImmuneMask MechanicImmuneMask { get; set; }
         FlagsExtra FlagsExtra { get; set; }
         string ScriptName{ get; set; }
-        int WDBVerified { get; set; }
-        string GetUpdateSQLQuery();
+        int WdbVerified { get; set; }
+        string GetUpdateSqlQuery();
     }
 
     public enum MovementType
@@ -99,7 +97,7 @@ namespace WoWEditor6.Storage.Database
         Path = 2
     }
 
-    public enum NPCFlag : uint
+    public enum NpcFlag : uint
     {
         Gossip = 0x1,
         QuestGiver = 0x2,
@@ -137,8 +135,8 @@ namespace WoWEditor6.Storage.Database
         Preparation = 0x20,
         Unknown6 = 0x40,
         NotAttackable1 = 0x80,
-        ImmuneToPC = 0x100,
-        ImmuneToNPC = 0x200,
+        ImmuneToPc = 0x100,
+        ImmuneToNpc = 0x200,
         Looting = 0x400,
         PetInCombat = 0x800,
         PvP = 0x1000,
@@ -271,7 +269,7 @@ namespace WoWEditor6.Storage.Database
         SpiritBeast = 46
     }
 
-    public enum enumType
+    public enum EnumType
     {
         None = 0,
         Beast = 1,
@@ -317,16 +315,16 @@ namespace WoWEditor6.Storage.Database
         Unknown24 = 0x800000,
     }
 
-    public enum AIName
+    public enum AiName
     {
-        NullAI,
-        AggressorAI,
-        ReactorAI,
-        GuardAI,
-        PetAI,
-        TotemAI,
-        EventAI,
-        SmartAI
+        NullAi,
+        AggressorAi,
+        ReactorAi,
+        GuardAi,
+        PetAi,
+        TotemAi,
+        EventAi,
+        SmartAi
     }
 
     public enum InhabitType
@@ -379,7 +377,7 @@ namespace WoWEditor6.Storage.Database
         NoParryHasten = 0x8,
         NoBlock = 0x10,
         NoCrush = 0x20,
-        NoXPAtKill = 0x40,
+        NoXpAtKill = 0x40,
         Trigger = 0x80,
         NoTaunt = 0x100,
         Worldevent = 0x4000,

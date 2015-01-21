@@ -6,7 +6,7 @@ namespace WoWEditor6.IO.CASC
 {
     class TokenConfig
     {
-        private Dictionary<string, IEnumerable<string>> mValues = new Dictionary<string, IEnumerable<string>>();
+        private readonly Dictionary<string, IEnumerable<string>> mValues = new Dictionary<string, IEnumerable<string>>();
 
         public IEnumerable<string> this[string key]
         {

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 using WoWEditor6.Graphics;
 
@@ -13,8 +9,8 @@ namespace WoWEditor6.Scene.Terrain
         private const float StepX = Metrics.TileSize / 16.0f;
         private const float StepY = Metrics.TileSize / 32.0f;
 
-        private bool mAsyncLoaded = false;
-        private bool mSyncLoaded = false;
+        private bool mAsyncLoaded;
+        private bool mSyncLoaded;
 
         private Vector3[] mVertexData;
         private BoundingBox mBoudingBox;
@@ -34,7 +30,7 @@ namespace WoWEditor6.Scene.Terrain
         public void Dispose()
         {
             var vertexBuffer = mVertexBuffer;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(new Action(() => vertexBuffer?.Dispose()));
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() => vertexBuffer?.Dispose());
         }
 
         public void OnFrame()

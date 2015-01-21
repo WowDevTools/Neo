@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Collections.Generic;
 using SharpDX;
 
@@ -8,9 +7,9 @@ namespace WoWEditor6.Storage.Database
     interface ICreatureManager
     {
         void LoadCreatures(DataTable pDataTable);
-        void LoadSpawnedCreatures(DataTable pDataTable, int pMapID);
-        Creature GetCreatureByEntry(int pEntryID);
-        bool MapAlreadyLoaded(int pMapID);
+        void LoadSpawnedCreatures(DataTable pDataTable, int pMapId);
+        Creature GetCreatureByEntry(int pEntryId);
+        bool MapAlreadyLoaded(int pMapId);
         List<SpawnedCreature> GetSpawnedCreaturesInRadius(Vector3 pPosition, double pRadius);
 
     }

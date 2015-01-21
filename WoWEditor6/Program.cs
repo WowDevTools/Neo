@@ -7,6 +7,7 @@ namespace WoWEditor6
 {
     class Program
     {
+
         static void Main()
         {
             var window = new MainWindow();

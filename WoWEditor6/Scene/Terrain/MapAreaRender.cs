@@ -71,7 +71,7 @@ namespace WoWEditor6.Scene.Terrain
             mAsyncLoaded = false;
             var vertexBuffer = mVertexBuffer;
             mVertexBuffer = null;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(new Action(() => vertexBuffer.Dispose()));
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() => vertexBuffer.Dispose());
 
             for(var i = 0; i < 256; ++i)
             {

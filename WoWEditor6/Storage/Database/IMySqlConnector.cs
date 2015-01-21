@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data;
-using MySql.Data;
+﻿using System.Data;
 
 namespace WoWEditor6.Storage.Database
 {

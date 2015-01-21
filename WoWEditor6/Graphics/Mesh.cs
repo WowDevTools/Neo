@@ -15,6 +15,7 @@ namespace WoWEditor6.Graphics
         public IndexBuffer IndexBuffer { get; set; }
         public int Stride { get; set; }
         public int IndexCount { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public int StartIndex { get; set; }
         public int StartVertex { get; set; }
         public DepthState DepthState { get; set; }

@@ -1,32 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WoWEditor6.Storage.Database
 {
     class Creature : ICreature
     {
-        public int EntryID { get; set; }
+        public int EntryId { get; set; }
         public int DifficultyEntry1 { get; set; }
         public int DifficultyEntry2 { get; set; }
         public int DifficultyEntry3 { get; set; }
         public int KillCredit1 { get; set; }
         public int KillCredit2 { get; set; }
-        public int ModelID1 { get; set; }
-        public int ModelID2 { get; set; }
-        public int ModelID3 { get; set; }
-        public int ModelID4 { get; set; }
+        public int ModelId1 { get; set; }
+        public int ModelId2 { get; set; }
+        public int ModelId3 { get; set; }
+        public int ModelId4 { get; set; }
         public string Name { get; set; }
         public string SubName { get; set; }
         public string IconName { get; set; }
-        public int GossipMenuID { get; set; }
+        public int GossipMenuId { get; set; }
         public int MinLevel { get; set; }
         public int MaxLevel { get; set; }
         public int Experience { get; set; }
         public int Faction { get; set; }
-        public NPCFlag NPCFlag { get; set; }
+        public NpcFlag NpcFlag { get; set; }
         public float SpeedWalk { get; set; }
         public float SpeedRun { get; set; }
         public float Scale { get; set; }
@@ -50,9 +46,9 @@ namespace WoWEditor6.Storage.Database
         public float MinRangedDamage { get; set; }
         public float MaxRangedDamage { get; set; }
         public int RangedAttackPower { get; set; }
-        public enumType Type { get; set; }
+        public EnumType Type { get; set; }
         public TypeFlags TypeFlags { get; set; }
-        public int LootID { get; set; }
+        public int LootId { get; set; }
         public int PickPocketLoot { get; set; }
         public int SkinLoot { get; set; }
         public int Resistance1 { get; set; }
@@ -69,11 +65,11 @@ namespace WoWEditor6.Storage.Database
         public int Spell6 { get; set; }
         public int Spell7 { get; set; }
         public int Spell8 { get; set; }
-        public int PetSpellDataID { get; set; }
-        public int VehicleID { get; set; }
+        public int PetSpellDataId { get; set; }
+        public int VehicleId { get; set; }
         public int MinGold { get; set; }
         public int MaxGold { get; set; }
-        public AIName AIName { get; set; }
+        public AiName AiName { get; set; }
         public MovementType MovementType { get; set; }
         public InhabitType InhabitType { get; set; }
         public float HoverHeight { get; set; }
@@ -87,14 +83,14 @@ namespace WoWEditor6.Storage.Database
         public int QuestItem4 { get; set; }
         public int QuestItem5 { get; set; }
         public int QuestItem6 { get; set; }
-        public int MovementID { get; set; }
+        public int MovementId { get; set; }
         public int RegenHealth { get; set; }
         public MechanicImmuneMask MechanicImmuneMask { get; set; }
         public FlagsExtra FlagsExtra { get; set; }
         public string ScriptName { get; set; }
-        public int WDBVerified { get; set; }
+        public int WdbVerified { get; set; }
 
-        public string GetUpdateSQLQuery()
+        public string GetUpdateSqlQuery()
         {
             // TODO
             throw new NotImplementedException();

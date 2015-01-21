@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Data;
-using MySql.Data;
 
 namespace WoWEditor6.Storage.Database
 {
     class MySqlConnector : Singleton<MySqlConnector>, IMySqlConnector
     {
 
-        private MySql.Data.MySqlClient.MySqlConnection mMySqlConn = new MySql.Data.MySqlClient.MySqlConnection();
+        private readonly MySql.Data.MySqlClient.MySqlConnection mMySqlConn = new MySql.Data.MySqlClient.MySqlConnection();
         private bool mIsConfigured;
 
         public string MySqlServer { get; set; }
@@ -25,12 +24,12 @@ namespace WoWEditor6.Storage.Database
             if (string.IsNullOrEmpty(MySqlServer) || string.IsNullOrEmpty(MySqlUser) || string.IsNullOrEmpty(MySqlPassword) || string.IsNullOrEmpty(MySqlDatabase))
                 throw new ArgumentException();
 
-            if (!mIsConfigured && mMySqlConn.State != System.Data.ConnectionState.Open)
+            if (!mIsConfigured && mMySqlConn.State != ConnectionState.Open)
                 mMySqlConn.ConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", MySqlServer, MySqlUser, MySqlPassword, MySqlDatabase);
 
             mMySqlConn.Open();
 
-            if (mMySqlConn.State != System.Data.ConnectionState.Open)
+            if (mMySqlConn.State != ConnectionState.Open)
                 throw new TimeoutException("Can't connect to the server.");
         }
 
@@ -54,7 +53,7 @@ namespace WoWEditor6.Storage.Database
 
         public DataTable QueryToDataTable(string pQuery)
         {
-            if(mMySqlConn.State == System.Data.ConnectionState.Open)
+            if(mMySqlConn.State == ConnectionState.Open)
             {
                 DataTable retVal = new DataTable();
 

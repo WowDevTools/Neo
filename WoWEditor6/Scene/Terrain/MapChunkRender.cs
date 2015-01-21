@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Windows.Threading;
 using SharpDX;
 using WoWEditor6.Graphics;
 
@@ -29,11 +28,11 @@ namespace WoWEditor6.Scene.Terrain
             mShaderTextures = null;
             var alphaTex = mAlphaTexture;
             var constBuffer = mScaleBuffer;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(new Action(() =>
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
                 constBuffer?.Dispose();
                 alphaTex?.Dispose();
-            }));
+            });
         }
 
         public void OnFrame()

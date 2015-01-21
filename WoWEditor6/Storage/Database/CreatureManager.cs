@@ -8,20 +8,21 @@ namespace WoWEditor6.Storage.Database
 {
     class CreatureManager : Singleton<CreatureManager>, ICreatureManager
     {
-        private List<Creature> mCreatures = new List<Creature>();
-        private List<SpawnedCreature> mSpawnedCreatures = new List<SpawnedCreature>();
-        private List<int> mLoadedMaps = new List<int>();
+        private readonly List<Creature> mCreatures = new List<Creature>();
+        private readonly List<SpawnedCreature> mSpawnedCreatures = new List<SpawnedCreature>();
+        private readonly List<int> mLoadedMaps = new List<int>();
 
+        // ReSharper disable once FunctionComplexityOverflow
         public void LoadCreatures(DataTable pDataTable)
         {
             foreach (DataRow dRow in pDataTable.Rows)
             {
-                Creature creature = new Creature();
+                var creature = new Creature();
                 foreach (DataColumn dColumn in pDataTable.Columns)
                     switch (dColumn.ColumnName)
                     {
                         case "entry":
-                            creature.EntryID = int.Parse(dRow[dColumn].ToString());
+                            creature.EntryId = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "difficulty_entry_1":
                             creature.DifficultyEntry1 = int.Parse(dRow[dColumn].ToString());
@@ -39,16 +40,16 @@ namespace WoWEditor6.Storage.Database
                             creature.KillCredit2 = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "modelid1":
-                            creature.ModelID1 = int.Parse(dRow[dColumn].ToString());
+                            creature.ModelId1 = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "modelid2":
-                            creature.ModelID2 = int.Parse(dRow[dColumn].ToString());
+                            creature.ModelId2 = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "modelid3":
-                            creature.ModelID3 = int.Parse(dRow[dColumn].ToString());
+                            creature.ModelId3 = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "modelid4":
-                            creature.ModelID4 = int.Parse(dRow[dColumn].ToString());
+                            creature.ModelId4 = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "name":
                             creature.Name = dRow[dColumn].ToString();
@@ -60,7 +61,7 @@ namespace WoWEditor6.Storage.Database
                             creature.IconName = dRow[dColumn].ToString();
                             break;
                         case "gossip_menu_id":
-                            creature.GossipMenuID = int.Parse(dRow[dColumn].ToString());
+                            creature.GossipMenuId = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "minlevel":
                             creature.MinLevel = int.Parse(dRow[dColumn].ToString());
@@ -75,7 +76,7 @@ namespace WoWEditor6.Storage.Database
                             creature.Faction = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "npcflag":
-                            creature.NPCFlag = (NPCFlag)Enum.Parse(typeof(NPCFlag), dRow[dColumn].ToString());
+                            creature.NpcFlag = (NpcFlag)Enum.Parse(typeof(NpcFlag), dRow[dColumn].ToString());
                             break;
                         case "speed_walk":
                             creature.SpeedWalk = float.Parse(dRow[dColumn].ToString());
@@ -147,13 +148,13 @@ namespace WoWEditor6.Storage.Database
                             creature.RangedAttackPower = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "type":
-                            creature.Type = (enumType)Enum.Parse(typeof(enumType), dRow[dColumn].ToString());
+                            creature.Type = (EnumType)Enum.Parse(typeof(EnumType), dRow[dColumn].ToString());
                             break;
                         case "type_flags":
                             creature.TypeFlags = (TypeFlags)Enum.Parse(typeof(TypeFlags), dRow[dColumn].ToString());
                             break;
                         case "lootid":
-                            creature.LootID = int.Parse(dRow[dColumn].ToString());
+                            creature.LootId = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "pickpocketloot":
                             creature.PickPocketLoot = int.Parse(dRow[dColumn].ToString());
@@ -204,10 +205,10 @@ namespace WoWEditor6.Storage.Database
                             creature.Spell8 = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "PetSpellDataId":
-                            creature.PetSpellDataID = int.Parse(dRow[dColumn].ToString());
+                            creature.PetSpellDataId = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "VehicleId":
-                            creature.VehicleID = int.Parse(dRow[dColumn].ToString());
+                            creature.VehicleId = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "mingold":
                             creature.MinGold = int.Parse(dRow[dColumn].ToString());
@@ -216,7 +217,7 @@ namespace WoWEditor6.Storage.Database
                             creature.MaxGold = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "AIName":
-                            creature.AIName = (AIName)Enum.Parse(typeof(AIName), dRow[dColumn].ToString());
+                            creature.AiName = (AiName)Enum.Parse(typeof(AiName), dRow[dColumn].ToString());
                             break;
                         case "MovementType":
                             creature.MovementType = (MovementType)Enum.Parse(typeof(MovementType), dRow[dColumn].ToString());
@@ -258,7 +259,7 @@ namespace WoWEditor6.Storage.Database
                             creature.QuestItem6 = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "movementID":
-                            creature.MovementID = int.Parse(dRow[dColumn].ToString());
+                            creature.MovementId = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "RegenHealth":
                             creature.RegenHealth = int.Parse(dRow[dColumn].ToString());
@@ -273,26 +274,27 @@ namespace WoWEditor6.Storage.Database
                             creature.ScriptName = dRow[dColumn].ToString();
                             break;
                         case "WDBVerified":
-                            creature.WDBVerified = int.Parse(dRow[dColumn].ToString());
+                            creature.WdbVerified = int.Parse(dRow[dColumn].ToString());
                             break;
                     }
                 mCreatures.Add(creature);
             }
         }
 
-        public void LoadSpawnedCreatures(DataTable pDataTable, int pMapID)
+        // ReSharper disable once FunctionComplexityOverflow
+        public void LoadSpawnedCreatures(DataTable pDataTable, int pMapId)
         {
-            if (!MapAlreadyLoaded(pMapID))
+            if (!MapAlreadyLoaded(pMapId))
             {
                 foreach (DataRow dRow in pDataTable.Rows)
                 {
-                    SpawnedCreature creature = new SpawnedCreature();
-                    Vector3 position = new Vector3();
+                    var creature = new SpawnedCreature();
+                    var position = new Vector3();
                     foreach (DataColumn dColumn in pDataTable.Columns)
                         switch (dColumn.ColumnName)
                         {
                             case "guid":
-                                creature.SpawnGUID = int.Parse(dRow[dColumn].ToString());
+                                creature.SpawnGuid = int.Parse(dRow[dColumn].ToString());
                                 break;
                             case "id":
                                 creature.Creature = GetCreatureByEntry(int.Parse(dRow[dColumn].ToString()));
@@ -307,10 +309,10 @@ namespace WoWEditor6.Storage.Database
                                 creature.PhaseMask = int.Parse(dRow[dColumn].ToString());
                                 break;
                             case "modelid":
-                                creature.ModellID = int.Parse(dRow[dColumn].ToString());
+                                creature.ModellId = int.Parse(dRow[dColumn].ToString());
                                 break;
                             case "equipment_id":
-                                creature.EquipmentID = int.Parse(dRow[dColumn].ToString());
+                                creature.EquipmentId = int.Parse(dRow[dColumn].ToString());
                                 break;
                             case "position_x":
                                 position.X = float.Parse(dRow[dColumn].ToString());
@@ -343,7 +345,7 @@ namespace WoWEditor6.Storage.Database
                                 creature.MovementType = (MovementType)Enum.Parse(typeof(MovementType), dRow[dColumn].ToString());
                                 break;
                             case "npcflag":
-                                creature.NPCFlag = (NPCFlag)Enum.Parse(typeof(NPCFlag), dRow[dColumn].ToString());
+                                creature.NpcFlag = (NpcFlag)Enum.Parse(typeof(NpcFlag), dRow[dColumn].ToString());
                                 break;
                             case "unit_flags":
                                 creature.UnitFlags = (UnitFlags)Enum.Parse(typeof(UnitFlags), dRow[dColumn].ToString());
@@ -355,21 +357,22 @@ namespace WoWEditor6.Storage.Database
                     creature.Position = position;
                     mSpawnedCreatures.Add(creature);
                 }
-                mLoadedMaps.Add(pMapID);
+                mLoadedMaps.Add(pMapId);
             }
         }
 
-        public Creature GetCreatureByEntry(int pEntryID)
+        public Creature GetCreatureByEntry(int pEntryId)
         {
-            Creature retVal = mCreatures.First(creature => creature.EntryID == pEntryID);
+            var retVal = mCreatures.First(creature => creature.EntryId == pEntryId);
             return retVal;
         }
 
-        public bool MapAlreadyLoaded(int pMapID)
+        public bool MapAlreadyLoaded(int pMapId)
         {
             try
             {
-                int mapLoaded = mLoadedMaps.First(map => map == pMapID);
+                // ReSharper disable once UnusedVariable
+                var mapLoaded = mLoadedMaps.First(map => map == pMapId);
                 return true;
             }
             catch
@@ -380,16 +383,14 @@ namespace WoWEditor6.Storage.Database
 
         public List<SpawnedCreature> GetSpawnedCreaturesInRadius(Vector3 pPosition, double pRadius)
         {
-            List<SpawnedCreature> retVal = new List<SpawnedCreature>();
+            var camPosXPlus = pPosition.X + pRadius;
+            var camPosXMinus = pPosition.X - pRadius;
+            var camPosYPlus = pPosition.Y + pRadius;
+            var camPosYMinus = pPosition.Y - pRadius;
 
-            double camPosXPlus = pPosition.X + pRadius;
-            double camPosXMinus = pPosition.X - pRadius;
-            double camPosYPlus = pPosition.Y + pRadius;
-            double camPosYMinus = pPosition.Y - pRadius;
-
-            retVal = (from SpawnedCreature creature in mSpawnedCreatures
-                     where ((creature.Position.X <= camPosXPlus && creature.Position.X >= camPosXMinus) && (creature.Position.Y <= camPosYPlus && creature.Position.Y >= camPosYMinus))
-                     select creature).ToList<SpawnedCreature>();
+            var retVal = (from SpawnedCreature creature in mSpawnedCreatures
+                where ((creature.Position.X <= camPosXPlus && creature.Position.X >= camPosXMinus) && (creature.Position.Y <= camPosYPlus && creature.Position.Y >= camPosYMinus))
+                select creature).ToList<SpawnedCreature>();
 
             return retVal;
         }

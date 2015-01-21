@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using System.Windows.Threading;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene.Terrain;
