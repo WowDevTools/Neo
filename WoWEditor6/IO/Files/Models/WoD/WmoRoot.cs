@@ -3,55 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
-    class WmoMaterial
-    {
-        public Momt Material { get; }
-
-        public List<Graphics.Texture> Textures { get; } = new List<Graphics.Texture>();
-        public int ShaderType => Material.shader;
-
-        public WmoMaterial(WmoRoot root, Momt material)
-        {
-            Material = material;
-            LoadTextures(root);
-        }
-
-        private void LoadTextures(WmoRoot root)
-        {
-            switch(Material.shader)
-            {
-                case 11:
-                case 12:
-                case 7:
-                    Textures.Add(root.GetTexture(Material.texture1));
-                    Textures.Add(root.GetTexture(Material.texture2));
-                    Textures.Add(root.GetTexture(Material.texture3));
-                    break;
-
-                case 5:
-                case 6:
-                case 8:
-                case 9:
-                case 13:
-                case 15:
-                case 3:
-                    Textures.Add(root.GetTexture(Material.texture1));
-                    Textures.Add(root.GetTexture(Material.texture2));
-                    break;
-
-                default:
-                    Textures.Add(root.GetTexture(Material.texture1));
-                    break;
-            }
-        }
-    }
-
-    class WmoRoot
+    class WmoRoot : Models.WmoRoot
     {
         private Mohd mHeader;
         // ReSharper disable once CollectionNeverQueried.Local
@@ -60,9 +16,10 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private List<WmoMaterial> mMaterials = new List<WmoMaterial>();
         private string mFileName;
         private readonly List<WmoGroup> mGroups = new List<WmoGroup>();
-        private BoundingBox mBoundingBox;
 
-        public Graphics.Texture GetTexture(int index)
+        public BoundingBox BoundingBox { get; private set; }
+
+        public override Graphics.Texture GetTexture(int index)
         {
             if (index >= mTextures.Count)
                 throw new IndexOutOfRangeException();
@@ -78,7 +35,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
             return mMaterials[index];
         }
 
-        public void Load(string fileName)
+        public bool Load(string fileName)
         {
             mFileName = fileName;
 
@@ -89,28 +46,37 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
                 var reader = new BinaryReader(file);
 
-                while(true)
+                try
                 {
-                    var signature = reader.ReadUInt32();
-                    var size = reader.ReadInt32();
-                    var curPos = file.Position;
-                    switch(signature)
+                    while (true)
                     {
-                        case 0x4D4F4844:
-                            mHeader = reader.Read<Mohd>();
-                            break;
+                        var signature = reader.ReadUInt32();
+                        var size = reader.ReadInt32();
+                        var curPos = file.Position;
+                        switch (signature)
+                        {
+                            case 0x4D4F4844:
+                                mHeader = reader.Read<Mohd>();
+                                break;
 
-                        case 0x4D4F5458:
-                            ReadTextures(reader, size);
-                            break;
+                            case 0x4D4F5458:
+                                ReadTextures(reader, size);
+                                break;
 
-                        case 0x4D4F4D54:
-                            LoadMaterials(reader, size);
-                            break;
+                            case 0x4D4F4D54:
+                                LoadMaterials(reader, size);
+                                break;
+                        }
+
+                        file.Position = curPos + size;
                     }
-
-                    file.Position = curPos + size;
                 }
+                catch (EndOfStreamException)
+                {
+
+                }
+
+                return LoadGroups();
             }
         }
 
@@ -144,9 +110,11 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     if (gmax.Y > maxPos.Y) maxPos.Y = gmax.Y;
                     if (gmax.Z > maxPos.Z) maxPos.Z = gmax.Z;
                 }
+                else
+                    return false;
             }
 
-            mBoundingBox = new BoundingBox(minPos, maxPos);
+            BoundingBox = new BoundingBox(minPos, maxPos);
             return true;
         }
 
@@ -154,7 +122,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         {
             var numMaterials = size / SizeCache<Momt>.Size;
             var materials = reader.ReadArray<Momt>(numMaterials);
-            mMaterials = materials.Select(m => new WmoMaterial(this, m)).ToList();
+            mMaterials = materials.Select(m => new WmoMaterial(this, m.shader, m.texture1, m.texture2, m.texture3, m.blendMode, m.flags1)).ToList();
         }
 
         private void ReadTextures(BinaryReader reader, int size)

@@ -99,6 +99,10 @@
     <Compile Include="IO\FileManager.cs" />
     <Compile Include="IO\Files\DBCFile.cs" />
     <Compile Include="IO\Files\Models\CommonWmoStructures.cs" />
+    <Compile Include="IO\Files\Models\ModelFactory.cs" />
+    <Compile Include="IO\Files\Models\WmoGroup.cs" />
+    <Compile Include="IO\Files\Models\WmoMaterial.cs" />
+    <Compile Include="IO\Files\Models\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoStructures.cs" />
