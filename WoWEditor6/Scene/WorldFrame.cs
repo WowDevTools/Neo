@@ -139,6 +139,11 @@ namespace WoWEditor6.Scene
             WmoManager.OnFrame();
         }
 
+        public void OnMouseWheel(int delta)
+        {
+            mCamControl.HandleMouseWheel(delta);
+        }
+
         public void UpdateMapAmbient(Vector3 ambient)
         {
             lock (mGlobalParamsBuffer)
