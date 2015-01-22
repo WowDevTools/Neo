@@ -361,11 +361,10 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
             return retVal;
         }
 
-        public bool MapAlreadyLoaded(int pMapId)
+        private bool MapAlreadyLoaded(int pMapId)
         {
             try
             {
-                // ReSharper disable once UnusedVariable
                 var mapLoaded = mLoadedMaps.First(map => map == pMapId);
                 return true;
             }
