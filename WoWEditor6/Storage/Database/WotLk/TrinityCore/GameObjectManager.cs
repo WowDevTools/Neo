@@ -16,11 +16,11 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 
         public void LoadGameObjects(DataTable pDataTable)
         {
-
+            throw new NotImplementedException();
         }
         public void LoadSpawnedGameObjects(DataTable pDataTable, int pMapId)
         {
-
+            throw new NotImplementedException();
         }
         GameObject GetCreatureByEntry(int pEntryId)
         {
