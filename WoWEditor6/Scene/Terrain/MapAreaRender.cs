@@ -30,6 +30,9 @@ namespace WoWEditor6.Scene.Terrain
             if (mAsyncLoaded == false)
                 return;
 
+            if (AreaFile.IsValid == false)
+                return;
+
             if(mSyncLoaded == false)
             {
                 mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
@@ -52,6 +55,9 @@ namespace WoWEditor6.Scene.Terrain
         public void AsyncLoaded(IO.Files.Terrain.MapArea area)
         {
             AreaFile = area;
+            if (AreaFile.IsValid == false)
+                return;
+
             for(var i = 0; i < 256; ++i)
             {
                 var chunk = new MapChunkRender();
@@ -71,11 +77,11 @@ namespace WoWEditor6.Scene.Terrain
             mAsyncLoaded = false;
             var vertexBuffer = mVertexBuffer;
             mVertexBuffer = null;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() => vertexBuffer.Dispose());
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() => vertexBuffer?.Dispose());
 
             for(var i = 0; i < 256; ++i)
             {
-                mChunks[i].Dispose();
+                mChunks[i]?.Dispose();
                 mChunks[i] = null;
             }
         }

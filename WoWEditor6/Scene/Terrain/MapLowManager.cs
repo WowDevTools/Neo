@@ -83,7 +83,7 @@ namespace WoWEditor6.Scene.Terrain
                 }
             }
 
-            var loadMask = new Dictionary<int, bool>();
+            var loadMask = new List<int>();
             var invalidList = new List<MapAreaLowRender>();
             foreach (var tile in mAreas)
             {
@@ -96,7 +96,7 @@ namespace WoWEditor6.Scene.Terrain
                     continue;
                 }
 
-                loadMask.Add(index, true);
+                loadMask.Add(index);
             }
 
             lock(mUnloadAreas)
@@ -110,11 +110,10 @@ namespace WoWEditor6.Scene.Terrain
 
             lock(mDataToLoad)
             {
-                foreach (var tile in mDataToLoad)
-                    loadMask.Add(tile.IndexX + tile.IndexY * 0xFF, true);
+                loadMask.AddRange(mDataToLoad.Select(tile => tile.IndexX + tile.IndexY * 0xFF));
             }
 
-            foreach(var link in mCurrentValidLinks.Where(i => loadMask.ContainsKey(i) == false))
+            foreach(var link in mCurrentValidLinks.Where(i => loadMask.Contains(i) == false))
             {
                 var x = link % 0xFF;
                 var y = link / 0xFF;

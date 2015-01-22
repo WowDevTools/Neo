@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Scene;
 
@@ -20,7 +21,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private Mcnk mHeader;
 
-        private byte[] mAlphaDataCompressed;
+        private IntPtr mAlphaDataCompressed;
 
         private readonly WeakReference<MapArea> mParent;
 
@@ -90,50 +91,58 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void LoadTexData()
         {
-            mTexReader.BaseStream.Position = mTexInfo.PosStart;
-            var chunkSize = mTexReader.ReadInt32();
-
-            while (mTexReader.BaseStream.Position + 8 <= mTexInfo.PosStart + 8 + chunkSize)
+            try
             {
-                var id = mTexReader.ReadUInt32();
-                var size = mTexReader.ReadInt32();
+                mTexReader.BaseStream.Position = mTexInfo.PosStart;
+                var chunkSize = mTexReader.ReadInt32();
 
-                if (mTexReader.BaseStream.Position + size > mTexInfo.PosStart + 8 + chunkSize)
-                    break;
-
-                var cur = mTexReader.BaseStream.Position;
-
-                switch (id)
+                while (mTexReader.BaseStream.Position + 8 <= mTexInfo.PosStart + 8 + chunkSize)
                 {
-                    case 0x4D434C59:
-                        LoadMcly(size);
+                    var id = mTexReader.ReadUInt32();
+                    var size = mTexReader.ReadInt32();
+
+                    if (mTexReader.BaseStream.Position + size > mTexInfo.PosStart + 8 + chunkSize)
                         break;
 
-                    case 0x4D43414C:
-                        mAlphaDataCompressed = mTexReader.ReadBytes(size);
-                        break;
+                    var cur = mTexReader.BaseStream.Position;
+
+                    switch (id)
+                    {
+                        case 0x4D434C59:
+                            LoadMcly(size);
+                            break;
+
+                        case 0x4D43414C:
+                            mAlphaDataCompressed = Marshal.AllocHGlobal(size);
+                            mTexReader.ReadToPointer(mAlphaDataCompressed, size);
+                            break;
+                    }
+
+                    mTexReader.BaseStream.Position = cur + size;
                 }
 
-                mTexReader.BaseStream.Position = cur + size;
+                LoadAlpha();
+
+                var textures = new List<Graphics.Texture>();
+                MapArea parent;
+                mParent.TryGetTarget(out parent);
+                if (parent == null)
+                    throw new InvalidOperationException("Parent got disposed but loading was still invoked");
+
+                TextureScales = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
+                for (var i = 0; i < mLayerInfos.Count && i < 4; ++i)
+                {
+                    textures.Add(parent.GetTexture(mLayerInfos[i].TextureId));
+                    TextureScales[i] = parent.GetTextureScale(mLayerInfos[i].TextureId);
+                }
+
+                Textures = textures;
             }
-
-            LoadAlpha();
-
-            var textures = new List<Graphics.Texture>();
-            MapArea parent;
-            mParent.TryGetTarget(out parent);
-            if (parent == null)
-                throw new InvalidOperationException("Parent got disposed but loading was still invoked");
-
-            TextureScales = new[] {1.0f, 1.0f, 1.0f, 1.0f};
-            for (var i = 0; i < mLayerInfos.Count && i < 4; ++i)
+            finally
             {
-                textures.Add(parent.GetTexture(mLayerInfos[i].TextureId));
-                TextureScales[i] = parent.GetTextureScale(mLayerInfos[i].TextureId);
+                if (mAlphaDataCompressed != IntPtr.Zero)
+                    Marshal.FreeHGlobal(mAlphaDataCompressed);
             }
-
-            Textures = textures;
-            
         }
 
         private void LoadAlpha()
@@ -157,25 +166,27 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 }
             }
 
-            mAlphaDataCompressed = null;
+            //mAlphaDataCompressed = null;
         }
 
-        private void LoadUncompressed(Mcly layerInfo, int layer)
+        private unsafe void LoadUncompressed(Mcly layerInfo, int layer)
         {
+            var ptr = mAlphaDataCompressed.ToPointer();
             var startPos = layerInfo.OfsMcal;
             for (var i = 0; i < 4096; ++i)
-                AlphaValues[i] |= (uint) mAlphaDataCompressed[startPos++] << (8 * layer);
+                AlphaValues[i] |= (uint) ((byte*)ptr)[startPos++] << (8 * layer);
         }
 
-        private void LoadLayerCompressed(Mcly layerInfo, int layer)
+        private unsafe void LoadLayerCompressed(Mcly layerInfo, int layer)
         {
+            var ptr = mAlphaDataCompressed.ToPointer();
             var startPos = layerInfo.OfsMcal;
             var counter = 0;
             for (var k = 0; k < 64; ++k)
             {
                 for (var j = 0; j < 32; ++j)
                 {
-                    var alpha = mAlphaDataCompressed[startPos++];
+                    var alpha = ((byte*)ptr)[startPos++];
                     var val1 = alpha & 0xF;
                     var val2 = alpha >> 4;
                     val2 = j == 31 ? val1 : val2;
@@ -187,16 +198,17 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
         }
 
-        private void LoadLayerRle(Mcly layerInfo, int layer)
+        private unsafe void LoadLayerRle(Mcly layerInfo, int layer)
         {
+            var ptr = mAlphaDataCompressed.ToPointer();
             var counterOut = 0;
             var startPos = layerInfo.OfsMcal;
             while (counterOut < 4096)
             {
-                var indicator = mAlphaDataCompressed[startPos++];
+                var indicator = ((byte*)ptr)[startPos++];
                 if ((indicator & 0x80) != 0)
                 {
-                    var value = mAlphaDataCompressed[startPos++];
+                    var value = ((byte*)ptr)[startPos++];
                     var repeat = indicator & 0x7F;
                     for (var k = 0; k < repeat && counterOut < 4096; ++k)
                         AlphaValues[counterOut++] |= (uint)value << (layer * 8);
@@ -204,7 +216,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 else
                 {
                     for (var k = 0; k < (indicator & 0x7F) && counterOut < 4096; ++k)
-                        AlphaValues[counterOut++] |= (uint)mAlphaDataCompressed[startPos++] << (8 * layer);
+                        AlphaValues[counterOut++] |= (uint)((byte*)ptr)[startPos++] << (8 * layer);
                 }
             }
         }

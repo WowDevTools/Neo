@@ -295,7 +295,7 @@ namespace WoWEditor6.Scene.Terrain
                 }
             }
 
-            var loadMask = new Dictionary<int, bool>();
+            var loadMask = new List<int>();
             var invalidList = new List<MapAreaRender>();
             // ReSharper disable once InconsistentlySynchronizedField
             foreach(var pair in mAreas)
@@ -310,7 +310,7 @@ namespace WoWEditor6.Scene.Terrain
                     continue;
                 }
 
-                loadMask.Add(index, true);
+                loadMask.Add(index);
             }
 
             lock(mUnloadList)
@@ -326,19 +326,17 @@ namespace WoWEditor6.Scene.Terrain
 
             lock(mDataToLoad)
             {
-                foreach (var index in mDataToLoad.Select(tile => tile.IndexX + tile.IndexY * 64))
-                    loadMask.Add(index, true);
+                loadMask.AddRange(mDataToLoad.Select(tile => tile.IndexX + tile.IndexY * 64));
             }
 
             lock(mLoadedData)
             {
-                foreach (var index in mLoadedData.Select(tile => tile.IndexX + tile.IndexY * 64))
-                    loadMask.Add(index, true);
+                loadMask.AddRange(mLoadedData.Select(tile => tile.IndexX + tile.IndexY * 64));
             }
 
             foreach(var link in mCurrentValidLinks)
             {
-                if (loadMask.ContainsKey(link))
+                if (loadMask.Contains(link))
                     continue;
 
                 var x = link % 64;

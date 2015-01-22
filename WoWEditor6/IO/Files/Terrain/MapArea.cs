@@ -8,6 +8,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
         public string Continent { get; protected set; }
+        public bool IsValid { get; protected set; } = true;
 
         public AdtVertex[] FullVertices { get; } = new AdtVertex[145 * 256];
 

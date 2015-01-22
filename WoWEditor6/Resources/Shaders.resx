@@ -151,4 +151,10 @@
   <data name="WmoVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WmoVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="WmoPixel1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\WmoPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="WmoVertex1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\WmoVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

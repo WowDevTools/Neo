@@ -31,6 +31,15 @@ namespace WoWEditor6.IO
             }
         }
 
+        public static void ReadToPointer(this BinaryReader br, IntPtr dest, int size)
+        {
+            var bytes = br.ReadBytes(size);
+            fixed(byte* b = bytes)
+            {
+                UnsafeNativeMethods.CopyMemory((byte*) dest.ToPointer(), b, size);
+            }
+        }
+
         public static uint ReadUInt32Be(this BinaryReader br)
         {
             var be = br.ReadUInt32();
