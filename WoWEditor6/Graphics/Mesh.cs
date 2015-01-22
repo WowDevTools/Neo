@@ -52,9 +52,23 @@ namespace WoWEditor6.Graphics
             mContext.Context.DrawIndexed(IndexCount, StartIndex, StartVertex);
         }
 
+        public void UpdateIndexBuffer(IndexBuffer ib)
+        {
+            mContext.Context.InputAssembler.SetIndexBuffer(ib.Native, ib.IndexFormat, 0);
+        }
+
         public void UpdateVertexBuffer(VertexBuffer vb)
         {
             mContext.Context.InputAssembler.SetVertexBuffers(0, new[] {vb.Native}, new[] {Stride}, new[] {0});
+        }
+
+        public void UpdateBlendState(BlendState state)
+        {
+            if (state == BlendState)
+                return;
+
+            mContext.Context.OutputMerger.BlendState = state.Native;
+            BlendState = state;
         }
 
         public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }

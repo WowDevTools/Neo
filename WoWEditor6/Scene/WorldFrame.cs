@@ -1,6 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
+using WoWEditor6.Scene.Models;
+using WoWEditor6.Scene.Models.WMO;
 using WoWEditor6.Scene.Terrain;
 using WoWEditor6.Scene.Texture;
 using WoWEditor6.UI;
@@ -29,6 +31,7 @@ namespace WoWEditor6.Scene
         public static WorldFrame Instance { get; } = new WorldFrame();
 
         public MapManager MapManager { get; } = new MapManager();
+        public WmoManager WmoManager { get; } = new WmoManager();
 
         private AppState mState;
         private readonly PerspectiveCamera mMainCamera = new PerspectiveCamera();
@@ -90,6 +93,7 @@ namespace WoWEditor6.Scene
             Dispatcher = new GraphicsDispatcher();
             MapChunkRender.Initialize(context);
             MapAreaLowRender.Initialize(context);
+            WmoGroupRender.Initialize(context);
 
             GraphicsContext = context;
 
@@ -132,6 +136,12 @@ namespace WoWEditor6.Scene
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
             GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalParamsBuffer.Native);
             MapManager.OnFrame();
+            WmoManager.OnFrame();
+        }
+
+        public void OnMouseWheel(int delta)
+        {
+            mCamControl.HandleMouseWheel(delta);
         }
 
         public void UpdateMapAmbient(Vector3 ambient)

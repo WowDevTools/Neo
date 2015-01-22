@@ -10,9 +10,9 @@ namespace WoWEditor6.UI.Views
 
         public void OnRender(RenderTarget target)
         {
-#if DEBUG
+//#if DEBUG
             mPerfControl.OnRender(target);
-#endif
+//#endif
         }
 
         public void OnMessage(Message message)

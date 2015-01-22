@@ -14,6 +14,11 @@ namespace WoWEditor6.Scene
         private Point mLastCursorPos;
         private DateTime mLastUpdate = DateTime.Now;
 
+        private float speedFactor = 100.0f;
+        private float speedFactorWheel = 0.5f;
+        private float turnFactor = 0.2f;
+        private bool invert = false;
+
         public CameraControl(MainWindow window)
         {
             mWindow = window;
@@ -34,58 +39,58 @@ namespace WoWEditor6.Scene
             var positionChanged = false;
             var updateTerrain = false;
             var cam = WorldFrame.Instance.ActiveCamera;
-            var diff = (float) (DateTime.Now - mLastUpdate).TotalSeconds;
+            var diff = (float)(DateTime.Now - mLastUpdate).TotalSeconds;
 
-            if(IsDown(keyState, Keys.W))
+            if (IsDown(keyState, Keys.W))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveForward(diff * 30);
+                cam.MoveForward(diff * speedFactor);
             }
 
-            if(IsDown(keyState, Keys.S))
+            if (IsDown(keyState, Keys.S))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveForward(-diff * 30);
+                cam.MoveForward(-diff * speedFactor);
             }
 
-            if(IsDown(keyState, Keys.D))
+            if (IsDown(keyState, Keys.D))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveRight(diff * 30);
+                cam.MoveRight(diff * speedFactor);
             }
 
-            if(IsDown(keyState, Keys.A))
+            if (IsDown(keyState, Keys.A))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveRight(-diff * 30);
+                cam.MoveRight(-diff * speedFactor);
             }
 
             if (IsDown(keyState, Keys.Q))
             {
                 positionChanged = true;
-                cam.MoveUp(diff * 30);
+                cam.MoveUp(diff * speedFactor);
             }
 
             if (IsDown(keyState, Keys.E))
             {
                 positionChanged = true;
-                cam.MoveUp(-diff * 30);
+                cam.MoveUp(-diff * speedFactor);
             }
 
-            if(IsDown(keyState, Keys.RButton))
+            if (IsDown(keyState, Keys.RButton))
             {
                 var curPos = Cursor.Position;
                 var dx = curPos.X - mLastCursorPos.X;
                 var dy = curPos.Y - mLastCursorPos.Y;
 
                 if (dx != 0)
-                    cam.Yaw(dx * 0.2f);
+                    cam.Yaw(dx * turnFactor * (invert ? -1 : 1));
                 if (dy != 0)
-                    cam.Pitch(dy * 0.2f);
+                    cam.Pitch(dy * turnFactor * (invert ? -1 : 1));
             }
 
             if (positionChanged)
@@ -97,7 +102,20 @@ namespace WoWEditor6.Scene
 
         private static bool IsDown(byte[] keyState, Keys key)
         {
-            return ((keyState[(int) key]) & 0x80) != 0;
+            return ((keyState[(int)key]) & 0x80) != 0;
+        }
+
+        public void HandleMouseWheel(int delta)
+        {
+            var keyState = new byte[256];
+            UnsafeNativeMethods.GetKeyboardState(keyState);
+
+            if (IsDown(keyState, Keys.RButton))
+            {
+                var cam = WorldFrame.Instance.ActiveCamera;
+                cam.MoveForward(delta * speedFactorWheel);
+                WorldFrame.Instance.MapManager.UpdatePosition(cam.Position, true);
+            }
         }
     }
 }
