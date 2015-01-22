@@ -141,6 +141,11 @@
     <Compile Include="Scene\AppState.cs" />
     <Compile Include="Scene\Camera.cs" />
     <Compile Include="Scene\CameraControl.cs" />
+    <Compile Include="Scene\Models\WmoManager.cs" />
+    <Compile Include="Scene\Models\WMO\WmoBatchRender.cs" />
+    <Compile Include="Scene\Models\WMO\WmoGroupRender.cs" />
+    <Compile Include="Scene\Models\WMO\WmoInstance.cs" />
+    <Compile Include="Scene\Models\WMO\WmoRootRender.cs" />
     <Compile Include="Scene\OrthoCamera.cs" />
     <Compile Include="Scene\PerspectiveCamera.cs" />
     <Compile Include="Scene\Terrain\MapAreaLowRender.cs" />
@@ -199,6 +204,7 @@
     <Compile Include="UI\Views\SplashView.cs" />
     <Compile Include="UI\Views\WorldView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
+    <Compile Include="Utils\MathExtensions.cs" />
     <Compile Include="Utils\Polygon.cs" />
     <Compile Include="Utils\TimeManager.cs" />
     <Compile Include="Win32\Fos.cs" />
@@ -236,6 +242,8 @@
     <Content Include="Resources\Shaders\TerrainVertex.hlsl" />
     <Content Include="Resources\Shaders\TexturedQuadVertex.hlsl" />
     <Content Include="Resources\Shaders\TextureQuadPixel.hlsl" />
+    <Content Include="Resources\Shaders\WmoPixel.hlsl" />
+    <Content Include="Resources\Shaders\WmoVertex.hlsl" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />

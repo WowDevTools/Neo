@@ -8,7 +8,7 @@ namespace WoWEditor6.IO.Files.Models
         private readonly int mTexture2;
         private readonly int mTexture3;
 
-        public List<Graphics.Texture> Textures { get; } = new List<Graphics.Texture>();
+        public Graphics.Texture[] Textures { get; private set; } = new Graphics.Texture[0];
         public int ShaderType { get; }
         public int BlendMode { get; }
         public uint Flags1 { get; }
@@ -31,9 +31,12 @@ namespace WoWEditor6.IO.Files.Models
                 case 11:
                 case 12:
                 case 7:
-                    Textures.Add(root.GetTexture(mTexture1));
-                    Textures.Add(root.GetTexture(mTexture2));
-                    Textures.Add(root.GetTexture(mTexture3));
+                    Textures = new[]
+                    {
+                        root.GetTexture(mTexture1),
+                        root.GetTexture(mTexture2),
+                        root.GetTexture(mTexture3)
+                    };
                     break;
 
                 case 5:
@@ -43,12 +46,18 @@ namespace WoWEditor6.IO.Files.Models
                 case 13:
                 case 15:
                 case 3:
-                    Textures.Add(root.GetTexture(mTexture1));
-                    Textures.Add(root.GetTexture(mTexture2));
+                    Textures = new[]
+                    {
+                        root.GetTexture(mTexture1),
+                        root.GetTexture(mTexture2),
+                    };
                     break;
 
                 default:
-                    Textures.Add(root.GetTexture(mTexture1));
+                    Textures = new[]
+                    {
+                        root.GetTexture(mTexture1),
+                    };
                     break;
             }
         }

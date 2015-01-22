@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models
 {
-    class WmoGroup
+    abstract class WmoGroup
     {
+        public BoundingBox BoundingBox { get; protected set; }
+        public IList<ushort> Indices { get; protected set; }
+        public IList<WmoBatch> Batches { get; protected set; }
+        public IList<WmoVertex> Vertices { get; protected set; }
     }
 }

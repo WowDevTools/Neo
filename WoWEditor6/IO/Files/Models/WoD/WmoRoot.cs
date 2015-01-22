@@ -17,7 +17,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private string mFileName;
         private readonly List<WmoGroup> mGroups = new List<WmoGroup>();
 
-        public BoundingBox BoundingBox { get; private set; }
+        public uint AmbientColor => mHeader.ambientColor;
 
         public override Graphics.Texture GetTexture(int index)
         {
@@ -27,7 +27,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
             return mTextures[index];
         }
 
-        public WmoMaterial GetMaterial(int index)
+        public override WmoMaterial GetMaterial(int index)
         {
             if (index >= mMaterials.Count)
                 throw new IndexOutOfRangeException();
@@ -35,7 +35,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
             return mMaterials[index];
         }
 
-        public bool Load(string fileName)
+        public override bool Load(string fileName)
         {
             mFileName = fileName;
 
@@ -113,6 +113,9 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 else
                     return false;
             }
+
+
+            Groups = mGroups.Select(g => (Models.WmoGroup)g).ToList().AsReadOnly();
 
             BoundingBox = new BoundingBox(minPos, maxPos);
             return true;
