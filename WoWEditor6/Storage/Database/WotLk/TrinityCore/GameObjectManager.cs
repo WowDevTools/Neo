@@ -18,22 +18,17 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         {
             throw new NotImplementedException();
         }
+
         public void LoadSpawnedGameObjects(DataTable pDataTable, int pMapId)
         {
             throw new NotImplementedException();
         }
-        public List<SpawnedGameObject> GetSpawnedCreaturesInRadius(Vector3 pPosition, double pRadius)
+
+        public GameObject GetGameObjectByEntry(int pEntryId)
         {
             throw new NotImplementedException();
         }
-        public GameObject GetCreatureByEntry(int pEntryId)
-        {
-            throw new NotImplementedException();
-        }
-        GameObject GetGameObjectByEntry(int pEntryId)
-        {
-            throw new NotImplementedException();
-        }
+
         private bool MapAlreadyLoaded(int pMapId)
         {
             try

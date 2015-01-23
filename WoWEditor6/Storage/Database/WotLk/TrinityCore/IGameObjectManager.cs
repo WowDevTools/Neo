@@ -12,7 +12,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
     {
         void LoadGameObjects(DataTable pDataTable);
         void LoadSpawnedGameObjects(DataTable pDataTable, int pMapId);
-        GameObject GetCreatureByEntry(int pEntryId);
-        List<SpawnedGameObject> GetSpawnedCreaturesInRadius(Vector3 pPosition, double pRadius);
+        GameObject GetGameObjectByEntry(int pEntryId);
+        List<SpawnedGameObject> GetSpawnedGameObjectsInRadius(Vector3 pPosition, double pRadius);
     }
 }
