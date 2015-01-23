@@ -26,6 +26,10 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         public WmoGroup(string fileName, WmoRoot root)
         {
+            Batches = new List<WmoBatch>();
+            Indices = new List<ushort>();
+            Vertices = new List<WmoVertex>();
+
             mFileName = fileName;
             mParent = new WeakReference<WmoRoot>(root);
         }
@@ -41,32 +45,53 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 }
 
                 var reader = new BinaryReader(file);
-
-                while(true)
+                var readChunks = true;
+                try
                 {
-                    var signature = reader.ReadUInt32();
-                    var size = reader.ReadInt32();
-
-                    var oldPos = file.Position;
-                    switch(signature)
+                    while (readChunks)
                     {
-                        case 0x4D4F4750:
-                            mHeader = reader.Read<Mogp>();
-                            if (!LoadGroupChunks(reader, size - SizeCache<Mogp>.Size))
-                                return false;
+                        var signature = reader.ReadUInt32();
+                        var size = reader.ReadInt32();
 
-                            break;
+                        var oldPos = file.Position;
+                        switch (signature)
+                        {
+                            case 0x4D4F4750:
+                                mHeader = reader.Read<Mogp>();
+                                if (!LoadGroupChunks(reader, size - SizeCache<Mogp>.Size))
+                                    return false;
+
+                                readChunks = false;
+                                break;
+                        }
+
+                        file.Position = oldPos + size;
                     }
+                }
+                catch(EndOfStreamException)
+                {
 
-                    file.Position = oldPos + size;
+                }
+                catch(Exception e)
+                {
+                    Log.Error("Unable to load WMO group: " + e.Message);
+                    return false;
                 }
             }
+
+            return true;
         }
 
         private bool LoadGroupChunks(BinaryReader reader, int size)
         {
             var endPos = reader.BaseStream.Position + size;
-            while(reader.BaseStream.Position + 8 < endPos)
+            var hasVertices = false;
+            var hasTexCoords = false;
+            var hasNormals = false;
+            var hasColors = false;
+            var hasIndices = false;
+            var hasBatches = false;
+            while(reader.BaseStream.Position + 8 < endPos && !(hasVertices && hasTexCoords && hasNormals && hasColors && hasIndices && hasBatches))
             {
                 var signature = reader.ReadUInt32();
                 var chunkSize = reader.ReadInt32();
@@ -82,36 +107,45 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 {
                     case 0x4D4F5654:
                         LoadVertices(reader, chunkSize);
+                        hasVertices = true;
                         break;
 
                     case 0x4D4F5456:
                         LoadTexCoords(reader, chunkSize);
+                        hasTexCoords = true;
                         break;
 
                     case 0x4D4F4E52:
                         LoadNormals(reader, chunkSize);
+                        hasNormals = true;
                         break;
 
                     case 0x4D4F4356:
                         LoadColors(reader, chunkSize);
+                        hasColors = true;
                         break;
 
                     case 0x4D4F5649:
                         LoadIndices(reader, chunkSize);
+                        hasIndices = true;
                         break;
 
                     case 0x4D4F4241:
                         if (!LoadBatches(reader, chunkSize))
                             return false;
+                        hasBatches = true;
                         break;
                 }
 
                 reader.BaseStream.Position = curPos + chunkSize;
             }
 
-            if(mPositions.Length == 0 || mPositions.Length != mNormals.Length || mNormals.Length != mVertices.Length)
+            if(mPositions.Length == 0 || mPositions.Length != mNormals.Length || mNormals.Length != mTexCoords.Length)
             {
-                Log.Error("Invalid format in WMO group. Inconsistent sizes in positions, texture coordinates and normals");
+                Log.Error(
+                    string.Format(
+                        "Invalid format in WMO group. Inconsistent sizes in positions, texture coordinates and normals. {0}/{1}/{2}",
+                        mPositions.Length, mTexCoords.Length, mNormals.Length));
                 return false;
             }
 
@@ -143,7 +177,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         private void LoadTexCoords(BinaryReader reader, int size)
         {
-            if (mTexCoordsLoaded)
+            if (mTexCoordsLoaded && mTexCoords.Length > 0)
                 return;
 
             mTexCoordsLoaded = true;

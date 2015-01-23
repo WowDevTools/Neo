@@ -95,6 +95,8 @@ namespace WoWEditor6.Scene
             MapAreaLowRender.Initialize(context);
             WmoGroupRender.Initialize(context);
 
+            WmoManager.Initialize();
+
             GraphicsContext = context;
 
             SetActiveCamera(mMainCamera);
@@ -123,6 +125,7 @@ namespace WoWEditor6.Scene
         {
             TextureManager.Instance.Shutdown();
             MapManager.Shutdown();
+            WmoManager.Shutdown();
         }
 
         public void OnFrame()

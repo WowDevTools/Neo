@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using SharpDX;
 using WoWEditor6.Scene.Models.WMO;
 
@@ -8,8 +9,23 @@ namespace WoWEditor6.Scene.Models
     {
         private readonly Dictionary<int, WmoBatchRender> mRenderer = new Dictionary<int, WmoBatchRender>();
         private readonly object mAddLock = new object();
+        private Thread mUnloadThread;
+        private List<WmoBatchRender> mUnloadItems = new List<WmoBatchRender>();
+        private bool mIsRunning = true;
 
-        public void PreloadModel(string model)
+        public void Initialize()
+        {
+            mUnloadThread = new Thread(UnloadThread);
+            mUnloadThread.Start();
+        }
+
+        public void Shutdown()
+        {
+            mIsRunning = false;
+            mUnloadThread.Join();
+        }
+
+        private void PreloadModel(string model)
         {
             var hash = model.ToUpperInvariant().GetHashCode();
             lock(mRenderer)
@@ -29,6 +45,27 @@ namespace WoWEditor6.Scene.Models
                 lock (mAddLock)
                     mRenderer.Add(hash, batch);
             }
+        }
+
+        public void RemoveInstance(string model, int uuid)
+        {
+            var hash = model.ToUpperInvariant().GetHashCode();
+
+            WmoBatchRender batch;
+            lock (mRenderer)
+            {
+                if (mRenderer.TryGetValue(hash, out batch) == false)
+                    return;
+
+                if (batch.RemoveInstance(uuid) == false)
+                    return;
+
+                lock (mAddLock)
+                    mRenderer.Remove(hash);
+            }
+
+            lock (mUnloadItems)
+                mUnloadItems.Add(batch);
         }
 
         public void AddInstance(string model, int uuid, Vector3 position, Vector3 rotation)
@@ -65,11 +102,26 @@ namespace WoWEditor6.Scene.Models
 
         public void OnFrame()
         {
+            WmoGroupRender.Mesh.BeginDraw();
             WmoGroupRender.Mesh.Program.SetPixelSampler(0, WmoGroupRender.Sampler);
             lock(mAddLock)
             {
                 foreach (var pair in mRenderer)
                     pair.Value.OnFrame();
+            }
+        }
+
+        private void UnloadThread()
+        {
+            while(mIsRunning)
+            {
+                lock(mUnloadItems)
+                {
+                    mUnloadItems.ForEach(w => w.Dispose());
+                    mUnloadItems.Clear();
+                }
+
+                Thread.Sleep(500);
             }
         }
     }

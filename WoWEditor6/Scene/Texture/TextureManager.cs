@@ -59,6 +59,9 @@ namespace WoWEditor6.Scene.Texture
 
         public Graphics.Texture GetTexture(string path)
         {
+            if (string.IsNullOrEmpty(path))
+                return new Graphics.Texture(mContext);
+
             var hash = path.ToUpperInvariant().GetHashCode();
             TextureWorkItem workItem;
             Graphics.Texture retTexture;

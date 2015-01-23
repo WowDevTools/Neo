@@ -12,9 +12,11 @@ namespace WoWEditor6.IO.Files.Models
         public int ShaderType { get; }
         public int BlendMode { get; }
         public uint Flags1 { get; }
+        public uint MaterialFlags { get; }
 
-        public WmoMaterial(WmoRoot root, int shader, int texture1, int texture2, int texture3, int blendMode, uint flags)
+        public WmoMaterial(WmoRoot root, int shader, int texture1, int texture2, int texture3, int blendMode, uint flags, uint materialFlags)
         {
+            MaterialFlags = materialFlags;
             mTexture1 = texture1;
             mTexture2 = texture2;
             mTexture3 = texture3;

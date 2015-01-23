@@ -42,6 +42,9 @@ namespace WoWEditor6.IO.Files.Texture
 
         public static TextureLoadInfo LoadHeaderOnly(string file)
         {
+            if (string.IsNullOrEmpty(file))
+                return null;
+
             using (var strm = FileManager.Instance.Provider.OpenFile(file))
             {
                 if (strm == null)
@@ -56,6 +59,9 @@ namespace WoWEditor6.IO.Files.Texture
 
         public static TextureLoadInfo LoadFirstLayer(string file)
         {
+            if (string.IsNullOrEmpty(file))
+                return null;
+
             using (var strm = FileManager.Instance.Provider.OpenFile(file))
             {
                 if (strm == null)
@@ -73,6 +79,9 @@ namespace WoWEditor6.IO.Files.Texture
 
         public static TextureLoadInfo Load(string file)
         {
+            if (string.IsNullOrEmpty(file))
+                return null;
+
             using (var strm = FileManager.Instance.Provider.OpenFile(file))
             {
                 if (strm == null)

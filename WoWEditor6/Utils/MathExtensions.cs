@@ -9,7 +9,7 @@ namespace WoWEditor6.Utils
 {
     static class MathExtensions
     {
-        public static void Transform(this BoundingBox box, ref Matrix matrix)
+        public static BoundingBox Transform(this BoundingBox box, ref Matrix matrix)
         {
             var corners = new Vector3[8];
             box.GetCorners(corners);
@@ -20,15 +20,14 @@ namespace WoWEditor6.Utils
             {
                 Vector3 v;
                 Vector3.TransformCoordinate(ref corners[i], ref matrix, out v);
-                newMin.TakeMin(ref v);
-                newMax.TakeMax(ref v);
+                TakeMin(ref newMin, ref v);
+                TakeMax(ref newMax, ref v);
             }
 
-            box.Maximum = newMax;
-            box.Minimum = newMin;
+            return new BoundingBox(newMin, newMax);
         }
 
-        public static void TakeMin(this Vector3 v , ref Vector3 other)
+        public static void TakeMin(ref Vector3 v , ref Vector3 other)
         {
             if (v.X > other.X)
                 v.X = other.X;
@@ -38,7 +37,7 @@ namespace WoWEditor6.Utils
                 v.Z = other.Z;
         }
 
-        public static void TakeMax(this Vector3 v, ref Vector3 other)
+        public static void TakeMax(ref Vector3 v, ref Vector3 other)
         {
             if (v.X < other.X)
                 v.X = other.X;

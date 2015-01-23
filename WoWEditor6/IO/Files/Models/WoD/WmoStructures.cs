@@ -34,6 +34,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         public readonly uint flags2;
         public readonly int texture3;
         public readonly uint color3;
+        private readonly int padding1, padding2, padding3, padding4, padding5;
     }
 
     [StructLayout(LayoutKind.Sequential)]

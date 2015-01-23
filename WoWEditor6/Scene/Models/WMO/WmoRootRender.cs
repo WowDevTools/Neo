@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SharpDX;
 using WoWEditor6.Graphics;
@@ -6,7 +7,7 @@ using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.WMO
 {
-    class WmoRootRender
+    class WmoRootRender : IDisposable
     {
         public WmoRoot Data { get; private set; }
 
@@ -21,20 +22,36 @@ namespace WoWEditor6.Scene.Models.WMO
         private IndexBuffer mIndexBuffer;
 
         public BoundingBox BoundingBox => mBoundingBox;
+
         public IList<WmoGroupRender> Groups { get; private set; }
+
+        public void Dispose()
+        {
+            mIndices = null;
+            mVertices = null;
+            mAsyncLoaded = false;
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
+            {
+                mVertexBuffer?.Dispose();
+                mIndexBuffer?.Dispose();
+            });
+
+            foreach (var group in Groups)
+                group.Dispose();
+
+            Groups = new List<WmoGroupRender>();
+            Data?.Dispose();
+        }
 
         public void OnFrame(List<WmoInstance> instances)
         {
             if (mAsyncLoaded == false)
                 return;
 
-            if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
-            {
-                if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
-                    return;
-            }
+            if (mIndices.Length == 0 || mVertices.Length == 0)
+                return;
 
-            if(mSyncLoaded == false)
+            if (mSyncLoaded == false)
             {
                 if (mSyncLoadRequested)
                     return;
@@ -52,10 +69,16 @@ namespace WoWEditor6.Scene.Models.WMO
             var mesh = WmoGroupRender.Mesh;
             mesh.UpdateVertexBuffer(mVertexBuffer);
             mesh.UpdateIndexBuffer(mIndexBuffer);
-            mesh.Program.SetVertexConstantBuffer(2, WmoGroupRender.InstanceBuffer);
+            mesh.Program.SetVertexConstantBuffer(1, WmoGroupRender.InstanceBuffer);
 
             foreach (var instance in instances)
             {
+                if (WorldFrame.Instance.MapManager.IsInitialLoad == false)
+                {
+                    if (WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox) == false)
+                        continue;
+                }
+
                 WmoGroupRender.InstanceBuffer.UpdateData(instance.InstanceMatrix);
 
                 for(var i = 0; i < Groups.Count; ++i)
@@ -70,13 +93,15 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public void OnAsyncLoad(WmoRoot root)
         {
+            var indices = new List<ushort>();
+            var vertices = new List<WmoVertex>();
+
             Data = root;
+
             var groups = root.Groups.Select(@group => new WmoGroupRender(@group, this)).ToList();
             Groups = groups.AsReadOnly();
             mBoundingBox = Data.BoundingBox;
 
-            var indices = new List<ushort>();
-            var vertices = new List<WmoVertex>();
             foreach(var group in Groups)
             {
                 group.BaseIndex = indices.Count;
@@ -93,10 +118,16 @@ namespace WoWEditor6.Scene.Models.WMO
 
         private void SyncLoad()
         {
+            if (mVertices == null || mIndices == null || Groups == null)
+                return;
+
             mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
             mIndexBuffer = new IndexBuffer(WorldFrame.Instance.GraphicsContext);
-            mVertexBuffer.UpdateData(mVertices);
-            mIndexBuffer.UpdateData(mIndices);
+            if (mVertices.Length != 0 && mIndices.Length != 0)
+            {
+                mVertexBuffer.UpdateData(mVertices);
+                mIndexBuffer.UpdateData(mIndices);
+            }
 
             foreach (var group in Groups)
                 group.SyncLoad();

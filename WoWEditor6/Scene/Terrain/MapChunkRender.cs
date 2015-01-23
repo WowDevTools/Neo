@@ -112,6 +112,7 @@ namespace WoWEditor6.Scene.Terrain
             ChunkMesh.Stride = IO.SizeCache<IO.Files.Terrain.AdtVertex>.Size;
             ChunkMesh.BlendState.BlendEnabled = false;
             ChunkMesh.DepthState.DepthEnabled = true;
+            ChunkMesh.RasterizerState.CullEnabled = true;
 
             BlendNew = new ShaderProgram(context);
             BlendNew.SetVertexShader(Resources.Shaders.TerrainVertex, "main");

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpDX;
 using WoWEditor6.Graphics;
 
 namespace WoWEditor6.Scene.Models.WMO
 {
-    class WmoGroupRender
+    class WmoGroupRender : IDisposable
     {
         class WmoRenderBatch
         {
@@ -16,6 +17,11 @@ namespace WoWEditor6.Scene.Models.WMO
 
         private static BlendState gNoBlendState;
         private static BlendState gAlphaBlendState;
+        private static ShaderProgram gBlendProgram;
+        private static ShaderProgram gNoBlendProgram;
+        private static RasterState gNoCullState;
+        private static RasterState gCullState;
+
         public static Sampler Sampler { get; private set; }
         public static ConstantBuffer InstanceBuffer { get; private set; }
 
@@ -43,6 +49,11 @@ namespace WoWEditor6.Scene.Models.WMO
             }
         }
 
+        public void Dispose()
+        {
+            
+        }
+
         public void OnFrame()
         {
             if (mLoaded == false)
@@ -65,9 +76,13 @@ namespace WoWEditor6.Scene.Models.WMO
             mLoaded = true;
         }
 
-        private void SetupBatch(WmoRenderBatch batch)
+        private static void SetupBatch(WmoRenderBatch batch)
         {
-            Mesh.UpdateBlendState(batch.Batch.BlendMode != 0 ? gAlphaBlendState : gNoBlendState);
+            var hasCull = (batch.Material.MaterialFlags & 0x04) != 0;
+            Mesh.UpdateRasterizerState(hasCull ? gCullState : gNoCullState);
+            Mesh.UpdateBlendState((batch.Batch.BlendMode != 0) ? gAlphaBlendState : gNoBlendState);
+            Mesh.Program = (batch.Batch.BlendMode != 0) ? gBlendProgram : gNoBlendProgram;
+            Mesh.Program.Bind();
             Mesh.Program.SetPixelTextures(0, batch.Material.Textures);
         }
 
@@ -75,6 +90,9 @@ namespace WoWEditor6.Scene.Models.WMO
         {
             gNoBlendState = new BlendState(context) { BlendEnabled = false };
             gAlphaBlendState = new BlendState(context) { BlendEnabled = true };
+
+            gNoCullState = new RasterState(context) {CullEnabled = false};
+            gCullState = new RasterState(context) {CullEnabled = true};
 
             Sampler = new Sampler(context);
 
@@ -92,11 +110,15 @@ namespace WoWEditor6.Scene.Models.WMO
             Mesh.AddElement("TEXCOORD", 0, 2);
             Mesh.AddElement("COLOR", 0, 4, DataType.Byte, true);
 
-            var program = new ShaderProgram(context);
-            program.SetVertexShader(Resources.Shaders.WmoVertex, "main");
-            program.SetPixelShader(Resources.Shaders.WmoPixel, "main");
+            gNoBlendProgram = new ShaderProgram(context);
+            gNoBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex, "main");
+            gNoBlendProgram.SetPixelShader(Resources.Shaders.WmoPixel, "main");
 
-            Mesh.Program = program;
+            gBlendProgram = new ShaderProgram(context);
+            gBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex, "main");
+            gBlendProgram.SetPixelShader(Resources.Shaders.WmoPixel, "main_blend");
+
+            Mesh.Program = gNoBlendProgram;
         }
     }
 }

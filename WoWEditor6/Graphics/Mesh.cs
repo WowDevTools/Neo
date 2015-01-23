@@ -21,6 +21,7 @@ namespace WoWEditor6.Graphics
         public DepthState DepthState { get; set; }
         public RasterState RasterizerState { get; set; }
         public BlendState BlendState { get; set; }
+        public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }
 
         public Mesh(GxContext context)
         {
@@ -71,7 +72,14 @@ namespace WoWEditor6.Graphics
             BlendState = state;
         }
 
-        public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }
+        public void UpdateRasterizerState(RasterState state)
+        {
+            if (state == RasterizerState)
+                return;
+
+            mContext.Context.Rasterizer.State = state.Native;
+            RasterizerState = state;
+        }
 
         public void AddElement(VertexElement element) => mElements.Add(element);
 

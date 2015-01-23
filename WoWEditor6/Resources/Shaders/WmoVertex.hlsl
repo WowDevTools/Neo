@@ -5,7 +5,7 @@
 	float4 eyePosition;
 };
 
-cbuffer InstanceBuffer : register(b2)
+cbuffer InstanceBuffer : register(b1)
 {
 	float4x4 matInstance;
 };
@@ -40,7 +40,7 @@ VSOutput main(VSInput input) {
 	output.texCoord = input.texCoord;
 	output.color = input.color;
 
-	output.depth = length(input.position - eyePosition.xyz);
+	output.depth = length(posTransformed.xyz - eyePosition.xyz);
 
 	return output;
 }

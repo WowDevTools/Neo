@@ -19,11 +19,15 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         public uint AmbientColor => mHeader.ambientColor;
 
+        public override void Dispose()
+        {
+            mMaterials.Clear();
+            mTextures.Clear();
+            mGroups.Clear();
+        }
+
         public override Graphics.Texture GetTexture(int index)
         {
-            if (index >= mTextures.Count)
-                throw new IndexOutOfRangeException();
-
             return mTextures[index];
         }
 
@@ -37,6 +41,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         public override bool Load(string fileName)
         {
+            Groups = new List<Models.WmoGroup>();
+
             mFileName = fileName;
 
             using (var file = FileManager.Instance.Provider.OpenFile(fileName))
@@ -48,7 +54,10 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
                 try
                 {
-                    while (true)
+                    var hasHeader = false;
+                    var hasTextures = false;
+                    var hasMaterials = false;
+                    while (hasHeader == false || hasTextures == false || hasMaterials == false)
                     {
                         var signature = reader.ReadUInt32();
                         var size = reader.ReadInt32();
@@ -57,14 +66,17 @@ namespace WoWEditor6.IO.Files.Models.WoD
                         {
                             case 0x4D4F4844:
                                 mHeader = reader.Read<Mohd>();
+                                hasHeader = true;
                                 break;
 
                             case 0x4D4F5458:
                                 ReadTextures(reader, size);
+                                hasTextures = true;
                                 break;
 
                             case 0x4D4F4D54:
                                 LoadMaterials(reader, size);
+                                hasMaterials = true;
                                 break;
                         }
 
@@ -74,6 +86,11 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 catch (EndOfStreamException)
                 {
 
+                }
+                catch(Exception e)
+                {
+                    Log.Error("Unable to load WMO: " + e.Message);
+                    return false;
                 }
 
                 return LoadGroups();
@@ -125,7 +142,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         {
             var numMaterials = size / SizeCache<Momt>.Size;
             var materials = reader.ReadArray<Momt>(numMaterials);
-            mMaterials = materials.Select(m => new WmoMaterial(this, m.shader, m.texture1, m.texture2, m.texture3, m.blendMode, m.flags1)).ToList();
+            mMaterials = materials.Select(m => new WmoMaterial(this, m.shader, m.texture1, m.texture2, m.texture3, m.blendMode, m.flags1, m.flags)).ToList();
         }
 
         private void ReadTextures(BinaryReader reader, int size)

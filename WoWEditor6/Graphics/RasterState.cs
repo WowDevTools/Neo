@@ -19,6 +19,12 @@ namespace WoWEditor6.Graphics
             }
         }
 
+        public bool CullEnabled
+        {
+            get { return mDescription.CullMode != CullMode.None; }
+            set { mDescription.CullMode = CullMode.Back; mChanged = true; }
+        }
+
         public RasterizerState Native
         {
             get
@@ -44,7 +50,7 @@ namespace WoWEditor6.Graphics
                 FillMode = FillMode.Solid,
                 IsAntialiasedLineEnabled = false,
                 IsDepthClipEnabled = true,
-                IsFrontCounterClockwise = false,
+                IsFrontCounterClockwise = true,
                 IsMultisampleEnabled = false,
                 IsScissorEnabled = false,
                 SlopeScaledDepthBias = 0.0f

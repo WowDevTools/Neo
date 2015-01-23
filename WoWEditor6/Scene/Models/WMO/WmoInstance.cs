@@ -21,17 +21,18 @@ namespace WoWEditor6.Scene.Models.WMO
             mPosition = position;
             mRotation = rotation;
             BoundingBox = model.BoundingBox;
-            mInstanceMatrix = Matrix.Translation(position) *
-                              Matrix.RotationYawPitchRoll(rotation.Y, rotation.X, rotation.Z);
+            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
+                                  MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix.Translation(position);
 
-            BoundingBox.Transform(ref mInstanceMatrix);
+            BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
             GroupBoxes = new BoundingBox[model.Groups.Count];
             for(var i = 0; i < GroupBoxes.Length; ++i)
             {
                 var group = model.Groups[i];
-                GroupBoxes[i] = group.BoundingBox;
-                GroupBoxes[i].Transform(ref mInstanceMatrix);
+                GroupBoxes[i] = group.BoundingBox.Transform(ref mInstanceMatrix);
             }
+
+            mInstanceMatrix = Matrix.Transpose(mInstanceMatrix);
         }
 
 

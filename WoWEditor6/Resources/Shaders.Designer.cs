@@ -343,39 +343,6 @@ namespace WoWEditor6.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
-        ///{
-        ///	float4 ambientLight;
-        ///	float4 diffuseLight;
-        ///	float4 fogColor;
-        ///	// x -&gt; fogStart
-        ///	// y -&gt; fotEnd
-        ///	// z -&gt; farClip
-        ///	float4 fogParams;
-        ///};
-        ///
-        ///Texture2D batchTexture : register(t0);
-        ///SamplerState batchSampler : register(s0);
-        ///
-        ///struct PSInput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float depth : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///};
-        ///
-        ///float3 getDiffuseLight(float3 normal) {
-        ///	float light = dot(normal,  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string WmoPixel1 {
-            get {
-                return ResourceManager.GetString("WmoPixel1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to cbuffer MatrixBuffer : register(b0)
         ///{
         ///	float4x4 matView;
@@ -383,7 +350,7 @@ namespace WoWEditor6.Resources {
         ///	float4 eyePosition;
         ///};
         ///
-        ///cbuffer InstanceBuffer : register(b2)
+        ///cbuffer InstanceBuffer : register(b1)
         ///{
         ///	float4x4 matInstance;
         ///};
@@ -410,44 +377,6 @@ namespace WoWEditor6.Resources {
         internal static string WmoVertex {
             get {
                 return ResourceManager.GetString("WmoVertex", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to cbuffer MatrixBuffer : register(b0)
-        ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4 eyePosition;
-        ///};
-        ///
-        ///cbuffer InstanceBuffer : register(b2)
-        ///{
-        ///	float4x4 matInstance;
-        ///};
-        ///
-        ///struct VSInput
-        ///{
-        ///	float3 position : POSITION0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float4 color : COLOR0;
-        ///};
-        ///
-        ///struct VSOutput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float depth : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///};
-        ///
-        ///VSOutput main(VSInput in [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string WmoVertex1 {
-            get {
-                return ResourceManager.GetString("WmoVertex1", resourceCulture);
             }
         }
     }

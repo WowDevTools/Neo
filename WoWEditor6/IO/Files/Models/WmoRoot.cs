@@ -7,7 +7,7 @@ using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models
 {
-    abstract class WmoRoot
+    abstract class WmoRoot : IDisposable
     {
         public abstract Graphics.Texture GetTexture(int index);
         public abstract WmoMaterial GetMaterial(int index);
@@ -16,5 +16,7 @@ namespace WoWEditor6.IO.Files.Models
         public BoundingBox BoundingBox { get; protected set; }
 
         public IList<WmoGroup> Groups { get; protected set; }
+
+        public abstract void Dispose();
     }
 }

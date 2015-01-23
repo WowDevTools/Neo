@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SharpDX;
+using WoWEditor6.Scene;
 using WoWEditor6.Scene.Texture;
 
 namespace WoWEditor6.IO.Files.Terrain.WoD
@@ -13,6 +14,18 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public BinaryReader Stream;
         public int PosStart;
         public int Size;
+    }
+
+    class LoadedModel
+    {
+        public readonly string FileName;
+        public readonly int Uuid;
+
+        public LoadedModel(string file, int uuid)
+        {
+            FileName = file;
+            Uuid = uuid;
+        }
     }
 
     class MapArea : Terrain.MapArea
@@ -34,6 +47,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private readonly List<ChunkStreamInfo> mObjChunks = new List<ChunkStreamInfo>();
 
         private readonly List<MapChunk> mChunks = new List<MapChunk>();
+
+        private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
 
         public MapArea(string continent, int ix, int iy)
         {
@@ -102,6 +117,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
                 mTexStream.Position = 0;
                 InitTextureNames();
+
+                mObjStream.Position = 0;
+                InitModels();
+
                 InitChunks();
             }
             catch(Exception e)
@@ -151,6 +170,61 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 mReader.ReadBytes(mMainChunks.Last().Size);
                 mTexReader.ReadBytes(mTexChunks.Last().Size);
                 mObjReader.ReadBytes(mObjChunks.Last().Size);
+            }
+        }
+
+        private void InitModels()
+        {
+            InitWmoModels();
+
+
+        }
+
+        private void InitWmoModels()
+        {
+            if (SeekChunk(mObjReader, 0x4D574D4F) == false)
+                return;
+
+            var size = mObjReader.ReadInt32();
+            var bytes = mObjReader.ReadBytes(size);
+            var fullString = Encoding.ASCII.GetString(bytes);
+            var modelNames = fullString.Split('\0');
+            var modelNameLookup = new Dictionary<int, string>();
+            var curOffset = 0;
+            foreach(var name in modelNames)
+            {
+                modelNameLookup.Add(curOffset, name);
+                curOffset += name.Length + 1;
+            }
+
+            if (SeekChunk(mObjReader, 0x4D574944) == false)
+                return;
+
+            size = mObjReader.ReadInt32();
+            var modelNameIds = mObjReader.ReadArray<int>(size / 4);
+
+            if (SeekChunk(mObjReader, 0x4D4F4446) == false)
+                return;
+
+            size = mObjReader.ReadInt32();
+            var modf = mObjReader.ReadArray<Modf>(size / SizeCache<Modf>.Size);
+
+            foreach(var entry in modf)
+            {
+                if (entry.Mwid >= modelNameIds.Length)
+                    continue;
+
+                var nameId = modelNameIds[entry.Mwid];
+                string modelName;
+                if (modelNameLookup.TryGetValue(nameId, out modelName) == false)
+                    continue;
+
+                var position = new Vector3(entry.Position.X, 64.0f * Metrics.TileSize - entry.Position.Z,
+                    entry.Position.Y);
+                var rotation = new Vector3(360.0f - entry.Rotation.X, 360.0f - entry.Rotation.Z, entry.Rotation.Y - 90);
+
+                WorldFrame.Instance.WmoManager.AddInstance(modelName, entry.UniqueId, position, rotation);
+                mWmoInstances.Add(new LoadedModel(modelName, entry.UniqueId));
             }
         }
 
@@ -241,6 +315,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             mChunks.Clear();
             mTextures.Clear();
+
+            foreach (var instance in mWmoInstances)
+                WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid);
+
+            mWmoInstances.Clear();
         }
     }
 }
