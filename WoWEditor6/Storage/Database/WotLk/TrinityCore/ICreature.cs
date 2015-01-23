@@ -40,7 +40,7 @@
         int TrainerClass { get; set; }
         int TrainerRace { get; set; }
         int RangedAttackPower { get; set; }
-        EnumType Type { get; set; }
+        CreatureType Type { get; set; }
         TypeFlags TypeFlags { get; set; }
         int LootId { get; set; }
         int PickPocketLoot { get; set; }
@@ -268,7 +268,7 @@
         SpiritBeast = 46
     }
 
-    public enum EnumType
+    public enum CreatureType
     {
         None = 0,
         Beast = 1,

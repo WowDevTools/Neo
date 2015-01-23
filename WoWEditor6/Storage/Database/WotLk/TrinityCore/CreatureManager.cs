@@ -136,7 +136,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                             creature.RangedAttackPower = int.Parse(dRow[dColumn].ToString());
                             break;
                         case "type":
-                            creature.Type = (EnumType)Enum.Parse(typeof(EnumType), dRow[dColumn].ToString());
+                            creature.Type = (CreatureType)Enum.Parse(typeof(EnumType), dRow[dColumn].ToString());
                             break;
                         case "type_flags":
                             creature.TypeFlags = (TypeFlags)Enum.Parse(typeof(TypeFlags), dRow[dColumn].ToString());

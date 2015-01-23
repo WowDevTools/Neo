@@ -42,7 +42,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public int TrainerClass { get; set; }
         public int TrainerRace { get; set; }
         public int RangedAttackPower { get; set; }
-        public EnumType Type { get; set; }
+        public CreatureType Type { get; set; }
         public TypeFlags TypeFlags { get; set; }
         public int LootId { get; set; }
         public int PickPocketLoot { get; set; }

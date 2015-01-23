@@ -22,7 +22,15 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         {
             throw new NotImplementedException();
         }
-        GameObject GetCreatureByEntry(int pEntryId)
+        public List<SpawnedGameObject> GetSpawnedCreaturesInRadius(Vector3 pPosition, double pRadius)
+        {
+            throw new NotImplementedException();
+        }
+        public GameObject GetCreatureByEntry(int pEntryId)
+        {
+            throw new NotImplementedException();
+        }
+        GameObject GetGameObjectByEntry(int pEntryId)
         {
             throw new NotImplementedException();
         }
