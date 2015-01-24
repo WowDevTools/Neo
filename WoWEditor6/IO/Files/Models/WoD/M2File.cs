@@ -17,15 +17,15 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private M2Header mHeader;
         private M2Vertex[] mVertices = new M2Vertex[0];
         private Graphics.Texture[] mTextures = new Graphics.Texture[0];
-        private AnimationEntry[] mAnimations = new AnimationEntry[0];
-        private short[] mUVAnimLookup = new short[0];
+        private short[] mUvAnimLookup = new short[0];
         private bool mRemapBlend;
         private ushort[] mBlendMap = new ushort[0];
         private M2SkinFile mSkin;
-        private short[] mAnimLookup = new short[0];
         private readonly List<M2RenderPass> mPasses = new List<M2RenderPass>();
 
         public uint[] GlobalSequences { get; private set; } = new uint[0];
+        public AnimationEntry[] Animations { get; private set; } = new AnimationEntry[0];
+        public short[] AnimLookup { get; private set; } = new short[0];
 
         public M2File(string fileName)
         {
@@ -137,8 +137,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private void LoadAnimations(BinaryReader reader)
         {
             var bones = ReadArrayOf<M2Bone>(reader, mHeader.OfsBones, mHeader.NBones);
-            mAnimLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
-            mAnimations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
+            AnimLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
+            Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
         }
 
         private void SortPasses()
