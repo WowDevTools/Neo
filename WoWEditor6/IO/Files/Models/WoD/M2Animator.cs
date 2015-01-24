@@ -1,9 +1,10 @@
 ﻿using SharpDX;
 using System;
+// ReSharper disable InconsistentlySynchronizedField
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
-    class M2Animator
+    class M2Animator : IM2Animator
     {
         public Matrix[] BoneMatrices { get; private set; }
         private M2AnimationBone[] mBones;
@@ -36,6 +37,11 @@ namespace WoWEditor6.IO.Files.Models.WoD
             mHasAnimation = false;
             mAnimations = file.Animations;
             mAnimationLookup = file.AnimLookup;
+
+            SetBoneData(file.Bones);
+            SetUvData(file.UvAnimations);
+            SetTexColorData(file.ColorAnimations);
+            SetAlphaData(file.Transparencies);
         }
 
         public void SetAnimation(uint animation)
@@ -58,7 +64,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
             ResetAnimationTimes();
         }
 
-        public void SetAnimationByIndex(int index)
+        public void SetAnimationByIndex(uint index)
         {
             if(index >= mAnimations.Length)
             {
@@ -67,75 +73,9 @@ namespace WoWEditor6.IO.Files.Models.WoD
             }
 
             mAnimation = mAnimations[index];
-            mAnimationId = index;
+            mAnimationId = (int) index;
             mHasAnimation = true;
             ResetAnimationTimes();
-        }
-
-        public Vector4 GetColorValue(int texAnim)
-        {
-            if (texAnim < Colors.Length && texAnim >= 0)
-                return Colors[texAnim];
-
-            return Vector4.One;
-        }
-
-        public float GetAlphaValue(int alphaAnim)
-        {
-            if (alphaAnim >= 0 && alphaAnim < Transparencies.Length)
-                return Transparencies[alphaAnim];
-
-            return 1.0f;
-        }
-
-        public Matrix GetUvAnimMatrix(int animation)
-        {
-            if (animation >= 0 && animation < UvMatrices.Length)
-                return UvMatrices[animation];
-
-            return Matrix.Identity;
-        }
-
-        public Matrix GetBoneMatrix(uint time, short bone)
-        {
-            if (bone < 0 || bone >= mBones.Length)
-                return Matrix.Identity;
-
-            if (mBoneCalculated[bone])
-                return BoneMatrices[bone];
-
-            mBones[bone].UpdateMatrix(time, mAnimationId, out BoneMatrices[bone], this);
-            mBoneCalculated[bone] = true;
-            return BoneMatrices[bone];
-        }
-
-        public void SetBoneData(M2AnimationBone[] bones)
-        {
-            mBones = bones;
-            mBoneCalculated = new bool[bones.Length];
-            BoneMatrices = new Matrix[bones.Length];
-            mBoneStart = Environment.TickCount;
-        }
-
-        public void SetUvData(M2UVAnimation[] animations)
-        {
-            mUvAnimations = animations;
-            UvMatrices = new Matrix[animations.Length];
-            mUvStart = Environment.TickCount;
-        }
-
-        public void SetTexColorData(M2TexColorAnimation[] animations)
-        {
-            mTexColorAnimations = animations;
-            Colors = new Vector4[animations.Length];
-            mTexColorStart = Environment.TickCount;
-        }
-
-        public void SetAlphaData(M2AlphaAnimation[] animations)
-        {
-            mAlphaAnimations = animations;
-            Transparencies = new float[animations.Length];
-            mAlphaStart = Environment.TickCount;
         }
 
         public void Update()
@@ -146,9 +86,9 @@ namespace WoWEditor6.IO.Files.Models.WoD
             var now = Environment.TickCount;
 
             var time = (uint)(now - mBoneStart);
-            if(time >= mAnimation.length && ((mAnimation.flags & 0x20) == 0 || mAnimation.nextAnimation >= 0))
+            if (time >= mAnimation.length && ((mAnimation.flags & 0x20) == 0 || mAnimation.nextAnimation >= 0))
             {
-                if(mIsFinished)
+                if (mIsFinished)
                 {
                     if (mAnimation.nextAnimation < 0 || mAnimation.nextAnimation >= mAnimations.Length) return;
 
@@ -168,33 +108,128 @@ namespace WoWEditor6.IO.Files.Models.WoD
             for (var i = 0; i < mBoneCalculated.Length; ++i)
                 mBoneCalculated[i] = false;
 
-            for(var i = 0; i < mBones.Length; ++i)
+            lock(mBones)
             {
-                if (mBoneCalculated[i])
-                    continue;
+                for (var i = 0; i < mBones.Length; ++i)
+                {
+                    if (mBoneCalculated[i])
+                        continue;
 
-                mBones[i].UpdateMatrix(time, mAnimationId, out BoneMatrices[i], this);
-                mBoneCalculated[i] = true;
+                    mBones[i].UpdateMatrix(time, mAnimationId, out BoneMatrices[i], this);
+                    mBoneCalculated[i] = true;
+                }
             }
 
-            time = (uint) (now - mUvStart);
-            for(var i = 0; i < mUvAnimations.Length; ++i)
-                mUvAnimations[i].UpdateMatrix(mAnimationId, time, out UvMatrices[i]);
+            time = (uint)(now - mUvStart);
+            lock(mUvAnimations)
+            {
+                for (var i = 0; i < mUvAnimations.Length; ++i)
+                    mUvAnimations[i].UpdateMatrix(mAnimationId, time, out UvMatrices[i]);
+            }
 
-            time = (uint) (now - mTexColorStart);
-            for (var i = 0; i < mTexColorAnimations.Length; ++i)
-                mTexColorAnimations[i].UpdateValue(mAnimationId, time, out Colors[i]);
+            time = (uint)(now - mTexColorStart);
+            lock(mTexColorAnimations)
+            {
+                for (var i = 0; i < mTexColorAnimations.Length; ++i)
+                    mTexColorAnimations[i].UpdateValue(mAnimationId, time, out Colors[i]);
+            }
 
-            time = (uint) (now - mAlphaStart);
-            for (var i = 0; i < mAlphaAnimations.Length; ++i)
-                mAlphaAnimations[i].UpdateValue(mAnimationId, time, out Transparencies[i]);
+            time = (uint)(now - mAlphaStart);
+            lock(mAlphaAnimations)
+            {
+                for (var i = 0; i < mAlphaAnimations.Length; ++i)
+                    mAlphaAnimations[i].UpdateValue(mAnimationId, time, out Transparencies[i]);
+            }
         }
 
-        private void ResetAnimationTimes()
+        public Vector4 GetColorValue(int texAnim)
+        {
+            lock(mTexColorAnimations)
+            {
+                if (texAnim < Colors.Length && texAnim >= 0)
+                    return Colors[texAnim];
+
+                return Vector4.One;
+            }
+        }
+
+        public float GetAlphaValue(int alphaAnim)
+        {
+            lock(mAlphaAnimations)
+            {
+                if (alphaAnim >= 0 && alphaAnim < Transparencies.Length)
+                    return Transparencies[alphaAnim];
+
+                return 1.0f;
+            }
+        }
+
+        public Matrix GetUvAnimMatrix(int animation)
+        {
+            lock(mUvAnimations)
+            {
+                if (animation >= 0 && animation < UvMatrices.Length)
+                    return UvMatrices[animation];
+
+                return Matrix.Identity;
+            }
+        }
+
+        public Matrix GetBoneMatrix(int bone)
+        {
+            return GetBoneMatrix((uint)(Environment.TickCount - mBoneStart), (short) bone);
+        }
+
+        public Matrix GetBoneMatrix(uint time, short bone)
+        {
+            lock(mBones)
+            {
+                if (bone < 0 || bone >= mBones.Length)
+                    return Matrix.Identity;
+
+                if (mBoneCalculated[bone])
+                    return BoneMatrices[bone];
+
+                mBones[bone].UpdateMatrix(time, mAnimationId, out BoneMatrices[bone], this);
+                mBoneCalculated[bone] = true;
+                return BoneMatrices[bone];
+            }
+        }
+
+        public void ResetAnimationTimes()
         {
             mBoneStart = Environment.TickCount;
             mUvStart = Environment.TickCount;
             mTexColorStart = Environment.TickCount;
+            mAlphaStart = Environment.TickCount;
+        }
+
+        private void SetBoneData(M2AnimationBone[] bones)
+        {
+            mBones = bones;
+            mBoneCalculated = new bool[bones.Length];
+            BoneMatrices = new Matrix[bones.Length];
+            mBoneStart = Environment.TickCount;
+        }
+
+        private void SetUvData(M2UVAnimation[] animations)
+        {
+            mUvAnimations = animations;
+            UvMatrices = new Matrix[animations.Length];
+            mUvStart = Environment.TickCount;
+        }
+
+        private void SetTexColorData(M2TexColorAnimation[] animations)
+        {
+            mTexColorAnimations = animations;
+            Colors = new Vector4[animations.Length];
+            mTexColorStart = Environment.TickCount;
+        }
+
+        private void SetAlphaData(M2AlphaAnimation[] animations)
+        {
+            mAlphaAnimations = animations;
+            Transparencies = new float[animations.Length];
             mAlphaStart = Environment.TickCount;
         }
     }

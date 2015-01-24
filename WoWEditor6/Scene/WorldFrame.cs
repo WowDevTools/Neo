@@ -2,6 +2,7 @@
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene.Models;
+using WoWEditor6.Scene.Models.M2;
 using WoWEditor6.Scene.Models.WMO;
 using WoWEditor6.Scene.Terrain;
 using WoWEditor6.Scene.Texture;
@@ -32,6 +33,7 @@ namespace WoWEditor6.Scene
 
         public MapManager MapManager { get; } = new MapManager();
         public WmoManager WmoManager { get; } = new WmoManager();
+        public M2Manager M2Manager { get; } = new M2Manager();
 
         private AppState mState;
         private readonly PerspectiveCamera mMainCamera = new PerspectiveCamera();
@@ -94,6 +96,9 @@ namespace WoWEditor6.Scene
             MapChunkRender.Initialize(context);
             MapAreaLowRender.Initialize(context);
             WmoGroupRender.Initialize(context);
+            M2BatchRenderer.Initialize(context);
+
+            StaticAnimationThread.Instance.Initialize();
 
             WmoManager.Initialize();
 
@@ -126,6 +131,7 @@ namespace WoWEditor6.Scene
             TextureManager.Instance.Shutdown();
             MapManager.Shutdown();
             WmoManager.Shutdown();
+            StaticAnimationThread.Instance.Shutdown();
         }
 
         public void OnFrame()
@@ -140,6 +146,7 @@ namespace WoWEditor6.Scene
             GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalParamsBuffer.Native);
             MapManager.OnFrame();
             WmoManager.OnFrame();
+            M2Manager.OnFrame();
         }
 
         public void OnMouseWheel(int delta)
@@ -193,6 +200,8 @@ namespace WoWEditor6.Scene
 
             mGlobalBufferStore.matView = matView;
             mGlobalChanged = true;
+
+            M2Manager.ViewChanged();
         }
 
         private void ProjectionChanged(Camera camera, Matrix matProj)
@@ -208,6 +217,8 @@ namespace WoWEditor6.Scene
 
             mGlobalParamsBufferStore.fogParams.Z = perspectiveCamera.FarClip;
             mGlobalParamsChanged = true;
+
+            M2Manager.ViewChanged();
         }
 
         private void UpdateBuffers()
@@ -221,13 +232,12 @@ namespace WoWEditor6.Scene
                 }
             }
 
-            if (mGlobalChanged)
+            if (!mGlobalChanged) return;
+
+            lock (mGlobalBuffer)
             {
-                lock (mGlobalBuffer)
-                {
-                    mGlobalBuffer.UpdateData(mGlobalBufferStore);
-                    mGlobalChanged = false;
-                }
+                mGlobalBuffer.UpdateData(mGlobalBufferStore);
+                mGlobalChanged = false;
             }
         }
     }

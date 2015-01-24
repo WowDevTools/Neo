@@ -1,8 +1,9 @@
-﻿using SharpDX.Direct3D11;
+﻿using System;
+using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
 {
-    class BlendState
+    class BlendState : IDisposable
     {
         private SharpDX.Direct3D11.BlendState mState;
         private BlendStateDescription mDescription;
@@ -51,6 +52,11 @@ namespace WoWEditor6.Graphics
             };
 
             mChanged = true;
+        }
+
+        public void Dispose()
+        {
+            mState?.Dispose();
         }
     }
 }

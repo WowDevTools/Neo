@@ -9,7 +9,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
     {
         private readonly string mFileName;
         private M2Skin mSkin;
-        private ushort[] mIndices = new ushort[0];
+        public ushort[] Indices { get; private set; } = new ushort[0];
 
         public M2TexUnit[] TexUnits { get; private set; } = new M2TexUnit[0];
         public M2SubMesh[] SubMeshes { get; private set; } = new M2SubMesh[0];
@@ -31,7 +31,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 var indexLookup = ReadArrayOf<ushort>(reader, mSkin.ofsIndices, mSkin.nIndices);
                 var triangles = ReadArrayOf<ushort>(reader, mSkin.ofsTriangles, mSkin.nTriangles);
 
-                mIndices = triangles.Select(t => indexLookup[t]).ToArray();
+                Indices = triangles.Select(t => indexLookup[t]).ToArray();
                 SubMeshes = ReadArrayOf<M2SubMesh>(reader, mSkin.ofsSubmeshes, mSkin.nSubmeshes);
                 TexUnits = ReadArrayOf<M2TexUnit>(reader, mSkin.ofsTexUnits, mSkin.nTexUnits);
                 return true;

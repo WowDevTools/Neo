@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
-    class M2File
+    class M2File : Models.M2File
     {
         private string mModelName;
         private readonly string mRootPath;
         private readonly string mFileName;
 
-        private BoundingBox mBoundingBox;
-
         private M2Header mHeader;
-        private M2Vertex[] mVertices = new M2Vertex[0];
         private Graphics.Texture[] mTextures = new Graphics.Texture[0];
-        private short[] mUvAnimLookup = new short[0];
         private bool mRemapBlend;
         private ushort[] mBlendMap = new ushort[0];
         private M2SkinFile mSkin;
-        private readonly List<M2RenderPass> mPasses = new List<M2RenderPass>();
+
+        public M2AnimationBone[] Bones { get; private set; } = new M2AnimationBone[0];
+        public M2UVAnimation[] UvAnimations { get; private set; } = new M2UVAnimation[0];
+        public M2TexColorAnimation[] ColorAnimations { get; private set; } = new M2TexColorAnimation[0];
+        public M2AlphaAnimation[] Transparencies { get; private set; } = new M2AlphaAnimation[0];
 
         public uint[] GlobalSequences { get; private set; } = new uint[0];
         public AnimationEntry[] Animations { get; private set; } = new AnimationEntry[0];
@@ -33,7 +34,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
             mRootPath = Path.GetDirectoryName(mFileName);
         }
 
-        public bool Load()
+        public override bool Load()
         {
             using (var strm = FileManager.Instance.Provider.OpenFile(mFileName))
             {
@@ -49,12 +50,12 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     mBlendMap = reader.ReadArray<ushort>(nBlendMaps);
                 }
 
-                mBoundingBox = new BoundingBox(mHeader.BoundingBoxMin, mHeader.BoundingBoxMax);
+                BoundingBox = new BoundingBox(mHeader.BoundingBoxMin, mHeader.BoundingBoxMax);
                 strm.Position = mHeader.OfsName;
                 mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName)).Trim();
 
                 GlobalSequences = ReadArrayOf<uint>(reader, mHeader.OfsGlobalSequences, mHeader.NGlobalSequences);
-                mVertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
+                Vertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];
                 for(var i = 0; i < textures.Length; ++i)
@@ -71,6 +72,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 }
 
                 LoadSkins(reader);
+                LoadAnimations(reader);
             }
 
             return true;
@@ -81,6 +83,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
             mSkin = new M2SkinFile(mRootPath, mModelName, 0);
             if (mSkin.Load() == false)
                 throw new InvalidOperationException("Unable to load skin file");
+
+            Indices = mSkin.Indices;
 
             var texLookup = ReadArrayOf<ushort>(reader, mHeader.OfsTexLookup, mHeader.NTexLookup);
             var renderFlags = ReadArrayOf<uint>(reader, mHeader.OfsRenderFlags, mHeader.NRenderFlags);
@@ -118,7 +122,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                         break;
                 }
 
-                mPasses.Add(new M2RenderPass
+                Passes.Add(new M2RenderPass
                 {
                     Textures = textures,
                     AlphaAnimIndex = transLookup[texUnit.transparency],
@@ -137,13 +141,24 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private void LoadAnimations(BinaryReader reader)
         {
             var bones = ReadArrayOf<M2Bone>(reader, mHeader.OfsBones, mHeader.NBones);
+            Bones = bones.Select(b => new M2AnimationBone(this, ref b, reader)).ToArray();
+
             AnimLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
             Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
+
+            var uvAnims = ReadArrayOf<M2TexAnim>(reader, mHeader.OfsUvAnimation, mHeader.NUvAnimation);
+            UvAnimations = uvAnims.Select(uv => new M2UVAnimation(this, ref uv, reader)).ToArray();
+
+            var colorAnims = ReadArrayOf<M2ColorAnim>(reader, mHeader.OfsSubmeshAnimations, mHeader.NSubmeshAnimations);
+            ColorAnimations = colorAnims.Select(c => new M2TexColorAnimation(this, ref c, reader)).ToArray();
+
+            var transparencies = ReadArrayOf<AnimationBlock>(reader, mHeader.OfsTransparencies, mHeader.NTransparencies);
+            Transparencies = transparencies.Select(t => new M2AlphaAnimation(this, ref t, reader)).ToArray();
         }
 
         private void SortPasses()
         {
-            mPasses.Sort((e1, e2) =>
+            Passes.Sort((e1, e2) =>
             {
                 if (e1.BlendMode == 0 && e2.BlendMode != 0)
                     return -1;

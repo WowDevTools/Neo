@@ -16,16 +16,16 @@ namespace WoWEditor6.Graphics
 
         public InputElement Element => mDescription;
 
-        public VertexElement(string semantic, int index, int components, DataType dataType = DataType.Float, bool normalized = false)
+        public VertexElement(string semantic, int index, int components, DataType dataType = DataType.Float, bool normalized = false, int slot = 0, bool instanceData = false)
         {
             mDescription = new InputElement
             {
                 AlignedByteOffset = InputElement.AppendAligned,
-                Classification = InputClassification.PerVertexData,
+                Classification = instanceData ? InputClassification.PerInstanceData : InputClassification.PerVertexData,
                 InstanceDataStepRate = 0,
                 SemanticIndex = index,
                 SemanticName = semantic,
-                Slot = 0
+                Slot = slot
             };
 
             if(dataType == DataType.Byte)

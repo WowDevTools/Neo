@@ -99,12 +99,15 @@
     <Compile Include="IO\FileManager.cs" />
     <Compile Include="IO\Files\DBCFile.cs" />
     <Compile Include="IO\Files\Models\CommonWmoStructures.cs" />
+    <Compile Include="IO\Files\Models\IM2Animator.cs" />
     <Compile Include="IO\Files\Models\M2AnimationInterpolation.cs" />
+    <Compile Include="IO\Files\Models\M2File.cs" />
     <Compile Include="IO\Files\Models\M2RenderPass.cs" />
     <Compile Include="IO\Files\Models\ModelFactory.cs" />
     <Compile Include="IO\Files\Models\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WmoMaterial.cs" />
     <Compile Include="IO\Files\Models\WmoRoot.cs" />
+    <Compile Include="IO\Files\Models\CommonM2Structures.cs" />
     <Compile Include="IO\Files\Models\WoD\M2AlphaAnimation.cs" />
     <Compile Include="IO\Files\Models\WoD\M2AnimationBlock.cs" />
     <Compile Include="IO\Files\Models\WoD\M2AnimationBone.cs" />
@@ -152,6 +155,10 @@
     <Compile Include="Scene\Camera.cs" />
     <Compile Include="Scene\CameraControl.cs" />
     <Compile Include="IO\Files\Models\WoD\M2Structs.cs" />
+    <Compile Include="Scene\Models\M2Manager.cs" />
+    <Compile Include="Scene\Models\M2\M2BatchRenderer.cs" />
+    <Compile Include="Scene\Models\M2\M2RenderInstance.cs" />
+    <Compile Include="Scene\Models\M2\StaticAnimationThread.cs" />
     <Compile Include="Scene\Models\WmoManager.cs" />
     <Compile Include="Scene\Models\WMO\WmoBatchRender.cs" />
     <Compile Include="Scene\Models\WMO\WmoGroupRender.cs" />
@@ -236,7 +243,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IO\MPQ\" />
-    <Folder Include="Scene\Models\M2\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Shaders.resx">
@@ -252,6 +258,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Shaders\M2Pixel.hlsl" />
+    <Content Include="Resources\Shaders\M2VertexInstanced.hlsl" />
     <Content Include="Resources\Shaders\MapLowPixel.hlsl" />
     <Content Include="Resources\Shaders\MapLowVertex.hlsl" />
     <Content Include="Resources\Shaders\SkyPixel.hlsl" />

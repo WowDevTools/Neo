@@ -14,6 +14,7 @@ namespace WoWEditor6.Graphics
         public VertexBuffer VertexBuffer { get; set; }
         public IndexBuffer IndexBuffer { get; set; }
         public int Stride { get; set; }
+        public int InstanceStride { get; set; }
         public int IndexCount { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public int StartIndex { get; set; }
@@ -53,6 +54,15 @@ namespace WoWEditor6.Graphics
             mContext.Context.DrawIndexed(IndexCount, StartIndex, StartVertex);
         }
 
+        public void UpdateInstanceBuffer(VertexBuffer buffer)
+        {
+            if (InstanceStride == 0 || buffer == null)
+                return;
+
+            mContext.Context.InputAssembler.SetVertexBuffers(1,
+                new VertexBufferBinding(buffer.Native, InstanceStride, 0));
+        }
+
         public void UpdateIndexBuffer(IndexBuffer ib)
         {
             mContext.Context.InputAssembler.SetIndexBuffer(ib.Native, ib.IndexFormat, 0);
@@ -83,9 +93,9 @@ namespace WoWEditor6.Graphics
 
         public void AddElement(VertexElement element) => mElements.Add(element);
 
-        public void AddElement(string semantic, int index, int components, DataType type = DataType.Float, bool normalized = false)
+        public void AddElement(string semantic, int index, int components, DataType type = DataType.Float, bool normalized = false, int slot = 0, bool instanceData = false)
         {
-            AddElement(new VertexElement(semantic, index, components, type, normalized));
+            AddElement(new VertexElement(semantic, index, components, type, normalized, slot, instanceData));
         }
 
         private void UpdateProgram(ShaderProgram program)

@@ -10,7 +10,7 @@ namespace WoWEditor6.Scene.Models
         private readonly Dictionary<int, WmoBatchRender> mRenderer = new Dictionary<int, WmoBatchRender>();
         private readonly object mAddLock = new object();
         private Thread mUnloadThread;
-        private List<WmoBatchRender> mUnloadItems = new List<WmoBatchRender>();
+        private readonly List<WmoBatchRender> mUnloadItems = new List<WmoBatchRender>();
         private bool mIsRunning = true;
 
         public void Initialize()

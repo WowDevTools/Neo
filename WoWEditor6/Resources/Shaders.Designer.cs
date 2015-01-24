@@ -61,6 +61,61 @@ namespace WoWEditor6.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to struct PixelInput
+        ///{
+        ///	float4 position : SV_Position;
+        ///	float3 normal : NORMAL0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///	float depth : TEXCOORD1;
+        ///};
+        ///
+        ///float4 main(PixelInput input) : SV_Target {
+        ///	return float4(1, 1, 1, 1);
+        ///}.
+        /// </summary>
+        internal static string M2Pixel {
+            get {
+                return ResourceManager.GetString("M2Pixel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
+        ///{
+        ///	float4x4 matView;
+        ///	float4x4 matProj;
+        ///	float4 eyePosition;
+        ///};
+        ///
+        ///cbuffer AnimationMatrices : register(b2)
+        ///{
+        ///	float4x4 Bones[256];
+        ///}
+        ///
+        ///struct VertexInput
+        ///{
+        ///	float3 position : POSITION0;
+        ///	float4 boneWeigths : BLENDWEIGHT0;
+        ///	int4 bones : BLENDINDEX0;
+        ///	float3 normal : NORMAL0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///	float2 texCoord2 : TEXCOORD1;
+        ///
+        ///	float4 mat0 : TEXCOORD2;
+        ///	float4 mat1 : TEXCOORD3;
+        ///	float4 mat2 : TEXCOORD4;
+        ///	float4 mat3 : TEXCOORD5;
+        ///};
+        ///
+        ///struct [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string M2VertexInstanced {
+            get {
+                return ResourceManager.GetString("M2VertexInstanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
         ///{
         ///	float4 ambientLight;
