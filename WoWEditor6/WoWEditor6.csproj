@@ -99,10 +99,15 @@
     <Compile Include="IO\FileManager.cs" />
     <Compile Include="IO\Files\DBCFile.cs" />
     <Compile Include="IO\Files\Models\CommonWmoStructures.cs" />
+    <Compile Include="IO\Files\Models\M2RenderPass.cs" />
     <Compile Include="IO\Files\Models\ModelFactory.cs" />
     <Compile Include="IO\Files\Models\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WmoMaterial.cs" />
     <Compile Include="IO\Files\Models\WmoRoot.cs" />
+    <Compile Include="IO\Files\Models\WoD\M2AnimationBlock.cs" />
+    <Compile Include="IO\Files\Models\WoD\M2AnimationBone.cs" />
+    <Compile Include="IO\Files\Models\WoD\M2File.cs" />
+    <Compile Include="IO\Files\Models\WoD\M2SkinFile.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoStructures.cs" />
@@ -141,6 +146,7 @@
     <Compile Include="Scene\AppState.cs" />
     <Compile Include="Scene\Camera.cs" />
     <Compile Include="Scene\CameraControl.cs" />
+    <Compile Include="IO\Files\Models\WoD\M2Structs.cs" />
     <Compile Include="Scene\Models\WmoManager.cs" />
     <Compile Include="Scene\Models\WMO\WmoBatchRender.cs" />
     <Compile Include="Scene\Models\WMO\WmoGroupRender.cs" />
@@ -179,6 +185,7 @@
     <Compile Include="UI\Brushes.cs" />
     <Compile Include="UI\ComponentRoot.cs" />
     <Compile Include="UI\Components\Button.cs" />
+    <Compile Include="UI\Components\Checkbox.cs" />
     <Compile Include="UI\Components\EditBox.cs" />
     <Compile Include="UI\Components\Frame.cs" />
     <Compile Include="UI\Components\KeyboardMessage.cs" />
@@ -224,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IO\MPQ\" />
+    <Folder Include="Scene\Models\M2\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Shaders.resx">
