@@ -29,6 +29,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private int mAnimationId;
         private readonly AnimationEntry[] mAnimations;
         private readonly short[] mAnimationLookup;
+        private bool mIsDirty;
 
         public uint AnimationLength => mAnimation.length;
 
@@ -103,7 +104,10 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 mIsFinished = true;
             }
             else
-                time %= mAnimation.length;
+            {
+                if (mAnimation.length > 0)
+                    time %= mAnimation.length;
+            }
 
             for (var i = 0; i < mBoneCalculated.Length; ++i)
                 mBoneCalculated[i] = false;
@@ -140,6 +144,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 for (var i = 0; i < mAlphaAnimations.Length; ++i)
                     mAlphaAnimations[i].UpdateValue(mAnimationId, time, out Transparencies[i]);
             }
+
+            mIsDirty = true;
         }
 
         public Vector4 GetColorValue(int texAnim)
@@ -172,6 +178,21 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     return UvMatrices[animation];
 
                 return Matrix.Identity;
+            }
+        }
+
+        public bool GetBones(Matrix[] bones)
+        {
+            if (mIsDirty == false)
+                return false;
+
+            lock (mBones)
+            {
+                for (var i = 0; i < Math.Min(bones.Length, BoneMatrices.Length); ++i)
+                    bones[i] = BoneMatrices[i];
+
+                mIsDirty = false;
+                return true;
             }
         }
 
@@ -210,6 +231,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
             mBoneCalculated = new bool[bones.Length];
             BoneMatrices = new Matrix[bones.Length];
             mBoneStart = Environment.TickCount;
+            for (var i = 0; i < bones.Length; ++i)
+                BoneMatrices[i] = Matrix.Identity;
         }
 
         private void SetUvData(M2UVAnimation[] animations)

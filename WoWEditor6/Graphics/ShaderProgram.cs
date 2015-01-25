@@ -8,6 +8,8 @@ namespace WoWEditor6.Graphics
 {
     class ShaderProgram
     {
+        private static readonly ShaderResourceView[] gShaderViews = new ShaderResourceView[64];
+
         private VertexShader mVertexShader;
         private PixelShader mPixelShader;
         private readonly GxContext mContext;
@@ -36,7 +38,10 @@ namespace WoWEditor6.Graphics
 
         public void SetVertexTextures(int slot, params Texture[] textures)
         {
-            mContext.Context.VertexShader.SetShaderResources(slot, textures.Select(t => t.NativeView).ToArray());
+            for (var i = 0; i < textures.Length; ++i)
+                gShaderViews[i] = textures[i].NativeView;
+
+            mContext.Context.VertexShader.SetShaderResources(slot, textures.Length, gShaderViews);
         }
 
         public void SetVertexTexture(int slot, ShaderResourceView view)
@@ -56,7 +61,10 @@ namespace WoWEditor6.Graphics
 
         public void SetPixelTextures(int slot, params Texture[] textures)
         {
-            mContext.Context.PixelShader.SetShaderResources(slot, textures.Select(t => t.NativeView).ToArray());
+            for (var i = 0; i < textures.Length; ++i)
+                gShaderViews[i] = textures[i].NativeView;
+
+            mContext.Context.PixelShader.SetShaderResources(slot, textures.Length, gShaderViews);
         }
 
         public void SetPixelTextures(int slot, params ShaderResourceView[] textures)

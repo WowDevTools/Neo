@@ -11,9 +11,10 @@ namespace WoWEditor6.Scene.Models.M2
 {
     class M2BatchRenderer
     {
-        private static Mesh gMesh;
+        public static Mesh Mesh { get; private set; }
+        public static Sampler Sampler { get; private set; }
 
-        private IM2Animator mAnimator;
+        private readonly IM2Animator mAnimator;
         private readonly M2File mModel;
         private bool mIsSyncLoaded;
         private bool mIsSyncLoadRequested;
@@ -21,10 +22,22 @@ namespace WoWEditor6.Scene.Models.M2
         private VertexBuffer mVertexBuffer;
         private VertexBuffer mInstanceBuffer;
         private IndexBuffer mIndexBuffer;
+        private readonly object mInstanceBufferLock = new object();
+
+        private int mInstanceCount;
 
         private readonly List<M2RenderInstance> mInstances = new List<M2RenderInstance>();
-        private Matrix[] mActiveInstances;
+        private Matrix[] mActiveInstances = new Matrix[0];
         private bool mUpdateBuffer;
+        private readonly Matrix[] mAnimationMatrices = new Matrix[256];
+
+        private Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
+        private List<M2RenderInstance> mVisibleInstances = new List<M2RenderInstance>();
+        private List<int> mUpdatedEntries = new List<int>();
+
+        private bool mSkipRendering;
+
+        private ConstantBuffer mAnimBuffer;
 
         public BoundingBox BoundingBox => mModel.BoundingBox;
 
@@ -32,6 +45,7 @@ namespace WoWEditor6.Scene.Models.M2
         {
             mModel = model;
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
+            mAnimator.SetAnimationByIndex(0);
             StaticAnimationThread.Instance.AddAnimator(mAnimator);
         }
 
@@ -52,52 +66,140 @@ namespace WoWEditor6.Scene.Models.M2
                 }
             }
 
+            if (mSkipRendering)
+                return;
+
             CheckBuffer();
+
+            if (mInstanceCount == 0)
+                return;
+
+            Mesh.UpdateIndexBuffer(mIndexBuffer);
+            Mesh.UpdateVertexBuffer(mVertexBuffer);
+            Mesh.UpdateInstanceBuffer(mInstanceBuffer);
+
+            if (mAnimator.GetBones(mAnimationMatrices))
+                mAnimBuffer.UpdateData(mAnimationMatrices);
+
+            Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
+
+            foreach (var pass in mModel.Passes)
+            {
+                Mesh.StartVertex = 0;
+                Mesh.StartIndex = pass.StartIndex;
+                Mesh.IndexCount = pass.IndexCount;
+                Mesh.Program.SetPixelTexture(0, pass.Textures.First());
+                Mesh.Draw(mInstanceCount);
+            }
         }
 
-        public void AddInstance(int uuid, Vector3 position, Quaternion rotation, Vector3 scaling)
+        public BoundingBox AddInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
         {
             var instance = new M2RenderInstance(uuid, position, rotation, scaling, this);
             lock (mInstances)
             {
+                if (mFullInstances.ContainsKey(uuid))
+                    return instance.BoundingBox;
+
                 mInstances.Add(instance);
+                mFullInstances.Add(uuid, instance);
                 if (!WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox))
+                    return instance.BoundingBox;
+
+                lock (mInstanceBufferLock)
+                {
+                    mVisibleInstances.Add(instance); //mActiveInstances.Concat(new[] {instance.InstanceMatrix}).ToArray();
+                    if (mVisibleInstances.Count > mActiveInstances.Length)
+                        mActiveInstances = new Matrix[mVisibleInstances.Count];
+
+                    for (var i = 0; i < mVisibleInstances.Count; ++i)
+                        mActiveInstances[i] = mVisibleInstances[i].InstanceMatrix;
+
+                    mInstanceCount = mVisibleInstances.Count;
+
+                }
+                mUpdateBuffer = true;
+                return instance.BoundingBox;
+            }
+        }
+
+        public void PushMapReference(M2Instance instance)
+        {
+            lock(mInstanceBufferLock)
+            {
+                if (mUpdatedEntries.Contains(instance.Uuid))
                     return;
 
-                lock (mInstanceBuffer)
-                    mActiveInstances = mActiveInstances.Concat(new[] {instance.InstanceMatrix}).ToArray();
-                mUpdateBuffer = true;
+                var inst = mFullInstances[instance.Uuid];
+                if (WorldFrame.Instance.ActiveCamera.Contains(ref inst.BoundingBox))
+                    mVisibleInstances.Add(inst);
+
+                mUpdatedEntries.Add(instance.Uuid);
             }
         }
 
         public void ViewChanged()
         {
-            lock(mInstances)
+            lock (mInstanceBufferLock)
             {
-                lock (mInstanceBuffer)
+                /*var visibleInstances = new Matrix[mInstances.Count];
+                var j = 0;
+                for(var i = 0; i < visibleInstances.Length; ++i)
                 {
-                    mActiveInstances =
-                        mInstances.Where(i => WorldFrame.Instance.ActiveCamera.Contains(ref i.BoundingBox))
-                            .Select(i => i.InstanceMatrix)
-                            .ToArray();
-
-                    mUpdateBuffer = true;
+                    if (WorldFrame.Instance.ActiveCamera.Contains(ref mInstances[i].BoundingBox))
+                        visibleInstances[j++] = mInstances[i].InstanceMatrix;
                 }
+
+                mInstanceCount = j;
+                mActiveInstances = visibleInstances;
+                mUpdateBuffer = true;*/
+
+                mVisibleInstances.Clear();
+                mUpdatedEntries.Clear();
             }
         }
 
         private void CheckBuffer()
         {
-            if (mUpdateBuffer == false)
-                return;
+            if(M2Manager.IsViewDirty)
+            {
+                lock(mInstanceBufferLock)
+                {
+                    if (mActiveInstances.Length < mVisibleInstances.Count)
+                        mActiveInstances = new Matrix[mVisibleInstances.Count];
 
-            mUpdateBuffer = false;
-            lock (mInstanceBuffer)
-                mInstanceBuffer.UpdateData(mActiveInstances);
+                    for (var i = 0; i < mVisibleInstances.Count; ++i)
+                        mActiveInstances[i] = mVisibleInstances[i].InstanceMatrix;
+
+                    mInstanceCount = mVisibleInstances.Count;
+                    if (mInstanceCount == 0)
+                        return;
+
+                    mInstanceBuffer.UpdateData(mActiveInstances);
+                }
+            }
+            else if(mUpdateBuffer)
+            {
+                lock(mInstanceBuffer)
+                {
+                    mUpdateBuffer = false;
+                    if (mInstanceCount == 0)
+                        return;
+
+                    mInstanceBuffer.UpdateData(mActiveInstances);
+                }
+            }
         }
 
         private void SyncLoad()
         {
+            if(mModel.Vertices.Length ==0 || mModel.Indices.Length == 0 || mModel.Passes.Count == 0)
+            {
+                mIsSyncLoaded = true;
+                mSkipRendering = true;
+                return;
+            }
+
             var ctx = WorldFrame.Instance.GraphicsContext;
             mVertexBuffer = new VertexBuffer(ctx);
             // ReSharper disable once InconsistentlySynchronizedField
@@ -107,40 +209,48 @@ namespace WoWEditor6.Scene.Models.M2
             mVertexBuffer.UpdateData(mModel.Vertices);
             mIndexBuffer.UpdateData(mModel.Indices);
 
+            mAnimBuffer = new ConstantBuffer(ctx);
+            mAnimBuffer.UpdateData(mAnimationMatrices);
+
             mIsSyncLoaded = true;
         }
 
         public static void Initialize(GxContext context)
         {
-            gMesh = new Mesh(context)
+            Mesh = new Mesh(context)
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
                 InstanceStride = 64,
                 DepthState = {DepthEnabled = true}
             };
 
-            // 4 * 4 matrix entries, 4 bytes per entry
-            gMesh.BlendState.Dispose();
-            gMesh.IndexBuffer.Dispose();
-            gMesh.VertexBuffer.Dispose();
+            Mesh.BlendState.Dispose();
+            Mesh.IndexBuffer.Dispose();
+            Mesh.VertexBuffer.Dispose();
 
-            gMesh.AddElement("POSITION", 0, 3);
-            gMesh.AddElement("BLENDWEIGHT", 0, 4, DataType.Byte, true);
-            gMesh.AddElement("BLENDINDEX", 0, 4, DataType.Byte);
-            gMesh.AddElement("NORMAL", 0, 3);
-            gMesh.AddElement("TEXCOORD", 0, 2);
-            gMesh.AddElement("TEXCOORD", 1, 2);
+            Mesh.AddElement("POSITION", 0, 3);
+            Mesh.AddElement("BLENDWEIGHT", 0, 4, DataType.Byte, true);
+            Mesh.AddElement("BLENDINDEX", 0, 4, DataType.Byte);
+            Mesh.AddElement("NORMAL", 0, 3);
+            Mesh.AddElement("TEXCOORD", 0, 2);
+            Mesh.AddElement("TEXCOORD", 1, 2);
 
-            gMesh.AddElement("TEXCOORD", 2, 4, DataType.Float, false, 1, true);
-            gMesh.AddElement("TEXCOORD", 3, 4, DataType.Float, false, 1, true);
-            gMesh.AddElement("TEXCOORD", 4, 4, DataType.Float, false, 1, true);
-            gMesh.AddElement("TEXCOORD", 5, 4, DataType.Float, false, 1, true);
+            Mesh.AddElement("TEXCOORD", 2, 4, DataType.Float, false, 1, true);
+            Mesh.AddElement("TEXCOORD", 3, 4, DataType.Float, false, 1, true);
+            Mesh.AddElement("TEXCOORD", 4, 4, DataType.Float, false, 1, true);
+            Mesh.AddElement("TEXCOORD", 5, 4, DataType.Float, false, 1, true);
 
             var program = new ShaderProgram(context);
             program.SetVertexShader(Resources.Shaders.M2VertexInstanced, "main");
             program.SetPixelShader(Resources.Shaders.M2Pixel, "main");
 
-            gMesh.Program = program;
+            Mesh.Program = program;
+
+            Sampler = new Sampler(context)
+            {
+                AddressMode = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
+            };
         }
     }
 }

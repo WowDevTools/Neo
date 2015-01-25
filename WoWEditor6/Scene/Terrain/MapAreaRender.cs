@@ -1,6 +1,8 @@
 ﻿using System;
 using SharpDX;
 using WoWEditor6.Graphics;
+using WoWEditor6.Scene.Models;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace WoWEditor6.Scene.Terrain
@@ -13,6 +15,7 @@ namespace WoWEditor6.Scene.Terrain
         private VertexBuffer mVertexBuffer;
         private readonly MapChunkRender[] mChunks = new MapChunkRender[256];
         private BoundingBox mBoundingBox;
+        private BoundingBox mModelBox;
 
         public int IndexX { get; private set; }
         public int IndexY { get; private set; }
@@ -43,7 +46,18 @@ namespace WoWEditor6.Scene.Terrain
             if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
             {
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
+                {
+                    if (!M2Manager.IsViewDirty)
+                        return;
+
+                    if (!WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))
+                        return;
+
+                    foreach (var chunk in mChunks)
+                        chunk.PushDoodadReferences();
+
                     return;
+                }
             }
 
             MapChunkRender.ChunkMesh.UpdateVertexBuffer(mVertexBuffer);
@@ -61,11 +75,12 @@ namespace WoWEditor6.Scene.Terrain
             for(var i = 0; i < 256; ++i)
             {
                 var chunk = new MapChunkRender();
-                chunk.OnAsyncLoad(area.GetChunk(i));
+                chunk.OnAsyncLoad(area.GetChunk(i), this);
                 mChunks[i] = chunk;
             }
 
             mBoundingBox = area.BoundingBox;
+            mModelBox = area.ModelBox;
             mAsyncLoaded = true;
         }
 

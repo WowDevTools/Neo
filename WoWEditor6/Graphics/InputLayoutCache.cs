@@ -23,6 +23,28 @@ namespace WoWEditor6.Graphics
                 return layout;
             }
 
+            bool hasInstance = false, hasVertex = false;
+
+            for(var i = 0; i < elements.Length; ++i)
+            {
+                if (hasInstance && hasVertex)
+                    break;
+
+                if(elements[i].Classification == InputClassification.PerInstanceData && hasInstance == false)
+                {
+                    elements[i].AlignedByteOffset = 0;
+                    hasInstance = true;
+                    continue;
+                }
+
+                if(elements[i].Classification == InputClassification.PerVertexData && hasVertex == false)
+                {
+                    elements[i].AlignedByteOffset = 0;
+                    hasVertex = true;
+                    continue;
+                }
+            }
+
             layout = new InputLayout(context.Device, program.VertexShaderCode.Data, elements);
             meshEntry = new Dictionary<ShaderProgram, InputLayout>()
             {

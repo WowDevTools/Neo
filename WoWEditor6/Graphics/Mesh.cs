@@ -54,6 +54,11 @@ namespace WoWEditor6.Graphics
             mContext.Context.DrawIndexed(IndexCount, StartIndex, StartVertex);
         }
 
+        public void Draw(int numInstances)
+        {
+            mContext.Context.DrawIndexedInstanced(IndexCount, numInstances, StartIndex, StartVertex, 0);
+        }
+
         public void UpdateInstanceBuffer(VertexBuffer buffer)
         {
             if (InstanceStride == 0 || buffer == null)

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SharpDX;
+using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Texture;
 
@@ -176,8 +177,62 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private void InitModels()
         {
             InitWmoModels();
+            InitM2Models();
+        }
 
+        private void InitM2Models()
+        {
+            if (SeekChunk(mObjReader, 0x4D4D4458) == false)
+                return;
 
+            var size = mObjReader.ReadInt32();
+            var bytes = mObjReader.ReadBytes(size);
+            var fullString = Encoding.ASCII.GetString(bytes);
+            var modelNames = fullString.Split('\0');
+            var modelNameLookup = new Dictionary<int, string>();
+            var curOffset = 0;
+            foreach (var name in modelNames)
+            {
+                modelNameLookup.Add(curOffset, name);
+                curOffset += name.Length + 1;
+            }
+
+            if (SeekChunk(mObjReader, 0x4D4D4944) == false)
+                return;
+
+            size = mObjReader.ReadInt32();
+            var modelNameIds = mObjReader.ReadArray<int>(size / 4);
+
+            if (SeekChunk(mObjReader, 0x4D444446) == false)
+                return;
+
+            size = mObjReader.ReadInt32();
+            var mddf = mObjReader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
+            foreach(var entry in mddf)
+            {
+                if (entry.Mmid >= modelNameIds.Length)
+                    continue;
+
+                var nameId = modelNameIds[entry.Mmid];
+                string modelName;
+                if (modelNameLookup.TryGetValue(nameId, out modelName) == false)
+                    continue;
+
+                var position = new Vector3(entry.Position.X, 64.0f * Metrics.TileSize - entry.Position.Z,
+                    entry.Position.Y);
+                var rotation = new Vector3(360.0f - entry.Rotation.X, 360.0f - entry.Rotation.Z, entry.Rotation.Y - 90);
+                var scale = entry.Scale / 1024.0f;
+
+                var bbox = WorldFrame.Instance.M2Manager.AddInstance(modelName, entry.UniqueId, position, rotation,
+                    new Vector3(scale));
+
+                DoodadInstances.Add(new M2Instance
+                {
+                    Hash = modelName.ToUpperInvariant().GetHashCode(),
+                    Uuid = entry.UniqueId,
+                    BoundingBox = bbox
+                });
+            }
         }
 
         private void InitWmoModels()
@@ -256,6 +311,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
+            var modelMin = new Vector3(float.MaxValue);
+            var modelMax = new Vector3(float.MinValue);
+
             for (var i = 0; i < 256; ++i)
             {
                 var chunk = new MapChunk(mMainChunks[i], mTexChunks[i], mObjChunks[i], i % 16, i / 16, this);
@@ -275,17 +333,36 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 if (bbmax.Z > maxPos.Z)
                     maxPos.Z = bbmax.Z;
 
+                bbmin = chunk.ModelBox.Minimum;
+                bbmax = chunk.ModelBox.Maximum;
+                if (bbmin.X < modelMin.X)
+                    modelMin.X = bbmin.X;
+                if (bbmax.X > modelMax.X)
+                    modelMax.X = bbmax.X;
+                if (bbmin.Y < modelMin.Y)
+                    modelMin.Y = bbmin.Y;
+                if (bbmax.Y > modelMax.Y)
+                    modelMax.Y = bbmax.Y;
+                if (bbmin.Z < modelMin.Z)
+                    modelMin.Z = bbmin.Z;
+                if (bbmax.Z > modelMax.Z)
+                    modelMax.Z = bbmax.Z;
+
                 mChunks.Add(chunk);
                 Array.Copy(chunk.Vertices, 0, FullVertices, i * 145, 145);
             }
 
             BoundingBox = new BoundingBox(minPos, maxPos);
+            ModelBox = new BoundingBox(modelMin, modelMax);
         }
 
-        private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B);
+        private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B, false);
 
-        private static bool SeekChunk(BinaryReader reader, uint signature)
+        private static bool SeekChunk(BinaryReader reader, uint signature, bool begin = true)
         {
+            if (begin)
+                reader.BaseStream.Position = 0;
+
             try
             {
                 var sig = reader.ReadUInt32();

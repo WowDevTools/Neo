@@ -22,7 +22,7 @@ namespace WoWEditor6.Graphics
             {
                 AlignedByteOffset = InputElement.AppendAligned,
                 Classification = instanceData ? InputClassification.PerInstanceData : InputClassification.PerVertexData,
-                InstanceDataStepRate = 0,
+                InstanceDataStepRate = instanceData ? 1 : 0,
                 SemanticIndex = index,
                 SemanticName = semantic,
                 Slot = slot

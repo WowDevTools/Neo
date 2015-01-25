@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using SharpDX;
+using SharpDX.Direct3D11;
 using WoWEditor6.Graphics;
+using WoWEditor6.IO.Files.Models;
+using WoWEditor6.Scene.Models;
 
 namespace WoWEditor6.Scene.Terrain
 {
@@ -18,8 +21,10 @@ namespace WoWEditor6.Scene.Terrain
         private bool mSyncLoadRequested;
         private Graphics.Texture mAlphaTexture;
         private BoundingBox mBoundingBox;
+        private BoundingBox mModelBox;
         private ConstantBuffer mScaleBuffer;
         private Graphics.Texture[] mShaderTextures;
+        private M2Instance[] mReferences;
 
         public static Mesh ChunkMesh { get; private set; }
 
@@ -35,6 +40,15 @@ namespace WoWEditor6.Scene.Terrain
             });
         }
 
+        public void PushDoodadReferences()
+        {
+            if (mReferences.Length == 0)
+                return;
+
+            if (WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))
+                WorldFrame.Instance.M2Manager.PushMapReferences(mReferences);
+        }
+
         public void OnFrame()
         {
             if (mAsyncLoaded == false)
@@ -43,7 +57,13 @@ namespace WoWEditor6.Scene.Terrain
             if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
             {
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
+                {
+                    if (M2Manager.IsViewDirty == false)
+                        return;
+
+                    PushDoodadReferences();
                     return;
+                }
             }
 
             if(mSyncLoaded == false)
@@ -64,6 +84,9 @@ namespace WoWEditor6.Scene.Terrain
                 }
             }
 
+            if (M2Manager.IsViewDirty)
+                PushDoodadReferences();
+
             ChunkMesh.StartVertex = mData.StartVertex;
             ChunkMesh.Program.SetPixelTexture(0, mAlphaTexture);
             ChunkMesh.Program.SetPixelTextures(1, mShaderTextures);
@@ -73,10 +96,15 @@ namespace WoWEditor6.Scene.Terrain
             ChunkMesh.Draw();
         }
 
-        public void OnAsyncLoad(IO.Files.Terrain.MapChunk chunk)
+        public void OnAsyncLoad(IO.Files.Terrain.MapChunk chunk, MapAreaRender parent)
         {
             mData = chunk;
             mBoundingBox = chunk.BoundingBox;
+            mModelBox = chunk.ModelBox;
+            mReferences = new M2Instance[chunk.DoodadReferences.Length];
+            for (var i = 0; i < mReferences.Length; ++i)
+                mReferences[i] = parent.AreaFile.DoodadInstances[chunk.DoodadReferences[i]];
+
             mAsyncLoaded = true;
         }
 

@@ -102,6 +102,7 @@
     <Compile Include="IO\Files\Models\IM2Animator.cs" />
     <Compile Include="IO\Files\Models\M2AnimationInterpolation.cs" />
     <Compile Include="IO\Files\Models\M2File.cs" />
+    <Compile Include="IO\Files\Models\M2Instance.cs" />
     <Compile Include="IO\Files\Models\M2RenderPass.cs" />
     <Compile Include="IO\Files\Models\ModelFactory.cs" />
     <Compile Include="IO\Files\Models\WmoGroup.cs" />

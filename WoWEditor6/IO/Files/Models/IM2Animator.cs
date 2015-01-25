@@ -19,5 +19,6 @@ namespace WoWEditor6.IO.Files.Models
         Matrix GetUvAnimMatrix(int uvIndex);
         Matrix GetBoneMatrix(int bone);
         Matrix GetBoneMatrix(uint time, short bone);
+        bool GetBones(Matrix[] bones);
     }
 }

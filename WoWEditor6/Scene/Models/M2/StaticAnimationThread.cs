@@ -15,6 +15,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void Initialize()
         {
+            mIsRunning = true;
             mThread = new Thread(AnimationProc);
             mThread.Start();
         }

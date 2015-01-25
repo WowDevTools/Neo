@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
     class M2AnimationBone
     {
-        private Matrix mInvPivot;
-        private Matrix mPivot;
+        private readonly Matrix mInvPivot;
+        private readonly Matrix mPivot;
 
-        private M2Vector3AnimationBlock mTranslation;
-        private M2Quaternion16AnimationBlock mRotation;
-        private M2Vector3AnimationBlock mScaling;
+        private readonly M2Vector3AnimationBlock mTranslation;
+        private readonly M2Quaternion16AnimationBlock mRotation;
+        private readonly M2Vector3AnimationBlock mScaling;
 
         public M2AnimationBone ParentBone { get; set; }
 
@@ -28,17 +23,17 @@ namespace WoWEditor6.IO.Files.Models.WoD
             mInvPivot = Matrix.Translation(-bone.pivot);
 
             mTranslation = new M2Vector3AnimationBlock(file, bone.translation, reader);
-            mRotation = new M2Quaternion16AnimationBlock(file, bone.rotation, reader);
+            mRotation = new M2Quaternion16AnimationBlock(file, bone.rotation, reader, Quaternion.Identity);
             mScaling = new M2Vector3AnimationBlock(file, bone.scaling, reader, Vector3.One);
         }
 
         public void UpdateMatrix(uint time, int animation, out Matrix matrix, M2Animator animator)
         {
-            var position = mTranslation.GetValue(animation, time, 0);
-            var scaling = mScaling.GetValue(animation, time, 0);
-            var rotation = mRotation.GetValue(animation, time, 0);
+            var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
+            var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
+            var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
 
-            var boneMatrix = mInvPivot * Matrix.Scaling(scaling) * Matrix.RotationQuaternion(rotation) *
+            var boneMatrix = mInvPivot * Matrix.RotationQuaternion(rotation) * Matrix.Scaling(scaling) *
                      Matrix.Translation(position) * mPivot;
 
             if (Bone.parentBone >= 0)

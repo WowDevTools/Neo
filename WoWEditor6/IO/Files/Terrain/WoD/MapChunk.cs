@@ -11,13 +11,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
     {
         private readonly ChunkStreamInfo mMainInfo;
         private readonly ChunkStreamInfo mTexInfo;
-        // ReSharper disable once NotAccessedField.Local
-        private ChunkStreamInfo mObjInfo;
+        private readonly ChunkStreamInfo mObjInfo;
 
         private readonly BinaryReader mReader;
         private readonly BinaryReader mTexReader;
-        // ReSharper disable once NotAccessedField.Local
-        private BinaryReader mObjReader;
+        private readonly BinaryReader mObjReader;
 
         private Mcnk mHeader;
 
@@ -85,8 +83,67 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
 
             LoadTexData();
+            LoadObjData();
 
             WorldFrame.Instance.MapManager.OnLoadProgress();
+        }
+
+        private void LoadObjData()
+        {
+            mObjReader.BaseStream.Position = mObjInfo.PosStart;
+            var chunkSize = mObjReader.ReadInt32();
+
+            while(mObjReader.BaseStream.Position + 8 <= mObjInfo.PosStart + 8 + chunkSize)
+            {
+                var id = mObjReader.ReadUInt32();
+                var size = mObjReader.ReadInt32();
+
+                if (mObjReader.BaseStream.Position + size > mObjInfo.PosStart + 8 + chunkSize)
+                    break;
+
+                var cur = mObjReader.BaseStream.Position;
+                switch(id)
+                {
+                    case 0x4D435244:
+                        LoadMcrd(size);
+                        break;
+                }
+
+                mObjReader.BaseStream.Position = cur + size;
+            }
+        }
+
+        private void LoadMcrd(int size)
+        {
+            DoodadReferences = mObjReader.ReadArray<int>(size / 4);
+            var minPos = BoundingBox.Minimum;
+            var maxPos = BoundingBox.Maximum;
+
+            MapArea parent;
+            if (mParent.TryGetTarget(out parent) == false)
+                return;
+
+            foreach (var reference in DoodadReferences)
+            {
+                var inst = parent.DoodadInstances[reference];
+                var min = inst.BoundingBox.Minimum;
+                var max = inst.BoundingBox.Maximum;
+
+                if (min.X < minPos.X)
+                    minPos.X = min.X;
+                if (min.Y < minPos.Y)
+                    minPos.Y = min.Y;
+                if (min.Z < minPos.Z)
+                    minPos.Z = min.Z;
+                if (max.X > maxPos.X)
+                    maxPos.X = max.X;
+                if (max.Y > maxPos.Y)
+                    maxPos.Y = max.Y;
+                if (max.Z > maxPos.Z)
+                    maxPos.Z = max.Z;
+            }
+
+            ModelBox = new BoundingBox(minPos, maxPos);
         }
 
         private void LoadTexData()

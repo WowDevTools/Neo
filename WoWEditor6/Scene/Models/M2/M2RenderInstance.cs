@@ -17,13 +17,13 @@ namespace WoWEditor6.Scene.Models.M2
         public int Uuid { get; }
         public Matrix InstanceMatrix => mInstanceMatrix;
 
-        public M2RenderInstance(int uuid, Vector3 position, Quaternion rotation, Vector3 scale, M2BatchRenderer renderer)
+        public M2RenderInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scale, M2BatchRenderer renderer)
         {
             Uuid = uuid;
             BoundingBox = renderer.BoundingBox;
-            mInstanceMatrix = Matrix.RotationQuaternion(rotation) * Matrix.Scaling(scale) * Matrix.Translation(position);
+            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
+                MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix.Scaling(scale) * Matrix.Translation(position);
             BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
-            Matrix.Transpose(ref mInstanceMatrix, out mInstanceMatrix);
         }
     }
 }

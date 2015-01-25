@@ -7,7 +7,7 @@
 
 cbuffer AnimationMatrices : register(b2)
 {
-	float4x4 Bones[256];
+	row_major float4x4 Bones[256];
 }
 
 struct VertexInput
@@ -38,17 +38,17 @@ VertexOutput main(VertexInput input) {
 
 	float3x3 matNormal = (float3x3)matInstance;
 
-	float4 position = float4(input.position, 1.0);
-	position += mul(position, Bones[input.bones.x]) * input.boneWeights.x;
-	position += mul(position, Bones[input.bones.y]) * input.boneWeights.y;
-	position += mul(position, Bones[input.bones.z]) * input.boneWeights.z;
-	position += mul(position, Bones[input.bones.w]) * input.boneWeights.w;
+	float4 basePosition = float4(input.position, 1.0);
+	float4 position  = mul(basePosition, Bones[input.bones.x]) * input.boneWeights.x;
+	position		+= mul(basePosition, Bones[input.bones.y]) * input.boneWeights.y;
+	position		+= mul(basePosition, Bones[input.bones.z]) * input.boneWeights.z;
+	position		+= mul(basePosition, Bones[input.bones.w]) * input.boneWeights.w;
 
-	float3 normal = input.normal;
-	normal += mul(normal, (float3x3)Bones[input.bones.x]) * input.boneWeights.x;
-	normal += mul(normal, (float3x3)Bones[input.bones.y]) * input.boneWeights.y;
-	normal += mul(normal, (float3x3)Bones[input.bones.z]) * input.boneWeights.z;
-	normal += mul(normal, (float3x3)Bones[input.bones.w]) * input.boneWeights.w;
+	float3 normal = float3(0, 0, 0);
+	normal += mul(input.normal, (float3x3)Bones[input.bones.x]) * input.boneWeights.x;
+	normal += mul(input.normal, (float3x3)Bones[input.bones.y]) * input.boneWeights.y;
+	normal += mul(input.normal, (float3x3)Bones[input.bones.z]) * input.boneWeights.z;
+	normal += mul(input.normal, (float3x3)Bones[input.bones.w]) * input.boneWeights.w;
 
 	position = mul(position, matInstance);
 	normal = mul(normal, matNormal);

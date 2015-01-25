@@ -27,4 +27,15 @@ namespace WoWEditor6.IO.Files.Terrain
         public readonly short NameSet;
         private readonly short padding;
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct Mddf
+    {
+        public readonly int Mmid;
+        public readonly int UniqueId;
+        public readonly Vector3 Position;
+        public readonly Vector3 Rotation;
+        public readonly ushort Scale;
+        public readonly ushort Flags;
+    }
 }

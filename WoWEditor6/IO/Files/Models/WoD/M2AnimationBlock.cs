@@ -57,13 +57,18 @@ namespace WoWEditor6.IO.Files.Models.WoD
             if (time == tl[maxIndex - 1])
                 return Interpolator.Interpolate(ref values[maxIndex - 1]);
 
-            if (time < tl[maxIndex - 1])
-                return time < tl[0] ? Interpolator.Interpolate(ref values[0]) : InterpolateValue(time, timeline);
+            if(time >= tl[maxIndex - 1])
+            {
+                var te = tl[0] + length;
+                var ts = tl[maxIndex - 1];
+                var fac = (time - ts) / (float) (te - ts);
+                return Interpolator.Interpolate(fac, ref values[maxIndex - 1], ref values[0]);
+            }
 
-            var te = tl[0] + length;
-            var ts = tl[maxIndex - 1];
-            var fac = (time - ts) / (float) (te - ts);
-            return Interpolator.Interpolate(fac, ref values[maxIndex - 1], ref values[0]);
+            if (time <= tl[0])
+                return Interpolator.Interpolate(ref values[0]);
+
+            return InterpolateValue(time, timeline);
         }
 
         public TDest GetValueDefaultLength(int timeline, uint timeFull)
@@ -103,12 +108,12 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
             for (istart = 0; istart < maxIndex - 1; ++istart)
             {
-                if (tl[istart] > time || tl[istart + 1] < time)
-                    continue;
-
-                iend = istart + 1;
-                found = true;
-                break;
+                if (tl[istart] <= time && tl[istart + 1] >= time)
+                {
+                    iend = istart + 1;
+                    found = true;
+                    break;
+                }
             }
 
             if (!found)

@@ -30,6 +30,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         public M2File(string fileName)
         {
+            mModelName = string.Empty;
             mFileName = fileName;
             mRootPath = Path.GetDirectoryName(mFileName);
         }
@@ -52,7 +53,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
                 BoundingBox = new BoundingBox(mHeader.BoundingBoxMin, mHeader.BoundingBoxMax);
                 strm.Position = mHeader.OfsName;
-                mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName)).Trim();
+                if (mHeader.LenName > 0)
+                    mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
 
                 GlobalSequences = ReadArrayOf<uint>(reader, mHeader.OfsGlobalSequences, mHeader.NGlobalSequences);
                 Vertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
@@ -61,10 +63,10 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 for(var i = 0; i < textures.Length; ++i)
                 {
                     var tex = textures[i];
-                    if (tex.type == 0)
+                    if (tex.type == 0 && tex.lenName > 0)
                     {
                         var texName =
-                            Encoding.ASCII.GetString(ReadArrayOf<byte>(reader, tex.ofsName, tex.lenName)).Trim();
+                            Encoding.ASCII.GetString(ReadArrayOf<byte>(reader, tex.ofsName, tex.lenName - 1)).Trim();
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(texName);
                     }
                     else

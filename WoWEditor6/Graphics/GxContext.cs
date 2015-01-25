@@ -52,7 +52,7 @@ namespace WoWEditor6.Graphics
 
         public void EndFrame()
         {
-            mSwapChain.Present(0, PresentFlags.None);
+            mSwapChain.Present(1, PresentFlags.None);
         }
 
         public void InitContext()
