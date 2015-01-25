@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Models;
@@ -26,14 +23,13 @@ namespace WoWEditor6.Scene.Models.M2
 
         private int mInstanceCount;
 
-        private readonly List<M2RenderInstance> mInstances = new List<M2RenderInstance>();
         private Matrix[] mActiveInstances = new Matrix[0];
         private bool mUpdateBuffer;
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
 
-        private Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
-        private List<M2RenderInstance> mVisibleInstances = new List<M2RenderInstance>();
-        private List<int> mUpdatedEntries = new List<int>();
+        private readonly Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
+        private readonly List<M2RenderInstance> mVisibleInstances = new List<M2RenderInstance>();
+        private readonly List<int> mUpdatedEntries = new List<int>();
 
         private bool mSkipRendering;
 
@@ -96,19 +92,18 @@ namespace WoWEditor6.Scene.Models.M2
         public BoundingBox AddInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
         {
             var instance = new M2RenderInstance(uuid, position, rotation, scaling, this);
-            lock (mInstances)
+            lock (mFullInstances)
             {
                 if (mFullInstances.ContainsKey(uuid))
                     return instance.BoundingBox;
 
-                mInstances.Add(instance);
                 mFullInstances.Add(uuid, instance);
                 if (!WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox))
                     return instance.BoundingBox;
 
                 lock (mInstanceBufferLock)
                 {
-                    mVisibleInstances.Add(instance); //mActiveInstances.Concat(new[] {instance.InstanceMatrix}).ToArray();
+                    mVisibleInstances.Add(instance);
                     if (mVisibleInstances.Count > mActiveInstances.Length)
                         mActiveInstances = new Matrix[mVisibleInstances.Count];
 
@@ -118,6 +113,7 @@ namespace WoWEditor6.Scene.Models.M2
                     mInstanceCount = mVisibleInstances.Count;
 
                 }
+
                 mUpdateBuffer = true;
                 return instance.BoundingBox;
             }
@@ -140,23 +136,8 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void ViewChanged()
         {
-            lock (mInstanceBufferLock)
-            {
-                /*var visibleInstances = new Matrix[mInstances.Count];
-                var j = 0;
-                for(var i = 0; i < visibleInstances.Length; ++i)
-                {
-                    if (WorldFrame.Instance.ActiveCamera.Contains(ref mInstances[i].BoundingBox))
-                        visibleInstances[j++] = mInstances[i].InstanceMatrix;
-                }
-
-                mInstanceCount = j;
-                mActiveInstances = visibleInstances;
-                mUpdateBuffer = true;*/
-
-                mVisibleInstances.Clear();
-                mUpdatedEntries.Clear();
-            }
+            mVisibleInstances.Clear();
+            mUpdatedEntries.Clear();
         }
 
         private void CheckBuffer()
