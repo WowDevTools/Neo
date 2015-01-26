@@ -140,6 +140,13 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 reader.BaseStream.Position = curPos + chunkSize;
             }
 
+            if(mTexCoords.Length == 0 && mPositions.Length != 0)
+            {
+                mTexCoords = new Vector2[mPositions.Length];
+                for (var i = 0; i < mTexCoords.Length; ++i)
+                    mTexCoords[i] = new Vector2(0, 0);
+            }
+
             if(mPositions.Length == 0 || mPositions.Length != mNormals.Length || mNormals.Length != mTexCoords.Length)
             {
                 Log.Error(

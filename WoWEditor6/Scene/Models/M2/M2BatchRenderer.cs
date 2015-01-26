@@ -11,6 +11,11 @@ namespace WoWEditor6.Scene.Models.M2
         public static Mesh Mesh { get; private set; }
         public static Sampler Sampler { get; private set; }
 
+        private static BlendState gNoBlendState;
+        private static BlendState gAlphaBlendState;
+        private static ShaderProgram gNoBlendProgram;
+        private static ShaderProgram gBlendProgram;
+
         private readonly IM2Animator mAnimator;
         private readonly M2File mModel;
         private bool mIsSyncLoaded;
@@ -81,6 +86,12 @@ namespace WoWEditor6.Scene.Models.M2
 
             foreach (var pass in mModel.Passes)
             {
+                Mesh.UpdateBlendState(pass.BlendMode > 0 ? gAlphaBlendState : gNoBlendState);
+                var oldProgram = Mesh.Program;
+                Mesh.Program = (pass.BlendMode > 0 ? gBlendProgram : gNoBlendProgram);
+                if (Mesh.Program != oldProgram)
+                    Mesh.Program.Bind();
+
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
                 Mesh.IndexCount = pass.IndexCount;
@@ -232,6 +243,15 @@ namespace WoWEditor6.Scene.Models.M2
                 AddressMode = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
             };
+
+            gNoBlendState = new BlendState(context) {BlendEnabled = false};
+            gAlphaBlendState = new BlendState(context) {BlendEnabled = true};
+
+            gNoBlendProgram = program;
+
+            gBlendProgram = new ShaderProgram(context);
+            gBlendProgram.SetPixelShader(Resources.Shaders.M2Pixel, "main_blend");
+            gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced, "main");
         }
     }
 }
