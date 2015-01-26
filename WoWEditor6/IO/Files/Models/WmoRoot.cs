@@ -17,6 +17,8 @@ namespace WoWEditor6.IO.Files.Models
 
         public IList<WmoGroup> Groups { get; protected set; }
 
+        public virtual string FileName { get; }
+
         public abstract void Dispose();
     }
 }

@@ -136,9 +136,9 @@ namespace WoWEditor6.IO.Files.Models.WoD
     {
         public fixed uint a [3];
         public readonly int firstFace;
-        public readonly short numFaces;
-        public readonly short firstVertex;
-        public readonly short lastVertex;
+        public readonly ushort numFaces;
+        public readonly ushort firstVertex;
+        public readonly ushort lastVertex;
         private readonly byte unused;
         public readonly byte material;
     }

@@ -16,7 +16,7 @@ namespace WoWEditor6.Scene.Models.WMO
         private bool mSyncLoadRequested;
         private BoundingBox mBoundingBox;
         private WmoVertex[] mVertices;
-        private ushort[] mIndices;
+        private uint[] mIndices;
 
         private VertexBuffer mVertexBuffer;
         private IndexBuffer mIndexBuffer;
@@ -43,7 +43,7 @@ namespace WoWEditor6.Scene.Models.WMO
             Data?.Dispose();
         }
 
-        public void OnFrame(List<WmoInstance> instances)
+        public void OnFrame(IEnumerable<WmoInstance> instances)
         {
             if (mAsyncLoaded == false)
                 return;
@@ -102,7 +102,7 @@ namespace WoWEditor6.Scene.Models.WMO
             Groups = groups.AsReadOnly();
             mBoundingBox = Data.BoundingBox;
 
-            foreach(var group in Groups)
+            foreach (var group in Groups)
             {
                 group.BaseIndex = indices.Count;
                 group.BaseVertex = vertices.Count;
@@ -111,7 +111,7 @@ namespace WoWEditor6.Scene.Models.WMO
             }
 
             mVertices = vertices.ToArray();
-            mIndices = indices.ToArray();
+            mIndices = indices.Select(i => (uint)i).ToArray();
 
             mAsyncLoaded = true;
         }
@@ -122,7 +122,11 @@ namespace WoWEditor6.Scene.Models.WMO
                 return;
 
             mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
-            mIndexBuffer = new IndexBuffer(WorldFrame.Instance.GraphicsContext);
+            mIndexBuffer = new IndexBuffer(WorldFrame.Instance.GraphicsContext)
+            {
+                IndexFormat = SharpDX.DXGI.Format.R32_UInt
+            };
+
             if (mVertices.Length != 0 && mIndices.Length != 0)
             {
                 mVertexBuffer.UpdateData(mVertices);
