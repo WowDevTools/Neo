@@ -91,15 +91,6 @@ namespace WoWEditor6.Scene.Models
             batch.AddInstance(uuid, position, rotation);
         }
 
-        public void ForceVisibilityUpdate()
-        {
-            lock(mAddLock)
-            {
-                foreach (var pair in mRenderer)
-                    pair.Value.UpdateVisibility();
-            }
-        }
-
         public void OnFrame()
         {
             WmoGroupRender.Mesh.BeginDraw();

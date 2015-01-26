@@ -124,13 +124,23 @@ namespace WoWEditor6.IO.Files.Models.WoD
                         break;
                 }
 
+                var flags = renderFlags[texUnit.renderFlags];
+                var blendMode = flags >> 16;
+                var flag = flags & 0xFFFF;
+
+                if (mRemapBlend && texUnit.shaderId < mBlendMap.Length)
+                    blendMode = mBlendMap[texUnit.shaderId];
+
+                blendMode %= 7;
+
                 Passes.Add(new M2RenderPass
                 {
                     Textures = textures,
                     AlphaAnimIndex = transLookup[texUnit.transparency],
                     ColorAnimIndex = texUnit.colorIndex,
                     IndexCount = mesh.nTriangles,
-                    RenderFlags = renderFlags[texUnit.renderFlags],
+                    RenderFlag = flag,
+                    BlendMode = blendMode,
                     StartIndex = startTriangle,
                     TexAnimIndex = uvIndex,
                     TexUnitNumber = texUnit.texUnitNumber

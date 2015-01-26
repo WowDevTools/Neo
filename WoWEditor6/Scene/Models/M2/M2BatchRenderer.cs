@@ -11,8 +11,8 @@ namespace WoWEditor6.Scene.Models.M2
         public static Mesh Mesh { get; private set; }
         public static Sampler Sampler { get; private set; }
 
-        private static BlendState gNoBlendState;
-        private static BlendState gAlphaBlendState;
+        private static readonly BlendState[] gBlendStates = new BlendState[7];
+
         private static ShaderProgram gNoBlendProgram;
         private static ShaderProgram gBlendProgram;
 
@@ -86,7 +86,7 @@ namespace WoWEditor6.Scene.Models.M2
 
             foreach (var pass in mModel.Passes)
             {
-                Mesh.UpdateBlendState(pass.BlendMode > 0 ? gAlphaBlendState : gNoBlendState);
+                Mesh.UpdateBlendState(gBlendStates[pass.BlendMode]);
                 var oldProgram = Mesh.Program;
                 Mesh.Program = (pass.BlendMode > 0 ? gBlendProgram : gNoBlendProgram);
                 if (Mesh.Program != oldProgram)
@@ -97,6 +97,31 @@ namespace WoWEditor6.Scene.Models.M2
                 Mesh.IndexCount = pass.IndexCount;
                 Mesh.Program.SetPixelTexture(0, pass.Textures.First());
                 Mesh.Draw(mInstanceCount);
+            }
+        }
+
+        public bool RemoveInstance(int uuid)
+        {
+            lock(mFullInstances)
+            {
+                if (mFullInstances.ContainsKey(uuid) == false)
+                    return false;
+
+                mFullInstances.Remove(uuid);
+                lock(mInstanceBuffer)
+                {
+                    for(var i = 0; i < mVisibleInstances.Count; ++i)
+                    {
+                        if(mVisibleInstances[i].Uuid == uuid)
+                        {
+                            mVisibleInstances.RemoveAt(i);
+                            mUpdateBuffer = true;
+                            break;
+                        }
+                    }
+
+                    return mFullInstances.Count == 0;
+                }
             }
         }
 
@@ -244,8 +269,67 @@ namespace WoWEditor6.Scene.Models.M2
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
             };
 
-            gNoBlendState = new BlendState(context) {BlendEnabled = false};
-            gAlphaBlendState = new BlendState(context) {BlendEnabled = true};
+            for (var i = 0; i < gBlendStates.Length; ++i)
+                gBlendStates[i] = new BlendState(context);
+
+            gBlendStates[0] = new BlendState(context)
+            {
+                BlendEnabled = false
+            };
+
+            gBlendStates[1] = new BlendState(context)
+            {
+                BlendEnabled = true,
+                SourceBlend = SharpDX.Direct3D11.BlendOption.One,
+                DestinationBlend = SharpDX.Direct3D11.BlendOption.Zero,
+                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.One,
+                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.Zero
+            };
+
+            gBlendStates[2] = new BlendState(context)
+            {
+                BlendEnabled = true,
+                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
+                DestinationBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,
+                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
+                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha
+            };
+
+            gBlendStates[3] = new BlendState(context)
+            {
+                BlendEnabled = true,
+                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceColor,
+                DestinationBlend = SharpDX.Direct3D11.BlendOption.DestinationColor,
+                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
+                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.DestinationAlpha
+            };
+
+            gBlendStates[4] = new BlendState(context)
+            {
+                BlendEnabled = true,
+                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
+                DestinationBlend = SharpDX.Direct3D11.BlendOption.One,
+                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
+                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.One
+            };
+
+            gBlendStates[5] = new BlendState(context)
+            {
+                BlendEnabled = true,
+                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
+                DestinationBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,
+                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
+                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha
+            };
+
+            gBlendStates[6] = new BlendState(context)
+            {
+                BlendEnabled = true,
+                SourceBlend = SharpDX.Direct3D11.BlendOption.DestinationColor,
+                DestinationBlend = SharpDX.Direct3D11.BlendOption.SourceColor,
+                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.DestinationAlpha,
+                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha
+            };
 
             gNoBlendProgram = program;
 

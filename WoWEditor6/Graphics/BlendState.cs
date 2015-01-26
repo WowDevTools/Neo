@@ -2,7 +2,7 @@
 using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
-{
+{ 
     class BlendState : IDisposable
     {
         private SharpDX.Direct3D11.BlendState mState;
@@ -28,6 +28,30 @@ namespace WoWEditor6.Graphics
 
                 return mState;
             }
+        }
+
+        public BlendOption SourceBlend
+        {
+            get { return mDescription.RenderTarget[0].SourceBlend; }
+            set { mDescription.RenderTarget[0].SourceBlend = value; mChanged = true; }
+        }
+
+        public BlendOption DestinationBlend
+        {
+            get { return mDescription.RenderTarget[0].DestinationBlend; }
+            set { mDescription.RenderTarget[0].DestinationBlend = value; mChanged = true; }
+        }
+
+        public BlendOption SourceAlphaBlend
+        {
+            get { return mDescription.RenderTarget[0].SourceAlphaBlend; }
+            set { mDescription.RenderTarget[0].SourceAlphaBlend = value; mChanged = true; }
+        }
+
+        public BlendOption DestinationAlphaBlend
+        {
+            get { return mDescription.RenderTarget[0].DestinationAlphaBlend; }
+            set { mDescription.RenderTarget[0].DestinationAlphaBlend = value; mChanged = true; }
         }
 
         public BlendState(GxContext context)

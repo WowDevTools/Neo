@@ -396,6 +396,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             foreach (var instance in mWmoInstances)
                 WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid);
 
+            foreach (var instance in DoodadInstances)
+                WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+
             mWmoInstances.Clear();
         }
     }

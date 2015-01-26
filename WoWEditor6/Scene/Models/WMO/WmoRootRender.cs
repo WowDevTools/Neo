@@ -111,7 +111,7 @@ namespace WoWEditor6.Scene.Models.WMO
             }
 
             mVertices = vertices.ToArray();
-            mIndices = indices.Select(i => (uint)i).ToArray();
+            mIndices = indices.Select(i => (uint) i).ToArray();
 
             mAsyncLoaded = true;
         }

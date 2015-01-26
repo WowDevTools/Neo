@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene.Models.M2;
@@ -10,6 +11,7 @@ namespace WoWEditor6.Scene.Models
     {
         private readonly Dictionary<int, M2BatchRenderer> mRenderer = new Dictionary<int, M2BatchRenderer>();
         private readonly object mAddLock = new object();
+        private Thread mUnloadThread;
 
         public static bool IsViewDirty { get; private set; }
 
@@ -47,6 +49,25 @@ namespace WoWEditor6.Scene.Models
             {
                 foreach (var pair in mRenderer)
                     pair.Value.ViewChanged();
+            }
+        }
+
+        public void RemoveInstance(string model, int uuid)
+        {
+            var hash = model.ToUpperInvariant().GetHashCode();
+            RemoveInstance(hash, uuid);
+        }
+
+        public void RemoveInstance(int hash, int uuid)
+        {
+            lock (mRenderer)
+            {
+                M2BatchRenderer renderer;
+                if (mRenderer.TryGetValue(hash, out renderer) == false)
+                    return;
+
+                if (renderer.RemoveInstance(uuid))
+                    mRenderer.Remove(hash);
             }
         }
 
