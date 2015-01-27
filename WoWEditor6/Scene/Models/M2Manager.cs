@@ -125,6 +125,8 @@ namespace WoWEditor6.Scene.Models
 
                     mUnloadList.Clear();
                 }
+
+                Thread.Sleep(200);
             }
         }
 

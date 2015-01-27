@@ -101,6 +101,7 @@ namespace WoWEditor6.Scene
             StaticAnimationThread.Instance.Initialize();
 
             WmoManager.Initialize();
+            M2Manager.Initialize();
 
             GraphicsContext = context;
 
@@ -132,6 +133,7 @@ namespace WoWEditor6.Scene
             MapManager.Shutdown();
             WmoManager.Shutdown();
             StaticAnimationThread.Instance.Shutdown();
+            M2Manager.Shutdown();
         }
 
         public void OnFrame()
