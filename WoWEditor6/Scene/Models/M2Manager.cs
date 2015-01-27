@@ -13,7 +13,7 @@ namespace WoWEditor6.Scene.Models
         private readonly object mAddLock = new object();
         private Thread mUnloadThread;
         private bool mIsRunning;
-        private List<M2BatchRenderer> mUnloadList = new List<M2BatchRenderer>();
+        private readonly List<M2BatchRenderer> mUnloadList = new List<M2BatchRenderer>();
 
         public static bool IsViewDirty { get; private set; }
 
@@ -118,15 +118,20 @@ namespace WoWEditor6.Scene.Models
         {
             while(mIsRunning)
             {
+                M2BatchRenderer element = null;
                 lock(mUnloadList)
                 {
-                    foreach(var element in mUnloadList)
-                        element?.Dispose();
-
-                    mUnloadList.Clear();
+                    if(mUnloadList.Count > 0)
+                    {
+                        element = mUnloadList[0];
+                        mUnloadList.RemoveAt(0);
+                    }
                 }
 
-                Thread.Sleep(200);
+                element?.Dispose();
+
+                if (element == null)
+                    Thread.Sleep(200);
             }
         }
 

@@ -184,6 +184,9 @@ namespace WoWEditor6.Scene.Terrain
                         if (x < 0 || y < 0 || x > 63 || y > 63)
                             continue;
 
+                        if (IO.FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, x, y)) == false)
+                            continue;
+
                         var tile = IO.Files.Terrain.AdtFactory.Instance.CreateArea(Continent, x, y);
                         mDataToLoad.Add(tile);
                         mTotalLoadSteps += 2 * 256;

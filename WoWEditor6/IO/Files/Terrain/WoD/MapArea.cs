@@ -95,13 +95,13 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             try
             {
                 mMainStream =
-                    FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1:D2}_{2:D2}.adt", Continent,
+                    FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent,
                         IndexX, IndexY));
 
-                mTexStream = FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1:D2}_{2:D2}_tex0.adt", Continent,
+                mTexStream = FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1}_{2}_tex0.adt", Continent,
                         IndexX, IndexY));
 
-                mObjStream = FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1:D2}_{2:D2}_obj0.adt", Continent,
+                mObjStream = FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1}_{2}_obj0.adt", Continent,
                         IndexX, IndexY));
 
                 if (mMainStream == null || mTexStream == null || mObjStream == null)
@@ -126,7 +126,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
             catch(Exception e)
             {
-                Log.Warning(string.Format("Attempted to load ADT {0}_{1:D2}_{2:D2}.adt but it caused an error: {3}. Skipping the adt.", Continent, IndexX, IndexY, e.Message));
+                Log.Warning(string.Format("Attempted to load ADT {0}_{1}_{2}.adt but it caused an error: {3}. Skipping the adt.", Continent, IndexX, IndexY, e.Message));
                 IsValid = false;
                 return;
             }
@@ -176,7 +176,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void InitModels()
         {
-            InitWmoModels();
+            //InitWmoModels();
             InitM2Models();
         }
 

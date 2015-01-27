@@ -62,6 +62,7 @@ namespace WoWEditor6.Scene.Models.M2
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
+                Console.WriteLine("Disposing");
                 vb?.Dispose();
                 ib?.Dispose();
                 instanceBuffer?.Dispose();
@@ -127,31 +128,34 @@ namespace WoWEditor6.Scene.Models.M2
                     return false;
 
                 mFullInstances.Remove(uuid);
-                lock(mInstanceBufferLock)
-                {
-                    for(var i = 0; i < mVisibleInstances.Count; ++i)
-                    {
-                        if(mVisibleInstances[i].Uuid == uuid)
-                        {
-                            mVisibleInstances.RemoveAt(i);
-                            mUpdateBuffer = true;
-                            break;
-                        }
-                    }
+            }
 
-                    return mFullInstances.Count == 0;
+            lock (mInstanceBufferLock)
+            {
+                for (var i = 0; i < mVisibleInstances.Count; ++i)
+                {
+                    if (mVisibleInstances[i].Uuid == uuid)
+                    {
+                        mVisibleInstances.RemoveAt(i);
+                        mUpdateBuffer = true;
+                        break;
+                    }
                 }
             }
+
+            lock (mFullInstances)
+                return mFullInstances.Count == 0;
         }
 
         public BoundingBox AddInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
         {
+            M2RenderInstance inst;
+            if (mFullInstances.TryGetValue(uuid, out inst))
+                return inst.BoundingBox;
+
             var instance = new M2RenderInstance(uuid, position, rotation, scaling, this);
             lock (mFullInstances)
             {
-                if (mFullInstances.ContainsKey(uuid))
-                    return instance.BoundingBox;
-
                 mFullInstances.Add(uuid, instance);
                 if (!WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox))
                     return instance.BoundingBox;
@@ -159,13 +163,13 @@ namespace WoWEditor6.Scene.Models.M2
                 lock (mInstanceBufferLock)
                 {
                     mVisibleInstances.Add(instance);
-                    if (mVisibleInstances.Count > mActiveInstances.Length)
+                    /*if (mVisibleInstances.Count > mActiveInstances.Length)
                         mActiveInstances = new Matrix[mVisibleInstances.Count];
 
                     for (var i = 0; i < mVisibleInstances.Count; ++i)
                         mActiveInstances[i] = mVisibleInstances[i].InstanceMatrix;
 
-                    mInstanceCount = mVisibleInstances.Count;
+                    mInstanceCount = mVisibleInstances.Count;*/
 
                 }
 
@@ -176,25 +180,32 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void PushMapReference(M2Instance instance)
         {
-            lock(mInstanceBufferLock)
+            if (mUpdatedEntries.Contains(instance.Uuid))
+                return;
+
+            M2RenderInstance inst;
+            lock (mFullInstances)
             {
-                lock(mFullInstances)
-                {
-                    if (mUpdatedEntries.Contains(instance.Uuid) || mFullInstances.ContainsKey(instance.Uuid) == false)
-                        return;
-                }
-
-                var inst = mFullInstances[instance.Uuid];
-                if (WorldFrame.Instance.ActiveCamera.Contains(ref inst.BoundingBox))
-                    mVisibleInstances.Add(inst);
-
-                mUpdatedEntries.Add(instance.Uuid);
+                if (mFullInstances.TryGetValue(instance.Uuid, out inst) == false)
+                    return;
             }
+
+            var isContained = WorldFrame.Instance.ActiveCamera.Contains(ref inst.BoundingBox);
+
+            if (isContained)
+            {
+                lock (mInstanceBufferLock)
+                        mVisibleInstances.Add(inst);
+            }
+
+            mUpdatedEntries.Add(instance.Uuid);
         }
 
         public void ViewChanged()
         {
-            mVisibleInstances.Clear();
+            lock(mInstanceBufferLock)
+                mVisibleInstances.Clear();
+
             mUpdatedEntries.Clear();
         }
 

@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 
 namespace WoWEditor6.Graphics
 {
@@ -12,14 +13,18 @@ namespace WoWEditor6.Graphics
         {
             var result = ContainmentType.Contains;
             box.GetCorners(BoxCorners);
+            // ReSharper disable TooWideLocalVariableScope
+            int k, nIn, nOut;
+            float distance;
 
             for(var i = 0; i < 6; ++i)
             {
-                var nIn = 0;
-                var nOut = 0;
-                for(var k = 0; k < 8 && (nIn == 0 || nOut == 0); ++k)
+                nIn = 0;
+                nOut = 0;
+                for(k = 0; k < 8 && (nIn == 0 || nOut == 0); ++k)
                 {
-                    if (Plane.DotCoordinate(mPlanes[i], BoxCorners[k]) < 0)
+                    Plane.DotCoordinate(ref mPlanes[i], ref BoxCorners[k], out distance);
+                    if (distance < 0)
                         ++nOut;
                     else
                         ++nIn;
@@ -32,6 +37,23 @@ namespace WoWEditor6.Graphics
             }
 
             return result;
+        }
+
+        public ContainmentType Contains(ref BoundingSphere sphere)
+        {
+            float distance;
+
+            for(var i = 0; i < 6; ++i)
+            {
+                Plane.DotNormal(ref mPlanes[i], ref sphere.Center, out distance);
+                if (distance < sphere.Radius)
+                    return ContainmentType.Disjoint;
+
+                if (Math.Abs(distance) < sphere.Radius)
+                    return ContainmentType.Intersects;
+            }
+
+            return ContainmentType.Contains;
         }
 
         // ReSharper disable once FunctionComplexityOverflow
