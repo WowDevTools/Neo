@@ -12,8 +12,22 @@ namespace WoWEditor6.Scene.Models
         private readonly Dictionary<int, M2BatchRenderer> mRenderer = new Dictionary<int, M2BatchRenderer>();
         private readonly object mAddLock = new object();
         private Thread mUnloadThread;
+        private bool mIsRunning;
+        private List<M2BatchRenderer> mUnloadList = new List<M2BatchRenderer>();
 
         public static bool IsViewDirty { get; private set; }
+
+        public void Initialize()
+        {
+            mUnloadThread = new Thread(UnloadProc);
+            mUnloadThread.Start();
+        }
+
+        public void Shutdown()
+        {
+            mIsRunning = false;
+            mUnloadThread.Join();
+        }
 
         public void OnFrame()
         {
@@ -67,7 +81,13 @@ namespace WoWEditor6.Scene.Models
                     return;
 
                 if (renderer.RemoveInstance(uuid))
-                    mRenderer.Remove(hash);
+                {
+                    lock (mAddLock)
+                        mRenderer.Remove(hash);
+
+                    lock (mUnloadList)
+                        mUnloadList.Add(renderer);
+                }
             }
         }
 
@@ -91,6 +111,20 @@ namespace WoWEditor6.Scene.Models
                     mRenderer.Add(hash, batch);
 
                 return batch.AddInstance(uuid, position, rotation, scaling);
+            }
+        }
+
+        private void UnloadProc()
+        {
+            while(mIsRunning)
+            {
+                lock(mUnloadList)
+                {
+                    foreach(var element in mUnloadList)
+                        element?.Dispose();
+
+                    mUnloadList.Clear();
+                }
             }
         }
 

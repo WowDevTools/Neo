@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SharpDX;
 using WoWEditor6.Graphics;
@@ -6,7 +7,7 @@ using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
 {
-    class M2BatchRenderer
+    class M2BatchRenderer : IDisposable
     {
         public static Mesh Mesh { get; private set; }
         public static Sampler Sampler { get; private set; }
@@ -48,6 +49,24 @@ namespace WoWEditor6.Scene.Models.M2
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
             mAnimator.SetAnimationByIndex(0);
             StaticAnimationThread.Instance.AddAnimator(mAnimator);
+        }
+
+        public void Dispose()
+        {
+            mSkipRendering = true;
+            var vb = mVertexBuffer;
+            var ib = mIndexBuffer;
+            var instanceBuffer = mInstanceBuffer;
+            var cb = mAnimBuffer;
+            mModel?.Dispose();
+
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
+            {
+                vb?.Dispose();
+                ib?.Dispose();
+                instanceBuffer?.Dispose();
+                cb?.Dispose();
+            });
         }
 
         public void OnFrame()
@@ -108,7 +127,7 @@ namespace WoWEditor6.Scene.Models.M2
                     return false;
 
                 mFullInstances.Remove(uuid);
-                lock(mInstanceBuffer)
+                lock(mInstanceBufferLock)
                 {
                     for(var i = 0; i < mVisibleInstances.Count; ++i)
                     {
@@ -159,8 +178,11 @@ namespace WoWEditor6.Scene.Models.M2
         {
             lock(mInstanceBufferLock)
             {
-                if (mUpdatedEntries.Contains(instance.Uuid))
-                    return;
+                lock(mFullInstances)
+                {
+                    if (mUpdatedEntries.Contains(instance.Uuid) || mFullInstances.ContainsKey(instance.Uuid) == false)
+                        return;
+                }
 
                 var inst = mFullInstances[instance.Uuid];
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref inst.BoundingBox))
@@ -197,7 +219,7 @@ namespace WoWEditor6.Scene.Models.M2
             }
             else if(mUpdateBuffer)
             {
-                lock(mInstanceBuffer)
+                lock(mInstanceBufferLock)
                 {
                     mUpdateBuffer = false;
                     if (mInstanceCount == 0)
