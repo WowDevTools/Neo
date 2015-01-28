@@ -25,5 +25,16 @@ namespace WoWEditor6.Scene
         public bool WmoHit { get; set; }
         public bool M2Hit { get; set; }
         public bool TerrainHit { get; set; }
+
+        public Matrix InverseView;
+        public Matrix InverseProjection;
+        public Vector2 ScreenPosition;
+
+        public IntersectionParams(Matrix inverseView, Matrix inverseProjection, Vector2 screenPosition)
+        {
+            InverseView = inverseView;
+            InverseProjection = inverseProjection;
+            ScreenPosition = screenPosition;
+        }
     }
 }

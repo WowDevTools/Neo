@@ -58,6 +58,35 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             IndexY = iy;
         }
 
+        public override bool Intersect(ref Ray ray, out Terrain.MapChunk chunk, out float distance)
+        {
+            distance = float.MaxValue;
+            chunk = null;
+
+            var mindistance = float.MaxValue;
+            if (BoundingBox.Intersects(ref ray) == false)
+                return false;
+
+            Terrain.MapChunk chunkHit = null;
+            var hasHit = false;
+            foreach(var cnk in mChunks)
+            {
+                float dist;
+                if (cnk.Intersect(ref ray, out dist) == false)
+                    continue;
+
+                hasHit = true;
+                if (dist >= mindistance) continue;
+
+                mindistance = dist;
+                chunkHit = cnk;
+            }
+
+            chunk = chunkHit;
+            distance = mindistance;
+            return hasHit;
+        }
+
         public string GetTextureName(int index)
         {
             if (index >= mTextureNames.Count)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using SharpDX;
+using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.UI;
 using WoWEditor6.UI.Views;
 
@@ -161,6 +162,37 @@ namespace WoWEditor6.Scene.Terrain
 
             z = chunk.Vertices[17 * (row / 2) + (((row % 2) != 0) ? 9 : 0) + col].Position.Z;
             return true;
+        }
+
+        public void Intersect(IntersectionParams parameters)
+        {
+            var ray = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
+                ref parameters.InverseProjection);
+
+            var hasHit = false;
+            var minDist = float.MaxValue;
+            MapChunk chunkHit = null;
+
+            foreach(var pair in mAreas)
+            {
+                MapChunk chunk;
+                float distance;
+                if (!pair.Value.AreaFile.Intersect(ref ray, out chunk, out distance)) continue;
+
+                hasHit = true;
+                if ((distance >= minDist)) continue;
+
+                minDist = distance;
+                chunkHit = chunk;
+            }
+
+            parameters.TerrainHit = hasHit;
+            if (hasHit)
+                parameters.TerrainPosition = ray.Position + minDist * ray.Direction;
+            else
+                parameters.TerrainPosition = new Vector3(float.MaxValue);
+
+            parameters.ChunkHit = chunkHit;
         }
 
         private void LoadInitial()

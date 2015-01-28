@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
+using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Terrain
 {
@@ -23,6 +24,8 @@ namespace WoWEditor6.IO.Files.Terrain
         public abstract Graphics.Texture GetTexture(int index);
         public abstract void AsyncLoad();
         public abstract MapChunk GetChunk(int index);
+
+        public abstract bool Intersect(ref Ray ray, out MapChunk chunk, out float distance);
 
         public abstract void Dispose();
     }

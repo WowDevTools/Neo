@@ -20,6 +20,7 @@ namespace WoWEditor6.UI
         public int Height => mLoadInfo.Height;
 
         public event Action<TextureBitmap> LoadComplete;
+        public event Action<TextureBitmap, byte[]> OnBeforeLoad;
 
         public static implicit operator Bitmap(TextureBitmap bmp)
         {
@@ -32,7 +33,7 @@ namespace WoWEditor6.UI
             {
                 DpiX = 96.0f,
                 DpiY = 96.0f,
-                PixelFormat = new PixelFormat(Format.R8G8B8A8_UNorm, AlphaMode.Ignore)
+                PixelFormat = new PixelFormat(Format.R8G8B8A8_UNorm, AlphaMode.Premultiplied)
             });
         }
 
@@ -51,6 +52,8 @@ namespace WoWEditor6.UI
             mLoadInfo = await Task<TextureLoadInfo>.Factory.StartNew(() => TextureLoader.LoadFirstLayer(file));
             if (mLoadInfo.Format != Format.R8G8B8A8_UNorm)
                 DecompressData();
+
+            OnBeforeLoad?.Invoke(this, mLoadInfo.Layers[0]);
             InterfaceManager.Instance.Dispatcher.Invoke(OnSyncLoad);
         }
 

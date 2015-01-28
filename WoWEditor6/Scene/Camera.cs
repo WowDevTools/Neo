@@ -55,8 +55,8 @@ namespace WoWEditor6.Scene
             mForward = mTarget - Position;
             mForward.Normalize();
             mViewNoTranspose = Matrix.LookAtRH(Position, mTarget, mUp);
+            Matrix.Invert(ref mViewNoTranspose, out mViewInverted);
             Matrix.Transpose(ref mViewNoTranspose, out mMatView);
-            Matrix.Invert(ref mMatView, out mViewInverted);
             ViewChanged?.Invoke(this, mMatView);
 
             mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
@@ -65,8 +65,8 @@ namespace WoWEditor6.Scene
         protected void OnProjectionChanged()
         {
             mProjNoTranspose = mMatProjection;
-            Matrix.Transpose(ref mMatProjection, out mMatProjection);
             Matrix.Invert(ref mMatProjection, out mProjInverted);
+            Matrix.Transpose(ref mMatProjection, out mMatProjection);
             ProjectionChanged?.Invoke(this, mMatProjection);
 
             mFrustum.Update(mViewNoTranspose, mProjNoTranspose);

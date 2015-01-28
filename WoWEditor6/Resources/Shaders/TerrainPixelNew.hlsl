@@ -6,6 +6,7 @@
 	float2 texCoordAlpha : TEXCOORD1;
 	float4 color : COLOR0;
 	float depth : TEXCOORD2;
+	float3 worldPosition : TEXCOORD3;
 };
 
 SamplerState alphaSampler : register(s1);
@@ -25,12 +26,33 @@ cbuffer GlobalParamsBuffer : register(b0)
 	float4 diffuseLight;
 	float4 fogColor;
 	float4 fogParams;
+	float4 mousePosition;
+	float4 brushParams;
 };
 
 cbuffer TextureScaleParams : register(b2)
 {
 	float4 texScales;
 };
+
+float4 applyBrush(float4 color, float3 worldPos) {
+	float3 dirVec = worldPos - mousePosition.xyz;
+	float dsq = dot(dirVec, dirVec);
+	float innerRadius = brushParams.x * brushParams.x;
+	float outerRadius = brushParams.y * brushParams.y;
+	float facInner = step(dsq, innerRadius) * step(innerRadius * 0.95, dsq);
+	float facOuter = step(dsq, outerRadius) * step(outerRadius * 0.95, dsq);
+	float angle = atan2(dirVec.y, dirVec.x) + 3.141592;
+	angle = degrees(angle);
+	angle = fmod(angle, 36.0f);
+
+	float fac = step(0.1, (facInner + facOuter) / 2);
+	fac *= step(angle, 18.0f);
+	float4 brushColor = float4(1, 1, 1, 1);
+	brushColor.rgb -= color.rgb;
+
+	return fac * brushColor + (1 - fac) * color;
+}
 
 float3 getDiffuseLight(float3 normal) {
 	float light = dot(normal, normalize(-float3(-1, 1, -1)));
@@ -65,6 +87,8 @@ float4 main(PixelInput input) : SV_Target{
 	float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
 	color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+
+	color = applyBrush(color, input.worldPosition);
 
 	return color;
 }

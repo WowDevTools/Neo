@@ -15,6 +15,7 @@ struct VertexOutput
 	float2 texCoordAlpha : TEXCOORD1;
 	float4 color : COLOR0;
 	float depth : TEXCOORD2;
+	float3 worldPosition : TEXCOORD3;
 };
 
 cbuffer GlobalParams : register(b0)
@@ -37,6 +38,7 @@ VertexOutput main(VertexInput input) {
 	output.texCoordAlpha = input.texCoordAlpha;
 	output.color = input.color;
 	output.depth = length(input.position - eyePosition.xyz);
+	output.worldPosition = input.position;
 
 	return output;
 }

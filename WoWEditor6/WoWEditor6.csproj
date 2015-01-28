@@ -203,6 +203,7 @@
     <Compile Include="UI\Components\Checkbox.cs" />
     <Compile Include="UI\Components\EditBox.cs" />
     <Compile Include="UI\Components\Frame.cs" />
+    <Compile Include="UI\Components\ImageButton.cs" />
     <Compile Include="UI\Components\KeyboardMessage.cs" />
     <Compile Include="UI\Components\Label.cs" />
     <Compile Include="UI\Components\MapSelectQuad.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="UI\Components\MouseMessage.cs" />
     <Compile Include="UI\Components\PerformanceControl.cs" />
     <Compile Include="UI\Components\Scrollbar.cs" />
+    <Compile Include="UI\Components\Toolbar.cs" />
     <Compile Include="UI\Components\WdlControl.cs" />
     <Compile Include="UI\DrawSurface.cs" />
     <Compile Include="UI\FontCollection.cs" />

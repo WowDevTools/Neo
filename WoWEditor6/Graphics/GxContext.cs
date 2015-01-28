@@ -23,6 +23,7 @@ namespace WoWEditor6.Graphics
         public Device Device { get; private set; }
         public DeviceContext Context { get; private set; }
         public Adapter1 Adapter { get; }
+        public ViewportF Viewport => Context.Rasterizer.GetViewports()[0];
 
         public GxContext(MainWindow window)
         {

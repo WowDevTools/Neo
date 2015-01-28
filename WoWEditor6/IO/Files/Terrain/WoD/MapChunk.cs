@@ -17,6 +17,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private readonly BinaryReader mTexReader;
         private readonly BinaryReader mObjReader;
 
+        private static readonly uint[] Indices = new uint[768];
+
         private Mcnk mHeader;
 
         private IntPtr mAlphaDataCompressed;
@@ -38,6 +40,67 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             IndexX = indexX;
             IndexY = indexY;
+        }
+
+        public bool Intersect(ref Ray ray, out float distance)
+        {
+            distance = float.MaxValue;
+            if (BoundingBox.Intersects(ref ray) == false)
+                return false;
+
+            var minDist = float.MaxValue;
+            var hasHit = false;
+            var dir = ray.Direction;
+            var orig = ray.Position;
+
+            Vector3 e1, e2, P, T, Q;
+
+            for (var i = 0; i < Indices.Length; i += 3)
+            {
+                var i0 = Indices[i];
+                var i1 = Indices[i + 1];
+                var i2 = Indices[i + 2];
+                Vector3.Subtract(ref Vertices[i1].Position, ref Vertices[i0].Position, out e1);
+                Vector3.Subtract(ref Vertices[i2].Position, ref Vertices[i0].Position, out e2);
+
+                Vector3.Cross(ref dir, ref e2, out P);
+                float det;
+                Vector3.Dot(ref e1, ref P, out det);
+
+                if (Math.Abs(det) < 1e-4)
+                    continue;
+
+                var invDet = 1.0f / det;
+                Vector3.Subtract(ref orig, ref Vertices[i0].Position, out T);
+                float u;
+                Vector3.Dot(ref T, ref P, out u);
+                u *= invDet;
+
+                if (u < 0 || u > 1)
+                    continue;
+
+                Vector3.Cross(ref T, ref e1, out Q);
+                float v;
+                Vector3.Dot(ref dir, ref Q, out v);
+                v *= invDet;
+                if (v < 0 || (u + v) > 1)
+                    continue;
+
+                float t;
+                Vector3.Dot(ref e2, ref Q, out t);
+                t *= invDet;
+
+                if (t < 1e-4) continue;
+
+                hasHit = true;
+                if (t < minDist)
+                    minDist = t;
+            }
+
+            if(hasHit)
+                distance = minDist;
+
+            return hasHit;
         }
 
         public override void AsyncLoad()
@@ -360,6 +423,33 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public override void Dispose()
         {
             Textures.Clear();
+        }
+
+        static MapChunk()
+        {
+            var indices = Indices;
+            for (uint y = 0; y < 8; ++y)
+            {
+                for (uint x = 0; x < 8; ++x)
+                {
+                    var i = y * 8 * 12 + x * 12;
+                    indices[i + 0] = y * 17 + x;
+                    indices[i + 2] = y * 17 + x + 1;
+                    indices[i + 1] = y * 17 + x + 9;
+
+                    indices[i + 3] = y * 17 + x + 1;
+                    indices[i + 5] = y * 17 + x + 18;
+                    indices[i + 4] = y * 17 + x + 9;
+
+                    indices[i + 6] = y * 17 + x + 18;
+                    indices[i + 8] = y * 17 + x + 17;
+                    indices[i + 7] = y * 17 + x + 9;
+
+                    indices[i + 9] = y * 17 + x + 17;
+                    indices[i + 11] = y * 17 + x;
+                    indices[i + 10] = y * 17 + x + 9;
+                }
+            }
         }
     }
 }

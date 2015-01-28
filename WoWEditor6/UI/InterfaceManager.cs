@@ -83,9 +83,6 @@ namespace WoWEditor6.UI
 
         public void OnFrame()
         {
-            if (mActiveView is WorldView)
-                return;
-
             Surface.RenderFrame(rt =>
             {
                 Root.OnRender(rt);

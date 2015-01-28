@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene.Models;
@@ -19,6 +20,8 @@ namespace WoWEditor6.Scene
             public Vector4 mapDiffuse;
             public Vector4 fogColor;
             public Vector4 fogParams;
+            public Vector4 mousePosition;
+            public Vector4 brushParameters;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -45,6 +48,8 @@ namespace WoWEditor6.Scene
         private bool mGlobalParamsChanged;
         private bool mGlobalChanged;
         private CameraControl mCamControl;
+        private IntersectionParams mIntersection;
+        private Point mLastCursorPosition;
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
@@ -78,7 +83,9 @@ namespace WoWEditor6.Scene
                 mapAmbient = new Vector4(0.5f, 0.5f, 0.5f, 1.0f),
                 mapDiffuse = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
                 fogColor = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
-                fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f)
+                fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f),
+                brushParameters = new Vector4(45.0f, 55.0f, 0.0f, 0.0f),
+                mousePosition = new Vector4(float.MaxValue)
             };
 
             mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
@@ -142,6 +149,9 @@ namespace WoWEditor6.Scene
 
             mCamControl.Update();
 
+            // do not move before mCamControl.Update to have the latest view/projection
+            UpdateCursorPosition();
+
             UpdateBuffers();
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
@@ -180,6 +190,21 @@ namespace WoWEditor6.Scene
             {
                 mGlobalParamsBufferStore.fogColor = new Vector4(fogColor, 1.0f);
                 mGlobalParamsBufferStore.fogParams = new Vector4(fogStart, 900.0f, mMainCamera.FarClip, 0.0f);
+                mGlobalParamsChanged = true;
+            }
+        }
+
+        private void UpdateCursorPosition()
+        {
+            var pos = InterfaceManager.Instance.Window.PointToClient(Cursor.Position);
+            if (mIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y)
+            {
+                mLastCursorPosition = new Point(pos.X, pos.Y);
+                mIntersection = new IntersectionParams(ActiveCamera.ViewInverse, ActiveCamera.ProjectionInverse,
+                    new Vector2(mLastCursorPosition.X, mLastCursorPosition.Y));
+
+                MapManager.Intersect(mIntersection);
+                mGlobalParamsBufferStore.mousePosition = new Vector4(mIntersection.TerrainPosition, 0.0f);
                 mGlobalParamsChanged = true;
             }
         }
