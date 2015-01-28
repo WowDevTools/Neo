@@ -24,6 +24,8 @@ namespace WoWEditor6.Scene
 
         public Matrix View => mMatView;
         public Matrix Projection => mMatProjection;
+        public Matrix ViewInverse => mViewInverted;
+        public Matrix ProjectionInverse => mProjInverted;
 
         public Vector3 Position { get; private set; }
 
@@ -41,6 +43,11 @@ namespace WoWEditor6.Scene
         public bool Contains(ref BoundingBox box)
         {
             return mFrustum.Contains(ref box) != ContainmentType.Disjoint;
+        }
+
+        public bool Contains(ref BoundingSphere sphere)
+        {
+            return mFrustum.Contains(ref sphere) != ContainmentType.Disjoint;
         }
 
         private void UpdateView()

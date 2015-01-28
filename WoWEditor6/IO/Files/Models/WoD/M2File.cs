@@ -57,6 +57,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 }
 
                 BoundingBox = new BoundingBox(mHeader.BoundingBoxMin, mHeader.BoundingBoxMax);
+                BoundingSphere = new BoundingSphere(Vector3.Zero, mHeader.BoundingRadius);
                 strm.Position = mHeader.OfsName;
                 if (mHeader.LenName > 0)
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));

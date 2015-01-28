@@ -49,6 +49,9 @@ namespace WoWEditor6.Scene.Models
             {
                 foreach (var instance in instances)
                 {
+                    if (instance?.RenderInstance?.IsUpdated ?? true)
+                        continue;
+
                     M2BatchRenderer renderer;
                     if (mRenderer.TryGetValue(instance.Hash, out renderer))
                         renderer.PushMapReference(instance);
@@ -91,7 +94,7 @@ namespace WoWEditor6.Scene.Models
             }
         }
 
-        public BoundingBox AddInstance(string model, int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
+        public M2RenderInstance AddInstance(string model, int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
         {
             var hash = model.ToUpperInvariant().GetHashCode();
             lock(mRenderer)
@@ -104,7 +107,7 @@ namespace WoWEditor6.Scene.Models
 
                 var file = LoadModel(model);
                 if (file == null)
-                    return new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue));
+                    return null;
 
                 var batch = new M2BatchRenderer(file);
                 lock (mAddLock)

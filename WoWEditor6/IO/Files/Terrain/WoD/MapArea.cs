@@ -223,14 +223,15 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 var rotation = new Vector3(360.0f - entry.Rotation.X, 360.0f - entry.Rotation.Z, entry.Rotation.Y - 90);
                 var scale = entry.Scale / 1024.0f;
 
-                var bbox = WorldFrame.Instance.M2Manager.AddInstance(modelName, entry.UniqueId, position, rotation,
+                var instance = WorldFrame.Instance.M2Manager.AddInstance(modelName, entry.UniqueId, position, rotation,
                     new Vector3(scale));
 
                 DoodadInstances.Add(new M2Instance
                 {
                     Hash = modelName.ToUpperInvariant().GetHashCode(),
                     Uuid = entry.UniqueId,
-                    BoundingBox = bbox
+                    BoundingBox = instance?.BoundingBox ?? new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue)),
+                    RenderInstance = instance
                 });
             }
         }

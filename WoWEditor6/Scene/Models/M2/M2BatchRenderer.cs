@@ -12,7 +12,7 @@ namespace WoWEditor6.Scene.Models.M2
         public static Mesh Mesh { get; private set; }
         public static Sampler Sampler { get; private set; }
 
-        private static readonly BlendState[] gBlendStates = new BlendState[7];
+        private static readonly BlendState[] BlendStates = new BlendState[7];
 
         private static ShaderProgram gNoBlendProgram;
         private static ShaderProgram gBlendProgram;
@@ -35,13 +35,13 @@ namespace WoWEditor6.Scene.Models.M2
 
         private readonly Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
         private readonly List<M2RenderInstance> mVisibleInstances = new List<M2RenderInstance>();
-        private readonly List<int> mUpdatedEntries = new List<int>();
 
         private bool mSkipRendering;
 
         private ConstantBuffer mAnimBuffer;
 
         public BoundingBox BoundingBox => mModel.BoundingBox;
+        public BoundingSphere BoundingSphere => mModel.BoundingSphere;
 
         public M2BatchRenderer(M2File model)
         {
@@ -62,7 +62,6 @@ namespace WoWEditor6.Scene.Models.M2
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                Console.WriteLine("Disposing");
                 vb?.Dispose();
                 ib?.Dispose();
                 instanceBuffer?.Dispose();
@@ -106,7 +105,7 @@ namespace WoWEditor6.Scene.Models.M2
 
             foreach (var pass in mModel.Passes)
             {
-                Mesh.UpdateBlendState(gBlendStates[pass.BlendMode]);
+                Mesh.UpdateBlendState(BlendStates[pass.BlendMode]);
                 var oldProgram = Mesh.Program;
                 Mesh.Program = (pass.BlendMode > 0 ? gBlendProgram : gNoBlendProgram);
                 if (Mesh.Program != oldProgram)
@@ -124,7 +123,12 @@ namespace WoWEditor6.Scene.Models.M2
         {
             lock(mFullInstances)
             {
-                if (mFullInstances.ContainsKey(uuid) == false)
+                M2RenderInstance inst;
+                if (mFullInstances.TryGetValue(uuid, out inst) == false)
+                    return false;
+
+                --inst.NumReferences;
+                if (inst.NumReferences > 0)
                     return false;
 
                 mFullInstances.Remove(uuid);
@@ -147,42 +151,32 @@ namespace WoWEditor6.Scene.Models.M2
                 return mFullInstances.Count == 0;
         }
 
-        public BoundingBox AddInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
+        public M2RenderInstance AddInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
         {
             M2RenderInstance inst;
             if (mFullInstances.TryGetValue(uuid, out inst))
-                return inst.BoundingBox;
+            {
+                ++inst.NumReferences;
+                return inst;
+            }
 
             var instance = new M2RenderInstance(uuid, position, rotation, scaling, this);
             lock (mFullInstances)
             {
                 mFullInstances.Add(uuid, instance);
                 if (!WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox))
-                    return instance.BoundingBox;
+                    return instance;
 
                 lock (mInstanceBufferLock)
-                {
                     mVisibleInstances.Add(instance);
-                    /*if (mVisibleInstances.Count > mActiveInstances.Length)
-                        mActiveInstances = new Matrix[mVisibleInstances.Count];
-
-                    for (var i = 0; i < mVisibleInstances.Count; ++i)
-                        mActiveInstances[i] = mVisibleInstances[i].InstanceMatrix;
-
-                    mInstanceCount = mVisibleInstances.Count;*/
-
-                }
 
                 mUpdateBuffer = true;
-                return instance.BoundingBox;
+                return instance;
             }
         }
 
         public void PushMapReference(M2Instance instance)
         {
-            if (mUpdatedEntries.Contains(instance.Uuid))
-                return;
-
             M2RenderInstance inst;
             lock (mFullInstances)
             {
@@ -190,15 +184,10 @@ namespace WoWEditor6.Scene.Models.M2
                     return;
             }
 
-            var isContained = WorldFrame.Instance.ActiveCamera.Contains(ref inst.BoundingBox);
+            inst.IsUpdated = true;
 
-            if (isContained)
-            {
-                lock (mInstanceBufferLock)
-                        mVisibleInstances.Add(inst);
-            }
-
-            mUpdatedEntries.Add(instance.Uuid);
+            lock (mInstanceBufferLock)
+                mVisibleInstances.Add(inst);
         }
 
         public void ViewChanged()
@@ -206,7 +195,9 @@ namespace WoWEditor6.Scene.Models.M2
             lock(mInstanceBufferLock)
                 mVisibleInstances.Clear();
 
-            mUpdatedEntries.Clear();
+            lock(mFullInstances)
+                foreach (var pair in mFullInstances)
+                    pair.Value.IsUpdated = false;
         }
 
         private void CheckBuffer()
@@ -302,15 +293,15 @@ namespace WoWEditor6.Scene.Models.M2
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
             };
 
-            for (var i = 0; i < gBlendStates.Length; ++i)
-                gBlendStates[i] = new BlendState(context);
+            for (var i = 0; i < BlendStates.Length; ++i)
+                BlendStates[i] = new BlendState(context);
 
-            gBlendStates[0] = new BlendState(context)
+            BlendStates[0] = new BlendState(context)
             {
                 BlendEnabled = false
             };
 
-            gBlendStates[1] = new BlendState(context)
+            BlendStates[1] = new BlendState(context)
             {
                 BlendEnabled = true,
                 SourceBlend = SharpDX.Direct3D11.BlendOption.One,
@@ -319,7 +310,7 @@ namespace WoWEditor6.Scene.Models.M2
                 DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.Zero
             };
 
-            gBlendStates[2] = new BlendState(context)
+            BlendStates[2] = new BlendState(context)
             {
                 BlendEnabled = true,
                 SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
@@ -328,7 +319,7 @@ namespace WoWEditor6.Scene.Models.M2
                 DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha
             };
 
-            gBlendStates[3] = new BlendState(context)
+            BlendStates[3] = new BlendState(context)
             {
                 BlendEnabled = true,
                 SourceBlend = SharpDX.Direct3D11.BlendOption.SourceColor,
@@ -337,7 +328,7 @@ namespace WoWEditor6.Scene.Models.M2
                 DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.DestinationAlpha
             };
 
-            gBlendStates[4] = new BlendState(context)
+            BlendStates[4] = new BlendState(context)
             {
                 BlendEnabled = true,
                 SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
@@ -346,7 +337,7 @@ namespace WoWEditor6.Scene.Models.M2
                 DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.One
             };
 
-            gBlendStates[5] = new BlendState(context)
+            BlendStates[5] = new BlendState(context)
             {
                 BlendEnabled = true,
                 SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
@@ -355,7 +346,7 @@ namespace WoWEditor6.Scene.Models.M2
                 DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha
             };
 
-            gBlendStates[6] = new BlendState(context)
+            BlendStates[6] = new BlendState(context)
             {
                 BlendEnabled = true,
                 SourceBlend = SharpDX.Direct3D11.BlendOption.DestinationColor,

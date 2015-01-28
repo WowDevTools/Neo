@@ -14,6 +14,7 @@ namespace WoWEditor6.IO.Files.Models
         public ushort[] Indices { get; protected set; } = new ushort[0];
 
         public BoundingBox BoundingBox { get; protected set; }
+        public BoundingSphere BoundingSphere { get; protected set; }
 
         public abstract void Dispose();
 

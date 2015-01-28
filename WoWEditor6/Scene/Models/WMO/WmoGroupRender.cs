@@ -73,11 +73,6 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public void SyncLoad()
         {
-            foreach(var batch in mBatches)
-            {
-                System.IO.File.AppendAllText("Group" + this.GetHashCode() + ".txt", "StartIndex: " + batch.Batch.StartIndex + " - NumIndices: " +
-                                             batch.Batch.NumIndices + "\r\n");
-            }
             mLoaded = true;
         }
 
