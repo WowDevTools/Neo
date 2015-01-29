@@ -7,7 +7,7 @@ namespace WoWEditor6.Settings
 {
     public class Camera
     {
-        public Keys[] Forward = {Keys.ShiftKey, Keys.W};
+        public Keys[] Forward = {Keys.W};
         public Keys[] Backward = {Keys.S};
         public Keys[] Left = {Keys.A};
         public Keys[] Right = {Keys.D};
