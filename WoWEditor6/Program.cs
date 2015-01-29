@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
@@ -7,9 +8,13 @@ namespace WoWEditor6
 {
     class Program
     {
-
+        [STAThread]
         static void Main()
         {
+            Application.EnableVisualStyles();
+
+            Settings.KeyBindings.Initialize();
+
             var window = new MainWindow();
             var context = new GxContext(window);
             context.InitContext();

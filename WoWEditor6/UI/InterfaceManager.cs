@@ -127,7 +127,7 @@ namespace WoWEditor6.UI
                     GetButton(args.Button)) { Delta = -args.Delta / 120 };
                 Root.OnMessage(msg);
                 mActiveView?.OnMessage(msg);
-                Scene.WorldFrame.Instance.OnMouseWheel(args.Delta);
+                WorldFrame.Instance.OnMouseWheel(args.Delta);
             };
 
             Window.KeyDown += (sender, args) =>

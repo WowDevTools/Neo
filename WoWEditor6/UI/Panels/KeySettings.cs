@@ -2,37 +2,32 @@
 using SharpDX.Direct2D1;
 using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
+using WoWEditor6.UI.Dialogs;
 
 namespace WoWEditor6.UI.Panels
 {
     class KeySettings
     {
-        private readonly Frame mFrame;
+        private readonly InputSettings mSettingsDialog;
 
-        public bool Visible { get; set; }
+        public bool Visible { get { return mSettingsDialog.Visible; } set { mSettingsDialog.Visible = value; } }
 
         public KeySettings()
         {
-            var invertMouseBox = new Checkbox
+            mSettingsDialog = new InputSettings();
+            mSettingsDialog.FormClosing += (sender, args) =>
             {
-                Position = new Vector2(5, 5),
-                Checked = true,
-                Size = 16.0f,
-                Text = "Invert mouse"
+                if (args.CloseReason != System.Windows.Forms.CloseReason.UserClosing)
+                    return;
+
+                mSettingsDialog.Visible = false;
+                args.Cancel = true;
             };
 
-            invertMouseBox.CheckChanged += (box, check) => WorldFrame.Instance.CamControl.Invert = check;
-
-            mFrame = new Frame
-            {
-                HasCaption = false,
-                Size = new Vector2(300, 250),
-                Position = new Vector2(80.0f, 100.0f),
-                Children =
-                {
-                    invertMouseBox
-                }
-            };
+            mSettingsDialog.Owner = InterfaceManager.Instance.Window;
+            mSettingsDialog.Visible = false;
+            mSettingsDialog.InvertMouseBox.CheckedChanged +=
+                (sender, args) => WorldFrame.Instance.CamControl.Invert = mSettingsDialog.InvertMouseBox.Checked;
         }
 
         public void OnResize(Vector2 newSize)
@@ -42,15 +37,12 @@ namespace WoWEditor6.UI.Panels
 
         public void OnRender(RenderTarget target)
         {
-            if (Visible == false)
-                return;
 
-            mFrame.OnRender(target);
         }
 
         public void OnMessage(Message message)
         {
-            mFrame.OnMessage(message);
+
         }
     }
 }

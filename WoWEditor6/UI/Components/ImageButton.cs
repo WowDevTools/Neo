@@ -10,9 +10,9 @@ namespace WoWEditor6.UI.Components
 {
     class ImageButton : IComponent
     {
-        private static Brush gBorder;
-        private static Brush gHover;
-        private static Brush gClick;
+        private static SolidBrush gBorder;
+        private static SolidBrush gHover;
+        private static SolidBrush gClick;
 
         private bool mIsHovered;
         private bool mIsClicked;

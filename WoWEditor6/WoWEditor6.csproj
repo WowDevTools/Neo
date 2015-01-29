@@ -184,6 +184,7 @@
     <Compile Include="Scene\Texture\TextureArrayManager.cs" />
     <Compile Include="Scene\Texture\TextureManager.cs" />
     <Compile Include="Scene\WorldFrame.cs" />
+    <Compile Include="Settings\KeyBindings.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\Creature.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\CreatureManager.cs" />
@@ -220,6 +221,21 @@
     <Compile Include="UI\Components\StatusBar.cs" />
     <Compile Include="UI\Components\Toolbar.cs" />
     <Compile Include="UI\Components\WdlControl.cs" />
+    <Compile Include="UI\Dialogs\BorderColorLabel.cs">
+      <SubType>component</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\InputSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\InputSettings.Designer.cs">
+      <DependentUpon>InputSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\KeyBindingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\KeyBindingControl.Designer.cs">
+      <DependentUpon>KeyBindingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DrawSurface.cs" />
     <Compile Include="UI\FontCollection.cs" />
     <Compile Include="UI\IComponent.cs" />
@@ -232,8 +248,8 @@
     </Compile>
     <Compile Include="UI\Panels\KeySettings.cs" />
     <Compile Include="UI\Panels\TerrainParams.cs" />
-    <Compile Include="UI\Settings\ToolbarButtons.cs" />
-    <Compile Include="UI\Settings\ToolbarSettings.cs" />
+    <Compile Include="Settings\ToolbarButtons.cs" />
+    <Compile Include="Settings\ToolbarSettings.cs" />
     <Compile Include="UI\StaticText.cs" />
     <Compile Include="UI\SolidBrush.cs" />
     <Compile Include="UI\TextureBitmap.cs" />
@@ -273,6 +289,12 @@
     <EmbeddedResource Include="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\InputSettings.resx">
+      <DependentUpon>InputSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\KeyBindingControl.resx">
+      <DependentUpon>KeyBindingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

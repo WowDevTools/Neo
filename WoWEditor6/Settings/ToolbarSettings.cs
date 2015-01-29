@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace WoWEditor6.UI.Settings
+namespace WoWEditor6.Settings
 {
     [Serializable]
     public class ToolbarSettings

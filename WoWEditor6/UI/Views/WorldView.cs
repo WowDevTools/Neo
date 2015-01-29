@@ -4,9 +4,9 @@ using System.Drawing;
 using SharpDX;
 using SharpDX.Direct2D1;
 using WoWEditor6.Resources;
+using WoWEditor6.Settings;
 using WoWEditor6.UI.Components;
 using WoWEditor6.UI.Panels;
-using WoWEditor6.UI.Settings;
 
 namespace WoWEditor6.UI.Views
 {
