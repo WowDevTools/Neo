@@ -47,7 +47,7 @@ namespace WoWEditor6.Scene
         private GlobalBuffer mGlobalBufferStore;
         private bool mGlobalParamsChanged;
         private bool mGlobalChanged;
-        private CameraControl mCamControl;
+        public CameraControl CamControl { get; private set; }
         private IntersectionParams mIntersection;
         private Point mLastCursorPosition;
 
@@ -123,7 +123,7 @@ namespace WoWEditor6.Scene
             ViewChanged(mMainCamera, mMainCamera.View);
             ProjectionChanged(mMainCamera, mMainCamera.Projection);
 
-            mCamControl = new CameraControl(window);
+            CamControl = new CameraControl(window);
         }
 
         public void OnEnterWorld(Vector3 position)
@@ -147,7 +147,7 @@ namespace WoWEditor6.Scene
         {
             Dispatcher.ProcessFrame();
 
-            mCamControl.Update();
+            CamControl.Update();
 
             // do not move before mCamControl.Update to have the latest view/projection
             UpdateCursorPosition();
@@ -163,7 +163,7 @@ namespace WoWEditor6.Scene
 
         public void OnMouseWheel(int delta)
         {
-            mCamControl.HandleMouseWheel(delta);
+            CamControl.HandleMouseWheel(delta);
         }
 
         public void UpdateMapAmbient(Vector3 ambient)

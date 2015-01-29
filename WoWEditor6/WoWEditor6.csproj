@@ -142,6 +142,11 @@
     <Compile Include="Metrics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Images.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Images.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Shaders.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -211,6 +216,8 @@
     <Compile Include="UI\Components\MouseMessage.cs" />
     <Compile Include="UI\Components\PerformanceControl.cs" />
     <Compile Include="UI\Components\Scrollbar.cs" />
+    <Compile Include="UI\Components\Slider.cs" />
+    <Compile Include="UI\Components\StatusBar.cs" />
     <Compile Include="UI\Components\Toolbar.cs" />
     <Compile Include="UI\Components\WdlControl.cs" />
     <Compile Include="UI\DrawSurface.cs" />
@@ -223,6 +230,10 @@
     <Compile Include="UI\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Panels\KeySettings.cs" />
+    <Compile Include="UI\Panels\TerrainParams.cs" />
+    <Compile Include="UI\Settings\ToolbarButtons.cs" />
+    <Compile Include="UI\Settings\ToolbarSettings.cs" />
     <Compile Include="UI\StaticText.cs" />
     <Compile Include="UI\SolidBrush.cs" />
     <Compile Include="UI\TextureBitmap.cs" />
@@ -250,6 +261,11 @@
     <Folder Include="IO\MPQ\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Images.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Shaders.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Shaders.Designer.cs</LastGenOutput>
@@ -263,6 +279,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Images\joystick-48.png" />
+    <None Include="Resources\Images\wheelbarrow-48.png" />
+    <Content Include="Resources\Images\License.txt" />
     <Content Include="Resources\Shaders\M2Pixel.hlsl" />
     <Content Include="Resources\Shaders\M2VertexInstanced.hlsl" />
     <Content Include="Resources\Shaders\MapLowPixel.hlsl" />

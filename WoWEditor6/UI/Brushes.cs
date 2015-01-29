@@ -44,6 +44,18 @@ namespace WoWEditor6.UI
                 return this[(a << 24) | (b << 16) | (g << 8) | r];
             }
         }
+
+        public SolidBrush this[SharpDX.Color color]
+        {
+            get
+            {
+                uint r = color.R;
+                uint g = color.G;
+                uint b = color.B;
+                uint a = color.A;
+                return this[(a << 24) | (b << 16) | (g << 8) | r];
+            }
+        }
     }
 
     static class Brushes

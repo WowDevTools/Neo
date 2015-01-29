@@ -91,7 +91,6 @@ namespace WoWEditor6.UI
 
             Brushes.Initialize(RenderTarget);
             Fonts.Initialize(DirectWriteFactory);
-            BitmapImage.UpdateRenderTarget();
 
             Button.Initialize();
             Frame.Initialize();

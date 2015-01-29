@@ -23,7 +23,7 @@ namespace WoWEditor6.UI.Components
         public float Size { get { return mSize; } set { ClientAreaChanged(mPosition, value); } }
 
         public string Text { get { return mTextDraw.Text; } set { mTextDraw.Text = value; } }
-        public bool Checked { get; private set; }
+        public bool Checked { get; set; }
         public event Action<Checkbox, bool> CheckChanged;
 
         public Checkbox()
@@ -48,7 +48,7 @@ namespace WoWEditor6.UI.Components
                 gBorderBrush = Brushes.White;
             }
 
-            target.DrawTextLayout(new Vector2(Position.X + Size + 7, Position.Y), mTextDraw, Brushes.White);
+            target.DrawTextLayout(new Vector2(Position.X + Size + 7, Position.Y - 2), mTextDraw, Brushes.White);
 
             var brush = gBackgroundBrush;
             if (mIsPressed)
@@ -78,17 +78,17 @@ namespace WoWEditor6.UI.Components
             switch(message.Type)
             {
                 case MessageType.MouseMove:
-                    mIsHovered = mTargetRect.Contains(msg.Position);
+                    mIsHovered = IsHovered(msg.Position);
                     break;
 
                 case MessageType.MouseDown:
                     if (msg.Buttons == MouseButton.Left)
-                        mIsPressed = mTargetRect.Contains(msg.Position);
+                        mIsPressed = IsHovered(msg.Position);
                     break;
 
                 case MessageType.MouseUp:
                     {
-                        if (msg.Buttons == MouseButton.Left && mTargetRect.Contains(msg.Position) && mIsPressed)
+                        if (msg.Buttons == MouseButton.Left && IsHovered(msg.Position) && mIsPressed)
                         {
                             Checked = !Checked;
                             CheckChanged?.Invoke(this, Checked);
@@ -107,8 +107,13 @@ namespace WoWEditor6.UI.Components
             mSize = size;
 
             mTargetRect = new RectangleF(position.X, position.Y, size, size);
-            mTextDraw.FontSize = 0.75f * size;
+            mTextDraw.FontSize = size;
             mTextDraw.Size = new Size2F(float.MaxValue, size);
+        }
+
+        private bool IsHovered(Vector2 position)
+        {
+            return mTargetRect.Contains(position) || new RectangleF(mPosition.X + mSize, mPosition.Y, mTextDraw.Width + 7, Size).Contains(position);
         }
     }
 }

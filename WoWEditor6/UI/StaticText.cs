@@ -43,6 +43,8 @@ namespace WoWEditor6.UI
             }
         }
 
+        public float Width => GetLayout().Metrics.Width;
+
         public StaticText()
         {
             mFactory = InterfaceManager.Instance.Surface.DirectWriteFactory;
