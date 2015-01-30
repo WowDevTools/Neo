@@ -247,6 +247,9 @@
     <Compile Include="UI\Dialogs\TerrainSettings.Designer.cs">
       <DependentUpon>TerrainSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Dialogs\ColorPickerControl.xaml.cs">
+      <DependentUpon>ColorPickerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Dialogs\TerrainSettingsImpl.xaml.cs">
       <DependentUpon>TerrainSettingsImpl.xaml</DependentUpon>
     </Compile>
@@ -337,6 +340,10 @@
     <Content Include="Resources\Shaders\WmoVertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Dialogs\ColorPickerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Dialogs\TerrainSettingsImpl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

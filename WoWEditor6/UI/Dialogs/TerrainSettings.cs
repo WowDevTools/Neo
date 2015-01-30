@@ -21,8 +21,8 @@ namespace WoWEditor6.UI.Dialogs
         {
             var terrainSettings = new TerrainSettingsImpl();
             elementHost1.Child = terrainSettings;
-            terrainSettings.ColorChanged += (clr) =>
-                colorPreviewPanel.BackColor = Color.FromArgb(0xFF, clr.R, clr.G, clr.B);
+            //terrainSettings.ColorChanged += (clr) =>
+            //    colorPreviewPanel.BackColor = Color.FromArgb(0xFF, clr.R, clr.G, clr.B);
         }
     }
 }

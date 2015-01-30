@@ -12,6 +12,8 @@ namespace WoWEditor6.UI.Views
 {
     class WorldView : IView
     {
+        public static WorldView Instance { get; private set; }
+
         private readonly PerformanceControl mPerfControl = new PerformanceControl();
 
         private readonly Toolbar mTopToolbar = new Toolbar();
@@ -27,8 +29,12 @@ namespace WoWEditor6.UI.Views
 
         private readonly Dictionary<ToolbarFunction, Image> mButtonImages;
 
+        public KeySettings KeySettingsDialog => mKeySettingsPanel;
+
         public WorldView()
         {
+            Instance = this;
+
             mButtonHandlers.Add(ToolbarFunction.Terrain, OnTerrainButton);
             mButtonHandlers.Add(ToolbarFunction.KeyBinding, OnKeySettingsButton);
 
