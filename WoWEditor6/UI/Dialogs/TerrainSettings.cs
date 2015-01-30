@@ -19,6 +19,7 @@ namespace WoWEditor6.UI.Dialogs
 
         private void TerrainSettings_Load(object sender, EventArgs e)
         {
+            ClientSize = new Size(527, 320);
             var terrainSettings = new TerrainSettingsImpl();
             elementHost1.Child = terrainSettings;
             //terrainSettings.ColorChanged += (clr) =>

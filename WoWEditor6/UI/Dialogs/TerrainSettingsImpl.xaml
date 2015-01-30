@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WoWEditor6.UI.Dialogs"
              mc:Ignorable="d" 
-             d:DesignHeight="398" d:DesignWidth="562">
+             d:DesignHeight="320" d:DesignWidth="527">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -24,6 +24,25 @@
                 <TextBlock Margin="0,10,0,0">
                 <Hyperlink Click="Hyperlink_Click">Assign keyboard shortcuts</Hyperlink>
                 </TextBlock>
+            </StackPanel>
+        </Border>
+        <Border Padding="10" Grid.Row="0" Grid.Column="1">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="75">Intensity</Label>
+                    <Slider Name="IntensitySlider" Width="200" Margin="5,0,0,0" Minimum="1" Maximum="40" Value="15" ValueChanged="IntensitySlider_ValueChanged"></Slider>
+                    <TextBlock Margin="5,0,0,0" Text="{Binding ElementName=IntensitySlider, Path=Value, StringFormat={}{0:F0}}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="75">Inner Radius</Label>
+                    <Slider Name="InnerRadiusSlider" ValueChanged="InnerRadiusSlider_ValueChanged" Width="200" Margin="5,0,0,0" Minimum="1" Maximum="{Binding ElementName=OuterRadiusSlider, Path=Value}" Value="45"></Slider>
+                    <TextBlock Margin="5,0,0,0" Text="{Binding ElementName=InnerRadiusSlider, Path=Value, StringFormat={}{0:F0}}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="75">Outer Radius</Label>
+                    <Slider Name="OuterRadiusSlider" ValueChanged="OuterRadiusSlider_ValueChanged" Width="200" Margin="5,0,0,0" Minimum="1" Maximum="200" Value="55"></Slider>
+                    <TextBlock Margin="5,0,0,0" Text="{Binding ElementName=OuterRadiusSlider, Path=Value, StringFormat={}{0:F0}}"></TextBlock>
+                </StackPanel>
             </StackPanel>
         </Border>
         <local:ColorPickerControl Margin="5,0,0,5" HorizontalAlignment="Left" Height="200" Width="200" Grid.Row="1" Grid.Column="0" ColorChanged="ColorPickerControl_ColorChanged"/>

@@ -3,12 +3,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using WoWEditor6.Settings;
 using WoWEditor6.UI;
+using WoWEditor6.Utils;
 
 namespace WoWEditor6.Scene
 {
-    /// <summary>
-    /// TODO: CameraControl should use some sort of key bindings and not hard coded keys
-    /// </summary>
     class CameraControl
     {
         private readonly MainWindow mWindow;
@@ -18,7 +16,7 @@ namespace WoWEditor6.Scene
         private float speedFactor = 100.0f;
         private float speedFactorWheel = 0.5f;
         private float turnFactor = 0.2f;
-        public bool Invert { get; set; } = false;
+        public bool Invert { get; set; }
 
         public CameraControl(MainWindow window)
         {
@@ -44,47 +42,47 @@ namespace WoWEditor6.Scene
 
             var camBind = KeyBindings.Instance.Camera;
 
-            if (AreKeysDown(keyState, camBind.Forward))
+            if (KeyHelper.AreKeysDown(keyState, camBind.Forward))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveForward(diff * speedFactor);
             }
 
-            if (AreKeysDown(keyState, camBind.Backward))
+            if (KeyHelper.AreKeysDown(keyState, camBind.Backward))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveForward(-diff * speedFactor);
             }
 
-            if (AreKeysDown(keyState, camBind.Right))
+            if (KeyHelper.AreKeysDown(keyState, camBind.Right))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveRight(diff * speedFactor);
             }
 
-            if (AreKeysDown(keyState, camBind.Left))
+            if (KeyHelper.AreKeysDown(keyState, camBind.Left))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveRight(-diff * speedFactor);
             }
 
-            if (AreKeysDown(keyState, camBind.Up))
+            if (KeyHelper.AreKeysDown(keyState, camBind.Up))
             {
                 positionChanged = true;
                 cam.MoveUp(diff * speedFactor);
             }
 
-            if (AreKeysDown(keyState, camBind.Down))
+            if (KeyHelper.AreKeysDown(keyState, camBind.Down))
             {
                 positionChanged = true;
                 cam.MoveUp(-diff * speedFactor);
             }
 
-            if (IsDown(keyState, Keys.RButton))
+            if (KeyHelper.IsKeyDown(keyState, Keys.RButton))
             {
                 var curPos = Cursor.Position;
                 var dx = curPos.X - mLastCursorPos.X;
@@ -103,34 +101,12 @@ namespace WoWEditor6.Scene
             mLastCursorPos = Cursor.Position;
         }
 
-        private static bool AreKeysDown(byte[] keyState, Keys[] keys)
-        {
-            if (keys.Length == 0)
-                return false;
-
-            foreach(var key in keys)
-            {
-                if ((int) key >= keyState.Length)
-                    return false;
-
-                if (((keyState[(int) key]) & 0x80) == 0)
-                    return false;
-            }
-
-            return true;
-        }
-
-        private static bool IsDown(byte[] keyState, Keys key)
-        {
-            return ((keyState[(int)key]) & 0x80) != 0;
-        }
-
         public void HandleMouseWheel(int delta)
         {
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);
 
-            if (IsDown(keyState, Keys.RButton))
+            if (KeyHelper.IsKeyDown(keyState, Keys.RButton))
             {
                 var cam = WorldFrame.Instance.ActiveCamera;
                 cam.MoveForward(delta * speedFactorWheel);

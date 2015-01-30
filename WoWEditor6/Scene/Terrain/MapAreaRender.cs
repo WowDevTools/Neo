@@ -16,6 +16,7 @@ namespace WoWEditor6.Scene.Terrain
         private readonly MapChunkRender[] mChunks = new MapChunkRender[256];
         private BoundingBox mBoundingBox;
         private BoundingBox mModelBox;
+        private bool mIsDirty;
 
         public int IndexX { get; private set; }
         public int IndexY { get; private set; }
@@ -26,6 +27,20 @@ namespace WoWEditor6.Scene.Terrain
         {
             IndexX = indexX;
             IndexY = indexY;
+        }
+
+        public void OnTerrainChange(Editing.TerrainChangeParameters parameters)
+        {
+            if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
+                return;
+
+            mIsDirty = AreaFile.OnChangeTerrain(parameters);
+            if (!mIsDirty)
+                return;
+
+            mBoundingBox = AreaFile.BoundingBox;
+            foreach (var chunk in mChunks)
+                chunk?.UpdateBoundingBox();
         }
 
         public void OnFrame()
@@ -58,6 +73,13 @@ namespace WoWEditor6.Scene.Terrain
 
                     return;
                 }
+            }
+
+            if (mIsDirty)
+            {
+                AreaFile.UpdateNormals();
+                mVertexBuffer.UpdateData(AreaFile.FullVertices);
+                mIsDirty = false;
             }
 
             MapChunkRender.ChunkMesh.UpdateVertexBuffer(mVertexBuffer);

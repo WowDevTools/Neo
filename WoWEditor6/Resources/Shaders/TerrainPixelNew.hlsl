@@ -37,7 +37,7 @@ cbuffer TextureScaleParams : register(b2)
 
 float4 applyBrush(float4 color, float3 worldPos) {
 	float3 dirVec = worldPos - mousePosition.xyz;
-	float dsq = dot(dirVec, dirVec);
+	float dsq = dot(dirVec.xy, dirVec.xy);
 	float innerRadius = brushParams.x * brushParams.x;
 	float outerRadius = brushParams.y * brushParams.y;
 	float facInner = step(dsq, innerRadius) * step(innerRadius * 0.95, dsq);

@@ -28,6 +28,11 @@ namespace WoWEditor6.Scene.Terrain
 
         public static Mesh ChunkMesh { get; private set; }
 
+        public void UpdateBoundingBox()
+        {
+            mBoundingBox = mData.BoundingBox;
+        }
+
         public void Dispose()
         {
             mShaderTextures = null;

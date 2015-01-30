@@ -139,6 +139,7 @@ namespace WoWEditor6.UI.Views
         private void OnTerrainButton(ImageButton button)
         {
             mTerrainParamsPanel.Visible = true;
+            Editing.EditManager.Instance.EnableSculpting();
         }
 
         private void OnKeySettingsButton(ImageButton button)

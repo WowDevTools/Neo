@@ -77,6 +77,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editing\EditManager.cs" />
+    <Compile Include="Editing\EditMode.cs" />
+    <Compile Include="Editing\TerrainChangeManager.cs" />
     <Compile Include="Graphics\BlendState.cs" />
     <Compile Include="Graphics\Buffer.cs" />
     <Compile Include="Graphics\ConstantBuffer.cs" />
@@ -279,6 +282,7 @@
     <Compile Include="UI\Views\WorldView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Utils\ColorUtils.cs" />
+    <Compile Include="Utils\KeyHelper.cs" />
     <Compile Include="Utils\MathExtensions.cs" />
     <Compile Include="Utils\Polygon.cs" />
     <Compile Include="Utils\TimeManager.cs" />

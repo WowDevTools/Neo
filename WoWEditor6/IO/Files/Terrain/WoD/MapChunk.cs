@@ -27,6 +27,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly List<Mcly> mLayerInfos = new List<Mcly>();
 
+        private Vector3 mMidPoint;
+        private float mMinHeight = float.MaxValue;
+        private float mMaxHeight = float.MinValue;
+        private bool mUpdateNormals;
+
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
             mParent = new WeakReference<MapArea>(parent);
@@ -40,6 +45,92 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             IndexX = indexX;
             IndexY = indexY;
+        }
+
+        public bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
+        {
+            var diffVec = new Vector2(mMidPoint.X, mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
+            var dsquare = Vector2.Dot(diffVec, diffVec);
+
+            var maxRadius = parameters.OuterRadius + Metrics.ChunkRadius;
+
+            if (dsquare > maxRadius * maxRadius)
+                return false;
+
+            // always update the normals if we are closer than ChunkRadius to the modified area
+            // since nearby changes might affect the normals of this chunk even if the positions
+            // themself didnt change
+            mUpdateNormals = true;
+
+            var changed = false;
+            switch(parameters.Method)
+            {
+                case Editing.TerrainChangeType.Elevate:
+                    changed = HandleElevateTerrain(parameters);
+                    break;
+            }
+
+            if(changed)
+            {
+                MapArea parent;
+                mParent.TryGetTarget(out parent);
+
+                var omin = BoundingBox.Minimum;
+                var omax = BoundingBox.Maximum;
+                BoundingBox = new BoundingBox(new Vector3(omin.X, omin.Y, mMinHeight),
+                    new Vector3(omax.X, omax.Y, mMaxHeight));
+
+                parent?.UpdateBoundingBox(BoundingBox);
+            }
+
+            return changed;
+        }
+
+        public void UpdateNormals()
+        {
+            if (mUpdateNormals == false)
+                return;
+
+            mUpdateNormals = false;
+            for(var i = 0; i < 145; ++i)
+            {
+                var p1 = Vertices[i].Position;
+                var p2 = p1;
+                var p3 = p2;
+                var p4 = p3;
+                var v = p1;
+
+                p1.X -= 0.5f * Metrics.UnitSize;
+                p1.Y -= 0.5f * Metrics.UnitSize;
+                p2.X += 0.5f * Metrics.UnitSize;
+                p2.Y -= 0.5f * Metrics.UnitSize;
+                p3.X += 0.5f * Metrics.UnitSize;
+                p3.Y += 0.5f * Metrics.UnitSize;
+                p4.X -= 0.5f * Metrics.UnitSize;
+                p4.Y += 0.5f * Metrics.UnitSize;
+
+                var mgr = WorldFrame.Instance.MapManager;
+                float h;
+                if (mgr.GetLandHeight(p1.X, 64.0f * Metrics.TileSize - p1.Y, out h)) p1.Z = h;
+                if (mgr.GetLandHeight(p2.X, 64.0f * Metrics.TileSize - p2.Y, out h)) p2.Z = h;
+                if (mgr.GetLandHeight(p3.X, 64.0f * Metrics.TileSize - p3.Y, out h)) p3.Z = h;
+                if (mgr.GetLandHeight(p4.X, 64.0f * Metrics.TileSize - p4.Y, out h)) p4.Z = h;
+
+                var n1 = Vector3.Cross((p2 - v), (p1 - v));
+                var n2 = Vector3.Cross((p3 - v), (p2 - v));
+                var n3 = Vector3.Cross((p4 - v), (p3 - v));
+                var n4 = Vector3.Cross((p1 - v), (p4 - v));
+
+                var n = n1 + n2 + n3 + n4;
+                n.Normalize();
+                n *= -1;
+
+                Vertices[i].Normal = n;
+            }
+
+            MapArea parent;
+            mParent.TryGetTarget(out parent);
+            parent?.UpdateVertices(this);
         }
 
         public bool Intersect(ref Ray ray, out float distance)
@@ -386,7 +477,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 }
             }
 
+            mMinHeight = minPos.Z;
+            mMaxHeight = maxPos.Z;
+
             BoundingBox = new BoundingBox(minPos, maxPos);
+            mMidPoint = minPos + (maxPos - minPos) / 2.0f;
         }
 
         private void LoadMcnr()
@@ -418,6 +513,53 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private void LoadMcly(int size)
         {
             mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
+        }
+
+        private bool HandleElevateTerrain(Editing.TerrainChangeParameters parameters)
+        {
+            var amount = 20.0f * (float) parameters.TimeDiff.TotalSeconds;
+            var changed = false;
+            var radius = parameters.OuterRadius;
+
+            for(var i = 0; i < 145; ++i)
+            {
+                var p = Vertices[i].Position;
+                var dist = (p - parameters.Center).Length();
+                if (dist > radius)
+                    continue;
+
+                changed = true;
+                var factor = dist / radius;
+
+                switch(parameters.Algorithm)
+                {
+                    case Editing.TerrainAlgorithm.Flat:
+                        p.Z += amount;
+                        break;
+
+                    case Editing.TerrainAlgorithm.Linear:
+                        p.Z += (amount * (1.0f - factor));
+                        break;
+
+                    case Editing.TerrainAlgorithm.Quadratic:
+                        p.Z += ((-amount) / (radius * radius) * (dist * dist)) + amount;
+                        break;
+
+                    case Editing.TerrainAlgorithm.Trigonometric:
+                        var cs = Math.Cos(factor * Math.PI / 2);
+                        p.Z += amount * (float) cs;
+                        break;
+                }
+
+                if (p.Z < mMinHeight)
+                    mMinHeight = p.Z;
+                if (p.Z > mMaxHeight)
+                    mMaxHeight = p.Z;
+
+                Vertices[i].Position = p;
+            }
+
+            return changed;
         }
 
         public override void Dispose()

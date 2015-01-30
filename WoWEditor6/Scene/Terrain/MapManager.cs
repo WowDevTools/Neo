@@ -16,8 +16,8 @@ namespace WoWEditor6.Scene.Terrain
         private Vector2 mEntryPoint;
         private int mTotalLoadSteps;
         private int mLoadStepsDone;
-        private readonly List<IO.Files.Terrain.MapArea> mDataToLoad = new List<IO.Files.Terrain.MapArea>();
-        private readonly List<IO.Files.Terrain.MapArea> mLoadedData = new List<IO.Files.Terrain.MapArea>();
+        private readonly List<MapArea> mDataToLoad = new List<MapArea>();
+        private readonly List<MapArea> mLoadedData = new List<MapArea>();
         private readonly List<MapAreaRender> mUnloadList = new List<MapAreaRender>();
         private readonly Dictionary<int, MapAreaRender> mAreas = new Dictionary<int, MapAreaRender>();
         private Thread mLoadThread;
@@ -29,7 +29,7 @@ namespace WoWEditor6.Scene.Terrain
 
         public string Continent { get; private set; }
         public int MapId { get; private set; }
-        public IO.Files.Terrain.WdtFile CurrentWdt { get; private set; }
+        public WdtFile CurrentWdt { get; private set; }
         public bool HasNewBlend { get; private set; }
         public bool IsInitialLoad { get; private set; }
         public SkySphere SkySphere { get; private set; }
@@ -44,6 +44,13 @@ namespace WoWEditor6.Scene.Terrain
             mLightUpdateThread.Start();
             mUnloadThread = new Thread(UnloadProc);
             mUnloadThread.Start();
+        }
+
+        public void OnEditTerrain(Editing.TerrainChangeParameters parameters)
+        {
+            // ReSharper disable once InconsistentlySynchronizedField
+            foreach (var pair in mAreas)
+                pair.Value.OnTerrainChange(parameters);
         }
 
         public void Shutdown()
@@ -82,7 +89,7 @@ namespace WoWEditor6.Scene.Terrain
             Continent = continent;
             WorldFrame.Instance.State = AppState.LoadingScreen;
 
-            CurrentWdt = new IO.Files.Terrain.WdtFile();
+            CurrentWdt = new WdtFile();
             CurrentWdt.Load(continent);
             HasNewBlend = (CurrentWdt.Flags & 0x84) != 0;
 
@@ -139,27 +146,37 @@ namespace WoWEditor6.Scene.Terrain
                 mAreas.TryGetValue(index, out tile);
 
             if (tile == null)
+            {
+                Log.Debug("tile == null");
                 return false;
+            }
 
             var chunkx = (int) Math.Floor(x / Metrics.ChunkSize);
             var chunky = (int) Math.Floor(y / Metrics.ChunkSize);
 
             if (chunkx < 0 || chunky < 0 || chunkx > 15 || chunky > 15)
+            {
+                Log.Debug("chunk < 0 || chunky < 0 || chunkx > 15 || chunky > 15");
                 return false;
-
+            }
             var chunk = tile.AreaFile.GetChunk(chunkx + chunky * 16);
             if (chunk == null)
+            {
+                Log.Debug("chunk == null");
                 return false;
+            }
 
             x -= chunkx * Metrics.ChunkSize;
             y -= chunky * Metrics.ChunkSize;
 
             var row = (int) Math.Floor(y / (Metrics.UnitSize * 0.5f) + 0.5f);
             var col =
-                (int) Math.Floor((x + Metrics.UnitSize * 0.5f * ((row % 2 != 0) ? 1 : 0)) / Metrics.UnitSize + 0.5f);
+                (int) Math.Floor((x - Metrics.UnitSize * 0.5f * ((row % 2 != 0) ? 1 : 0)) / Metrics.UnitSize + 0.5f);
             if (row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))
+            {
+                Log.Debug("row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))");
                 return false;
-
+            }
             z = chunk.Vertices[17 * (row / 2) + (((row % 2) != 0) ? 9 : 0) + col].Position.Z;
             return true;
         }
@@ -173,6 +190,7 @@ namespace WoWEditor6.Scene.Terrain
             var minDist = float.MaxValue;
             MapChunk chunkHit = null;
 
+            // ReSharper disable once InconsistentlySynchronizedField
             foreach(var pair in mAreas)
             {
                 MapChunk chunk;
@@ -219,7 +237,7 @@ namespace WoWEditor6.Scene.Terrain
                         if (IO.FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, x, y)) == false)
                             continue;
 
-                        var tile = IO.Files.Terrain.AdtFactory.Instance.CreateArea(Continent, x, y);
+                        var tile = AdtFactory.Instance.CreateArea(Continent, x, y);
                         mDataToLoad.Add(tile);
                         mTotalLoadSteps += 2 * 256;
                         mCurrentValidLinks.Add(x + y * 64);
@@ -244,7 +262,7 @@ namespace WoWEditor6.Scene.Terrain
         {
             while(mIsRunning)
             {
-                IO.Files.Terrain.MapArea loadTile = null;
+                MapArea loadTile = null;
                 lock(mDataToLoad)
                 {
                     if (mDataToLoad.Count > 0)
@@ -377,7 +395,7 @@ namespace WoWEditor6.Scene.Terrain
                 var x = link % 64;
                 var y = link / 64;
 
-                var area = IO.Files.Terrain.AdtFactory.Instance.CreateArea(Continent, x, y);
+                var area = AdtFactory.Instance.CreateArea(Continent, x, y);
                 lock (mDataToLoad)
                     mDataToLoad.Add(area);
             }

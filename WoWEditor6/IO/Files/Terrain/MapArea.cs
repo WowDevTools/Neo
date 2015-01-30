@@ -28,5 +28,8 @@ namespace WoWEditor6.IO.Files.Terrain
         public abstract bool Intersect(ref Ray ray, out MapChunk chunk, out float distance);
 
         public abstract void Dispose();
+
+        public abstract bool OnChangeTerrain(Editing.TerrainChangeParameters parameters);
+        public abstract void UpdateNormals();
     }
 }

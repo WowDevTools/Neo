@@ -60,6 +60,13 @@ namespace WoWEditor6.Scene
             mState = AppState.FileSystemInit;
         }
 
+        public void UpdateTerrainBrush(float innerRadius, float outerRadius)
+        {
+            mGlobalParamsBufferStore.brushParameters.X = innerRadius;
+            mGlobalParamsBufferStore.brushParameters.Y = outerRadius;
+            mGlobalParamsChanged = true;
+        }
+
         public void OnResize(int width, int height)
         {
             mMainCamera.SetAspect((float) width / height);
@@ -149,6 +156,8 @@ namespace WoWEditor6.Scene
 
             CamControl.Update();
 
+            Editing.EditManager.Instance.UpdateChanges();
+
             // do not move before mCamControl.Update to have the latest view/projection
             UpdateCursorPosition();
 
@@ -194,10 +203,10 @@ namespace WoWEditor6.Scene
             }
         }
 
-        private void UpdateCursorPosition()
+        private void UpdateCursorPosition(bool forced = false)
         {
             var pos = InterfaceManager.Instance.Window.PointToClient(Cursor.Position);
-            if (mIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y)
+            if (mIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
             {
                 mLastCursorPosition = new Point(pos.X, pos.Y);
                 mIntersection = new IntersectionParams(ActiveCamera.ViewInverse, ActiveCamera.ProjectionInverse,
@@ -206,6 +215,9 @@ namespace WoWEditor6.Scene
                 MapManager.Intersect(mIntersection);
                 mGlobalParamsBufferStore.mousePosition = new Vector4(mIntersection.TerrainPosition, 0.0f);
                 mGlobalParamsChanged = true;
+
+                Editing.TerrainChangeManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;
+                Editing.TerrainChangeManager.Instance.MousePosition = mIntersection.TerrainPosition;
             }
         }
 
@@ -229,6 +241,8 @@ namespace WoWEditor6.Scene
             mGlobalChanged = true;
 
             M2Manager.ViewChanged();
+
+            UpdateCursorPosition(true);
         }
 
         private void ProjectionChanged(Camera camera, Matrix matProj)

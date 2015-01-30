@@ -46,5 +46,20 @@ namespace WoWEditor6.UI.Dialogs
         {
             Views.WorldView.Instance.KeySettingsDialog.Visible = true;
         }
+
+        private void IntensitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void InnerRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Editing.TerrainChangeManager.Instance.InnerRadius = (float) InnerRadiusSlider.Value;
+        }
+
+        private void OuterRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Editing.TerrainChangeManager.Instance.OuterRadius = (float) OuterRadiusSlider.Value;
+        }
     }
 }

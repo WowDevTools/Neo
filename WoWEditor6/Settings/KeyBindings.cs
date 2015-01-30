@@ -15,12 +15,19 @@ namespace WoWEditor6.Settings
         public Keys[] Down = {Keys.E};
     }
 
+    public class Interaction
+    {
+        public Keys[] Edit = {Keys.ControlKey};
+        public Keys[] EditInverse = {Keys.ShiftKey};
+    }
+
     public class KeyBindings
     {
         [XmlIgnore]
         public static KeyBindings Instance { get; private set; }
 
         public Camera Camera { get; set; } = new Camera();
+        public Interaction Interaction { get; set; } = new Interaction();
 
         public static void Save()
         {
@@ -48,6 +55,8 @@ namespace WoWEditor6.Settings
                     var serializer = new XmlSerializer(typeof (KeyBindings));
                     Instance = (KeyBindings) serializer.Deserialize(strm);
                 }
+
+                Save();
             }
             catch(Exception)
             {

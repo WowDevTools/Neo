@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SharpDX;
+using WoWEditor6.Editing;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Texture;
@@ -56,6 +57,54 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             Continent = continent;
             IndexX = ix;
             IndexY = iy;
+        }
+
+        public override void UpdateNormals()
+        {
+            foreach (var chunk in mChunks)
+                chunk?.UpdateNormals();
+        }
+
+        public void UpdateBoundingBox(BoundingBox chunkBox)
+        {
+            var minPos = chunkBox.Minimum;
+            var maxPos = chunkBox.Maximum;
+
+            var omin = BoundingBox.Minimum;
+            var omax = BoundingBox.Maximum;
+
+            omin.X = Math.Min(omin.X, minPos.X);
+            omin.Y = Math.Min(omin.Y, minPos.Y);
+            omin.Z = Math.Min(omin.Z, minPos.Z);
+            omax.X = Math.Max(omax.X, maxPos.X);
+            omax.Y = Math.Max(omax.Y, maxPos.Y);
+            omax.Z = Math.Max(omax.Z, maxPos.Z);
+
+            BoundingBox = new BoundingBox(omin, omax);
+        }
+
+        public void UpdateVertices(MapChunk chunk)
+        {
+            if (chunk == null)
+                return;
+
+            var ix = chunk.IndexX;
+            var iy = chunk.IndexY;
+
+            var index = (ix + iy * 16) * 145;
+            for (var i = 0; i < 145; ++i)
+                FullVertices[i + index] = chunk.Vertices[i];
+        }
+
+        public override bool OnChangeTerrain(TerrainChangeParameters parameters)
+        {
+            var changed = false;
+            foreach (var chunk in mChunks)
+            {
+                if (chunk?.OnTerrainChange(parameters) ?? false)
+                    changed = true;
+            }
+            return changed;
         }
 
         public override bool Intersect(ref Ray ray, out Terrain.MapChunk chunk, out float distance)
