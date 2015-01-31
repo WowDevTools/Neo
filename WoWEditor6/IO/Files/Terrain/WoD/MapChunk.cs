@@ -76,6 +76,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     changed = HandleFlatten(parameters);
                     break;
 
+                case Editing.TerrainChangeType.Blur:
+                    changed = HandleBlur(parameters);
+                    break;
+
                 case Editing.TerrainChangeType.Shading:
                     changed = HandleMccvPaint(parameters);
                     break;
@@ -534,6 +538,89 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
         }
 
+        private bool HandleBlur(Editing.TerrainChangeParameters parameters)
+        {
+            var radius = parameters.OuterRadius;
+            var amount = parameters.Amount / 550.0f;
+            if (amount > 1) amount = 1;
+
+            amount = 1 - amount;
+            var changed = false;
+
+            for(var i = 0; i < 145; ++i)
+            {
+                var p = Vertices[i].Position;
+                var dist = (p - parameters.Center).Length();
+                if (dist > radius)
+                    continue;
+
+                changed = true;
+                var totalHeight = 0.0f;
+                var totalWeight = 0.0f;
+                var rad = (int) (radius / Metrics.UnitSize);
+                for(var j = -rad; j <= rad; ++j)
+                {
+                    var ty = parameters.Center.Y + j * Metrics.UnitSize;
+                    for(var k = -rad; k <= rad; ++k)
+                    {
+                        var tx = parameters.Center.X + k * Metrics.UnitSize;
+                        var xdiff = tx - p.X;
+                        var ydiff = ty - p.Y;
+                        var diff = xdiff * xdiff + ydiff * ydiff;
+                        if (diff > radius * radius)
+                            continue;
+
+                        float height;
+                        if (WorldFrame.Instance.MapManager.GetLandHeight(tx, 64.0f * Metrics.TileSize - ty, out height) ==
+                            false)
+                            height = p.Z;
+
+                        var dist2 = (float) Math.Sqrt(diff);
+                        totalHeight += (1 - dist2 / radius) * height;
+                        totalWeight += (1 - dist2 / radius);
+                    }
+                }
+
+                var h = totalHeight / totalWeight;
+                switch(parameters.Algorithm)
+                {
+                    case Editing.TerrainAlgorithm.Flat:
+                        p.Z = amount * p.Z + (1 - amount) * h;
+                        break;
+
+                    case Editing.TerrainAlgorithm.Linear:
+                        {
+                            var nremain = 1 - (1 - amount) * (1 - dist / radius);
+                            p.Z = nremain * p.Z + (1 - nremain) * h;
+                        }
+                        break;
+
+                    case Editing.TerrainAlgorithm.Quadratic:
+                        {
+                            var nremain = 1 - (float)Math.Pow(1 - amount, 1 + dist / radius);
+                            p.Z = nremain * p.Z + (1 - nremain) * h;
+                        }
+                        break;
+
+                    case Editing.TerrainAlgorithm.Trigonometric:
+                        {
+                            var nremain = 1 - (1 - amount) * (float)Math.Cos(dist / radius);
+                            p.Z = nremain * p.Z + (1 - nremain) * h;
+                        }
+                        break;
+                }
+
+                if (p.Z < mMinHeight)
+                    mMinHeight = p.Z;
+                if (p.Z > mMaxHeight)
+                    mMaxHeight = p.Z;
+
+                Vertices[i].Position = p;
+            }
+
+            return changed;
+        }
+
         private bool HandleFlatten(Editing.TerrainChangeParameters parameters)
         {
             var radius = parameters.OuterRadius;
@@ -659,20 +746,20 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 switch(parameters.Algorithm)
                 {
                     case Editing.TerrainAlgorithm.Flat:
-                        p.Z += amount;
+                        p.Z += amount * (parameters.Inverted ? -1 : 1);
                         break;
 
                     case Editing.TerrainAlgorithm.Linear:
-                        p.Z += (amount * (1.0f - factor));
+                        p.Z += (amount * (1.0f - factor)) * (parameters.Inverted ? -1 : 1);
                         break;
 
                     case Editing.TerrainAlgorithm.Quadratic:
-                        p.Z += ((-amount) / (radius * radius) * (dist * dist)) + amount;
+                        p.Z += (((-amount) / (radius * radius) * (dist * dist)) + amount) * (parameters.Inverted ? -1 : 1);
                         break;
 
                     case Editing.TerrainAlgorithm.Trigonometric:
                         var cs = Math.Cos(factor * Math.PI / 2);
-                        p.Z += amount * (float) cs;
+                        p.Z += (amount * (float) cs) * (parameters.Inverted ? -1 : 1);
                         break;
                 }
 

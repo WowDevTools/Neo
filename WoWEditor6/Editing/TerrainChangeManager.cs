@@ -35,6 +35,7 @@ namespace WoWEditor6.Editing
         public TimeSpan TimeDiff;
         public Vector3 Shading;
         public float Amount;
+        public bool Inverted;
     }
 
     class TerrainChangeManager
@@ -73,7 +74,8 @@ namespace WoWEditor6.Editing
 
         public void OnChange(TimeSpan diff)
         {
-            if (CheckRequirements() == false)
+            bool inverted;
+            if (CheckRequirements(out inverted) == false)
                 return;
 
             var parameters = new TerrainChangeParameters()
@@ -85,14 +87,16 @@ namespace WoWEditor6.Editing
                 Method = ChangeType,
                 TimeDiff = diff,
                 Shading = ShadingMultiplier,
-                Amount = Amount
+                Amount = Amount,
+                Inverted = inverted
             };
 
             WorldFrame.Instance.MapManager.OnEditTerrain(parameters);
         }
 
-        private bool CheckRequirements()
+        private bool CheckRequirements(out bool isInverted)
         {
+            isInverted = false;
             if (IsTerrainHovered == false)
                 return false;
 
@@ -103,6 +107,9 @@ namespace WoWEditor6.Editing
             if (KeyHelper.AreKeysDown(state, bindings.Interaction.Edit) == false &&
                 KeyHelper.AreKeysDown(state, bindings.Interaction.EditInverse) == false)
                 return false;
+
+            if (KeyHelper.AreKeysDown(state, bindings.Interaction.EditInverse))
+                isInverted = true;
 
             return true;
         }
