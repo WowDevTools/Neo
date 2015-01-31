@@ -72,6 +72,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     changed = HandleElevateTerrain(parameters);
                     break;
 
+                case Editing.TerrainChangeType.Flatten:
+                    changed = HandleFlatten(parameters);
+                    break;
+
                 case Editing.TerrainChangeType.Shading:
                     changed = HandleMccvPaint(parameters);
                     break;
@@ -530,6 +534,64 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
         }
 
+        private bool HandleFlatten(Editing.TerrainChangeParameters parameters)
+        {
+            var radius = parameters.OuterRadius;
+            var amount = parameters.Amount / 550.0f;
+            if (amount > 1) amount = 1;
+
+            amount = 1 - amount;
+            var changed = false;
+
+            for (var i = 0; i < 145; ++i)
+            {
+                var p = Vertices[i].Position;
+                var dist = (p - parameters.Center).Length();
+                if (dist > radius)
+                    continue;
+
+                changed = true;
+                var factor = dist / radius;
+
+                switch (parameters.Algorithm)
+                {
+                    case Editing.TerrainAlgorithm.Flat:
+                        p.Z = amount * p.Z + (1 - amount) * parameters.Center.Z;
+                        break;
+
+                    case Editing.TerrainAlgorithm.Linear:
+                        {
+                            var nremain = 1 - (1 - amount) * (1 - factor);
+                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
+                            break;
+                        }
+
+                    case Editing.TerrainAlgorithm.Quadratic:
+                        {
+                            var nremain = 1 - (float)Math.Pow(1 - amount, 1 + factor);
+                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
+                            break;
+                        }
+
+                    case Editing.TerrainAlgorithm.Trigonometric:
+                        {
+                            var nremain = 1 - (1 - amount) * (1 - (float)Math.Cos(factor * Math.PI / 2.0f));
+                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
+                            break;
+                        }
+                }
+
+                if (p.Z < mMinHeight)
+                    mMinHeight = p.Z;
+                if (p.Z > mMaxHeight)
+                    mMaxHeight = p.Z;
+
+                Vertices[i].Position = p;
+            }
+
+            return changed;
+        }
+
         private bool HandleMccvPaint(Editing.TerrainChangeParameters parameters)
         {
             var amount = (parameters.Amount / 75.0f) * (float)parameters.TimeDiff.TotalSeconds;
@@ -580,7 +642,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private bool HandleElevateTerrain(Editing.TerrainChangeParameters parameters)
         {
-            var amount = 20.0f * (float) parameters.TimeDiff.TotalSeconds;
+            var amount = parameters.Amount * (float) parameters.TimeDiff.TotalSeconds;
             var changed = false;
             var radius = parameters.OuterRadius;
 
