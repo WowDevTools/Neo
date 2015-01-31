@@ -33,6 +33,8 @@ namespace WoWEditor6.Editing
         public float OuterRadius;
         public float InnerRadius;
         public TimeSpan TimeDiff;
+        public Vector3 Shading;
+        public float Amount;
     }
 
     class TerrainChangeManager
@@ -46,6 +48,8 @@ namespace WoWEditor6.Editing
         public TerrainAlgorithm ChangeAlgorithm { get; set; } = TerrainAlgorithm.Linear;
         public Vector3 MousePosition { get; set; }
         public bool IsTerrainHovered { get; set; }
+        public Vector3 ShadingMultiplier { get; set; } = Vector3.One;
+        public float Amount { get; set; } = 15.0f;
 
         public float InnerRadius
         {
@@ -79,7 +83,9 @@ namespace WoWEditor6.Editing
                 InnerRadius = mInnerRadius,
                 OuterRadius = mOuterRadius,
                 Method = ChangeType,
-                TimeDiff = diff
+                TimeDiff = diff,
+                Shading = ShadingMultiplier,
+                Amount = Amount
             };
 
             WorldFrame.Instance.MapManager.OnEditTerrain(parameters);

@@ -31,6 +31,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private float mMinHeight = float.MaxValue;
         private float mMaxHeight = float.MinValue;
         private bool mUpdateNormals;
+        private readonly Vector4[] mShadingFloats = new Vector4[145];
 
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
@@ -45,6 +46,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             IndexX = indexX;
             IndexY = indexY;
+
+            for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
         public bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
@@ -59,7 +62,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             // always update the normals if we are closer than ChunkRadius to the modified area
             // since nearby changes might affect the normals of this chunk even if the positions
-            // themself didnt change
+            // them self didn't change
             mUpdateNormals = true;
 
             var changed = false;
@@ -67,6 +70,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             {
                 case Editing.TerrainChangeType.Elevate:
                     changed = HandleElevateTerrain(parameters);
+                    break;
+
+                case Editing.TerrainChangeType.Shading:
+                    changed = HandleMccvPaint(parameters);
                     break;
             }
 
@@ -507,12 +514,68 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         {
             var colors = mReader.ReadArray<uint>(145);
             for (var i = 0; i < 145; ++i)
+            {
                 Vertices[i].Color = colors[i];
+                var r = (colors[i] >> 16) & 0xFF;
+                var g = (colors[i] >> 8) & 0xFF;
+                var b = (colors[i]) & 0xFF;
+                var a = (colors[i] >> 24) & 0xFF;
+
+                mShadingFloats[i] = new Vector4(b * 2.0f / 255.0f, g * 2.0f / 255.0f, r * 2.0f / 255.0f, a * 2.0f / 255.0f);
+            }
         }
 
         private void LoadMcly(int size)
         {
             mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
+        }
+
+        private bool HandleMccvPaint(Editing.TerrainChangeParameters parameters)
+        {
+            var amount = (parameters.Amount / 75.0f) * (float)parameters.TimeDiff.TotalSeconds;
+            var changed = false;
+
+            var radius = parameters.OuterRadius;
+            for(var i = 0; i < 145; ++i)
+            {
+                var p = Vertices[i].Position;
+                var dist = (p - parameters.Center).Length();
+                if (dist > radius)
+                    continue;
+
+                changed = true;
+                var factor = dist / radius;
+                if (dist < parameters.InnerRadius)
+                    factor = 1.0f;
+
+                var curColor = mShadingFloats[i];
+                var dr = parameters.Shading.X - curColor.X;
+                var dg = parameters.Shading.Y - curColor.Y;
+                var db = parameters.Shading.Z - curColor.Z;
+
+                var cr = Math.Min(Math.Abs(dr), amount * factor);
+                var cg = Math.Min(Math.Abs(dg), amount * factor);
+                var cb = Math.Min(Math.Abs(db), amount * factor);
+
+                if (dr < 0) curColor.X -= cr;
+                else curColor.X += cr;
+                if (dg < 0) curColor.Y -= cg;
+                else curColor.Y += cg;
+                if (db < 0) curColor.Z -= cb;
+                else curColor.Z += cb;
+
+                mShadingFloats[i] = curColor;
+
+                var r = (byte) ((curColor.X / 2.0f) * 255.0f);
+                var g = (byte) ((curColor.Y / 2.0f) * 255.0f);
+                var b = (byte) ((curColor.Z / 2.0f) * 255.0f);
+                var a = (byte) ((curColor.W / 2.0f) * 255.0f);
+
+                var color = (uint)((a << 24) | (r << 16) | (g << 8) | b);
+                Vertices[i].Color = color;
+            }
+
+            return changed;
         }
 
         private bool HandleElevateTerrain(Editing.TerrainChangeParameters parameters)

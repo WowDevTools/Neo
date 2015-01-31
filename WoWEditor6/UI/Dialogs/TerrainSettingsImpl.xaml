@@ -17,10 +17,10 @@
         </Grid.ColumnDefinitions>
         <Border Padding="10" Grid.Row="0" Grid.Column="0">
             <StackPanel Orientation="Vertical">
-                <RadioButton Content="Raise/lower" IsChecked="True"></RadioButton>
-                <RadioButton Content="Flatten"></RadioButton>
-                <RadioButton Content="Blur"></RadioButton>
-                <RadioButton Content="Shading"></RadioButton>
+                <RadioButton Content="Raise/lower" IsChecked="True" Tag="Elevate" Checked="ChangeMode_Checked"></RadioButton>
+                <RadioButton Content="Flatten" Tag="Flatten" Checked="ChangeMode_Checked"></RadioButton>
+                <RadioButton Content="Blur" Tag="Blur" Checked="ChangeMode_Checked"></RadioButton>
+                <RadioButton Content="Shading" Tag="Shading" Checked="ChangeMode_Checked"></RadioButton>
                 <TextBlock Margin="0,10,0,0">
                 <Hyperlink Click="Hyperlink_Click">Assign keyboard shortcuts</Hyperlink>
                 </TextBlock>
