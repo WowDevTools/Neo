@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
-using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Terrain
 {

@@ -110,15 +110,15 @@ namespace WoWEditor6.UI.Components
                     mFpsSamples.RemoveAt(0);
             }
 
-            //target.FillRectangle(mMemoryRectangle, Brushes.Solid[0xBB333333]);
-            //target.DrawRectangle(mMemoryRectangle, Brushes.White);
+            target.FillRectangle(mMemoryRectangle, Brushes.Solid[0xBB333333]);
+            target.DrawRectangle(mMemoryRectangle, Brushes.White);
             target.FillRectangle(mFpsRectangle, Brushes.Solid[0xBB333333]);
             target.DrawRectangle(mFpsRectangle, Brushes.White);
 
-            //DrawMemorySamples(target);
+            DrawMemorySamples(target);
             DrawFpsSamples(target);
 
-            //target.DrawTextLayout(new Vector2(Position.X, mMemoryRectangle.Top - 20.0f), mMemoryCaption, Brushes.White);
+            target.DrawTextLayout(new Vector2(Position.X, mMemoryRectangle.Top - 20.0f), mMemoryCaption, Brushes.White);
             target.DrawTextLayout(new Vector2(Position.X, mFpsRectangle.Top - 20.0f), mFpsCaption, Brushes.White);
         }
 

@@ -67,6 +67,8 @@ namespace WoWEditor6.Scene.Models.M2
                 instanceBuffer?.Dispose();
                 cb?.Dispose();
             });
+
+            StaticAnimationThread.Instance.RemoveAnimator(mAnimator);
         }
 
         public void OnFrame()

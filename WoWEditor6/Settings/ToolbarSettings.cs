@@ -57,10 +57,7 @@ namespace WoWEditor6.Settings
 
                 Left = new ToolbarButtons
                 {
-                    Buttons = new List<ToolbarButton>
-                    {
-
-                    }
+                    Buttons = new List<ToolbarButton>()
                 }
             };
 

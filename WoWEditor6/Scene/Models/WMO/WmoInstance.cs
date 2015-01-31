@@ -5,8 +5,6 @@ namespace WoWEditor6.Scene.Models.WMO
 {
     class WmoInstance
     {
-        private Vector3 mPosition;
-        private Vector3 mRotation;
         private readonly Matrix mInstanceMatrix;
 
         public BoundingBox BoundingBox;
@@ -18,8 +16,6 @@ namespace WoWEditor6.Scene.Models.WMO
         public WmoInstance(int uuid, Vector3 position, Vector3 rotation, WmoRootRender model)
         {
             Uuid = uuid;
-            mPosition = position;
-            mRotation = rotation;
             BoundingBox = model.BoundingBox;
             mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
                                   MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix.Translation(position);

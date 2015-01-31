@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using SharpDX;
-using SharpDX.Direct3D11;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene.Models;

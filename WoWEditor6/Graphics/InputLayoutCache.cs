@@ -41,7 +41,6 @@ namespace WoWEditor6.Graphics
                 {
                     elements[i].AlignedByteOffset = 0;
                     hasVertex = true;
-                    continue;
                 }
             }
 

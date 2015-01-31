@@ -314,6 +314,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         private void InitWmoModels()
         {
             if (SeekChunk(mObjReader, 0x4D574D4F) == false)

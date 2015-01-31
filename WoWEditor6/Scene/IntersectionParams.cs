@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX;
+﻿using SharpDX;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.Scene.Models.M2;
@@ -17,6 +12,7 @@ namespace WoWEditor6.Scene
         public M2RenderInstance M2Instance { get; set; }
         public WmoGroup WmoModel { get; set; }
         public WmoInstance WmoInstance { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public MapChunk ChunkHit { get; set; }
         public Vector3 TerrainPosition { get; set; }
         public Vector3 M2Position { get; set; }

@@ -26,11 +26,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private readonly WeakReference<MapArea> mParent;
 
         private readonly List<Mcly> mLayerInfos = new List<Mcly>();
-
-        private Vector3 mMidPoint;
-        private float mMinHeight = float.MaxValue;
-        private float mMaxHeight = float.MinValue;
-        private bool mUpdateNormals;
         private readonly Vector4[] mShadingFloats = new Vector4[145];
 
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
@@ -50,40 +45,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
-        public bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
+        public override bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
         {
-            var diffVec = new Vector2(mMidPoint.X, mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
-            var dsquare = Vector2.Dot(diffVec, diffVec);
-
-            var maxRadius = parameters.OuterRadius + Metrics.ChunkRadius;
-
-            if (dsquare > maxRadius * maxRadius)
-                return false;
-
-            // always update the normals if we are closer than ChunkRadius to the modified area
-            // since nearby changes might affect the normals of this chunk even if the positions
-            // them self didn't change
-            mUpdateNormals = true;
-
-            var changed = false;
-            switch(parameters.Method)
-            {
-                case Editing.TerrainChangeType.Elevate:
-                    changed = HandleElevateTerrain(parameters);
-                    break;
-
-                case Editing.TerrainChangeType.Flatten:
-                    changed = HandleFlatten(parameters);
-                    break;
-
-                case Editing.TerrainChangeType.Blur:
-                    changed = HandleBlur(parameters);
-                    break;
-
-                case Editing.TerrainChangeType.Shading:
-                    changed = HandleMccvPaint(parameters);
-                    break;
-            }
+            var changed = base.OnTerrainChange(parameters);
 
             if(changed)
             {
@@ -101,47 +65,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             return changed;
         }
 
-        public void UpdateNormals()
+        public override void UpdateNormals()
         {
-            if (mUpdateNormals == false)
-                return;
-
-            mUpdateNormals = false;
-            for(var i = 0; i < 145; ++i)
-            {
-                var p1 = Vertices[i].Position;
-                var p2 = p1;
-                var p3 = p2;
-                var p4 = p3;
-                var v = p1;
-
-                p1.X -= 0.5f * Metrics.UnitSize;
-                p1.Y -= 0.5f * Metrics.UnitSize;
-                p2.X += 0.5f * Metrics.UnitSize;
-                p2.Y -= 0.5f * Metrics.UnitSize;
-                p3.X += 0.5f * Metrics.UnitSize;
-                p3.Y += 0.5f * Metrics.UnitSize;
-                p4.X -= 0.5f * Metrics.UnitSize;
-                p4.Y += 0.5f * Metrics.UnitSize;
-
-                var mgr = WorldFrame.Instance.MapManager;
-                float h;
-                if (mgr.GetLandHeight(p1.X, 64.0f * Metrics.TileSize - p1.Y, out h)) p1.Z = h;
-                if (mgr.GetLandHeight(p2.X, 64.0f * Metrics.TileSize - p2.Y, out h)) p2.Z = h;
-                if (mgr.GetLandHeight(p3.X, 64.0f * Metrics.TileSize - p3.Y, out h)) p3.Z = h;
-                if (mgr.GetLandHeight(p4.X, 64.0f * Metrics.TileSize - p4.Y, out h)) p4.Z = h;
-
-                var n1 = Vector3.Cross((p2 - v), (p1 - v));
-                var n2 = Vector3.Cross((p3 - v), (p2 - v));
-                var n3 = Vector3.Cross((p4 - v), (p3 - v));
-                var n4 = Vector3.Cross((p1 - v), (p4 - v));
-
-                var n = n1 + n2 + n3 + n4;
-                n.Normalize();
-                n *= -1;
-
-                Vertices[i].Normal = n;
-            }
+            base.UpdateNormals();
 
             MapArea parent;
             mParent.TryGetTarget(out parent);
@@ -209,7 +135,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             return hasHit;
         }
 
-        public override void AsyncLoad()
+        public virtual void AsyncLoad()
         {
             mReader.BaseStream.Position = mMainInfo.PosStart;
             var chunkSize = mReader.ReadInt32();
@@ -538,148 +464,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
         }
 
-        private bool HandleBlur(Editing.TerrainChangeParameters parameters)
-        {
-            var radius = parameters.OuterRadius;
-            var amount = parameters.Amount / 550.0f;
-            if (amount > 1) amount = 1;
-
-            amount = 1 - amount;
-            var changed = false;
-
-            for(var i = 0; i < 145; ++i)
-            {
-                var p = Vertices[i].Position;
-                var dist = (p - parameters.Center).Length();
-                if (dist > radius)
-                    continue;
-
-                changed = true;
-                var totalHeight = 0.0f;
-                var totalWeight = 0.0f;
-                var rad = (int) (radius / Metrics.UnitSize);
-                for(var j = -rad; j <= rad; ++j)
-                {
-                    var ty = parameters.Center.Y + j * Metrics.UnitSize;
-                    for(var k = -rad; k <= rad; ++k)
-                    {
-                        var tx = parameters.Center.X + k * Metrics.UnitSize;
-                        var xdiff = tx - p.X;
-                        var ydiff = ty - p.Y;
-                        var diff = xdiff * xdiff + ydiff * ydiff;
-                        if (diff > radius * radius)
-                            continue;
-
-                        float height;
-                        if (WorldFrame.Instance.MapManager.GetLandHeight(tx, 64.0f * Metrics.TileSize - ty, out height) ==
-                            false)
-                            height = p.Z;
-
-                        var dist2 = (float) Math.Sqrt(diff);
-                        totalHeight += (1 - dist2 / radius) * height;
-                        totalWeight += (1 - dist2 / radius);
-                    }
-                }
-
-                var h = totalHeight / totalWeight;
-                switch(parameters.Algorithm)
-                {
-                    case Editing.TerrainAlgorithm.Flat:
-                        p.Z = amount * p.Z + (1 - amount) * h;
-                        break;
-
-                    case Editing.TerrainAlgorithm.Linear:
-                        {
-                            var nremain = 1 - (1 - amount) * (1 - dist / radius);
-                            p.Z = nremain * p.Z + (1 - nremain) * h;
-                        }
-                        break;
-
-                    case Editing.TerrainAlgorithm.Quadratic:
-                        {
-                            var nremain = 1 - (float)Math.Pow(1 - amount, 1 + dist / radius);
-                            p.Z = nremain * p.Z + (1 - nremain) * h;
-                        }
-                        break;
-
-                    case Editing.TerrainAlgorithm.Trigonometric:
-                        {
-                            var nremain = 1 - (1 - amount) * (float)Math.Cos(dist / radius);
-                            p.Z = nremain * p.Z + (1 - nremain) * h;
-                        }
-                        break;
-                }
-
-                if (p.Z < mMinHeight)
-                    mMinHeight = p.Z;
-                if (p.Z > mMaxHeight)
-                    mMaxHeight = p.Z;
-
-                Vertices[i].Position = p;
-            }
-
-            return changed;
-        }
-
-        private bool HandleFlatten(Editing.TerrainChangeParameters parameters)
-        {
-            var radius = parameters.OuterRadius;
-            var amount = parameters.Amount / 550.0f;
-            if (amount > 1) amount = 1;
-
-            amount = 1 - amount;
-            var changed = false;
-
-            for (var i = 0; i < 145; ++i)
-            {
-                var p = Vertices[i].Position;
-                var dist = (p - parameters.Center).Length();
-                if (dist > radius)
-                    continue;
-
-                changed = true;
-                var factor = dist / radius;
-
-                switch (parameters.Algorithm)
-                {
-                    case Editing.TerrainAlgorithm.Flat:
-                        p.Z = amount * p.Z + (1 - amount) * parameters.Center.Z;
-                        break;
-
-                    case Editing.TerrainAlgorithm.Linear:
-                        {
-                            var nremain = 1 - (1 - amount) * (1 - factor);
-                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
-                            break;
-                        }
-
-                    case Editing.TerrainAlgorithm.Quadratic:
-                        {
-                            var nremain = 1 - (float)Math.Pow(1 - amount, 1 + factor);
-                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
-                            break;
-                        }
-
-                    case Editing.TerrainAlgorithm.Trigonometric:
-                        {
-                            var nremain = 1 - (1 - amount) * (1 - (float)Math.Cos(factor * Math.PI / 2.0f));
-                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
-                            break;
-                        }
-                }
-
-                if (p.Z < mMinHeight)
-                    mMinHeight = p.Z;
-                if (p.Z > mMaxHeight)
-                    mMaxHeight = p.Z;
-
-                Vertices[i].Position = p;
-            }
-
-            return changed;
-        }
-
-        private bool HandleMccvPaint(Editing.TerrainChangeParameters parameters)
+        protected override bool HandleMccvPaint(Editing.TerrainChangeParameters parameters)
         {
             var amount = (parameters.Amount / 75.0f) * (float)parameters.TimeDiff.TotalSeconds;
             var changed = false;
@@ -730,53 +515,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
                 var color = (uint)((a << 24) | (r << 16) | (g << 8) | b);
                 Vertices[i].Color = color;
-            }
-
-            return changed;
-        }
-
-        private bool HandleElevateTerrain(Editing.TerrainChangeParameters parameters)
-        {
-            var amount = parameters.Amount * (float) parameters.TimeDiff.TotalSeconds;
-            var changed = false;
-            var radius = parameters.OuterRadius;
-
-            for(var i = 0; i < 145; ++i)
-            {
-                var p = Vertices[i].Position;
-                var dist = (p - parameters.Center).Length();
-                if (dist > radius)
-                    continue;
-
-                changed = true;
-                var factor = dist / radius;
-
-                switch(parameters.Algorithm)
-                {
-                    case Editing.TerrainAlgorithm.Flat:
-                        p.Z += amount * (parameters.Inverted ? -1 : 1);
-                        break;
-
-                    case Editing.TerrainAlgorithm.Linear:
-                        p.Z += (amount * (1.0f - factor)) * (parameters.Inverted ? -1 : 1);
-                        break;
-
-                    case Editing.TerrainAlgorithm.Quadratic:
-                        p.Z += (((-amount) / (radius * radius) * (dist * dist)) + amount) * (parameters.Inverted ? -1 : 1);
-                        break;
-
-                    case Editing.TerrainAlgorithm.Trigonometric:
-                        var cs = Math.Cos(factor * Math.PI / 2);
-                        p.Z += (amount * (float) cs) * (parameters.Inverted ? -1 : 1);
-                        break;
-                }
-
-                if (p.Z < mMinHeight)
-                    mMinHeight = p.Z;
-                if (p.Z > mMaxHeight)
-                    mMaxHeight = p.Z;
-
-                Vertices[i].Position = p;
             }
 
             return changed;

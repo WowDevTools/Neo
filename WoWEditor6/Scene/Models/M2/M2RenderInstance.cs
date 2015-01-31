@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX;
+﻿using SharpDX;
 using WoWEditor6.Utils;
 
 namespace WoWEditor6.Scene.Models.M2

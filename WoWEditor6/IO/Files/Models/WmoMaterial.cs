@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace WoWEditor6.IO.Files.Models
 {
     class WmoMaterial

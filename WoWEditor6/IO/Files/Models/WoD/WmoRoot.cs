@@ -17,7 +17,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private string mFileName;
         private readonly List<WmoGroup> mGroups = new List<WmoGroup>();
 
-        public override string FileName => mFileName;
+        public virtual string FileName => mFileName;
 
         public uint AmbientColor => mHeader.ambientColor;
 

@@ -22,7 +22,13 @@ namespace WoWEditor6.Graphics
         public bool CullEnabled
         {
             get { return mDescription.CullMode != CullMode.None; }
-            set { mDescription.CullMode = CullMode.Back; mChanged = true; }
+            set { mDescription.CullMode = value ? CullMode.Back : CullMode.None; mChanged = true; }
+        }
+
+        public bool Wireframe
+        {
+            get { return mDescription.FillMode == FillMode.Wireframe; }
+            set { mDescription.FillMode = value ? FillMode.Wireframe : FillMode.Solid; mChanged = true; }
         }
 
         public RasterizerState Native

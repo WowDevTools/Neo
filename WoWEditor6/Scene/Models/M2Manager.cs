@@ -52,6 +52,9 @@ namespace WoWEditor6.Scene.Models
                     if (instance?.RenderInstance?.IsUpdated ?? true)
                         continue;
 
+                    if (instance == null)
+                        continue;
+
                     M2BatchRenderer renderer;
                     if (mRenderer.TryGetValue(instance.Hash, out renderer))
                         renderer.PushMapReference(instance);

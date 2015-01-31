@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models
@@ -16,8 +13,6 @@ namespace WoWEditor6.IO.Files.Models
         public BoundingBox BoundingBox { get; protected set; }
 
         public IList<WmoGroup> Groups { get; protected set; }
-
-        public virtual string FileName { get; }
 
         public abstract void Dispose();
     }

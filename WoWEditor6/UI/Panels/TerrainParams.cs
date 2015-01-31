@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct2D1;
 using WoWEditor6.UI.Components;
 using WoWEditor6.UI.Dialogs;

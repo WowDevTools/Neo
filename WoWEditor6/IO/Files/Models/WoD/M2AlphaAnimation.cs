@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
     class M2AlphaAnimation
     {
-        private M2InterpolateAlpha16AnimationBlock mAlpha;
+        private readonly M2InterpolateAlpha16AnimationBlock mAlpha;
 
         public M2AlphaAnimation(M2File file, ref AnimationBlock transBlock, BinaryReader reader)
         {

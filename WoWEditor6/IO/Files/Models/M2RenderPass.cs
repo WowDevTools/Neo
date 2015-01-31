@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace WoWEditor6.IO.Files.Models
 {
