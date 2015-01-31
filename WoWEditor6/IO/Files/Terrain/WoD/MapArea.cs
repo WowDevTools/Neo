@@ -52,11 +52,18 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
 
+        private Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
+
         public MapArea(string continent, int ix, int iy)
         {
             Continent = continent;
             IndexX = ix;
             IndexY = iy;
+        }
+
+        public override void Save()
+        {
+            WriteBaseFile();
         }
 
         public override void UpdateNormals()
@@ -201,6 +208,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 InitModels();
 
                 InitChunks();
+
+                BuildDataForSave();
             }
             catch(Exception e)
             {
@@ -212,18 +221,42 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             IsValid = true;
         }
 
+        private void BuildDataForSave()
+        {
+            mReader.BaseStream.Position = 0;
+            while(mReader.BaseStream.Position + 8 < mReader.BaseStream.Length)
+            {
+                var signature = mReader.ReadUInt32();
+                var size = mReader.ReadInt32();
+                // skip the MCNK, chunks will write it
+                if(signature == 0x4D434E4B)
+                {
+                    mReader.BaseStream.Position += size;
+                    continue;
+                }
+
+                var data = mReader.ReadBytes(size);
+                mBaseChunks.Add(signature, new DataChunk
+                {
+                    Data = data,
+                    Signature = signature,
+                    Size = size
+                });
+            }
+        }
+
         private void InitChunkInfos()
         {
             for(var i = 0; i < 256; ++i)
             {
                 if (SeekNextMcnk(mReader) == false)
-                    throw new InvalidOperationException("Unable to read MCNK from adt");
+                    throw new InvalidOperationException("Unable to read MCNK from ADT");
 
                 if (SeekNextMcnk(mTexReader) == false)
-                    throw new InvalidOperationException("Unable to read MCNK from tex adt");
+                    throw new InvalidOperationException("Unable to read MCNK from TEX ADT");
 
                 if (SeekNextMcnk(mObjReader) == false)
-                    throw new InvalidOperationException("Unable to read MCNK from obj adt");
+                    throw new InvalidOperationException("Unable to read MCNK from obj ADT");
 
                 mMainChunks.Add(new ChunkStreamInfo
                 {
@@ -434,6 +467,20 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             BoundingBox = new BoundingBox(minPos, maxPos);
             ModelBox = new BoundingBox(modelMin, modelMax);
+        }
+
+        private void WriteBaseFile()
+        {
+            using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, IndexX, IndexY)))
+            {
+                var writer = new BinaryWriter(strm);
+                foreach (var pair in mBaseChunks)
+                {
+                    writer.Write(pair.Value.Signature);
+                    writer.Write(pair.Value.Size);
+                    writer.Write(pair.Value.Data);
+                }
+            }
         }
 
         private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B, false);

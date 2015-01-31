@@ -20,6 +20,8 @@ namespace WoWEditor6.IO.Files.Terrain
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
 
+        public abstract void Save();
+
         public abstract Graphics.Texture GetTexture(int index);
         public abstract void AsyncLoad();
         public abstract MapChunk GetChunk(int index);

@@ -297,7 +297,6 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     StartIndex = b.firstFace,
                     MaterialId = b.material,
                     BlendMode = parent.GetMaterial(b.material).BlendMode,
-                    MaterialFlags = parent.GetMaterial(b.material).Flags1
                 };
 
                 mBatches.Add(batch);

@@ -13,6 +13,19 @@ namespace WoWEditor6.IO
 
         public event Action LoadComplete;
 
+        public Stream GetOutputStream(string path)
+        {
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);
+            try
+            {
+                return File.Open(fullPath, FileMode.Create, FileAccess.Write, FileShare.None);
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+        }
+
         public void InitFromPath()
         {
             if(string.IsNullOrEmpty(DataPath))
