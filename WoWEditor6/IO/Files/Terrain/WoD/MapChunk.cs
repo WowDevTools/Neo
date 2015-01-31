@@ -684,6 +684,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var amount = (parameters.Amount / 75.0f) * (float)parameters.TimeDiff.TotalSeconds;
             var changed = false;
 
+            var destColor = parameters.Shading;
+            if(parameters.Inverted)
+            {
+                destColor.X = 2 - destColor.X;
+                destColor.Y = 2 - destColor.Y;
+                destColor.Z = 2 - destColor.Z;
+            }
+
             var radius = parameters.OuterRadius;
             for(var i = 0; i < 145; ++i)
             {
@@ -698,9 +706,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     factor = 1.0f;
 
                 var curColor = mShadingFloats[i];
-                var dr = parameters.Shading.X - curColor.X;
-                var dg = parameters.Shading.Y - curColor.Y;
-                var db = parameters.Shading.Z - curColor.Z;
+                var dr = destColor.X - curColor.X;
+                var dg = destColor.Y - curColor.Y;
+                var db = destColor.Z - curColor.Z;
 
                 var cr = Math.Min(Math.Abs(dr), amount * factor);
                 var cg = Math.Min(Math.Abs(dg), amount * factor);
