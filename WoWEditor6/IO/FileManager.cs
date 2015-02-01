@@ -27,6 +27,25 @@ namespace WoWEditor6.IO
             }
         }
 
+		public Stream GetExistingFile(string path)
+		{
+			try
+			{
+				var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);
+				using (var strm = File.OpenRead(fullPath))
+				{
+					var retStream = new MemoryStream();
+					strm.CopyTo(retStream);
+					retStream.Position = 0;
+					return retStream;
+				}
+			}
+			catch(Exception)
+			{
+				return null;
+			}
+		}
+
         public void InitFromPath()
         {
             if(string.IsNullOrEmpty(DataPath))
