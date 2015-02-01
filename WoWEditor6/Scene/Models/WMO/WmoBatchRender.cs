@@ -51,13 +51,14 @@ namespace WoWEditor6.Scene.Models.WMO
         }
 
         public void AddInstance(int uuid, Vector3 position, Vector3 rotation)
-        {
-            lock(mInstances)
-            {
-                if (mInstances.Any(w => w.Uuid == uuid))
-                    return;
+		{
+			if (mInstances.Any(w => w.Uuid == uuid))
+				return;
 
-                var inst = new WmoInstance(uuid, position, rotation, mRoot);
+			var inst = new WmoInstance(uuid, position, rotation, mRoot);
+
+			lock (mInstances)
+            {
                 mInstances.Add(inst);
                 mInstancesChanged = true;
             }

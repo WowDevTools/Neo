@@ -34,13 +34,15 @@ namespace WoWEditor6.Scene.Models
                     return;
 
                 var root = IO.Files.Models.ModelFactory.Instance.CreateWmo();
-                if (root.Load(model) == false)
+
+				if (root.Load(model) == false)
                     Log.Warning("Unable to load WMO '" + model + "'. Further instances wont be loaded again");
 
-                var renderer = new WmoRootRender();
+
+				var renderer = new WmoRootRender();
                 renderer.OnAsyncLoad(root);
 
-                var batch = new WmoBatchRender(renderer);
+				var batch = new WmoBatchRender(renderer);
 
                 lock (mAddLock)
                     mRenderer.Add(hash, batch);

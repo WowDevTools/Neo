@@ -10,6 +10,11 @@ cbuffer AnimationMatrices : register(b2)
 	row_major float4x4 Bones[256];
 }
 
+cbuffer UvAnimation : register(b3)
+{
+	row_major float4x4 UvAnimation;
+}
+
 struct VertexInput
 {
 	float3 position : POSITION0;
@@ -62,7 +67,8 @@ VertexOutput main(VertexInput input) {
 	output.position = position;
 	output.depth = distance(worldPos, eyePosition);
 	output.normal = normal;
-	output.texCoord = input.texCoord;
+	float4 tcTransform = mul(float4(input.texCoord, 0, 1), UvAnimation);
+	output.texCoord = tcTransform.xy / tcTransform.w;
 	
 	return output;
 }

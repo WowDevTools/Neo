@@ -170,14 +170,18 @@ namespace WoWEditor6.IO.Files.Models.WoD
             }
         }
 
-        public Matrix GetUvAnimMatrix(int animation)
+        public bool GetUvAnimMatrix(int animation, ref Matrix matrix)
         {
             lock(mUvAnimations)
             {
-                if (animation >= 0 && animation < UvMatrices.Length)
-                    return UvMatrices[animation];
+				if (animation >= 0 && animation < UvMatrices.Length)
+				{
+					matrix = UvMatrices[animation];
+					return true;
+				}
 
-                return Matrix.Identity;
+	            matrix = Matrix.Identity;
+	            return false;
             }
         }
 
