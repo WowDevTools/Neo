@@ -18,6 +18,7 @@ namespace WoWEditor6.IO
             var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);
             try
             {
+	            Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? ".");
                 return File.Open(fullPath, FileMode.Create, FileAccess.Write, FileShare.None);
             }
             catch(Exception)

@@ -53,6 +53,12 @@ namespace WoWEditor6.Scene.Terrain
                 pair.Value.OnTerrainChange(parameters);
         }
 
+		public void OnSaveAllFiles()
+		{
+			foreach (var pair in mAreas)
+				pair.Value.AreaFile.Save();
+		}
+
         public void Shutdown()
         {
             mIsRunning = false;

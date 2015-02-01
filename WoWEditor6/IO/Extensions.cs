@@ -135,7 +135,7 @@ namespace WoWEditor6.IO
             }
         }
 
-        public static void WriteStruct<T>(this BinaryWriter bw, T value) where T : struct
+        public static void Write<T>(this BinaryWriter bw, T value) where T : struct
         {
             if (SizeCache<T>.TypeRequiresMarshal)
                 throw new ArgumentException(
@@ -156,12 +156,20 @@ namespace WoWEditor6.IO
 
         public static void WriteArray<T>(this BinaryWriter writer, T[] values) where T : struct
         {
-            var size = Marshal.SizeOf(typeof(T)) * values.Length;
-            var buffer = new byte[size];
-            var handle = GCHandle.Alloc(values, GCHandleType.Pinned);
-            Marshal.Copy(handle.AddrOfPinnedObject(), buffer, 0, size);
-            handle.Free();
-            writer.Write(buffer, 0, size);
+	        if (values.Length == 0)
+		        return;
+
+			if (SizeCache<T>.TypeRequiresMarshal)
+				throw new ArgumentException(
+					"Cannot write a generic structure type that requires marshaling support. Write the structure out manually.");
+
+	        var buf = new byte[SizeCache<T>.Size * values.Length];
+	        var valData = (byte*) SizeCache<T>.GetUnsafePtr(ref values[0]);
+
+	        fixed (byte* ptr = buf)
+		        UnsafeNativeMethods.CopyMemory(ptr, valData, buf.Length);
+
+	        writer.Write(buf, 0, buf.Length);
         }
     }
 }

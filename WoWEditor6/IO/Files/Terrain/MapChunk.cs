@@ -105,6 +105,10 @@ namespace WoWEditor6.IO.Files.Terrain
                 n.Normalize();
                 n *= -1;
 
+	            n.X = ((sbyte) (n.X * 127)) / 127.0f;
+	            n.Y = ((sbyte) (n.Y * 127)) / 127.0f;
+	            n.Z = ((sbyte) (n.Z * 127)) / 127.0f;
+
                 Vertices[i].Normal = n;
             }
         }

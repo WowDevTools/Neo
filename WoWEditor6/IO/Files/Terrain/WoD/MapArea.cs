@@ -52,7 +52,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
 
-        private Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
+        private readonly Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
+
+	    private bool mWasChanged;
 
         public MapArea(string continent, int ix, int iy)
         {
@@ -63,6 +65,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public override void Save()
         {
+	        if (mWasChanged == false)
+		        return;
+
             WriteBaseFile();
         }
 
@@ -111,6 +116,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 if (chunk?.OnTerrainChange(parameters) ?? false)
                     changed = true;
             }
+
+	        if (changed)
+		        mWasChanged = true;
+
             return changed;
         }
 
@@ -480,6 +489,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     writer.Write(pair.Value.Size);
                     writer.Write(pair.Value.Data);
                 }
+
+	            foreach (var chunk in mChunks)
+		            chunk?.WriteBaseChunks(writer);
             }
         }
 
