@@ -52,7 +52,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Rectangle Name="ColorPreviewRect" Grid.Row="0" Margin="15,5,0,0" Width="50" Height="50" HorizontalAlignment="Left"></Rectangle>
-            <Button Grid.Row="0" Margin="200,0,0,0" Height="25" Click="Button_Click">Save</Button>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <Label Width="30">R:</Label>

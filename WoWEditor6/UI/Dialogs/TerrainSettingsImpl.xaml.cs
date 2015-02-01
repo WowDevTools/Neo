@@ -83,10 +83,5 @@ namespace WoWEditor6.UI.Dialogs
                 TerrainChangeManager.Instance.ChangeType = mode;
             }
         }
-
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			Scene.WorldFrame.Instance.MapManager.OnSaveAllFiles();
-		}
 	}
 }

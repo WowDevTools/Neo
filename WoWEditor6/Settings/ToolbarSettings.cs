@@ -16,7 +16,7 @@ namespace WoWEditor6.Settings
 
         public static void Load()
         {
-            if (File.Exists(".\\Config\\Toolbars.xml"))
+            /*if (File.Exists(".\\Config\\Toolbars.xml"))
             {
                 Stream strm = null;
                 try
@@ -38,7 +38,7 @@ namespace WoWEditor6.Settings
 
                 CreateDefault();
             }
-            else
+            else*/
                 CreateDefault();
         }
 
@@ -51,7 +51,8 @@ namespace WoWEditor6.Settings
                     Buttons = new List<ToolbarButton>
                     {
                         new ToolbarButton {Function = ToolbarFunction.Terrain, Tooltip = "Switch to terrain editing mode" },
-                        new ToolbarButton {Function =ToolbarFunction.KeyBinding, Tooltip = "Open keyboard/mouse settings dialog." }
+                        new ToolbarButton {Function = ToolbarFunction.KeyBinding, Tooltip = "Open keyboard/mouse settings dialog" },
+						new ToolbarButton {Function = ToolbarFunction.Save, Tooltip = "Save all pending changes" }
                     }
                 },
 

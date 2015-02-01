@@ -4,6 +4,7 @@ using System.Drawing;
 using SharpDX;
 using SharpDX.Direct2D1;
 using WoWEditor6.Resources;
+using WoWEditor6.Scene;
 using WoWEditor6.Settings;
 using WoWEditor6.UI.Components;
 using WoWEditor6.UI.Panels;
@@ -37,12 +38,14 @@ namespace WoWEditor6.UI.Views
 
             mButtonHandlers.Add(ToolbarFunction.Terrain, OnTerrainButton);
             mButtonHandlers.Add(ToolbarFunction.KeyBinding, OnKeySettingsButton);
+	        mButtonHandlers.Add(ToolbarFunction.Save, OnSave);
 
-            mButtonImages = new Dictionary<ToolbarFunction, Image>
-            {
-                {ToolbarFunction.Terrain, Images.wheelbarrow_48},
-                {ToolbarFunction.KeyBinding, Images.joystick_48}
-            };
+	        mButtonImages = new Dictionary<ToolbarFunction, Image>
+	        {
+		        {ToolbarFunction.Terrain, Images.wheelbarrow_48},
+		        {ToolbarFunction.KeyBinding, Images.joystick_48},
+		        {ToolbarFunction.Save, Images.save_48}
+	        };
         }
 
         public void OnRender(RenderTarget target)
@@ -146,5 +149,10 @@ namespace WoWEditor6.UI.Views
         {
             mKeySettingsPanel.Visible = true;
         }
+
+		private void OnSave(ImageButton button)
+		{
+			WorldFrame.Instance.MapManager.OnSaveAllFiles();
+		}
     }
 }

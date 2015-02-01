@@ -5,7 +5,8 @@ namespace WoWEditor6.Settings
     public enum ToolbarFunction
     {
         Terrain,
-        KeyBinding
+        KeyBinding,
+		Save
     }
 
     public class ToolbarButton

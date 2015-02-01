@@ -330,6 +330,7 @@
     <None Include="Resources\Images\joystick-48.png" />
     <None Include="Resources\Images\wheelbarrow-48.png" />
     <Content Include="Resources\Images\License.txt" />
+    <None Include="Resources\Images\save-48.bmp" />
     <Content Include="Resources\Shaders\M2Pixel.hlsl" />
     <Content Include="Resources\Shaders\M2VertexInstanced.hlsl" />
     <Content Include="Resources\Shaders\MapLowPixel.hlsl" />

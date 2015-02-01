@@ -61,10 +61,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
 			var colors = mShadingFloats.Select(v =>
 			{
-				uint r = (byte) Math.Max(Math.Min((v.X / 2.0f) * 255.0f, 255), 0);
-				uint g = (byte) Math.Max(Math.Min((v.Y / 2.0f) * 255.0f, 255), 0);
 				uint b = (byte) Math.Max(Math.Min((v.Z / 2.0f) * 255.0f, 255), 0);
-				return 0xFF000000 | (r << 16) | (g << 8) | b;
+				uint g = (byte) Math.Max(Math.Min((v.Y / 2.0f) * 255.0f, 255), 0);
+				uint r = (byte) Math.Max(Math.Min((v.X / 2.0f) * 255.0f, 255), 0);
+				return 0x7F000000 | (b << 16) | (g << 8) | r;
 			}).ToArray();
 
 			AddOrReplaceChunk(0x4D435654, heights);
@@ -584,18 +584,22 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 var cg = Math.Min(Math.Abs(dg), amount * factor);
                 var cb = Math.Min(Math.Abs(db), amount * factor);
 
-                if (dr < 0) curColor.X -= cr;
-                else curColor.X += cr;
+                if (dr < 0) curColor.Z -= cr;
+                else curColor.Z += cr;
                 if (dg < 0) curColor.Y -= cg;
                 else curColor.Y += cg;
-                if (db < 0) curColor.Z -= cb;
-                else curColor.Z += cb;
+                if (db < 0) curColor.X -= cb;
+				else curColor.X += cb;
 
                 mShadingFloats[i] = curColor;
 
-                var r = (byte) ((curColor.X / 2.0f) * 255.0f);
+	            curColor.X = Math.Min(Math.Max(curColor.X, 0), 2);
+				curColor.Y = Math.Min(Math.Max(curColor.Y, 0), 2);
+				curColor.Z = Math.Min(Math.Max(curColor.Z, 0), 2);
+
+				var r = (byte) ((curColor.Z / 2.0f) * 255.0f);
                 var g = (byte) ((curColor.Y / 2.0f) * 255.0f);
-                var b = (byte) ((curColor.Z / 2.0f) * 255.0f);
+                var b = (byte) ((curColor.X / 2.0f) * 255.0f);
                 var a = (byte) ((curColor.W / 2.0f) * 255.0f);
 
                 var color = (uint)((a << 24) | (r << 16) | (g << 8) | b);
