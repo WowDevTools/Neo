@@ -63,7 +63,7 @@ namespace WoWEditor6.Scene.Models.WMO
             }
         }
 
-        public void UpdateVisibility()
+	    private void UpdateVisibility()
         {
             mInstancesChanged = false;
 

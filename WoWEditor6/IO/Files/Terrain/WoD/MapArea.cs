@@ -296,7 +296,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void InitModels()
         {
-            //InitWmoModels();
+            InitWmoModels();
             InitM2Models();
         }
 
@@ -364,15 +364,23 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             var size = mObjReader.ReadInt32();
             var bytes = mObjReader.ReadBytes(size);
-            var fullString = Encoding.ASCII.GetString(bytes);
-            var modelNames = fullString.Split('\0');
             var modelNameLookup = new Dictionary<int, string>();
             var curOffset = 0;
-            foreach(var name in modelNames)
-            {
-                modelNameLookup.Add(curOffset, name);
-                curOffset += name.Length + 1;
-            }
+	        var curBytes = new List<byte>();
+
+			for(var i = 0; i < bytes.Length; ++i)
+			{
+				if (bytes[i] == 0)
+				{
+					if (curBytes.Count > 0)
+						modelNameLookup.Add(curOffset, Encoding.ASCII.GetString(curBytes.ToArray()));
+
+					curOffset = i + 1;
+					curBytes.Clear();
+				}
+				else
+					curBytes.Add(bytes[i]);
+			}
 
             if (SeekChunk(mObjReader, 0x4D574944) == false)
                 return;
