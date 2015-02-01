@@ -16,5 +16,10 @@ namespace WoWEditor6.UI
         {
             InitializeComponent();
         }
+
+		public void OnLoadFinished()
+		{
+			label1.Visible = false;
+		}
     }
 }

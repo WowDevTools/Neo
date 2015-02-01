@@ -22,9 +22,13 @@ namespace WoWEditor6
             window.FormClosed += (s, e) => isClosed = true;
             window.Show();
 
+	        Application.DoEvents();
+
             InterfaceManager.Instance.Initialize(window, context);
             WorldFrame.Instance.Initialize(window, context);
             WorldFrame.Instance.OnResize(window.ClientSize.Width, window.ClientSize.Height);
+
+	        InterfaceManager.Instance.Window.OnLoadFinished();
 
             while (isClosed == false)
             {
