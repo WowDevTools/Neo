@@ -113,7 +113,10 @@ namespace WoWEditor6.Scene.Texture
                 else
                 {
                     var loadInfo = TextureLoader.Load(workItem.FileName);
-                    mDispatcher.BeginInvoke(new Action(() => workItem.Texture.LoadFromLoadInfo(loadInfo)));
+	                if (loadInfo != null)
+		                mDispatcher.BeginInvoke(new Action(() => workItem.Texture.LoadFromLoadInfo(loadInfo)));
+	                else
+		                Log.Warning("Load failed: " + workItem.FileName);
                 }
             }
         }

@@ -90,6 +90,8 @@ namespace WoWEditor6.Scene.Terrain
 
         public void EnterWorld(Vector2 entryPoint, int mapId, string continent)
         {
+	        MapChunkRender.InitIndices();
+
             mEntryPoint = entryPoint;
             MapId = mapId;
             Continent = continent;
@@ -260,7 +262,12 @@ namespace WoWEditor6.Scene.Terrain
 
             height += 50.0f;
             IO.Files.Sky.SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint, height));
-            WorldFrame.Instance.OnEnterWorld(new Vector3(mEntryPoint, height));
+
+	        var entryPoint = new Vector3(mEntryPoint, height);
+	        if (IO.FileManager.Instance.Version > IO.FileDataVersion.Mists)
+		        entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
+
+            WorldFrame.Instance.OnEnterWorld(entryPoint);
             WorldFrame.Instance.Dispatcher.BeginInvoke(() => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height)));
         }
 
@@ -326,7 +333,8 @@ namespace WoWEditor6.Scene.Terrain
         {
             var cx = position.X;
             var cy = position.Y;
-            cy = 64.0f * Metrics.TileSize - cy;
+	        if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
+		        cy = 64.0f * Metrics.TileSize - cy;
 
             var ix = (int) Math.Floor(cx / Metrics.TileSize);
             var iy = (int) Math.Floor(cy / Metrics.TileSize);

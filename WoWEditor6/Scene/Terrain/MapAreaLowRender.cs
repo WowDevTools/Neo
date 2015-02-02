@@ -74,7 +74,8 @@ namespace WoWEditor6.Scene.Terrain
                         v.X += 0.5f * StepX;
 
                     v.Y += IndexY * Metrics.TileSize;
-                    v.Y = 64.0f * Metrics.TileSize - v.Y;
+	                if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
+		                v.Y = 64.0f * Metrics.TileSize - v.Y;
 
                     if (v.X < posMin.X) posMin.X = v.X;
                     if (v.X > posMax.X) posMax.X = v.X;

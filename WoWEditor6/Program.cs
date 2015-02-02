@@ -11,6 +11,7 @@ namespace WoWEditor6
         [STAThread]
         static void Main()
         {
+	        AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
             Application.EnableVisualStyles();
 
             Settings.KeyBindings.Initialize();

@@ -12,7 +12,9 @@ namespace WoWEditor6.IO.Files.Terrain
         protected float mMaxHeight = float.MinValue;
         protected bool mUpdateNormals;
 
-        public int IndexX { get; protected set; }
+	    public abstract uint[] RenderIndices { get; }
+
+	    public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
 
         public int StartVertex => (IndexX + IndexY * 16) * 145;
@@ -302,5 +304,5 @@ namespace WoWEditor6.IO.Files.Terrain
 
             return changed;
         }
-    }
+	}
 }

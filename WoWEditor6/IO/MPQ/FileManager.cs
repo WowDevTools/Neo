@@ -135,8 +135,11 @@ namespace WoWEditor6.IO.MPQ
 			{
 				IntPtr handle;
 				if (Imports.SFileOpenArchive(file, 0, 0x100, out handle) == false)
+				{
+					Log.Warning("Archive failed: " + file);
 					continue;
-
+				}
+				Log.Debug("Loaded " + file);
 				ret.Add(new Archive(handle, file));
 			}
 

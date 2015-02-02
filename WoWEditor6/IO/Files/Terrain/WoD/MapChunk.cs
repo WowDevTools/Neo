@@ -18,9 +18,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private readonly BinaryReader mTexReader;
         private readonly BinaryReader mObjReader;
 
-        private static readonly uint[] Indices = new uint[768];
-
-        private Mcnk mHeader;
+	    private Mcnk mHeader;
 
         private IntPtr mAlphaDataCompressed;
 
@@ -31,8 +29,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 	    private bool mForceMccv;
 
 	    private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
+	    protected static readonly uint[] Indices = new uint[768];
 
-        public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
+	    public override uint[] RenderIndices => Indices; 
+
+		public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
             mParent = new WeakReference<MapArea>(parent);
             mMainInfo = mainInfo;
@@ -614,31 +615,31 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             Textures.Clear();
         }
 
-        static MapChunk()
-        {
-            var indices = Indices;
-            for (uint y = 0; y < 8; ++y)
-            {
-                for (uint x = 0; x < 8; ++x)
-                {
-                    var i = y * 8 * 12 + x * 12;
-                    indices[i + 0] = y * 17 + x;
-                    indices[i + 2] = y * 17 + x + 1;
-                    indices[i + 1] = y * 17 + x + 9;
+		static MapChunk()
+		{
+			var indices = Indices;
+			for (uint y = 0; y < 8; ++y)
+			{
+				for (uint x = 0; x < 8; ++x)
+				{
+					var i = y * 8 * 12 + x * 12;
+					indices[i + 0] = y * 17 + x;
+					indices[i + 2] = y * 17 + x + 1;
+					indices[i + 1] = y * 17 + x + 9;
 
-                    indices[i + 3] = y * 17 + x + 1;
-                    indices[i + 5] = y * 17 + x + 18;
-                    indices[i + 4] = y * 17 + x + 9;
+					indices[i + 3] = y * 17 + x + 1;
+					indices[i + 5] = y * 17 + x + 18;
+					indices[i + 4] = y * 17 + x + 9;
 
-                    indices[i + 6] = y * 17 + x + 18;
-                    indices[i + 8] = y * 17 + x + 17;
-                    indices[i + 7] = y * 17 + x + 9;
+					indices[i + 6] = y * 17 + x + 18;
+					indices[i + 8] = y * 17 + x + 17;
+					indices[i + 7] = y * 17 + x + 9;
 
-                    indices[i + 9] = y * 17 + x + 17;
-                    indices[i + 11] = y * 17 + x;
-                    indices[i + 10] = y * 17 + x + 9;
-                }
-            }
-        }
-    }
+					indices[i + 9] = y * 17 + x + 17;
+					indices[i + 11] = y * 17 + x;
+					indices[i + 10] = y * 17 + x + 9;
+				}
+			}
+		}
+	}
 }
