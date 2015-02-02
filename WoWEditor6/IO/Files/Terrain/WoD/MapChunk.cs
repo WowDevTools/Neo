@@ -585,12 +585,42 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 var cg = Math.Min(Math.Abs(dg), amount * factor);
                 var cb = Math.Min(Math.Abs(db), amount * factor);
 
-                if (dr < 0) curColor.Z -= cr;
-                else curColor.Z += cr;
-                if (dg < 0) curColor.Y -= cg;
-                else curColor.Y += cg;
-                if (db < 0) curColor.X -= cb;
-				else curColor.X += cb;
+				if (dr < 0)
+				{
+					curColor.Z -= cr;
+					if (curColor.Z < destColor.Z)
+						curColor.Z = destColor.Z;
+				}
+				else
+				{
+					curColor.Z += cr;
+					if (curColor.Z > destColor.Z)
+						curColor.Z = destColor.Z;
+				}
+				if (dg < 0)
+				{
+					curColor.Y -= cg;
+					if (curColor.Y < destColor.Y)
+						curColor.Y = destColor.Y;
+				}
+				else
+				{
+					curColor.Y += cg;
+					if (curColor.Y > destColor.Y)
+						curColor.Y = destColor.Y;
+				}
+				if (db < 0)
+				{
+					curColor.X -= cb;
+					if (curColor.X < destColor.X)
+						curColor.X = destColor.Y;
+				}
+				else
+				{
+					curColor.X += cb;
+					if (curColor.X > destColor.X)
+						curColor.X = destColor.X;
+				}
 
                 mShadingFloats[i] = curColor;
 

@@ -155,25 +155,17 @@ namespace WoWEditor6.Scene.Terrain
                 mAreas.TryGetValue(index, out tile);
 
             if (tile == null)
-            {
-                Log.Debug("tile == null");
                 return false;
-            }
 
             var chunkx = (int) Math.Floor(x / Metrics.ChunkSize);
             var chunky = (int) Math.Floor(y / Metrics.ChunkSize);
 
             if (chunkx < 0 || chunky < 0 || chunkx > 15 || chunky > 15)
-            {
-                Log.Debug("chunk < 0 || chunky < 0 || chunkx > 15 || chunky > 15");
                 return false;
-            }
+            
             var chunk = tile.AreaFile.GetChunk(chunkx + chunky * 16);
             if (chunk == null)
-            {
-                Log.Debug("chunk == null");
                 return false;
-            }
 
             x -= chunkx * Metrics.ChunkSize;
             y -= chunky * Metrics.ChunkSize;
@@ -181,11 +173,10 @@ namespace WoWEditor6.Scene.Terrain
             var row = (int) Math.Floor(y / (Metrics.UnitSize * 0.5f) + 0.5f);
             var col =
                 (int) Math.Floor((x - Metrics.UnitSize * 0.5f * ((row % 2 != 0) ? 1 : 0)) / Metrics.UnitSize + 0.5f);
-            if (row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))
-            {
-                Log.Debug("row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))");
+
+			if (row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))
                 return false;
-            }
+
             z = chunk.Vertices[17 * (row / 2) + (((row % 2) != 0) ? 9 : 0) + col].Position.Z;
             return true;
         }

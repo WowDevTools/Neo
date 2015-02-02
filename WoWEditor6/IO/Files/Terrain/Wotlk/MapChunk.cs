@@ -27,6 +27,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 			IndexY = indexY;
 			mParent = parent;
 			TextureScales = new float[] {1, 1, 1, 1};
+			for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
 		}
 
 		public bool AsyncLoad(BinaryReader reader, ChunkInfo chunkInfo)
@@ -88,7 +89,49 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
 		public override void UpdateNormals()
 		{
-			base.UpdateNormals();
+			if (mUpdateNormals == false)
+				return;
+
+			mUpdateNormals = false;
+			for (var i = 0; i < 145; ++i)
+			{
+				var p1 = Vertices[i].Position;
+				var p2 = p1;
+				var p3 = p2;
+				var p4 = p3;
+				var v = p1;
+
+				p1.X -= 0.5f * Metrics.UnitSize;
+				p1.Y -= 0.5f * Metrics.UnitSize;
+				p2.X += 0.5f * Metrics.UnitSize;
+				p2.Y -= 0.5f * Metrics.UnitSize;
+				p3.X += 0.5f * Metrics.UnitSize;
+				p3.Y += 0.5f * Metrics.UnitSize;
+				p4.X -= 0.5f * Metrics.UnitSize;
+				p4.Y += 0.5f * Metrics.UnitSize;
+
+				var mgr = WorldFrame.Instance.MapManager;
+				float h;
+				if (mgr.GetLandHeight(p1.X, p1.Y, out h)) p1.Z = h;
+				if (mgr.GetLandHeight(p2.X, p2.Y, out h)) p2.Z = h;
+				if (mgr.GetLandHeight(p3.X, p3.Y, out h)) p3.Z = h;
+				if (mgr.GetLandHeight(p4.X, p4.Y, out h)) p4.Z = h;
+
+				var n1 = Vector3.Cross((p2 - v), (p1 - v));
+				var n2 = Vector3.Cross((p3 - v), (p2 - v));
+				var n3 = Vector3.Cross((p4 - v), (p3 - v));
+				var n4 = Vector3.Cross((p1 - v), (p4 - v));
+
+				var n = n1 + n2 + n3 + n4;
+				n.Normalize();
+				n *= -1;
+
+				n.X = ((sbyte)(n.X * 127)) / 127.0f;
+				n.Y = ((sbyte)(n.Y * 127)) / 127.0f;
+				n.Z = ((sbyte)(n.Z * 127)) / 127.0f;
+
+				Vertices[i].Normal = n;
+			}
 
 			MapArea parent;
 			mParent.TryGetTarget(out parent);
@@ -217,12 +260,42 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 				var cg = Math.Min(Math.Abs(dg), amount * factor);
 				var cb = Math.Min(Math.Abs(db), amount * factor);
 
-				if (dr < 0) curColor.Z -= cr;
-				else curColor.Z += cr;
-				if (dg < 0) curColor.Y -= cg;
-				else curColor.Y += cg;
-				if (db < 0) curColor.X -= cb;
-				else curColor.X += cb;
+				if (dr < 0)
+				{
+					curColor.Z -= cr;
+					if (curColor.Z < destColor.Z)
+						curColor.Z = destColor.Z;
+				}
+				else
+				{
+					curColor.Z += cr;
+					if (curColor.Z > destColor.Z)
+						curColor.Z = destColor.Z;
+				}
+				if (dg < 0)
+				{
+					curColor.Y -= cg;
+					if (curColor.Y < destColor.Y)
+						curColor.Y = destColor.Y;
+				}
+				else
+				{
+					curColor.Y += cg;
+					if (curColor.Y > destColor.Y)
+						curColor.Y = destColor.Y;
+				}
+				if (db < 0)
+				{
+					curColor.X -= cb;
+					if (curColor.X < destColor.X)
+						curColor.X = destColor.Y;
+				}
+				else
+				{
+					curColor.X += cb;
+					if (curColor.X > destColor.X)
+						curColor.X = destColor.X;
+				}
 
 				mShadingFloats[i] = curColor;
 
