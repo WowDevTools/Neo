@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace WoWEditor6.IO
@@ -12,6 +13,7 @@ namespace WoWEditor6.IO
         public bool Initialized { get; private set; }
 
         public event Action LoadComplete;
+		public FileDataVersion Version { get; private set; }
 
         public Stream GetOutputStream(string path)
         {
@@ -51,24 +53,47 @@ namespace WoWEditor6.IO
             if(string.IsNullOrEmpty(DataPath))
                 throw new InvalidOperationException("Cannot initialize file system without a path");
 
-            if (File.Exists(Path.Combine(DataPath, ".build.info")))
-            {
-                Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Warlords;
-                Files.Models.ModelFactory.Instance.Version = FileDataVersion.Warlords;
-                Files.Sky.SkyManager.InitVersion(FileDataVersion.Warlords);
+	        if (File.Exists(Path.Combine(DataPath, ".build.info")))
+	        {
+		        Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Warlords;
+		        Files.Models.ModelFactory.Instance.Version = FileDataVersion.Warlords;
+		        Files.Sky.SkyManager.InitVersion(FileDataVersion.Warlords);
+		        Version = FileDataVersion.Warlords;
 
-                var mgr = new CASC.FileManager();
-                mgr.LoadComplete += () =>
-                {
-                    Initialized = true;
-                    LoadComplete?.Invoke();
-                };
+		        var mgr = new CASC.FileManager();
+		        mgr.LoadComplete += () =>
+		        {
+			        Initialized = true;
+			        LoadComplete?.Invoke();
+		        };
 
-                mgr.Initialize(DataPath);
-                Provider = mgr;
-            }
-            else
-                throw new NotSupportedException("Only CASC based installations are currently supported.");
+				Provider = mgr;
+				mgr.Initialize(DataPath);
+	        }
+	        else
+		        InitMpq();
         }
+
+		private void InitMpq()
+		{
+			var version = FileVersionInfo.GetVersionInfo(Path.Combine(DataPath, "Wow.exe"));
+			if (version.FilePrivatePart > 13000 || version.FilePrivatePart < 9000)
+				throw new NotImplementedException("MPQ is only implemented for WOTLK (builds 9000 - 13000)");
+
+			Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Lichking;
+			Files.Models.ModelFactory.Instance.Version = FileDataVersion.Lichking;
+			//Files.Sky.SkyManager.InitVersion(FileDataVersion.Lichking);
+			Version = FileDataVersion.Lichking;
+
+			var mgr = new MPQ.FileManager();
+			mgr.LoadComplete += () =>
+			{
+				Initialized = true;
+				LoadComplete?.Invoke();
+			};
+
+			Provider = mgr;
+			mgr.InitFromPath(DataPath);
+		}
     }
 }

@@ -146,6 +146,9 @@
     <Compile Include="IO\Files\Terrain\WdtFile.cs" />
     <Compile Include="IO\Files\Texture\TextureLoader.cs" />
     <Compile Include="IO\IFileProvider.cs" />
+    <Compile Include="IO\MPQ\Archive.cs" />
+    <Compile Include="IO\MPQ\FileManager.cs" />
+    <Compile Include="IO\MPQ\Imports.cs" />
     <Compile Include="IO\SizeCache.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Metrics.cs" />
@@ -296,9 +299,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IO\MPQ\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -327,6 +328,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="StormLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Images\joystick-48.png" />
     <None Include="Resources\Images\wheelbarrow-48.png" />
     <Content Include="Resources\Images\License.txt" />
