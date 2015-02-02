@@ -135,6 +135,9 @@
     <Compile Include="IO\Files\Sky\WoD\MapLight.cs" />
     <Compile Include="IO\Files\Sky\WoD\MapLightCollection.cs" />
     <Compile Include="IO\Files\Sky\WoD\ZoneLight.cs" />
+    <Compile Include="IO\Files\Sky\Wotlk\LightManager.cs" />
+    <Compile Include="IO\Files\Sky\Wotlk\MapSky.cs" />
+    <Compile Include="IO\Files\Sky\Wotlk\WorldLightEntry.cs" />
     <Compile Include="IO\Files\Terrain\AdtFactory.cs" />
     <Compile Include="IO\Files\Terrain\CommonMapStructs.cs" />
     <Compile Include="IO\Files\Terrain\MapArea.cs" />

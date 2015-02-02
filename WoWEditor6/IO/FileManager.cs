@@ -82,7 +82,7 @@ namespace WoWEditor6.IO
 
 			Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Lichking;
 			Files.Models.ModelFactory.Instance.Version = FileDataVersion.Lichking;
-			//Files.Sky.SkyManager.InitVersion(FileDataVersion.Lichking);
+			Files.Sky.SkyManager.InitVersion(FileDataVersion.Lichking);
 			Version = FileDataVersion.Lichking;
 
 			var mgr = new MPQ.FileManager();

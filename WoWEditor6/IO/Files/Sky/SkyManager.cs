@@ -45,6 +45,10 @@ namespace WoWEditor6.IO.Files.Sky
                     Instance = new WoD.LightManager();
                     break;
 
+				case FileDataVersion.Lichking:
+		            Instance = new Wotlk.LightManager();
+		            break;
+
                 default:
                     throw new NotSupportedException("Sorry, version not supported yet");
             }
