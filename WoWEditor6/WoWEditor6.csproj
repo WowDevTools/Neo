@@ -242,6 +242,18 @@
     <Compile Include="UI\Dialogs\BorderColorLabel.cs">
       <SubType>component</SubType>
     </Compile>
+    <Compile Include="UI\Dialogs\CreatureEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\CreatureEditor.Designer.cs">
+      <DependentUpon>CreatureEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\GameObjectEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\GameObjectEditor.Designer.cs">
+      <DependentUpon>GameObjectEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Dialogs\InputSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -319,6 +331,12 @@
     <EmbeddedResource Include="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\CreatureEditor.resx">
+      <DependentUpon>CreatureEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\GameObjectEditor.resx">
+      <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\InputSettings.resx">
       <DependentUpon>InputSettings.cs</DependentUpon>
