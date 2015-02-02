@@ -22,6 +22,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 		private readonly List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
 		private readonly MapChunk[] mChunks = new MapChunk[256];
 
+		private bool mWasChanged;
+
 		public MapArea(string continent, int ix, int iy)
 		{
 			Continent = continent;
@@ -29,8 +31,42 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 			IndexY = iy;
 		}
 
+		public void UpdateBoundingBox(BoundingBox chunkBox)
+		{
+			var minPos = chunkBox.Minimum;
+			var maxPos = chunkBox.Maximum;
+
+			var omin = BoundingBox.Minimum;
+			var omax = BoundingBox.Maximum;
+
+			omin.X = Math.Min(omin.X, minPos.X);
+			omin.Y = Math.Min(omin.Y, minPos.Y);
+			omin.Z = Math.Min(omin.Z, minPos.Z);
+			omax.X = Math.Max(omax.X, maxPos.X);
+			omax.Y = Math.Max(omax.Y, maxPos.Y);
+			omax.Z = Math.Max(omax.Z, maxPos.Z);
+
+			BoundingBox = new BoundingBox(omin, omax);
+		}
+
+		public void UpdateVertices(MapChunk chunk)
+		{
+			if (chunk == null)
+				return;
+
+			var ix = chunk.IndexX;
+			var iy = chunk.IndexY;
+
+			var index = (ix + iy * 16) * 145;
+			for (var i = 0; i < 145; ++i)
+				FullVertices[i + index] = chunk.Vertices[i];
+		}
+
 		public override void Save()
 		{
+			if (mWasChanged == false)
+				return;
+
 			throw new NotImplementedException();
 		}
 
@@ -103,12 +139,23 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
 		public override bool OnChangeTerrain(TerrainChangeParameters parameters)
 		{
-			throw new NotImplementedException();
+			var changed = false;
+			foreach (var chunk in mChunks)
+			{
+				if (chunk?.OnTerrainChange(parameters) ?? false)
+					changed = true;
+			}
+
+			if (changed)
+				mWasChanged = true;
+
+			return changed;
 		}
 
 		public override void UpdateNormals()
 		{
-			throw new NotImplementedException();
+			foreach (var chunk in mChunks)
+				chunk?.UpdateNormals();
 		}
 
 		private void InitChunkInfos(BinaryReader reader)

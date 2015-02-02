@@ -26,8 +26,16 @@ namespace WoWEditor6.UI.Panels
 
             mSettingsDialog.Owner = InterfaceManager.Instance.Window;
             mSettingsDialog.Visible = false;
-            mSettingsDialog.InvertMouseBox.CheckedChanged +=
-                (sender, args) => WorldFrame.Instance.CamControl.Invert = mSettingsDialog.InvertMouseBox.Checked;
+	        mSettingsDialog.InvertMouseBox.CheckedChanged +=
+		        (sender, args) =>
+		        {
+			        var invert = mSettingsDialog.InvertMouseBox.Checked;
+			        if (WorldFrame.Instance.LeftHandedCamera)
+				        invert = !invert;
+
+			        WorldFrame.Instance.CamControl.InvertX = invert;
+			        WorldFrame.Instance.CamControl.InvertY = !invert;
+		        };
         }
 
         public void OnResize(Vector2 newSize)

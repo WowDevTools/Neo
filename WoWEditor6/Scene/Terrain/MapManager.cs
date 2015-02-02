@@ -91,6 +91,7 @@ namespace WoWEditor6.Scene.Terrain
         public void EnterWorld(Vector2 entryPoint, int mapId, string continent)
         {
 	        MapChunkRender.InitIndices();
+	        WorldFrame.Instance.LeftHandedCamera = IO.FileManager.Instance.Version > IO.FileDataVersion.Cataclysm;
 
             mEntryPoint = entryPoint;
             MapId = mapId;

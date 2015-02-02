@@ -16,7 +16,8 @@ namespace WoWEditor6.Scene
         private float speedFactor = 100.0f;
         private float speedFactorWheel = 0.5f;
         private float turnFactor = 0.2f;
-        public bool Invert { get; set; }
+        public bool InvertX { get; set; }
+		public bool InvertY { get; set; }
 
         public CameraControl(MainWindow window)
         {
@@ -89,9 +90,9 @@ namespace WoWEditor6.Scene
                 var dy = curPos.Y - mLastCursorPos.Y;
 
                 if (dx != 0)
-                    cam.Yaw(dx * turnFactor * (Invert ? -1 : 1));
+                    cam.Yaw(dx * turnFactor * (InvertX ? -1 : 1));
                 if (dy != 0)
-                    cam.Pitch(dy * turnFactor * (Invert ? -1 : 1));
+                    cam.Pitch(dy * turnFactor * (InvertY ? -1 : 1));
             }
 
             if (positionChanged)

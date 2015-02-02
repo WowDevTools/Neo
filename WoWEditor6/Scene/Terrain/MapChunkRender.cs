@@ -166,7 +166,7 @@ namespace WoWEditor6.Scene.Terrain
 		public static void InitIndices()
 		{
 			if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
-				InitIndicesWotlk();
+				InitIndicesDefault();
 			else
 				InitIndicesDefault();
 		}

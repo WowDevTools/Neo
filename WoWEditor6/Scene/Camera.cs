@@ -22,6 +22,8 @@ namespace WoWEditor6.Scene
 
         public event Action<Camera, Matrix> ViewChanged , ProjectionChanged;
 
+		public bool LeftHanded { get; set; }
+
         public Matrix View => mMatView;
         public Matrix Projection => mMatProjection;
         public Matrix ViewInverse => mViewInverted;
@@ -50,11 +52,16 @@ namespace WoWEditor6.Scene
             return mFrustum.Contains(ref sphere) != ContainmentType.Disjoint;
         }
 
+		public virtual void Update()
+		{
+			UpdateView();
+		}
+
         private void UpdateView()
         {
             mForward = mTarget - Position;
             mForward.Normalize();
-            mViewNoTranspose = Matrix.LookAtRH(Position, mTarget, mUp);
+	        mViewNoTranspose = LeftHanded == false ? Matrix.LookAtRH(Position, mTarget, mUp) : Matrix.LookAtLH(Position, mTarget, mUp);
             Matrix.Invert(ref mViewNoTranspose, out mViewInverted);
             Matrix.Transpose(ref mViewNoTranspose, out mMatView);
             ViewChanged?.Invoke(this, mMatView);
@@ -118,12 +125,12 @@ namespace WoWEditor6.Scene
 
         public void MoveRight(float amount)
         {
-            Move(mRight * amount);
+            Move(mRight * amount * (LeftHanded ? -1 : 1));
         }
 
         public void MoveLeft(float amount)
         {
-            Move(mRight * -amount);
+            Move(mRight * -amount * (LeftHanded ? -1 : 1));
         }
 
         public void Pitch(float angle)

@@ -86,6 +86,35 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 			return true;
 		}
 
+		public override void UpdateNormals()
+		{
+			base.UpdateNormals();
+
+			MapArea parent;
+			mParent.TryGetTarget(out parent);
+			parent?.UpdateVertices(this);
+		}
+
+		public override bool OnTerrainChange(TerrainChangeParameters parameters)
+		{
+			var changed = base.OnTerrainChange(parameters);
+
+			if (changed)
+			{
+				MapArea parent;
+				mParent.TryGetTarget(out parent);
+
+				var omin = BoundingBox.Minimum;
+				var omax = BoundingBox.Maximum;
+				BoundingBox = new BoundingBox(new Vector3(omin.X, omin.Y, mMinHeight),
+					new Vector3(omax.X, omax.Y, mMaxHeight));
+
+				parent?.UpdateBoundingBox(BoundingBox);
+			}
+
+			return changed;
+		}
+
 		public bool Intersect(ref Ray ray, out float distance)
 		{
 			distance = float.MaxValue;
@@ -399,20 +428,20 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 				{
 					var i = y * 8 * 12 + x * 12;
 					indices[i + 0] = y * 17 + x;
-					indices[i + 1] = y * 17 + x + 1;
-					indices[i + 2] = y * 17 + x + 9;
+					indices[i + 2] = y * 17 + x + 1;
+					indices[i + 1] = y * 17 + x + 9;
 
 					indices[i + 3] = y * 17 + x + 1;
-					indices[i + 4] = y * 17 + x + 18;
-					indices[i + 5] = y * 17 + x + 9;
+					indices[i + 5] = y * 17 + x + 18;
+					indices[i + 4] = y * 17 + x + 9;
 
 					indices[i + 6] = y * 17 + x + 18;
-					indices[i + 7] = y * 17 + x + 17;
-					indices[i + 8] = y * 17 + x + 9;
+					indices[i + 8] = y * 17 + x + 17;
+					indices[i + 7] = y * 17 + x + 9;
 
 					indices[i + 9] = y * 17 + x + 17;
-					indices[i + 10] = y * 17 + x;
-					indices[i + 11] = y * 17 + x + 9;
+					indices[i + 11] = y * 17 + x;
+					indices[i + 10] = y * 17 + x + 9;
 				}
 			}
 		}
