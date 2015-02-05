@@ -88,8 +88,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 				signature = reader.ReadUInt32();
 				if(signature == 0x4D43414C)
 				{
-					size = reader.ReadInt32();
-					mAlphaCompressed = reader.ReadBytes(size);
+					reader.ReadInt32();
+					mAlphaCompressed = reader.ReadBytes(mHeader.SizeAlpha - 8);
 				}
 			}
 

@@ -295,6 +295,7 @@
     <Compile Include="UI\Views\WorldView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Utils\ColorUtils.cs" />
+    <Compile Include="Utils\DxtHelper.cs" />
     <Compile Include="Utils\KeyHelper.cs" />
     <Compile Include="Utils\MathExtensions.cs" />
     <Compile Include="Utils\Polygon.cs" />
