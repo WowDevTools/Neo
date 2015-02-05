@@ -32,46 +32,65 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
 		public bool AsyncLoad(BinaryReader reader, ChunkInfo chunkInfo)
 		{
+			// chunkInfo.Offset points to right after the MCNK signature, the offsets in the header are relative to the signature tho
+			var basePosition = chunkInfo.Offset - 4;
 			reader.BaseStream.Position = chunkInfo.Offset;
-
-			var csize = reader.ReadInt32();
+			reader.ReadInt32();
 			mHeader = reader.Read<Mcnk>();
-			var hasMccv = false;
-			while(reader.BaseStream.Position + 8 < chunkInfo.Offset + 4 + csize)
+			reader.BaseStream.Position = basePosition + mHeader.Mcvt;
+			var signature = reader.ReadUInt32();
+			reader.ReadInt32();
+			if (signature != 0x4D435654)
 			{
-				var signature = reader.ReadUInt32();
-				var size = reader.ReadInt32();
-				if (reader.BaseStream.Position + size > chunkInfo.Offset + 4 + csize)
-					break;
+				Log.Error("Chunk is missing valid MCVT sub chunk");
+				return false;
+			}
 
-				var cur = reader.BaseStream.Position;
+			LoadMcvt(reader);
 
-				switch (signature)
+			reader.BaseStream.Position = basePosition + mHeader.Mcnr;
+			signature = reader.ReadUInt32();
+			reader.ReadInt32();
+
+			if (signature != 0x4D434E52)
+			{
+				Log.Error("Chunk is missing valid MCNR sub chunk");
+				return false;
+			}
+
+			LoadMcnr(reader);
+
+			var hasMccv = false;
+			if(mHeader.Mccv != 0)
+			{
+				reader.BaseStream.Position = basePosition + mHeader.Mccv;
+				signature = reader.ReadUInt32();
+				reader.ReadInt32();
+				if (signature == 0x4D434356)
 				{
-					case 0x4D435654:
-						LoadMcvt(reader);
-						break;
-
-					case 0x4D434E52:
-						size += 13;
-						LoadMcnr(reader);
-						break;
-
-					case 0x4D434356:
-						hasMccv = true;
-						LoadMccv(reader);
-						break;
-
-					case 0x4D434C59:
-						LoadLayers(reader, size);
-						break;
-
-					case 0x4D43414C:
-						mAlphaCompressed = reader.ReadBytes(size);
-						break;
+					LoadMccv(reader);
+					hasMccv = true;
 				}
-				
-				reader.BaseStream.Position = cur + size;
+			}
+
+			reader.BaseStream.Position = basePosition + mHeader.Mcly;
+			signature = reader.ReadUInt32();
+			var size = reader.ReadInt32();
+
+			if (signature != 0x4D434C59)
+				return false;
+
+			LoadLayers(reader, size);
+
+			if(mHeader.SizeAlpha > 8)
+			{
+				reader.BaseStream.Position = basePosition + mHeader.Mcal;
+				signature = reader.ReadUInt32();
+				if(signature == 0x4D43414C)
+				{
+					size = reader.ReadInt32();
+					mAlphaCompressed = reader.ReadBytes(size);
+				}
 			}
 
 			if (hasMccv == false)
@@ -169,7 +188,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 			var dir = ray.Direction;
 			var orig = ray.Position;
 
-			Vector3 e1, e2, P, T, Q;
+			Vector3 e1, e2, p, T, q;
 
 			for (var i = 0; i < Indices.Length; i += 3)
 			{
@@ -179,9 +198,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 				Vector3.Subtract(ref Vertices[i1].Position, ref Vertices[i0].Position, out e1);
 				Vector3.Subtract(ref Vertices[i2].Position, ref Vertices[i0].Position, out e2);
 
-				Vector3.Cross(ref dir, ref e2, out P);
+				Vector3.Cross(ref dir, ref e2, out p);
 				float det;
-				Vector3.Dot(ref e1, ref P, out det);
+				Vector3.Dot(ref e1, ref p, out det);
 
 				if (Math.Abs(det) < 1e-4)
 					continue;
@@ -189,21 +208,21 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 				var invDet = 1.0f / det;
 				Vector3.Subtract(ref orig, ref Vertices[i0].Position, out T);
 				float u;
-				Vector3.Dot(ref T, ref P, out u);
+				Vector3.Dot(ref T, ref p, out u);
 				u *= invDet;
 
 				if (u < 0 || u > 1)
 					continue;
 
-				Vector3.Cross(ref T, ref e1, out Q);
+				Vector3.Cross(ref T, ref e1, out q);
 				float v;
-				Vector3.Dot(ref dir, ref Q, out v);
+				Vector3.Dot(ref dir, ref q, out v);
 				v *= invDet;
 				if (v < 0 || (u + v) > 1)
 					continue;
 
 				float t;
-				Vector3.Dot(ref e2, ref Q, out t);
+				Vector3.Dot(ref e2, ref q, out t);
 				t *= invDet;
 
 				if (t < 1e-4) continue;

@@ -82,16 +82,16 @@ namespace WoWEditor6.IO.Files.Terrain
                 var p4 = p3;
                 var v = p1;
 
-                p1.X -= 0.5f * Metrics.UnitSize;
-                p1.Y -= 0.5f * Metrics.UnitSize;
-                p2.X += 0.5f * Metrics.UnitSize;
-                p2.Y -= 0.5f * Metrics.UnitSize;
-                p3.X += 0.5f * Metrics.UnitSize;
-                p3.Y += 0.5f * Metrics.UnitSize;
-                p4.X -= 0.5f * Metrics.UnitSize;
-                p4.Y += 0.5f * Metrics.UnitSize;
+				p1.X -= 1.5f * Metrics.UnitSize;
+				p1.Y -= 1.5f * Metrics.UnitSize;
+				p2.X += 1.5f * Metrics.UnitSize;
+				p2.Y -= 1.5f * Metrics.UnitSize;
+				p3.X += 1.5f * Metrics.UnitSize;
+				p3.Y += 1.5f * Metrics.UnitSize;
+				p4.X -= 1.5f * Metrics.UnitSize;
+				p4.Y += 1.5f * Metrics.UnitSize;
 
-                var mgr = WorldFrame.Instance.MapManager;
+				var mgr = WorldFrame.Instance.MapManager;
                 float h;
                 if (mgr.GetLandHeight(p1.X, 64.0f * Metrics.TileSize - p1.Y, out h)) p1.Z = h;
                 if (mgr.GetLandHeight(p2.X, 64.0f * Metrics.TileSize - p2.Y, out h)) p2.Z = h;
@@ -105,7 +105,9 @@ namespace WoWEditor6.IO.Files.Terrain
 
                 var n = n1 + n2 + n3 + n4;
                 n.Normalize();
-                n *= -1;
+	            n.X *= -1;
+	            n.Y *= -1;
+	            n.Z *= -1;
 
 	            n.X = ((sbyte) (n.X * 127)) / 127.0f;
 	            n.Y = ((sbyte) (n.Y * 127)) / 127.0f;
