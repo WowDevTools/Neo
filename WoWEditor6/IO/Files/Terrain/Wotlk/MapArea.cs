@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using SharpDX;
 using WoWEditor6.Editing;
+using WoWEditor6.IO.Files.Terrain.WoD;
+using WoWEditor6.Scene;
 using WoWEditor6.Scene.Texture;
 
 namespace WoWEditor6.IO.Files.Terrain.Wotlk
@@ -21,6 +23,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 		private readonly List<string> mTextureNames = new List<string>();
 		private readonly List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
 		private readonly MapChunk[] mChunks = new MapChunk[256];
+		private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
 
 		private bool mWasChanged;
 
@@ -92,6 +95,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 				InitChunkInfos(reader);
 				InitTextures(reader);
 				InitChunks(reader);
+				InitWmoModels(reader);
 			}
 		}
 
@@ -238,6 +242,61 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
 			BoundingBox = new BoundingBox(minPos, maxPos);
 			ModelBox = new BoundingBox(modelMin, modelMax);
+		}
+
+		private void InitWmoModels(BinaryReader reader)
+		{
+			if (SeekChunk(reader, 0x4D574D4F) == false)
+				return;
+
+			var size = reader.ReadInt32();
+			var bytes = reader.ReadBytes(size);
+			var modelNameLookup = new Dictionary<int, string>();
+			var curOffset = 0;
+			var curBytes = new List<byte>();
+
+			for (var i = 0; i < bytes.Length; ++i)
+			{
+				if (bytes[i] == 0)
+				{
+					if (curBytes.Count > 0)
+						modelNameLookup.Add(curOffset, Encoding.ASCII.GetString(curBytes.ToArray()));
+
+					curOffset = i + 1;
+					curBytes.Clear();
+				}
+				else
+					curBytes.Add(bytes[i]);
+			}
+
+			if (SeekChunk(reader, 0x4D574944) == false)
+				return;
+
+			size = reader.ReadInt32();
+			var modelNameIds = reader.ReadArray<int>(size / 4);
+
+			if (SeekChunk(reader, 0x4D4F4446) == false)
+				return;
+
+			size = reader.ReadInt32();
+			var modf = reader.ReadArray<Modf>(size / SizeCache<Modf>.Size);
+
+			foreach (var entry in modf)
+			{
+				if (entry.Mwid >= modelNameIds.Length)
+					continue;
+
+				var nameId = modelNameIds[entry.Mwid];
+				string modelName;
+				if (modelNameLookup.TryGetValue(nameId, out modelName) == false)
+					continue;
+
+				var position = new Vector3(entry.Position.X, entry.Position.Z, entry.Position.Y);
+				var rotation = new Vector3(360.0f - entry.Rotation.X, 360.0f - entry.Rotation.Z, 360.0f - entry.Rotation.Y + 90);
+
+				WorldFrame.Instance.WmoManager.AddInstance(modelName, entry.UniqueId, position, rotation);
+				mWmoInstances.Add(new LoadedModel(modelName, entry.UniqueId));
+			}
 		}
 
 		private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B, false);

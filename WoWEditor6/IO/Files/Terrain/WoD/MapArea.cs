@@ -18,18 +18,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public int Size;
     }
 
-    class LoadedModel
-    {
-        public readonly string FileName;
-        public readonly int Uuid;
-
-        public LoadedModel(string file, int uuid)
-        {
-            FileName = file;
-            Uuid = uuid;
-        }
-    }
-
     class MapArea : Terrain.MapArea
     {
         private Stream mMainStream;

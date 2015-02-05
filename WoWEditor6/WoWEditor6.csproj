@@ -129,6 +129,9 @@
     <Compile Include="IO\Files\Models\WoD\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoStructures.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\WmoGroup.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\WmoRoot.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\WmoStructures.cs" />
     <Compile Include="IO\Files\Sky\SkyManager.cs" />
     <Compile Include="IO\Files\Sky\WoD\LightManager.cs" />
     <Compile Include="IO\Files\Sky\WoD\LightStructs.cs" />
