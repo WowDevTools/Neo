@@ -74,8 +74,8 @@ namespace WoWEditor6.UI
 
         private void DecompressData()
         {
-	        mLoadInfo.Layers[0] = DxtHelper.Decompress(mLoadInfo.Width, mLoadInfo.Height, mLoadInfo.Layers[0],
-		        mLoadInfo.Format);
+            mLoadInfo.Layers[0] = DxtHelper.Decompress(mLoadInfo.Width, mLoadInfo.Height, mLoadInfo.Layers[0],
+            mLoadInfo.Format);
             mLoadInfo.Format = Format.R8G8B8A8_UNorm;
         }
     }

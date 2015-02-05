@@ -41,20 +41,20 @@ namespace WoWEditor6.IO.Files.Texture
             0xBB, 0xCC, 0xDD, 0xEE, 0xFF
         };
 
-		public static TextureLoadInfo LoadToArgbImage(string file)
-		{
-			var loadInfo = LoadFirstLayer(file);
-			if (loadInfo == null)
-				return null;
+        public static TextureLoadInfo LoadToArgbImage(string file)
+        {
+            var loadInfo = LoadFirstLayer(file);
+            if (loadInfo == null)
+                return null;
 
-			if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
-				return loadInfo;
+            if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
+                return loadInfo;
 
-			loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
-			loadInfo.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
+            loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
+            loadInfo.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
 
-			return loadInfo;
-		}
+            return loadInfo;
+        }
 
         public static TextureLoadInfo LoadHeaderOnly(string file)
         {
