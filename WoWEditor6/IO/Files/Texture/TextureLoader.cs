@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using WoWEditor6.Utils;
 
 namespace WoWEditor6.IO.Files.Texture
 {
@@ -39,6 +40,21 @@ namespace WoWEditor6.IO.Files.Texture
             0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xAA,
             0xBB, 0xCC, 0xDD, 0xEE, 0xFF
         };
+
+		public static TextureLoadInfo LoadToArgbImage(string file)
+		{
+			var loadInfo = LoadFirstLayer(file);
+			if (loadInfo == null)
+				return null;
+
+			if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
+				return loadInfo;
+
+			loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
+			loadInfo.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
+
+			return loadInfo;
+		}
 
         public static TextureLoadInfo LoadHeaderOnly(string file)
         {
