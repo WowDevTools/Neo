@@ -30,6 +30,17 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
+        public void SaveChunk(BinaryWriter writer)
+        {
+            var basePos = (int) writer.BaseStream.Position;
+            writer.Write(0x4D434E4B);
+            writer.Write(0);
+            var header = mHeader;
+            writer.Write(header);
+
+            SaveHeights(writer, basePos, ref header);
+        }
+
         public bool AsyncLoad(BinaryReader reader, ChunkInfo chunkInfo)
         {
             // chunkInfo.Offset points to right after the MCNK signature, the offsets in the header are relative to the signature tho
@@ -509,6 +520,17 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                         AlphaValues[counterOut++] |= (uint)mAlphaCompressed[startPos++] << (8 * layer);
                 }
             }
+        }
+
+        private void SaveHeights(BinaryWriter writer, int basePosition, ref Mcnk header)
+        {
+            header.Mcvt = (int) writer.BaseStream.Position - basePosition;
+            var minPos = Vertices.Min(v => v.Position.Z);
+            header.Position.Z = minPos;
+            var heights = Vertices.Select(v => v.Position.Z - minPos);
+            writer.Write(0x4D435654);
+            writer.Write(145 * 4);
+            writer.WriteArray(heights.ToArray());
         }
 
         static MapChunk()

@@ -24,6 +24,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private readonly List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
         private readonly MapChunk[] mChunks = new MapChunk[256];
         private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
+        private Mhdr mHeader;
+        private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
 
         private bool mWasChanged;
 
@@ -70,6 +72,51 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             if (mWasChanged == false)
                 return;
 
+            using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, IndexX, IndexY)))
+            {
+                var writer = new BinaryWriter(strm);
+                writer.Write(0x4D564552); // MVER
+                writer.Write(4);
+                writer.Write(18);
+                writer.Write(0x4D484452);
+                writer.Write(SizeCache<Mhdr>.Size);
+
+                var headerStart = writer.BaseStream.Position;
+                writer.Write(mHeader);
+                var header = mHeader;
+
+                var chunkInfos = new Mcin[256];
+                writer.Write(0x4D43494E);
+                writer.Write(256 * SizeCache<Mcin>.Size);
+                var mcinStart = writer.BaseStream.Position;
+                writer.WriteArray(chunkInfos);
+
+                SaveChunk(0x4D444446, writer, ref header.ofsMddf);
+                SaveChunk(0x4D4D4458, writer, ref header.ofsMmdx);
+                SaveChunk(0x4D4D4944, writer, ref header.ofsMmid);
+                SaveChunk(0x4D574D4F, writer, ref header.ofsMwmo);
+                SaveChunk(0x4D574944, writer, ref header.ofsMwid);
+                SaveChunk(0x4D4F4446, writer, ref header.ofsModf);
+                SaveChunk(0x4D544558, writer, ref header.ofsMtex);
+                SaveChunk(0x4D545846, writer, ref header.ofsMtxf);
+                SaveChunk(0x4D48324F, writer, ref header.ofsMh2o);
+
+                for(var i = 0; i < 256; ++i)
+                {
+                    var startPos = writer.BaseStream.Position;
+                    mChunks[i].SaveChunk(writer);
+                    var endPos = writer.BaseStream.Position;
+                    chunkInfos[i].OfsMcnk = (int) startPos;
+                    chunkInfos[i].SizeMcnk = (int) (endPos - startPos);
+                    chunkInfos[i].Flags = chunkInfos[i].AsyncId = 0;
+                }
+
+                writer.BaseStream.Position = headerStart;
+                writer.Write(header);
+                writer.BaseStream.Position = mcinStart;
+                writer.WriteArray(chunkInfos);
+            }
+
             throw new NotImplementedException();
         }
 
@@ -92,6 +139,26 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 }
 
                 var reader = new BinaryReader(file);
+                if (SeekChunk(reader, 0x4D484452) == false)
+                    throw new InvalidOperationException("ADT has no header chunk");
+
+                reader.BaseStream.Position = 0;
+                while(reader.BaseStream.Position + 8 <= reader.BaseStream.Length)
+                {
+                    var signature = reader.ReadUInt32();
+                    var size = reader.ReadInt32();
+                    if (reader.BaseStream.Position + size > reader.BaseStream.Length)
+                        break;
+
+                    var bytes = reader.ReadBytes(size);
+                    if (mSaveChunks.ContainsKey(signature))
+                        continue;
+
+                    mSaveChunks.Add(signature, new DataChunk {Data = bytes, Signature = signature, Size = size});
+                }
+
+                reader.ReadInt32();
+                mHeader = reader.Read<Mhdr>();
                 InitChunkInfos(reader);
                 InitTextures(reader);
                 InitChunks(reader);
@@ -297,6 +364,20 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 WorldFrame.Instance.WmoManager.AddInstance(modelName, entry.UniqueId, position, rotation);
                 mWmoInstances.Add(new LoadedModel(modelName, entry.UniqueId));
             }
+        }
+
+        private void SaveChunk(uint signature, BinaryWriter writer, ref int offsetField)
+        {
+            if(mSaveChunks.ContainsKey(signature) == false)
+            {
+                offsetField = 0;
+                return;
+            }
+
+            var chunk = mSaveChunks[signature];
+            writer.Write(signature);
+            writer.Write(chunk.Size);
+            writer.Write(chunk.Data);
         }
 
         private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B, false);

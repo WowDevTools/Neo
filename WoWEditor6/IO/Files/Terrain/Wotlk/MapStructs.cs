@@ -4,6 +4,32 @@ using SharpDX;
 namespace WoWEditor6.IO.Files.Terrain.Wotlk
 {
     [StructLayout(LayoutKind.Sequential)]
+    struct Mhdr
+    {
+        public uint Flags;
+        public int ofsMcin;
+        public int ofsMtex;
+        public int ofsMmdx;
+        public int ofsMmid;
+        public int ofsMwmo;
+        public int ofsMwid;
+        public int ofsMddf;
+        public int ofsModf;
+        public int ofsMh2o;
+        public int ofsMtxf;
+        public int unused0, unused1, unused2, unused3;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct Mcin
+    {
+        public int OfsMcnk;
+        public int SizeMcnk;
+        public int Flags;
+        public int AsyncId;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     struct Mcnk
     {
         public int Flags;
