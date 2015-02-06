@@ -8,7 +8,7 @@ using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Terrain.WoD
 {
-    class MapChunk : Terrain.MapChunk
+    sealed class MapChunk : Terrain.MapChunk
     {
         private readonly ChunkStreamInfo mMainInfo;
         private readonly ChunkStreamInfo mTexInfo;
@@ -29,7 +29,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 	    private bool mForceMccv;
 
 	    private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
-	    protected static readonly uint[] Indices = new uint[768];
+        private static readonly uint[] Indices = new uint[768];
 
 	    public override uint[] RenderIndices => Indices; 
 
@@ -137,7 +137,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var dir = ray.Direction;
             var orig = ray.Position;
 
-            Vector3 e1, e2, P, T, Q;
+            Vector3 e1, e2, p, T, q;
 
             for (var i = 0; i < Indices.Length; i += 3)
             {
@@ -147,9 +147,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 Vector3.Subtract(ref Vertices[i1].Position, ref Vertices[i0].Position, out e1);
                 Vector3.Subtract(ref Vertices[i2].Position, ref Vertices[i0].Position, out e2);
 
-                Vector3.Cross(ref dir, ref e2, out P);
+                Vector3.Cross(ref dir, ref e2, out p);
                 float det;
-                Vector3.Dot(ref e1, ref P, out det);
+                Vector3.Dot(ref e1, ref p, out det);
 
                 if (Math.Abs(det) < 1e-4)
                     continue;
@@ -157,21 +157,21 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 var invDet = 1.0f / det;
                 Vector3.Subtract(ref orig, ref Vertices[i0].Position, out T);
                 float u;
-                Vector3.Dot(ref T, ref P, out u);
+                Vector3.Dot(ref T, ref p, out u);
                 u *= invDet;
 
                 if (u < 0 || u > 1)
                     continue;
 
-                Vector3.Cross(ref T, ref e1, out Q);
+                Vector3.Cross(ref T, ref e1, out q);
                 float v;
-                Vector3.Dot(ref dir, ref Q, out v);
+                Vector3.Dot(ref dir, ref q, out v);
                 v *= invDet;
                 if (v < 0 || (u + v) > 1)
                     continue;
 
                 float t;
-                Vector3.Dot(ref e2, ref Q, out t);
+                Vector3.Dot(ref e2, ref q, out t);
                 t *= invDet;
 
                 if (t < 1e-4) continue;
@@ -187,7 +187,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             return hasHit;
         }
 
-        public virtual void AsyncLoad()
+        public void AsyncLoad()
         {
             mReader.BaseStream.Position = mMainInfo.PosStart;
             var chunkSize = mReader.ReadInt32();

@@ -16,8 +16,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private readonly Vector4[] mShadingFloats = new Vector4[145];
         private bool mForceMccv;
         private byte[] mAlphaCompressed;
-        private List<Mcly> mLayers = new List<Mcly>();
+        private Mcly[] mLayers = new Mcly[0];
         private static readonly uint[] Indices = new uint[768];
+        private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
 
         public override uint[] RenderIndices => Indices;
 
@@ -36,9 +37,24 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             writer.Write(0x4D434E4B);
             writer.Write(0);
             var header = mHeader;
+            var headerPos = writer.BaseStream.Position;
+            var startPos = writer.BaseStream.Position;
             writer.Write(header);
 
             SaveHeights(writer, basePos, ref header);
+            SaveNormals(writer, basePos, ref header);
+            SaveMccv(writer, basePos, ref header);
+            // INFO: SaveAlpha must be called before SaveLayers since SaveAlpha modifies the layer flags
+            SaveAlpha(writer, basePos, ref header);
+            SaveLayers(writer, basePos, ref header);
+            SaveUnusedChunks(writer, basePos, ref header);
+
+            var endPos = writer.BaseStream.Position;
+            writer.BaseStream.Position = headerPos;
+            writer.Write(header);
+            writer.BaseStream.Position = headerPos - 4;
+            writer.Write((int) (endPos - startPos));
+            writer.BaseStream.Position = endPos;
         }
 
         public bool AsyncLoad(BinaryReader reader, ChunkInfo chunkInfo)
@@ -81,6 +97,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 {
                     LoadMccv(reader);
                     hasMccv = true;
+                    mForceMccv = true;
                 }
             }
 
@@ -109,6 +126,12 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 for (var i = 0; i < 145; ++i)
                     Vertices[i].Color = 0x7F7F7F7F;
             }
+
+            LoadUnusedChunk(0x4D435246, basePosition + mHeader.Mcrf, 0, reader);
+            LoadUnusedChunk(0x4D435348, basePosition + mHeader.Mcsh, mHeader.SizeShadow - 8, reader);
+            LoadUnusedChunk(0x4D435345, basePosition + mHeader.Mcse, mHeader.NumSoundEmitters * 0x1C, reader);
+            LoadUnusedChunk(0x4D434C51, basePosition + mHeader.Mclq, mHeader.SizeLiquid - 8, reader);
+            LoadUnusedChunk(0x4D434C56, basePosition + mHeader.Mclv, 0, reader);
 
             InitLayerData();
 
@@ -345,6 +368,38 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             return changed;
         }
 
+        private void LoadUnusedChunk(uint signature, int offset, int size, BinaryReader reader)
+        {
+            if (offset == 0 || size == 0)
+                return;
+
+            reader.BaseStream.Position = offset;
+            var sig = reader.ReadUInt32();
+            if(sig != signature)
+            {
+                Log.Warning(
+                    string.Format(
+                        "Info: Expected signature {0:X8} inside chunk, got {1:X8}. Since this chunk is not used for rendering its ignored.",
+                        signature, sig));
+                return;
+            }
+
+            var dataSize = reader.ReadInt32();
+            if(dataSize != size && size != 0)
+            {
+                Log.Warning(
+                    string.Format(
+                        "Info: Expected chunk size {0} was not the same as actual data size {1}. Using expected chunk size.",
+                        size, dataSize));
+            }
+
+            var data = reader.ReadBytes(size);
+            if (mSaveChunks.ContainsKey(signature))
+                return;
+
+            mSaveChunks.Add(signature, new DataChunk {Data = data, Signature = signature, Size = size});
+        }
+
         private void LoadMcvt(BinaryReader reader)
         {
             var heights = reader.ReadArray<float>(145);
@@ -433,7 +488,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private void LoadLayers(BinaryReader reader, int size)
         {
-            mLayers = reader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size).ToList();
+            mLayers = reader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size);
             MapArea parent;
             if (mParent.TryGetTarget(out parent) == false)
             {
@@ -446,7 +501,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private void InitLayerData()
         {
-            var nLayers = Math.Min(mLayers.Count, 4);
+            var nLayers = Math.Min(mLayers.Length, 4);
             for (var i = 0; i < nLayers; ++i)
             {
                 if ((mLayers[i].Flags & 0x200) != 0)
@@ -464,8 +519,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                         AlphaValues[j] |= 0xFFu << (8 * i);
                 }
             }
-
-            mAlphaCompressed = null;
         }
 
         private void LoadUncompressed(Mcly layerInfo, int layer)
@@ -531,6 +584,229 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             writer.Write(0x4D435654);
             writer.Write(145 * 4);
             writer.WriteArray(heights.ToArray());
+        }
+
+        private void SaveNormals(BinaryWriter writer, int basePosition, ref Mcnk header)
+        {
+            header.Mcnr = (int) writer.BaseStream.Position - basePosition;
+
+            var normals =
+                Vertices.SelectMany(v => new[] {(sbyte)(v.Normal.X / -127.0f), (sbyte)(v.Normal.Y / -127.0f), (sbyte)(v.Normal.Z / 127.0f)});
+
+            writer.Write(0x4D434E52);
+            writer.Write(145 * 3);
+            writer.WriteArray(normals.ToArray());
+            writer.Write(new byte[13]);
+        }
+
+        private void SaveMccv(BinaryWriter writer, int basePosition, ref Mcnk header)
+        {
+            if (mForceMccv == false)
+            {
+                header.Mccv = 0;
+                header.Flags &= ~0x40u;
+                return;
+            }
+
+            var colors = mShadingFloats.Select(v =>
+            {
+                uint b = (byte)Math.Max(Math.Min((v.Z / 2.0f) * 255.0f, 255), 0);
+                uint g = (byte)Math.Max(Math.Min((v.Y / 2.0f) * 255.0f, 255), 0);
+                uint r = (byte)Math.Max(Math.Min((v.X / 2.0f) * 255.0f, 255), 0);
+                return 0x7F000000 | (b << 16) | (g << 8) | r;
+            }).ToArray();
+
+            header.Mccv = (int)writer.BaseStream.Position - basePosition;
+            writer.Write(0x4D434356);
+            writer.Write(145 * 4);
+            writer.WriteArray(colors.ToArray());
+        }
+
+        private void SaveLayers(BinaryWriter writer, int basePosition, ref Mcnk header)
+        {
+            header.NumLayers = mLayers.Length;
+            if(header.NumLayers == 0)
+            {
+                header.Mcly = 0;
+                return;
+            }
+
+            header.Mcly = (int) writer.BaseStream.Position - basePosition;
+            writer.Write(0x4D434C59);
+            writer.Write(mLayers.Length * SizeCache<Mcly>.Size);
+            writer.WriteArray(mLayers.ToArray());
+        }
+
+        private void SaveAlpha(BinaryWriter writer, int basePosition, ref Mcnk header)
+        {
+            header.Mcal = (int) writer.BaseStream.Position - basePosition;
+            var curPos = 0;
+            for(var i = 1; i < mLayers.Length; ++i)
+            {
+                bool compressed;
+                var data = GetSavedAlphaForLayer(i, out compressed);
+                mLayers[i].OfsMcal = curPos;
+                if (compressed)
+                    mLayers[i].Flags |= 0x200;
+                else
+                {
+                    mLayers[i].Flags |= 0x100;
+                    mLayers[i].Flags &= ~0x200u;
+                }
+                writer.Write(data);
+                curPos += data.Length;
+            }
+
+            header.SizeAlpha = curPos + 8;
+        }
+
+        private void SaveUnusedChunks(BinaryWriter writer, int basePosition, ref Mcnk header)
+        {
+            var unusedSize = 0;
+            SaveUnusedChunk(writer, 0x4D435246, basePosition, ref header.Mcrf, ref unusedSize);
+            SaveUnusedChunk(writer, 0x4D435348, basePosition, ref header.Mcsh, ref mHeader.SizeShadow);
+            SaveUnusedChunk(writer, 0x4D435345, basePosition, ref header.Mcse, ref mHeader.NumSoundEmitters, false);
+            SaveUnusedChunk(writer, 0x4D435C51, basePosition, ref header.Mclq, ref mHeader.SizeLiquid);
+            SaveUnusedChunk(writer, 0x4D434C56, basePosition, ref header.Mclv, ref unusedSize);
+
+            header.NumSoundEmitters /= 0x1C;
+        }
+
+        private void SaveUnusedChunk(BinaryWriter writer, uint signature, int basePosition, ref int offset, ref int size, bool sizeWithHeader = true)
+        {
+            if (mSaveChunks.ContainsKey(signature) == false)
+                return;
+
+            var cnk = mSaveChunks[signature];
+            size = cnk.Size + (sizeWithHeader ? 8 : 0);
+            offset = (int) writer.BaseStream.Position - basePosition;
+            writer.Write(signature);
+            writer.Write(cnk.Size);
+            writer.Write(cnk.Data);
+        }
+
+        private float CalculateAlphaHomogenity(int layer)
+        {
+            var numCompressable = 1;
+            var lastAlpha = (AlphaValues[0] >> (layer * 8)) & 0xFF;
+            for (var i = 1; i < 4096; ++i)
+            {
+                var value = (AlphaValues[i] >> (layer * 8)) & 0xFF;
+                if (value == lastAlpha)
+                    ++numCompressable;
+
+                lastAlpha = value;
+            }
+
+            return numCompressable / 4096.0f;
+        }
+
+        private byte[] GetSavedAlphaForLayer(int layer, out bool compressed)
+        {
+            compressed = false;
+            var homogenity = CalculateAlphaHomogenity(layer);
+            return homogenity > 0.3f ? GetAlphaCompressed(layer) : GetAlphaUncompressed(layer);
+        }
+
+        private byte[] GetAlphaCompressed(int layer)
+        {
+            var strm = new MemoryStream();
+            var isRepeating = true;
+            var repeatCount = 1;
+            var lastValue = (AlphaValues[0] >> (layer * 8)) & 0xFF;
+            var lastNonRepeatBytes = new List<byte>();
+
+            for(var i = 1; i < 4096; ++i)
+            {
+                var cur = (byte)((AlphaValues[i] >> (layer * 8)) & 0xFF);
+                if(cur == lastValue)
+                {
+                    if(isRepeating)
+                    {
+                        if(repeatCount >= 0x7F)
+                        {
+                            strm.WriteByte((byte)(0x80 | repeatCount));
+                            strm.WriteByte((byte)lastValue);
+                            repeatCount = 0;
+                            continue;
+                        }
+
+                        repeatCount++;
+                        continue;
+                    }
+
+                    if (repeatCount > 0)
+                    {
+                        strm.WriteByte((byte)repeatCount);
+                        strm.Write(lastNonRepeatBytes.ToArray(), 0, lastNonRepeatBytes.Count);
+                        lastNonRepeatBytes.Clear();
+                    }
+
+                    repeatCount = 2;
+                    isRepeating = true;
+                }
+                else
+                {
+                    if (isRepeating)
+                    {
+                        strm.WriteByte((byte)(0x80 | repeatCount));
+                        strm.WriteByte((byte)lastValue);
+                        repeatCount = 1;
+                    }
+
+                    isRepeating = false;
+                    if(repeatCount >= 0x7F)
+                    {
+                        strm.WriteByte((byte) repeatCount);
+                        strm.Write(lastNonRepeatBytes.ToArray(), 0, lastNonRepeatBytes.Count);
+                        lastNonRepeatBytes.Clear();
+                        repeatCount = 0;
+                        continue;
+                    }
+
+                    ++repeatCount;
+                    lastNonRepeatBytes.Add(cur);
+                }
+            }
+
+            if(isRepeating)
+            {
+                strm.WriteByte((byte)(0x80 | repeatCount));
+                strm.WriteByte((byte)lastValue);
+            }
+            else
+            {
+                strm.WriteByte((byte)repeatCount);
+                strm.Write(lastNonRepeatBytes.ToArray(), 0, lastNonRepeatBytes.Count);
+            }
+
+            return strm.ToArray();
+        }
+
+        private byte[] GetAlphaUncompressed(int layer)
+        {
+            if(WorldFrame.Instance.MapManager.HasNewBlend)
+            {
+                var ret = new byte[4096];
+                for (var i = 0; i < 4096; ++i)
+                    ret[i] = (byte)((AlphaValues[i] >> (layer * 8)) & 0xFF);
+                return ret;
+            }
+            else
+            {
+                var ret = new byte[2048];
+                for(var i = 0; i < 2048; ++i)
+                {
+                    var a1 = (byte) ((AlphaValues[i * 2] >> (layer * 8)) & 0xFF);
+                    var a2 = (byte) ((AlphaValues[i * 2 + 1] >> (layer * 8)) & 0xFF);
+
+                    var v1 = (uint) ((a1 / 255.0f) * 15.0f);
+                    var v2 = (uint) ((a2 / 255.0f) * 15.0f);
+                    ret[i] = (byte) ((v2 << 4) | v1);
+                }
+
+                return ret;
+            }
         }
 
         static MapChunk()

@@ -91,23 +91,23 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 var mcinStart = writer.BaseStream.Position;
                 writer.WriteArray(chunkInfos);
 
-                SaveChunk(0x4D444446, writer, ref header.ofsMddf);
-                SaveChunk(0x4D4D4458, writer, ref header.ofsMmdx);
-                SaveChunk(0x4D4D4944, writer, ref header.ofsMmid);
-                SaveChunk(0x4D574D4F, writer, ref header.ofsMwmo);
-                SaveChunk(0x4D574944, writer, ref header.ofsMwid);
-                SaveChunk(0x4D4F4446, writer, ref header.ofsModf);
-                SaveChunk(0x4D544558, writer, ref header.ofsMtex);
-                SaveChunk(0x4D545846, writer, ref header.ofsMtxf);
-                SaveChunk(0x4D48324F, writer, ref header.ofsMh2o);
+                SaveChunk(0x4D444446, writer, out header.ofsMddf);
+                SaveChunk(0x4D4D4458, writer, out header.ofsMmdx);
+                SaveChunk(0x4D4D4944, writer, out header.ofsMmid);
+                SaveChunk(0x4D574D4F, writer, out header.ofsMwmo);
+                SaveChunk(0x4D574944, writer, out header.ofsMwid);
+                SaveChunk(0x4D4F4446, writer, out header.ofsModf);
+                SaveChunk(0x4D544558, writer, out header.ofsMtex);
+                SaveChunk(0x4D545846, writer, out header.ofsMtxf);
+                SaveChunk(0x4D48324F, writer, out header.ofsMh2o);
 
-                for(var i = 0; i < 256; ++i)
+                for (var i = 0; i < 256; ++i)
                 {
                     var startPos = writer.BaseStream.Position;
                     mChunks[i].SaveChunk(writer);
                     var endPos = writer.BaseStream.Position;
-                    chunkInfos[i].OfsMcnk = (int) startPos;
-                    chunkInfos[i].SizeMcnk = (int) (endPos - startPos);
+                    chunkInfos[i].OfsMcnk = (int)startPos;
+                    chunkInfos[i].SizeMcnk = (int)(endPos - startPos);
                     chunkInfos[i].Flags = chunkInfos[i].AsyncId = 0;
                 }
 
@@ -116,8 +116,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 writer.BaseStream.Position = mcinStart;
                 writer.WriteArray(chunkInfos);
             }
-
-            throw new NotImplementedException();
         }
 
         public override Graphics.Texture GetTexture(int index)
@@ -366,13 +364,15 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
         }
 
-        private void SaveChunk(uint signature, BinaryWriter writer, ref int offsetField)
+        private void SaveChunk(uint signature, BinaryWriter writer, out int offsetField)
         {
             if(mSaveChunks.ContainsKey(signature) == false)
             {
                 offsetField = 0;
                 return;
             }
+
+            offsetField = (int)writer.BaseStream.Position - (12 + 8 + SizeCache<Mhdr>.Size); // MVER signature + size + version = 12 bytes, MHDR signature + size = 8 bytes
 
             var chunk = mSaveChunks[signature];
             writer.Write(signature);
