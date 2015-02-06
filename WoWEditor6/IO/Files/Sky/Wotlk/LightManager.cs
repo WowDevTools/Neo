@@ -4,129 +4,129 @@ using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Sky.Wotlk
 {
-	class LightManager : SkyManager
-	{
-		private readonly Dictionary<uint, MapSky> mSkies = new Dictionary<uint, MapSky>();
-		private readonly Vector3[] mCurColors = new Vector3[18];
-		private readonly float[] mCurFloats = new float[2];
+    class LightManager : SkyManager
+    {
+        private readonly Dictionary<uint, MapSky> mSkies = new Dictionary<uint, MapSky>();
+        private readonly Vector3[] mCurColors = new Vector3[18];
+        private readonly float[] mCurFloats = new float[2];
 
-		private MapSky mActiveSky;
-		private bool mIsTextureDirty;
-		private Graphics.Texture mSkyTexture;
-		private readonly uint[] mSkyGraph = new uint[180];
-		
-		private Vector3 mLastPosition;
+        private MapSky mActiveSky;
+        private bool mIsTextureDirty;
+        private Graphics.Texture mSkyTexture;
+        private readonly uint[] mSkyGraph = new uint[180];
 
-		public override void OnEnterWorld(int mapId)
-		{
-			mSkies.TryGetValue((uint) mapId, out mActiveSky);
-		}
+        private Vector3 mLastPosition;
 
-		public override void AsyncUpdate()
-		{
-			if (mActiveSky == null)
-				return;
+        public override void OnEnterWorld(int mapId)
+        {
+            mSkies.TryGetValue((uint)mapId, out mActiveSky);
+        }
 
-			var time = Utils.TimeManager.Instance.GetTime();
-			var ms = (uint)(time.TotalMilliseconds / 10.0f);
+        public override void AsyncUpdate()
+        {
+            if (mActiveSky == null)
+                return;
 
-			mActiveSky.Update(mLastPosition, ms);
-			for (var i = 0; i < 18; ++i)
-				mCurColors[i] = mActiveSky.GetColor((LightColor) i);
+            var time = Utils.TimeManager.Instance.GetTime();
+            var ms = (uint)(time.TotalMilliseconds / 10.0f);
 
-			mCurFloats[0] = mActiveSky.GetFloat(LightFloat.FogEnd);
-			mCurFloats[1] = mActiveSky.GetFloat(LightFloat.FogScale);
+            mActiveSky.Update(mLastPosition, ms);
+            for (var i = 0; i < 18; ++i)
+                mCurColors[i] = mActiveSky.GetColor((LightColor)i);
 
-			UpdateSkyTexture();
-		}
+            mCurFloats[0] = mActiveSky.GetFloat(LightFloat.FogEnd);
+            mCurFloats[1] = mActiveSky.GetFloat(LightFloat.FogScale);
 
-		public override void UpdatePosition(Vector3 position)
-		{
-			mLastPosition = position;
-		}
+            UpdateSkyTexture();
+        }
 
-		public override void SyncUpdate()
-		{
-			if (mActiveSky == null)
-				return;
+        public override void UpdatePosition(Vector3 position)
+        {
+            mLastPosition = position;
+        }
 
-			if (mIsTextureDirty)
-			{
-				mIsTextureDirty = false;
-				mSkyTexture.UpdateMemory(1, 180, SharpDX.DXGI.Format.B8G8R8A8_UNorm, mSkyGraph, 4);
-			}
-		}
+        public override void SyncUpdate()
+        {
+            if (mActiveSky == null)
+                return;
 
-		public override void Initialize()
-		{
-			mSkyTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
-			WorldFrame.Instance.MapManager.SkySphere.UpdateSkyTexture(mSkyTexture);
+            if (mIsTextureDirty)
+            {
+                mIsTextureDirty = false;
+                mSkyTexture.UpdateMemory(1, 180, SharpDX.DXGI.Format.B8G8R8A8_UNorm, mSkyGraph, 4);
+            }
+        }
 
-			for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)
-			{
-				var id = Storage.DbcStorage.Map.GetRow(i).GetUint32(0);
-				mSkies.Add(id, new MapSky(id));
-			}
-		}
+        public override void Initialize()
+        {
+            mSkyTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
+            WorldFrame.Instance.MapManager.SkySphere.UpdateSkyTexture(mSkyTexture);
 
-		private void UpdateSkyTexture()
-		{
-			var top = mCurColors[(int)LightColor.Top];
-			var middle = mCurColors[(int)LightColor.Middle];
-			var middleLower = mCurColors[(int)LightColor.MiddleLower];
-			var lower = mCurColors[(int)LightColor.Lower];
-			var horizon = mCurColors[(int)LightColor.Horizon];
-			var fog = mCurColors[(int)LightColor.Fog];
+            for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)
+            {
+                var id = Storage.DbcStorage.Map.GetRow(i).GetUint32(0);
+                mSkies.Add(id, new MapSky(id));
+            }
+        }
 
-			for (var i = 0; i < 80; ++i)
-				mSkyGraph[i] = ToRgbx(ref fog);
+        private void UpdateSkyTexture()
+        {
+            var top = mCurColors[(int)LightColor.Top];
+            var middle = mCurColors[(int)LightColor.Middle];
+            var middleLower = mCurColors[(int)LightColor.MiddleLower];
+            var lower = mCurColors[(int)LightColor.Lower];
+            var horizon = mCurColors[(int)LightColor.Horizon];
+            var fog = mCurColors[(int)LightColor.Fog];
 
-			for (var i = 80; i < 90; ++i)
-			{
-				var sat = (i - 80) / 10.0f;
-				var clr = fog + (horizon - fog) * sat;
-				mSkyGraph[i] = ToRgbx(ref clr);
-			}
+            for (var i = 0; i < 80; ++i)
+                mSkyGraph[i] = ToRgbx(ref fog);
 
-			for (var i = 90; i < 95; ++i)
-			{
-				var sat = (i - 90) / 5.0f;
-				var clr = horizon + (lower - horizon) * sat;
-				mSkyGraph[i] = ToRgbx(ref clr);
-			}
+            for (var i = 80; i < 90; ++i)
+            {
+                var sat = (i - 80) / 10.0f;
+                var clr = fog + (horizon - fog) * sat;
+                mSkyGraph[i] = ToRgbx(ref clr);
+            }
 
-			for (var i = 95; i < 105; ++i)
-			{
-				var sat = (i - 95) / 10.0f;
-				var clr = lower + (middleLower - lower) * sat;
-				mSkyGraph[i] = ToRgbx(ref clr);
-			}
+            for (var i = 90; i < 95; ++i)
+            {
+                var sat = (i - 90) / 5.0f;
+                var clr = horizon + (lower - horizon) * sat;
+                mSkyGraph[i] = ToRgbx(ref clr);
+            }
 
-			for (var i = 105; i < 120; ++i)
-			{
-				var sat = (i - 105) / 15.0f;
-				var clr = middleLower + (middle - middleLower) * sat;
-				mSkyGraph[i] = ToRgbx(ref clr);
-			}
+            for (var i = 95; i < 105; ++i)
+            {
+                var sat = (i - 95) / 10.0f;
+                var clr = lower + (middleLower - lower) * sat;
+                mSkyGraph[i] = ToRgbx(ref clr);
+            }
 
-			for (var i = 120; i < 180; ++i)
-			{
-				var sat = (i - 120) / 60.0f;
-				var clr = middle + (top - middle) * sat;
-				mSkyGraph[i] = ToRgbx(ref clr);
-			}
+            for (var i = 105; i < 120; ++i)
+            {
+                var sat = (i - 105) / 15.0f;
+                var clr = middleLower + (middle - middleLower) * sat;
+                mSkyGraph[i] = ToRgbx(ref clr);
+            }
 
-			mIsTextureDirty = true;
-		}
+            for (var i = 120; i < 180; ++i)
+            {
+                var sat = (i - 120) / 60.0f;
+                var clr = middle + (top - middle) * sat;
+                mSkyGraph[i] = ToRgbx(ref clr);
+            }
 
-		private static uint ToRgbx(ref Vector3 value)
-		{
-			var r = (uint)(value.X * 255.0f);
-			var g = (uint)(value.Y * 255.0f);
-			var b = (uint)(value.Z * 255.0f);
-			const uint a = 0xFFu;
+            mIsTextureDirty = true;
+        }
 
-			return r | (g << 8) | (b << 16) | (a << 24);
-		}
-	}
+        private static uint ToRgbx(ref Vector3 value)
+        {
+            var r = (uint)(value.X * 255.0f);
+            var g = (uint)(value.Y * 255.0f);
+            var b = (uint)(value.Z * 255.0f);
+            const uint a = 0xFFu;
+
+            return r | (g << 8) | (b << 16) | (a << 24);
+        }
+    }
 }
