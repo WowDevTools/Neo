@@ -128,9 +128,13 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
 
             LoadUnusedChunk(0x4D435246, basePosition + mHeader.Mcrf, 0, reader);
-            LoadUnusedChunk(0x4D435348, basePosition + mHeader.Mcsh, mHeader.SizeShadow - 8, reader);
-            LoadUnusedChunk(0x4D435345, basePosition + mHeader.Mcse, mHeader.NumSoundEmitters * 0x1C, reader);
-            LoadUnusedChunk(0x4D434C51, basePosition + mHeader.Mclq, mHeader.SizeLiquid - 8, reader);
+            if (mHeader.SizeShadow > 0)
+                LoadUnusedChunk(0x4D435348, basePosition + mHeader.Mcsh, mHeader.SizeShadow, reader);
+            if (mHeader.NumSoundEmitters > 0)
+                LoadUnusedChunk(0x4D435345, basePosition + mHeader.Mcse, mHeader.NumSoundEmitters * 0x1C, reader);
+            if (mHeader.SizeLiquid > 8)
+                LoadUnusedChunk(0x4D434C51, basePosition + mHeader.Mclq, mHeader.SizeLiquid - 8, reader);
+
             LoadUnusedChunk(0x4D434C56, basePosition + mHeader.Mclv, 0, reader);
 
             InitLayerData();
@@ -305,9 +309,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     factor = 1.0f;
 
                 var curColor = mShadingFloats[i];
-                var dr = destColor.X - curColor.X;
+                var dr = destColor.X - curColor.Z;
                 var dg = destColor.Y - curColor.Y;
-                var db = destColor.Z - curColor.Z;
+                var db = destColor.Z - curColor.X;
 
                 var cr = Math.Min(Math.Abs(dr), amount * factor);
                 var cg = Math.Min(Math.Abs(dg), amount * factor);
@@ -316,14 +320,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 if (dr < 0)
                 {
                     curColor.Z -= cr;
-                    if (curColor.Z < destColor.Z)
-                        curColor.Z = destColor.Z;
+                    if (curColor.Z < destColor.X)
+                        curColor.Z = destColor.X;
                 }
                 else
                 {
                     curColor.Z += cr;
-                    if (curColor.Z > destColor.Z)
-                        curColor.Z = destColor.Z;
+                    if (curColor.Z > destColor.X)
+                        curColor.Z = destColor.X;
                 }
                 if (dg < 0)
                 {
@@ -340,14 +344,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 if (db < 0)
                 {
                     curColor.X -= cb;
-                    if (curColor.X < destColor.X)
-                        curColor.X = destColor.X;
+                    if (curColor.X < destColor.Z)
+                        curColor.X = destColor.Z;
                 }
                 else
                 {
                     curColor.X += cb;
-                    if (curColor.X > destColor.X)
-                        curColor.X = destColor.X;
+                    if (curColor.X > destColor.Z)
+                        curColor.X = destColor.Z;
                 }
 
                 mShadingFloats[i] = curColor;
@@ -389,8 +393,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             {
                 Log.Warning(
                     string.Format(
-                        "Info: Expected chunk size {0} was not the same as actual data size {1}. Using expected chunk size.",
-                        size, dataSize));
+                        "Info: Expected chunk size {0} was not the same as actual data size {1}. Chunk was: {2:X8}. Using expected chunk size.",
+                        size, dataSize, signature));
             }
 
             var data = reader.ReadBytes(size);
@@ -634,12 +638,15 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             header.Mcly = (int) writer.BaseStream.Position - basePosition;
             writer.Write(0x4D434C59);
             writer.Write(mLayers.Length * SizeCache<Mcly>.Size);
-            writer.WriteArray(mLayers.ToArray());
+            writer.WriteArray(mLayers);
         }
 
         private void SaveAlpha(BinaryWriter writer, int basePosition, ref Mcnk header)
         {
             header.Mcal = (int) writer.BaseStream.Position - basePosition;
+            writer.Write(0x4D43414C);
+            var sizePos = writer.BaseStream.Position;
+            writer.Write(0);
             var curPos = 0;
             for(var i = 1; i < mLayers.Length; ++i)
             {
@@ -647,7 +654,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 var data = GetSavedAlphaForLayer(i, out compressed);
                 mLayers[i].OfsMcal = curPos;
                 if (compressed)
-                    mLayers[i].Flags |= 0x200;
+                    mLayers[i].Flags |= 0x300;
                 else
                 {
                     mLayers[i].Flags |= 0x100;
@@ -656,6 +663,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 writer.Write(data);
                 curPos += data.Length;
             }
+
+            var endPos = writer.BaseStream.Position;
+            writer.BaseStream.Position = sizePos;
+            writer.Write((int) (endPos - sizePos - 4));
+            writer.BaseStream.Position = endPos;
 
             header.SizeAlpha = curPos + 8;
         }
@@ -705,7 +717,13 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         {
             compressed = false;
             var homogenity = CalculateAlphaHomogenity(layer);
-            return homogenity > 0.3f ? GetAlphaCompressed(layer) : GetAlphaUncompressed(layer);
+            if (homogenity > 0.3f)
+            {
+                compressed = true;
+                return GetAlphaCompressed(layer);
+            }
+            else
+                return GetAlphaUncompressed(layer);
         }
 
         private byte[] GetAlphaCompressed(int layer)

@@ -46,13 +46,21 @@ namespace WoWEditor6.IO.MPQ
 		}
 
 		public Stream OpenFile(string path)
-		{
-			return mArchives.Select(archive => archive.Open(path)).FirstOrDefault(ret => ret != null);
-		}
+        {
+            var existing = IO.FileManager.Instance.GetExistingFile(path);
+            return existing ?? mArchives.Select(archive => archive.Open(path)).FirstOrDefault(ret => ret != null);
+        }
 
 		public bool Exists(string path)
 		{
-			return mArchives.Any(archive => archive.Contains(path));
+            using (var strm = IO.FileManager.Instance.GetExistingFile(path))
+            {
+                if (strm != null)
+                    return true;
+
+            }
+
+		    return mArchives.Any(archive => archive.Contains(path));
 		}
 
 		private static int Compare(Archive a1, Archive a2)
