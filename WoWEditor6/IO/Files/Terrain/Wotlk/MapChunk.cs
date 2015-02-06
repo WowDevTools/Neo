@@ -341,7 +341,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 {
                     curColor.X -= cb;
                     if (curColor.X < destColor.X)
-                        curColor.X = destColor.Y;
+                        curColor.X = destColor.X;
                 }
                 else
                 {

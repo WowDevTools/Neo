@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using SharpDX;
 using WoWEditor6.Editing;
-using WoWEditor6.IO.Files.Terrain.WoD;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Texture;
 
@@ -155,6 +154,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     mSaveChunks.Add(signature, new DataChunk {Data = bytes, Signature = signature, Size = size});
                 }
 
+                reader.BaseStream.Position = 0;
                 reader.ReadInt32();
                 mHeader = reader.Read<Mhdr>();
                 InitChunkInfos(reader);
