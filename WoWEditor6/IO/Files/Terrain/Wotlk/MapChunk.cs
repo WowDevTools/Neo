@@ -181,7 +181,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
                 var n = n1 + n2 + n3 + n4;
                 n.Normalize();
-                n *= -1;
+                n.Z *= -1;
 
                 n.X = ((sbyte)(n.X * 127)) / 127.0f;
                 n.Y = ((sbyte)(n.Y * 127)) / 127.0f;
@@ -459,19 +459,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private void LoadMcnr(BinaryReader reader)
         {
             var normals = reader.ReadArray<sbyte>(145 * 3);
-            var counter = 0;
 
-            for (var i = 0; i < 17; ++i)
+            for(var i = 0; i < 145; ++i)
             {
-                for (var j = 0; j < (((i % 2) != 0) ? 8 : 9); ++j)
-                {
-                    var nx = normals[counter * 3] / -127.0f;
-                    var ny = normals[counter * 3 + 1] / -127.0f;
-                    var nz = normals[counter * 3 + 2] / 127.0f;
+                var nx = normals[i * 3] / -127.0f;
+                var ny = normals[i * 3 + 1] / -127.0f;
+                var nz = normals[i * 3 + 2] / 127.0f;
 
-                    Vertices[counter].Normal = new Vector3(nx, ny, nz);
-                    ++counter;
-                }
+                Vertices[i].Normal = new Vector3(nx, ny, nz);
             }
         }
 
@@ -595,7 +590,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             header.Mcnr = (int) writer.BaseStream.Position - basePosition;
 
             var normals =
-                Vertices.SelectMany(v => new[] {(sbyte)(v.Normal.X / -127.0f), (sbyte)(v.Normal.Y / -127.0f), (sbyte)(v.Normal.Z / 127.0f)});
+                Vertices.SelectMany(v => new[] {(sbyte)(v.Normal.X * -127.0f), (sbyte)(v.Normal.Y * -127.0f), (sbyte)(v.Normal.Z * 127.0f)});
 
             writer.Write(0x4D434E52);
             writer.Write(145 * 3);
@@ -747,6 +742,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 lastValue = cur;
             }
 
+            // step 2: Write the ranges appropriately
             var read = 0;
             while(read < 4096)
             {

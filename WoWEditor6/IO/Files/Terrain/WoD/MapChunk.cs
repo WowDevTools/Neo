@@ -577,58 +577,58 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     factor = 1.0f;
 
                 var curColor = mShadingFloats[i];
-                var dr = destColor.X - curColor.X;
+                var dr = destColor.X - curColor.Z;
                 var dg = destColor.Y - curColor.Y;
-                var db = destColor.Z - curColor.Z;
+                var db = destColor.Z - curColor.X;
 
                 var cr = Math.Min(Math.Abs(dr), amount * factor);
                 var cg = Math.Min(Math.Abs(dg), amount * factor);
                 var cb = Math.Min(Math.Abs(db), amount * factor);
 
-				if (dr < 0)
-				{
-					curColor.Z -= cr;
-					if (curColor.Z < destColor.Z)
-						curColor.Z = destColor.Z;
-				}
-				else
-				{
-					curColor.Z += cr;
-					if (curColor.Z > destColor.Z)
-						curColor.Z = destColor.Z;
-				}
-				if (dg < 0)
-				{
-					curColor.Y -= cg;
-					if (curColor.Y < destColor.Y)
-						curColor.Y = destColor.Y;
-				}
-				else
-				{
-					curColor.Y += cg;
-					if (curColor.Y > destColor.Y)
-						curColor.Y = destColor.Y;
-				}
-				if (db < 0)
-				{
-					curColor.X -= cb;
-					if (curColor.X < destColor.X)
-						curColor.X = destColor.Y;
-				}
-				else
-				{
-					curColor.X += cb;
-					if (curColor.X > destColor.X)
-						curColor.X = destColor.X;
-				}
+                if (dr < 0)
+                {
+                    curColor.Z -= cr;
+                    if (curColor.Z < destColor.X)
+                        curColor.Z = destColor.X;
+                }
+                else
+                {
+                    curColor.Z += cr;
+                    if (curColor.Z > destColor.X)
+                        curColor.Z = destColor.X;
+                }
+                if (dg < 0)
+                {
+                    curColor.Y -= cg;
+                    if (curColor.Y < destColor.Y)
+                        curColor.Y = destColor.Y;
+                }
+                else
+                {
+                    curColor.Y += cg;
+                    if (curColor.Y > destColor.Y)
+                        curColor.Y = destColor.Y;
+                }
+                if (db < 0)
+                {
+                    curColor.X -= cb;
+                    if (curColor.X < destColor.Z)
+                        curColor.X = destColor.Z;
+                }
+                else
+                {
+                    curColor.X += cb;
+                    if (curColor.X > destColor.Z)
+                        curColor.X = destColor.Z;
+                }
 
                 mShadingFloats[i] = curColor;
 
-	            curColor.X = Math.Min(Math.Max(curColor.X, 0), 2);
-				curColor.Y = Math.Min(Math.Max(curColor.Y, 0), 2);
-				curColor.Z = Math.Min(Math.Max(curColor.Z, 0), 2);
+                curColor.X = Math.Min(Math.Max(curColor.X, 0), 2);
+                curColor.Y = Math.Min(Math.Max(curColor.Y, 0), 2);
+                curColor.Z = Math.Min(Math.Max(curColor.Z, 0), 2);
 
-				var r = (byte) ((curColor.Z / 2.0f) * 255.0f);
+                var r = (byte) ((curColor.Z / 2.0f) * 255.0f);
                 var g = (byte) ((curColor.Y / 2.0f) * 255.0f);
                 var b = (byte) ((curColor.X / 2.0f) * 255.0f);
                 var a = (byte) ((curColor.W / 2.0f) * 255.0f);
