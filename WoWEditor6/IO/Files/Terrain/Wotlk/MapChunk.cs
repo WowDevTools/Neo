@@ -717,13 +717,13 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         {
             compressed = false;
             var homogenity = CalculateAlphaHomogenity(layer);
-            if (homogenity > 0.3f)
+            if (homogenity > 0.3f && false)
             {
                 compressed = true;
                 return GetAlphaCompressed(layer);
             }
-            else
-                return GetAlphaUncompressed(layer);
+
+            return GetAlphaUncompressed(layer);
         }
 
         private byte[] GetAlphaCompressed(int layer)
@@ -769,7 +769,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     {
                         strm.WriteByte((byte)(0x80 | repeatCount));
                         strm.WriteByte((byte)lastValue);
-                        repeatCount = 1;
+                        repeatCount = 0;
                     }
 
                     isRepeating = false;
@@ -785,6 +785,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     ++repeatCount;
                     lastNonRepeatBytes.Add(cur);
                 }
+
+                lastValue = cur;
             }
 
             if(isRepeating)
