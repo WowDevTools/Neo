@@ -717,7 +717,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         {
             compressed = false;
             var homogenity = CalculateAlphaHomogenity(layer);
-            if (homogenity > 0.3f && false)
+            if (homogenity > 0.3f)
             {
                 compressed = true;
                 return GetAlphaCompressed(layer);
@@ -729,75 +729,74 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private byte[] GetAlphaCompressed(int layer)
         {
             var strm = new MemoryStream();
-            var isRepeating = true;
-            var repeatCount = 1;
-            var lastValue = (AlphaValues[0] >> (layer * 8)) & 0xFF;
-            var lastNonRepeatBytes = new List<byte>();
 
+            // step 1: find ranges of identical values
+            var ranges = new List<Tuple<int, int>>();
+            var lastValue = (byte) ((AlphaValues[0] >> (layer * 8)) & 0xFF);
+            var curRangeStart = 0;
             for(var i = 1; i < 4096; ++i)
             {
-                var cur = (byte)((AlphaValues[i] >> (layer * 8)) & 0xFF);
-                if(cur == lastValue)
-                {
-                    if(isRepeating)
-                    {
-                        if(repeatCount >= 0x7F)
-                        {
-                            strm.WriteByte((byte)(0x80 | repeatCount));
-                            strm.WriteByte((byte)lastValue);
-                            repeatCount = 0;
-                            continue;
-                        }
+                var cur = (byte) ((AlphaValues[i] >> (layer * 8)) & 0xFF);
+                if (cur == lastValue)
+                    continue;
+                
+                if(i - curRangeStart > 1)
+                    ranges.Add(new Tuple<int, int>(curRangeStart, i));
 
-                        repeatCount++;
-                        continue;
-                    }
-
-                    if (repeatCount > 0)
-                    {
-                        strm.WriteByte((byte)repeatCount);
-                        strm.Write(lastNonRepeatBytes.ToArray(), 0, lastNonRepeatBytes.Count);
-                        lastNonRepeatBytes.Clear();
-                    }
-
-                    repeatCount = 2;
-                    isRepeating = true;
-                }
-                else
-                {
-                    if (isRepeating)
-                    {
-                        strm.WriteByte((byte)(0x80 | repeatCount));
-                        strm.WriteByte((byte)lastValue);
-                        repeatCount = 0;
-                    }
-
-                    isRepeating = false;
-                    if(repeatCount >= 0x7F)
-                    {
-                        strm.WriteByte((byte) repeatCount);
-                        strm.Write(lastNonRepeatBytes.ToArray(), 0, lastNonRepeatBytes.Count);
-                        lastNonRepeatBytes.Clear();
-                        repeatCount = 0;
-                        continue;
-                    }
-
-                    ++repeatCount;
-                    lastNonRepeatBytes.Add(cur);
-                }
-
+                curRangeStart = i;
                 lastValue = cur;
             }
 
-            if(isRepeating)
+            var read = 0;
+            while(read < 4096)
             {
-                strm.WriteByte((byte)(0x80 | repeatCount));
-                strm.WriteByte((byte)lastValue);
-            }
-            else
-            {
-                strm.WriteByte((byte)repeatCount);
-                strm.Write(lastNonRepeatBytes.ToArray(), 0, lastNonRepeatBytes.Count);
+                var range = ranges.Count > 0 ? ranges[0] : null;
+                if(range != null && range.Item1 == read)
+                {
+                    var value = (byte) ((AlphaValues[read] >> (layer * 8)) & 0xFF);
+                    var repeatCount = range.Item2 - range.Item1;
+                    while(repeatCount >= 0x7F)
+                    {
+                        strm.WriteByte(0xFF);
+                        strm.WriteByte(value);
+                        repeatCount -= 0x7F;
+                    }
+
+                    if(repeatCount > 0)
+                    {
+                        strm.WriteByte((byte)(0x80 | repeatCount));
+                        strm.WriteByte(value);
+                    }
+
+                    ranges.RemoveAt(0);
+
+                    read = range.Item2;
+                }
+                else
+                {
+                    var nextRange = ranges.Count > 0 ? ranges[0] : null;
+                    int repeatCount;
+                    if (nextRange == null)
+                        repeatCount = 4096 - read;
+                    else
+                        repeatCount = nextRange.Item1 - read;
+
+                    while(repeatCount >= 0x7F)
+                    {
+                        strm.WriteByte(0x7F);
+                        for (var i = 0; i < 0x7F; ++i)
+                            strm.WriteByte((byte) ((AlphaValues[read++] >> (layer * 8)) & 0xFF));
+
+                        repeatCount -= 0x7F;
+                    }
+
+                    if(repeatCount > 0)
+                    {
+                        strm.WriteByte((byte) repeatCount);
+                        for (var i = 0; i < repeatCount; ++i)
+                            strm.WriteByte((byte) ((AlphaValues[read++] >> (layer * 8)) & 0xFF));
+                    }
+                }
             }
 
             return strm.ToArray();
