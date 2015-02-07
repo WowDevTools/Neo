@@ -5,6 +5,8 @@ using System.Linq;
 using SharpDX;
 using WoWEditor6.Editing;
 using WoWEditor6.Scene;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace WoWEditor6.IO.Files.Terrain.Wotlk
 {
@@ -19,6 +21,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private Mcly[] mLayers = new Mcly[0];
         private static readonly uint[] Indices = new uint[768];
         private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
+        private byte[] mNormalExtra;
 
         public override uint[] RenderIndices => Indices;
 
@@ -127,7 +130,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     Vertices[i].Color = 0x7F7F7F7F;
             }
 
-            LoadUnusedChunk(0x4D435246, basePosition + mHeader.Mcrf, 0, reader);
+            if (mHeader.Mcrf > 0)
+                LoadUnusedChunk(0x4D435246, basePosition + mHeader.Mcrf, (mHeader.NumDoodadRefs + mHeader.NumMapObjRefs) * 4, reader);
             if (mHeader.SizeShadow > 0)
                 LoadUnusedChunk(0x4D435348, basePosition + mHeader.Mcsh, mHeader.SizeShadow, reader);
             if (mHeader.NumSoundEmitters > 0)
@@ -135,7 +139,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             if (mHeader.SizeLiquid > 8)
                 LoadUnusedChunk(0x4D434C51, basePosition + mHeader.Mclq, mHeader.SizeLiquid - 8, reader);
 
-            LoadUnusedChunk(0x4D434C56, basePosition + mHeader.Mclv, 0, reader);
+            if (mHeader.Mclv > 0)
+                LoadUnusedChunk(0x4D434C56, basePosition + mHeader.Mclv, 0, reader);
 
             InitLayerData();
 
@@ -154,8 +159,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             {
                 var p1 = Vertices[i].Position;
                 var p2 = p1;
-                var p3 = p2;
-                var p4 = p3;
+                var p3 = p1;
+                var p4 = p1;
                 var v = p1;
 
                 p1.X -= 0.5f * Metrics.UnitSize;
@@ -181,7 +186,10 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
                 var n = n1 + n2 + n3 + n4;
                 n.Normalize();
-                n.Z *= -1;
+                n *= -1;
+                var tmp = n.X;
+                n.X = n.Y;
+                n.Y = tmp;
 
                 n.X = ((sbyte)(n.X * 127)) / 127.0f;
                 n.Y = ((sbyte)(n.Y * 127)) / 127.0f;
@@ -374,7 +382,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private void LoadUnusedChunk(uint signature, int offset, int size, BinaryReader reader)
         {
-            if (offset == 0 || size == 0)
+            if (offset == 0)
                 return;
 
             reader.BaseStream.Position = offset;
@@ -459,11 +467,12 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private void LoadMcnr(BinaryReader reader)
         {
             var normals = reader.ReadArray<sbyte>(145 * 3);
+            mNormalExtra = reader.ReadBytes(13);
 
-            for(var i = 0; i < 145; ++i)
+            for (var i = 0; i < 145; ++i)
             {
-                var nx = normals[i * 3] / -127.0f;
-                var ny = normals[i * 3 + 1] / -127.0f;
+                var nx = -(normals[i * 3] / 127.0f);
+                var ny = -(normals[i * 3 + 1] / 127.0f);
                 var nz = normals[i * 3 + 2] / 127.0f;
 
                 Vertices[i].Normal = new Vector3(nx, ny, nz);
@@ -587,15 +596,15 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private void SaveNormals(BinaryWriter writer, int basePosition, ref Mcnk header)
         {
-            header.Mcnr = (int) writer.BaseStream.Position - basePosition;
+            header.Mcnr = (int)writer.BaseStream.Position - basePosition;
 
             var normals =
-                Vertices.SelectMany(v => new[] {(sbyte)(v.Normal.X * -127.0f), (sbyte)(v.Normal.Y * -127.0f), (sbyte)(v.Normal.Z * 127.0f)});
+                Vertices.SelectMany(v => new[] { (sbyte)(v.Normal.X * -127.0f), (sbyte)(v.Normal.Y * -127.0f), (sbyte)(v.Normal.Z * 127.0f) });
 
             writer.Write(0x4D434E52);
             writer.Write(145 * 3);
             writer.WriteArray(normals.ToArray());
-            writer.Write(new byte[13]);
+            writer.Write(mNormalExtra);
         }
 
         private void SaveMccv(BinaryWriter writer, int basePosition, ref Mcnk header)
@@ -643,6 +652,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             var sizePos = writer.BaseStream.Position;
             writer.Write(0);
             var curPos = 0;
+            mLayers[0].Flags &= ~0x300u;
+            mLayers[0].OfsMcal = 0;
             for(var i = 1; i < mLayers.Length; ++i)
             {
                 bool compressed;
@@ -669,20 +680,24 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private void SaveUnusedChunks(BinaryWriter writer, int basePosition, ref Mcnk header)
         {
-            var unusedSize = 0;
-            SaveUnusedChunk(writer, 0x4D435246, basePosition, ref header.Mcrf, ref unusedSize);
-            SaveUnusedChunk(writer, 0x4D435348, basePosition, ref header.Mcsh, ref mHeader.SizeShadow);
-            SaveUnusedChunk(writer, 0x4D435345, basePosition, ref header.Mcse, ref mHeader.NumSoundEmitters, false);
-            SaveUnusedChunk(writer, 0x4D435C51, basePosition, ref header.Mclq, ref mHeader.SizeLiquid);
-            SaveUnusedChunk(writer, 0x4D434C56, basePosition, ref header.Mclv, ref unusedSize);
+            int unusedSize;
+            SaveUnusedChunk(writer, 0x4D435246, basePosition, out header.Mcrf, out unusedSize);
+            SaveUnusedChunk(writer, 0x4D435348, basePosition, out header.Mcsh, out unusedSize);
+            SaveUnusedChunk(writer, 0x4D435345, basePosition, out header.Mcse, out unusedSize);
+            SaveUnusedChunk(writer, 0x4D434C51, basePosition, out header.Mclq, out unusedSize);
+            SaveUnusedChunk(writer, 0x4D434C56, basePosition, out header.Mclv, out unusedSize);
 
-            header.NumSoundEmitters /= 0x1C;
+            //header.NumSoundEmitters /= 0x1C;
         }
 
-        private void SaveUnusedChunk(BinaryWriter writer, uint signature, int basePosition, ref int offset, ref int size, bool sizeWithHeader = true)
+        private void SaveUnusedChunk(BinaryWriter writer, uint signature, int basePosition, out int offset, out int size, bool sizeWithHeader = true)
         {
             if (mSaveChunks.ContainsKey(signature) == false)
+            {
+                offset = 0;
+                size = 0 + (sizeWithHeader ? 8 : 0);
                 return;
+            }
 
             var cnk = mSaveChunks[signature];
             size = cnk.Size + (sizeWithHeader ? 8 : 0);
@@ -712,11 +727,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         {
             compressed = false;
             var homogenity = CalculateAlphaHomogenity(layer);
-            if (homogenity > 0.3f)
-            {
-                compressed = true;
-                return GetAlphaCompressed(layer);
-            }
+            //if (homogenity > 0.3f)
+            //{
+            //    compressed = true;
+            //    return GetAlphaCompressed(layer);
+            //}
 
             return GetAlphaUncompressed(layer);
         }
@@ -819,7 +834,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     var v2 = (uint) ((a2 / 255.0f) * 15.0f);
                     ret[i] = (byte) ((v2 << 4) | v1);
                 }
-
+                
                 return ret;
             }
         }

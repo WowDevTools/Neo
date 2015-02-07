@@ -15,6 +15,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         public int ofsMwid;
         public int ofsMddf;
         public int ofsModf;
+        public int ofsMfbo;
         public int ofsMh2o;
         public int ofsMtxf;
         public int unused0, unused1, unused2, unused3;

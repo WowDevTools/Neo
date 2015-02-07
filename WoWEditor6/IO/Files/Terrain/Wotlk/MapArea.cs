@@ -25,6 +25,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
         private Mhdr mHeader;
         private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
+        private Mcin[] mChunkOffsets;
 
         private bool mWasChanged;
 
@@ -84,20 +85,21 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 writer.Write(mHeader);
                 var header = mHeader;
 
-                var chunkInfos = new Mcin[256];
+                var chunkInfos = mChunkOffsets.ToArray();
                 writer.Write(0x4D43494E);
                 writer.Write(256 * SizeCache<Mcin>.Size);
                 var mcinStart = writer.BaseStream.Position;
                 writer.WriteArray(chunkInfos);
 
-                SaveChunk(0x4D444446, writer, out header.ofsMddf);
+                header.ofsMcin = (int)(mcinStart - 28);
+
+                SaveChunk(0x4D544558, writer, out header.ofsMtex);
                 SaveChunk(0x4D4D4458, writer, out header.ofsMmdx);
                 SaveChunk(0x4D4D4944, writer, out header.ofsMmid);
                 SaveChunk(0x4D574D4F, writer, out header.ofsMwmo);
                 SaveChunk(0x4D574944, writer, out header.ofsMwid);
+                SaveChunk(0x4D444446, writer, out header.ofsMddf);
                 SaveChunk(0x4D4F4446, writer, out header.ofsModf);
-                SaveChunk(0x4D544558, writer, out header.ofsMtex);
-                SaveChunk(0x4D545846, writer, out header.ofsMtxf);
                 SaveChunk(0x4D48324F, writer, out header.ofsMh2o);
 
                 for (var i = 0; i < 256; ++i)
@@ -107,8 +109,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     var endPos = writer.BaseStream.Position;
                     chunkInfos[i].OfsMcnk = (int)startPos;
                     chunkInfos[i].SizeMcnk = (int)(endPos - startPos);
-                    chunkInfos[i].Flags = chunkInfos[i].AsyncId = 0;
+                    //chunkInfos[i].Flags = chunkInfos[i].AsyncId = 0;
                 }
+
+                SaveChunk(0x4D545846, writer, out header.ofsMtxf);
+                SaveChunk(0x4D46424F, writer, out header.ofsMfbo);
 
                 writer.BaseStream.Position = headerStart;
                 writer.Write(header);
@@ -136,9 +141,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 }
 
                 var reader = new BinaryReader(file);
-                if (SeekChunk(reader, 0x4D484452) == false)
-                    throw new InvalidOperationException("ADT has no header chunk");
-
                 reader.BaseStream.Position = 0;
                 while(reader.BaseStream.Position + 8 <= reader.BaseStream.Length)
                 {
@@ -150,11 +152,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     var bytes = reader.ReadBytes(size);
                     if (mSaveChunks.ContainsKey(signature))
                         continue;
-
+                    
                     mSaveChunks.Add(signature, new DataChunk {Data = bytes, Signature = signature, Size = size});
                 }
 
                 reader.BaseStream.Position = 0;
+                if (SeekChunk(reader, 0x4D484452) == false)
+                    throw new InvalidOperationException("ADT has no header chunk");
+
                 reader.ReadInt32();
                 mHeader = reader.Read<Mhdr>();
                 InitChunkInfos(reader);
@@ -229,6 +234,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private void InitChunkInfos(BinaryReader reader)
         {
+            if(SeekChunk(reader, 0x4D43494E))
+                mChunkOffsets = reader.ReadArray<Mcin>(256);
+
             reader.BaseStream.Position = 0;
             for (var i = 0; i < 256; ++i)
             {
@@ -372,7 +380,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 return;
             }
 
-            offsetField = (int)writer.BaseStream.Position - (12 + 8 + SizeCache<Mhdr>.Size); // MVER signature + size + version = 12 bytes, MHDR signature + size = 8 bytes
+            offsetField = (int)writer.BaseStream.Position - (12 + 8); // MVER signature + size + version = 12 bytes, MHDR signature + size = 8 bytes
 
             var chunk = mSaveChunks[signature];
             writer.Write(signature);

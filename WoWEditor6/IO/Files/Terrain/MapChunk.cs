@@ -82,14 +82,14 @@ namespace WoWEditor6.IO.Files.Terrain
                 var p4 = p3;
                 var v = p1;
 
-				p1.X -= 1.5f * Metrics.UnitSize;
-				p1.Y -= 1.5f * Metrics.UnitSize;
-				p2.X += 1.5f * Metrics.UnitSize;
-				p2.Y -= 1.5f * Metrics.UnitSize;
-				p3.X += 1.5f * Metrics.UnitSize;
-				p3.Y += 1.5f * Metrics.UnitSize;
-				p4.X -= 1.5f * Metrics.UnitSize;
-				p4.Y += 1.5f * Metrics.UnitSize;
+				p1.X -= 0.5f * Metrics.UnitSize;
+				p1.Y -= 0.5f * Metrics.UnitSize;
+				p2.X += 0.5f * Metrics.UnitSize;
+				p2.Y -= 0.5f * Metrics.UnitSize;
+				p3.X += 0.5f * Metrics.UnitSize;
+				p3.Y += 0.5f * Metrics.UnitSize;
+				p4.X -= 0.5f * Metrics.UnitSize;
+				p4.Y += 0.5f * Metrics.UnitSize;
 
 				var mgr = WorldFrame.Instance.MapManager;
                 float h;
@@ -105,6 +105,9 @@ namespace WoWEditor6.IO.Files.Terrain
 
                 var n = n1 + n2 + n3 + n4;
                 n.Normalize();
+                var tmp = n.Y;
+                n.Y = n.X;
+                n.X = tmp;
 	            n.Y *= -1;
 	            n.Z *= -1;
 
