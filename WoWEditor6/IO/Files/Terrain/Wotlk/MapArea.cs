@@ -365,7 +365,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     continue;
 
                 var position = new Vector3(entry.Position.X, entry.Position.Z, entry.Position.Y);
-                var rotation = new Vector3(entry.Rotation.Z, -entry.Rotation.X, entry.Rotation.Y - 90);
+                var rotation = new Vector3(-entry.Rotation.X, -entry.Rotation.Z, 90 - entry.Rotation.Y);
                 var scale = entry.Scale / 1024.0f;
 
                 var instance = WorldFrame.Instance.M2Manager.AddInstance(modelName, entry.UniqueId, position, rotation,
