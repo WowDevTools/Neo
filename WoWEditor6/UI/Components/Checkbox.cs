@@ -91,7 +91,8 @@ namespace WoWEditor6.UI.Components
                         if (msg.Buttons == MouseButton.Left && IsHovered(msg.Position) && mIsPressed)
                         {
                             Checked = !Checked;
-                            CheckChanged?.Invoke(this, Checked);
+                            if (CheckChanged != null)
+                                CheckChanged(this, Checked);
                         }
 
                         mIsPressed = false;

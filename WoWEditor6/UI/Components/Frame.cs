@@ -19,12 +19,12 @@ namespace WoWEditor6.UI.Components
         private RectangleF mCaptionRect;
         private readonly StaticText mCaptionText;
 
-        public bool HasCaption { get; set; } = false;
+        public bool HasCaption { get; set; }
 
         public string Text { get { return mCaptionText.Text; } set { mCaptionText.Text = value; } }
 
         // ReSharper disable once CollectionNeverUpdated.Global
-        public List<IComponent> Children { get; } = new List<IComponent>();
+        public List<IComponent> Children { get; private set; }
 
         public Vector2 Position
         {
@@ -48,6 +48,8 @@ namespace WoWEditor6.UI.Components
 
         public Frame()
         {
+            Children = new List<IComponent>();
+            HasCaption = false;
             mCaptionText = new StaticText
             {
                 FontFamily = "Segoe UI",

@@ -134,7 +134,8 @@ namespace WoWEditor6.IO.Files
 
         public void Dispose()
         {
-            mStream?.Dispose();
+            if (mStream != null)
+                mStream.Dispose();
         }
     }
 }

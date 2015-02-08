@@ -20,13 +20,15 @@ namespace WoWEditor6.UI
         private const long Key11 = 0xFF110000;
 
         public SharpDX.Direct3D11.ShaderResourceView NativeView { get; private set; }
-        public SharpDX.DirectWrite.Factory DirectWriteFactory { get; } = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Isolated);
+        public SharpDX.DirectWrite.Factory DirectWriteFactory { get; private set; }
         public RenderTarget RenderTarget { get; private set; }
-        public Factory Direct2DFactory { get; } = new Factory();
+        public Factory Direct2DFactory { get; private set; }
         public Device1 D2DDevice { get; private set; }
 
         public DrawSurface(GxContext context)
         {
+            DirectWriteFactory = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Isolated);
+            Direct2DFactory = new Factory();
             mDevice = context;
         }
 
@@ -38,8 +40,10 @@ namespace WoWEditor6.UI
 
         public void OnResize(int width, int height)
         {
-            mRealTexture?.Dispose();
-            mTmpTexture?.Dispose();
+            if (mRealTexture != null)
+                mRealTexture.Dispose();
+            if (mTmpTexture != null)
+                mTmpTexture.Dispose();
 
             mRealTexture = new SharpDX.Direct3D11.Texture2D(mDevice.Device, new SharpDX.Direct3D11.Texture2DDescription
             {
@@ -58,7 +62,8 @@ namespace WoWEditor6.UI
             using (var resource = mRealTexture.QueryInterface<SharpDX.DXGI.Resource>())
                 mTmpTexture = D2DDevice.OpenSharedResource<Texture2D>(resource.SharedHandle);
 
-            NativeView?.Dispose();
+            if (NativeView != null)
+                NativeView.Dispose();
             NativeView = new SharpDX.Direct3D11.ShaderResourceView(mDevice.Device, mRealTexture,
                 new SharpDX.Direct3D11.ShaderResourceViewDescription
                 {
@@ -71,7 +76,8 @@ namespace WoWEditor6.UI
                     }
                 });
 
-            RenderTarget?.Dispose();
+            if (RenderTarget != null)
+                RenderTarget.Dispose();
             using (var surface = mTmpTexture.QueryInterface<Surface>())
                 RenderTarget = new RenderTarget(Direct2DFactory, surface, new RenderTargetProperties()
                 {
@@ -83,8 +89,10 @@ namespace WoWEditor6.UI
                     Usage = RenderTargetUsage.None
                 });
 
-            mMutex10?.Dispose();
-            mMutex11?.Dispose();
+            if (mMutex10 != null)
+                mMutex10.Dispose();
+            if (mMutex11 != null)
+                mMutex11.Dispose();
 
             mMutex10 = mTmpTexture.QueryInterface<KeyedMutex>();
             mMutex11 = mRealTexture.QueryInterface<KeyedMutex>();
@@ -110,7 +118,8 @@ namespace WoWEditor6.UI
             {
                 RenderTarget.BeginDraw();
                 RenderTarget.Clear(new Color4(0, 0, 0, 0));
-                renderAction?.Invoke(RenderTarget);
+                if (renderAction != null)
+                    renderAction(RenderTarget);
                 RenderTarget.EndDraw();
             }
             finally

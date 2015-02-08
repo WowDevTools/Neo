@@ -167,7 +167,9 @@ namespace WoWEditor6.UI.Views
             try
             {
                 var wowKey = baseKey.OpenSubKey(rootKey);
-                return wowKey?.GetValue("InstallPath") as string;
+                if (wowKey == null)
+                    return null;
+                return wowKey.GetValue("InstallPath") as string;
             }
             catch(Exception)
             {

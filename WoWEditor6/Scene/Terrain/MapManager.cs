@@ -170,11 +170,10 @@ namespace WoWEditor6.Scene.Terrain
             x -= chunkx * Metrics.ChunkSize;
             y -= chunky * Metrics.ChunkSize;
 
-            var row = (int) Math.Floor(y / (Metrics.UnitSize * 0.5f) + 0.5f);
-            var col =
-                (int) Math.Floor((x - Metrics.UnitSize * 0.5f * ((row % 2 != 0) ? 1 : 0)) / Metrics.UnitSize + 0.5f);
+            var row = (int)(y / (Metrics.UnitSize * 0.5f) + 0.5f);
+            var col = (int)((x - Metrics.UnitSize * 0.5f * (row % 2)) / Metrics.UnitSize + 0.5f);
 
-			if (row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))
+            if (row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))
                 return false;
 
             z = chunk.Vertices[17 * (row / 2) + (((row % 2) != 0) ? 9 : 0) + col].Position.Z;

@@ -37,7 +37,7 @@ cbuffer TextureParamsBuffer : register(b2)
 
 float4 applyBrush(float4 color, float3 worldPos) {
 	float3 dirVec = worldPos - mousePosition.xyz;
-		float dsq = dot(dirVec.xy, dirVec.xy);
+	float dsq = dot(dirVec.xy, dirVec.xy);
 	float innerRadius = brushParams.x * brushParams.x;
 	float outerRadius = brushParams.y * brushParams.y;
 	float facInner = step(dsq, innerRadius) * step(innerRadius * 0.95, dsq);
@@ -55,7 +55,7 @@ float4 applyBrush(float4 color, float3 worldPos) {
 }
 
 float3 getDiffuseLight(float3 normal) {
-	float light = dot(normal, normalize(-float3(-1, 1, -1)));
+	float light = dot(normalize(normal), normalize(-float3(-1, 1, -1)));
 	if (light < 0.0)
 		light = 0.0;
 	if (light > 0.5)

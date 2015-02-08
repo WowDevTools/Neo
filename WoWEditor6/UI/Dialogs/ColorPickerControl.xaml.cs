@@ -74,7 +74,9 @@ namespace WoWEditor6.UI.Dialogs
 
         private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            (sender as UIElement)?.CaptureMouse();
+            var elem = sender as UIElement;
+            if (elem != null)
+                elem.CaptureMouse();
             mIsMouseDown = true;
             var rc = sender as Rectangle;
             if (rc == null)
@@ -120,7 +122,9 @@ namespace WoWEditor6.UI.Dialogs
 
         private void Rectangle_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            (sender as UIElement)?.ReleaseMouseCapture();
+            var elem = sender as UIElement;
+            if (elem != null)
+                elem.ReleaseMouseCapture();
             mIsMouseDown = false;
         }
 
@@ -176,13 +180,18 @@ namespace WoWEditor6.UI.Dialogs
 
         private void DetailGradient_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            (sender as UIElement)?.CaptureMouse();
+            var elem = sender as UIElement;
+            if (elem != null)
+                elem.CaptureMouse();
+
             mIsDetailMouseDown = true;
         }
 
         private void DetailGradient_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            (sender as UIElement)?.ReleaseMouseCapture();
+            var elem = sender as UIElement;
+            if (elem != null)
+                elem.ReleaseMouseCapture();
             mIsDetailMouseDown = false;
         }
 
@@ -214,7 +223,8 @@ namespace WoWEditor6.UI.Dialogs
             int r, g, b;
             ColorUtils.HsvToRgb(h, s, 1.0 - v, out r, out g, out b);
             var clr = Color.FromRgb((byte) r, (byte) g, (byte) b);
-            ColorChanged?.Invoke(clr);
+            if (ColorChanged != null)
+                ColorChanged(clr);
 
             ColorEllipse.Stroke = new SolidColorBrush(Color.FromRgb((byte) (255 - r), (byte) (255 - g), (byte) (255 - b)));
         }

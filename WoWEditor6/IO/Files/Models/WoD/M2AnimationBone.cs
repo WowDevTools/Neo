@@ -14,7 +14,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         public M2AnimationBone ParentBone { get; set; }
 
-        public M2Bone Bone { get; }
+        public M2Bone Bone { get; private set; }
 
         public M2AnimationBone(M2File file, ref M2Bone bone, BinaryReader reader)
         {

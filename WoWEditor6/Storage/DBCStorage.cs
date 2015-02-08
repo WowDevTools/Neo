@@ -4,15 +4,28 @@ namespace WoWEditor6.Storage
 {
     static class DbcStorage
     {
-        public static DbcFile Map { get; } = new DbcFile();
-        public static DbcFile LoadingScreen { get; } = new DbcFile();
-        public static DbcFile Light { get; } = new DbcFile();
-        public static DbcFile LightData { get; } = new DbcFile();
-        public static DbcFile LightParams { get; } = new DbcFile();
-        public static DbcFile ZoneLight { get; } = new DbcFile();
-        public static DbcFile ZoneLightPoint { get; } = new DbcFile();
-	    public static DbcFile LightIntBand { get; } = new DbcFile();
-	    public static DbcFile LightFloatBand { get; } = new DbcFile();
+        public static DbcFile Map { get; private set; }
+        public static DbcFile LoadingScreen { get; private set; }
+        public static DbcFile Light { get; private set; }
+        public static DbcFile LightData { get;private set;  }
+        public static DbcFile LightParams { get;private set;  }
+        public static DbcFile ZoneLight { get;private set;  }
+        public static DbcFile ZoneLightPoint { get;private set;  }
+	    public static DbcFile LightIntBand { get;private set;  }
+	    public static DbcFile LightFloatBand { get;private set;  }
+
+        static DbcStorage()
+        {
+            Map = new DbcFile();
+            LoadingScreen = new DbcFile();
+            Light = new DbcFile();
+            LightData = new DbcFile();
+            LightParams = new DbcFile();
+            ZoneLight = new DbcFile();
+            ZoneLightPoint = new DbcFile();
+            LightIntBand = new DbcFile();
+            LightFloatBand = new DbcFile();
+        }
 
 		public static void Initialize()
 		{

@@ -32,9 +32,9 @@ namespace WoWEditor6.Scene.Models.WMO
         public int BaseIndex { get; set; }
         public int BaseVertex { get; set; }
 
-        public IO.Files.Models.WmoGroup Data { get; }
+        public IO.Files.Models.WmoGroup Data { get; private set; }
 
-        public BoundingBox BoundingBox => Data.BoundingBox;
+        public BoundingBox BoundingBox { get { return Data.BoundingBox; } }
 
         public WmoGroupRender(IO.Files.Models.WmoGroup group, WmoRootRender root)
         {

@@ -8,7 +8,7 @@ using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Terrain.WoD
 {
-    class MapChunk : Terrain.MapChunk
+    sealed class MapChunk : Terrain.MapChunk
     {
         private readonly ChunkStreamInfo mMainInfo;
         private readonly ChunkStreamInfo mTexInfo;
@@ -29,9 +29,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 	    private bool mForceMccv;
 
 	    private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
-	    protected static readonly uint[] Indices = new uint[768];
+        private static readonly uint[] Indices = new uint[768];
 
-	    public override uint[] RenderIndices => Indices; 
+        public override uint[] RenderIndices { get { return Indices; } } 
 
 		public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
@@ -111,7 +111,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 BoundingBox = new BoundingBox(new Vector3(omin.X, omin.Y, mMinHeight),
                     new Vector3(omax.X, omax.Y, mMaxHeight));
 
-                parent?.UpdateBoundingBox(BoundingBox);
+                if (parent != null)
+                    parent.UpdateBoundingBox(BoundingBox);
             }
 
             return changed;
@@ -123,7 +124,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             MapArea parent;
             mParent.TryGetTarget(out parent);
-            parent?.UpdateVertices(this);
+            if (parent != null)
+                parent.UpdateVertices(this);
         }
 
         public bool Intersect(ref Ray ray, out float distance)
@@ -137,7 +139,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var dir = ray.Direction;
             var orig = ray.Position;
 
-            Vector3 e1, e2, P, T, Q;
+            Vector3 e1, e2, p, T, q;
 
             for (var i = 0; i < Indices.Length; i += 3)
             {
@@ -147,9 +149,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 Vector3.Subtract(ref Vertices[i1].Position, ref Vertices[i0].Position, out e1);
                 Vector3.Subtract(ref Vertices[i2].Position, ref Vertices[i0].Position, out e2);
 
-                Vector3.Cross(ref dir, ref e2, out P);
+                Vector3.Cross(ref dir, ref e2, out p);
                 float det;
-                Vector3.Dot(ref e1, ref P, out det);
+                Vector3.Dot(ref e1, ref p, out det);
 
                 if (Math.Abs(det) < 1e-4)
                     continue;
@@ -157,21 +159,21 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 var invDet = 1.0f / det;
                 Vector3.Subtract(ref orig, ref Vertices[i0].Position, out T);
                 float u;
-                Vector3.Dot(ref T, ref P, out u);
+                Vector3.Dot(ref T, ref p, out u);
                 u *= invDet;
 
                 if (u < 0 || u > 1)
                     continue;
 
-                Vector3.Cross(ref T, ref e1, out Q);
+                Vector3.Cross(ref T, ref e1, out q);
                 float v;
-                Vector3.Dot(ref dir, ref Q, out v);
+                Vector3.Dot(ref dir, ref q, out v);
                 v *= invDet;
                 if (v < 0 || (u + v) > 1)
                     continue;
 
                 float t;
-                Vector3.Dot(ref e2, ref Q, out t);
+                Vector3.Dot(ref e2, ref q, out t);
                 t *= invDet;
 
                 if (t < 1e-4) continue;
@@ -187,7 +189,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             return hasHit;
         }
 
-        public virtual void AsyncLoad()
+        public void AsyncLoad()
         {
             mReader.BaseStream.Position = mMainInfo.PosStart;
             var chunkSize = mReader.ReadInt32();
@@ -577,58 +579,58 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     factor = 1.0f;
 
                 var curColor = mShadingFloats[i];
-                var dr = destColor.X - curColor.X;
+                var dr = destColor.X - curColor.Z;
                 var dg = destColor.Y - curColor.Y;
-                var db = destColor.Z - curColor.Z;
+                var db = destColor.Z - curColor.X;
 
                 var cr = Math.Min(Math.Abs(dr), amount * factor);
                 var cg = Math.Min(Math.Abs(dg), amount * factor);
                 var cb = Math.Min(Math.Abs(db), amount * factor);
 
-				if (dr < 0)
-				{
-					curColor.Z -= cr;
-					if (curColor.Z < destColor.Z)
-						curColor.Z = destColor.Z;
-				}
-				else
-				{
-					curColor.Z += cr;
-					if (curColor.Z > destColor.Z)
-						curColor.Z = destColor.Z;
-				}
-				if (dg < 0)
-				{
-					curColor.Y -= cg;
-					if (curColor.Y < destColor.Y)
-						curColor.Y = destColor.Y;
-				}
-				else
-				{
-					curColor.Y += cg;
-					if (curColor.Y > destColor.Y)
-						curColor.Y = destColor.Y;
-				}
-				if (db < 0)
-				{
-					curColor.X -= cb;
-					if (curColor.X < destColor.X)
-						curColor.X = destColor.Y;
-				}
-				else
-				{
-					curColor.X += cb;
-					if (curColor.X > destColor.X)
-						curColor.X = destColor.X;
-				}
+                if (dr < 0)
+                {
+                    curColor.Z -= cr;
+                    if (curColor.Z < destColor.X)
+                        curColor.Z = destColor.X;
+                }
+                else
+                {
+                    curColor.Z += cr;
+                    if (curColor.Z > destColor.X)
+                        curColor.Z = destColor.X;
+                }
+                if (dg < 0)
+                {
+                    curColor.Y -= cg;
+                    if (curColor.Y < destColor.Y)
+                        curColor.Y = destColor.Y;
+                }
+                else
+                {
+                    curColor.Y += cg;
+                    if (curColor.Y > destColor.Y)
+                        curColor.Y = destColor.Y;
+                }
+                if (db < 0)
+                {
+                    curColor.X -= cb;
+                    if (curColor.X < destColor.Z)
+                        curColor.X = destColor.Z;
+                }
+                else
+                {
+                    curColor.X += cb;
+                    if (curColor.X > destColor.Z)
+                        curColor.X = destColor.Z;
+                }
 
                 mShadingFloats[i] = curColor;
 
-	            curColor.X = Math.Min(Math.Max(curColor.X, 0), 2);
-				curColor.Y = Math.Min(Math.Max(curColor.Y, 0), 2);
-				curColor.Z = Math.Min(Math.Max(curColor.Z, 0), 2);
+                curColor.X = Math.Min(Math.Max(curColor.X, 0), 2);
+                curColor.Y = Math.Min(Math.Max(curColor.Y, 0), 2);
+                curColor.Z = Math.Min(Math.Max(curColor.Z, 0), 2);
 
-				var r = (byte) ((curColor.Z / 2.0f) * 255.0f);
+                var r = (byte) ((curColor.Z / 2.0f) * 255.0f);
                 var g = (byte) ((curColor.Y / 2.0f) * 255.0f);
                 var b = (byte) ((curColor.X / 2.0f) * 255.0f);
                 var a = (byte) ((curColor.W / 2.0f) * 255.0f);

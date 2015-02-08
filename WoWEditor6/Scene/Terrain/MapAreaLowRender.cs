@@ -18,8 +18,8 @@ namespace WoWEditor6.Scene.Terrain
 
         public static Mesh Mesh { get; private set; }
 
-        public int IndexX { get; }
-        public int IndexY { get; }
+        public int IndexX { get; private set; }
+        public int IndexY { get; private set; }
 
         public MapAreaLowRender(int indexX, int indexY)
         {
@@ -30,7 +30,7 @@ namespace WoWEditor6.Scene.Terrain
         public void Dispose()
         {
             var vertexBuffer = mVertexBuffer;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() => vertexBuffer?.Dispose());
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() => { if(vertexBuffer != null)vertexBuffer.Dispose(); });
         }
 
         public void OnFrame()

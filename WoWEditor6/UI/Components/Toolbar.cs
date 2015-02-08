@@ -41,7 +41,8 @@ namespace WoWEditor6.UI.Components
                 lock(this)
                 {
                     mButtons.Add(button);
-                    OnItemsChanged?.Invoke();
+                    if (OnItemsChanged != null)
+                        OnItemsChanged();
                 }
             }
 
@@ -50,7 +51,10 @@ namespace WoWEditor6.UI.Components
                 lock(this)
                 {
                     if (mButtons.Remove(button))
-                        OnItemsChanged?.Invoke();
+                    {
+                        if (OnItemsChanged != null)
+                            OnItemsChanged();
+                    }
                 }
             }
 
@@ -59,7 +63,8 @@ namespace WoWEditor6.UI.Components
                 lock(this)
                 {
                     mButtons.AddRange(buttons);
-                    OnItemsChanged?.Invoke();
+                    if (OnItemsChanged != null)
+                            OnItemsChanged();
                 }
             }
 
@@ -71,7 +76,7 @@ namespace WoWEditor6.UI.Components
         private RectangleF mTargetRectangle;
         private ToolbarOrientation mOrientation;
 
-        public IToolbarButtonCollection Buttons { get; private set; } = new ToolbarButtonCollection();
+        public IToolbarButtonCollection Buttons { get; private set; }
 
         public Vector2 Position { get { return mPosition; } set { ClientAreaChanged(value, mSize); } }
         public Vector2 Size { get { return mSize; } set { ClientAreaChanged(mPosition, value); } }
@@ -81,6 +86,7 @@ namespace WoWEditor6.UI.Components
 
         public Toolbar()
         {
+            Buttons = new ToolbarButtonCollection();
             var tbc = Buttons as ToolbarButtonCollection;
             // ReSharper disable once PossibleNullReferenceException
             tbc.OnItemsChanged += ButtonsChanged;

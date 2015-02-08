@@ -37,7 +37,8 @@ namespace WoWEditor6.Graphics
             {
                 if (!mChanged) return mState;
 
-                mState?.Dispose();
+                if (mState != null)
+                    mState.Dispose();
                 mState = new RasterizerState(mContext.Device, mDescription);
                 mChanged = false;
 

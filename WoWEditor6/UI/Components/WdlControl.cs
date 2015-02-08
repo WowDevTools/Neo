@@ -43,7 +43,8 @@ namespace WoWEditor6.UI.Components
         {
             mWdlFile = new IO.Files.Terrain.WdlFile();
             mWdlFile.Load(mapName);
-            mImage?.Dispose();
+            if (mImage != null)
+                mImage.Dispose();
 
             var textureData = new uint[Width * Height];
             for(var i = 0; i < 64; ++i)
@@ -166,7 +167,8 @@ namespace WoWEditor6.UI.Components
                     sourcey *= Metrics.TileSize;
                     sourcey = 64.0f * Metrics.TileSize - sourcey;
 
-                    LocationSelected?.Invoke(new Vector2(sourcex, sourcey));
+                    if (LocationSelected != null)
+                        LocationSelected(new Vector2(sourcex, sourcey));
                 }
 
                 mIsLeftClick = false;

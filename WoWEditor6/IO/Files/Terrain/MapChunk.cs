@@ -17,16 +17,23 @@ namespace WoWEditor6.IO.Files.Terrain
 	    public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
 
-        public int StartVertex => (IndexX + IndexY * 16) * 145;
+        public int StartVertex {get{return (IndexX + IndexY * 16) * 145;}}
 
-        public AdtVertex[] Vertices { get; } = new AdtVertex[145];
-        public uint[] AlphaValues { get; } = new uint[4096];
+        public AdtVertex[] Vertices { get; private set; }
+        public uint[] AlphaValues { get; private set; }
         public IList<Graphics.Texture> Textures { get; protected set; }
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
         public float[] TextureScales { get; protected set; }
 
-        public int[] DoodadReferences { get; protected set; } = new int[0];
+        public int[] DoodadReferences { get; protected set; }
+
+        protected MapChunk()
+        {
+            Vertices = new AdtVertex[145];
+            AlphaValues = new uint[4096];
+            DoodadReferences = new int[0];
+        }
 
         public abstract void Dispose();
 
@@ -82,16 +89,16 @@ namespace WoWEditor6.IO.Files.Terrain
                 var p4 = p3;
                 var v = p1;
 
-                p1.X -= 0.5f * Metrics.UnitSize;
-                p1.Y -= 0.5f * Metrics.UnitSize;
-                p2.X += 0.5f * Metrics.UnitSize;
-                p2.Y -= 0.5f * Metrics.UnitSize;
-                p3.X += 0.5f * Metrics.UnitSize;
-                p3.Y += 0.5f * Metrics.UnitSize;
-                p4.X -= 0.5f * Metrics.UnitSize;
-                p4.Y += 0.5f * Metrics.UnitSize;
+				p1.X -= 0.5f * Metrics.UnitSize;
+				p1.Y -= 0.5f * Metrics.UnitSize;
+				p2.X += 0.5f * Metrics.UnitSize;
+				p2.Y -= 0.5f * Metrics.UnitSize;
+				p3.X += 0.5f * Metrics.UnitSize;
+				p3.Y += 0.5f * Metrics.UnitSize;
+				p4.X -= 0.5f * Metrics.UnitSize;
+				p4.Y += 0.5f * Metrics.UnitSize;
 
-                var mgr = WorldFrame.Instance.MapManager;
+				var mgr = WorldFrame.Instance.MapManager;
                 float h;
                 if (mgr.GetLandHeight(p1.X, 64.0f * Metrics.TileSize - p1.Y, out h)) p1.Z = h;
                 if (mgr.GetLandHeight(p2.X, 64.0f * Metrics.TileSize - p2.Y, out h)) p2.Z = h;
@@ -105,7 +112,11 @@ namespace WoWEditor6.IO.Files.Terrain
 
                 var n = n1 + n2 + n3 + n4;
                 n.Normalize();
-                n *= -1;
+                var tmp = n.Y;
+                n.Y = n.X;
+                n.X = tmp;
+	            n.Y *= -1;
+	            n.Z *= -1;
 
 	            n.X = ((sbyte) (n.X * 127)) / 127.0f;
 	            n.Y = ((sbyte) (n.Y * 127)) / 127.0f;

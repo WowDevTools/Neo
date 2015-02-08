@@ -40,7 +40,11 @@ namespace WoWEditor6.Scene.Terrain
 
             mBoundingBox = AreaFile.BoundingBox;
             foreach (var chunk in mChunks)
-                chunk?.UpdateBoundingBox();
+            {
+                if (chunk == null) continue;
+
+                chunk.UpdateBoundingBox();
+            }
         }
 
         public void OnFrame()
@@ -108,17 +112,20 @@ namespace WoWEditor6.Scene.Terrain
 
         public void Dispose()
         {
-            AreaFile?.Dispose();
+            if(AreaFile != null)
+                AreaFile.Dispose();
             AreaFile = null;
 
             mAsyncLoaded = false;
             var vertexBuffer = mVertexBuffer;
             mVertexBuffer = null;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() => vertexBuffer?.Dispose());
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() => { if (vertexBuffer != null) vertexBuffer.Dispose(); });
 
             for(var i = 0; i < 256; ++i)
             {
-                mChunks[i]?.Dispose();
+                if (mChunks[i] == null) continue;
+
+                mChunks[i].Dispose();
                 mChunks[i] = null;
             }
         }

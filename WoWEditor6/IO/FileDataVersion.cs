@@ -6,7 +6,7 @@ namespace WoWEditor6.IO
         Warlords,
         Mists,
         Cataclysm,
-		Lichking,
+        Lichking,
         Crusade,
         Classic
     }

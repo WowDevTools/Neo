@@ -10,15 +10,22 @@ namespace WoWEditor6.IO.Files.Terrain
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
         public string Continent { get; protected set; }
-        public bool IsValid { get; protected set; } = true;
+        public bool IsValid { get; protected set; }
 
-        public List<M2Instance> DoodadInstances { get; } = new List<M2Instance>();
+        public List<M2Instance> DoodadInstances { get; private set; }
 
-        public AdtVertex[] FullVertices { get; } = new AdtVertex[145 * 256];
+        public AdtVertex[] FullVertices { get; private set; }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
+
+        protected MapArea()
+        {
+            IsValid = true;
+            DoodadInstances = new List<M2Instance>();
+            FullVertices = new AdtVertex[145 * 256];
+        }
 
         public abstract void Save();
 

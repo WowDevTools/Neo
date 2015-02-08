@@ -13,7 +13,7 @@ namespace WoWEditor6.UI.Components
         public Vector2 Position { get; set; }
         public Vector2 Size { get { return mSize; } set { SizeChanged(value); } }
         public string Text { get { return mTextDraw.Text; } set { mTextDraw.Text = value; } }
-        public SolidBrush Color { get; set; } = Brushes.Solid[0xFFFFFFFF];
+        public SolidBrush Color { get; set; }
         public float FontSize { get { return mTextDraw.FontSize; } set { mTextDraw.FontSize = value; } }
         public bool Multiline { get { return mMultiline; } set { MultilineChanged(value); } }
         public TextAlignment HorizontalAlignment
@@ -28,10 +28,11 @@ namespace WoWEditor6.UI.Components
             set { mTextDraw.VerticalAlignment = value; }
         }
 
-        public float TextHeight => ((TextLayout) mTextDraw).Metrics.Height;
+        public float TextHeight { get { return ((TextLayout)mTextDraw).Metrics.Height; } }
 
         public Label()
         {
+            Color = Brushes.White;
             mTextDraw = new StaticText
             {
                 FontFamily = "Segoe UI",

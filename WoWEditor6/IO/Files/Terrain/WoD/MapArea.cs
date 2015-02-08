@@ -18,18 +18,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public int Size;
     }
 
-    class LoadedModel
-    {
-        public readonly string FileName;
-        public readonly int Uuid;
-
-        public LoadedModel(string file, int uuid)
-        {
-            FileName = file;
-            Uuid = uuid;
-        }
-    }
-
     class MapArea : Terrain.MapArea
     {
         private Stream mMainStream;
@@ -74,7 +62,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public override void UpdateNormals()
         {
             foreach (var chunk in mChunks)
-                chunk?.UpdateNormals();
+            {
+                if (chunk != null)
+                    chunk.UpdateNormals();
+            }
         }
 
         public void UpdateBoundingBox(BoundingBox chunkBox)
@@ -113,7 +104,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var changed = false;
             foreach (var chunk in mChunks)
             {
-                if (chunk?.OnTerrainChange(parameters) ?? false)
+                if (chunk == null) continue;
+
+                if (chunk.OnTerrainChange(parameters))
                     changed = true;
             }
 
@@ -350,7 +343,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 {
                     Hash = modelName.ToUpperInvariant().GetHashCode(),
                     Uuid = entry.UniqueId,
-                    BoundingBox = instance?.BoundingBox ?? new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue)),
+                    BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
                     RenderInstance = instance
                 });
             }
@@ -427,8 +420,13 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mTextureNames.ForEach(t =>
             {
                 var loadInfo = Texture.TextureLoader.LoadHeaderOnly(t);
-                var width = loadInfo?.Width ?? 256;
-                var height = loadInfo?.Height ?? 256;
+                var width = 256;
+                var height = 256;
+                if(loadInfo != null)
+                {
+                    width = loadInfo.Width;
+                    height = loadInfo.Height;
+                }
                 if (width <= 256 || height <= 256 || loadInfo == null)
                     mTextureScales.Add(1.0f);
                 else
@@ -499,11 +497,15 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 }
 
 	            foreach (var chunk in mChunks)
-		            chunk?.WriteBaseChunks(writer);
+	            {
+	                if (chunk == null) continue;
+
+		            chunk.WriteBaseChunks(writer);
+                }
             }
         }
 
-        private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B, false);
+        private static bool SeekNextMcnk(BinaryReader reader) { return SeekChunk(reader, 0x4D434E4B, false); }
 
         private static bool SeekChunk(BinaryReader reader, uint signature, bool begin = true)
         {
@@ -530,9 +532,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public override void Dispose()
         {
-            mMainStream?.Dispose();
-            mTexStream?.Dispose();
-            mObjStream?.Dispose();
+            if (mMainStream != null)
+                mMainStream.Dispose();
+            if (mTexStream != null)
+                mTexStream.Dispose();
+            if (mObjStream != null)
+                mObjStream.Dispose();
 
             foreach (var chunk in mChunks)
                 chunk.Dispose();

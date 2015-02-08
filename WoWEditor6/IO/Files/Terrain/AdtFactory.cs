@@ -4,9 +4,14 @@ namespace WoWEditor6.IO.Files.Terrain
 {
     class AdtFactory
     {
-        public static AdtFactory Instance { get; } = new AdtFactory();
+        public static AdtFactory Instance { get; private set; }
 
         public FileDataVersion Version { get; set; }
+
+        static AdtFactory()
+        {
+            Instance = new AdtFactory();
+        }
 
         public MapArea CreateArea(string continent, int ix, int iy)
         {

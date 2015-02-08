@@ -81,8 +81,16 @@ namespace WoWEditor6.UI.Components
                     var isHover = mIsHovered;
                     mIsHovered = mTargetRect.Contains(msg.Position);
                     if (mIsHovered) msg.IsHandled = true;
-                    if (mIsHovered && !isHover) MouseEnter?.Invoke(this);
-                    if (mIsHovered == false && isHover) MouseLeave?.Invoke(this);
+                    if (mIsHovered && !isHover)
+                    {
+                        if (MouseEnter != null)
+                            MouseEnter.Invoke(this);
+                    }
+                    if (mIsHovered == false && isHover)
+                    {
+                        if(MouseLeave != null)
+                            MouseLeave.Invoke(this);
+                    }
                     break;
 
                 case MessageType.MouseDown:
@@ -92,7 +100,10 @@ namespace WoWEditor6.UI.Components
 
                 case MessageType.MouseUp:
                     if(mIsClicked && mTargetRect.Contains(msg.Position))
-                        OnClick?.Invoke(this);
+                    {
+                        if (OnClick != null)
+                            OnClick.Invoke(this);
+                    }
 
                     if (mTargetRect.Contains(msg.Position)) msg.IsHandled = true;
                     mIsClicked = false;

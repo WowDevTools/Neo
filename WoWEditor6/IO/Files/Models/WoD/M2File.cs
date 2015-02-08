@@ -19,17 +19,24 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private ushort[] mBlendMap = new ushort[0];
         private M2SkinFile mSkin;
 
-        public M2AnimationBone[] Bones { get; private set; } = new M2AnimationBone[0];
-        public M2UVAnimation[] UvAnimations { get; private set; } = new M2UVAnimation[0];
-        public M2TexColorAnimation[] ColorAnimations { get; private set; } = new M2TexColorAnimation[0];
-        public M2AlphaAnimation[] Transparencies { get; private set; } = new M2AlphaAnimation[0];
+        public M2AnimationBone[] Bones { get; private set; }
+        public M2UVAnimation[] UvAnimations { get; private set; }
+        public M2TexColorAnimation[] ColorAnimations { get; private set; }
+        public M2AlphaAnimation[] Transparencies { get; private set; }
 
-        public uint[] GlobalSequences { get; private set; } = new uint[0];
-        public AnimationEntry[] Animations { get; private set; } = new AnimationEntry[0];
-        public short[] AnimLookup { get; private set; } = new short[0];
+        public uint[] GlobalSequences { get; private set; }
+        public AnimationEntry[] Animations { get; private set; }
+        public short[] AnimLookup { get; private set; }
 
         public M2File(string fileName)
         {
+            Bones = new M2AnimationBone[0];
+            UvAnimations = new M2UVAnimation[0];
+            ColorAnimations = new M2TexColorAnimation[0];
+            Transparencies = new M2AlphaAnimation[0];
+            GlobalSequences = new uint[0];
+            Animations = new AnimationEntry[0];
+            AnimLookup = new short[0];
             mModelName = string.Empty;
             mFileName = fileName;
             mRootPath = Path.GetDirectoryName(mFileName);

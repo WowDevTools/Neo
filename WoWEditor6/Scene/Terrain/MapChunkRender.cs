@@ -39,8 +39,10 @@ namespace WoWEditor6.Scene.Terrain
             var constBuffer = mScaleBuffer;
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                constBuffer?.Dispose();
-                alphaTex?.Dispose();
+                if (constBuffer != null) 
+                    constBuffer.Dispose();
+                if (alphaTex != null)
+                    alphaTex.Dispose();
             });
         }
 

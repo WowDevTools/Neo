@@ -20,7 +20,7 @@ namespace WoWEditor6.UI.Dialogs
             InitializeComponent();
         }
 
-        public CheckBox InvertMouseBox => invertMouseBox;
+        public CheckBox InvertMouseBox { get { return invertMouseBox; } }
 
         private void InputSettings_Resize(object sender, EventArgs e)
         {

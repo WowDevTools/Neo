@@ -32,7 +32,7 @@ namespace WoWEditor6.Scene.Models.M2
         private Matrix[] mActiveInstances = new Matrix[0];
         private bool mUpdateBuffer;
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-	    private Matrix mUvMatrix = Matrix.Identity;
+        private Matrix mUvMatrix = Matrix.Identity;
 
         private readonly Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
         private readonly List<M2RenderInstance> mVisibleInstances = new List<M2RenderInstance>();
@@ -40,10 +40,10 @@ namespace WoWEditor6.Scene.Models.M2
         private bool mSkipRendering;
 
         private ConstantBuffer mAnimBuffer;
-	    private ConstantBuffer mUvBuffer;
+        private ConstantBuffer mUvBuffer;
 
-        public BoundingBox BoundingBox => mModel.BoundingBox;
-        public BoundingSphere BoundingSphere => mModel.BoundingSphere;
+        public BoundingBox BoundingBox { get { return mModel.BoundingBox; } }
+        public BoundingSphere BoundingSphere { get { return mModel.BoundingSphere; } }
 
         public M2BatchRenderer(M2File model)
         {
@@ -60,16 +60,22 @@ namespace WoWEditor6.Scene.Models.M2
             var ib = mIndexBuffer;
             var instanceBuffer = mInstanceBuffer;
             var cb = mAnimBuffer;
-	        var uv = mUvBuffer;
-            mModel?.Dispose();
+            var uv = mUvBuffer;
+            if (mModel != null)
+                mModel.Dispose();
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                vb?.Dispose();
-                ib?.Dispose();
-                instanceBuffer?.Dispose();
-                cb?.Dispose();
-	            uv?.Dispose();
+                if (vb != null)
+                    vb.Dispose();
+                if (ib != null)
+                    ib.Dispose();
+                if (instanceBuffer != null)
+                    instanceBuffer.Dispose();
+                if (cb != null)
+                    cb.Dispose();
+                if (uv != null)
+                    uv.Dispose();
             });
 
             StaticAnimationThread.Instance.RemoveAnimator(mAnimator);
@@ -108,7 +114,7 @@ namespace WoWEditor6.Scene.Models.M2
                 mAnimBuffer.UpdateData(mAnimationMatrices);
 
             Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
-	        Mesh.Program.SetVertexConstantBuffer(3, mUvBuffer);
+            Mesh.Program.SetVertexConstantBuffer(3, mUvBuffer);
 
             foreach (var pass in mModel.Passes)
             {
@@ -118,8 +124,8 @@ namespace WoWEditor6.Scene.Models.M2
                 if (Mesh.Program != oldProgram)
                     Mesh.Program.Bind();
 
-	            mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, ref mUvMatrix);
-	            mUvBuffer.UpdateData(mUvMatrix);
+                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, ref mUvMatrix);
+                mUvBuffer.UpdateData(mUvMatrix);
 
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
@@ -263,8 +269,8 @@ namespace WoWEditor6.Scene.Models.M2
             mAnimBuffer = new ConstantBuffer(ctx);
             mAnimBuffer.UpdateData(mAnimationMatrices);
 
-	        mUvBuffer = new ConstantBuffer(ctx);
-	        mUvBuffer.UpdateData(mUvMatrix);
+            mUvBuffer = new ConstantBuffer(ctx);
+            mUvBuffer.UpdateData(mUvMatrix);
 
             mIsSyncLoaded = true;
         }

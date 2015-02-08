@@ -75,6 +75,36 @@
     <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Xceed.Wpf.AvalonDock">
+      <HintPath>..\packages\Xceed.Wpf.AvalonDock.2.4.14475.10340\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
+      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.Aero.2.4.14475.10340\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
+      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.Metro.2.4.14475.10340\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.MetroAccent">
+      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.MetroAccent.2.4.14475.10340\lib\net40\Xceed.Wpf.AvalonDock.Themes.MetroAccent.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Office2007">
+      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.Office2007.2.4.14475.10340\lib\net40\Xceed.Wpf.AvalonDock.Themes.Office2007.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
+      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.VS2010.2.4.14475.10340\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Themes">
+      <HintPath>..\packages\Xceed.Wpf.Themes.2.4.14475.10340\lib\net40\Xceed.Wpf.Themes.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Themes.Metro">
+      <HintPath>..\packages\Xceed.Wpf.Themes.Metro.2.4.14475.10340\lib\net40\Xceed.Wpf.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Themes.Office2007">
+      <HintPath>..\packages\Xceed.Wpf.Themes.Office2007.2.4.14475.10340\lib\net40\Xceed.Wpf.Themes.Office2007.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\packages\Xceed.Wpf.Toolkit.2.4.14475.10340\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Editing\EditManager.cs" />
@@ -129,6 +159,18 @@
     <Compile Include="IO\Files\Models\WoD\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoStructures.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2AlphaAnimation.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2AnimationBlock.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2AnimationBone.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2Animator.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2File.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2SkinFile.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2Structs.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2TexColorAninmation.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2UVAnimation.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\WmoGroup.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\WmoRoot.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\WmoStructures.cs" />
     <Compile Include="IO\Files\Sky\SkyManager.cs" />
     <Compile Include="IO\Files\Sky\WoD\LightManager.cs" />
     <Compile Include="IO\Files\Sky\WoD\LightStructs.cs" />
@@ -310,6 +352,7 @@
     <Compile Include="UI\Views\WorldView.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Utils\ColorUtils.cs" />
+    <Compile Include="Utils\DxtHelper.cs" />
     <Compile Include="Utils\KeyHelper.cs" />
     <Compile Include="Utils\MathExtensions.cs" />
     <Compile Include="Utils\Polygon.cs" />

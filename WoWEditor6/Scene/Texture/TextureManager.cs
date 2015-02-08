@@ -10,7 +10,7 @@ namespace WoWEditor6.Scene.Texture
     class TextureWorkItem
     {
         public Graphics.Texture Texture { get; private set; }
-        public string FileName { get; }
+        public string FileName { get; private set; }
 
         public TextureWorkItem(string file, Graphics.Texture tex)
         {
@@ -21,7 +21,12 @@ namespace WoWEditor6.Scene.Texture
 
     class TextureManager
     {
-        public static TextureManager Instance { get; } = new TextureManager();
+        public static TextureManager Instance { get; private set; }
+
+        static TextureManager()
+        {
+            Instance = new TextureManager();
+        }
 
         private GxContext mContext;
         private readonly Dictionary<int, WeakReference<Graphics.Texture>> mCache = new Dictionary<int, WeakReference<Graphics.Texture>>();

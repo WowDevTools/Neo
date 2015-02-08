@@ -26,8 +26,14 @@ namespace WoWEditor6.Settings
         [XmlIgnore]
         public static KeyBindings Instance { get; private set; }
 
-        public Camera Camera { get; set; } = new Camera();
-        public Interaction Interaction { get; set; } = new Interaction();
+        public Camera Camera { get; set; }
+        public Interaction Interaction { get; set; }
+
+        public KeyBindings()
+        {
+            Camera = new Camera();
+            Interaction = new Interaction();
+        }
 
         public static void Save()
         {

@@ -41,32 +41,41 @@ namespace WoWEditor6.IO.MPQ
 				archives.Sort(Compare);
 				mArchives = archives;
 
-				LoadComplete?.Invoke();
+			    if (LoadComplete != null)
+			        LoadComplete();
 			});
 		}
 
 		public Stream OpenFile(string path)
-		{
-			return mArchives.Select(archive => archive.Open(path)).FirstOrDefault(ret => ret != null);
-		}
+        {
+            var existing = IO.FileManager.Instance.GetExistingFile(path);
+            return existing ?? mArchives.Select(archive => archive.Open(path)).FirstOrDefault(ret => ret != null);
+        }
 
 		public bool Exists(string path)
 		{
-			return mArchives.Any(archive => archive.Contains(path));
+            using (var strm = IO.FileManager.Instance.GetExistingFile(path))
+            {
+                if (strm != null)
+                    return true;
+
+            }
+
+		    return mArchives.Any(archive => archive.Contains(path));
 		}
 
 		private static int Compare(Archive a1, Archive a2)
 		{
-			var name1 = Path.GetFileName(a1.Name)?.ToLowerInvariant();
-			var name2 = Path.GetFileName(a2.Name)?.ToLowerInvariant();
+			var name1 = (Path.GetFileName(a1.Name) ?? "").ToLowerInvariant();
+			var name2 = (Path.GetFileName(a2.Name) ?? "").ToLowerInvariant();
 
-			if (name1 == null && name2 != null)
+			if (name1.Length == 0 && name2.Length != 0)
 				return 1;
 
-			if (name1 != null && name2 == null)
+			if (name1.Length != 0 && name2.Length == 0)
 				return -1;
 
-			if (name1 == null)
+			if (name1.Length == 0)
 				return 0;
 
 			var isLocale1 = name1.IndexOf("locale", StringComparison.Ordinal) >= 0 ||

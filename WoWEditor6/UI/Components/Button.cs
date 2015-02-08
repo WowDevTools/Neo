@@ -103,7 +103,10 @@ namespace WoWEditor6.UI.Components
                         if(msg.IsHandled == false)
                         {
                             if (mClientRectangle.Contains(msg.Position) && mIsClicked)
-                                OnClick?.Invoke(this);
+                            {
+                                if (OnClick != null)
+                                    OnClick(this);
+                            }
                         }
 
                         mIsClicked = false;

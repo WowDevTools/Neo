@@ -34,7 +34,12 @@ namespace WoWEditor6.UI
 
     static class Fonts
     {
-        public static FontCollection Cache { get; } = new FontCollection();
+        public static FontCollection Cache { get; private set; }
+
+        static Fonts()
+        {
+            Cache = new FontCollection();
+        }
 
         public static void Initialize(Factory factory)
         {
