@@ -309,6 +309,9 @@
       <DependentUpon>TerrainSettingsImpl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\DrawSurface.cs" />
+    <Compile Include="UI\EditorWindow.xaml.cs">
+      <DependentUpon>EditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\FontCollection.cs" />
     <Compile Include="UI\IComponent.cs" />
     <Compile Include="UI\InterfaceManager.cs" />
@@ -322,6 +325,12 @@
     <Compile Include="UI\Panels\TerrainParams.cs" />
     <Compile Include="Settings\ToolbarButtons.cs" />
     <Compile Include="Settings\ToolbarSettings.cs" />
+    <Compile Include="UI\RenderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\RenderControl.Designer.cs">
+      <DependentUpon>RenderControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\StaticText.cs" />
     <Compile Include="UI\SolidBrush.cs" />
     <Compile Include="UI\TextureBitmap.cs" />
@@ -375,6 +384,9 @@
     <EmbeddedResource Include="UI\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\RenderControl.resx">
+      <DependentUpon>RenderControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="StormLib.dll">
@@ -404,6 +416,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Dialogs\TerrainSettingsImpl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\EditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

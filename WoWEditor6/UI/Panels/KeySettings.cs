@@ -24,7 +24,6 @@ namespace WoWEditor6.UI.Panels
                 args.Cancel = true;
             };
 
-            mSettingsDialog.Owner = InterfaceManager.Instance.Window;
             mSettingsDialog.Visible = false;
 	        mSettingsDialog.InvertMouseBox.CheckedChanged +=
 		        (sender, args) =>

@@ -9,7 +9,7 @@ namespace WoWEditor6.Scene
 {
     class CameraControl
     {
-        private readonly MainWindow mWindow;
+        private readonly RenderControl mWindow;
         private Point mLastCursorPos;
         private DateTime mLastUpdate = DateTime.Now;
 
@@ -19,7 +19,7 @@ namespace WoWEditor6.Scene
         public bool InvertX { get; set; }
 		public bool InvertY { get; set; }
 
-        public CameraControl(MainWindow window)
+        public CameraControl(RenderControl window)
         {
             mWindow = window;
         }

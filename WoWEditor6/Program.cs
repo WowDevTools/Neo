@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Threading;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
@@ -12,33 +13,32 @@ namespace WoWEditor6
         static void Main()
         {
 	        AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
-            Application.EnableVisualStyles();
 
             Settings.KeyBindings.Initialize();
 
-            var window = new MainWindow();
-            var context = new GxContext(window);
+            var window = new EditorWindow();
+            var context = new GxContext(window.DrawTarget);
             context.InitContext();
-            var isClosed = false;
-            window.FormClosed += (s, e) => isClosed = true;
             window.Show();
 
-	        Application.DoEvents();
+            InterfaceManager.Instance.Initialize(window.DrawTarget, context);
+            WorldFrame.Instance.Initialize(window.DrawTarget, context);
+            WorldFrame.Instance.OnResize((int)window.RenderSize.Width, (int)window.RenderSize.Height);
 
-            InterfaceManager.Instance.Initialize(window, context);
-            WorldFrame.Instance.Initialize(window, context);
-            WorldFrame.Instance.OnResize(window.ClientSize.Width, window.ClientSize.Height);
+	        InterfaceManager.Instance.RenderWindow.OnLoadFinished();
 
-	        InterfaceManager.Instance.Window.OnLoadFinished();
+            var app = new Application();
+            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.ApplicationIdle,
+                (sender, args) =>
+                {
+                    context.BeginFrame();
+                    WorldFrame.Instance.OnFrame();
+                    InterfaceManager.Instance.OnFrame();
+                    context.EndFrame();
+                }, app.Dispatcher);
 
-            while (isClosed == false)
-            {
-                context.BeginFrame();
-                WorldFrame.Instance.OnFrame();
-                InterfaceManager.Instance.OnFrame();
-                context.EndFrame();
-                Application.DoEvents();
-            }
+            window.Closing += (s, e) => timer.Stop();
+            app.Run(window);
 
             WorldFrame.Instance.Shutdown();
         }

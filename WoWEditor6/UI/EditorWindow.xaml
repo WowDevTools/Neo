@@ -1,0 +1,31 @@
+﻿<Window x:Class="WoWEditor6.UI.EditorWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:avalon="http://schemas.xceed.com/wpf/xaml/avalondock"
+             xmlns:local="clr-namespace:WoWEditor6.UI"
+             mc:Ignorable="d" Height="607" Width="927" Title="WoWDev">
+    <Grid>
+        <avalon:DockingManager x:Name="DockingManager">
+            <avalon:LayoutRoot>
+                <avalon:LayoutPanel Orientation="Horizontal">
+                    <avalon:LayoutDocumentPane DockWidth="4*">
+                        <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False">
+                            <WindowsFormsHost>
+                                <local:RenderControl x:Name="RenderTarget">
+                                    
+                                </local:RenderControl>
+                            </WindowsFormsHost>
+                        </avalon:LayoutDocument>
+                    </avalon:LayoutDocumentPane>
+                    <avalon:LayoutAnchorablePane DockWidth="*">
+                        <avalon:LayoutAnchorable Title="Sample Tool Pane">
+                            
+                        </avalon:LayoutAnchorable>
+                    </avalon:LayoutAnchorablePane>
+                </avalon:LayoutPanel>
+            </avalon:LayoutRoot>
+        </avalon:DockingManager>
+    </Grid>
+</Window>

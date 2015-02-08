@@ -102,7 +102,7 @@ namespace WoWEditor6.Scene
             }
         }
 
-        public void Initialize(MainWindow window, GxContext context)
+        public void Initialize(RenderControl window, GxContext context)
         {
             mGlobalBuffer = new ConstantBuffer(context);
             mGlobalParamsBuffer = new ConstantBuffer(context);
@@ -226,7 +226,7 @@ namespace WoWEditor6.Scene
 
         private void UpdateCursorPosition(bool forced = false)
         {
-            var pos = InterfaceManager.Instance.Window.PointToClient(Cursor.Position);
+            var pos = InterfaceManager.Instance.RenderWindow.PointToClient(Cursor.Position);
             if (mIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
             {
                 mLastCursorPosition = new Point(pos.X, pos.Y);

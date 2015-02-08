@@ -24,7 +24,7 @@ namespace WoWEditor6.UI
 
         public ComponentRoot Root { get; private set; }
         public DrawSurface Surface { get; private set; }
-        public MainWindow Window { get; private set; }
+        public RenderControl RenderWindow { get; private set; }
 
         public Dispatcher Dispatcher { get; private set; }
 
@@ -38,12 +38,12 @@ namespace WoWEditor6.UI
             Root = new ComponentRoot();
         }
 
-        public void Initialize(MainWindow window, GxContext context)
+        public void Initialize(RenderControl window, GxContext context)
         {
             Dispatcher = Dispatcher.CurrentDispatcher;
 
             mContext = context;
-            Window = window;
+            RenderWindow = window;
             Surface = new DrawSurface(context);
             Surface.GraphicsInit();
             Surface.OnResize(window.ClientSize.Width, window.ClientSize.Height);
@@ -53,7 +53,7 @@ namespace WoWEditor6.UI
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipPoint
             };
 
-            Window.Text = Strings.MainWindowTitle;
+            RenderWindow.Text = Strings.MainWindowTitle;
 
             mViews.Add(AppState.Splash, new SplashView());
             mViews.Add(AppState.FileSystemInit, new FileSystemInitView());
@@ -67,7 +67,7 @@ namespace WoWEditor6.UI
             InitMessages();
 
             foreach(var pair in mViews)
-                pair.Value.OnResize(new SharpDX.Vector2(Window.ClientSize.Width, Window.ClientSize.Height));
+                pair.Value.OnResize(new SharpDX.Vector2(RenderWindow.ClientSize.Width, RenderWindow.ClientSize.Height));
         }
 
         public void UpdateState(AppState state)
@@ -114,7 +114,7 @@ namespace WoWEditor6.UI
 
         private void InitMessages()
         {
-            Window.MouseMove += (sender, args) =>
+            RenderWindow.MouseMove += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseMove, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
@@ -122,7 +122,7 @@ namespace WoWEditor6.UI
                     mActiveView.OnMessage(msg);
             };
 
-            Window.MouseDown += (sender, args) =>
+            RenderWindow.MouseDown += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseDown, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
@@ -130,7 +130,7 @@ namespace WoWEditor6.UI
                     mActiveView.OnMessage(msg);
             };
 
-            Window.MouseUp += (sender, args) =>
+            RenderWindow.MouseUp += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseUp, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
@@ -138,7 +138,7 @@ namespace WoWEditor6.UI
                     mActiveView.OnMessage(msg);
             };
 
-            Window.MouseWheel += (sender, args) =>
+            RenderWindow.MouseWheel += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseWheel, new SharpDX.Vector2(args.X, args.Y),
                     GetButton(args.Button)) { Delta = -args.Delta / 120 };
@@ -148,7 +148,7 @@ namespace WoWEditor6.UI
                 WorldFrame.Instance.OnMouseWheel(args.Delta);
             };
 
-            Window.KeyDown += (sender, args) =>
+            RenderWindow.KeyDown += (sender, args) =>
             {
                 var c = KeyboardMessage.GetCharacter(args);
                 var msg = new KeyboardMessage(MessageType.KeyDown, c, args.KeyCode);
@@ -157,7 +157,7 @@ namespace WoWEditor6.UI
                     mActiveView.OnMessage(msg);
             };
 
-            Window.KeyUp += (sender, args) =>
+            RenderWindow.KeyUp += (sender, args) =>
             {
                 var c = KeyboardMessage.GetCharacter(args);
                 var msg = new KeyboardMessage(MessageType.KeyUp, c, args.KeyCode);
@@ -166,29 +166,17 @@ namespace WoWEditor6.UI
                     mActiveView.OnMessage(msg);
             };
 
-            Window.ResizeBegin += (sender, args) => mIsResizing = true;
-            Window.Resize += OnResize;
-            Window.ResizeEnd += (sender, args) =>
-            {
-                mIsResizing = false;
-                OnResize(sender, args);
-            };
+            RenderWindow.Resize += OnResize;
         }
 
         private void OnResize(object sender, EventArgs args)
         {
-            if (mIsResizing)
-                return;
-
-            if (Window.WindowState == FormWindowState.Minimized)
-                return;
-
-            Surface.OnResize(Window.ClientSize.Width, Window.ClientSize.Height);
+            Surface.OnResize(RenderWindow.ClientSize.Width, RenderWindow.ClientSize.Height);
             lock(mViews)
                 foreach (var pair in mViews)
-                    pair.Value.OnResize(new SharpDX.Vector2(Window.ClientSize.Width, Window.ClientSize.Height));
+                    pair.Value.OnResize(new SharpDX.Vector2(RenderWindow.ClientSize.Width, RenderWindow.ClientSize.Height));
 
-            WorldFrame.Instance.OnResize(Window.ClientSize.Width, Window.ClientSize.Height);
+            WorldFrame.Instance.OnResize(RenderWindow.ClientSize.Width, RenderWindow.ClientSize.Height);
         }
 
         private static MouseButton GetButton(MouseButtons button)

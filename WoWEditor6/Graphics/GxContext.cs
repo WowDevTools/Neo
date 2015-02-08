@@ -10,7 +10,7 @@ namespace WoWEditor6.Graphics
     class GxContext
     {
         private readonly Factory1 mFactory;
-        private readonly MainWindow mWindow;
+        private readonly RenderControl mWindow;
         private SwapChainDescription mSwapChainDesc;
         private SwapChain mSwapChain;
         private readonly Output mOutput;
@@ -25,7 +25,7 @@ namespace WoWEditor6.Graphics
         public Adapter1 Adapter { get; private set; }
         public ViewportF Viewport { get { return Context.Rasterizer.GetViewports()[0]; } }
 
-        public GxContext(MainWindow window)
+        public GxContext(RenderControl window)
         {
             mWindow = window;
             mFactory = new Factory1();
@@ -104,20 +104,11 @@ namespace WoWEditor6.Graphics
 
             Texture.InitDefaultTexture(this);
 
-            mWindow.ResizeBegin += (sender, args) => mIsResizing = true;
             mWindow.Resize += OnResize;
-            mWindow.ResizeEnd += (sender, args) =>
-            {
-                mIsResizing = false;
-                OnResize(sender, args);
-            };
         }
 
         private void OnResize(object sender, EventArgs args)
         {
-            if (mIsResizing)
-                return;
-
             if (Device == null)
                 return;
 

@@ -23,7 +23,6 @@ namespace WoWEditor6.UI.Panels
                 args.Cancel = true;
             };
 
-            mDialog.Owner = InterfaceManager.Instance.Window;
             mDialog.Visible = false;
         }
 

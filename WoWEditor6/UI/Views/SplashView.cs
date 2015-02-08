@@ -115,7 +115,7 @@ namespace WoWEditor6.UI.Views
             fd.SetOptions(options);
            
 
-            var wnd = InterfaceManager.Instance.Window;
+            var wnd = InterfaceManager.Instance.RenderWindow;
             var result = 0;
             if (wnd.InvokeRequired)
                 wnd.Invoke(new Action(() => result = fd.Show(wnd.Handle)));
