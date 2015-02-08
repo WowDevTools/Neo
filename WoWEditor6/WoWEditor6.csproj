@@ -129,6 +129,15 @@
     <Compile Include="IO\Files\Models\WoD\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoStructures.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2AlphaAnimation.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2AnimationBlock.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2AnimationBone.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2Animator.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2File.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2SkinFile.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2Structs.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2TexColorAninmation.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\M2UVAnimation.cs" />
     <Compile Include="IO\Files\Models\Wotlk\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\Wotlk\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\Wotlk\WmoStructures.cs" />

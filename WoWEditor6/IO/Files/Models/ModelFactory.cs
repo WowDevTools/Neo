@@ -24,6 +24,9 @@ namespace WoWEditor6.IO.Files.Models
                 case FileDataVersion.Warlords:
                     return new WoD.M2File(file);
 
+                case FileDataVersion.Lichking:
+                    return new Wotlk.M2File(file);
+
                 default:
                     throw new NotImplementedException("Version not yet implemented for m2 models");
             }
