@@ -21,5 +21,10 @@ namespace WoWEditor6.UI
         {
             label1.Visible = false;
         }
+
+        private void RenderControl_Click(object sender, EventArgs e)
+        {
+            Focus();
+        }
     }
 }

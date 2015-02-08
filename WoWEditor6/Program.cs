@@ -19,13 +19,13 @@ namespace WoWEditor6
             var window = new EditorWindow();
             var context = new GxContext(window.DrawTarget);
             context.InitContext();
-            window.Show();
+
 
             InterfaceManager.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.Initialize(window.DrawTarget, context);
-            WorldFrame.Instance.OnResize((int)window.RenderSize.Width, (int)window.RenderSize.Height);
+            WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
 
-	        InterfaceManager.Instance.RenderWindow.OnLoadFinished();
+            InterfaceManager.Instance.RenderWindow.OnLoadFinished();
 
             var app = new Application();
             var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.ApplicationIdle,
@@ -37,7 +37,6 @@ namespace WoWEditor6
                     context.EndFrame();
                 }, app.Dispatcher);
 
-            window.Closing += (s, e) => timer.Stop();
             app.Run(window);
 
             WorldFrame.Instance.Shutdown();

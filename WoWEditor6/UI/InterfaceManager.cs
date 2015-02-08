@@ -18,7 +18,6 @@ namespace WoWEditor6.UI
         private GxContext mContext;
         private Sampler mQuadSampler;
         private IView mActiveView;
-        private bool mIsResizing;
 
         private readonly Dictionary<AppState, IView> mViews = new Dictionary<AppState, IView>(); 
 

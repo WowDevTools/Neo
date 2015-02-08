@@ -4,18 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WoWEditor6.UI.Dialogs"
-             mc:Ignorable="d" 
-             d:DesignHeight="320" d:DesignWidth="527">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="205"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="205"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Border Padding="10" Grid.Row="0" Grid.Column="0">
+             mc:Ignorable="d" Height="453" Width="560">
+    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+        <Border Padding="10">
             <StackPanel Orientation="Vertical">
                 <RadioButton Content="Raise/lower" IsChecked="True" Tag="Elevate" Checked="ChangeMode_Checked"></RadioButton>
                 <RadioButton Content="Flatten" Tag="Flatten" Checked="ChangeMode_Checked"></RadioButton>
@@ -26,7 +17,7 @@
                 </TextBlock>
             </StackPanel>
         </Border>
-        <Border Padding="10" Grid.Row="0" Grid.Column="1">
+        <Border Padding="10">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <Label Width="75">Intensity</Label>
@@ -45,27 +36,29 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <local:ColorPickerControl Margin="5,0,0,5" HorizontalAlignment="Left" Height="200" Width="200" Grid.Row="1" Grid.Column="0" ColorChanged="ColorPickerControl_ColorChanged"/>
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="75"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Rectangle Name="ColorPreviewRect" Grid.Row="0" Margin="15,5,0,0" Width="50" Height="50" HorizontalAlignment="Left"></Rectangle>
-            <StackPanel Grid.Row="1" Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
-                    <Label Width="30">R:</Label>
-                    <TextBox Width="50" Name="RedBox" TextChanged="RedBox_TextChanged"></TextBox>
-                </StackPanel>
-                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Label Width="30">G:</Label>
-                    <TextBox Width="50" Name="GreenBox" TextChanged="RedBox_TextChanged"></TextBox>
-                </StackPanel>
-                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Label Width="30">B:</Label>
-                    <TextBox Width="50" Name="BlueBox" TextChanged="RedBox_TextChanged"></TextBox>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="215"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <local:ColorPickerControl Margin="5,0,0,5" HorizontalAlignment="Left" Height="200" Width="200" Grid.Row="0" Grid.Column="0" ColorChanged="ColorPickerControl_ColorChanged"/>
+            <StackPanel Orientation="Vertical" Grid.Column="1">
+                <Rectangle Name="ColorPreviewRect" Margin="15,5,0,0" Width="50" Height="50" HorizontalAlignment="Left"></Rectangle>
+                <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Width="30">R:</Label>
+                        <TextBox Width="50" Name="RedBox" TextChanged="RedBox_TextChanged"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <Label Width="30">G:</Label>
+                        <TextBox Width="50" Name="GreenBox" TextChanged="RedBox_TextChanged"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <Label Width="30">B:</Label>
+                        <TextBox Width="50" Name="BlueBox" TextChanged="RedBox_TextChanged"></TextBox>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>
-    </Grid>
+    </StackPanel>
 </UserControl>

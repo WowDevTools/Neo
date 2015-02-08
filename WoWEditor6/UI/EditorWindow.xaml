@@ -5,25 +5,31 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:avalon="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:local="clr-namespace:WoWEditor6.UI"
+             xmlns:dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
              mc:Ignorable="d" Height="607" Width="927" Title="WoWDev">
     <Grid>
         <avalon:DockingManager x:Name="DockingManager">
+            <avalon:DockingManager.Theme>
+                <avalon:MetroTheme/>
+            </avalon:DockingManager.Theme>
             <avalon:LayoutRoot>
                 <avalon:LayoutPanel Orientation="Horizontal">
-                    <avalon:LayoutDocumentPane DockWidth="4*">
+                    <avalon:LayoutAnchorablePane DockWidth="320">
+                        <avalon:LayoutAnchorable Title="Sculpting">
+                            <dialogs:TerrainSettingsImpl VerticalAlignment="Top" Width="300">
+
+                            </dialogs:TerrainSettingsImpl>
+                        </avalon:LayoutAnchorable>
+                    </avalon:LayoutAnchorablePane>
+                    <avalon:LayoutDocumentPane DockWidth="*">
                         <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False">
                             <WindowsFormsHost>
                                 <local:RenderControl x:Name="RenderTarget">
-                                    
+
                                 </local:RenderControl>
                             </WindowsFormsHost>
                         </avalon:LayoutDocument>
                     </avalon:LayoutDocumentPane>
-                    <avalon:LayoutAnchorablePane DockWidth="*">
-                        <avalon:LayoutAnchorable Title="Sample Tool Pane">
-                            
-                        </avalon:LayoutAnchorable>
-                    </avalon:LayoutAnchorablePane>
                 </avalon:LayoutPanel>
             </avalon:LayoutRoot>
         </avalon:DockingManager>

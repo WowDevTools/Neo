@@ -18,7 +18,6 @@ namespace WoWEditor6.Graphics
         private DepthStencilView mDepthBuffer;
         private Texture2D mDepthTexture;
         private bool mHasMultisample;
-        private bool mIsResizing;
 
         public Device Device { get; private set; }
         public DeviceContext Context { get; private set; }

@@ -51,6 +51,7 @@
             this.Controls.Add(this.label1);
             this.Name = "RenderControl";
             this.Size = new System.Drawing.Size(883, 603);
+            this.Click += new System.EventHandler(this.RenderControl_Click);
             this.ResumeLayout(false);
 
         }
