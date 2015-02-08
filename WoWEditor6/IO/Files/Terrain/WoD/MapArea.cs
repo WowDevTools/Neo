@@ -396,6 +396,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     entry.Position.Y);
                 var rotation = new Vector3(360.0f - entry.Rotation.X, 360.0f - entry.Rotation.Z, entry.Rotation.Y - 90);
 
+                if (IndexX == 37 && IndexY == 44)
+                {
+                    System.IO.File.AppendAllLines("Wmo2.txt", new[]
+                    {
+                            Path.GetFileName(modelName) + "\t\t" + entry.Position + "\t" + entry.Rotation
+                    });
+                }
+
                 WorldFrame.Instance.WmoManager.AddInstance(modelName, entry.UniqueId, position, rotation);
                 mWmoInstances.Add(new LoadedModel(modelName, entry.UniqueId));
             }

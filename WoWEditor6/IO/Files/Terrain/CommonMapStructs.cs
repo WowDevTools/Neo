@@ -19,7 +19,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public readonly int Mwid;
         public readonly int UniqueId;
         public readonly Vector3 Position;
-        public readonly Vector3 Rotation;
+        public Vector3 Rotation;
         public readonly Vector3 BboxMax;
         public readonly Vector3 BboxMin;
         public readonly ushort Flags;

@@ -364,8 +364,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 if (modelNameLookup.TryGetValue(nameId, out modelName) == false)
                     continue;
 
+
                 var position = new Vector3(entry.Position.X, entry.Position.Z, entry.Position.Y);
-                var rotation = new Vector3(360.0f - entry.Rotation.X, 360.0f - entry.Rotation.Z, 360.0f - entry.Rotation.Y + 90);
+                var rotation = new Vector3(entry.Rotation.Z, -entry.Rotation.X, 90 - entry.Rotation.Y);
 
                 WorldFrame.Instance.WmoManager.AddInstance(modelName, entry.UniqueId, position, rotation);
                 mWmoInstances.Add(new LoadedModel(modelName, entry.UniqueId));

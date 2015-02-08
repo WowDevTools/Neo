@@ -5,8 +5,6 @@ using System.Linq;
 using SharpDX;
 using WoWEditor6.Editing;
 using WoWEditor6.Scene;
-using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace WoWEditor6.IO.Files.Terrain.Wotlk
 {

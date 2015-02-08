@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models.Wotlk
@@ -205,6 +203,10 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 		{
 			var numVertices = size / SizeCache<Vector3>.Size;
 			mPositions = reader.ReadArray<Vector3>(numVertices);
+            for(var i = 0; i < mPositions.Length; ++i)
+            {
+                mPositions[i] = new Vector3(mPositions[i].X, -mPositions[i].Y, mPositions[i].Z);
+            }
 		}
 
 		private bool CombineVertexData()
