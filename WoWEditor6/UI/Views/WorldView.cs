@@ -30,7 +30,7 @@ namespace WoWEditor6.UI.Views
 
         private readonly Dictionary<ToolbarFunction, Image> mButtonImages;
 
-        public KeySettings KeySettingsDialog => mKeySettingsPanel;
+        public KeySettings KeySettingsDialog { get { return mKeySettingsPanel; } }
 
         public WorldView()
         {

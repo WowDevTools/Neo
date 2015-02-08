@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using SharpDX;
 using WoWEditor6.Editing;
+using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Texture;
 
@@ -164,8 +165,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 mHeader = reader.Read<Mhdr>();
                 InitChunkInfos(reader);
                 InitTextures(reader);
-                InitChunks(reader);
+                InitM2Models(reader);
                 InitWmoModels(reader);
+                InitChunks(reader);
             }
         }
 
@@ -216,7 +218,10 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             var changed = false;
             foreach (var chunk in mChunks)
             {
-                if (chunk?.OnTerrainChange(parameters) ?? false)
+                if (chunk == null)
+                    continue;
+
+                if (chunk.OnTerrainChange(parameters))
                     changed = true;
             }
 
@@ -229,7 +234,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         public override void UpdateNormals()
         {
             foreach (var chunk in mChunks)
-                chunk?.UpdateNormals();
+            {
+                if (chunk == null) continue;
+
+                chunk.UpdateNormals();
+            }
         }
 
         private void InitChunkInfos(BinaryReader reader)
@@ -317,6 +326,61 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             ModelBox = new BoundingBox(modelMin, modelMax);
         }
 
+        private void InitM2Models(BinaryReader reader)
+        {
+            if (SeekChunk(reader, 0x4D4D4458) == false)
+                return;
+
+            var size = reader.ReadInt32();
+            var bytes = reader.ReadBytes(size);
+            var fullString = Encoding.ASCII.GetString(bytes);
+            var modelNames = fullString.Split('\0');
+            var modelNameLookup = new Dictionary<int, string>();
+            var curOffset = 0;
+            foreach (var name in modelNames)
+            {
+                modelNameLookup.Add(curOffset, name);
+                curOffset += name.Length + 1;
+            }
+
+            if (SeekChunk(reader, 0x4D4D4944) == false)
+                return;
+
+            size = reader.ReadInt32();
+            var modelNameIds = reader.ReadArray<int>(size / 4);
+
+            if (SeekChunk(reader, 0x4D444446) == false)
+                return;
+
+            size = reader.ReadInt32();
+            var mddf = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
+            foreach (var entry in mddf)
+            {
+                if (entry.Mmid >= modelNameIds.Length)
+                    continue;
+
+                var nameId = modelNameIds[entry.Mmid];
+                string modelName;
+                if (modelNameLookup.TryGetValue(nameId, out modelName) == false)
+                    continue;
+
+                var position = new Vector3(entry.Position.X, entry.Position.Z, entry.Position.Y);
+                var rotation = new Vector3(entry.Rotation.Z, -entry.Rotation.X, entry.Rotation.Y - 90);
+                var scale = entry.Scale / 1024.0f;
+
+                var instance = WorldFrame.Instance.M2Manager.AddInstance(modelName, entry.UniqueId, position, rotation,
+                    new Vector3(scale));
+
+                DoodadInstances.Add(new M2Instance
+                {
+                    Hash = modelName.ToUpperInvariant().GetHashCode(),
+                    Uuid = entry.UniqueId,
+                    BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
+                    RenderInstance = instance
+                });
+            }
+        }
+
         private void InitWmoModels(BinaryReader reader)
         {
             if (SeekChunk(reader, 0x4D574D4F) == false)
@@ -389,7 +453,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             writer.Write(chunk.Data);
         }
 
-        private static bool SeekNextMcnk(BinaryReader reader) => SeekChunk(reader, 0x4D434E4B, false);
+        private static bool SeekNextMcnk(BinaryReader reader) { return SeekChunk(reader, 0x4D434E4B, false); }
 
         private static bool SeekChunk(BinaryReader reader, uint signature, bool begin = true)
         {

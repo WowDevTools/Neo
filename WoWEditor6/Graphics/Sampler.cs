@@ -50,7 +50,8 @@ namespace WoWEditor6.Graphics
             get
             {
                 if (!mChanged) return mState;
-                mState?.Dispose();
+                if (mState != null)
+                    mState.Dispose();
                 mState = new SamplerState(mContext.Device, mDescription);
                 mChanged = false;
 

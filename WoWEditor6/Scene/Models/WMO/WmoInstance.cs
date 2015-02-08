@@ -9,9 +9,9 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public BoundingBox BoundingBox;
 
-        public int Uuid { get; }
-        public BoundingBox[] GroupBoxes { get; }
-        public Matrix InstanceMatrix => mInstanceMatrix;
+        public int Uuid { get; private set; }
+        public BoundingBox[] GroupBoxes { get; private set; }
+        public Matrix InstanceMatrix { get { return mInstanceMatrix; } }
 
         public WmoInstance(int uuid, Vector3 position, Vector3 rotation, WmoRootRender model)
         {

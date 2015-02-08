@@ -12,16 +12,17 @@ namespace WoWEditor6.IO.Files.Sky.WoD
         private readonly List<LightDataEntry> mDataEntries = new List<LightDataEntry>();
         private LightDataEntry[] mEntryArray = new LightDataEntry[0];
 
-        public bool IsZoneLight { get; } = false;
-        public int SkyId => mParams.Id;
-        public Vector3 Position => mEntry.Position;
-        public float OuterRadius => mEntry.OuterRadius;
-        public float InnerRadius => mEntry.InnerRadius;
-        public bool IsGlobal => (InnerRadius < 0.01f && OuterRadius < 0.01f);
-        public int LightId => mEntry.Id;
+        public bool IsZoneLight { get; private set; }
+        public int SkyId { get { return mParams.Id; } }
+        public Vector3 Position { get { return mEntry.Position; } }
+        public float OuterRadius { get { return mEntry.OuterRadius; } }
+        public float InnerRadius { get { return mEntry.InnerRadius; } }
+        public bool IsGlobal { get { return (InnerRadius < 0.01f && OuterRadius < 0.01f); } }
+        public int LightId { get { return mEntry.Id; } }
 
         public MapLight(LightEntryData entry, ref LightParamsEntry paramsEntry)
         {
+            IsZoneLight = false;
             mEntry = entry;
             mParams = paramsEntry;
         }

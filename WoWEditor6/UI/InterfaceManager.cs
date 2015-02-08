@@ -12,7 +12,7 @@ namespace WoWEditor6.UI
 {
     class InterfaceManager
     {
-        public static InterfaceManager Instance { get; } = new InterfaceManager();
+        public static InterfaceManager Instance { get; private set; }
 
         private Mesh mMesh;
         private GxContext mContext;
@@ -22,11 +22,21 @@ namespace WoWEditor6.UI
 
         private readonly Dictionary<AppState, IView> mViews = new Dictionary<AppState, IView>(); 
 
-        public ComponentRoot Root { get; } = new ComponentRoot();
+        public ComponentRoot Root { get; private set; }
         public DrawSurface Surface { get; private set; }
         public MainWindow Window { get; private set; }
 
         public Dispatcher Dispatcher { get; private set; }
+
+        static InterfaceManager()
+        {
+            Instance = new InterfaceManager();
+        }
+
+        private InterfaceManager()
+        {
+            Root = new ComponentRoot();
+        }
 
         public void Initialize(MainWindow window, GxContext context)
         {
@@ -65,7 +75,8 @@ namespace WoWEditor6.UI
             lock(mViews)
             {
                 mViews.TryGetValue(state, out mActiveView);
-                mActiveView?.OnShow();
+                if (mActiveView != null)
+                    mActiveView.OnShow();
             }
         }
 
@@ -87,7 +98,10 @@ namespace WoWEditor6.UI
             {
                 Root.OnRender(rt);
                 lock (mViews)
-                    mActiveView?.OnRender(rt);
+                {
+                    if (mActiveView != null)
+                        mActiveView.OnRender(rt);
+                }
             });
             mMesh.Program.SetPixelTexture(0, Surface.NativeView);
             mMesh.Program.SetPixelSampler(0, mQuadSampler);
@@ -104,21 +118,24 @@ namespace WoWEditor6.UI
             {
                 var msg = new MouseMessage(MessageType.MouseMove, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
-                mActiveView?.OnMessage(msg);
+                if (mActiveView != null)
+                    mActiveView.OnMessage(msg);
             };
 
             Window.MouseDown += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseDown, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
-                mActiveView?.OnMessage(msg);
+                if (mActiveView != null)
+                    mActiveView.OnMessage(msg);
             };
 
             Window.MouseUp += (sender, args) =>
             {
                 var msg = new MouseMessage(MessageType.MouseUp, new SharpDX.Vector2(args.X, args.Y), GetButton(args.Button));
                 Root.OnMessage(msg);
-                mActiveView?.OnMessage(msg);
+                if (mActiveView != null)
+                    mActiveView.OnMessage(msg);
             };
 
             Window.MouseWheel += (sender, args) =>
@@ -126,7 +143,8 @@ namespace WoWEditor6.UI
                 var msg = new MouseMessage(MessageType.MouseWheel, new SharpDX.Vector2(args.X, args.Y),
                     GetButton(args.Button)) { Delta = -args.Delta / 120 };
                 Root.OnMessage(msg);
-                mActiveView?.OnMessage(msg);
+                if (mActiveView != null)
+                    mActiveView.OnMessage(msg);
                 WorldFrame.Instance.OnMouseWheel(args.Delta);
             };
 
@@ -135,7 +153,8 @@ namespace WoWEditor6.UI
                 var c = KeyboardMessage.GetCharacter(args);
                 var msg = new KeyboardMessage(MessageType.KeyDown, c, args.KeyCode);
                 Root.OnMessage(msg);
-                mActiveView?.OnMessage(msg);
+                if (mActiveView != null)
+                    mActiveView.OnMessage(msg);
             };
 
             Window.KeyUp += (sender, args) =>
@@ -143,7 +162,8 @@ namespace WoWEditor6.UI
                 var c = KeyboardMessage.GetCharacter(args);
                 var msg = new KeyboardMessage(MessageType.KeyUp, c, args.KeyCode);
                 Root.OnMessage(msg);
-                mActiveView?.OnMessage(msg);
+                if (mActiveView != null)
+                    mActiveView.OnMessage(msg);
             };
 
             Window.ResizeBegin += (sender, args) => mIsResizing = true;

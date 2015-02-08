@@ -8,7 +8,8 @@ namespace WoWEditor6.UI
 
         public void OnUpdateBrush(uint color, RenderTarget target)
         {
-            mBrush?.Dispose();
+            if (mBrush != null)
+                mBrush.Dispose();
             mBrush = new SolidColorBrush(target, new SharpDX.Color4(color));
         }
 

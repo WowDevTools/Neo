@@ -15,15 +15,15 @@ namespace WoWEditor6.UI
 
         public bool IsLoaded { get; private set; }
 
-        public int Width => mLoadInfo.Width;
-        public int Height => mLoadInfo.Height;
+        public int Width { get { return mLoadInfo.Width; } }
+        public int Height { get { return mLoadInfo.Height; } }
 
         public event Action<TextureBitmap> LoadComplete;
         public event Action<TextureBitmap, byte[]> OnBeforeLoad;
 
         public static implicit operator Bitmap(TextureBitmap bmp)
         {
-            return bmp?.mBitmap;
+            return bmp != null ? bmp.mBitmap : null;
         }
 
         public TextureBitmap()
@@ -43,7 +43,8 @@ namespace WoWEditor6.UI
 
         public void Dispose()
         {
-            mBitmap?.Dispose();
+            if (mBitmap != null)
+                mBitmap.Dispose();
         }
 
         private async void Load(string file)
@@ -52,13 +53,16 @@ namespace WoWEditor6.UI
             if (mLoadInfo.Format != Format.R8G8B8A8_UNorm)
                 DecompressData();
 
-            OnBeforeLoad?.Invoke(this, mLoadInfo.Layers[0]);
+            if (OnBeforeLoad != null)
+                OnBeforeLoad(this, mLoadInfo.Layers[0]);
+
             InterfaceManager.Instance.Dispatcher.Invoke(OnSyncLoad);
         }
 
         private void OnSyncLoad()
         {
-            mBitmap?.Dispose();
+            if (mBitmap != null)
+                mBitmap.Dispose();
 
             mBitmap = new Bitmap(InterfaceManager.Instance.Surface.RenderTarget, new Size2(mLoadInfo.Width, mLoadInfo.Height), new BitmapProperties()
             {
@@ -69,7 +73,8 @@ namespace WoWEditor6.UI
 
             mBitmap.CopyFromMemory(mLoadInfo.Layers[0], mLoadInfo.Width * 4);
             IsLoaded = true;
-            LoadComplete?.Invoke(this);
+            if (LoadComplete != null)
+                LoadComplete(this);
         }
 
         private void DecompressData()

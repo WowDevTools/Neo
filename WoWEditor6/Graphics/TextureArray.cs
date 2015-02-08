@@ -30,7 +30,8 @@ namespace WoWEditor6.Graphics
                 Usage = ResourceUsage.Default
             };
 
-            mTexture?.Dispose();
+            if (mTexture != null)
+                mTexture.Dispose();
             mTexture = new Texture2D(mDevice.Device, textureDesc, datas);
 
             var srvd = new ShaderResourceViewDescription
@@ -46,7 +47,8 @@ namespace WoWEditor6.Graphics
                 }
             };
 
-            mView?.Dispose();
+            if (mView != null)
+                mView.Dispose();
             mView = new ShaderResourceView(mDevice.Device, mTexture, srvd);
         }
     }

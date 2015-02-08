@@ -13,10 +13,10 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
         private readonly List<float>[] mFloatTables = new List<float>[2];
         private readonly List<uint>[] mFloatTimes = new List<uint>[2];
 
-        public bool IsGlobal { get; }
-        public float InnerRadius { get; }
-        public float OuterRadius { get; }
-        public Vector3 Position { get; }
+        public bool IsGlobal { get; private set; }
+        public float InnerRadius { get; private set; }
+        public float OuterRadius { get; private set; }
+        public Vector3 Position { get; private set; }
 
         public WorldLightEntry(DbcRecord lightEntry)
         {

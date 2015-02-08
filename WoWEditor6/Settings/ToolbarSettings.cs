@@ -76,7 +76,8 @@ namespace WoWEditor6.Settings
             }
             finally
             {
-                strm?.Dispose();
+                if (strm != null)
+                    strm.Dispose();
             }
         }
     }

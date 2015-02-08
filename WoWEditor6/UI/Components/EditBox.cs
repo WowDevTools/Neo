@@ -75,11 +75,11 @@ namespace WoWEditor6.UI.Components
                 return;
 
             var keyMsg = message as KeyboardMessage;
-            if (keyMsg?.Type == MessageType.KeyDown)
+            if (keyMsg != null && keyMsg.Type == MessageType.KeyDown)
                 OnKeyDown(keyMsg);
 
             var mouseMsg = message as MouseMessage;
-            if (mouseMsg?.Type == MessageType.MouseDown)
+            if (mouseMsg != null && mouseMsg.Type == MessageType.MouseDown)
                 OnMouseDown(mouseMsg);
         }
 

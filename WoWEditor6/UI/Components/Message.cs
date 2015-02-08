@@ -14,7 +14,7 @@ namespace WoWEditor6.UI.Components
 
     class Message
     {
-        public MessageType Type { get; }
+        public MessageType Type { get; private set; }
         public bool IsHandled { get; set; }
 
         protected Message(MessageType type)

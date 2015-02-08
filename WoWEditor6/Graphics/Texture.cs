@@ -34,8 +34,10 @@ namespace WoWEditor6.Graphics
         {
             if (mTexture == gDefaultTexture) return;
 
-            mTexture?.Dispose();
-            NativeView?.Dispose();
+            if (mTexture != null)
+                mTexture.Dispose();
+            if (NativeView != null)
+                NativeView.Dispose();
             mIsDisposed = true;
         }
 
@@ -57,8 +59,10 @@ namespace WoWEditor6.Graphics
 
             if (mTexture != gDefaultTexture)
             {
-                mTexture?.Dispose();
-                NativeView?.Dispose();
+                if (mTexture != null)
+                    mTexture.Dispose();
+                if (NativeView != null)
+                    NativeView.Dispose();
             }
 
             var boxes = new DataBox[texDesc.MipLevels];
@@ -85,7 +89,11 @@ namespace WoWEditor6.Graphics
             }
             finally
             {
-                foreach (var stream in streams) stream?.Dispose();
+                foreach (var stream in streams)
+                {
+                    if (stream != null)
+                        stream.Dispose();
+                }
             }
         }
 
@@ -171,7 +179,11 @@ namespace WoWEditor6.Graphics
             }
             finally
             {
-                foreach (var strm in streams) strm?.Dispose();
+                foreach (var strm in streams)
+                {
+                    if (strm != null)
+                        strm.Dispose();
+                }
             }
         }
 

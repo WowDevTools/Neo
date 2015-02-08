@@ -20,17 +20,24 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         private ushort[] mBlendMap = new ushort[0];
         private M2SkinFile mSkin;
 
-        public M2AnimationBone[] Bones { get; private set; } = new M2AnimationBone[0];
-        public M2UVAnimation[] UvAnimations { get; private set; } = new M2UVAnimation[0];
-        public M2TexColorAnimation[] ColorAnimations { get; private set; } = new M2TexColorAnimation[0];
-        public M2AlphaAnimation[] Transparencies { get; private set; } = new M2AlphaAnimation[0];
+        public M2AnimationBone[] Bones { get; private set; }
+        public M2UVAnimation[] UvAnimations { get; private set; }
+        public M2TexColorAnimation[] ColorAnimations { get; private set; }
+        public M2AlphaAnimation[] Transparencies { get; private set; }
 
-        public uint[] GlobalSequences { get; private set; } = new uint[0];
-        public AnimationEntry[] Animations { get; private set; } = new AnimationEntry[0];
-        public short[] AnimLookup { get; private set; } = new short[0];
+        public uint[] GlobalSequences { get; private set; }
+        public AnimationEntry[] Animations { get; private set; }
+        public short[] AnimLookup { get; private set; }
 
         public M2File(string fileName)
         {
+            Bones = new M2AnimationBone[0];
+            UvAnimations = new M2UVAnimation[0];
+            ColorAnimations = new M2TexColorAnimation[0];
+            Transparencies = new M2AlphaAnimation[0];
+            GlobalSequences = new uint[0];
+            Animations = new AnimationEntry[0];
+            AnimLookup = new short[0];
             mModelName = string.Empty;
             mFileName = fileName;
             mRootPath = Path.GetDirectoryName(mFileName);
@@ -56,15 +63,32 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     strm.Position = ofsBlendMaps;
                     mBlendMap = reader.ReadArray<ushort>(nBlendMaps);
                 }
-
-                BoundingBox = new BoundingBox(mHeader.BoundingBoxMin, mHeader.BoundingBoxMax);
-                BoundingSphere = new BoundingSphere(Vector3.Zero, mHeader.BoundingRadius);
+                
                 strm.Position = mHeader.OfsName;
                 if (mHeader.LenName > 0)
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
 
                 GlobalSequences = ReadArrayOf<uint>(reader, mHeader.OfsGlobalSequences, mHeader.NGlobalSequences);
                 Vertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
+                var minPos = new Vector3(float.MaxValue);
+                var maxPos = new Vector3(float.MinValue);
+
+                for(var i = 0; i < Vertices.Length; ++i)
+                {
+                    Vertices[i].position = new Vector3(Vertices[i].position.X, -Vertices[i].position.Y, Vertices[i].position.Z);
+                    var p = Vertices[i].position;
+                    if (p.X < minPos.X) minPos.X = p.X;
+                    if (p.X > maxPos.X) maxPos.X = p.X;
+                    if (p.Y < minPos.Y) minPos.Y = p.Y;
+                    if (p.Y > maxPos.Y) maxPos.Y = p.Y;
+                    if (p.Z < minPos.Z) minPos.Z = p.Z;
+                    if (p.Z > maxPos.Z) maxPos.Z = p.Z;
+
+                }
+
+                BoundingBox = new BoundingBox(minPos, maxPos);
+                BoundingSphere = BoundingSphere.FromBox(BoundingBox);
+
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];
                 for (var i = 0; i < textures.Length; ++i)
@@ -92,7 +116,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             mSkin = new M2SkinFile(mRootPath, mModelName, 0);
             if (mSkin.Load() == false)
                 throw new InvalidOperationException("Unable to load skin file");
-
+            
             Indices = mSkin.Indices;
 
             var texLookup = ReadArrayOf<ushort>(reader, mHeader.OfsTexLookup, mHeader.NTexLookup);

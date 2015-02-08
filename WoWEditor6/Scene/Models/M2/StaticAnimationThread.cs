@@ -6,11 +6,16 @@ namespace WoWEditor6.Scene.Models.M2
 {
     class StaticAnimationThread
     {
-        public static StaticAnimationThread Instance { get; } = new StaticAnimationThread();
+        public static StaticAnimationThread Instance { get; private set; }
 
         private Thread mThread;
         private readonly List<IM2Animator> mAnimators = new List<IM2Animator>();
         private bool mIsRunning;
+
+        static StaticAnimationThread()
+        {
+            Instance = new StaticAnimationThread();
+        }
 
         public void Initialize()
         {

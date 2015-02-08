@@ -16,13 +16,19 @@ namespace WoWEditor6.UI.Components
         public float TotalSize { get; set; }
         public float VisibleSize { get; set; }
 
-        public float Thickness { get; set; } = 10.0f;
-        public bool Vertical { get; set; } = true;
+        public float Thickness { get; set; }
+        public bool Vertical { get; set; }
 
         public Vector2 Position { get { return mPosition; } set { mPosition = value; } }
         public float Size { get { return mSize; } set { mSize = value; } }
 
         public event Action<float> ScrollChanged;
+
+        public Scrollbar()
+        {
+            Thickness = 10.0f;
+            Vertical = true;
+        }
 
         public void OnRender(RenderTarget target)
         {
@@ -48,7 +54,8 @@ namespace WoWEditor6.UI.Components
             else if (mScrollOffset + VisibleSize > TotalSize)
                 mScrollOffset = TotalSize - VisibleSize;
 
-            ScrollChanged?.Invoke(mScrollOffset);
+            if (ScrollChanged != null)
+                ScrollChanged(mScrollOffset);
         }
 
         public void OnMessage(Message message)
@@ -100,7 +107,8 @@ namespace WoWEditor6.UI.Components
             if (mScrollOffset + VisibleSize > TotalSize)
                 mScrollOffset = TotalSize - VisibleSize;
 
-            ScrollChanged?.Invoke(mScrollOffset);
+            if (ScrollChanged != null)
+                ScrollChanged(mScrollOffset);
         }
 
         private void HandleMouseDown(MouseMessage msg)

@@ -11,11 +11,11 @@ namespace WoWEditor6.IO.Files.Sky.WoD
         private readonly List<ZoneLightPoint> mPoints = new List<ZoneLightPoint>();
         private DbcZoneLight mZoneLightEntry;
 
-        public int Id => mZoneLightEntry.Id;
+        public int Id { get { return mZoneLightEntry.Id; } }
         public MapLight Light { get; set; }
 
 
-        public void SetDbcZoneLight(ref DbcZoneLight e) => mZoneLightEntry = e;
+        public void SetDbcZoneLight(ref DbcZoneLight e) { mZoneLightEntry = e; }
 
         public void CreatePolygon()
         {

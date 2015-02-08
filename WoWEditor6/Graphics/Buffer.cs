@@ -28,7 +28,8 @@ namespace WoWEditor6.Graphics
 
         public void Dispose()
         {
-            Native?.Dispose();
+            if (Native != null)
+                Native.Dispose();
         }
 
         public void UpdateData<T>(T data) where T : struct
@@ -46,7 +47,8 @@ namespace WoWEditor6.Graphics
             if (length > mDescription.SizeInBytes)
             {
                 mDescription.SizeInBytes = length;
-                Native?.Dispose();
+                if (Native != null)
+                    Native.Dispose();
                 using (var strm = new DataStream(length, true, true))
                 {
                     strm.Write(value);
@@ -63,7 +65,8 @@ namespace WoWEditor6.Graphics
             if (length > mDescription.SizeInBytes)
             {
                 mDescription.SizeInBytes = length;
-                Native?.Dispose();
+                if (Native != null)
+                    Native.Dispose();
                 if (data != null)
                 {
                     using (var strm = new DataStream(length, true, true))

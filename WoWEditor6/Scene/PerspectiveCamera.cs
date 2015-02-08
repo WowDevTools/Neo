@@ -7,12 +7,14 @@ namespace WoWEditor6.Scene
         private float mAspect = 1.0f;
         private float mFov = 45.0f;
 
-        public float NearClip { get; private set; } = 0.2f;
+        public float NearClip { get; private set; }
 
-        public float FarClip { get; private set; } = 2000.0f;
+        public float FarClip { get; private set; }
 
         public PerspectiveCamera()
         {
+            NearClip = 0.2f;
+            FarClip = 2000.0f;
             UpdateProjection();
         }
 

@@ -21,8 +21,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
         private Vector3[] mNormals = new Vector3[0];
         private Vector2[] mTexCoords = new Vector2[0];
 
-        public Vector3 MinPosition => BoundingBox.Minimum;
-        public Vector3 MaxPosition => BoundingBox.Maximum;
+        public Vector3 MinPosition { get { return BoundingBox.Minimum; } }
+        public Vector3 MaxPosition { get { return BoundingBox.Maximum; } }
 
         public WmoGroup(string fileName, WmoRoot root)
         {

@@ -93,7 +93,8 @@ namespace WoWEditor6.IO.CASC
                 LoadEncodingFile();
                 LoadRootFile();
 
-                LoadComplete?.Invoke();
+                if (LoadComplete != null)
+                    LoadComplete();
             });
         }
 

@@ -10,11 +10,16 @@ namespace WoWEditor6.UI.Components
         private Vector2 mSize;
         private RectangleF mTargetRectangle;
 
-        public List<IComponent> Items { get; } = new List<IComponent>();
+        public List<IComponent> Items { get; private set; }
 
         public Vector2 Position { get { return mPosition; } set { ClientAreaChanged(value, mSize); } }
         public Vector2 Size { get { return mSize; } set { ClientAreaChanged(mPosition, value); } }
         public Vector2 BorderOffsets { private get; set; }
+
+        public StatusBar()
+        {
+            Items = new List<IComponent>();
+        }
 
         public void OnRender(RenderTarget target)
         {

@@ -4,11 +4,16 @@ namespace WoWEditor6.Editing
 {
     class EditManager
     {
-        public static EditManager Instance { get; } = new EditManager();
+        public static EditManager Instance { get; private set; }
 
         private DateTime mLastChange = DateTime.Now;
 
         public EditMode CurrentMode { get; private set; }
+
+        static EditManager()
+        {
+            Instance = new EditManager();
+        }
 
         public void UpdateChanges()
         {

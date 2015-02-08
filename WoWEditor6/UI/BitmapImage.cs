@@ -46,7 +46,8 @@ namespace WoWEditor6.UI
             {
                 if(image.Width != mWidth || image.Height != mHeight)
                 {
-                    mBitmap?.Dispose();
+                    if (mBitmap != null)
+                        mBitmap.Dispose();
                     mData.Dispose();
                     mData = new DataStream(image.Width * image.Height * 4, true, true);
                     mWidth = image.Width;

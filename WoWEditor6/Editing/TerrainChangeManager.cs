@@ -36,17 +36,17 @@ namespace WoWEditor6.Editing
 
     class TerrainChangeManager
     {
-        public static TerrainChangeManager Instance { get; } = new TerrainChangeManager();
+        public static TerrainChangeManager Instance { get; private set; }
 
         private float mInnerRadius = 45.0f;
         private float mOuterRadius = 55.0f;
 
-        public TerrainChangeType ChangeType { get; set; } = TerrainChangeType.Elevate;
-        public TerrainAlgorithm ChangeAlgorithm { get; set; } = TerrainAlgorithm.Linear;
+        public TerrainChangeType ChangeType { get; set; }
+        public TerrainAlgorithm ChangeAlgorithm { get; set; }
         public Vector3 MousePosition { get; set; }
         public bool IsTerrainHovered { get; set; }
-        public Vector3 ShadingMultiplier { get; set; } = Vector3.One;
-        public float Amount { get; set; } = 15.0f;
+        public Vector3 ShadingMultiplier { get; set; }
+        public float Amount { get; set; }
 
         public float InnerRadius
         {
@@ -66,6 +66,19 @@ namespace WoWEditor6.Editing
                 mOuterRadius = value;
                 WorldFrame.Instance.UpdateTerrainBrush(mInnerRadius, mOuterRadius);
             }
+        }
+
+        static TerrainChangeManager()
+        {
+            Instance = new TerrainChangeManager();
+        }
+
+        public TerrainChangeManager()
+        {
+            ChangeType = TerrainChangeType.Elevate;
+            ChangeAlgorithm = TerrainAlgorithm.Linear;
+            ShadingMultiplier = Vector3.One;
+            Amount = 15.0f;
         }
 
         public void OnChange(TimeSpan diff)

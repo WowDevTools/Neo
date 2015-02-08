@@ -32,11 +32,11 @@ namespace WoWEditor6.Scene
             public Vector4 eyePosition;
         }
 
-        public static WorldFrame Instance { get; } = new WorldFrame();
+        public static WorldFrame Instance { get; private set; }
 
-        public MapManager MapManager { get; } = new MapManager();
-        public WmoManager WmoManager { get; } = new WmoManager();
-        public M2Manager M2Manager { get; } = new M2Manager();
+        public MapManager MapManager { get; private set; }
+        public WmoManager WmoManager { get; private set; }
+        public M2Manager M2Manager { get; private set; }
 
 		public bool LeftHandedCamera
 		{
@@ -68,8 +68,16 @@ namespace WoWEditor6.Scene
         public GxContext GraphicsContext { get; private set; }
         public GraphicsDispatcher Dispatcher { get; private set; }
 
+        static WorldFrame()
+        {
+            Instance = new WorldFrame();
+        }
+
         private WorldFrame()
         {
+            MapManager = new MapManager();
+            WmoManager = new WmoManager();
+            M2Manager = new M2Manager();
             mState = AppState.FileSystemInit;
         }
 

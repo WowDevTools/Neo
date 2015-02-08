@@ -49,10 +49,7 @@ namespace WoWEditor6.Scene.Models
             {
                 foreach (var instance in instances)
                 {
-                    if (instance?.RenderInstance?.IsUpdated ?? true)
-                        continue;
-
-                    if (instance == null)
+                    if (instance == null || instance.RenderInstance == null || instance.RenderInstance.IsUpdated)
                         continue;
 
                     M2BatchRenderer renderer;
@@ -134,7 +131,8 @@ namespace WoWEditor6.Scene.Models
                     }
                 }
 
-                element?.Dispose();
+                if (element != null)
+                    element.Dispose();
 
                 if (element == null)
                     Thread.Sleep(200);

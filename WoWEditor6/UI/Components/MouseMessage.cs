@@ -13,8 +13,8 @@ namespace WoWEditor6.UI.Components
 
     class MouseMessage : Message
     {
-        public Vector2 Position { get; }
-        public MouseButton Buttons { get; }
+        public Vector2 Position { get; private set; }
+        public MouseButton Buttons { get; private set; }
         public int Delta { get; set; }
 
         public MouseMessage(MessageType type, Vector2 position, MouseButton buttons)

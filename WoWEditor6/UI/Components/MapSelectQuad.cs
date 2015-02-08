@@ -72,7 +72,10 @@ namespace WoWEditor6.UI.Components
 
                 case MessageType.MouseUp:
                     if (mIsClicked && mIsHovered)
-                        Clicked?.Invoke(this);
+                    {
+                        if (Clicked != null)
+                            Clicked(this);
+                    }
 
                     mIsClicked = false;
                     break;

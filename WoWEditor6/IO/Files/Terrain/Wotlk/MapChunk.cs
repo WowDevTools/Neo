@@ -21,7 +21,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
         private byte[] mNormalExtra;
 
-        public override uint[] RenderIndices => Indices;
+        public override uint[] RenderIndices { get { return Indices; } }
 
         public MapChunk(int indexX, int indexY, WeakReference<MapArea> parent)
         {
@@ -87,6 +87,15 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
 
             LoadMcnr(reader);
+
+            if(mHeader.Mcrf > 0)
+            {
+                reader.BaseStream.Position = basePosition + mHeader.Mcrf;
+                signature = reader.ReadUInt32();
+                var chunkSize = reader.ReadInt32();
+                if (signature == 0x4D435246)
+                    LoadReferences(reader, chunkSize);
+            }
 
             var hasMccv = false;
             if (mHeader.Mccv != 0)
@@ -198,7 +207,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
             MapArea parent;
             mParent.TryGetTarget(out parent);
-            parent?.UpdateVertices(this);
+            if (parent != null)
+                parent.UpdateVertices(this);
         }
 
         public override bool OnTerrainChange(TerrainChangeParameters parameters)
@@ -215,7 +225,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 BoundingBox = new BoundingBox(new Vector3(omin.X, omin.Y, mMinHeight),
                 new Vector3(omax.X, omax.Y, mMaxHeight));
 
-                parent?.UpdateBoundingBox(BoundingBox);
+                if (parent != null)
+                    parent.UpdateBoundingBox(BoundingBox);
             }
 
             return changed;
@@ -490,6 +501,43 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
                 mShadingFloats[i] = new Vector4(b * 2.0f / 255.0f, g * 2.0f / 255.0f, r * 2.0f / 255.0f, a * 2.0f / 255.0f);
             }
+        }
+
+        private void LoadReferences(BinaryReader reader, int size)
+        {
+            var refs = reader.ReadArray<int>(size / 4);
+            if (refs.Length < mHeader.NumDoodadRefs || mHeader.NumDoodadRefs == 0)
+                return;
+
+            DoodadReferences = refs.Take(mHeader.NumDoodadRefs).ToArray();
+            var minPos = BoundingBox.Minimum;
+            var maxPos = BoundingBox.Maximum;
+
+            MapArea parent;
+            if (mParent.TryGetTarget(out parent) == false)
+                return;
+
+            foreach (var reference in DoodadReferences)
+            {
+                var inst = parent.DoodadInstances[reference];
+                var min = inst.BoundingBox.Minimum;
+                var max = inst.BoundingBox.Maximum;
+
+                if (min.X < minPos.X)
+                    minPos.X = min.X;
+                if (min.Y < minPos.Y)
+                    minPos.Y = min.Y;
+                if (min.Z < minPos.Z)
+                    minPos.Z = min.Z;
+                if (max.X > maxPos.X)
+                    maxPos.X = max.X;
+                if (max.Y > maxPos.Y)
+                    maxPos.Y = max.Y;
+                if (max.Z > maxPos.Z)
+                    maxPos.Z = max.Z;
+            }
+
+            ModelBox = new BoundingBox(minPos, maxPos);
         }
 
         private void LoadLayers(BinaryReader reader, int size)

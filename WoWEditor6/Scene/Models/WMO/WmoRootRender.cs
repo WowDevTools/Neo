@@ -21,7 +21,7 @@ namespace WoWEditor6.Scene.Models.WMO
         private VertexBuffer mVertexBuffer;
         private IndexBuffer mIndexBuffer;
 
-        public BoundingBox BoundingBox => mBoundingBox;
+        public BoundingBox BoundingBox { get { return mBoundingBox; } }
 
         public IList<WmoGroupRender> Groups { get; private set; }
 
@@ -32,15 +32,18 @@ namespace WoWEditor6.Scene.Models.WMO
             mAsyncLoaded = false;
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                mVertexBuffer?.Dispose();
-                mIndexBuffer?.Dispose();
+                if (mVertexBuffer != null)
+                    mVertexBuffer.Dispose();
+                if (mIndexBuffer != null)
+                    mIndexBuffer.Dispose();
             });
 
             foreach (var group in Groups)
                 group.Dispose();
 
             Groups = new List<WmoGroupRender>();
-            Data?.Dispose();
+            if(Data != null)
+                Data.Dispose();
         }
 
         public void OnFrame(IEnumerable<WmoInstance> instances)

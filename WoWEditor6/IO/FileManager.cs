@@ -6,7 +6,7 @@ namespace WoWEditor6.IO
 {
     class FileManager
     {
-        public static FileManager Instance { get; } = new FileManager();
+        public static FileManager Instance { get; private set; }
 
         public IFileProvider Provider { get; private set; }
         public string DataPath { get; set; }
@@ -14,6 +14,11 @@ namespace WoWEditor6.IO
 
         public event Action LoadComplete;
 		public FileDataVersion Version { get; private set; }
+
+        static FileManager()
+        {
+            Instance = new FileManager();
+        }
 
         public Stream GetOutputStream(string path)
         {
@@ -64,7 +69,8 @@ namespace WoWEditor6.IO
 		        mgr.LoadComplete += () =>
 		        {
 			        Initialized = true;
-			        LoadComplete?.Invoke();
+		            if (LoadComplete != null)
+		                LoadComplete();
 		        };
 
 				Provider = mgr;
@@ -89,7 +95,8 @@ namespace WoWEditor6.IO
 			mgr.LoadComplete += () =>
 			{
 				Initialized = true;
-				LoadComplete?.Invoke();
+			    if (LoadComplete != null)
+			        LoadComplete();
 			};
 
 			Provider = mgr;

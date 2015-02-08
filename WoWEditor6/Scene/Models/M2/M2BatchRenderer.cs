@@ -42,8 +42,8 @@ namespace WoWEditor6.Scene.Models.M2
         private ConstantBuffer mAnimBuffer;
 	    private ConstantBuffer mUvBuffer;
 
-        public BoundingBox BoundingBox => mModel.BoundingBox;
-        public BoundingSphere BoundingSphere => mModel.BoundingSphere;
+        public BoundingBox BoundingBox { get { return mModel.BoundingBox; } }
+        public BoundingSphere BoundingSphere { get { return mModel.BoundingSphere; } }
 
         public M2BatchRenderer(M2File model)
         {
@@ -61,15 +61,21 @@ namespace WoWEditor6.Scene.Models.M2
             var instanceBuffer = mInstanceBuffer;
             var cb = mAnimBuffer;
 	        var uv = mUvBuffer;
-            mModel?.Dispose();
+            if (mModel != null)
+                mModel.Dispose();
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                vb?.Dispose();
-                ib?.Dispose();
-                instanceBuffer?.Dispose();
-                cb?.Dispose();
-	            uv?.Dispose();
+                if (vb != null)
+                    vb.Dispose();
+                if (ib != null)
+                    ib.Dispose();
+                if (instanceBuffer != null)
+                    instanceBuffer.Dispose();
+                if (cb != null)
+                    cb.Dispose();
+                if (uv != null)
+                    uv.Dispose();
             });
 
             StaticAnimationThread.Instance.RemoveAnimator(mAnimator);

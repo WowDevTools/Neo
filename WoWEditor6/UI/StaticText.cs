@@ -43,7 +43,7 @@ namespace WoWEditor6.UI
             }
         }
 
-        public float Width => GetLayout().Metrics.Width;
+        public float Width { get { return GetLayout().Metrics.Width; } }
 
         public StaticText()
         {
@@ -67,7 +67,8 @@ namespace WoWEditor6.UI
 
             var font = Fonts.Cache[mFontFamily, mFontSize, mWeight];
 
-            mLayout?.Dispose();
+            if (mLayout != null)
+                mLayout.Dispose();
             mLayout = new TextLayout(mFactory, mText, font, mSize.Width,
                 mSize.Height)
             {
@@ -82,7 +83,8 @@ namespace WoWEditor6.UI
 
         public void Dispose()
         {
-            mLayout?.Dispose();
+            if (mLayout != null)
+                mLayout.Dispose();
         }
 
         public static implicit operator TextLayout(StaticText text)

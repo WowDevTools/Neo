@@ -7,7 +7,7 @@ namespace WoWEditor6.IO.MPQ
 	{
 		private readonly IntPtr mHandle;
 
-		public string Name { get; }
+		public string Name { get; private set; }
 
 		public Archive(IntPtr handle, string name)
 		{

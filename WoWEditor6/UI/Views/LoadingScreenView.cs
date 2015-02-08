@@ -79,7 +79,8 @@ namespace WoWEditor6.UI.Views
                 }
             }
 
-            mLoadingImage?.Dispose();
+            if (mLoadingImage != null)
+                mLoadingImage.Dispose();
             mLoadingImage = new TextureBitmap();
             mLoadingImage.LoadComplete += ImageLoaded;
             mLoadingImage.LoadFromFile(loadScreenPath);

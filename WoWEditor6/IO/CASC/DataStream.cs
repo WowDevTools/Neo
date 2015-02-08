@@ -5,7 +5,7 @@ namespace WoWEditor6.IO.CASC
 {
     class DataStream : IDisposable
     {
-        public FileStream Stream { get; }
+        public FileStream Stream { get; private set; }
 
         public DataStream(string file)
         {
@@ -14,7 +14,8 @@ namespace WoWEditor6.IO.CASC
 
         public void Dispose()
         {
-            Stream?.Close();
+            if (Stream != null)
+                Stream.Close();
         }
     }
 }

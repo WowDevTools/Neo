@@ -7,14 +7,15 @@ namespace WoWEditor6.IO.Files.Models
         private readonly int mTexture2;
         private readonly int mTexture3;
 
-        public Graphics.Texture[] Textures { get; private set; } = new Graphics.Texture[0];
-        public int ShaderType { get; }
-        public int BlendMode { get; }
-        public uint Flags1 { get; }
-        public uint MaterialFlags { get; }
+        public Graphics.Texture[] Textures { get; private set; }
+        public int ShaderType { get; private set; }
+        public int BlendMode { get; private set; }
+        public uint Flags1 { get; private set; }
+        public uint MaterialFlags { get; private set; }
 
         public WmoMaterial(WmoRoot root, int shader, int texture1, int texture2, int texture3, int blendMode, uint flags, uint materialFlags)
         {
+            Textures = new Graphics.Texture[0];
             MaterialFlags = materialFlags;
             mTexture1 = texture1;
             mTexture2 = texture2;

@@ -24,7 +24,8 @@ namespace WoWEditor6.Scene.Models.WMO
                 mInstances.Clear();
 
             mActiveInstances.Clear();
-            mRoot?.Dispose();
+            if (mRoot != null)
+                mRoot.Dispose();
         }
 
         public bool RemoveInstance(int uuid)

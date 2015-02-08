@@ -22,7 +22,9 @@ namespace WoWEditor6.Graphics
             {
                 if (mChanged != true) return mState;
 
-                mState?.Dispose();
+                if (mState != null)
+                    mState.Dispose();
+
                 mState = new SharpDX.Direct3D11.BlendState(mContext.Device, mDescription);
                 mChanged = false;
 
@@ -80,7 +82,8 @@ namespace WoWEditor6.Graphics
 
         public void Dispose()
         {
-            mState?.Dispose();
+            if (mState != null)
+                mState.Dispose();
         }
     }
 }

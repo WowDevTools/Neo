@@ -31,7 +31,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         private readonly short[] mAnimationLookup;
         private bool mIsDirty;
 
-        public uint AnimationLength => mAnimation.length;
+        public uint AnimationLength { get { return mAnimation.length; } }
 
         public M2Animator(M2File file)
         {

@@ -96,7 +96,7 @@ namespace WoWEditor6.Graphics
             RasterizerState = state;
         }
 
-        public void AddElement(VertexElement element) => mElements.Add(element);
+        public void AddElement(VertexElement element) { mElements.Add(element); }
 
         public void AddElement(string semantic, int index, int components, DataType type = DataType.Float, bool normalized = false, int slot = 0, bool instanceData = false)
         {

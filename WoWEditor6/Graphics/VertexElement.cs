@@ -14,7 +14,7 @@ namespace WoWEditor6.Graphics
     {
         private readonly InputElement mDescription;
 
-        public InputElement Element => mDescription;
+        public InputElement Element { get { return mDescription; } }
 
         public VertexElement(string semantic, int index, int components, DataType dataType = DataType.Float, bool normalized = false, int slot = 0, bool instanceData = false)
         {

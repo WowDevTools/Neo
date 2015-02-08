@@ -31,7 +31,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 	    private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
         private static readonly uint[] Indices = new uint[768];
 
-	    public override uint[] RenderIndices => Indices; 
+        public override uint[] RenderIndices { get { return Indices; } } 
 
 		public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
@@ -111,7 +111,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 BoundingBox = new BoundingBox(new Vector3(omin.X, omin.Y, mMinHeight),
                     new Vector3(omax.X, omax.Y, mMaxHeight));
 
-                parent?.UpdateBoundingBox(BoundingBox);
+                if (parent != null)
+                    parent.UpdateBoundingBox(BoundingBox);
             }
 
             return changed;
@@ -123,7 +124,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             MapArea parent;
             mParent.TryGetTarget(out parent);
-            parent?.UpdateVertices(this);
+            if (parent != null)
+                parent.UpdateVertices(this);
         }
 
         public bool Intersect(ref Ray ray, out float distance)

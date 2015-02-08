@@ -7,13 +7,16 @@ namespace WoWEditor6.IO.Files.Models.WoD
     {
         private readonly string mFileName;
         private M2Skin mSkin;
-        public ushort[] Indices { get; private set; } = new ushort[0];
+        public ushort[] Indices { get; private set; }
 
-        public M2TexUnit[] TexUnits { get; private set; } = new M2TexUnit[0];
-        public M2SubMesh[] SubMeshes { get; private set; } = new M2SubMesh[0];
+        public M2TexUnit[] TexUnits { get; private set; }
+        public M2SubMesh[] SubMeshes { get; private set; }
 
         public M2SkinFile(string rootPath, string modelName, int index)
         {
+            Indices = new ushort[0];
+            TexUnits = new M2TexUnit[0];
+            SubMeshes = new M2SubMesh[0];
             mFileName = string.Format("{0}\\{1}{2:D2}.skin", rootPath, modelName, index);
         }
 
