@@ -41,7 +41,6 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public int TrainerSpell { get; set; }
         public int TrainerClass { get; set; }
         public int TrainerRace { get; set; }
-        public int RangedAttackPower { get; set; }
         public CreatureType Type { get; set; }
         public TypeFlags TypeFlags { get; set; }
         public int LootId { get; set; }

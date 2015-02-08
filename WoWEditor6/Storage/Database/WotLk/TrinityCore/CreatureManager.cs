@@ -132,9 +132,6 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                         case "trainer_race":
                             creature.TrainerRace = int.Parse(dRow[dColumn].ToString());
                             break;
-                        case "rangedattackpower":
-                            creature.RangedAttackPower = int.Parse(dRow[dColumn].ToString());
-                            break;
                         case "type":
                             creature.Type = (CreatureType)Enum.Parse(typeof(EnumType), dRow[dColumn].ToString());
                             break;
