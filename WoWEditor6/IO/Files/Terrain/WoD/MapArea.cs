@@ -59,6 +59,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             WriteBaseFile();
         }
 
+        public override void OnUpdateModelPositions(TerrainChangeParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void UpdateNormals()
         {
             foreach (var chunk in mChunks)

@@ -26,5 +26,10 @@ namespace WoWEditor6.UI
         }
 
         public RenderControl DrawTarget { get { return RenderTarget; } }
+
+        private void MenuSaveItem_Click(object sender, RoutedEventArgs e)
+        {
+            Scene.WorldFrame.Instance.MapManager.OnSaveAllFiles();
+        }
     }
 }

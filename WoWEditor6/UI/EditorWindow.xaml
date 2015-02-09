@@ -8,15 +8,24 @@
              xmlns:dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
              mc:Ignorable="d" Height="607" Width="927" Title="WoWDev">
     <Grid>
-        <avalon:DockingManager x:Name="DockingManager">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu IsMainMenu="True">
+            <MenuItem Header="_File">
+                <MenuItem Header="Save" Click="MenuSaveItem_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <avalon:DockingManager Grid.Row="1" x:Name="DockingManager">
             <avalon:DockingManager.Theme>
                 <avalon:MetroTheme/>
             </avalon:DockingManager.Theme>
             <avalon:LayoutRoot>
                 <avalon:LayoutPanel Orientation="Horizontal">
-                    <avalon:LayoutAnchorablePane DockWidth="320">
-                        <avalon:LayoutAnchorable Title="Sculpting">
-                            <dialogs:TerrainSettingsImpl VerticalAlignment="Top" Width="300">
+                    <avalon:LayoutAnchorablePane DockWidth="340">
+                        <avalon:LayoutAnchorable Title="Sculpting" CanClose="False" AutoHideWidth="340">
+                            <dialogs:TerrainSettingsImpl VerticalAlignment="Top">
 
                             </dialogs:TerrainSettingsImpl>
                         </avalon:LayoutAnchorable>

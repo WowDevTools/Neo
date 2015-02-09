@@ -206,6 +206,24 @@ namespace WoWEditor6.Scene.Models.M2
                 mVisibleInstances.Add(inst);
         }
 
+        public void ForceUpdate()
+        {
+            lock (mInstanceBufferLock)
+            {
+                if (mActiveInstances.Length < mVisibleInstances.Count)
+                    mActiveInstances = new Matrix[mVisibleInstances.Count];
+
+                for (var i = 0; i < mVisibleInstances.Count; ++i)
+                    mActiveInstances[i] = mVisibleInstances[i].InstanceMatrix;
+
+                mInstanceCount = mVisibleInstances.Count;
+                if (mInstanceCount == 0)
+                    return;
+
+                mUpdateBuffer = true;
+            }
+        }
+
         public void ViewChanged()
         {
             lock(mInstanceBufferLock)

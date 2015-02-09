@@ -47,6 +47,14 @@ namespace WoWEditor6.Scene.Terrain
             }
         }
 
+        public void OnUpdateModelPositions(Editing.TerrainChangeParameters parameters)
+        {
+            if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
+                return;
+
+            AreaFile.OnUpdateModelPositions(parameters);
+        }
+
         public void OnFrame()
         {
             if (mAsyncLoaded == false)

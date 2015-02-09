@@ -30,6 +30,11 @@ namespace WoWEditor6.UI.Dialogs
                 (obj.G / 255.0f) * 2.0f, (obj.B / 255.0f) * 2.0f);
         }
 
+        private void SculptingEnableButton_Clicked(object sender, RoutedEventArgs args)
+        {
+            EditManager.Instance.EnableSculpting();
+        }
+
         private void RedBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (mPreventUpdate)
@@ -82,6 +87,27 @@ namespace WoWEditor6.UI.Dialogs
 
                 TerrainChangeManager.Instance.ChangeType = mode;
             }
+        }
+
+        private void ChangeAlgo_Checked(object sender, RoutedEventArgs e)
+        {
+            var button = sender as RadioButton;
+            if (button == null)
+                return;
+
+            if(button.IsChecked ?? false)
+            {
+                TerrainAlgorithm algo;
+                if (!System.Enum.TryParse(button.Tag as string ?? "", out algo))
+                    return;
+
+                TerrainChangeManager.Instance.ChangeAlgorithm = algo; 
+            }
+        }
+
+        private void AlignModels_Changed(object sender, RoutedEventArgs args)
+        {
+            TerrainChangeManager.Instance.AlignModelsToGround = AlignModelsBox.IsChecked ?? false;
         }
 	}
 }

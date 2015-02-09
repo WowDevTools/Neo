@@ -9,5 +9,6 @@ namespace WoWEditor6.IO.Files.Models
         public int Uuid { get; set; }
         public BoundingBox BoundingBox { get; set; }
         public M2RenderInstance RenderInstance { get; set; }
+        public int MddfIndex { get; set; }
     }
 }

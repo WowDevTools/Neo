@@ -51,6 +51,12 @@ namespace WoWEditor6.Scene.Terrain
             // ReSharper disable once InconsistentlySynchronizedField
             foreach (var pair in mAreas)
                 pair.Value.OnTerrainChange(parameters);
+
+            if(parameters.AlignModels)
+            {
+                foreach (var pair in mAreas)
+                    pair.Value.OnUpdateModelPositions(parameters);
+            }
         }
 
 		public void OnSaveAllFiles()

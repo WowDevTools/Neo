@@ -32,6 +32,7 @@ namespace WoWEditor6.Editing
         public Vector3 Shading;
         public float Amount;
         public bool Inverted;
+        public bool AlignModels;
     }
 
     class TerrainChangeManager
@@ -47,6 +48,7 @@ namespace WoWEditor6.Editing
         public bool IsTerrainHovered { get; set; }
         public Vector3 ShadingMultiplier { get; set; }
         public float Amount { get; set; }
+        public bool AlignModelsToGround { get; set; }
 
         public float InnerRadius
         {
@@ -79,6 +81,7 @@ namespace WoWEditor6.Editing
             ChangeAlgorithm = TerrainAlgorithm.Linear;
             ShadingMultiplier = Vector3.One;
             Amount = 15.0f;
+            AlignModelsToGround = false;
         }
 
         public void OnChange(TimeSpan diff)
@@ -97,7 +100,8 @@ namespace WoWEditor6.Editing
                 TimeDiff = diff,
                 Shading = ShadingMultiplier,
                 Amount = Amount,
-                Inverted = inverted
+                Inverted = inverted,
+                AlignModels = AlignModelsToGround
             };
 
             WorldFrame.Instance.MapManager.OnEditTerrain(parameters);

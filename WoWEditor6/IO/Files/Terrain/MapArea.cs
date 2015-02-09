@@ -38,6 +38,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public abstract void Dispose();
 
         public abstract bool OnChangeTerrain(Editing.TerrainChangeParameters parameters);
+        public abstract void OnUpdateModelPositions(Editing.TerrainChangeParameters parameters);
         public abstract void UpdateNormals();
     }
 }

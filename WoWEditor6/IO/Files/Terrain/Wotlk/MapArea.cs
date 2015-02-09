@@ -27,6 +27,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private Mhdr mHeader;
         private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
         private Mcin[] mChunkOffsets;
+        private Mddf[] mDoodadDefs;
 
         private bool mWasChanged;
 
@@ -35,6 +36,27 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             Continent = continent;
             IndexX = ix;
             IndexY = iy;
+        }
+
+        public override void OnUpdateModelPositions(TerrainChangeParameters parameters)
+        {
+            var center = new Vector2(parameters.Center.X, parameters.Center.Y);
+            foreach(var inst in DoodadInstances)
+            {
+                if (inst == null || inst.RenderInstance == null)
+                    continue;
+
+                var pos = mDoodadDefs[inst.MddfIndex].Position;
+                var dist = (new Vector2(pos.X, pos.Z) - center).Length();
+                if (dist > parameters.OuterRadius)
+                    continue;
+
+                if(WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
+                {
+                    mDoodadDefs[inst.MddfIndex].Position = pos;
+                    inst.RenderInstance.UpdatePosition(new Vector3(pos.X, pos.Z, pos.Y));
+                }
+            }
         }
 
         public void UpdateBoundingBox(BoundingBox chunkBox)
@@ -94,12 +116,21 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
                 header.ofsMcin = (int)(mcinStart - 28);
 
+                if (mDoodadDefs != null && mDoodadDefs.Length > 0)
+                {
+                    header.ofsMddf = (int)(writer.BaseStream.Position - 20);
+                    writer.Write(0x4D444446);
+                    writer.Write(mDoodadDefs.Length * SizeCache<Mddf>.Size);
+                    writer.WriteArray(mDoodadDefs);
+                }
+                else
+                    header.ofsMddf = 0;
+
                 SaveChunk(0x4D544558, writer, out header.ofsMtex);
                 SaveChunk(0x4D4D4458, writer, out header.ofsMmdx);
                 SaveChunk(0x4D4D4944, writer, out header.ofsMmid);
                 SaveChunk(0x4D574D4F, writer, out header.ofsMwmo);
                 SaveChunk(0x4D574944, writer, out header.ofsMwid);
-                SaveChunk(0x4D444446, writer, out header.ofsMddf);
                 SaveChunk(0x4D4F4446, writer, out header.ofsModf);
                 SaveChunk(0x4D48324F, writer, out header.ofsMh2o);
 
@@ -354,8 +385,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
             size = reader.ReadInt32();
             var mddf = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
+            mDoodadDefs = mddf;
+            var index = -1;
             foreach (var entry in mddf)
             {
+                ++index;
                 if (entry.Mmid >= modelNameIds.Length)
                     continue;
 
@@ -376,7 +410,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     Hash = modelName.ToUpperInvariant().GetHashCode(),
                     Uuid = entry.UniqueId,
                     BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
-                    RenderInstance = instance
+                    RenderInstance = instance,
+                    MddfIndex = index
                 });
             }
         }
