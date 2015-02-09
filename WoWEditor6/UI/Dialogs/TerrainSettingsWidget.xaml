@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="WoWEditor6.UI.Dialogs.TerrainSettingsImpl"
+﻿<UserControl x:Class="WoWEditor6.UI.Dialogs.TerrainSettingsWidget"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WoWEditor6.UI.Dialogs"
-             mc:Ignorable="d" Height="453" Width="560">
+             mc:Ignorable="d" Height="587" Width="342">
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
         <Border Padding="10">
             <Grid>

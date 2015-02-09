@@ -7,7 +7,6 @@ using WoWEditor6.Resources;
 using WoWEditor6.Scene;
 using WoWEditor6.Settings;
 using WoWEditor6.UI.Components;
-using WoWEditor6.UI.Panels;
 
 namespace WoWEditor6.UI.Views
 {
@@ -21,16 +20,12 @@ namespace WoWEditor6.UI.Views
         private readonly Toolbar mLeftToolbar = new Toolbar();
         private readonly StatusBar mStatusBar = new StatusBar();
         private bool mToolbarInitialized;
-        private readonly TerrainParams mTerrainParamsPanel = new TerrainParams();
-        private readonly KeySettings mKeySettingsPanel = new KeySettings();
         private readonly Label mTooltipLabel = new Label();
 
         private readonly Dictionary<ToolbarFunction, Action<ImageButton>> mButtonHandlers =
             new Dictionary<ToolbarFunction, Action<ImageButton>>();
 
         private readonly Dictionary<ToolbarFunction, Image> mButtonImages;
-
-        public KeySettings KeySettingsDialog { get { return mKeySettingsPanel; } }
 
         public WorldView()
         {
@@ -53,8 +48,6 @@ namespace WoWEditor6.UI.Views
 #if DEBUG
             mPerfControl.OnRender(target);
 #endif
-            mTerrainParamsPanel.OnRender(target);
-            mKeySettingsPanel.OnRender(target);
 
             //mTopToolbar.OnRender(target);
             //mLeftToolbar.OnRender(target);
@@ -65,8 +58,6 @@ namespace WoWEditor6.UI.Views
         {
             mTopToolbar.OnMessage(message);
             mLeftToolbar.OnMessage(message);
-            mTerrainParamsPanel.OnMessage(message);
-            mKeySettingsPanel.OnMessage(message);
         }
 
         public void OnResize(Vector2 newSize)
@@ -77,8 +68,6 @@ namespace WoWEditor6.UI.Views
             mTopToolbar.Size = new Vector2(newSize.X, 56);
             mLeftToolbar.Position = new Vector2(0, 56.0f);
             mLeftToolbar.Size = new Vector2(66.0f, newSize.Y - 86.0f);
-            mTerrainParamsPanel.OnResize(newSize);
-            mKeySettingsPanel.OnResize(newSize);
             mStatusBar.Size = new Vector2(newSize.X, 30.0f);
             mStatusBar.Position = new Vector2(0.0f, newSize.Y - 30.0f);
         }
@@ -141,13 +130,12 @@ namespace WoWEditor6.UI.Views
 
         private void OnTerrainButton(ImageButton button)
         {
-            mTerrainParamsPanel.Visible = true;
             Editing.EditManager.Instance.EnableSculpting();
         }
 
         private void OnKeySettingsButton(ImageButton button)
         {
-            mKeySettingsPanel.Visible = true;
+
         }
 
         private void OnSave(ImageButton button)

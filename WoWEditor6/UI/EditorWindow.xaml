@@ -6,7 +6,7 @@
              xmlns:avalon="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:local="clr-namespace:WoWEditor6.UI"
              xmlns:dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
-             mc:Ignorable="d" Height="607" Width="927" Title="WoWDev">
+             mc:Ignorable="d" Height="607" Width="927" Title="WoWDev" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -24,10 +24,17 @@
             <avalon:LayoutRoot>
                 <avalon:LayoutPanel Orientation="Horizontal">
                     <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Sculpting" CanClose="False" AutoHideWidth="340">
-                            <dialogs:TerrainSettingsImpl VerticalAlignment="Top">
+                        <avalon:LayoutAnchorable Title="Sculpting" CanClose="False" AutoHideWidth="340" x:Name="SculptingPane">
+                            <dialogs:TerrainSettingsWidget VerticalAlignment="Top">
 
-                            </dialogs:TerrainSettingsImpl>
+                            </dialogs:TerrainSettingsWidget>
+                        </avalon:LayoutAnchorable>
+                    </avalon:LayoutAnchorablePane>
+                    <avalon:LayoutAnchorablePane DockWidth="340">
+                        <avalon:LayoutAnchorable Title="Key Bindings" CanClose="True" AutoHideWidth="340" x:Name="KeyBindingPane">
+                            <dialogs:KeyBindingWidget VerticalAlignment="Top">
+
+                            </dialogs:KeyBindingWidget>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">

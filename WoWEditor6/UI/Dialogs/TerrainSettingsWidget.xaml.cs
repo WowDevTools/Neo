@@ -8,11 +8,11 @@ namespace WoWEditor6.UI.Dialogs
     /// <summary>
     /// Interaction logic for TerrainSettingsImpl.xaml
     /// </summary>
-    public partial class TerrainSettingsImpl
+    public partial class TerrainSettingsWidget
     {
         private bool mPreventUpdate;
 
-        public TerrainSettingsImpl()
+        public TerrainSettingsWidget()
         {
             InitializeComponent();
         }
@@ -55,7 +55,7 @@ namespace WoWEditor6.UI.Dialogs
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            Views.WorldView.Instance.KeySettingsDialog.Visible = true;
+            
         }
 
         private void IntensitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

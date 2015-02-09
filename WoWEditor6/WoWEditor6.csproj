@@ -281,9 +281,6 @@
     <Compile Include="UI\Components\StatusBar.cs" />
     <Compile Include="UI\Components\Toolbar.cs" />
     <Compile Include="UI\Components\WdlControl.cs" />
-    <Compile Include="UI\Dialogs\BorderColorLabel.cs">
-      <SubType>component</SubType>
-    </Compile>
     <Compile Include="UI\Dialogs\CreatureEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -302,29 +299,17 @@
     <Compile Include="UI\Dialogs\GameObjectEditor.Designer.cs">
       <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\InputSettings.cs">
-      <SubType>Form</SubType>
+    <Compile Include="UI\Dialogs\KeyBindingControl.xaml.cs">
+      <DependentUpon>KeyBindingControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\InputSettings.Designer.cs">
-      <DependentUpon>InputSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Dialogs\KeyBindingControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Dialogs\KeyBindingControl.Designer.cs">
-      <DependentUpon>KeyBindingControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Dialogs\TerrainSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Dialogs\TerrainSettings.Designer.cs">
-      <DependentUpon>TerrainSettings.cs</DependentUpon>
+    <Compile Include="UI\Dialogs\KeyBindingWidget.xaml.cs">
+      <DependentUpon>KeyBindingWidget.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Dialogs\ColorPickerControl.xaml.cs">
       <DependentUpon>ColorPickerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\TerrainSettingsImpl.xaml.cs">
-      <DependentUpon>TerrainSettingsImpl.xaml</DependentUpon>
+    <Compile Include="UI\Dialogs\TerrainSettingsWidget.xaml.cs">
+      <DependentUpon>TerrainSettingsWidget.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\DrawSurface.cs" />
     <Compile Include="UI\EditorWindow.xaml.cs">
@@ -333,8 +318,6 @@
     <Compile Include="UI\FontCollection.cs" />
     <Compile Include="UI\IComponent.cs" />
     <Compile Include="UI\InterfaceManager.cs" />
-    <Compile Include="UI\Panels\KeySettings.cs" />
-    <Compile Include="UI\Panels\TerrainParams.cs" />
     <Compile Include="Settings\ToolbarButtons.cs" />
     <Compile Include="Settings\ToolbarSettings.cs" />
     <Compile Include="UI\RenderControl.cs">
@@ -393,15 +376,6 @@
     <EmbeddedResource Include="UI\Dialogs\GameObjectEditor.resx">
       <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dialogs\InputSettings.resx">
-      <DependentUpon>InputSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dialogs\KeyBindingControl.resx">
-      <DependentUpon>KeyBindingControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dialogs\TerrainSettings.resx">
-      <DependentUpon>TerrainSettings.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\RenderControl.resx">
       <DependentUpon>RenderControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -433,7 +407,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\TerrainSettingsImpl.xaml">
+    <Page Include="UI\Dialogs\KeyBindingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dialogs\KeyBindingWidget.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dialogs\TerrainSettingsWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

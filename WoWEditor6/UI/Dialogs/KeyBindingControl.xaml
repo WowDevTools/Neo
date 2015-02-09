@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="WoWEditor6.UI.Dialogs.KeyBindingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Width="253" Height="30">
+    <Grid>
+        <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
+            <Button Width="117" Height="23" Name="Button"></Button>
+            <Border Width="124" Height="20" Margin="5,0,0,0" BorderThickness="1" BorderBrush="Black">
+                <TextBlock VerticalAlignment="Center" Margin="1,1,1,1" Name="Label"></TextBlock>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>
