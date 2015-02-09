@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SharpDX;
-using WoWEditor6.IO.Files.Models.WoD;
 
 namespace WoWEditor6.IO.Files.Models.Wotlk
 {
@@ -73,6 +72,12 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
                 GlobalSequences = ReadArrayOf<uint>(reader, mHeader.OfsGlobalSequences, mHeader.NGlobalSequences);
                 Vertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
+
+                for(var i = 0; i < Vertices.Length; ++i)
+                {
+                    var p = Vertices[i].position;
+                    Vertices[i].position = new Vector3(p.X, -p.Y, p.Z);
+                }
 
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];

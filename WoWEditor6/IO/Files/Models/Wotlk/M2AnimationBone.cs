@@ -30,7 +30,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public void UpdateMatrix(uint time, int animation, out Matrix matrix, M2Animator animator)
         {
             var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
-            position = new Vector3(position.X, -position.Y, position.Z);
             var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
             var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
 
