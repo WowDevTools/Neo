@@ -107,6 +107,10 @@
             this.SkinningLootId = new System.Windows.Forms.TextBox();
             this.label42 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label59 = new System.Windows.Forms.Label();
+            this.MaxGold = new System.Windows.Forms.TextBox();
+            this.MinGold = new System.Windows.Forms.TextBox();
+            this.label58 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.ResArcane = new System.Windows.Forms.NumericUpDown();
             this.label48 = new System.Windows.Forms.Label();
@@ -142,10 +146,6 @@
             this.label13 = new System.Windows.Forms.Label();
             this.VehicleId = new System.Windows.Forms.TextBox();
             this.label57 = new System.Windows.Forms.Label();
-            this.MinGold = new System.Windows.Forms.TextBox();
-            this.label58 = new System.Windows.Forms.Label();
-            this.label59 = new System.Windows.Forms.Label();
-            this.MaxGold = new System.Windows.Forms.TextBox();
             this.label61 = new System.Windows.Forms.Label();
             this.label60 = new System.Windows.Forms.Label();
             this.MaxLevel = new System.Windows.Forms.NumericUpDown();
@@ -189,25 +189,25 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label71 = new System.Windows.Forms.Label();
-            this.label72 = new System.Windows.Forms.Label();
-            this.label73 = new System.Windows.Forms.Label();
-            this.label74 = new System.Windows.Forms.Label();
-            this.label75 = new System.Windows.Forms.Label();
+            this.RegenHealth = new System.Windows.Forms.ComboBox();
             this.MechanicImmuneMask = new System.Windows.Forms.TextBox();
-            this.NpcFlag = new System.Windows.Forms.TextBox();
+            this.tapPage3 = new System.Windows.Forms.TabPage();
+            this.FlagsExtra = new System.Windows.Forms.TextBox();
+            this.UnitFlags2 = new System.Windows.Forms.TextBox();
             this.TypeFlags = new System.Windows.Forms.TextBox();
+            this.NpcFlag = new System.Windows.Forms.TextBox();
             this.DynamicFlags = new System.Windows.Forms.TextBox();
             this.UnitFlags = new System.Windows.Forms.TextBox();
-            this.UnitFlags2 = new System.Windows.Forms.TextBox();
-            this.FlagsExtra = new System.Windows.Forms.TextBox();
-            this.RegenHealth = new System.Windows.Forms.ComboBox();
-            this.tapPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label75 = new System.Windows.Forms.Label();
+            this.label74 = new System.Windows.Forms.Label();
+            this.label73 = new System.Windows.Forms.Label();
+            this.label72 = new System.Windows.Forms.Label();
+            this.label71 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Exp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BaseAtkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAtkSpeed)).BeginInit();
@@ -233,10 +233,10 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.tapPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -514,16 +514,16 @@
             // GossipMenuId
             // 
             this.GossipMenuId.BackColor = System.Drawing.SystemColors.Window;
-            this.GossipMenuId.Location = new System.Drawing.Point(12, 151);
+            this.GossipMenuId.Location = new System.Drawing.Point(116, 117);
             this.GossipMenuId.Name = "GossipMenuId";
-            this.GossipMenuId.Size = new System.Drawing.Size(110, 20);
+            this.GossipMenuId.Size = new System.Drawing.Size(197, 20);
             this.GossipMenuId.TabIndex = 14;
             this.GossipMenuId.Text = "0";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(15, 135);
+            this.label15.Location = new System.Drawing.Point(7, 120);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(83, 13);
             this.label15.TabIndex = 13;
@@ -571,7 +571,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(25, 65);
+            this.label20.Location = new System.Drawing.Point(7, 37);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(49, 13);
             this.label20.TabIndex = 23;
@@ -767,7 +767,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(274, 88);
+            this.label30.Location = new System.Drawing.Point(7, 93);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(54, 13);
             this.label30.TabIndex = 43;
@@ -776,7 +776,7 @@
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(274, 127);
+            this.label31.Location = new System.Drawing.Point(7, 121);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(60, 13);
             this.label31.TabIndex = 45;
@@ -785,7 +785,7 @@
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(24, 112);
+            this.label32.Location = new System.Drawing.Point(7, 65);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(76, 13);
             this.label32.TabIndex = 47;
@@ -901,7 +901,7 @@
             // level300
             // 
             this.level300.AutoSize = true;
-            this.level300.Location = new System.Drawing.Point(25, 24);
+            this.level300.Location = new System.Drawing.Point(7, 9);
             this.level300.Name = "level300";
             this.level300.Size = new System.Drawing.Size(59, 13);
             this.level300.TabIndex = 61;
@@ -979,6 +979,42 @@
             this.groupBox4.TabIndex = 69;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Loot data";
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(380, 100);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(10, 13);
+            this.label59.TabIndex = 81;
+            this.label59.Text = "-";
+            // 
+            // MaxGold
+            // 
+            this.MaxGold.BackColor = System.Drawing.SystemColors.Window;
+            this.MaxGold.Location = new System.Drawing.Point(396, 97);
+            this.MaxGold.Name = "MaxGold";
+            this.MaxGold.Size = new System.Drawing.Size(260, 20);
+            this.MaxGold.TabIndex = 82;
+            this.MaxGold.Text = "0";
+            // 
+            // MinGold
+            // 
+            this.MinGold.BackColor = System.Drawing.SystemColors.Window;
+            this.MinGold.Location = new System.Drawing.Point(115, 97);
+            this.MinGold.Name = "MinGold";
+            this.MinGold.Size = new System.Drawing.Size(260, 20);
+            this.MinGold.TabIndex = 80;
+            this.MinGold.Text = "0";
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(6, 100);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(82, 13);
+            this.label58.TabIndex = 79;
+            this.label58.Text = "Gold (in copper)";
             // 
             // groupBox5
             // 
@@ -1281,7 +1317,7 @@
             this.groupBox7.Controls.Add(this.TrainerClass);
             this.groupBox7.Controls.Add(this.label37);
             this.groupBox7.Controls.Add(this.TrainerRace);
-            this.groupBox7.Location = new System.Drawing.Point(135, 41);
+            this.groupBox7.Location = new System.Drawing.Point(319, 6);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(115, 170);
             this.groupBox7.TabIndex = 71;
@@ -1308,16 +1344,16 @@
             // PetSpellDataId
             // 
             this.PetSpellDataId.BackColor = System.Drawing.SystemColors.Window;
-            this.PetSpellDataId.Location = new System.Drawing.Point(271, 246);
+            this.PetSpellDataId.Location = new System.Drawing.Point(116, 173);
             this.PetSpellDataId.Name = "PetSpellDataId";
-            this.PetSpellDataId.Size = new System.Drawing.Size(100, 20);
+            this.PetSpellDataId.Size = new System.Drawing.Size(197, 20);
             this.PetSpellDataId.TabIndex = 80;
             this.PetSpellDataId.Text = "0";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(271, 230);
+            this.label13.Location = new System.Drawing.Point(7, 176);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(89, 13);
             this.label13.TabIndex = 79;
@@ -1326,56 +1362,20 @@
             // VehicleId
             // 
             this.VehicleId.BackColor = System.Drawing.SystemColors.Window;
-            this.VehicleId.Location = new System.Drawing.Point(271, 285);
+            this.VehicleId.Location = new System.Drawing.Point(116, 200);
             this.VehicleId.Name = "VehicleId";
-            this.VehicleId.Size = new System.Drawing.Size(100, 20);
+            this.VehicleId.Size = new System.Drawing.Size(197, 20);
             this.VehicleId.TabIndex = 82;
             this.VehicleId.Text = "0";
             // 
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(271, 269);
+            this.label57.Location = new System.Drawing.Point(7, 204);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(56, 13);
             this.label57.TabIndex = 81;
             this.label57.Text = "Vehicle ID";
-            // 
-            // MinGold
-            // 
-            this.MinGold.BackColor = System.Drawing.SystemColors.Window;
-            this.MinGold.Location = new System.Drawing.Point(115, 97);
-            this.MinGold.Name = "MinGold";
-            this.MinGold.Size = new System.Drawing.Size(260, 20);
-            this.MinGold.TabIndex = 80;
-            this.MinGold.Text = "0";
-            // 
-            // label58
-            // 
-            this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(6, 100);
-            this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(82, 13);
-            this.label58.TabIndex = 79;
-            this.label58.Text = "Gold (in copper)";
-            // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(380, 100);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(10, 13);
-            this.label59.TabIndex = 81;
-            this.label59.Text = "-";
-            // 
-            // MaxGold
-            // 
-            this.MaxGold.BackColor = System.Drawing.SystemColors.Window;
-            this.MaxGold.Location = new System.Drawing.Point(396, 97);
-            this.MaxGold.Name = "MaxGold";
-            this.MaxGold.Size = new System.Drawing.Size(260, 20);
-            this.MaxGold.TabIndex = 82;
-            this.MaxGold.Text = "0";
             // 
             // label61
             // 
@@ -1442,15 +1442,15 @@
             // MovementType
             // 
             this.MovementType.FormattingEnabled = true;
-            this.MovementType.Location = new System.Drawing.Point(17, 30);
+            this.MovementType.Location = new System.Drawing.Point(116, 6);
             this.MovementType.Name = "MovementType";
-            this.MovementType.Size = new System.Drawing.Size(100, 21);
+            this.MovementType.Size = new System.Drawing.Size(197, 21);
             this.MovementType.TabIndex = 88;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(17, 14);
+            this.label17.Location = new System.Drawing.Point(7, 9);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(84, 13);
             this.label17.TabIndex = 87;
@@ -1459,15 +1459,15 @@
             // InhabitType
             // 
             this.InhabitType.FormattingEnabled = true;
-            this.InhabitType.Location = new System.Drawing.Point(17, 70);
+            this.InhabitType.Location = new System.Drawing.Point(116, 61);
             this.InhabitType.Name = "InhabitType";
-            this.InhabitType.Size = new System.Drawing.Size(100, 21);
+            this.InhabitType.Size = new System.Drawing.Size(197, 21);
             this.InhabitType.TabIndex = 90;
             // 
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(17, 54);
+            this.label62.Location = new System.Drawing.Point(7, 64);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(66, 13);
             this.label62.TabIndex = 89;
@@ -1476,16 +1476,16 @@
             // HoverHeight
             // 
             this.HoverHeight.BackColor = System.Drawing.SystemColors.Window;
-            this.HoverHeight.Location = new System.Drawing.Point(17, 111);
+            this.HoverHeight.Location = new System.Drawing.Point(116, 89);
             this.HoverHeight.Name = "HoverHeight";
-            this.HoverHeight.Size = new System.Drawing.Size(100, 20);
+            this.HoverHeight.Size = new System.Drawing.Size(197, 20);
             this.HoverHeight.TabIndex = 80;
             this.HoverHeight.Text = "0";
             // 
             // label63
             // 
             this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(14, 94);
+            this.label63.Location = new System.Drawing.Point(7, 92);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(70, 13);
             this.label63.TabIndex = 79;
@@ -1584,15 +1584,15 @@
             // AiName
             // 
             this.AiName.BackColor = System.Drawing.SystemColors.Window;
-            this.AiName.Location = new System.Drawing.Point(265, 112);
+            this.AiName.Location = new System.Drawing.Point(116, 229);
             this.AiName.Name = "AiName";
-            this.AiName.Size = new System.Drawing.Size(100, 20);
+            this.AiName.Size = new System.Drawing.Size(197, 20);
             this.AiName.TabIndex = 92;
             // 
             // label69
             // 
             this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(265, 96);
+            this.label69.Location = new System.Drawing.Point(7, 232);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(48, 13);
             this.label69.TabIndex = 91;
@@ -1601,15 +1601,15 @@
             // RacialLeader
             // 
             this.RacialLeader.BackColor = System.Drawing.SystemColors.Window;
-            this.RacialLeader.Location = new System.Drawing.Point(265, 151);
+            this.RacialLeader.Location = new System.Drawing.Point(116, 145);
             this.RacialLeader.Name = "RacialLeader";
-            this.RacialLeader.Size = new System.Drawing.Size(100, 20);
+            this.RacialLeader.Size = new System.Drawing.Size(197, 20);
             this.RacialLeader.TabIndex = 94;
             // 
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(265, 135);
+            this.label70.Location = new System.Drawing.Point(7, 148);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(73, 13);
             this.label70.TabIndex = 93;
@@ -1690,15 +1690,15 @@
             // MovementId
             // 
             this.MovementId.BackColor = System.Drawing.SystemColors.Window;
-            this.MovementId.Location = new System.Drawing.Point(265, 190);
+            this.MovementId.Location = new System.Drawing.Point(116, 34);
             this.MovementId.Name = "MovementId";
-            this.MovementId.Size = new System.Drawing.Size(100, 20);
+            this.MovementId.Size = new System.Drawing.Size(197, 20);
             this.MovementId.TabIndex = 96;
             // 
             // label77
             // 
             this.label77.AutoSize = true;
-            this.label77.Location = new System.Drawing.Point(265, 173);
+            this.label77.Location = new System.Drawing.Point(7, 37);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(71, 13);
             this.label77.TabIndex = 95;
@@ -1725,7 +1725,7 @@
             // label80
             // 
             this.label80.AutoSize = true;
-            this.label80.Location = new System.Drawing.Point(218, 200);
+            this.label80.Location = new System.Drawing.Point(8, 149);
             this.label80.Name = "label80";
             this.label80.Size = new System.Drawing.Size(59, 13);
             this.label80.TabIndex = 101;
@@ -1734,15 +1734,15 @@
             // ScriptName
             // 
             this.ScriptName.BackColor = System.Drawing.SystemColors.Window;
-            this.ScriptName.Location = new System.Drawing.Point(377, 109);
+            this.ScriptName.Location = new System.Drawing.Point(116, 257);
             this.ScriptName.Name = "ScriptName";
-            this.ScriptName.Size = new System.Drawing.Size(100, 20);
+            this.ScriptName.Size = new System.Drawing.Size(197, 20);
             this.ScriptName.TabIndex = 104;
             // 
             // label81
             // 
             this.label81.AutoSize = true;
-            this.label81.Location = new System.Drawing.Point(377, 93);
+            this.label81.Location = new System.Drawing.Point(7, 260);
             this.label81.Name = "label81";
             this.label81.Size = new System.Drawing.Size(65, 13);
             this.label81.TabIndex = 103;
@@ -1751,15 +1751,16 @@
             // VerifiedBuild
             // 
             this.VerifiedBuild.BackColor = System.Drawing.SystemColors.Window;
-            this.VerifiedBuild.Location = new System.Drawing.Point(377, 148);
+            this.VerifiedBuild.Location = new System.Drawing.Point(116, 286);
             this.VerifiedBuild.Name = "VerifiedBuild";
-            this.VerifiedBuild.Size = new System.Drawing.Size(100, 20);
+            this.VerifiedBuild.Size = new System.Drawing.Size(197, 20);
             this.VerifiedBuild.TabIndex = 106;
+            this.VerifiedBuild.Text = "12340";
             // 
             // label82
             // 
             this.label82.AutoSize = true;
-            this.label82.Location = new System.Drawing.Point(377, 132);
+            this.label82.Location = new System.Drawing.Point(7, 289);
             this.label82.Name = "label82";
             this.label82.Size = new System.Drawing.Size(68, 13);
             this.label82.TabIndex = 105;
@@ -1879,6 +1880,121 @@
             this.tabPage2.Text = "Combat";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // RegenHealth
+            // 
+            this.RegenHealth.FormattingEnabled = true;
+            this.RegenHealth.Items.AddRange(new object[] {
+            "True",
+            "False"});
+            this.RegenHealth.Location = new System.Drawing.Point(153, 185);
+            this.RegenHealth.Name = "RegenHealth";
+            this.RegenHealth.Size = new System.Drawing.Size(376, 21);
+            this.RegenHealth.TabIndex = 101;
+            // 
+            // MechanicImmuneMask
+            // 
+            this.MechanicImmuneMask.Location = new System.Drawing.Point(153, 212);
+            this.MechanicImmuneMask.Name = "MechanicImmuneMask";
+            this.MechanicImmuneMask.Size = new System.Drawing.Size(376, 20);
+            this.MechanicImmuneMask.TabIndex = 111;
+            // 
+            // tapPage3
+            // 
+            this.tapPage3.Controls.Add(this.FlagsExtra);
+            this.tapPage3.Controls.Add(this.level300);
+            this.tapPage3.Controls.Add(this.label31);
+            this.tapPage3.Controls.Add(this.label30);
+            this.tapPage3.Controls.Add(this.UnitFlags2);
+            this.tapPage3.Controls.Add(this.label80);
+            this.tapPage3.Controls.Add(this.TypeFlags);
+            this.tapPage3.Controls.Add(this.label20);
+            this.tapPage3.Controls.Add(this.NpcFlag);
+            this.tapPage3.Controls.Add(this.DynamicFlags);
+            this.tapPage3.Controls.Add(this.UnitFlags);
+            this.tapPage3.Controls.Add(this.label32);
+            this.tapPage3.Location = new System.Drawing.Point(4, 22);
+            this.tapPage3.Name = "tapPage3";
+            this.tapPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tapPage3.Size = new System.Drawing.Size(655, 373);
+            this.tapPage3.TabIndex = 2;
+            this.tapPage3.Text = "Flags";
+            this.tapPage3.UseVisualStyleBackColor = true;
+            // 
+            // FlagsExtra
+            // 
+            this.FlagsExtra.Location = new System.Drawing.Point(116, 144);
+            this.FlagsExtra.Name = "FlagsExtra";
+            this.FlagsExtra.Size = new System.Drawing.Size(197, 20);
+            this.FlagsExtra.TabIndex = 117;
+            // 
+            // UnitFlags2
+            // 
+            this.UnitFlags2.Location = new System.Drawing.Point(116, 118);
+            this.UnitFlags2.Name = "UnitFlags2";
+            this.UnitFlags2.Size = new System.Drawing.Size(197, 20);
+            this.UnitFlags2.TabIndex = 116;
+            // 
+            // TypeFlags
+            // 
+            this.TypeFlags.Location = new System.Drawing.Point(116, 6);
+            this.TypeFlags.Name = "TypeFlags";
+            this.TypeFlags.Size = new System.Drawing.Size(197, 20);
+            this.TypeFlags.TabIndex = 113;
+            // 
+            // NpcFlag
+            // 
+            this.NpcFlag.Location = new System.Drawing.Point(116, 34);
+            this.NpcFlag.Name = "NpcFlag";
+            this.NpcFlag.Size = new System.Drawing.Size(197, 20);
+            this.NpcFlag.TabIndex = 112;
+            // 
+            // DynamicFlags
+            // 
+            this.DynamicFlags.Location = new System.Drawing.Point(116, 62);
+            this.DynamicFlags.Name = "DynamicFlags";
+            this.DynamicFlags.Size = new System.Drawing.Size(197, 20);
+            this.DynamicFlags.TabIndex = 114;
+            // 
+            // UnitFlags
+            // 
+            this.UnitFlags.Location = new System.Drawing.Point(116, 90);
+            this.UnitFlags.Name = "UnitFlags";
+            this.UnitFlags.Size = new System.Drawing.Size(197, 20);
+            this.UnitFlags.TabIndex = 115;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.label17);
+            this.tabPage4.Controls.Add(this.label15);
+            this.tabPage4.Controls.Add(this.GossipMenuId);
+            this.tabPage4.Controls.Add(this.groupBox7);
+            this.tabPage4.Controls.Add(this.VerifiedBuild);
+            this.tabPage4.Controls.Add(this.label13);
+            this.tabPage4.Controls.Add(this.label82);
+            this.tabPage4.Controls.Add(this.PetSpellDataId);
+            this.tabPage4.Controls.Add(this.ScriptName);
+            this.tabPage4.Controls.Add(this.label57);
+            this.tabPage4.Controls.Add(this.label81);
+            this.tabPage4.Controls.Add(this.VehicleId);
+            this.tabPage4.Controls.Add(this.MovementId);
+            this.tabPage4.Controls.Add(this.MovementType);
+            this.tabPage4.Controls.Add(this.label77);
+            this.tabPage4.Controls.Add(this.label62);
+            this.tabPage4.Controls.Add(this.RacialLeader);
+            this.tabPage4.Controls.Add(this.label63);
+            this.tabPage4.Controls.Add(this.label70);
+            this.tabPage4.Controls.Add(this.InhabitType);
+            this.tabPage4.Controls.Add(this.AiName);
+            this.tabPage4.Controls.Add(this.HoverHeight);
+            this.tabPage4.Controls.Add(this.label69);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(655, 373);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Misc";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.DiffEntry3);
@@ -1920,50 +2036,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Quest data";
             // 
-            // label16
+            // label75
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 44);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(67, 13);
-            this.label16.TabIndex = 10;
-            this.label16.Text = "Quest Items*";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(299, 128);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(280, 13);
-            this.label39.TabIndex = 79;
-            this.label39.Text = "* NO LOOT INFORMATION! These are just for the tooltip!";
-            // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(337, 44);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(13, 13);
-            this.label71.TabIndex = 80;
-            this.label71.Text = "2";
-            // 
-            // label72
-            // 
-            this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(6, 72);
-            this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(13, 13);
-            this.label72.TabIndex = 81;
-            this.label72.Text = "3";
-            // 
-            // label73
-            // 
-            this.label73.AutoSize = true;
-            this.label73.Location = new System.Drawing.Point(6, 100);
-            this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(13, 13);
-            this.label73.TabIndex = 82;
-            this.label73.Text = "5";
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(337, 100);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(13, 13);
+            this.label75.TabIndex = 84;
+            this.label75.Text = "6";
             // 
             // label74
             // 
@@ -1974,129 +2054,50 @@
             this.label74.TabIndex = 83;
             this.label74.Text = "4";
             // 
-            // label75
+            // label73
             // 
-            this.label75.AutoSize = true;
-            this.label75.Location = new System.Drawing.Point(337, 100);
-            this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(13, 13);
-            this.label75.TabIndex = 84;
-            this.label75.Text = "6";
+            this.label73.AutoSize = true;
+            this.label73.Location = new System.Drawing.Point(6, 100);
+            this.label73.Name = "label73";
+            this.label73.Size = new System.Drawing.Size(13, 13);
+            this.label73.TabIndex = 82;
+            this.label73.Text = "5";
             // 
-            // MechanicImmuneMask
+            // label72
             // 
-            this.MechanicImmuneMask.Location = new System.Drawing.Point(153, 212);
-            this.MechanicImmuneMask.Name = "MechanicImmuneMask";
-            this.MechanicImmuneMask.Size = new System.Drawing.Size(376, 20);
-            this.MechanicImmuneMask.TabIndex = 111;
+            this.label72.AutoSize = true;
+            this.label72.Location = new System.Drawing.Point(6, 72);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(13, 13);
+            this.label72.TabIndex = 81;
+            this.label72.Text = "3";
             // 
-            // NpcFlag
+            // label71
             // 
-            this.NpcFlag.Location = new System.Drawing.Point(22, 81);
-            this.NpcFlag.Name = "NpcFlag";
-            this.NpcFlag.Size = new System.Drawing.Size(100, 20);
-            this.NpcFlag.TabIndex = 112;
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(337, 44);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(13, 13);
+            this.label71.TabIndex = 80;
+            this.label71.Text = "2";
             // 
-            // TypeFlags
+            // label39
             // 
-            this.TypeFlags.Location = new System.Drawing.Point(22, 40);
-            this.TypeFlags.Name = "TypeFlags";
-            this.TypeFlags.Size = new System.Drawing.Size(100, 20);
-            this.TypeFlags.TabIndex = 113;
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(299, 128);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(280, 13);
+            this.label39.TabIndex = 79;
+            this.label39.Text = "* NO LOOT INFORMATION! These are just for the tooltip!";
             // 
-            // DynamicFlags
+            // label16
             // 
-            this.DynamicFlags.Location = new System.Drawing.Point(31, 140);
-            this.DynamicFlags.Name = "DynamicFlags";
-            this.DynamicFlags.Size = new System.Drawing.Size(100, 20);
-            this.DynamicFlags.TabIndex = 114;
-            // 
-            // UnitFlags
-            // 
-            this.UnitFlags.Location = new System.Drawing.Point(263, 104);
-            this.UnitFlags.Name = "UnitFlags";
-            this.UnitFlags.Size = new System.Drawing.Size(100, 20);
-            this.UnitFlags.TabIndex = 115;
-            // 
-            // UnitFlags2
-            // 
-            this.UnitFlags2.Location = new System.Drawing.Point(273, 146);
-            this.UnitFlags2.Name = "UnitFlags2";
-            this.UnitFlags2.Size = new System.Drawing.Size(100, 20);
-            this.UnitFlags2.TabIndex = 116;
-            // 
-            // FlagsExtra
-            // 
-            this.FlagsExtra.Location = new System.Drawing.Point(228, 221);
-            this.FlagsExtra.Name = "FlagsExtra";
-            this.FlagsExtra.Size = new System.Drawing.Size(100, 20);
-            this.FlagsExtra.TabIndex = 117;
-            // 
-            // RegenHealth
-            // 
-            this.RegenHealth.FormattingEnabled = true;
-            this.RegenHealth.Items.AddRange(new object[] {
-            "True",
-            "False"});
-            this.RegenHealth.Location = new System.Drawing.Point(153, 185);
-            this.RegenHealth.Name = "RegenHealth";
-            this.RegenHealth.Size = new System.Drawing.Size(376, 21);
-            this.RegenHealth.TabIndex = 101;
-            // 
-            // tapPage3
-            // 
-            this.tapPage3.Controls.Add(this.FlagsExtra);
-            this.tapPage3.Controls.Add(this.level300);
-            this.tapPage3.Controls.Add(this.label31);
-            this.tapPage3.Controls.Add(this.label30);
-            this.tapPage3.Controls.Add(this.UnitFlags2);
-            this.tapPage3.Controls.Add(this.label80);
-            this.tapPage3.Controls.Add(this.TypeFlags);
-            this.tapPage3.Controls.Add(this.label20);
-            this.tapPage3.Controls.Add(this.NpcFlag);
-            this.tapPage3.Controls.Add(this.DynamicFlags);
-            this.tapPage3.Controls.Add(this.UnitFlags);
-            this.tapPage3.Controls.Add(this.label32);
-            this.tapPage3.Location = new System.Drawing.Point(4, 22);
-            this.tapPage3.Name = "tapPage3";
-            this.tapPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tapPage3.Size = new System.Drawing.Size(655, 373);
-            this.tapPage3.TabIndex = 2;
-            this.tapPage3.Text = "Flags";
-            this.tapPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.label17);
-            this.tabPage4.Controls.Add(this.label15);
-            this.tabPage4.Controls.Add(this.GossipMenuId);
-            this.tabPage4.Controls.Add(this.groupBox7);
-            this.tabPage4.Controls.Add(this.VerifiedBuild);
-            this.tabPage4.Controls.Add(this.label13);
-            this.tabPage4.Controls.Add(this.label82);
-            this.tabPage4.Controls.Add(this.PetSpellDataId);
-            this.tabPage4.Controls.Add(this.ScriptName);
-            this.tabPage4.Controls.Add(this.label57);
-            this.tabPage4.Controls.Add(this.label81);
-            this.tabPage4.Controls.Add(this.VehicleId);
-            this.tabPage4.Controls.Add(this.MovementId);
-            this.tabPage4.Controls.Add(this.MovementType);
-            this.tabPage4.Controls.Add(this.label77);
-            this.tabPage4.Controls.Add(this.label62);
-            this.tabPage4.Controls.Add(this.RacialLeader);
-            this.tabPage4.Controls.Add(this.label63);
-            this.tabPage4.Controls.Add(this.label70);
-            this.tabPage4.Controls.Add(this.InhabitType);
-            this.tabPage4.Controls.Add(this.AiName);
-            this.tabPage4.Controls.Add(this.HoverHeight);
-            this.tabPage4.Controls.Add(this.label69);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(655, 373);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Misc";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 44);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(67, 13);
+            this.label16.TabIndex = 10;
+            this.label16.Text = "Quest Items*";
             // 
             // CreatureEditorControl
             // 
@@ -2143,14 +2144,14 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.tapPage3.ResumeLayout(false);
             this.tapPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
