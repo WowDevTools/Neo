@@ -39,7 +39,6 @@
         int TrainerSpell { get; set; }
         int TrainerClass { get; set; }
         int TrainerRace { get; set; }
-        int RangedAttackPower { get; set; }
         CreatureType Type { get; set; }
         TypeFlags TypeFlags { get; set; }
         int LootId { get; set; }
@@ -98,6 +97,7 @@
 
     public enum NpcFlag : uint
     {
+        None = 0x0,
         Gossip = 0x1,
         QuestGiver = 0x2,
         Trainer = 0x10,
@@ -126,6 +126,7 @@
 
     public enum UnitFlags : uint
     {
+        None = 0x0,
         ServerControlled = 0x1,
         NonAttackable = 0x2,
         DisableMove = 0x4,
@@ -162,6 +163,7 @@
 
     public enum UnitFlags2
     {
+        None = 0x0,
         FeignDeath = 0x1,
         Unknown1 = 0x2,
         IgnoreReputation = 0x4,
@@ -226,6 +228,7 @@
 
     public enum Family
     {
+        None = 0x0,
         Wolf = 1,
         Cat = 2,
         Spider = 3,
@@ -288,6 +291,7 @@
 
     public enum TypeFlags
     {
+        None = 0x0,
         Tameable = 0x1,
         Ghost = 0x2,
         Unknown3 = 0x4,
@@ -335,6 +339,7 @@
 
     public enum MechanicImmuneMask
     {
+        None = 0x0,
         Charm = 0x1,
         Disoriented = 0x2,
         Disarm = 0x4,
@@ -370,6 +375,7 @@
 
     public enum FlagsExtra
     {
+        None = 0x0,
         InstanceBind = 0x1,
         Civilian = 0x2,
         NoParry = 0x4,
