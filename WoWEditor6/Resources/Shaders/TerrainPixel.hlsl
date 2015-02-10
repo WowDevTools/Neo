@@ -72,7 +72,7 @@ float4 applyBrush(float4 color, float3 worldPos) {
     fac *= clamp((radius - dsq) / antiAliasSize, 0, 1);
 
     float angle = atan2(dirVec.y, dirVec.x) + 3.1415926 * brushRotation;
-    float brushTime = brushParams.z * brushRotation * 4;
+    float brushTime = brushParams.z * brushRotation * 10;
     angle = fmod(abs(degrees(angle) + brushTime), 36.0f);
 
     // Antialiasing between the circle segments
