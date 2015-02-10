@@ -88,6 +88,13 @@ namespace WoWEditor6.Scene
             mGlobalParamsChanged = true;
         }
 
+        public void UpdateTerrainBrushTime(System.TimeSpan frameTime)
+        {
+            double timeSecs = (double)frameTime.TotalMilliseconds / 1000.0;
+            mGlobalParamsBufferStore.brushParameters.Z = (float)timeSecs;
+            mGlobalParamsChanged = true;
+        }
+
         public void OnResize(int width, int height)
         {
             mMainCamera.SetAspect((float) width / height);
@@ -186,7 +193,7 @@ namespace WoWEditor6.Scene
 
             // do not move before mCamControl.Update to have the latest view/projection
             UpdateCursorPosition();
-
+            UpdateTerrainBrushTime(Utils.TimeManager.Instance.GetTime());
             UpdateBuffers();
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
