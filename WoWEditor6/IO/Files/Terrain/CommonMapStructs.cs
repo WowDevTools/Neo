@@ -11,6 +11,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public Vector2 TexCoord;
         public Vector2 TexCoordAlpha;
         public uint Color;
+        public uint AdditiveColor;
     }
 
     [StructLayout(LayoutKind.Sequential)]

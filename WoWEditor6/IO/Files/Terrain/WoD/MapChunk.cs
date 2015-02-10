@@ -224,6 +224,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                         hasMccv = true;
                         LoadMccv();
                         break;
+
+                    case 0x4D434C56:
+                        LoadMclv();
+                        break;
                 }
 
                 mReader.BaseStream.Position = cur;
@@ -537,6 +541,15 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 var a = (colors[i] >> 24) & 0xFF;
 
                 mShadingFloats[i] = new Vector4(b * 2.0f / 255.0f, g * 2.0f / 255.0f, r * 2.0f / 255.0f, a * 2.0f / 255.0f);
+            }
+        }
+
+        private void LoadMclv()
+        {
+            var colors = mReader.ReadArray<uint>(145);
+            for(var i = 0; i < 145; ++i)
+            {
+                Vertices[i].AdditiveColor = colors[i];
             }
         }
 

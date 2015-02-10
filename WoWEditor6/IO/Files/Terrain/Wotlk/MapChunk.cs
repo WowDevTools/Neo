@@ -152,6 +152,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 }
             }
 
+            if(mHeader.Mclv > 0)
+            {
+                reader.BaseStream.Position = basePosition + mHeader.Mclv + 8;
+                var colors = reader.ReadArray<uint>(145);
+                for (var i = 0; i < 145; ++i)
+                    Vertices[i].AdditiveColor = colors[i];
+            }
+
             if (hasMccv == false)
             {
                 for (var i = 0; i < 145; ++i)
