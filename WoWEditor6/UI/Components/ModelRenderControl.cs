@@ -98,9 +98,7 @@ namespace WoWEditor6.UI.Components
 
         void OnRenderTimerTick(object sender, EventArgs args)
         {
-            if (Focused)
-                mCamControl.Update(mCamera);
-
+            mCamControl.Update(mCamera, false);
             WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
         }
 

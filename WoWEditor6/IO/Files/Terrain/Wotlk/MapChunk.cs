@@ -697,6 +697,12 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             writer.Write(0x4D43414C);
             var sizePos = writer.BaseStream.Position;
             writer.Write(0);
+            if(mLayers.Length == 0)
+            {
+                header.SizeAlpha = 8;
+                return;
+            }
+
             var curPos = 0;
             mLayers[0].Flags &= ~0x300u;
             mLayers[0].OfsMcal = 0;

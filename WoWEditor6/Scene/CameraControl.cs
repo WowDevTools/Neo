@@ -28,9 +28,9 @@ namespace WoWEditor6.Scene
             mWindow = window;
         }
 
-        public void Update(Camera cam)
+        public void Update(Camera cam, bool stateOnly)
         {
-            if (mWindow.Focused == false || WorldFrame.Instance.State != AppState.World)
+            if (mWindow.Focused == false || stateOnly)
             {
                 mLastCursorPos = Cursor.Position;
                 mLastUpdate = DateTime.Now;
