@@ -61,7 +61,18 @@ namespace WoWEditor6.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to struct PixelInput
+        ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
+        ///{
+        ///	float4 ambientLight;
+        ///	float4 diffuseLight;
+        ///	float4 fogColor;
+        ///	// x -&gt; fogStart
+        ///	// y -&gt; fotEnd
+        ///	// z -&gt; farClip
+        ///	float4 fogParams;
+        ///};
+        ///
+        ///struct PixelInput
         ///{
         ///	float4 position : SV_Position;
         ///	float3 normal : NORMAL0;
@@ -69,13 +80,46 @@ namespace WoWEditor6.Resources {
         ///	float depth : TEXCOORD1;
         ///};
         ///
-        ///float4 main(PixelInput input) : SV_Target {
-        ///	return float4(1, 1, 1, 1);
-        ///}.
+        ///float3 getDiffuseLight(float3 normal) {
+        ///	float light = dot(normal, normalize(-float3(-1, 1, -1)));
+        ///	if (light &lt; 0.0)
+        ///		light = 0.0;
+        ///	if (light &gt; 0.5)
+        ///		light = 0.5 + (lig [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string M2Pixel {
             get {
                 return ResourceManager.GetString("M2Pixel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to struct PixelInput
+        ///{
+        ///	float4 position : SV_Position;
+        ///	float3 normal : NORMAL0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///};
+        ///
+        ///float3 getDiffuseLight(float3 normal) {
+        ///	float light = dot(normal, normalize(-float3(-1, 1, -1)));
+        ///	if (light &lt; 0.0)
+        ///		light = 0.0;
+        ///	if (light &gt; 0.5)
+        ///		light = 0.5 + (light - 0.5) * 0.65;
+        ///
+        ///	float3 diffuse = float3(0.7, 0.7, 0.7) * light;
+        ///	diffuse += float3(0.3, 0.3, 0.3);
+        ///	diffuse = saturate(diffuse);
+        ///	return diffuse;
+        ///}
+        ///
+        ///Texture2D baseTexture : register(t0);
+        ///SamplerState baseS [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string M2PixelPortrait {
+            get {
+                return ResourceManager.GetString("M2PixelPortrait", resourceCulture);
             }
         }
         
@@ -89,29 +133,66 @@ namespace WoWEditor6.Resources {
         ///
         ///cbuffer AnimationMatrices : register(b2)
         ///{
-        ///	float4x4 Bones[256];
+        ///	row_major float4x4 Bones[256];
+        ///}
+        ///
+        ///cbuffer UvAnimation : register(b3)
+        ///{
+        ///	row_major float4x4 UvAnimation;
         ///}
         ///
         ///struct VertexInput
         ///{
         ///	float3 position : POSITION0;
-        ///	float4 boneWeigths : BLENDWEIGHT0;
+        ///	float4 boneWeights : BLENDWEIGHT0;
         ///	int4 bones : BLENDINDEX0;
         ///	float3 normal : NORMAL0;
         ///	float2 texCoord : TEXCOORD0;
         ///	float2 texCoord2 : TEXCOORD1;
         ///
         ///	float4 mat0 : TEXCOORD2;
-        ///	float4 mat1 : TEXCOORD3;
-        ///	float4 mat2 : TEXCOORD4;
-        ///	float4 mat3 : TEXCOORD5;
-        ///};
-        ///
-        ///struct [rest of string was truncated]&quot;;.
+        ///	floa [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string M2VertexInstanced {
             get {
                 return ResourceManager.GetString("M2VertexInstanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
+        ///{
+        ///	float4x4 matView;
+        ///	float4x4 matProj;
+        ///};
+        ///
+        ///cbuffer AnimationMatrices : register(b2)
+        ///{
+        ///	row_major float4x4 Bones[256];
+        ///}
+        ///
+        ///cbuffer UvAnimation : register(b3)
+        ///{
+        ///	row_major float4x4 UvAnimation;
+        ///}
+        ///
+        ///struct VertexInput
+        ///{
+        ///	float3 position : POSITION0;
+        ///	float4 boneWeights : BLENDWEIGHT0;
+        ///	int4 bones : BLENDINDEX0;
+        ///	float3 normal : NORMAL0;
+        ///	float2 texCoord : TEXCOORD0;
+        ///	float2 texCoord2 : TEXCOORD1;
+        ///};
+        ///
+        ///struct VertexOutput
+        ///{
+        ///	float4 position : SV_Posi [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string M2VertexPortrait {
+            get {
+                return ResourceManager.GetString("M2VertexPortrait", resourceCulture);
             }
         }
         
@@ -235,6 +316,7 @@ namespace WoWEditor6.Resources {
         ///	float2 texCoordAlpha : TEXCOORD1;
         ///	float4 color : COLOR0;
         ///	float depth : TEXCOORD2;
+        ///	float3 worldPosition : TEXCOORD3;
         ///};
         ///
         ///SamplerState alphaSampler : register(s1);
@@ -244,9 +326,7 @@ namespace WoWEditor6.Resources {
         ///Texture2D texture0 : register(t1);
         ///Texture2D texture1 : register(t2);
         ///Texture2D texture2 : register(t3);
-        ///Texture2D texture3 : register(t4);
-        ///
-        ///float3 sunDirection = float3(1, [rest of string was truncated]&quot;;.
+        ///Texture2D texture3 : register(t4) [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TerrainPixel {
             get {
@@ -263,6 +343,7 @@ namespace WoWEditor6.Resources {
         ///	float2 texCoordAlpha : TEXCOORD1;
         ///	float4 color : COLOR0;
         ///	float depth : TEXCOORD2;
+        ///	float3 worldPosition : TEXCOORD3;
         ///};
         ///
         ///SamplerState alphaSampler : register(s1);
@@ -272,9 +353,7 @@ namespace WoWEditor6.Resources {
         ///Texture2D texture0 : register(t1);
         ///Texture2D texture1 : register(t2);
         ///Texture2D texture2 : register(t3);
-        ///Texture2D texture3 : register(t4);
-        ///
-        ///float3 sunDirection = float3(1, [rest of string was truncated]&quot;;.
+        ///Texture2D texture3 : register(t4) [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TerrainPixelNew {
             get {
@@ -300,16 +379,14 @@ namespace WoWEditor6.Resources {
         ///	float2 texCoordAlpha : TEXCOORD1;
         ///	float4 color : COLOR0;
         ///	float depth : TEXCOORD2;
+        ///	float3 worldPosition : TEXCOORD3;
         ///};
         ///
         ///cbuffer GlobalParams : register(b0)
         ///{
         ///	float4x4 matView;
         ///	float4x4 matProj;
-        ///	float4 eyePosition;
-        ///};
-        ///
-        ///VertexOutput mai [rest of string was truncated]&quot;;.
+        ///	float4  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TerrainVertex {
             get {

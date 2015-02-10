@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
+using SharpDX;
 using WoWEditor6.Settings;
-using WoWEditor6.UI;
 using WoWEditor6.Utils;
+using Point = System.Drawing.Point;
 
 namespace WoWEditor6.Scene
 {
     class CameraControl
     {
-        private readonly RenderControl mWindow;
+        public delegate void PositionChangedHandler(Vector3 newPosition, bool updateTerrain);
+
+        private readonly Control mWindow;
         private Point mLastCursorPos;
         private DateTime mLastUpdate = DateTime.Now;
 
@@ -17,14 +19,16 @@ namespace WoWEditor6.Scene
         private float speedFactorWheel = 0.5f;
         private float turnFactor = 0.2f;
         public bool InvertX { get; set; }
-		public bool InvertY { get; set; }
+        public bool InvertY { get; set; }
 
-        public CameraControl(RenderControl window)
+        public event PositionChangedHandler PositionChanged;
+
+        public CameraControl(Control window)
         {
             mWindow = window;
         }
 
-        public void Update()
+        public void Update(Camera cam)
         {
             if (mWindow.Focused == false || WorldFrame.Instance.State != AppState.World)
             {
@@ -38,7 +42,6 @@ namespace WoWEditor6.Scene
 
             var positionChanged = false;
             var updateTerrain = false;
-            var cam = WorldFrame.Instance.ActiveCamera;
             var diff = (float)(DateTime.Now - mLastUpdate).TotalSeconds;
 
             var camBind = KeyBindings.Instance.Camera;
@@ -95,8 +98,8 @@ namespace WoWEditor6.Scene
                     cam.Pitch(dy * turnFactor * (InvertY ? -1 : 1));
             }
 
-            if (positionChanged)
-                WorldFrame.Instance.MapManager.UpdatePosition(cam.Position, updateTerrain);
+            if (positionChanged && PositionChanged != null)
+                PositionChanged(cam.Position, updateTerrain);
 
             mLastUpdate = DateTime.Now;
             mLastCursorPos = Cursor.Position;

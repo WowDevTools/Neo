@@ -19,6 +19,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public M2AnimationBone(M2File file, ref M2Bone bone, BinaryReader reader)
         {
             Bone = bone;
+            bone.pivot.Y = -bone.pivot.Y;
             mPivot = Matrix.Translation(bone.pivot);
             mInvPivot = Matrix.Translation(-bone.pivot);
 
@@ -30,6 +31,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public void UpdateMatrix(uint time, int animation, out Matrix matrix, M2Animator animator)
         {
             var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
+            position.Y = -position.Y;
             var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
             var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
 

@@ -120,6 +120,7 @@
     <Compile Include="Graphics\InputLayoutCache.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\RasterState.cs" />
+    <Compile Include="Graphics\RenderTarget.cs" />
     <Compile Include="Graphics\Sampler.cs" />
     <Compile Include="Graphics\ShaderProgram.cs" />
     <Compile Include="Graphics\Texture.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Scene\IntersectionParams.cs" />
     <Compile Include="Scene\Models\M2Manager.cs" />
     <Compile Include="Scene\Models\M2\M2BatchRenderer.cs" />
+    <Compile Include="Scene\Models\M2\M2ModelRenderer.cs" />
     <Compile Include="Scene\Models\M2\M2RenderInstance.cs" />
     <Compile Include="Scene\Models\M2\StaticAnimationThread.cs" />
     <Compile Include="Scene\Models\WmoManager.cs" />
@@ -274,6 +276,12 @@
     <Compile Include="UI\Components\Label.cs" />
     <Compile Include="UI\Components\MapSelectQuad.cs" />
     <Compile Include="UI\Components\Message.cs" />
+    <Compile Include="UI\Components\ModelRenderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Components\ModelRenderControl.Designer.cs">
+      <DependentUpon>ModelRenderControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\MouseMessage.cs" />
     <Compile Include="UI\Components\PerformanceControl.cs" />
     <Compile Include="UI\Components\Scrollbar.cs" />
@@ -367,6 +375,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Components\ModelRenderControl.resx">
+      <DependentUpon>ModelRenderControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\CreatureEditor.resx">
       <DependentUpon>CreatureEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -381,6 +392,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Shaders\M2PixelPortrait.hlsl" />
+    <Content Include="Resources\Shaders\M2VertexPortrait.hlsl" />
     <Content Include="StormLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

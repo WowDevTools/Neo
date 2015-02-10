@@ -132,6 +132,7 @@ namespace WoWEditor6.Scene
             MapAreaLowRender.Initialize(context);
             WmoGroupRender.Initialize(context);
             M2BatchRenderer.Initialize(context);
+            M2ModelRenderer.Initialize(context);
 
             StaticAnimationThread.Instance.Initialize();
 
@@ -152,6 +153,7 @@ namespace WoWEditor6.Scene
             ProjectionChanged(mMainCamera, mMainCamera.Projection);
 
             CamControl = new CameraControl(window);
+            CamControl.PositionChanged += MapManager.UpdatePosition;
         }
 
         public void OnEnterWorld(Vector3 position)
@@ -175,7 +177,7 @@ namespace WoWEditor6.Scene
         {
             Dispatcher.ProcessFrame();
 
-            CamControl.Update();
+            CamControl.Update(ActiveCamera);
 
             Editing.EditManager.Instance.UpdateChanges();
 

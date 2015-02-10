@@ -194,7 +194,31 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         }
     }
 
-    class M2Quaternion16AnimationBlock : M2AnimationBlock<Quaternion16, Quaternion, QuaternionInterpolator>
+    class M2QuaternionInterpolation : IInterpolator<Quaternion16, Quaternion>
+    {
+        public Quaternion Interpolate(float fac, ref Quaternion16 v1, ref Quaternion16 v2)
+        {
+            var q1 = v1.ToQuaternion();
+            var q2 = v2.ToQuaternion();
+            q1.X = -q1.X;
+            q1.Z = -q1.Z;
+            q2.X = -q2.X;
+            q2.Z = -q2.Z;
+            Quaternion ret;
+            Quaternion.Slerp(ref q1, ref q2, fac, out ret);
+            return ret;
+        }
+
+        public Quaternion Interpolate(ref Quaternion16 v1)
+        {
+            var q1 = v1.ToQuaternion();
+            q1.X = -q1.X;
+            q1.Z = -q1.Z;
+            return q1;
+        }
+    }
+
+    class M2Quaternion16AnimationBlock : M2AnimationBlock<Quaternion16, Quaternion, M2QuaternionInterpolation>
     {
         public M2Quaternion16AnimationBlock(M2File file, AnimationBlock data, BinaryReader reader, Quaternion defaultValue)
             : base(file, data, reader, defaultValue)

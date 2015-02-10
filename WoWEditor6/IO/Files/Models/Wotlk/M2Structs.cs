@@ -126,7 +126,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public readonly AnimationBlock translation;
         public readonly AnimationBlock rotation;
         public readonly AnimationBlock scaling;
-        public readonly Vector3 pivot;
+        public Vector3 pivot;
     }
 
     [StructLayout(LayoutKind.Sequential)]

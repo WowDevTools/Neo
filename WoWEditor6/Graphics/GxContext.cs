@@ -24,6 +24,9 @@ namespace WoWEditor6.Graphics
         public Adapter1 Adapter { get; private set; }
         public ViewportF Viewport { get { return Context.Rasterizer.GetViewports()[0]; } }
 
+        public SampleDescription Multisampling { get { return mSwapChainDesc.SampleDescription; } }
+        public Format BackBufferFormat { get { return mSwapChainDesc.ModeDescription.Format; } }
+
         public GxContext(RenderControl window)
         {
             mWindow = window;
