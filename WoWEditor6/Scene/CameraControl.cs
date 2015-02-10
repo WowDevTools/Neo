@@ -25,7 +25,6 @@ namespace WoWEditor6.Scene
 
         public CameraControl(Control window)
         {
-            InvertY = true;
             mWindow = window;
         }
 
@@ -95,6 +94,7 @@ namespace WoWEditor6.Scene
 
                 if (dx != 0)
                     cam.Yaw(dx * turnFactor * (InvertX ? 1 : -1));
+
                 if (dy != 0)
                     cam.Pitch(dy * turnFactor * (InvertY ? 1 : -1));
             }

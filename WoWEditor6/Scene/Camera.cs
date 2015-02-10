@@ -138,12 +138,14 @@ namespace WoWEditor6.Scene
         public void Pitch(float angle)
         {
             var matRot = Matrix.RotationAxis(mRight, MathUtil.DegreesToRadians(angle));
-            mForward = Vector3.TransformCoordinate(mForward, matRot);
-            mForward.Normalize();
-
-            mTarget = Position + mForward;
             mUp = Vector3.TransformCoordinate(mUp, matRot);
             mUp.Normalize();
+
+            if (mUp.Z < 0)
+                mUp.Z = 0;
+
+            mForward = Vector3.Cross(mUp, mRight);
+            mTarget = Position + mForward;
 
             UpdateView();
         }

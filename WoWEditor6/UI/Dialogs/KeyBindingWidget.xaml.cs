@@ -144,11 +144,7 @@ namespace WoWEditor6.UI.Dialogs
             if (cb == null)
                 return;
 
-            var invert = cb.IsChecked ?? false;
-            if (WorldFrame.Instance.LeftHandedCamera)
-                invert = !invert;
-
-            WorldFrame.Instance.CamControl.InvertY = invert;
+            WorldFrame.Instance.CamControl.InvertY = !WorldFrame.Instance.CamControl.InvertY;
         }
     }
 }

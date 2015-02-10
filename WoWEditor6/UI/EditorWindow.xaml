@@ -6,7 +6,7 @@
              xmlns:avalon="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:local="clr-namespace:WoWEditor6.UI"
              xmlns:dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
-             mc:Ignorable="d" Height="607" Width="927" Title="WoWDev" Loaded="Window_Loaded" Closed="Window_Closed">
+             mc:Ignorable="d" Width="1600" Height="900" Title="WoWDev" Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
