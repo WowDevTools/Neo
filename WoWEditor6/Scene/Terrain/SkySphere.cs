@@ -38,8 +38,8 @@ namespace WoWEditor6.Scene.Terrain
             mMatrixBuffer.UpdateData(Matrix.Identity);
 
             var program = new ShaderProgram(context);
-            program.SetVertexShader(Resources.Shaders.SkyVertex, "main");
-            program.SetPixelShader(Resources.Shaders.SkyPixel, "main");
+            program.SetVertexShader(Resources.Shaders.SkyVertex);
+            program.SetPixelShader(Resources.Shaders.SkyPixel);
 
             mMesh.Program = program;
         }

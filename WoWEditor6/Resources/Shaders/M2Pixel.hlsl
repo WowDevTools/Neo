@@ -1,4 +1,4 @@
-﻿cbuffer GlobalParamsBuffer : register(b0)
+cbuffer GlobalParamsBuffer : register(b0)
 {
 	float4 ambientLight;
 	float4 diffuseLight;

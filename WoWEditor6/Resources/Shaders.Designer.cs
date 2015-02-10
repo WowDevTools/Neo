@@ -61,454 +61,184 @@ namespace WoWEditor6.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
-        ///{
-        ///	float4 ambientLight;
-        ///	float4 diffuseLight;
-        ///	float4 fogColor;
-        ///	// x -&gt; fogStart
-        ///	// y -&gt; fotEnd
-        ///	// z -&gt; farClip
-        ///	float4 fogParams;
-        ///};
-        ///
-        ///struct PixelInput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float depth : TEXCOORD1;
-        ///};
-        ///
-        ///float3 getDiffuseLight(float3 normal) {
-        ///	float light = dot(normal, normalize(-float3(-1, 1, -1)));
-        ///	if (light &lt; 0.0)
-        ///		light = 0.0;
-        ///	if (light &gt; 0.5)
-        ///		light = 0.5 + (lig [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string M2Pixel {
+        internal static byte[] M2Pixel {
             get {
-                return ResourceManager.GetString("M2Pixel", resourceCulture);
+                object obj = ResourceManager.GetObject("M2Pixel", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to struct PixelInput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///};
-        ///
-        ///float3 getDiffuseLight(float3 normal) {
-        ///	float light = dot(normal, normalize(-float3(-1, 1, -1)));
-        ///	if (light &lt; 0.0)
-        ///		light = 0.0;
-        ///	if (light &gt; 0.5)
-        ///		light = 0.5 + (light - 0.5) * 0.65;
-        ///
-        ///	float3 diffuse = float3(0.7, 0.7, 0.7) * light;
-        ///	diffuse += float3(0.3, 0.3, 0.3);
-        ///	diffuse = saturate(diffuse);
-        ///	return diffuse;
-        ///}
-        ///
-        ///Texture2D baseTexture : register(t0);
-        ///SamplerState baseS [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string M2PixelPortrait {
+        internal static byte[] M2PixelBlend {
             get {
-                return ResourceManager.GetString("M2PixelPortrait", resourceCulture);
+                object obj = ResourceManager.GetObject("M2PixelBlend", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
-        ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4 eyePosition;
-        ///};
-        ///
-        ///cbuffer AnimationMatrices : register(b2)
-        ///{
-        ///	row_major float4x4 Bones[256];
-        ///}
-        ///
-        ///cbuffer UvAnimation : register(b3)
-        ///{
-        ///	row_major float4x4 UvAnimation;
-        ///}
-        ///
-        ///struct VertexInput
-        ///{
-        ///	float3 position : POSITION0;
-        ///	float4 boneWeights : BLENDWEIGHT0;
-        ///	int4 bones : BLENDINDEX0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoord2 : TEXCOORD1;
-        ///
-        ///	float4 mat0 : TEXCOORD2;
-        ///	floa [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string M2VertexInstanced {
+        internal static byte[] M2PixelPortrait {
             get {
-                return ResourceManager.GetString("M2VertexInstanced", resourceCulture);
+                object obj = ResourceManager.GetObject("M2PixelPortrait", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
-        ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///};
-        ///
-        ///cbuffer AnimationMatrices : register(b2)
-        ///{
-        ///	row_major float4x4 Bones[256];
-        ///}
-        ///
-        ///cbuffer UvAnimation : register(b3)
-        ///{
-        ///	row_major float4x4 UvAnimation;
-        ///}
-        ///
-        ///struct VertexInput
-        ///{
-        ///	float3 position : POSITION0;
-        ///	float4 boneWeights : BLENDWEIGHT0;
-        ///	int4 bones : BLENDINDEX0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoord2 : TEXCOORD1;
-        ///};
-        ///
-        ///struct VertexOutput
-        ///{
-        ///	float4 position : SV_Posi [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string M2VertexPortrait {
+        internal static byte[] M2PixelPortraitBlend {
             get {
-                return ResourceManager.GetString("M2VertexPortrait", resourceCulture);
+                object obj = ResourceManager.GetObject("M2PixelPortraitBlend", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
-        ///{
-        ///	float4 ambientLight;
-        ///	float4 diffuseLight;
-        ///	float4 fogColor;
-        ///	// x -&gt; fogStart
-        ///	// y -&gt; fotEnd
-        ///	// z -&gt; farClip
-        ///	float4 fogParams;
-        ///};
-        ///
-        ///float4 main(float4 position : SV_Position, float depth : TEXCOORD0) : SV_Target{
-        ///	clip(depth - (fogParams.y / fogParams.z));
-        ///	return float4(fogColor.rgb, 1.0);
-        ///}.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string MapLowPixel {
+        internal static byte[] M2VertexInstanced {
             get {
-                return ResourceManager.GetString("MapLowPixel", resourceCulture);
+                object obj = ResourceManager.GetObject("M2VertexInstanced", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
-        ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4 eyePosition;
-        ///};
-        ///
-        ///struct VSInput
-        ///{
-        ///	float3 position : POSITION0;
-        ///};
-        ///
-        ///struct VSOutput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float depth : TEXCOORD0;
-        ///};
-        ///
-        ///VSOutput main(VSInput input) {
-        ///	VSOutput output = (VSOutput) 0;
-        ///	output.position = float4(input.position, 1.0);
-        ///	output.position = mul(output.position, matView);
-        ///	output.position = mul(output.position, matProj);
-        ///
-        ///	output.depth = output.position.z / output. [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string MapLowVertex {
+        internal static byte[] M2VertexPortrait {
             get {
-                return ResourceManager.GetString("MapLowVertex", resourceCulture);
+                object obj = ResourceManager.GetObject("M2VertexPortrait", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Texture2D skyTexture : register(t0);
-        ///SamplerState skySampler : register(s0);
-        ///
-        ///struct PSInput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float2 texCoord : TEXCOORD0;
-        ///};
-        ///
-        ///float4 main(PSInput input) : SV_Target {
-        ///	return skyTexture.Sample(skySampler, input.texCoord);
-        ///}.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string SkyPixel {
+        internal static byte[] MapLowPixel {
             get {
-                return ResourceManager.GetString("SkyPixel", resourceCulture);
+                object obj = ResourceManager.GetObject("MapLowPixel", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer GlobalBuffer : register(b0)
-        ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///};
-        ///
-        ///cbuffer MatrixBuffer : register(b1)
-        ///{
-        ///	float4 translation;
-        ///};
-        ///
-        ///struct VertexInput
-        ///{
-        ///	float3 position : POSITION0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///};
-        ///
-        ///struct VertexOutput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float2 texCoord : TEXCOORD0;
-        ///};
-        ///
-        ///VertexOutput main(VertexInput input) {
-        ///	float4 position = float4(input.position + translation.xyz, 1.0);
-        ///	position = mul(position, matView);
-        ///	position = mul(position, mat [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string SkyVertex {
+        internal static byte[] MapLowVertex {
             get {
-                return ResourceManager.GetString("SkyVertex", resourceCulture);
+                object obj = ResourceManager.GetObject("MapLowVertex", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to struct PixelInput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoordAlpha : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///	float depth : TEXCOORD2;
-        ///	float3 worldPosition : TEXCOORD3;
-        ///};
-        ///
-        ///SamplerState alphaSampler : register(s1);
-        ///SamplerState colorSampler : register(s0);
-        ///
-        ///Texture2D alphaTexture : register(t0);
-        ///Texture2D texture0 : register(t1);
-        ///Texture2D texture1 : register(t2);
-        ///Texture2D texture2 : register(t3);
-        ///Texture2D texture3 : register(t4) [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string TerrainPixel {
+        internal static byte[] SkyPixel {
             get {
-                return ResourceManager.GetString("TerrainPixel", resourceCulture);
+                object obj = ResourceManager.GetObject("SkyPixel", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to struct PixelInput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoordAlpha : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///	float depth : TEXCOORD2;
-        ///	float3 worldPosition : TEXCOORD3;
-        ///};
-        ///
-        ///SamplerState alphaSampler : register(s1);
-        ///SamplerState colorSampler : register(s0);
-        ///
-        ///Texture2D alphaTexture : register(t0);
-        ///Texture2D texture0 : register(t1);
-        ///Texture2D texture1 : register(t2);
-        ///Texture2D texture2 : register(t3);
-        ///Texture2D texture3 : register(t4) [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string TerrainPixelNew {
+        internal static byte[] SkyVertex {
             get {
-                return ResourceManager.GetString("TerrainPixelNew", resourceCulture);
+                object obj = ResourceManager.GetObject("SkyVertex", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to struct VertexInput
-        ///{
-        ///	float3 position : POSITION0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoordAlpha : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///};
-        ///
-        ///struct VertexOutput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoordAlpha : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///	float depth : TEXCOORD2;
-        ///	float3 worldPosition : TEXCOORD3;
-        ///};
-        ///
-        ///cbuffer GlobalParams : register(b0)
-        ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string TerrainVertex {
+        internal static byte[] TerrainPixel {
             get {
-                return ResourceManager.GetString("TerrainVertex", resourceCulture);
+                object obj = ResourceManager.GetObject("TerrainPixel", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to struct VertexInput
-        ///{
-        ///	float2 position : POSITION0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///};
-        ///
-        ///struct VertexOutput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float2 texCoord : TEXCOORD0;
-        ///};
-        ///
-        ///VertexOutput main(VertexInput input) {
-        ///	VertexOutput output = (VertexOutput) 0;
-        ///	output.position = float4(input.position, 0, 1);
-        ///	output.texCoord = input.texCoord;
-        ///
-        ///	return output;
-        ///}.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string TexturedQuadVertex {
+        internal static byte[] TerrainPixelNew {
             get {
-                return ResourceManager.GetString("TexturedQuadVertex", resourceCulture);
+                object obj = ResourceManager.GetObject("TerrainPixelNew", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to struct PixelInput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float2 texCoord : TEXCOORD0;
-        ///};
-        ///
-        ///Texture2D quadTexture : register(t0);
-        ///SamplerState quadSampler : register(s0);
-        ///
-        ///float4 main(PixelInput input) : SV_Target {
-        ///	return quadTexture.Sample(quadSampler, input.texCoord);
-        ///}.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string TextureQuadPixel {
+        internal static byte[] TerrainVertex {
             get {
-                return ResourceManager.GetString("TextureQuadPixel", resourceCulture);
+                object obj = ResourceManager.GetObject("TerrainVertex", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
-        ///{
-        ///	float4 ambientLight;
-        ///	float4 diffuseLight;
-        ///	float4 fogColor;
-        ///	// x -&gt; fogStart
-        ///	// y -&gt; fotEnd
-        ///	// z -&gt; farClip
-        ///	float4 fogParams;
-        ///};
-        ///
-        ///Texture2D batchTexture : register(t0);
-        ///SamplerState batchSampler : register(s0);
-        ///
-        ///struct PSInput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float depth : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///};
-        ///
-        ///float3 getDiffuseLight(float3 normal) {
-        ///	float light = dot(normal,  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string WmoPixel {
+        internal static byte[] TexturedQuadVertex {
             get {
-                return ResourceManager.GetString("WmoPixel", resourceCulture);
+                object obj = ResourceManager.GetObject("TexturedQuadVertex", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cbuffer MatrixBuffer : register(b0)
-        ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4 eyePosition;
-        ///};
-        ///
-        ///cbuffer InstanceBuffer : register(b1)
-        ///{
-        ///	float4x4 matInstance;
-        ///};
-        ///
-        ///struct VSInput
-        ///{
-        ///	float3 position : POSITION0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float4 color : COLOR0;
-        ///};
-        ///
-        ///struct VSOutput
-        ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float depth : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///};
-        ///
-        ///VSOutput main(VSInput in [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string WmoVertex {
+        internal static byte[] TextureQuadPixel {
             get {
-                return ResourceManager.GetString("WmoVertex", resourceCulture);
+                object obj = ResourceManager.GetObject("TextureQuadPixel", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] WmoPixel {
+            get {
+                object obj = ResourceManager.GetObject("WmoPixel", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] WmoPixelBlend
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("WmoPixelBlend", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] WmoVertex {
+            get {
+                object obj = ResourceManager.GetObject("WmoVertex", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

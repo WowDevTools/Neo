@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SharpDX.D3DCompiler;
@@ -111,6 +112,22 @@ namespace WoWEditor6.Graphics
                     throw new ArgumentException(result.Message, "code");
 
                 mPixelShader = new PixelShader(mContext.Device, result.Bytecode.Data);
+            }
+        }
+
+        public void SetVertexShader(byte[] code)
+        {
+            var result = ShaderBytecode.FromStream(new MemoryStream(code));
+
+            VertexShaderCode = result;
+            mVertexShader = new VertexShader(mContext.Device, VertexShaderCode.Data);
+        }
+
+        public void SetPixelShader(byte[] code)
+        {
+            using(var result = ShaderBytecode.FromStream(new MemoryStream(code)))
+            {
+                mPixelShader = new PixelShader(mContext.Device, result);
             }
         }
 

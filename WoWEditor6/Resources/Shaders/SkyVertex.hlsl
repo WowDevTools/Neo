@@ -1,4 +1,4 @@
-﻿cbuffer GlobalBuffer : register(b0)
+cbuffer GlobalBuffer : register(b0)
 {
 	float4x4 matView;
 	float4x4 matProj;

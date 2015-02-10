@@ -111,12 +111,12 @@ namespace WoWEditor6.Scene.Models.WMO
             Mesh.AddElement("COLOR", 0, 4, DataType.Byte, true);
 
             gNoBlendProgram = new ShaderProgram(context);
-            gNoBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex, "main");
-            gNoBlendProgram.SetPixelShader(Resources.Shaders.WmoPixel, "main");
+            gNoBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
+            gNoBlendProgram.SetPixelShader(Resources.Shaders.WmoPixel);
 
             gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex, "main");
-            gBlendProgram.SetPixelShader(Resources.Shaders.WmoPixel, "main_blend");
+            gBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
+            gBlendProgram.SetPixelShader(Resources.Shaders.WmoPixelBlend);
 
             Mesh.Program = gNoBlendProgram;
         }

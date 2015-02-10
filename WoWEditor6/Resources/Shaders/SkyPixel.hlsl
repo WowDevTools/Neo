@@ -1,4 +1,4 @@
-﻿Texture2D skyTexture : register(t0);
+Texture2D skyTexture : register(t0);
 SamplerState skySampler : register(s0);
 
 struct PSInput

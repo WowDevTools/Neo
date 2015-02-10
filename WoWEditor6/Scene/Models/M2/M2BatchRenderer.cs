@@ -319,8 +319,8 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.AddElement("TEXCOORD", 5, 4, DataType.Float, false, 1, true);
 
             var program = new ShaderProgram(context);
-            program.SetVertexShader(Resources.Shaders.M2VertexInstanced, "main");
-            program.SetPixelShader(Resources.Shaders.M2Pixel, "main");
+            program.SetVertexShader(Resources.Shaders.M2VertexInstanced);
+            program.SetPixelShader(Resources.Shaders.M2Pixel);
 
             Mesh.Program = program;
 
@@ -395,8 +395,8 @@ namespace WoWEditor6.Scene.Models.M2
             gNoBlendProgram = program;
 
             gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetPixelShader(Resources.Shaders.M2Pixel, "main_blend");
-            gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced, "main");
+            gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlend);
+            gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
         }
     }
 }

@@ -119,48 +119,57 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="TexturedQuadVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\TexturedQuadVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\TexturedQuadVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="TextureQuadPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\TextureQuadPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\TextureQuadPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="TerrainVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\TerrainVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\TerrainVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="TerrainPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\TerrainPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\TerrainPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="TerrainPixelNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\TerrainPixelNew.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\TerrainPixelNew.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="SkyPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\SkyPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\SkyPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="SkyVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\SkyVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\SkyVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="MapLowPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\MapLowPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\MapLowPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="MapLowVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\MapLowVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\MapLowVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="WmoPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\WmoPixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\WmoPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="WmoPixelBlend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\WmoPixelBlend.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="WmoVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\WmoVertex.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\WmoVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="M2Pixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2Pixel.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\M2Pixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2PixelBlend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2PixelBlend.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="M2VertexInstanced" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2VertexInstanced.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\M2VertexInstanced.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="M2PixelPortrait" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2PixelPortrait.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\M2PixelPortrait.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="M2PixelPortraitBlend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2PixelPortraitBlend.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="M2VertexPortrait" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2VertexPortrait.hlsl;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Shaders\M2VertexPortrait.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

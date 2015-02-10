@@ -148,14 +148,14 @@ namespace WoWEditor6.Scene.Terrain
             ChunkMesh.RasterizerState.CullEnabled = true;
 
             BlendNew = new ShaderProgram(context);
-            BlendNew.SetVertexShader(Resources.Shaders.TerrainVertex, "main");
-            BlendNew.SetPixelShader(Resources.Shaders.TerrainPixelNew, "main");
+            BlendNew.SetVertexShader(Resources.Shaders.TerrainVertex);
+            BlendNew.SetPixelShader(Resources.Shaders.TerrainPixelNew);
 
             ChunkMesh.Program = BlendNew;
 
             BlendOld = new ShaderProgram(context);
-            BlendOld.SetVertexShader(Resources.Shaders.TerrainVertex, "main");
-            BlendOld.SetPixelShader(Resources.Shaders.TerrainPixel, "main");
+            BlendOld.SetVertexShader(Resources.Shaders.TerrainVertex);
+            BlendOld.SetPixelShader(Resources.Shaders.TerrainPixel);
 
             ColorSampler = new Sampler(context)
             {
