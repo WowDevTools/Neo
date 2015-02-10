@@ -63,29 +63,29 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
         ///{
-        ///	float4 ambientLight;
-        ///	float4 diffuseLight;
-        ///	float4 fogColor;
-        ///	// x -&gt; fogStart
-        ///	// y -&gt; fotEnd
-        ///	// z -&gt; farClip
-        ///	float4 fogParams;
+        ///    float4 ambientLight;
+        ///    float4 diffuseLight;
+        ///    float4 fogColor;
+        ///    // x -&gt; fogStart
+        ///    // y -&gt; fotEnd
+        ///    // z -&gt; farClip
+        ///    float4 fogParams;
         ///};
         ///
         ///struct PixelInput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float depth : TEXCOORD1;
+        ///    float4 position : SV_Position;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float depth : TEXCOORD1;
         ///};
         ///
         ///float3 getDiffuseLight(float3 normal) {
-        ///	float light = dot(normal, normalize(-float3(-1, 1, -1)));
-        ///	if (light &lt; 0.0)
-        ///		light = 0.0;
-        ///	if (light &gt; 0.5)
-        ///		light = 0.5 + (lig [rest of string was truncated]&quot;;.
+        ///    float light = dot(normal, normalize(-float3(-1, 1, -1)));
+        ///    if (light &lt; 0.0)
+        ///        light = 0.0;
+        ///    if (light &gt; 0.5)
+        ///        light = 0.5 + (lig [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string M2Pixel {
             get {
@@ -96,22 +96,22 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to struct PixelInput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
+        ///    float4 position : SV_Position;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
         ///};
         ///
         ///float3 getDiffuseLight(float3 normal) {
-        ///	float light = dot(normal, normalize(-float3(-1, 1, -1)));
-        ///	if (light &lt; 0.0)
-        ///		light = 0.0;
-        ///	if (light &gt; 0.5)
-        ///		light = 0.5 + (light - 0.5) * 0.65;
+        ///    float light = dot(normal, normalize(-float3(-1, 1, -1)));
+        ///    if (light &lt; 0.0)
+        ///        light = 0.0;
+        ///    if (light &gt; 0.5)
+        ///        light = 0.5 + (light - 0.5) * 0.65;
         ///
-        ///	float3 diffuse = float3(0.7, 0.7, 0.7) * light;
-        ///	diffuse += float3(0.3, 0.3, 0.3);
-        ///	diffuse = saturate(diffuse);
-        ///	return diffuse;
+        ///    float3 diffuse = float3(0.7, 0.7, 0.7) * light;
+        ///    diffuse += float3(0.3, 0.3, 0.3);
+        ///    diffuse = saturate(diffuse);
+        ///    return diffuse;
         ///}
         ///
         ///Texture2D baseTexture : register(t0);
@@ -126,32 +126,32 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
         ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4 eyePosition;
+        ///    float4x4 matView;
+        ///    float4x4 matProj;
+        ///    float4 eyePosition;
         ///};
         ///
         ///cbuffer AnimationMatrices : register(b2)
         ///{
-        ///	row_major float4x4 Bones[256];
+        ///    row_major float4x4 Bones[256];
         ///}
         ///
         ///cbuffer UvAnimation : register(b3)
         ///{
-        ///	row_major float4x4 UvAnimation;
+        ///    row_major float4x4 UvAnimation;
         ///}
         ///
         ///struct VertexInput
         ///{
-        ///	float3 position : POSITION0;
-        ///	float4 boneWeights : BLENDWEIGHT0;
-        ///	int4 bones : BLENDINDEX0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoord2 : TEXCOORD1;
+        ///    float3 position : POSITION0;
+        ///    float4 boneWeights : BLENDWEIGHT0;
+        ///    int4 bones : BLENDINDEX0;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float2 texCoord2 : TEXCOORD1;
         ///
-        ///	float4 mat0 : TEXCOORD2;
-        ///	floa [rest of string was truncated]&quot;;.
+        ///    float4 mat0 : TEXCOORD2;
+        ///    floa [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string M2VertexInstanced {
             get {
@@ -162,33 +162,33 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
         ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
+        ///    float4x4 matView;
+        ///    float4x4 matProj;
         ///};
         ///
         ///cbuffer AnimationMatrices : register(b2)
         ///{
-        ///	row_major float4x4 Bones[256];
+        ///    row_major float4x4 Bones[256];
         ///}
         ///
         ///cbuffer UvAnimation : register(b3)
         ///{
-        ///	row_major float4x4 UvAnimation;
+        ///    row_major float4x4 UvAnimation;
         ///}
         ///
         ///struct VertexInput
         ///{
-        ///	float3 position : POSITION0;
-        ///	float4 boneWeights : BLENDWEIGHT0;
-        ///	int4 bones : BLENDINDEX0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoord2 : TEXCOORD1;
+        ///    float3 position : POSITION0;
+        ///    float4 boneWeights : BLENDWEIGHT0;
+        ///    int4 bones : BLENDINDEX0;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float2 texCoord2 : TEXCOORD1;
         ///};
         ///
         ///struct VertexOutput
         ///{
-        ///	float4 position : SV_Posi [rest of string was truncated]&quot;;.
+        ///    float4 position : SV_Posi [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string M2VertexPortrait {
             get {
@@ -199,18 +199,18 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
         ///{
-        ///	float4 ambientLight;
-        ///	float4 diffuseLight;
-        ///	float4 fogColor;
-        ///	// x -&gt; fogStart
-        ///	// y -&gt; fotEnd
-        ///	// z -&gt; farClip
-        ///	float4 fogParams;
+        ///    float4 ambientLight;
+        ///    float4 diffuseLight;
+        ///    float4 fogColor;
+        ///    // x -&gt; fogStart
+        ///    // y -&gt; fotEnd
+        ///    // z -&gt; farClip
+        ///    float4 fogParams;
         ///};
         ///
         ///float4 main(float4 position : SV_Position, float depth : TEXCOORD0) : SV_Target{
-        ///	clip(depth - (fogParams.y / fogParams.z));
-        ///	return float4(fogColor.rgb, 1.0);
+        ///    clip(depth - (fogParams.y / fogParams.z));
+        ///    return float4(fogColor.rgb, 1.0);
         ///}.
         /// </summary>
         internal static string MapLowPixel {
@@ -222,29 +222,29 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cbuffer GlobalParams : register(b0)
         ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4 eyePosition;
+        ///    float4x4 matView;
+        ///    float4x4 matProj;
+        ///    float4 eyePosition;
         ///};
         ///
         ///struct VSInput
         ///{
-        ///	float3 position : POSITION0;
+        ///    float3 position : POSITION0;
         ///};
         ///
         ///struct VSOutput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float depth : TEXCOORD0;
+        ///    float4 position : SV_Position;
+        ///    float depth : TEXCOORD0;
         ///};
         ///
         ///VSOutput main(VSInput input) {
-        ///	VSOutput output = (VSOutput) 0;
-        ///	output.position = float4(input.position, 1.0);
-        ///	output.position = mul(output.position, matView);
-        ///	output.position = mul(output.position, matProj);
+        ///    VSOutput output = (VSOutput) 0;
+        ///    output.position = float4(input.position, 1.0);
+        ///    output.position = mul(output.position, matView);
+        ///    output.position = mul(output.position, matProj);
         ///
-        ///	output.depth = output.position.z / output. [rest of string was truncated]&quot;;.
+        ///    output.depth = output.position.z / output. [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MapLowVertex {
             get {
@@ -258,12 +258,12 @@ namespace WoWEditor6.Resources {
         ///
         ///struct PSInput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float2 texCoord : TEXCOORD0;
+        ///    float4 position : SV_Position;
+        ///    float2 texCoord : TEXCOORD0;
         ///};
         ///
         ///float4 main(PSInput input) : SV_Target {
-        ///	return skyTexture.Sample(skySampler, input.texCoord);
+        ///    return skyTexture.Sample(skySampler, input.texCoord);
         ///}.
         /// </summary>
         internal static string SkyPixel {
@@ -275,31 +275,31 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cbuffer GlobalBuffer : register(b0)
         ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
+        ///    float4x4 matView;
+        ///    float4x4 matProj;
         ///};
         ///
         ///cbuffer MatrixBuffer : register(b1)
         ///{
-        ///	float4 translation;
+        ///    float4 translation;
         ///};
         ///
         ///struct VertexInput
         ///{
-        ///	float3 position : POSITION0;
-        ///	float2 texCoord : TEXCOORD0;
+        ///    float3 position : POSITION0;
+        ///    float2 texCoord : TEXCOORD0;
         ///};
         ///
         ///struct VertexOutput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float2 texCoord : TEXCOORD0;
+        ///    float4 position : SV_Position;
+        ///    float2 texCoord : TEXCOORD0;
         ///};
         ///
         ///VertexOutput main(VertexInput input) {
-        ///	float4 position = float4(input.position + translation.xyz, 1.0);
-        ///	position = mul(position, matView);
-        ///	position = mul(position, mat [rest of string was truncated]&quot;;.
+        ///    float4 position = float4(input.position + translation.xyz, 1.0);
+        ///    position = mul(position, matView);
+        ///    position = mul(position, mat [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SkyVertex {
             get {
@@ -310,13 +310,13 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to struct PixelInput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoordAlpha : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///	float depth : TEXCOORD2;
-        ///	float3 worldPosition : TEXCOORD3;
+        ///    float4 position : SV_Position;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float2 texCoordAlpha : TEXCOORD1;
+        ///    float4 color : COLOR0;
+        ///    float depth : TEXCOORD2;
+        ///    float3 worldPosition : TEXCOORD3;
         ///};
         ///
         ///SamplerState alphaSampler : register(s1);
@@ -337,13 +337,13 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to struct PixelInput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoordAlpha : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///	float depth : TEXCOORD2;
-        ///	float3 worldPosition : TEXCOORD3;
+        ///    float4 position : SV_Position;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float2 texCoordAlpha : TEXCOORD1;
+        ///    float4 color : COLOR0;
+        ///    float depth : TEXCOORD2;
+        ///    float3 worldPosition : TEXCOORD3;
         ///};
         ///
         ///SamplerState alphaSampler : register(s1);
@@ -364,29 +364,29 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to struct VertexInput
         ///{
-        ///	float3 position : POSITION0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoordAlpha : TEXCOORD1;
-        ///	float4 color : COLOR0;
+        ///    float3 position : POSITION0;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float2 texCoordAlpha : TEXCOORD1;
+        ///    float4 color : COLOR0;
         ///};
         ///
         ///struct VertexOutput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float2 texCoordAlpha : TEXCOORD1;
-        ///	float4 color : COLOR0;
-        ///	float depth : TEXCOORD2;
-        ///	float3 worldPosition : TEXCOORD3;
+        ///    float4 position : SV_Position;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float2 texCoordAlpha : TEXCOORD1;
+        ///    float4 color : COLOR0;
+        ///    float depth : TEXCOORD2;
+        ///    float3 worldPosition : TEXCOORD3;
         ///};
         ///
         ///cbuffer GlobalParams : register(b0)
         ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4  [rest of string was truncated]&quot;;.
+        ///    float4x4 matView;
+        ///    float4x4 matProj;
+        ///    float4  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TerrainVertex {
             get {
@@ -397,22 +397,22 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to struct VertexInput
         ///{
-        ///	float2 position : POSITION0;
-        ///	float2 texCoord : TEXCOORD0;
+        ///    float2 position : POSITION0;
+        ///    float2 texCoord : TEXCOORD0;
         ///};
         ///
         ///struct VertexOutput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float2 texCoord : TEXCOORD0;
+        ///    float4 position : SV_Position;
+        ///    float2 texCoord : TEXCOORD0;
         ///};
         ///
         ///VertexOutput main(VertexInput input) {
-        ///	VertexOutput output = (VertexOutput) 0;
-        ///	output.position = float4(input.position, 0, 1);
-        ///	output.texCoord = input.texCoord;
+        ///    VertexOutput output = (VertexOutput) 0;
+        ///    output.position = float4(input.position, 0, 1);
+        ///    output.texCoord = input.texCoord;
         ///
-        ///	return output;
+        ///    return output;
         ///}.
         /// </summary>
         internal static string TexturedQuadVertex {
@@ -424,15 +424,15 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to struct PixelInput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float2 texCoord : TEXCOORD0;
+        ///    float4 position : SV_Position;
+        ///    float2 texCoord : TEXCOORD0;
         ///};
         ///
         ///Texture2D quadTexture : register(t0);
         ///SamplerState quadSampler : register(s0);
         ///
         ///float4 main(PixelInput input) : SV_Target {
-        ///	return quadTexture.Sample(quadSampler, input.texCoord);
+        ///    return quadTexture.Sample(quadSampler, input.texCoord);
         ///}.
         /// </summary>
         internal static string TextureQuadPixel {
@@ -444,13 +444,13 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cbuffer GlobalParamsBuffer : register(b0)
         ///{
-        ///	float4 ambientLight;
-        ///	float4 diffuseLight;
-        ///	float4 fogColor;
-        ///	// x -&gt; fogStart
-        ///	// y -&gt; fotEnd
-        ///	// z -&gt; farClip
-        ///	float4 fogParams;
+        ///    float4 ambientLight;
+        ///    float4 diffuseLight;
+        ///    float4 fogColor;
+        ///    // x -&gt; fogStart
+        ///    // y -&gt; fotEnd
+        ///    // z -&gt; farClip
+        ///    float4 fogParams;
         ///};
         ///
         ///Texture2D batchTexture : register(t0);
@@ -458,15 +458,15 @@ namespace WoWEditor6.Resources {
         ///
         ///struct PSInput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float depth : TEXCOORD1;
-        ///	float4 color : COLOR0;
+        ///    float4 position : SV_Position;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float depth : TEXCOORD1;
+        ///    float4 color : COLOR0;
         ///};
         ///
         ///float3 getDiffuseLight(float3 normal) {
-        ///	float light = dot(normal,  [rest of string was truncated]&quot;;.
+        ///    float light = dot(normal,  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WmoPixel {
             get {
@@ -477,31 +477,31 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cbuffer MatrixBuffer : register(b0)
         ///{
-        ///	float4x4 matView;
-        ///	float4x4 matProj;
-        ///	float4 eyePosition;
+        ///    float4x4 matView;
+        ///    float4x4 matProj;
+        ///    float4 eyePosition;
         ///};
         ///
         ///cbuffer InstanceBuffer : register(b1)
         ///{
-        ///	float4x4 matInstance;
+        ///    float4x4 matInstance;
         ///};
         ///
         ///struct VSInput
         ///{
-        ///	float3 position : POSITION0;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float4 color : COLOR0;
+        ///    float3 position : POSITION0;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float4 color : COLOR0;
         ///};
         ///
         ///struct VSOutput
         ///{
-        ///	float4 position : SV_Position;
-        ///	float3 normal : NORMAL0;
-        ///	float2 texCoord : TEXCOORD0;
-        ///	float depth : TEXCOORD1;
-        ///	float4 color : COLOR0;
+        ///    float4 position : SV_Position;
+        ///    float3 normal : NORMAL0;
+        ///    float2 texCoord : TEXCOORD0;
+        ///    float depth : TEXCOORD1;
+        ///    float4 color : COLOR0;
         ///};
         ///
         ///VSOutput main(VSInput in [rest of string was truncated]&quot;;.

@@ -42,7 +42,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
 
-	    private bool mWasChanged;
+        private bool mWasChanged;
 
         public MapArea(string continent, int ix, int iy)
         {
@@ -53,8 +53,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public override void Save()
         {
-	        if (mWasChanged == false)
-		        return;
+            if (mWasChanged == false)
+                return;
 
             WriteBaseFile();
         }
@@ -115,8 +115,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     changed = true;
             }
 
-	        if (changed)
-		        mWasChanged = true;
+            if (changed)
+                mWasChanged = true;
 
             return changed;
         }
@@ -364,21 +364,21 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var bytes = mObjReader.ReadBytes(size);
             var modelNameLookup = new Dictionary<int, string>();
             var curOffset = 0;
-	        var curBytes = new List<byte>();
+            var curBytes = new List<byte>();
 
-			for(var i = 0; i < bytes.Length; ++i)
-			{
-				if (bytes[i] == 0)
-				{
-					if (curBytes.Count > 0)
-						modelNameLookup.Add(curOffset, Encoding.ASCII.GetString(curBytes.ToArray()));
+            for(var i = 0; i < bytes.Length; ++i)
+            {
+                if (bytes[i] == 0)
+                {
+                    if (curBytes.Count > 0)
+                        modelNameLookup.Add(curOffset, Encoding.ASCII.GetString(curBytes.ToArray()));
 
-					curOffset = i + 1;
-					curBytes.Clear();
-				}
-				else
-					curBytes.Add(bytes[i]);
-			}
+                    curOffset = i + 1;
+                    curBytes.Clear();
+                }
+                else
+                    curBytes.Add(bytes[i]);
+            }
 
             if (SeekChunk(mObjReader, 0x4D574944) == false)
                 return;
@@ -501,11 +501,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     writer.Write(pair.Value.Data);
                 }
 
-	            foreach (var chunk in mChunks)
-	            {
-	                if (chunk == null) continue;
+                foreach (var chunk in mChunks)
+                {
+                    if (chunk == null) continue;
 
-		            chunk.WriteBaseChunks(writer);
+                    chunk.WriteBaseChunks(writer);
                 }
             }
         }

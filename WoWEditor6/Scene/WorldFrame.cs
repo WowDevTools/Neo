@@ -38,18 +38,18 @@ namespace WoWEditor6.Scene
         public WmoManager WmoManager { get; private set; }
         public M2Manager M2Manager { get; private set; }
 
-		public bool LeftHandedCamera
-		{
-			get { return mMainCamera.LeftHanded; }
-			set
-			{
-				if (mMainCamera.LeftHanded != value)
-					CamControl.InvertX = !CamControl.InvertX;
+        public bool LeftHandedCamera
+        {
+            get { return mMainCamera.LeftHanded; }
+            set
+            {
+                if (mMainCamera.LeftHanded != value)
+                    CamControl.InvertX = !CamControl.InvertX;
 
-				mMainCamera.LeftHanded = value;
-				mMainCamera.Update();
-			}
-		}
+                mMainCamera.LeftHanded = value;
+                mMainCamera.Update();
+            }
+        }
 
         private AppState mState;
         private readonly PerspectiveCamera mMainCamera = new PerspectiveCamera();

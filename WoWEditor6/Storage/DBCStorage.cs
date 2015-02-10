@@ -11,8 +11,8 @@ namespace WoWEditor6.Storage
         public static DbcFile LightParams { get;private set;  }
         public static DbcFile ZoneLight { get;private set;  }
         public static DbcFile ZoneLightPoint { get;private set;  }
-	    public static DbcFile LightIntBand { get;private set;  }
-	    public static DbcFile LightFloatBand { get;private set;  }
+        public static DbcFile LightIntBand { get;private set;  }
+        public static DbcFile LightFloatBand { get;private set;  }
 
         static DbcStorage()
         {
@@ -27,31 +27,31 @@ namespace WoWEditor6.Storage
             LightFloatBand = new DbcFile();
         }
 
-		public static void Initialize()
-		{
-			Map.Load(@"DBFilesClient\Map.dbc");
-			LoadingScreen.Load(@"DBFilesClient\LoadingScreens.dbc");
-			Light.Load(@"DBFilesClient\Light.dbc");
+        public static void Initialize()
+        {
+            Map.Load(@"DBFilesClient\Map.dbc");
+            LoadingScreen.Load(@"DBFilesClient\LoadingScreens.dbc");
+            Light.Load(@"DBFilesClient\Light.dbc");
 
-			if (IO.FileManager.Instance.Version <= IO.FileDataVersion.Mists)
-				InitLightsMop();
+            if (IO.FileManager.Instance.Version <= IO.FileDataVersion.Mists)
+                InitLightsMop();
 
-			if(IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
-			{
-				LightIntBand.Load(@"DBFilesClient\LightIntBand.dbc");
-				LightFloatBand.Load(@"DBFilesClient\LightFloatBand.dbc");
-			}
+            if(IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+            {
+                LightIntBand.Load(@"DBFilesClient\LightIntBand.dbc");
+                LightFloatBand.Load(@"DBFilesClient\LightFloatBand.dbc");
+            }
 
-			MapFormatGuess.Initialize();
-			IO.Files.Sky.SkyManager.Instance.Initialize();
-		}
+            MapFormatGuess.Initialize();
+            IO.Files.Sky.SkyManager.Instance.Initialize();
+        }
 
-	    private static void InitLightsMop()
-		{
-			LightData.Load(@"DBFilesClient\LightData.dbc");
-			LightParams.Load(@"DBFilesClient\LightParams.dbc");
-			ZoneLight.Load(@"DBFilesClient\ZoneLight.dbc");
-			ZoneLightPoint.Load(@"DBFilesClient\ZoneLightPoint.dbc");
-		}
+        private static void InitLightsMop()
+        {
+            LightData.Load(@"DBFilesClient\LightData.dbc");
+            LightParams.Load(@"DBFilesClient\LightParams.dbc");
+            ZoneLight.Load(@"DBFilesClient\ZoneLight.dbc");
+            ZoneLightPoint.Load(@"DBFilesClient\ZoneLightPoint.dbc");
+        }
     }
 }

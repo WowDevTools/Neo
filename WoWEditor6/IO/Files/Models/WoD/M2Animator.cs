@@ -174,14 +174,14 @@ namespace WoWEditor6.IO.Files.Models.WoD
         {
             lock(mUvAnimations)
             {
-				if (animation >= 0 && animation < UvMatrices.Length)
-				{
-					matrix = UvMatrices[animation];
-					return true;
-				}
+                if (animation >= 0 && animation < UvMatrices.Length)
+                {
+                    matrix = UvMatrices[animation];
+                    return true;
+                }
 
-	            matrix = Matrix.Identity;
-	            return false;
+                matrix = Matrix.Identity;
+                return false;
             }
         }
 

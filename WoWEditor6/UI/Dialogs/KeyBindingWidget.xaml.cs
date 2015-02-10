@@ -138,9 +138,9 @@ namespace WoWEditor6.UI.Dialogs
             }
         }
 
-        private void InvertMouseBox_Checked(object sender, RoutedEventArgs e)
+        private void InvertMouseBox_Clicked(object sender, RoutedEventArgs e)
         {
-            var cb = sender as System.Windows.Controls.CheckBox;
+           var cb = sender as System.Windows.Controls.CheckBox;
             if (cb == null)
                 return;
 
@@ -148,8 +148,7 @@ namespace WoWEditor6.UI.Dialogs
             if (WorldFrame.Instance.LeftHandedCamera)
                 invert = !invert;
 
-            WorldFrame.Instance.CamControl.InvertX = invert;
-            WorldFrame.Instance.CamControl.InvertY = !invert;
+            WorldFrame.Instance.CamControl.InvertY = invert;
         }
     }
 }

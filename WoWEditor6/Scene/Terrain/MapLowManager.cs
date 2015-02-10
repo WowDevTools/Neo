@@ -55,8 +55,8 @@ namespace WoWEditor6.Scene.Terrain
             var cx = position.X;
             var cy = position.Y;
 
-	        if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
-		        cy = 64.0f * Metrics.TileSize - cy;
+            if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
+                cy = 64.0f * Metrics.TileSize - cy;
 
             var ix = (int)Math.Floor(cx / Metrics.TileSize);
             var iy = (int)Math.Floor(cy / Metrics.TileSize);

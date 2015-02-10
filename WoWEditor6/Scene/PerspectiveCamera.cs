@@ -18,22 +18,22 @@ namespace WoWEditor6.Scene
             UpdateProjection();
         }
 
-		public override void Update()
-		{
-			base.Update();
-			UpdateProjection();
-		}
-
-		private void UpdateProjection()
+        public override void Update()
         {
-	        mMatProjection = LeftHanded == false
-		        ? Matrix.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip)
-		        : Matrix.PerspectiveFovLH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
-
-	        OnProjectionChanged();
+            base.Update();
+            UpdateProjection();
         }
 
-	    public void SetFarClip(float clip)
+        private void UpdateProjection()
+        {
+            mMatProjection = LeftHanded == false
+                ? Matrix.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip)
+                : Matrix.PerspectiveFovLH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
+
+            OnProjectionChanged();
+        }
+
+        public void SetFarClip(float clip)
         {
             FarClip = clip;
             UpdateProjection();

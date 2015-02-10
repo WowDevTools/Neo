@@ -13,7 +13,7 @@ namespace WoWEditor6.IO
         public bool Initialized { get; private set; }
 
         public event Action LoadComplete;
-		public FileDataVersion Version { get; private set; }
+        public FileDataVersion Version { get; private set; }
 
         static FileManager()
         {
@@ -25,7 +25,7 @@ namespace WoWEditor6.IO
             var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);
             try
             {
-	            Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? ".");
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? ".");
                 return File.Open(fullPath, FileMode.Create, FileAccess.Write, FileShare.None);
             }
             catch(Exception)
@@ -34,73 +34,73 @@ namespace WoWEditor6.IO
             }
         }
 
-		public Stream GetExistingFile(string path)
-		{
-			try
-			{
-				var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);
-				using (var strm = File.OpenRead(fullPath))
-				{
-					var retStream = new MemoryStream();
-					strm.CopyTo(retStream);
-					retStream.Position = 0;
-					return retStream;
-				}
-			}
-			catch(Exception)
-			{
-				return null;
-			}
-		}
+        public Stream GetExistingFile(string path)
+        {
+            try
+            {
+                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);
+                using (var strm = File.OpenRead(fullPath))
+                {
+                    var retStream = new MemoryStream();
+                    strm.CopyTo(retStream);
+                    retStream.Position = 0;
+                    return retStream;
+                }
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+        }
 
         public void InitFromPath()
         {
             if(string.IsNullOrEmpty(DataPath))
                 throw new InvalidOperationException("Cannot initialize file system without a path");
 
-	        if (File.Exists(Path.Combine(DataPath, ".build.info")))
-	        {
-		        Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Warlords;
-		        Files.Models.ModelFactory.Instance.Version = FileDataVersion.Warlords;
-		        Files.Sky.SkyManager.InitVersion(FileDataVersion.Warlords);
-		        Version = FileDataVersion.Warlords;
+            if (File.Exists(Path.Combine(DataPath, ".build.info")))
+            {
+                Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Warlords;
+                Files.Models.ModelFactory.Instance.Version = FileDataVersion.Warlords;
+                Files.Sky.SkyManager.InitVersion(FileDataVersion.Warlords);
+                Version = FileDataVersion.Warlords;
 
-		        var mgr = new CASC.FileManager();
-		        mgr.LoadComplete += () =>
-		        {
-			        Initialized = true;
-		            if (LoadComplete != null)
-		                LoadComplete();
-		        };
+                var mgr = new CASC.FileManager();
+                mgr.LoadComplete += () =>
+                {
+                    Initialized = true;
+                    if (LoadComplete != null)
+                        LoadComplete();
+                };
 
-				Provider = mgr;
-				mgr.Initialize(DataPath);
-	        }
-	        else
-		        InitMpq();
+                Provider = mgr;
+                mgr.Initialize(DataPath);
+            }
+            else
+                InitMpq();
         }
 
-		private void InitMpq()
-		{
-			var version = FileVersionInfo.GetVersionInfo(Path.Combine(DataPath, "Wow.exe"));
-			if (version.FilePrivatePart > 13000 || version.FilePrivatePart < 9000)
-				throw new NotImplementedException("MPQ is only implemented for WOTLK (builds 9000 - 13000)");
+        private void InitMpq()
+        {
+            var version = FileVersionInfo.GetVersionInfo(Path.Combine(DataPath, "Wow.exe"));
+            if (version.FilePrivatePart > 13000 || version.FilePrivatePart < 9000)
+                throw new NotImplementedException("MPQ is only implemented for WOTLK (builds 9000 - 13000)");
 
-			Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Lichking;
-			Files.Models.ModelFactory.Instance.Version = FileDataVersion.Lichking;
-			Files.Sky.SkyManager.InitVersion(FileDataVersion.Lichking);
-			Version = FileDataVersion.Lichking;
+            Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Lichking;
+            Files.Models.ModelFactory.Instance.Version = FileDataVersion.Lichking;
+            Files.Sky.SkyManager.InitVersion(FileDataVersion.Lichking);
+            Version = FileDataVersion.Lichking;
 
-			var mgr = new MPQ.FileManager();
-			mgr.LoadComplete += () =>
-			{
-				Initialized = true;
-			    if (LoadComplete != null)
-			        LoadComplete();
-			};
+            var mgr = new MPQ.FileManager();
+            mgr.LoadComplete += () =>
+            {
+                Initialized = true;
+                if (LoadComplete != null)
+                    LoadComplete();
+            };
 
-			Provider = mgr;
-			mgr.InitFromPath(DataPath);
-		}
+            Provider = mgr;
+            mgr.InitFromPath(DataPath);
+        }
     }
 }

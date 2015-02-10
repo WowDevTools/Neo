@@ -52,7 +52,7 @@ namespace WoWEditor6.Settings
                     {
                         new ToolbarButton {Function = ToolbarFunction.Terrain, Tooltip = "Switch to terrain editing mode" },
                         new ToolbarButton {Function = ToolbarFunction.KeyBinding, Tooltip = "Open keyboard/mouse settings dialog" },
-						new ToolbarButton {Function = ToolbarFunction.Save, Tooltip = "Save all pending changes" }
+                        new ToolbarButton {Function = ToolbarFunction.Save, Tooltip = "Save all pending changes" }
                     }
                 },
 
