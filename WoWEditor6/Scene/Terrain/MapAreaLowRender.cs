@@ -132,8 +132,8 @@ namespace WoWEditor6.Scene.Terrain
             Mesh.IndexBuffer.IndexFormat = SharpDX.DXGI.Format.R32_UInt;
 
             var program = new ShaderProgram(context);
-            program.SetVertexShader(Resources.Shaders.MapLowVertex, "main");
-            program.SetPixelShader(Resources.Shaders.MapLowPixel, "main");
+            program.SetVertexShader(Resources.Shaders.MapLowVertex);
+            program.SetPixelShader(Resources.Shaders.MapLowPixel);
             Mesh.Program = program;
         }
     }

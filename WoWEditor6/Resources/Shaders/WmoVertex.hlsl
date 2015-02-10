@@ -1,4 +1,4 @@
-﻿cbuffer MatrixBuffer : register(b0)
+cbuffer MatrixBuffer : register(b0)
 {
     float4x4 matView;
     float4x4 matProj;

@@ -199,8 +199,8 @@ namespace WoWEditor6.UI
         private void InitMesh()
         {
             var program = new ShaderProgram(mContext);
-            program.SetVertexShader(Shaders.TexturedQuadVertex, "main");
-            program.SetPixelShader(Shaders.TextureQuadPixel, "main");
+            program.SetVertexShader(Shaders.TexturedQuadVertex);
+            program.SetPixelShader(Shaders.TextureQuadPixel);
 
             mMesh = new Mesh(mContext) {IndexCount = 6, Stride = 16};
 
