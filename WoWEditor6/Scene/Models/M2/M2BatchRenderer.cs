@@ -16,6 +16,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         private static ShaderProgram gNoBlendProgram;
         private static ShaderProgram gBlendProgram;
+        private static ShaderProgram gBlendTestProgram;
 
         private readonly IM2Animator mAnimator;
         private readonly M2File mModel;
@@ -120,7 +121,10 @@ namespace WoWEditor6.Scene.Models.M2
             {
                 Mesh.UpdateBlendState(BlendStates[pass.BlendMode]);
                 var oldProgram = Mesh.Program;
-                Mesh.Program = (pass.BlendMode > 0 ? gBlendProgram : gNoBlendProgram);
+                if (pass.BlendMode == 1)
+                    Mesh.Program = gBlendTestProgram;
+                else
+                    Mesh.Program = (pass.BlendMode > 0 ? gBlendProgram : gNoBlendProgram);
                 if (Mesh.Program != oldProgram)
                     Mesh.Program.Bind();
 
@@ -397,6 +401,10 @@ namespace WoWEditor6.Scene.Models.M2
             gBlendProgram = new ShaderProgram(context);
             gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlend);
             gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
+
+            gBlendTestProgram = new ShaderProgram(context);
+            gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
+            gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
         }
     }
 }

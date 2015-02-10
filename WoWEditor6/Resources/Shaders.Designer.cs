@@ -79,6 +79,15 @@ namespace WoWEditor6.Resources {
                 return ((byte[])(obj));
             }
         }
+
+        internal static byte[] M2PixelBlendAlpha
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("M2PixelBlendAlpha", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].

@@ -160,6 +160,9 @@
   <data name="M2PixelBlend" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2PixelBlend.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="M2PixelBlendAlpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2PixelBlendAlpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="M2VertexInstanced" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2VertexInstanced.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -168,6 +171,9 @@
   </data>
   <data name="M2PixelPortraitBlend" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2PixelPortraitBlend.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="M2PixelPortraitBlendAlpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2PixelPortraitBlendAlpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="M2VertexPortrait" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2VertexPortrait.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
