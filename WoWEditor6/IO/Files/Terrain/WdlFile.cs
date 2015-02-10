@@ -16,13 +16,15 @@ namespace WoWEditor6.IO.Files.Terrain
     {
         private readonly Dictionary<int, MareEntry> mEntries = new Dictionary<int, MareEntry>();
 
+        public bool HasEntries { get { return mEntries.Count > 0; } }
+
         public void Load(string continent)
         {
             var wdlPath = string.Format(@"World\Maps\{0}\{0}.wdl", continent);
             using (var strm = FileManager.Instance.Provider.OpenFile(wdlPath))
             {
                 if (strm == null)
-                    throw new FileNotFoundException(continent);
+                    return;
 
                 var reader = new BinaryReader(strm);
                 var signature = 0u;

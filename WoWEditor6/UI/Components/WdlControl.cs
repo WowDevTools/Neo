@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using SharpDX;
 using SharpDX.Direct2D1;
+using WoWEditor6.IO;
 
 namespace WoWEditor6.UI.Components
 {
@@ -42,7 +44,21 @@ namespace WoWEditor6.UI.Components
         public void UpdateMap(string mapName)
         {
             mWdlFile = new IO.Files.Terrain.WdlFile();
-            mWdlFile.Load(mapName);
+            try
+            {
+                mWdlFile.Load(mapName);
+                if(mWdlFile.HasEntries == false)
+                {
+                    UpdateMapNoWdl(mapName);
+                    return;
+                }
+            }
+            catch(Exception)
+            {
+                UpdateMapNoWdl(mapName);
+                return;
+            }
+
             if (mImage != null)
                 mImage.Dispose();
 
@@ -126,6 +142,111 @@ namespace WoWEditor6.UI.Components
                 case MessageType.MouseMove:
                     HandleMouseMove(msg);
                     break;
+            }
+        }
+
+        private void UpdateMapNoWdl(string continent)
+        {
+            var wdtPath = string.Format(@"World\Map\{0}\{0}.wdt", continent);
+            var hasWdt = FileManager.Instance.Provider.Exists(wdtPath);
+            if(hasWdt == false)
+            {
+                UpdateMapFallback(continent);
+                return;
+            }
+
+            using(var strm = FileManager.Instance.Provider.OpenFile(wdtPath))
+            {
+                var reader = new BinaryReader(strm);
+                var hasWdtData = false;
+                while (true)
+                {
+                    try
+                    {
+                        var id = reader.ReadUInt32();
+                        var size = reader.ReadInt32();
+                        if (id == 0x4D41494E)
+                        {
+                            var adtFlags = reader.ReadArray<ulong>(size / 8);
+                            var textureData = new uint[Width * Height];
+                            for(var i = 0; i < 64; ++i)
+                            {
+                                for(var j = 0; j < 64; ++j)
+                                {
+                                    var idx = i * 64 + j;
+                                    var exists = (adtFlags[idx] & 1) != 0;
+                                    if(exists)
+                                    {
+                                        hasWdtData = true;
+                                        for(var k = 0; k < 17; ++k)
+                                        {
+                                            for(var l = 0; l < 17; ++l)
+                                                textureData[(i * 17 + k) * (64 * 17) + j * 17 + l] = 0xFFFFFFFF;
+                                        }
+                                    }
+                                }
+                            }
+
+                            var bmpProps =
+                                new BitmapProperties(new PixelFormat(SharpDX.DXGI.Format.B8G8R8A8_UNorm,
+                                    AlphaMode.Ignore));
+
+                            using (var dataStream = new DataStream(Width * Height * 4, true, true))
+                            {
+                                dataStream.WriteRange(textureData);
+                                dataStream.Position = 0;
+
+                                mImage = new Bitmap(InterfaceManager.Instance.Surface.RenderTarget, new Size2(Width, Height),
+                                    new DataPointer(dataStream.DataPointer, Width * Height * 4), Width * 4, bmpProps);
+                            }
+
+                            break;
+                        }
+
+                        reader.ReadBytes(size);
+                    }
+                    catch (Exception)
+                    {
+                        UpdateMapFallback(continent);
+                        return;
+                    }
+                }
+
+                if (hasWdtData == false)
+                    UpdateMapFallback(continent);
+            }
+        }
+
+        private void UpdateMapFallback(string continent)
+        {
+            var textureData = new uint[Width * Height];
+            for (var i = 0; i < 64; ++i)
+            {
+                for (var j = 0; j < 64; ++j)
+                {
+                    var exists = FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", continent, j, i));
+                    if (exists)
+                    {
+                        for (var k = 0; k < 17; ++k)
+                        {
+                            for (var l = 0; l < 17; ++l)
+                                textureData[(i * 17 + k) * (64 * 17) + j * 17 + l] = 0xFFFFFFFF;
+                        }
+                    }
+                }
+            }
+
+            var bmpProps =
+                new BitmapProperties(new PixelFormat(SharpDX.DXGI.Format.B8G8R8A8_UNorm,
+                    AlphaMode.Ignore));
+
+            using (var dataStream = new DataStream(Width * Height * 4, true, true))
+            {
+                dataStream.WriteRange(textureData);
+                dataStream.Position = 0;
+
+                mImage = new Bitmap(InterfaceManager.Instance.Surface.RenderTarget, new Size2(Width, Height),
+                    new DataPointer(dataStream.DataPointer, Width * Height * 4), Width * 4, bmpProps);
             }
         }
 
