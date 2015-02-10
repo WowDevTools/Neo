@@ -35,23 +35,43 @@ cbuffer TextureScaleParams : register(b2)
     float4 texScales;
 };
 
+float4 sinusInterpolate(float4 src, float4 dst, float pct) {
+    float sinval = sin(pct * 3.1415926 / 2.0f);
+    return sinval * dst + (1 - sinval) * src;
+}
+
 float4 applyBrush(float4 color, float3 worldPos) {
     float3 dirVec = worldPos - mousePosition.xyz;
     float dsq = dot(dirVec.xy, dirVec.xy);
+
     float innerRadius = brushParams.x * brushParams.x;
     float outerRadius = brushParams.y * brushParams.y;
-    float facInner = step(dsq, innerRadius) * step(innerRadius * 0.95, dsq);
-    float facOuter = step(dsq, outerRadius) * step(outerRadius * 0.95, dsq);
     float angle = atan2(dirVec.y, dirVec.x) + 3.141592;
-    angle = degrees(angle);
-    angle = fmod(angle, 36.0f);
+    angle = fmod(degrees(angle), 36.0f);
 
-    float fac = step(0.1, (facInner + facOuter) / 2);
-    fac *= step(angle, 18.0f);
+    // Antialiasing between the circle segments
+    float fac = 1.0;
+    fac *= clamp((18.0 - angle) / 0.4, 0, 1);
+    fac *= clamp((angle - 0.4)  / 0.4, 0, 1);
+
+    // Antialiasing for the circle borders
+    if (dsq < innerRadius && innerRadius * 0.95 < dsq) {
+        float antiAliasSize = innerRadius * 0.01;
+        fac *= clamp((dsq - innerRadius * 0.95) / antiAliasSize, 0, 1);
+        fac *= clamp((innerRadius - dsq) / antiAliasSize, 0, 1);
+    }
+    else if (dsq < outerRadius && outerRadius * 0.95 < dsq) {
+        float antiAliasSize = outerRadius * 0.01;
+        fac *= clamp((dsq - outerRadius * 0.95) / antiAliasSize, 0, 1);
+        fac *= clamp((outerRadius - dsq) / antiAliasSize, 0, 1);
+    }
+    else {
+        fac = 0.0;
+    }
+
     float4 brushColor = float4(1, 1, 1, 1);
     brushColor.rgb -= color.rgb;
-
-    return fac * brushColor + (1 - fac) * color;
+    return sinusInterpolate(color, brushColor, fac);
 }
 
 float3 getDiffuseLight(float3 normal) {
