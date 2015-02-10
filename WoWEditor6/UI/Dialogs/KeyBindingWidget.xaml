@@ -7,12 +7,20 @@
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <Grid Margin="0,0,32,-194" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="75" />
+            <RowDefinition Height="125" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Border Padding="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <CheckBox IsChecked="True" Click="InvertMouseBox_Clicked">Invert Mouse</CheckBox>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                    <CheckBox IsChecked="True" Click="InvertMouseBox_Clicked">Invert Mouse Y-Axis</CheckBox>
+                    <CheckBox IsChecked="False" Click="InvertMouseBoxX_Clicked" Margin="0,5,0,0">Invert Mouse X-Axis</CheckBox>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Label Margin="0,0,5,0">Mouse sensitivity</Label>
+                        <Slider Width="100" VerticalAlignment="Center" Value="5" Minimum="1" Maximum="10" x:Name="SensitivitySlider" ValueChanged="SensitivitySlider_ValueChanged"></Slider>
+                        <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" x:Name="SensitivitySliderIndicator"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
             </Border>
         </Grid>
         <WrapPanel Grid.Row="1" Name="InputElementWrapper">
