@@ -17,6 +17,8 @@ namespace WoWEditor6.Scene.Models.M2
         private static ShaderProgram gNoBlendProgram;
         private static ShaderProgram gBlendProgram;
         private static ShaderProgram gBlendTestProgram;
+        private static RasterState gNoCullState;
+        private static RasterState gCullState;
 
         private readonly IM2Animator mAnimator;
         private readonly M2File mModel;
@@ -119,7 +121,10 @@ namespace WoWEditor6.Scene.Models.M2
 
             foreach (var pass in mModel.Passes)
             {
+                var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
+                Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
                 Mesh.UpdateBlendState(BlendStates[pass.BlendMode]);
+
                 var oldProgram = Mesh.Program;
                 if (pass.BlendMode == 1)
                     Mesh.Program = gBlendTestProgram;
@@ -405,6 +410,9 @@ namespace WoWEditor6.Scene.Models.M2
             gBlendTestProgram = new ShaderProgram(context);
             gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
             gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
+
+            gNoCullState = new RasterState(context) { CullEnabled = false };
+            gCullState = new RasterState(context) { CullEnabled = true };
         }
     }
 }

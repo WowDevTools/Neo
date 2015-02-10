@@ -78,8 +78,8 @@ namespace WoWEditor6.Scene.Models.WMO
 
         private static void SetupBatch(WmoRenderBatch batch)
         {
-            var hasCull = (batch.Material.MaterialFlags & 0x04) != 0;
-            Mesh.UpdateRasterizerState(hasCull ? gCullState : gNoCullState);
+            var cullingDisabled = (batch.Material.MaterialFlags & 0x04) != 0;
+            Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
             Mesh.UpdateBlendState((batch.Batch.BlendMode != 0) ? gAlphaBlendState : gNoBlendState);
             Mesh.Program = (batch.Batch.BlendMode != 0) ? gBlendProgram : gNoBlendProgram;
             Mesh.Program.Bind();
