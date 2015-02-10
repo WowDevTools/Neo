@@ -56,6 +56,17 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             if (mWasChanged == false)
                 return;
 
+            var hasMccv = mChunks.Any(c => c != null && c.HasMccv);
+            if(hasMccv)
+            {
+                var wdt = WorldFrame.Instance.MapManager.CurrentWdt;
+                if((wdt.Flags & 2) == 0)
+                {
+                    wdt.Flags |= 2;
+                    wdt.Save(WorldFrame.Instance.MapManager.Continent);
+                }
+            }
+
             WriteBaseFile();
         }
 

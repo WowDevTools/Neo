@@ -95,6 +95,17 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             if (mWasChanged == false)
                 return;
 
+            var hasMccv = mChunks.Any(c => c != null && c.HasMccv);
+            if(hasMccv)
+            {
+                var wdt = WorldFrame.Instance.MapManager.CurrentWdt;
+                if((wdt.Flags & 2) == 0)
+                {
+                    wdt.Flags |= 2;
+                    wdt.Save(WorldFrame.Instance.MapManager.Continent);
+                }
+            }
+
             using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, IndexX, IndexY)))
             {
                 var writer = new BinaryWriter(strm);

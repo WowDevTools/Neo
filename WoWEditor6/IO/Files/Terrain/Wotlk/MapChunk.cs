@@ -14,12 +14,13 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private Mcnk mHeader;
 
         private readonly Vector4[] mShadingFloats = new Vector4[145];
-        private bool mForceMccv;
         private byte[] mAlphaCompressed;
         private Mcly[] mLayers = new Mcly[0];
         private static readonly uint[] Indices = new uint[768];
         private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
         private byte[] mNormalExtra;
+
+        public bool HasMccv { get; private set; }
 
         public override uint[] RenderIndices { get { return Indices; } }
 
@@ -107,7 +108,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 {
                     LoadMccv(reader);
                     hasMccv = true;
-                    mForceMccv = true;
+                    HasMccv = true;
                 }
             }
 
@@ -319,7 +320,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 if (dist > radius)
                     continue;
 
-                mForceMccv = true;
+                HasMccv = true;
                 changed = true;
                 var factor = dist / radius;
                 if (dist < parameters.InnerRadius)
@@ -655,12 +656,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private void SaveMccv(BinaryWriter writer, int basePosition, ref Mcnk header)
         {
-            if (mForceMccv == false)
+            if (HasMccv == false)
             {
                 header.Mccv = 0;
                 header.Flags &= ~0x40u;
                 return;
             }
+
+            header.Flags |= 0x40;
 
             var colors = mShadingFloats.Select(v =>
             {

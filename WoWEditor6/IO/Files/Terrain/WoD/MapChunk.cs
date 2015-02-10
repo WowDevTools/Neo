@@ -26,10 +26,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly List<Mcly> mLayerInfos = new List<Mcly>();
         private readonly Vector4[] mShadingFloats = new Vector4[145];
-        private bool mForceMccv;
 
         private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
         private static readonly uint[] Indices = new uint[768];
+
+        public bool HasMccv { get; private set; }
 
         public override uint[] RenderIndices { get { return Indices; } } 
 
@@ -70,7 +71,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             AddOrReplaceChunk(0x4D435654, heights);
             AddOrReplaceChunk(0x4D434E52, normals);
-            if (mForceMccv)
+            if (HasMccv)
             {
                 mHeader.Flags |= 0x40;
                 AddOrReplaceChunk(0x4D434356, colors);
@@ -572,7 +573,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 if (dist > radius)
                     continue;
 
-                mForceMccv = true;
+                HasMccv = true;
                 changed = true;
                 var factor = dist / radius;
                 if (dist < parameters.InnerRadius)
