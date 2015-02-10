@@ -208,3 +208,5 @@ ModelManifest.xml
 /WoWEditor6/Resources/Shaders/WmoVertex.dxc
 /WoWEditor6/M2Pixel.dxc
 /WoWEditor6/M2PixelBlend.dxc
+/WoWEditor6/Resources/Shaders/M2PixelBlendAlpha.dxc
+/WoWEditor6/Resources/Shaders/M2PixelPortraitBlendAlpha.dxc

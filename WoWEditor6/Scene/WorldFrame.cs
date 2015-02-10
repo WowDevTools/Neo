@@ -180,7 +180,7 @@ namespace WoWEditor6.Scene
         {
             Dispatcher.ProcessFrame();
 
-            CamControl.Update(ActiveCamera);
+            CamControl.Update(ActiveCamera, State != AppState.World);
 
             Editing.EditManager.Instance.UpdateChanges();
 

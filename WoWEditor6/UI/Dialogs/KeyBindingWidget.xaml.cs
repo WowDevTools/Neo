@@ -100,6 +100,8 @@ namespace WoWEditor6.UI.Dialogs
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            SensitivitySliderIndicator.Text = (SensitivitySlider.Value / 5.0f).ToString("F2");
+
             if (mInitialized)
                 return;
 
@@ -145,6 +147,32 @@ namespace WoWEditor6.UI.Dialogs
                 return;
 
             WorldFrame.Instance.CamControl.InvertY = !WorldFrame.Instance.CamControl.InvertY;
+        }
+
+        private void InvertMouseBoxX_Clicked(object sender, RoutedEventArgs e)
+        {
+            var cb = sender as System.Windows.Controls.CheckBox;
+            if (cb == null)
+                return;
+
+            WorldFrame.Instance.CamControl.InvertX = !WorldFrame.Instance.CamControl.InvertX;
+        }
+
+        private void SensitivitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var slider = sender as System.Windows.Controls.Slider;
+            if (slider == null)
+                return;
+
+
+            var newValue = slider.Value / 5.0f;
+            if (SensitivitySliderIndicator != null)
+                SensitivitySliderIndicator.Text = newValue.ToString("F2");
+
+            if (WorldFrame.Instance == null || WorldFrame.Instance.CamControl == null)
+                return;
+
+            WorldFrame.Instance.CamControl.TurnFactor = (float)newValue * 0.2f;
         }
     }
 }

@@ -61,7 +61,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public override void OnUpdateModelPositions(TerrainChangeParameters parameters)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void UpdateNormals()

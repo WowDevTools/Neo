@@ -43,3 +43,15 @@ float4 main_blend(PixelInput input) : SV_Target{
     return color;
 
 }
+
+float4 main_blend_alpha_test(PixelInput input) : SV_Target{
+    float4 color = baseTexture.Sample(baseSampler, input.texCoord);
+    if (color.a < 0.5)
+        discard;
+
+    float3 lightColor = getDiffuseLight(input.normal);
+    lightColor.rgb = saturate(lightColor.rgb);
+    color.rgb *= lightColor;
+
+    return color;
+}
