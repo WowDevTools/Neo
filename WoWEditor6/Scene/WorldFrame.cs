@@ -154,6 +154,9 @@ namespace WoWEditor6.Scene
 
             CamControl = new CameraControl(window);
             CamControl.PositionChanged += MapManager.UpdatePosition;
+
+            if (!LeftHandedCamera)
+                CamControl.InvertY = true;
         }
 
         public void OnEnterWorld(Vector3 position)

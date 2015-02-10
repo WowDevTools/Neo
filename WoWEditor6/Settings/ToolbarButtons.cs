@@ -6,7 +6,7 @@ namespace WoWEditor6.Settings
     {
         Terrain,
         KeyBinding,
-		Save
+        Save
     }
 
     public class ToolbarButton

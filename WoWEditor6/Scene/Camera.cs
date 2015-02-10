@@ -22,7 +22,7 @@ namespace WoWEditor6.Scene
 
         public event Action<Camera, Matrix> ViewChanged , ProjectionChanged;
 
-		public bool LeftHanded { get; set; }
+        public bool LeftHanded { get; set; }
 
         public Matrix View { get { return mMatView; } }
         public Matrix Projection { get { return mMatProjection; } }
@@ -52,16 +52,16 @@ namespace WoWEditor6.Scene
             return mFrustum.Contains(ref sphere) != ContainmentType.Disjoint;
         }
 
-		public virtual void Update()
-		{
-			UpdateView();
-		}
+        public virtual void Update()
+        {
+            UpdateView();
+        }
 
         private void UpdateView()
         {
             mForward = mTarget - Position;
             mForward.Normalize();
-	        mViewNoTranspose = LeftHanded == false ? Matrix.LookAtRH(Position, mTarget, mUp) : Matrix.LookAtLH(Position, mTarget, mUp);
+            mViewNoTranspose = LeftHanded == false ? Matrix.LookAtRH(Position, mTarget, mUp) : Matrix.LookAtLH(Position, mTarget, mUp);
             Matrix.Invert(ref mViewNoTranspose, out mViewInverted);
             Matrix.Transpose(ref mViewNoTranspose, out mMatView);
             if (ViewChanged != null)
@@ -138,12 +138,14 @@ namespace WoWEditor6.Scene
         public void Pitch(float angle)
         {
             var matRot = Matrix.RotationAxis(mRight, MathUtil.DegreesToRadians(angle));
-            mForward = Vector3.TransformCoordinate(mForward, matRot);
-            mForward.Normalize();
-
-            mTarget = Position + mForward;
             mUp = Vector3.TransformCoordinate(mUp, matRot);
             mUp.Normalize();
+
+            if (mUp.Z < 0)
+                mUp.Z = 0;
+
+            mForward = Vector3.Cross(mUp, mRight);
+            mTarget = Position + mForward;
 
             UpdateView();
         }

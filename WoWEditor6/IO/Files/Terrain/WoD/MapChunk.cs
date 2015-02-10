@@ -18,7 +18,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private readonly BinaryReader mTexReader;
         private readonly BinaryReader mObjReader;
 
-	    private Mcnk mHeader;
+        private Mcnk mHeader;
 
         private IntPtr mAlphaDataCompressed;
 
@@ -26,14 +26,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly List<Mcly> mLayerInfos = new List<Mcly>();
         private readonly Vector4[] mShadingFloats = new Vector4[145];
-	    private bool mForceMccv;
+        private bool mForceMccv;
 
-	    private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
+        private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
         private static readonly uint[] Indices = new uint[768];
 
         public override uint[] RenderIndices { get { return Indices; } } 
 
-		public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
+        public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
             mParent = new WeakReference<MapArea>(parent);
             mMainInfo = mainInfo;
@@ -50,52 +50,52 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
-		public void WriteBaseChunks(BinaryWriter writer)
-		{
-			var minHeight = Vertices.Select(v => v.Position.Z).Min();
-			mHeader.Position.Z = minHeight;
-			var heights = Vertices.Select(v => v.Position.Z - minHeight).ToArray();
-			var normals =
-				Vertices.SelectMany(
-					v => new[] {(sbyte) (-v.Normal.X * 127.0f), (sbyte) (-v.Normal.Y * 127.0f), (sbyte) (v.Normal.Z * 127.0f)})
-					.ToArray();
+        public void WriteBaseChunks(BinaryWriter writer)
+        {
+            var minHeight = Vertices.Select(v => v.Position.Z).Min();
+            mHeader.Position.Z = minHeight;
+            var heights = Vertices.Select(v => v.Position.Z - minHeight).ToArray();
+            var normals =
+                Vertices.SelectMany(
+                    v => new[] {(sbyte) (-v.Normal.X * 127.0f), (sbyte) (-v.Normal.Y * 127.0f), (sbyte) (v.Normal.Z * 127.0f)})
+                    .ToArray();
 
-			var colors = mShadingFloats.Select(v =>
-			{
-				uint b = (byte) Math.Max(Math.Min((v.Z / 2.0f) * 255.0f, 255), 0);
-				uint g = (byte) Math.Max(Math.Min((v.Y / 2.0f) * 255.0f, 255), 0);
-				uint r = (byte) Math.Max(Math.Min((v.X / 2.0f) * 255.0f, 255), 0);
-				return 0x7F000000 | (b << 16) | (g << 8) | r;
-			}).ToArray();
+            var colors = mShadingFloats.Select(v =>
+            {
+                uint b = (byte) Math.Max(Math.Min((v.Z / 2.0f) * 255.0f, 255), 0);
+                uint g = (byte) Math.Max(Math.Min((v.Y / 2.0f) * 255.0f, 255), 0);
+                uint r = (byte) Math.Max(Math.Min((v.X / 2.0f) * 255.0f, 255), 0);
+                return 0x7F000000 | (b << 16) | (g << 8) | r;
+            }).ToArray();
 
-			AddOrReplaceChunk(0x4D435654, heights);
-			AddOrReplaceChunk(0x4D434E52, normals);
-			if (mForceMccv)
-			{
-				mHeader.Flags |= 0x40;
-				AddOrReplaceChunk(0x4D434356, colors);
-			}
+            AddOrReplaceChunk(0x4D435654, heights);
+            AddOrReplaceChunk(0x4D434E52, normals);
+            if (mForceMccv)
+            {
+                mHeader.Flags |= 0x40;
+                AddOrReplaceChunk(0x4D434356, colors);
+            }
 
-			var totalSize = mOriginalMainChunks.Sum(pair => pair.Value.Size + 8);
-			totalSize += SizeCache<Mcnk>.Size;
+            var totalSize = mOriginalMainChunks.Sum(pair => pair.Value.Size + 8);
+            totalSize += SizeCache<Mcnk>.Size;
 
-			writer.Write(0x4D434E4B);
-			writer.Write(totalSize);
-			writer.Write(mHeader);
+            writer.Write(0x4D434E4B);
+            writer.Write(totalSize);
+            writer.Write(mHeader);
 
-			var startPos = writer.BaseStream.Position;
-			foreach(var chunk in mOriginalMainChunks)
-			{
-				writer.Write(chunk.Key);
-				writer.Write(chunk.Value.Size);
-				writer.Write(chunk.Value.Data);
-			}
+            var startPos = writer.BaseStream.Position;
+            foreach(var chunk in mOriginalMainChunks)
+            {
+                writer.Write(chunk.Key);
+                writer.Write(chunk.Value.Size);
+                writer.Write(chunk.Value.Data);
+            }
 
-			var endPos = writer.BaseStream.Position;
-			writer.BaseStream.Position = startPos - SizeCache<Mcnk>.Size;
-			writer.Write(mHeader);
-			writer.BaseStream.Position = endPos;
-		}
+            var endPos = writer.BaseStream.Position;
+            writer.BaseStream.Position = startPos - SizeCache<Mcnk>.Size;
+            writer.Write(mHeader);
+            writer.BaseStream.Position = endPos;
+        }
 
         public override bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
         {
@@ -222,9 +222,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                         break;
                 }
 
-	            mReader.BaseStream.Position = cur;
-	            var data = mReader.ReadBytes(size);
-	            mOriginalMainChunks.Add(id, new DataChunk {Data = data, Signature = id, Size = size});
+                mReader.BaseStream.Position = cur;
+                var data = mReader.ReadBytes(size);
+                mOriginalMainChunks.Add(id, new DataChunk {Data = data, Signature = id, Size = size});
             }
 
             if (hasMccv == false)
@@ -520,36 +520,36 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
         }
 
-		private unsafe DataChunk ChunkFromArray<T>(uint signature, T[] data) where T : struct
-		{
-			var byteData = new byte[data.Length * SizeCache<T>.Size];
-			fixed(byte* ptr = byteData)
-				UnsafeNativeMethods.CopyMemory(ptr, (byte*) SizeCache<T>.GetUnsafePtr(ref data[0]), byteData.Length);
+        private unsafe DataChunk ChunkFromArray<T>(uint signature, T[] data) where T : struct
+        {
+            var byteData = new byte[data.Length * SizeCache<T>.Size];
+            fixed(byte* ptr = byteData)
+                UnsafeNativeMethods.CopyMemory(ptr, (byte*) SizeCache<T>.GetUnsafePtr(ref data[0]), byteData.Length);
 
-			return new DataChunk
-			{
-				Data = byteData,
-				Signature = signature,
-				Size = byteData.Length
-			};
-		}
+            return new DataChunk
+            {
+                Data = byteData,
+                Signature = signature,
+                Size = byteData.Length
+            };
+        }
 
-		private void AddOrReplaceChunk<T>(uint signature, T[] data) where T : struct
-		{
-			var chunk = ChunkFromArray(signature, data);
-			if (mOriginalMainChunks.ContainsKey(signature) == false)
-				mOriginalMainChunks.Add(signature, chunk);
-			else
-			{
-				var old = mOriginalMainChunks[signature];
-				if (old.Size >= chunk.Size)
-					Buffer.BlockCopy(chunk.Data, 0, old.Data, 0, chunk.Size);
-				else
-					old = chunk;
+        private void AddOrReplaceChunk<T>(uint signature, T[] data) where T : struct
+        {
+            var chunk = ChunkFromArray(signature, data);
+            if (mOriginalMainChunks.ContainsKey(signature) == false)
+                mOriginalMainChunks.Add(signature, chunk);
+            else
+            {
+                var old = mOriginalMainChunks[signature];
+                if (old.Size >= chunk.Size)
+                    Buffer.BlockCopy(chunk.Data, 0, old.Data, 0, chunk.Size);
+                else
+                    old = chunk;
 
-				mOriginalMainChunks[signature] = old;
-			}
-		}
+                mOriginalMainChunks[signature] = old;
+            }
+        }
 
         protected override bool HandleMccvPaint(Editing.TerrainChangeParameters parameters)
         {
@@ -572,7 +572,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 if (dist > radius)
                     continue;
 
-	            mForceMccv = true;
+                mForceMccv = true;
                 changed = true;
                 var factor = dist / radius;
                 if (dist < parameters.InnerRadius)
@@ -647,31 +647,31 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             Textures.Clear();
         }
 
-		static MapChunk()
-		{
-			var indices = Indices;
-			for (uint y = 0; y < 8; ++y)
-			{
-				for (uint x = 0; x < 8; ++x)
-				{
-					var i = y * 8 * 12 + x * 12;
-					indices[i + 0] = y * 17 + x;
-					indices[i + 2] = y * 17 + x + 1;
-					indices[i + 1] = y * 17 + x + 9;
+        static MapChunk()
+        {
+            var indices = Indices;
+            for (uint y = 0; y < 8; ++y)
+            {
+                for (uint x = 0; x < 8; ++x)
+                {
+                    var i = y * 8 * 12 + x * 12;
+                    indices[i + 0] = y * 17 + x;
+                    indices[i + 2] = y * 17 + x + 1;
+                    indices[i + 1] = y * 17 + x + 9;
 
-					indices[i + 3] = y * 17 + x + 1;
-					indices[i + 5] = y * 17 + x + 18;
-					indices[i + 4] = y * 17 + x + 9;
+                    indices[i + 3] = y * 17 + x + 1;
+                    indices[i + 5] = y * 17 + x + 18;
+                    indices[i + 4] = y * 17 + x + 9;
 
-					indices[i + 6] = y * 17 + x + 18;
-					indices[i + 8] = y * 17 + x + 17;
-					indices[i + 7] = y * 17 + x + 9;
+                    indices[i + 6] = y * 17 + x + 18;
+                    indices[i + 8] = y * 17 + x + 17;
+                    indices[i + 7] = y * 17 + x + 9;
 
-					indices[i + 9] = y * 17 + x + 17;
-					indices[i + 11] = y * 17 + x;
-					indices[i + 10] = y * 17 + x + 9;
-				}
-			}
-		}
-	}
+                    indices[i + 9] = y * 17 + x + 17;
+                    indices[i + 11] = y * 17 + x;
+                    indices[i + 10] = y * 17 + x + 9;
+                }
+            }
+        }
+    }
 }

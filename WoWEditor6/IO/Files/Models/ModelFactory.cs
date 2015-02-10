@@ -48,8 +48,8 @@ namespace WoWEditor6.IO.Files.Models
                 case FileDataVersion.Warlords:
                     return new WoD.WmoRoot();
 
-				case FileDataVersion.Lichking:
-		            return new Wotlk.WmoRoot();
+                case FileDataVersion.Lichking:
+                    return new Wotlk.WmoRoot();
 
                 default:
                     throw new NotImplementedException("Version not yet supported for WMO models");

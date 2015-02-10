@@ -156,20 +156,20 @@ namespace WoWEditor6.IO
 
         public static void WriteArray<T>(this BinaryWriter writer, T[] values) where T : struct
         {
-	        if (values.Length == 0)
-		        return;
+            if (values.Length == 0)
+                return;
 
-			if (SizeCache<T>.TypeRequiresMarshal)
-				throw new ArgumentException(
-					"Cannot write a generic structure type that requires marshaling support. Write the structure out manually.");
+            if (SizeCache<T>.TypeRequiresMarshal)
+                throw new ArgumentException(
+                    "Cannot write a generic structure type that requires marshaling support. Write the structure out manually.");
 
-	        var buf = new byte[SizeCache<T>.Size * values.Length];
-	        var valData = (byte*) SizeCache<T>.GetUnsafePtr(ref values[0]);
+            var buf = new byte[SizeCache<T>.Size * values.Length];
+            var valData = (byte*) SizeCache<T>.GetUnsafePtr(ref values[0]);
 
-	        fixed (byte* ptr = buf)
-		        UnsafeNativeMethods.CopyMemory(ptr, valData, buf.Length);
+            fixed (byte* ptr = buf)
+                UnsafeNativeMethods.CopyMemory(ptr, valData, buf.Length);
 
-	        writer.Write(buf, 0, buf.Length);
+            writer.Write(buf, 0, buf.Length);
         }
     }
 }

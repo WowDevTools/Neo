@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Border Padding="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <CheckBox Checked="InvertMouseBox_Checked">Invert Mouse</CheckBox>
+                <CheckBox IsChecked="True" Click="InvertMouseBox_Clicked">Invert Mouse</CheckBox>
             </Border>
         </Grid>
         <WrapPanel Grid.Row="1" Name="InputElementWrapper">

@@ -109,5 +109,5 @@ namespace WoWEditor6.UI.Dialogs
         {
             TerrainChangeManager.Instance.AlignModelsToGround = AlignModelsBox.IsChecked ?? false;
         }
-	}
+    }
 }
