@@ -111,6 +111,7 @@ float4 main(PixelInput input) : SV_Target{
 
     color.rgb *= input.color.bgr * 2;
     color.rgb *= getDiffuseLight(input.normal);
+    color.rgb *= alpha.r;
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);

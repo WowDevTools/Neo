@@ -197,6 +197,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mHeader = mReader.Read<Mcnk>();
             var hasMccv = false;
 
+            for (var i = 0; i < 4096; ++i)
+                AlphaValues[i] = 0xFF;
+
             while (mReader.BaseStream.Position + 8 <= mMainInfo.PosStart + 8 + chunkSize)
             {
                 var id = mReader.ReadUInt32();
@@ -325,6 +328,27 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                             mAlphaDataCompressed = Marshal.AllocHGlobal(size);
                             mTexReader.ReadToPointer(mAlphaDataCompressed, size);
                             break;
+
+                        case 0x4D435348:
+                            {
+                                if (mHeader.SizeShadow > 8)
+                                {
+                                    var curPtr = 0;
+                                    for (var i = 0; i < 64; ++i)
+                                    {
+                                        for (var j = 0; j < 8; ++j)
+                                        {
+                                            var mask = mReader.ReadByte();
+                                            for (var k = 0; k < 8; ++k)
+                                            {
+                                                AlphaValues[curPtr] &= 0xFFFFFF00;
+                                                AlphaValues[curPtr++] |= ((mask & (1 << k)) == 0) ? (byte)0xFF : (byte)0xCC;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
                     }
 
                     mTexReader.BaseStream.Position = cur + size;
@@ -357,7 +381,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private void LoadAlpha()
         {
             var nLayers = Math.Min(mLayerInfos.Count, 4);
-            for(var i = 0; i < nLayers; ++i)
+            for(var i = 1; i < nLayers; ++i)
             {
                 if ((mLayerInfos[i].Flags & 0x200) != 0)
                     LoadLayerRle(mLayerInfos[i], i);

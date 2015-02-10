@@ -104,13 +104,14 @@ float4 main(PixelInput input) : SV_Target{
     float4 c2 = texture2.Sample(colorSampler, input.texCoord * texScales.z);
     float4 c3 = texture3.Sample(colorSampler, input.texCoord * texScales.a);
 
-    float4 color = c0 * alpha.r;
+    float4 color = c0;
     color = c1 * alpha.g + (1.0 - alpha.g) * color;
     color = c2 * alpha.b + (1.0 - alpha.b) * color;
     color = c3 * alpha.a + (1.0 - alpha.a) * color;
 
     color.rgb *= input.color.bgr * 2;
     color.rgb *= getDiffuseLight(input.normal);
+	color.rgb *= alpha.r;
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
