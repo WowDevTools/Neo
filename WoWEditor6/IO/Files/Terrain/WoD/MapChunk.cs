@@ -331,14 +331,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
                         case 0x4D435348:
                             {
-                                if (mHeader.SizeShadow > 8)
+                                if (size >= 512)
                                 {
                                     var curPtr = 0;
                                     for (var i = 0; i < 64; ++i)
                                     {
                                         for (var j = 0; j < 8; ++j)
                                         {
-                                            var mask = mReader.ReadByte();
+                                            var mask = mTexReader.ReadByte();
                                             for (var k = 0; k < 8; ++k)
                                             {
                                                 AlphaValues[curPtr] &= 0xFFFFFF00;
