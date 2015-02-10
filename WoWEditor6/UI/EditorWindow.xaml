@@ -6,7 +6,7 @@
              xmlns:avalon="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:local="clr-namespace:WoWEditor6.UI"
              xmlns:dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
-             mc:Ignorable="d" Height="607" Width="927" Title="WoWDev" Loaded="Window_Loaded">
+             mc:Ignorable="d" Height="607" Width="927" Title="WoWDev" Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -17,7 +17,7 @@
                 <MenuItem Header="Save" Click="MenuSaveItem_Click"></MenuItem>
             </MenuItem>
         </Menu>
-        <avalon:DockingManager Grid.Row="1" x:Name="DockingManager">
+        <avalon:DockingManager Grid.Row="1">
             <avalon:DockingManager.Theme>
                 <avalon:MetroTheme/>
             </avalon:DockingManager.Theme>
@@ -47,6 +47,19 @@
                         </avalon:LayoutDocument>
                     </avalon:LayoutDocumentPane>
                 </avalon:LayoutPanel>
+                <avalon:LayoutRoot.BottomSide>
+                    <avalon:LayoutAnchorSide>
+                        <avalon:LayoutAnchorGroup>
+                            <avalon:LayoutAnchorable Title="Log" AutoHideHeight="200" FloatingHeight="200">
+                                <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <FlowDocument x:Name="LogDocument" Background="DarkGray" FontFamily="Consolas" FontSize="8pt">
+                                        
+                                    </FlowDocument>
+                                </FlowDocumentScrollViewer>
+                            </avalon:LayoutAnchorable>
+                        </avalon:LayoutAnchorGroup>
+                    </avalon:LayoutAnchorSide>
+                </avalon:LayoutRoot.BottomSide>
             </avalon:LayoutRoot>
         </avalon:DockingManager>
     </Grid>

@@ -93,9 +93,6 @@ namespace WoWEditor6.UI
 
         public void OnFrame()
         {
-            if (mActiveView is MapSelectView)
-                return;
-
             Surface.RenderFrame(rt =>
             {
                 Root.OnRender(rt);

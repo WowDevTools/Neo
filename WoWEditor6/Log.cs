@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace WoWEditor6
 {
-    enum LogLevel
+    public enum LogLevel
     {
         Fatal,
         Error,
@@ -64,9 +64,9 @@ namespace WoWEditor6
             Sinks.Add(new ConsoleLogSink());
         }
 
-        private static string GetTitle(string fileName)
+        private static string GetTitle(string fileName, int line)
         {
-            return string.Format("{0:HH:mm:ss} {1}", DateTime.Now, Path.GetFileName(fileName));
+            return string.Format("{0:HH:mm:ss} {1}:{2}", DateTime.Now, Path.GetFileName(fileName), line);
         }
 
         private static void AddMessage(LogLevel level, string title, string message)
@@ -81,24 +81,36 @@ namespace WoWEditor6
             }
         }
 
-        public static void Debug(string message, [CallerFilePath] string fileName = "")
+        public static void AddSink(ILogSink sink)
         {
-            AddMessage(LogLevel.Debug, GetTitle(fileName) + " - Debug: ", message);
+            lock (Sinks)
+                Sinks.Add(sink);
         }
 
-        public static void Warning(string message, [CallerFilePath] string fileName = "")
+        public static void RemoveSink(ILogSink sink)
         {
-            AddMessage(LogLevel.Warning, GetTitle(fileName) + " - Warning: ", message);
+            lock (Sinks)
+                Sinks.Remove(sink);
         }
 
-        public static void Error(string message, [CallerFilePath] string fileName = "")
+        public static void Debug(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Error, GetTitle(fileName) + " - ERROR: ", message);
+            AddMessage(LogLevel.Debug, GetTitle(fileName, line) + " - Debug: ", message);
         }
 
-        public static void Fatal(string message, [CallerFilePath] string fileName = "")
+        public static void Warning(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Fatal, GetTitle(fileName) + " - FATAL: ", message);
+            AddMessage(LogLevel.Warning, GetTitle(fileName, line) + " - Warning: ", message);
+        }
+
+        public static void Error(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        {
+            AddMessage(LogLevel.Error, GetTitle(fileName, line) + " - ERROR: ", message);
+        }
+
+        public static void Fatal(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        {
+            AddMessage(LogLevel.Fatal, GetTitle(fileName, line) + " - FATAL: ", message);
         }
     }
 }

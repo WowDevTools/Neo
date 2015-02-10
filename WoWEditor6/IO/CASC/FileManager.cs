@@ -100,13 +100,13 @@ namespace WoWEditor6.IO.CASC
 
         public bool Exists(string path)
         {
-			using (var strm = IO.FileManager.Instance.GetExistingFile(path))
-			{
-				if (strm != null)
-					return true;
-			}
+            using (var strm = IO.FileManager.Instance.GetExistingFile(path))
+            {
+                if (strm != null)
+                    return true;
+            }
 
-			path = path.ToUpperInvariant();
+            path = path.ToUpperInvariant();
             var hash = (new JenkinsHash()).Compute(path);
             List<RootEntry> roots;
             if (mRootData.TryGetValue(hash, out roots) == false)
@@ -135,11 +135,11 @@ namespace WoWEditor6.IO.CASC
 
         public Stream OpenFile(string path)
         {
-	        var existing = IO.FileManager.Instance.GetExistingFile(path);
-	        if (existing != null)
-		        return existing;
-			
-			path = path.ToUpperInvariant();
+            var existing = IO.FileManager.Instance.GetExistingFile(path);
+            if (existing != null)
+                return existing;
+            
+            path = path.ToUpperInvariant();
             var hash = (new JenkinsHash()).Compute(path);
             List<RootEntry> roots;
             if (mRootData.TryGetValue(hash, out roots) == false)
