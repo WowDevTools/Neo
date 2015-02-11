@@ -9,7 +9,7 @@ namespace WoWEditor6.IO.Files.Models
         public Vector3 position;
         public fixed byte boneWeights[4];
         public fixed byte boneIndices[4];
-        public readonly Vector3 normal;
+        public Vector3 normal;
         public readonly Vector2 texCoord1;
         public readonly Vector2 texCoord2;
     }

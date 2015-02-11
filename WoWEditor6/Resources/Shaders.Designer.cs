@@ -240,7 +240,31 @@ namespace WoWEditor6.Resources {
                 return ((byte[])(obj));
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] WmoPixelIndoor
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("WmoPixelIndoor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] WmoPixelBlendIndoor
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("WmoPixelBlendIndoor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>

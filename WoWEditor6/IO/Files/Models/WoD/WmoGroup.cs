@@ -58,6 +58,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                         {
                             case 0x4D4F4750:
                                 mHeader = reader.Read<Mogp>();
+                                IsIndoor = (mHeader.flags & 0x2000) != 0;
                                 if (!LoadGroupChunks(reader, size - SizeCache<Mogp>.Size))
                                     return false;
 

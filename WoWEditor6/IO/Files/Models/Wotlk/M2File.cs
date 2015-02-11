@@ -77,6 +77,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 {
                     var p = Vertices[i].position;
                     Vertices[i].position = new Vector3(p.X, -p.Y, p.Z);
+                    Vertices[i].normal = new Vector3(Vertices[i].normal.X, -Vertices[i].normal.Y, Vertices[i].normal.Z);
                 }
 
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
