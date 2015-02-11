@@ -400,10 +400,10 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 return;
 
             size = reader.ReadInt32();
-            var mddf = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
-            mDoodadDefs = mddf;
+            mDoodadDefs = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
+
             var index = -1;
-            foreach (var entry in mddf)
+            foreach (var entry in mDoodadDefs)
             {
                 ++index;
                 if (entry.Mmid >= modelNameIds.Length)
