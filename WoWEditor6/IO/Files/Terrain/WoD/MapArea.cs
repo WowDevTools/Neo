@@ -84,6 +84,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
         }
 
+        public override bool OnTextureTerrain(TextureChangeParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UpdateBoundingBox(BoundingBox chunkBox)
         {
             var minPos = chunkBox.Minimum;

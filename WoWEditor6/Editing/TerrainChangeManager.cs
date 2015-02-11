@@ -39,36 +39,12 @@ namespace WoWEditor6.Editing
     {
         public static TerrainChangeManager Instance { get; private set; }
 
-        private float mInnerRadius = 45.0f;
-        private float mOuterRadius = 55.0f;
-
         public TerrainChangeType ChangeType { get; set; }
         public TerrainAlgorithm ChangeAlgorithm { get; set; }
-        public Vector3 MousePosition { get; set; }
-        public bool IsTerrainHovered { get; set; }
         public Vector3 ShadingMultiplier { get; set; }
         public float Amount { get; set; }
         public bool AlignModelsToGround { get; set; }
 
-        public float InnerRadius
-        {
-            get { return mInnerRadius; }
-            set
-            {
-                mInnerRadius = value;
-                WorldFrame.Instance.UpdateTerrainBrush(mInnerRadius, mOuterRadius);
-            }
-        }
-
-        public float OuterRadius
-        {
-            get { return mOuterRadius; }
-            set
-            {
-                mOuterRadius = value;
-                WorldFrame.Instance.UpdateTerrainBrush(mInnerRadius, mOuterRadius);
-            }
-        }
 
         static TerrainChangeManager()
         {
@@ -93,9 +69,9 @@ namespace WoWEditor6.Editing
             var parameters = new TerrainChangeParameters()
             {
                 Algorithm = ChangeAlgorithm,
-                Center = MousePosition,
-                InnerRadius = mInnerRadius,
-                OuterRadius = mOuterRadius,
+                Center = EditManager.Instance.MousePosition,
+                InnerRadius = EditManager.Instance.InnerRadius,
+                OuterRadius = EditManager.Instance.OuterRadius,
                 Method = ChangeType,
                 TimeDiff = diff,
                 Shading = ShadingMultiplier,
@@ -110,7 +86,7 @@ namespace WoWEditor6.Editing
         private bool CheckRequirements(out bool isInverted)
         {
             isInverted = false;
-            if (IsTerrainHovered == false)
+            if (EditManager.Instance.IsTerrainHovered == false)
                 return false;
 
             var bindings = Settings.KeyBindings.Instance;

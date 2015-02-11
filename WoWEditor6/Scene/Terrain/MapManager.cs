@@ -59,6 +59,12 @@ namespace WoWEditor6.Scene.Terrain
             }
         }
 
+        public void OnTextureTerrain(Editing.TextureChangeParameters parameters)
+        {
+            foreach (var pair in mAreas)
+                pair.Value.OnTextureChange(parameters);
+        }
+
         public void OnSaveAllFiles()
         {
             foreach (var pair in mAreas)

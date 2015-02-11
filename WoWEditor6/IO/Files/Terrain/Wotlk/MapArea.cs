@@ -283,6 +283,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
         }
 
+        public override bool OnTextureTerrain(TextureChangeParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         private void InitChunkInfos(BinaryReader reader)
         {
             if(SeekChunk(reader, 0x4D43494E))

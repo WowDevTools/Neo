@@ -110,6 +110,7 @@
     <Compile Include="Editing\EditManager.cs" />
     <Compile Include="Editing\EditMode.cs" />
     <Compile Include="Editing\TerrainChangeManager.cs" />
+    <Compile Include="Editing\TextureChangeManager.cs" />
     <Compile Include="Graphics\BlendState.cs" />
     <Compile Include="Graphics\Buffer.cs" />
     <Compile Include="Graphics\ConstantBuffer.cs" />

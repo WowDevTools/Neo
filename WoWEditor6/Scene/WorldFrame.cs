@@ -22,6 +22,7 @@ namespace WoWEditor6.Scene
             public Vector4 fogParams;
             public Vector4 mousePosition;
             public Vector4 brushParameters;
+            public Vector4 eyePosition;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -88,9 +89,9 @@ namespace WoWEditor6.Scene
             mGlobalParamsChanged = true;
         }
 
-        public void UpdateTerrainBrushTime(System.TimeSpan frameTime)
+        private void UpdateTerrainBrushTime(System.TimeSpan frameTime)
         {
-            double timeSecs = (double)frameTime.TotalMilliseconds / 1000.0;
+            var timeSecs = frameTime.TotalMilliseconds / 1000.0;
             mGlobalParamsBufferStore.brushParameters.Z = (float)timeSecs;
             mGlobalParamsChanged = true;
         }
@@ -105,7 +106,9 @@ namespace WoWEditor6.Scene
             lock (mGlobalBuffer)
             {
                 mGlobalBufferStore.eyePosition = new Vector4(position, 1.0f);
+                mGlobalParamsBufferStore.eyePosition = new Vector4(position, 1.0f);
                 mGlobalChanged = true;
+                mGlobalParamsChanged = true;
             }
         }
 
@@ -120,7 +123,8 @@ namespace WoWEditor6.Scene
                 fogColor = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
                 fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f),
                 brushParameters = new Vector4(45.0f, 55.0f, 0.0f, 0.0f),
-                mousePosition = new Vector4(float.MaxValue)
+                mousePosition = new Vector4(float.MaxValue),
+                eyePosition = Vector4.Zero
             };
 
             mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
@@ -249,8 +253,8 @@ namespace WoWEditor6.Scene
                 mGlobalParamsBufferStore.mousePosition = new Vector4(mIntersection.TerrainPosition, 0.0f);
                 mGlobalParamsChanged = true;
 
-                Editing.TerrainChangeManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;
-                Editing.TerrainChangeManager.Instance.MousePosition = mIntersection.TerrainPosition;
+                Editing.EditManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;
+                Editing.EditManager.Instance.MousePosition = mIntersection.TerrainPosition;
             }
         }
 

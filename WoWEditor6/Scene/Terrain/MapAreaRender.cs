@@ -29,6 +29,14 @@ namespace WoWEditor6.Scene.Terrain
             IndexY = indexY;
         }
 
+        public void OnTextureChange(Editing.TextureChangeParameters parameters)
+        {
+            if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
+                return;
+
+            AreaFile.OnTextureTerrain(parameters);
+        }
+
         public void OnTerrainChange(Editing.TerrainChangeParameters parameters)
         {
             if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)

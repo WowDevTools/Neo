@@ -606,7 +606,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             for(var i = 0; i < 145; ++i)
             {
                 var p = Vertices[i].Position;
-                var dist = (p - parameters.Center).Length();
+                var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length();
                 if (dist > radius)
                     continue;
 

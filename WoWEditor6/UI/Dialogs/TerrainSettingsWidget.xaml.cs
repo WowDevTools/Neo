@@ -65,12 +65,12 @@ namespace WoWEditor6.UI.Dialogs
 
         private void InnerRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            TerrainChangeManager.Instance.InnerRadius = (float) InnerRadiusSlider.Value;
+            EditManager.Instance.InnerRadius = (float) InnerRadiusSlider.Value;
         }
 
         private void OuterRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            TerrainChangeManager.Instance.OuterRadius = (float) OuterRadiusSlider.Value;
+            EditManager.Instance.OuterRadius = (float) OuterRadiusSlider.Value;
         }
 
         private void ChangeMode_Checked(object sender, RoutedEventArgs e)

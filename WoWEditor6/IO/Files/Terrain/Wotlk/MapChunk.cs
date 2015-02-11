@@ -138,12 +138,12 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             {
                 reader.BaseStream.Position = basePosition + mHeader.Mcsh + 8;
                 var curPtr = 0;
-                for (int i = 0; i < 64; ++i)
+                for (var i = 0; i < 64; ++i)
                 {
-                    for (int j = 0; j < 8; ++j)
+                    for (var j = 0; j < 8; ++j)
                     {
                         byte mask = reader.ReadByte();
-                        for (int k = 0; k < 8; ++k)
+                        for (var k = 0; k < 8; ++k)
                         {
                             AlphaValues[curPtr] &= 0xFFFFFF00;
                             AlphaValues[curPtr++] |= ((mask & (1 << k)) == 0) ? (byte)0xFF : (byte)0xCC;
@@ -343,7 +343,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             for (var i = 0; i < 145; ++i)
             {
                 var p = Vertices[i].Position;
-                var dist = (p - parameters.Center).Length();
+                var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length();
                 if (dist > radius)
                     continue;
 

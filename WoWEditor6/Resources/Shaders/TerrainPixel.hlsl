@@ -29,6 +29,7 @@ cbuffer GlobalParamsBuffer : register(b0)
     float4 fogParams;
     float4 mousePosition;
     float4 brushParams;
+	float4 eyePosition;
 };
 
 cbuffer TextureParamsBuffer : register(b2)
@@ -85,17 +86,26 @@ float4 applyBrush(float4 color, float3 worldPos) {
     return sinusInterpolate(color, brushColor, fac);
 }
 
-float3 getDiffuseLight(float3 normal) {
-    float light = dot(normalize(normal), normalize(-float3(-1, 1, -1)));
-    if (light < 0.0)
-        light = 0.0;
-    if (light > 0.5)
-        light = 0.5 + (light - 0.5) * 0.65;
+float3 getDiffuseLight(float3 normal, float3 worldPos) {
+	float3 lightDir = normalize(-float3(-1, 1, -1));
+	normal = normalize(normal);
+	float light = dot(normal, lightDir);
+	if (light < 0.0)
+		light = 0.0;
+	if (light > 0.5)
+		light = 0.5 + (light - 0.5) * 0.65;
 
-    float3 diffuse = diffuseLight.rgb * light;
-    diffuse += ambientLight.rgb;
-    diffuse = saturate(diffuse);
-    return diffuse;
+	float3 r = normalize(2 * dot(-lightDir, normal) * normal - lightDir);
+	float3 v = normalize(worldPos - eyePosition.xyz);
+
+	float rdv = dot(r, v);
+	float3 specular = float3(1, 1, 1) * max(pow(rdv, 8), 0) * 0.2;
+
+	float3 diffuse = diffuseLight.rgb * light;
+	diffuse += ambientLight.rgb;
+	diffuse += specular;
+	diffuse = saturate(diffuse);
+	return diffuse;
 }
 
 float4 main(PixelInput input) : SV_Target{
@@ -112,7 +122,7 @@ float4 main(PixelInput input) : SV_Target{
 
     color.rgb *= input.color.bgr * 2;
     color.rgb += input.addColor.bgr;
-    color.rgb *= getDiffuseLight(input.normal);
+    color.rgb *= getDiffuseLight(input.normal, input.worldPosition);
     color.rgb *= alpha.r;
     color.rgb = saturate(color.rgb);
 
