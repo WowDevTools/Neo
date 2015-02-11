@@ -108,6 +108,24 @@ float4 main(PSInput input) : SV_Target{
 	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;
 }
 
+float4 main_indoor(PSInput input) : SV_Target{
+	float4 color = batchTexture.Sample(batchSampler, input.texCoord);
+	float3 lightColor = getDiffuseLight(input.normal);
+	float3 groupColor = input.color.bgr;
+	float3 finalColor = input.color.a * lightColor + (1 - input.color.a) * groupColor;
+	finalColor = saturate(finalColor);
+	color.rgb *= finalColor;
+
+	float fogDepth = input.depth - fogParams.x;
+	fogDepth /= (fogParams.y - fogParams.x);
+	float fog = 1.0f - pow(saturate(fogDepth), 1.5);
+
+	color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+
+	float4 brushColor = applyBrush(color, input.worldPosition);
+	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;
+}
+
 float4 main_blend(PSInput input) : SV_Target {
     float4 color = batchTexture.Sample(batchSampler, input.texCoord);
     if (color.a < (5.0f / 255.0f))
@@ -123,6 +141,27 @@ float4 main_blend(PSInput input) : SV_Target {
     float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+
+	float4 brushColor = applyBrush(color, input.worldPosition);
+	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;
+}
+
+float4 main_blend_indoor(PSInput input) : SV_Target{
+	float4 color = batchTexture.Sample(batchSampler, input.texCoord);
+	if (color.a < (5 / 255.0f))
+		discard;
+
+	float3 lightColor = getDiffuseLight(input.normal);
+	float3 groupColor = input.color.bgr;
+	float3 finalColor = input.color.a * lightColor + (1 - input.color.a) * groupColor;
+	finalColor = saturate(finalColor);
+	color.rgb *= finalColor;
+
+	float fogDepth = input.depth - fogParams.x;
+	fogDepth /= (fogParams.y - fogParams.x);
+	float fog = 1.0f - pow(saturate(fogDepth), 1.5);
+
+	color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
 
 	float4 brushColor = applyBrush(color, input.worldPosition);
 	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;

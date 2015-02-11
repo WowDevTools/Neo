@@ -19,6 +19,8 @@ namespace WoWEditor6.Scene.Models.WMO
         private static BlendState gAlphaBlendState;
         private static ShaderProgram gBlendProgram;
         private static ShaderProgram gNoBlendProgram;
+        private static ShaderProgram gIndoorBlendProgram;
+        private static ShaderProgram gIndoorNoBlendProgram;
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
@@ -76,13 +78,22 @@ namespace WoWEditor6.Scene.Models.WMO
             mLoaded = true;
         }
 
-        private static void SetupBatch(WmoRenderBatch batch)
+        private void SetupBatch(WmoRenderBatch batch)
         {
             var cullingDisabled = (batch.Material.MaterialFlags & 0x04) != 0;
             Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
             Mesh.UpdateBlendState((batch.Batch.BlendMode != 0) ? gAlphaBlendState : gNoBlendState);
-            Mesh.Program = (batch.Batch.BlendMode != 0) ? gBlendProgram : gNoBlendProgram;
-            Mesh.Program.Bind();
+            ShaderProgram newProgram;
+            if(Data.IsIndoor)
+                newProgram = (batch.Batch.BlendMode != 0) ? gIndoorBlendProgram : gIndoorNoBlendProgram;
+            else
+                newProgram = (batch.Batch.BlendMode != 0) ? gBlendProgram : gNoBlendProgram;
+
+            if(newProgram != Mesh.Program)
+            {
+                Mesh.Program = newProgram;
+                Mesh.Program.Bind();
+            }
             Mesh.Program.SetPixelTextures(0, batch.Material.Textures);
         }
 
@@ -117,6 +128,14 @@ namespace WoWEditor6.Scene.Models.WMO
             gBlendProgram = new ShaderProgram(context);
             gBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
             gBlendProgram.SetPixelShader(Resources.Shaders.WmoPixelBlend);
+
+            gIndoorNoBlendProgram = new ShaderProgram(context);
+            gIndoorNoBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
+            gIndoorNoBlendProgram.SetPixelShader(Resources.Shaders.WmoPixelIndoor);
+
+            gIndoorBlendProgram = new ShaderProgram(context);
+            gIndoorBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
+            gIndoorBlendProgram.SetPixelShader(Resources.Shaders.WmoPixelBlendIndoor);
 
             Mesh.Program = gNoBlendProgram;
         }
