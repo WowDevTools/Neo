@@ -21,6 +21,7 @@ struct PixelInput
     float depth : TEXCOORD1;
     float3 worldPosition : TEXCOORD2;
     float4 colorMod : COLOR0;
+    float4 modelPassParams : TEXCOORD3; // x = unlit, y = unfogged
 };
 
 float4 sinusInterpolate(float4 src, float4 dst, float pct) {
@@ -95,13 +96,15 @@ float4 main(PixelInput input) : SV_Target {
     float4 color = baseTexture.Sample(baseSampler, input.texCoord);
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
-    color.rgb *= lightColor;
+   
+    float unlit = input.modelPassParams.x;
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
-    float fog = 1.0f - pow(saturate(fogDepth), 1.5);
+    float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
 
-    color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+    color.rgb = fog * fogColor.rgb + (1.0 - fog) * color.rgb;
 	color *= input.colorMod * brushSettings.y + (1 - brushSettings.y) * float4(1, 1, 1, 1);
 
 	float4 brushColor = applyBrush(color, input.worldPosition);
@@ -115,13 +118,15 @@ float4 main_blend(PixelInput input) : SV_Target{
 
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
-    color.rgb *= lightColor;
+
+    float unlit = input.modelPassParams.x;
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
-    float fog = 1.0f - pow(saturate(fogDepth), 1.5);
+    float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
 
-    color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+    color.rgb = fog * fogColor.rgb + (1.0 - fog) * color.rgb;
 	color *= input.colorMod * brushSettings.y + (1 - brushSettings.y) * float4(1, 1, 1, 1);
 
 	float4 brushColor = applyBrush(color, input.worldPosition);
@@ -135,13 +140,15 @@ float4 main_blend_alpha_test(PixelInput input) : SV_Target{
 
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
-    color.rgb *= lightColor;
+
+    float unlit = input.modelPassParams.x;
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
-    float fog = 1.0f - pow(saturate(fogDepth), 1.5);
+    float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
 
-    color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+    color.rgb = fog * fogColor.rgb + (1.0 - fog) * color.rgb;
     color *= input.colorMod * brushSettings.y + (1 - brushSettings.y) * float4(1, 1, 1, 1);
 
     float4 brushColor = applyBrush(color, input.worldPosition);

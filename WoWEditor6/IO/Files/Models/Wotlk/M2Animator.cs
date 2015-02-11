@@ -170,7 +170,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             }
         }
 
-        public bool GetUvAnimMatrix(int animation, ref Matrix matrix)
+        public bool GetUvAnimMatrix(int animation, out Matrix matrix)
         {
             lock (mUvAnimations)
             {

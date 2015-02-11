@@ -11,10 +11,17 @@ namespace WoWEditor6.Scene.Models.M2
     class M2BatchRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct InstanceBuffer
+        struct PerInstanceBuffer
         {
             public Matrix matInstance;
             public Color4 colorMod;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct PerModelPassBuffer
+        {
+            public Matrix uvAnimMatrix;
+            public Vector4 modelPassParams;
         }
 
         public static Mesh Mesh { get; private set; }
@@ -40,9 +47,8 @@ namespace WoWEditor6.Scene.Models.M2
 
         private int mInstanceCount;
 
-        private InstanceBuffer[] mActiveInstances = new InstanceBuffer[0];
+        private PerInstanceBuffer[] mActiveInstances = new PerInstanceBuffer[0];
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-        private Matrix mUvMatrix = Matrix.Identity;
 
         private readonly Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
         private readonly List<M2RenderInstance> mVisibleInstances = new List<M2RenderInstance>();
@@ -50,7 +56,7 @@ namespace WoWEditor6.Scene.Models.M2
         private bool mSkipRendering;
 
         private ConstantBuffer mAnimBuffer;
-        private ConstantBuffer mUvBuffer;
+        private ConstantBuffer mPerPassBuffer;
 
         public BoundingBox BoundingBox { get { return mModel.BoundingBox; } }
 
@@ -69,7 +75,7 @@ namespace WoWEditor6.Scene.Models.M2
             var ib = mIndexBuffer;
             var instanceBuffer = mInstanceBuffer;
             var cb = mAnimBuffer;
-            var uv = mUvBuffer;
+            var uv = mPerPassBuffer;
             if (mModel != null)
                 mModel.Dispose();
 
@@ -129,7 +135,7 @@ namespace WoWEditor6.Scene.Models.M2
                 mAnimBuffer.UpdateData(mAnimationMatrices);
 
             Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
-            Mesh.Program.SetVertexConstantBuffer(3, mUvBuffer);
+            Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
 
             foreach (var pass in mModel.Passes)
             {
@@ -145,8 +151,17 @@ namespace WoWEditor6.Scene.Models.M2
                 if (Mesh.Program != oldProgram)
                     Mesh.Program.Bind();
 
-                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, ref mUvMatrix);
-                mUvBuffer.UpdateData(mUvMatrix);
+                var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
+                var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
+
+                Matrix uvAnimMat;
+                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+
+                mPerPassBuffer.UpdateData(new PerModelPassBuffer()
+                {
+                    uvAnimMatrix = uvAnimMat,
+                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
+                });
 
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
@@ -249,7 +264,7 @@ namespace WoWEditor6.Scene.Models.M2
             lock(mInstanceBufferLock)
             {
                 if (mActiveInstances.Length < mVisibleInstances.Count)
-                    mActiveInstances = new InstanceBuffer[mVisibleInstances.Count];
+                    mActiveInstances = new PerInstanceBuffer[mVisibleInstances.Count];
 
                 for (var i = 0; i < mVisibleInstances.Count; ++i)
                 {
@@ -286,8 +301,12 @@ namespace WoWEditor6.Scene.Models.M2
             mAnimBuffer = new ConstantBuffer(ctx);
             mAnimBuffer.UpdateData(mAnimationMatrices);
 
-            mUvBuffer = new ConstantBuffer(ctx);
-            mUvBuffer.UpdateData(mUvMatrix);
+            mPerPassBuffer = new ConstantBuffer(ctx);
+            mPerPassBuffer.UpdateData(new PerModelPassBuffer()
+            {
+                uvAnimMatrix = Matrix.Identity,
+                modelPassParams = Vector4.Zero
+            });
 
             mIsSyncLoaded = true;
         }
@@ -297,7 +316,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh = new Mesh(context)
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
-                InstanceStride = IO.SizeCache<InstanceBuffer>.Size,
+                InstanceStride = IO.SizeCache<PerInstanceBuffer>.Size,
                 DepthState = {DepthEnabled = true}
             };
 

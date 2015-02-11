@@ -11,7 +11,7 @@ namespace WoWEditor6.IO.Files.Models
         void ResetAnimationTimes();
         Vector4 GetColorValue(int texAnim);
         float GetAlphaValue(int alphaAnim);
-        bool GetUvAnimMatrix(int uvIndex, ref Matrix matrix);
+        bool GetUvAnimMatrix(int uvIndex, out Matrix matrix);
         Matrix GetBoneMatrix(int bone);
         Matrix GetBoneMatrix(uint time, short bone);
         bool GetBones(Matrix[] bones);

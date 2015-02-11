@@ -10,9 +10,10 @@ cbuffer AnimationMatrices : register(b2)
     row_major float4x4 Bones[256];
 }
 
-cbuffer UvAnimation : register(b3)
+cbuffer PerModelPassBuffer : register(b3)
 {
-    row_major float4x4 UvAnimation;
+    row_major float4x4 uvAnimation;
+    float4 modelPassParams;
 }
 
 struct VertexInput
@@ -39,6 +40,7 @@ struct VertexOutput
     float depth : TEXCOORD1;
     float3 worldPosition : TEXCOORD2;
     float4 colorMod : COLOR0;
+    float4 modelPassParams : TEXCOORD3;
 };
 
 VertexOutput main(VertexInput input) {
@@ -70,10 +72,11 @@ VertexOutput main(VertexInput input) {
     output.position = position;
     output.depth = distance(worldPos, eyePosition);
     output.normal = normal;
-    float4 tcTransform = mul(float4(input.texCoord, 0, 1), UvAnimation);
+    float4 tcTransform = mul(float4(input.texCoord, 0, 1), uvAnimation);
     output.texCoord = tcTransform.xy / tcTransform.w;
     output.worldPosition = worldPos;
     output.colorMod = input.colorMod;
+    output.modelPassParams = modelPassParams;
     
     return output;
 }

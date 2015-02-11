@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Models;
@@ -7,6 +8,13 @@ namespace WoWEditor6.Scene.Models.M2
 {
     class M2ModelRenderer
     {
+        [StructLayout(LayoutKind.Sequential)]
+        struct PerModelPassBuffer
+        {
+            public Matrix uvAnimMatrix;
+            public Vector4 modelPassParams;
+        }
+
         private static Mesh Mesh { get; set; }
         private static Sampler Sampler { get; set; }
 
@@ -22,13 +30,12 @@ namespace WoWEditor6.Scene.Models.M2
         private bool mSkipRendering;
 
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-        private Matrix mUvMatrix = Matrix.Identity;
 
         private VertexBuffer mVertexBuffer;
         private IndexBuffer mIndexBuffer;
 
         private ConstantBuffer mAnimBuffer;
-        private ConstantBuffer mUvBuffer;
+        private ConstantBuffer mPerPassBuffer;
 
         public M2ModelRenderer(M2File model)
         {
@@ -60,7 +67,7 @@ namespace WoWEditor6.Scene.Models.M2
                 mAnimBuffer.UpdateData(mAnimationMatrices);
 
             Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
-            Mesh.Program.SetVertexConstantBuffer(3, mUvBuffer);
+            Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
 
             foreach (var pass in mModel.Passes)
             {
@@ -73,8 +80,17 @@ namespace WoWEditor6.Scene.Models.M2
                 if (Mesh.Program != oldProgram)
                     Mesh.Program.Bind();
 
-                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, ref mUvMatrix);
-                mUvBuffer.UpdateData(mUvMatrix);
+                var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
+                var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
+
+                Matrix uvAnimMat;
+                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+
+                mPerPassBuffer.UpdateData(new PerModelPassBuffer()
+                {
+                    uvAnimMatrix = uvAnimMat,
+                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
+                });
 
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
@@ -104,8 +120,12 @@ namespace WoWEditor6.Scene.Models.M2
             mAnimBuffer = new ConstantBuffer(ctx);
             mAnimBuffer.UpdateData(mAnimationMatrices);
 
-            mUvBuffer = new ConstantBuffer(ctx);
-            mUvBuffer.UpdateData(mUvMatrix);
+            mPerPassBuffer = new ConstantBuffer(ctx);
+            mPerPassBuffer.UpdateData(new PerModelPassBuffer()
+            {
+                uvAnimMatrix = Matrix.Identity,
+                modelPassParams = Vector4.Zero
+            });
         }
 
         public static void Initialize(GxContext context)
