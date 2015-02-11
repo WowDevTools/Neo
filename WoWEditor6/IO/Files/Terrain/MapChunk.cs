@@ -12,8 +12,6 @@ namespace WoWEditor6.IO.Files.Terrain
         protected float mMaxHeight = float.MinValue;
         protected bool mUpdateNormals;
 
-        public abstract uint[] RenderIndices { get; }
-
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
 
@@ -21,6 +19,7 @@ namespace WoWEditor6.IO.Files.Terrain
 
         public AdtVertex[] Vertices { get; private set; }
         public uint[] AlphaValues { get; private set; }
+        public byte[] HoleValues { get; private set; }
         public IList<Graphics.Texture> Textures { get; protected set; }
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
@@ -30,6 +29,9 @@ namespace WoWEditor6.IO.Files.Terrain
 
         protected MapChunk()
         {
+            HoleValues = new byte[64];
+            for (var i = 0; i < 64; ++i) HoleValues[i] = 0xFF;
+
             Vertices = new AdtVertex[145];
             AlphaValues = new uint[4096];
             DoodadReferences = new int[0];

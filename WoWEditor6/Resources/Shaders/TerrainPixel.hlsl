@@ -14,10 +14,11 @@ SamplerState alphaSampler : register(s1);
 SamplerState colorSampler : register(s0);
 
 Texture2D alphaTexture : register(t0);
-Texture2D texture0 : register(t1);
-Texture2D texture1 : register(t2);
-Texture2D texture2 : register(t3);
-Texture2D texture3 : register(t4);
+Texture2D holeTexture : register(t1);
+Texture2D texture0 : register(t2);
+Texture2D texture1 : register(t3);
+Texture2D texture2 : register(t4);
+Texture2D texture3 : register(t5);
 
 float3 sunDirection = float3(1, 1, -1);
 
@@ -113,6 +114,10 @@ float3 getDiffuseLight(float3 normal, float3 worldPos) {
 
 float4 main(PixelInput input) : SV_Target{
     float4 alpha = alphaTexture.Sample(alphaSampler, input.texCoordAlpha);
+	float holeValue = holeTexture.Sample(alphaSampler, input.texCoordAlpha).r;
+	if (holeValue < 0.5)
+		discard;
+
     float4 c0 = texture0.Sample(colorSampler, input.texCoord * texScales.x);
     float4 c1 = texture1.Sample(colorSampler, input.texCoord * texScales.y);
     float4 c2 = texture2.Sample(colorSampler, input.texCoord * texScales.z);

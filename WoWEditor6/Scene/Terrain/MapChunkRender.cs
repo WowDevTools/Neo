@@ -19,6 +19,7 @@ namespace WoWEditor6.Scene.Terrain
         private bool mSyncLoaded;
         private bool mSyncLoadRequested;
         private Graphics.Texture mAlphaTexture;
+        private Graphics.Texture mHoleTexture;
         private BoundingBox mBoundingBox;
         private BoundingBox mModelBox;
         private ConstantBuffer mScaleBuffer;
@@ -95,7 +96,8 @@ namespace WoWEditor6.Scene.Terrain
 
             ChunkMesh.StartVertex = mData.StartVertex;
             ChunkMesh.Program.SetPixelTexture(0, mAlphaTexture);
-            ChunkMesh.Program.SetPixelTextures(1, mShaderTextures);
+            ChunkMesh.Program.SetPixelTexture(1, mHoleTexture);
+            ChunkMesh.Program.SetPixelTextures(2, mShaderTextures);
 
             ChunkMesh.Program.SetPixelConstantBuffer(2, mScaleBuffer);
 
@@ -118,6 +120,8 @@ namespace WoWEditor6.Scene.Terrain
         {
             mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
             mAlphaTexture.UpdateMemory(64, 64, SharpDX.DXGI.Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
+            mHoleTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
+            mHoleTexture.UpdateMemory(8, 8, SharpDX.DXGI.Format.R8_UNorm, mData.HoleValues, 8);
             mScaleBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
             mScaleBuffer.UpdateData(mData.TextureScales);
             mShaderTextures = mData.Textures.ToArray();

@@ -32,8 +32,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public bool HasMccv { get; private set; }
 
-        public override uint[] RenderIndices { get { return Indices; } } 
-
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
             mParent = new WeakReference<MapArea>(parent);
@@ -234,6 +232,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 var data = mReader.ReadBytes(size);
                 mOriginalMainChunks.Add(id, new DataChunk {Data = data, Signature = id, Size = size});
             }
+
+            LoadHoles();
 
             if (hasMccv == false)
             {
@@ -550,6 +550,37 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             for(var i = 0; i < 145; ++i)
             {
                 Vertices[i].AdditiveColor = colors[i];
+            }
+        }
+
+        private void LoadHoles()
+        {
+            if((mHeader.Flags & 0x10000) == 0)
+            {
+                for (var i = 0; i < 4; ++i)
+                {
+                    for (var j = 0; j < 4; ++j)
+                    {
+                        var baseIndex = i * 2 * 8 + j * 2;
+                        var mask = (mHeader.Holes & (1 << (i * 4 + j))) != 0;
+                        HoleValues[baseIndex] = HoleValues[baseIndex + 1] =
+                                HoleValues[baseIndex + 8] = HoleValues[baseIndex + 9] = (byte)(mask ? 0x00 : 0xFF);
+                    }
+                }
+            }
+            else
+            {
+                var holeBytes = new byte[8];
+                Buffer.BlockCopy(BitConverter.GetBytes(mHeader.Mcvt), 0, holeBytes, 0, 4);
+                Buffer.BlockCopy(BitConverter.GetBytes(mHeader.Mcnr), 0, holeBytes, 4, 4);
+
+                for(var i = 0; i < 8; ++i)
+                {
+                    for(var j = 0; j < 8; ++j)
+                    {
+                        HoleValues[i * 8 + j] = (byte) (((holeBytes[i] >> j) & 1) != 0 ? 0x00 : 0xFF);
+                    }
+                }
             }
         }
 

@@ -22,7 +22,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public bool HasMccv { get; private set; }
 
-        public override uint[] RenderIndices { get { return Indices; } }
+        public virtual uint[] RenderIndices { get { return Indices; } }
 
         public MapChunk(int indexX, int indexY, WeakReference<MapArea> parent)
         {
@@ -159,6 +159,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 for (var i = 0; i < 145; ++i)
                     Vertices[i].AdditiveColor = colors[i];
             }
+
+            LoadHoles();
 
             if (hasMccv == false)
             {
@@ -579,6 +581,20 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
 
             Textures = mLayers.Select(l => parent.GetTexture(l.TextureId)).ToList().AsReadOnly();
+        }
+
+        private void LoadHoles()
+        {
+            for(var i = 0; i < 4; ++i)
+            {
+                for(var j = 0; j < 4; ++j)
+                {
+                    var baseIndex = i * 2 * 8 + j * 2;
+                    var mask = (mHeader.Holes & (1 << (i * 4 + j))) != 0;
+                    HoleValues[baseIndex] = HoleValues[baseIndex + 1] =
+                            HoleValues[baseIndex + 8] = HoleValues[baseIndex + 9] = (byte)(mask ? 0x00 : 0xFF);
+                }
+            }
         }
 
         private void InitLayerData()

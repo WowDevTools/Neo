@@ -236,6 +236,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
             catch(Exception e)
             {
+                Log.Error(e.ToString());
                 Log.Warning(string.Format("Attempted to load ADT {0}_{1}_{2}.adt but it caused an error: {3}. Skipping the adt.", Continent, IndexX, IndexY, e.Message));
                 IsValid = false;
                 return;
