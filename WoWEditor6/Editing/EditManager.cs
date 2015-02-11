@@ -19,7 +19,7 @@ namespace WoWEditor6.Editing
             set
             {
                 mInnerRadius = value;
-                WorldFrame.Instance.UpdateTerrainBrush(mInnerRadius, mOuterRadius);
+                WorldFrame.Instance.UpdateBrush(mInnerRadius, mOuterRadius);
             }
         }
 
@@ -29,7 +29,7 @@ namespace WoWEditor6.Editing
             set
             {
                 mOuterRadius = value;
-                WorldFrame.Instance.UpdateTerrainBrush(mInnerRadius, mOuterRadius);
+                WorldFrame.Instance.UpdateBrush(mInnerRadius, mOuterRadius);
             }
         }
 

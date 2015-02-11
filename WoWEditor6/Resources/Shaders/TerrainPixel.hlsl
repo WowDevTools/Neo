@@ -45,6 +45,7 @@ float4 sinusInterpolate(float4 src, float4 dst, float pct) {
 float4 applyBrush(float4 color, float3 worldPos) {
     float3 dirVec = worldPos - mousePosition.xyz;
     float dsq = dot(dirVec.xy, dirVec.xy);
+    float dz = dirVec.z * dirVec.z;
 
     float innerRadius = brushParams.x * brushParams.x;
     float outerRadius = brushParams.y * brushParams.y;
@@ -80,6 +81,8 @@ float4 applyBrush(float4 color, float3 worldPos) {
     // Antialiasing between the circle segments
     fac *= clamp((18.0 - angle) / 0.4, 0, 1);
     fac *= clamp((angle - 0.4)  / 0.4, 0, 1);
+
+    fac *= clamp(1 - dz / 2000, 0, 1);
 
     float4 brushColor = float4(1, 1, 1, 1);
     brushColor.rgb -= color.rgb;

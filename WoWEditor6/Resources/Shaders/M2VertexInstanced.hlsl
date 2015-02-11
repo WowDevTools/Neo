@@ -28,6 +28,7 @@ struct VertexInput
     float4 mat1 : TEXCOORD3;
     float4 mat2 : TEXCOORD4;
     float4 mat3 : TEXCOORD5;
+    float4 colorMod : COLOR0;
 };
 
 struct VertexOutput
@@ -36,6 +37,8 @@ struct VertexOutput
     float3 normal : NORMAL0;
     float2 texCoord : TEXCOORD0;
     float depth : TEXCOORD1;
+    float3 worldPosition : TEXCOORD2;
+    float4 colorMod : COLOR0;
 };
 
 VertexOutput main(VertexInput input) {
@@ -69,6 +72,8 @@ VertexOutput main(VertexInput input) {
     output.normal = normal;
     float4 tcTransform = mul(float4(input.texCoord, 0, 1), UvAnimation);
     output.texCoord = tcTransform.xy / tcTransform.w;
+    output.worldPosition = worldPos;
+    output.colorMod = input.colorMod;
     
     return output;
 }

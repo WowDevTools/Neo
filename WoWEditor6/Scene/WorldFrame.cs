@@ -82,14 +82,14 @@ namespace WoWEditor6.Scene
             mState = AppState.FileSystemInit;
         }
 
-        public void UpdateTerrainBrush(float innerRadius, float outerRadius)
+        public void UpdateBrush(float innerRadius, float outerRadius)
         {
             mGlobalParamsBufferStore.brushParameters.X = innerRadius;
             mGlobalParamsBufferStore.brushParameters.Y = outerRadius;
             mGlobalParamsChanged = true;
         }
 
-        private void UpdateTerrainBrushTime(System.TimeSpan frameTime)
+        private void UpdateBrushTime(System.TimeSpan frameTime)
         {
             var timeSecs = frameTime.TotalMilliseconds / 1000.0;
             mGlobalParamsBufferStore.brushParameters.Z = (float)timeSecs;
@@ -197,7 +197,7 @@ namespace WoWEditor6.Scene
 
             // do not move before mCamControl.Update to have the latest view/projection
             UpdateCursorPosition();
-            UpdateTerrainBrushTime(Utils.TimeManager.Instance.GetTime());
+            UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
             UpdateBuffers();
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
@@ -250,7 +250,14 @@ namespace WoWEditor6.Scene
                     new Vector2(mLastCursorPosition.X, mLastCursorPosition.Y));
 
                 MapManager.Intersect(mIntersection);
-                mGlobalParamsBufferStore.mousePosition = new Vector4(mIntersection.TerrainPosition, 0.0f);
+
+                Editing.EditManager.Instance.MousePosition = mIntersection.TerrainPosition;
+                if (mIntersection.WmoHit)
+                    Editing.EditManager.Instance.MousePosition = mIntersection.WmoPosition;
+                if (mIntersection.M2Hit)
+                    Editing.EditManager.Instance.MousePosition = mIntersection.M2Position;
+
+                mGlobalParamsBufferStore.mousePosition = new Vector4(Editing.EditManager.Instance.MousePosition, 0.0f);
                 mGlobalParamsChanged = true;
 
                 Editing.EditManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;
