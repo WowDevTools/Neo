@@ -9,6 +9,8 @@ cbuffer GlobalParamsBuffer : register(b0)
     float4 fogParams;
     float4 mousePosition;
     float4 brushParams;
+	float4 eyePosition;
+	float4 brushSettings;
 };
 
 struct PixelInput
@@ -100,9 +102,10 @@ float4 main(PixelInput input) : SV_Target {
     float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
-    color *= input.colorMod;
+	color *= input.colorMod * brushSettings.y + (1 - brushSettings.y) * float4(1, 1, 1, 1);
 
-    return applyBrush(color, input.worldPosition);
+	float4 brushColor = applyBrush(color, input.worldPosition);
+	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;
 }
 
 float4 main_blend(PixelInput input) : SV_Target{
@@ -119,9 +122,10 @@ float4 main_blend(PixelInput input) : SV_Target{
     float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
-    color *= input.colorMod;
+	color *= input.colorMod * brushSettings.y + (1 - brushSettings.y) * float4(1, 1, 1, 1);
 
-    return applyBrush(color, input.worldPosition);
+	float4 brushColor = applyBrush(color, input.worldPosition);
+	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;
 }
 
 float4 main_blend_alpha_test(PixelInput input) : SV_Target{
@@ -138,7 +142,8 @@ float4 main_blend_alpha_test(PixelInput input) : SV_Target{
     float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
-    color *= input.colorMod;
+    color *= input.colorMod * brushSettings.y + (1 - brushSettings.y) * float4(1, 1, 1, 1);
 
-    return applyBrush(color, input.worldPosition);
+    float4 brushColor = applyBrush(color, input.worldPosition);
+	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;
 }

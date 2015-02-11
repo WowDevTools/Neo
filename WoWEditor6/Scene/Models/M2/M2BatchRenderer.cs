@@ -53,7 +53,6 @@ namespace WoWEditor6.Scene.Models.M2
         private ConstantBuffer mUvBuffer;
 
         public BoundingBox BoundingBox { get { return mModel.BoundingBox; } }
-        public BoundingSphere BoundingSphere { get { return mModel.BoundingSphere; } }
 
         public M2BatchRenderer(M2File model)
         {
@@ -111,9 +110,12 @@ namespace WoWEditor6.Scene.Models.M2
             if (mSkipRendering)
                 return;
 
-            var brushPosition = Editing.EditManager.Instance.MousePosition;
-            var highlightRadius = Editing.EditManager.Instance.OuterRadius;
-            UpdateBrushHighlighting(brushPosition, highlightRadius);
+            if (WorldFrame.Instance.HighlightModelsInBrush)
+            {
+                var brushPosition = Editing.EditManager.Instance.MousePosition;
+                var highlightRadius = Editing.EditManager.Instance.OuterRadius;
+                UpdateBrushHighlighting(brushPosition, highlightRadius);
+            }
 
             UpdateVisibleInstances();
             if (mInstanceCount == 0)
@@ -188,6 +190,7 @@ namespace WoWEditor6.Scene.Models.M2
         public M2RenderInstance AddInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
         {
             M2RenderInstance inst;
+            // ReSharper disable once InconsistentlySynchronizedField
             if (mFullInstances.TryGetValue(uuid, out inst))
             {
                 ++inst.NumReferences;
@@ -236,8 +239,8 @@ namespace WoWEditor6.Scene.Models.M2
         {
             lock(mInstanceBufferLock)
             {
-                for (var i = 0; i < mVisibleInstances.Count; ++i)
-                    mVisibleInstances[i].UpdateBrushHighlighting(brushPosition, radius);
+                foreach (var t in mVisibleInstances)
+                    t.UpdateBrushHighlighting(brushPosition, radius);
             }
         }
 

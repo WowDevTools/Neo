@@ -290,6 +290,9 @@
     <Compile Include="UI\Components\StatusBar.cs" />
     <Compile Include="UI\Components\Toolbar.cs" />
     <Compile Include="UI\Components\WdlControl.cs" />
+    <Compile Include="UI\Dialogs\BrushSettingsWidget.xaml.cs">
+      <DependentUpon>BrushSettingsWidget.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Dialogs\CreatureEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -420,6 +423,9 @@
     <Content Include="Resources\Shaders\WmoVertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Dialogs\BrushSettingsWidget.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Dialogs\ColorPickerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

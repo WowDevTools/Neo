@@ -9,6 +9,8 @@ cbuffer GlobalParamsBuffer : register(b0)
     float4 fogParams;
     float4 mousePosition;
     float4 brushParams;
+	float4 eyePosition;
+	float4 brushSettings;
 };
 
 Texture2D batchTexture : register(t0);
@@ -102,7 +104,8 @@ float4 main(PSInput input) : SV_Target{
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
 
-    return applyBrush(color, input.worldPosition);
+	float4 brushColor = applyBrush(color, input.worldPosition);
+	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;
 }
 
 float4 main_blend(PSInput input) : SV_Target {
@@ -121,5 +124,6 @@ float4 main_blend(PSInput input) : SV_Target {
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
 
-    return applyBrush(color, input.worldPosition);
+	float4 brushColor = applyBrush(color, input.worldPosition);
+	return brushSettings.x * brushColor + (1 - brushSettings.x) * color;
 }

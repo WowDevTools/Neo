@@ -26,6 +26,7 @@ namespace WoWEditor6.UI
         {
             SculptingPane.ToggleAutoHide();
             KeyBindingPane.ToggleAutoHide();
+            BrushSettingsPane.ToggleAutoHide();
             Log.AddSink(this);
         }
 

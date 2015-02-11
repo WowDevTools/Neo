@@ -23,6 +23,8 @@ namespace WoWEditor6.Scene
             public Vector4 mousePosition;
             public Vector4 brushParameters;
             public Vector4 eyePosition;
+            // X -> drawOnModels
+            public Vector4 brushSettings;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -64,10 +66,16 @@ namespace WoWEditor6.Scene
         public CameraControl CamControl { get; private set; }
         private IntersectionParams mIntersection;
         private Point mLastCursorPosition;
+        private bool mHighlightModels;
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
         public GraphicsDispatcher Dispatcher { get; private set; }
+        public bool HighlightModelsInBrush
+        {
+            get { return mHighlightModels; }
+            set { OnUpdateHighlightModels(value); }
+        }
 
         static WorldFrame()
         {
@@ -76,6 +84,7 @@ namespace WoWEditor6.Scene
 
         private WorldFrame()
         {
+            HighlightModelsInBrush = true;
             MapManager = new MapManager();
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
@@ -86,13 +95,6 @@ namespace WoWEditor6.Scene
         {
             mGlobalParamsBufferStore.brushParameters.X = innerRadius;
             mGlobalParamsBufferStore.brushParameters.Y = outerRadius;
-            mGlobalParamsChanged = true;
-        }
-
-        private void UpdateBrushTime(System.TimeSpan frameTime)
-        {
-            var timeSecs = frameTime.TotalMilliseconds / 1000.0;
-            mGlobalParamsBufferStore.brushParameters.Z = (float)timeSecs;
             mGlobalParamsChanged = true;
         }
 
@@ -124,7 +126,8 @@ namespace WoWEditor6.Scene
                 fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f),
                 brushParameters = new Vector4(45.0f, 55.0f, 0.0f, 0.0f),
                 mousePosition = new Vector4(float.MaxValue),
-                eyePosition = Vector4.Zero
+                eyePosition = Vector4.Zero,
+                brushSettings = new Vector4(0, 1, 0, 0)
             };
 
             mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
@@ -212,6 +215,12 @@ namespace WoWEditor6.Scene
             CamControl.HandleMouseWheel(delta);
         }
 
+        public void UpdateDrawBrushOnModels(bool enabled)
+        {
+            mGlobalParamsBufferStore.brushSettings.X = enabled ? 1 : 0;
+            mGlobalParamsChanged = true;
+        }
+
         public void UpdateMapAmbient(Vector3 ambient)
         {
             lock (mGlobalParamsBuffer)
@@ -238,6 +247,20 @@ namespace WoWEditor6.Scene
                 mGlobalParamsBufferStore.fogParams = new Vector4(fogStart, 900.0f, mMainCamera.FarClip, 0.0f);
                 mGlobalParamsChanged = true;
             }
+        }
+
+        private void OnUpdateHighlightModels(bool enabled)
+        {
+            mHighlightModels = enabled;
+            mGlobalParamsBufferStore.brushSettings.Y = enabled ? 1 : 0;
+            mGlobalParamsChanged = true;
+        }
+
+        private void UpdateBrushTime(System.TimeSpan frameTime)
+        {
+            var timeSecs = frameTime.TotalMilliseconds / 1000.0;
+            mGlobalParamsBufferStore.brushParameters.Z = (float)timeSecs;
+            mGlobalParamsChanged = true;
         }
 
         private void UpdateCursorPosition(bool forced = false)
