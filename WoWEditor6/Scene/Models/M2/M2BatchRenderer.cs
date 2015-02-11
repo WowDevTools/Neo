@@ -232,7 +232,7 @@ namespace WoWEditor6.Scene.Models.M2
                     pair.Value.IsUpdated = false;
         }
 
-        public void UpdateBrushHighlighting(Vector3 brushPosition, float radius)
+        private void UpdateBrushHighlighting(Vector3 brushPosition, float radius)
         {
             lock(mInstanceBufferLock)
             {
