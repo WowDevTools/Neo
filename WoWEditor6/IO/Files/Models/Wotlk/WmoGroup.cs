@@ -197,6 +197,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         {
             var numNormals = size / SizeCache<Vector3>.Size;
             mNormals = reader.ReadArray<Vector3>(numNormals);
+            for (var i = 0; i < mNormals.Length; ++i)
+                mNormals[i] = new Vector3(mNormals[i].X, -mNormals[i].Y, mNormals[i].Z);
         }
 
         private void LoadVertices(BinaryReader reader, int size)
