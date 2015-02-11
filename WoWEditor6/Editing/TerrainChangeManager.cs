@@ -39,9 +39,6 @@ namespace WoWEditor6.Editing
     {
         public static TerrainChangeManager Instance { get; private set; }
 
-        private float mInnerRadius = 45.0f;
-        private float mOuterRadius = 55.0f;
-
         public TerrainChangeType ChangeType { get; set; }
         public TerrainAlgorithm ChangeAlgorithm { get; set; }
         public Vector3 MousePosition { get; set; }
@@ -49,26 +46,6 @@ namespace WoWEditor6.Editing
         public Vector3 ShadingMultiplier { get; set; }
         public float Amount { get; set; }
         public bool AlignModelsToGround { get; set; }
-
-        public float InnerRadius
-        {
-            get { return mInnerRadius; }
-            set
-            {
-                mInnerRadius = value;
-                WorldFrame.Instance.UpdateTerrainBrush(mInnerRadius, mOuterRadius);
-            }
-        }
-
-        public float OuterRadius
-        {
-            get { return mOuterRadius; }
-            set
-            {
-                mOuterRadius = value;
-                WorldFrame.Instance.UpdateTerrainBrush(mInnerRadius, mOuterRadius);
-            }
-        }
 
         static TerrainChangeManager()
         {
@@ -94,8 +71,8 @@ namespace WoWEditor6.Editing
             {
                 Algorithm = ChangeAlgorithm,
                 Center = MousePosition,
-                InnerRadius = mInnerRadius,
-                OuterRadius = mOuterRadius,
+                InnerRadius = WorldFrame.Instance.InnerBrushRadius,
+                OuterRadius = WorldFrame.Instance.OuterBrushRadius,
                 Method = ChangeType,
                 TimeDiff = diff,
                 Shading = ShadingMultiplier,

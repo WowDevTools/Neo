@@ -18,6 +18,7 @@ struct PixelInput
     float2 texCoord : TEXCOORD0;
     float depth : TEXCOORD1;
     float3 worldPosition : TEXCOORD2;
+    float4 colorMod : COLOR0;
 };
 
 float4 sinusInterpolate(float4 src, float4 dst, float pct) {
@@ -99,6 +100,7 @@ float4 main(PixelInput input) : SV_Target {
     float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+    color *= input.colorMod;
 
     return applyBrush(color, input.worldPosition);
 }
@@ -117,6 +119,7 @@ float4 main_blend(PixelInput input) : SV_Target{
     float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+    color *= input.colorMod;
 
     return applyBrush(color, input.worldPosition);
 }
@@ -135,6 +138,7 @@ float4 main_blend_alpha_test(PixelInput input) : SV_Target{
     float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+    color *= input.colorMod;
 
     return applyBrush(color, input.worldPosition);
 }

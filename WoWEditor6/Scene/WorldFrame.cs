@@ -68,6 +68,23 @@ namespace WoWEditor6.Scene
         public GxContext GraphicsContext { get; private set; }
         public GraphicsDispatcher Dispatcher { get; private set; }
 
+        public Vector3 BrushPosition { get; private set; }
+
+        private float mInnerBrushRadius = 45.0f;
+        private float mOuterBrushRadius = 55.0f;
+
+        public float InnerBrushRadius
+        {
+            get { return mInnerBrushRadius; }
+            set { UpdateBrush(value, mOuterBrushRadius); }
+        }
+
+        public float OuterBrushRadius
+        {
+            get { return mOuterBrushRadius; }
+            set { UpdateBrush(mInnerBrushRadius, value); }
+        }
+
         static WorldFrame()
         {
             Instance = new WorldFrame();
@@ -78,17 +95,21 @@ namespace WoWEditor6.Scene
             MapManager = new MapManager();
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
+            BrushPosition = new Vector3();
             mState = AppState.FileSystemInit;
         }
 
-        public void UpdateTerrainBrush(float innerRadius, float outerRadius)
+        public void UpdateBrush(float innerRadius, float outerRadius)
         {
+            mInnerBrushRadius = innerRadius;
+            mOuterBrushRadius = outerRadius;
+
             mGlobalParamsBufferStore.brushParameters.X = innerRadius;
             mGlobalParamsBufferStore.brushParameters.Y = outerRadius;
             mGlobalParamsChanged = true;
         }
 
-        public void UpdateTerrainBrushTime(System.TimeSpan frameTime)
+        public void UpdateBrushTime(System.TimeSpan frameTime)
         {
             double timeSecs = (double)frameTime.TotalMilliseconds / 1000.0;
             mGlobalParamsBufferStore.brushParameters.Z = (float)timeSecs;
@@ -193,7 +214,7 @@ namespace WoWEditor6.Scene
 
             // do not move before mCamControl.Update to have the latest view/projection
             UpdateCursorPosition();
-            UpdateTerrainBrushTime(Utils.TimeManager.Instance.GetTime());
+            UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
             UpdateBuffers();
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
@@ -247,13 +268,13 @@ namespace WoWEditor6.Scene
 
                 MapManager.Intersect(mIntersection);
 
-                var position = mIntersection.TerrainPosition;
+                BrushPosition = mIntersection.TerrainPosition;
                 if (mIntersection.WmoHit)
-                    position = mIntersection.WmoPosition;
+                    BrushPosition = mIntersection.WmoPosition;
                 if (mIntersection.M2Hit)
-                    position = mIntersection.M2Position;
+                    BrushPosition = mIntersection.M2Position;
 
-                mGlobalParamsBufferStore.mousePosition = new Vector4(position, 0.0f);
+                mGlobalParamsBufferStore.mousePosition = new Vector4(BrushPosition, 0.0f);
                 mGlobalParamsChanged = true;
 
                 Editing.TerrainChangeManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;

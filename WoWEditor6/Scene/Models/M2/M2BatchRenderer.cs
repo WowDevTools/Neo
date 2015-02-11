@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Models;
@@ -9,6 +10,13 @@ namespace WoWEditor6.Scene.Models.M2
 {
     class M2BatchRenderer : IDisposable
     {
+        [StructLayout(LayoutKind.Sequential)]
+        struct InstanceBuffer
+        {
+            public Matrix matInstance;
+            public Color4 colorMod;
+        }
+
         public static Mesh Mesh { get; private set; }
         public static Sampler Sampler { get; private set; }
 
@@ -32,8 +40,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         private int mInstanceCount;
 
-        private Matrix[] mActiveInstances = new Matrix[0];
-        private bool mUpdateBuffer;
+        private InstanceBuffer[] mActiveInstances = new InstanceBuffer[0];
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
         private Matrix mUvMatrix = Matrix.Identity;
 
@@ -104,8 +111,11 @@ namespace WoWEditor6.Scene.Models.M2
             if (mSkipRendering)
                 return;
 
-            CheckBuffer();
+            Vector3 brushPosition = WorldFrame.Instance.BrushPosition;
+            float highlightRadius = WorldFrame.Instance.OuterBrushRadius;
+            UpdateBrushHighlighting(brushPosition, highlightRadius);
 
+            UpdateVisibleInstances();
             if (mInstanceCount == 0)
                 return;
 
@@ -166,7 +176,6 @@ namespace WoWEditor6.Scene.Models.M2
                     if (mVisibleInstances[i].Uuid == uuid)
                     {
                         mVisibleInstances.RemoveAt(i);
-                        mUpdateBuffer = true;
                         break;
                     }
                 }
@@ -194,8 +203,6 @@ namespace WoWEditor6.Scene.Models.M2
 
                 lock (mInstanceBufferLock)
                     mVisibleInstances.Add(instance);
-
-                mUpdateBuffer = true;
                 return instance;
             }
         }
@@ -215,24 +222,6 @@ namespace WoWEditor6.Scene.Models.M2
                 mVisibleInstances.Add(inst);
         }
 
-        public void ForceUpdate()
-        {
-            lock (mInstanceBufferLock)
-            {
-                if (mActiveInstances.Length < mVisibleInstances.Count)
-                    mActiveInstances = new Matrix[mVisibleInstances.Count];
-
-                for (var i = 0; i < mVisibleInstances.Count; ++i)
-                    mActiveInstances[i] = mVisibleInstances[i].InstanceMatrix;
-
-                mInstanceCount = mVisibleInstances.Count;
-                if (mInstanceCount == 0)
-                    return;
-
-                mUpdateBuffer = true;
-            }
-        }
-
         public void ViewChanged()
         {
             lock(mInstanceBufferLock)
@@ -243,35 +232,33 @@ namespace WoWEditor6.Scene.Models.M2
                     pair.Value.IsUpdated = false;
         }
 
-        private void CheckBuffer()
+        public void UpdateBrushHighlighting(Vector3 brushPosition, float radius)
         {
-            if(M2Manager.IsViewDirty)
+            lock(mInstanceBufferLock)
             {
-                lock(mInstanceBufferLock)
-                {
-                    if (mActiveInstances.Length < mVisibleInstances.Count)
-                        mActiveInstances = new Matrix[mVisibleInstances.Count];
-
-                    for (var i = 0; i < mVisibleInstances.Count; ++i)
-                        mActiveInstances[i] = mVisibleInstances[i].InstanceMatrix;
-
-                    mInstanceCount = mVisibleInstances.Count;
-                    if (mInstanceCount == 0)
-                        return;
-
-                    mInstanceBuffer.UpdateData(mActiveInstances);
-                }
+                for (var i = 0; i < mVisibleInstances.Count; ++i)
+                    mVisibleInstances[i].UpdateBrushHighlighting(brushPosition, radius);
             }
-            else if(mUpdateBuffer)
-            {
-                lock(mInstanceBufferLock)
-                {
-                    mUpdateBuffer = false;
-                    if (mInstanceCount == 0)
-                        return;
+        }
 
-                    mInstanceBuffer.UpdateData(mActiveInstances);
+        private void UpdateVisibleInstances()
+        {
+            lock(mInstanceBufferLock)
+            {
+                if (mActiveInstances.Length < mVisibleInstances.Count)
+                    mActiveInstances = new InstanceBuffer[mVisibleInstances.Count];
+
+                for (var i = 0; i < mVisibleInstances.Count; ++i)
+                {
+                    mActiveInstances[i].matInstance = mVisibleInstances[i].InstanceMatrix;
+                    mActiveInstances[i].colorMod = mVisibleInstances[i].HighlightColor;
                 }
+
+                mInstanceCount = mVisibleInstances.Count;
+                if (mInstanceCount == 0)
+                    return;
+
+                mInstanceBuffer.UpdateData(mActiveInstances);
             }
         }
 
@@ -307,7 +294,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh = new Mesh(context)
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
-                InstanceStride = 64,
+                InstanceStride = 80,
                 DepthState = {DepthEnabled = true}
             };
 
@@ -326,6 +313,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.AddElement("TEXCOORD", 3, 4, DataType.Float, false, 1, true);
             Mesh.AddElement("TEXCOORD", 4, 4, DataType.Float, false, 1, true);
             Mesh.AddElement("TEXCOORD", 5, 4, DataType.Float, false, 1, true);
+            Mesh.AddElement("COLOR", 0, 4, DataType.Float, false, 1, true);
 
             var program = new ShaderProgram(context);
             program.SetVertexShader(Resources.Shaders.M2VertexInstanced);
