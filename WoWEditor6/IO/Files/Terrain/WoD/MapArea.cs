@@ -44,6 +44,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private bool mWasChanged;
 
+        private Mddf[] mDoodadDefs;
+
         public MapArea(string continent, int ix, int iy)
         {
             Continent = continent;
@@ -72,7 +74,24 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public override void OnUpdateModelPositions(TerrainChangeParameters parameters)
         {
-            
+            var center = new Vector2(parameters.Center.X, parameters.Center.Y);
+            foreach (var inst in DoodadInstances)
+            {
+                if (inst == null || inst.RenderInstance == null)
+                    continue;
+
+                var pos = mDoodadDefs[inst.MddfIndex].Position;
+                var invZ = 64.0f * Metrics.TileSize - pos.Z;
+                var dist = (new Vector2(pos.X, invZ) - center).Length();
+                if (dist > parameters.OuterRadius)
+                    continue;
+
+                if (WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
+                {
+                    mDoodadDefs[inst.MddfIndex].Position = pos;
+                    inst.RenderInstance.UpdatePosition(new Vector3(pos.X, invZ, pos.Y));
+                }
+            }
         }
 
         public override void UpdateNormals()
@@ -341,9 +360,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 return;
 
             size = mObjReader.ReadInt32();
-            var mddf = mObjReader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
-            foreach(var entry in mddf)
+            mDoodadDefs = mObjReader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
+
+            var index = -1;
+            foreach (var entry in mDoodadDefs)
             {
+                ++index;
                 if (entry.Mmid >= modelNameIds.Length)
                     continue;
 
@@ -365,7 +387,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     Hash = modelName.ToUpperInvariant().GetHashCode(),
                     Uuid = entry.UniqueId,
                     BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
-                    RenderInstance = instance
+                    RenderInstance = instance,
+                    MddfIndex = index
                 });
             }
         }
