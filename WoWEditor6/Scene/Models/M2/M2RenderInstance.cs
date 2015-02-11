@@ -74,7 +74,7 @@ namespace WoWEditor6.Scene.Models.M2
             var src = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
             var dst = new Color4(1.5f, 1.5f, 1.5f, 1.0f);
 
-            var fac = (float)((double)timeMs / 500.0f);
+            var fac = (float)((double)timeMs / 500.0);
             if (fac > 1.0f)
                 fac = 1.0f;
 

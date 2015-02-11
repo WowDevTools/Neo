@@ -294,7 +294,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh = new Mesh(context)
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
-                InstanceStride = 80,
+                InstanceStride = IO.SizeCache<InstanceBuffer>.Size,
                 DepthState = {DepthEnabled = true}
             };
 
