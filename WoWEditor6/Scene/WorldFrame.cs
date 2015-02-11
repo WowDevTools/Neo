@@ -246,7 +246,14 @@ namespace WoWEditor6.Scene
                     new Vector2(mLastCursorPosition.X, mLastCursorPosition.Y));
 
                 MapManager.Intersect(mIntersection);
-                mGlobalParamsBufferStore.mousePosition = new Vector4(mIntersection.TerrainPosition, 0.0f);
+
+                var position = mIntersection.TerrainPosition;
+                if (mIntersection.WmoHit)
+                    position = mIntersection.WmoPosition;
+                if (mIntersection.M2Hit)
+                    position = mIntersection.M2Position;
+
+                mGlobalParamsBufferStore.mousePosition = new Vector4(position, 0.0f);
                 mGlobalParamsChanged = true;
 
                 Editing.TerrainChangeManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;

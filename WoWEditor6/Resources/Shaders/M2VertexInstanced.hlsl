@@ -36,6 +36,7 @@ struct VertexOutput
     float3 normal : NORMAL0;
     float2 texCoord : TEXCOORD0;
     float depth : TEXCOORD1;
+    float3 worldPosition : TEXCOORD2;
 };
 
 VertexOutput main(VertexInput input) {
@@ -69,6 +70,7 @@ VertexOutput main(VertexInput input) {
     output.normal = normal;
     float4 tcTransform = mul(float4(input.texCoord, 0, 1), UvAnimation);
     output.texCoord = tcTransform.xy / tcTransform.w;
+    output.worldPosition = worldPos;
     
     return output;
 }

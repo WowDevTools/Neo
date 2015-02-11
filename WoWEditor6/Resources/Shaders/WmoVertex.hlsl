@@ -25,6 +25,7 @@ struct VSOutput
     float2 texCoord : TEXCOORD0;
     float depth : TEXCOORD1;
     float4 color : COLOR0;
+    float3 worldPosition : TEXCOORD2;
 };
 
 VSOutput main(VSInput input) {
@@ -35,6 +36,7 @@ VSOutput main(VSInput input) {
     output.position = posTransformed;
     output.position = mul(output.position, matView);
     output.position = mul(output.position, matProj);
+    output.worldPosition = posTransformed;
 
     output.normal = normalize(mul(input.normal, (float3x3) matInstance));
     output.texCoord = input.texCoord;
