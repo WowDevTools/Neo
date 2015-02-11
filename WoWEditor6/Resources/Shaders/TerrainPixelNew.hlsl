@@ -5,6 +5,7 @@ struct PixelInput
     float2 texCoord : TEXCOORD0;
     float2 texCoordAlpha : TEXCOORD1;
     float4 color : COLOR0;
+    float4 addColor : COLOR1;
     float depth : TEXCOORD2;
     float3 worldPosition : TEXCOORD3;
 };
@@ -113,7 +114,10 @@ float4 main(PixelInput input) : SV_Target{
     color += alpha.a * c3;
 
     color.rgb *= input.color.bgr * 2;
+    color.rgb += input.addColor.bgr;
     color.rgb *= getDiffuseLight(input.normal);
+    color.rgb *= alpha.r;
+    color.rgb = saturate(color.rgb);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);

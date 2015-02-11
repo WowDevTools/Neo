@@ -132,6 +132,34 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 }
             }
 
+            InitLayerData();
+
+            if(mHeader.SizeShadow > 8 && mHeader.Mcsh > 0)
+            {
+                reader.BaseStream.Position = basePosition + mHeader.Mcsh + 8;
+                var curPtr = 0;
+                for (int i = 0; i < 64; ++i)
+                {
+                    for (int j = 0; j < 8; ++j)
+                    {
+                        byte mask = reader.ReadByte();
+                        for (int k = 0; k < 8; ++k)
+                        {
+                            AlphaValues[curPtr] &= 0xFFFFFF00;
+                            AlphaValues[curPtr++] |= ((mask & (1 << k)) == 0) ? (byte)0xFF : (byte)0xCC;
+                        }
+                    }
+                }
+            }
+
+            if(mHeader.Mclv > 0)
+            {
+                reader.BaseStream.Position = basePosition + mHeader.Mclv + 8;
+                var colors = reader.ReadArray<uint>(145);
+                for (var i = 0; i < 145; ++i)
+                    Vertices[i].AdditiveColor = colors[i];
+            }
+
             if (hasMccv == false)
             {
                 for (var i = 0; i < 145; ++i)
@@ -150,7 +178,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             if (mHeader.Mclv > 0)
                 LoadUnusedChunk(0x4D434C56, basePosition + mHeader.Mclv, 0, reader);
 
-            InitLayerData();
 
             WorldFrame.Instance.MapManager.OnLoadProgress();
 

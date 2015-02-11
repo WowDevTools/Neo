@@ -5,6 +5,7 @@ struct VertexInput
     float2 texCoord : TEXCOORD0;
     float2 texCoordAlpha : TEXCOORD1;
     float4 color : COLOR0;
+    float4 addColor : COLOR1;
 };
 
 struct VertexOutput
@@ -14,6 +15,7 @@ struct VertexOutput
     float2 texCoord : TEXCOORD0;
     float2 texCoordAlpha : TEXCOORD1;
     float4 color : COLOR0;
+    float4 addColor : COLOR1;
     float depth : TEXCOORD2;
     float3 worldPosition : TEXCOORD3;
 };
@@ -39,6 +41,7 @@ VertexOutput main(VertexInput input) {
     output.color = input.color;
     output.depth = length(input.position - eyePosition.xyz);
     output.worldPosition = input.position;
+    output.addColor = input.addColor;
 
     return output;
 }
