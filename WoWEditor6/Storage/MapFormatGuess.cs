@@ -128,6 +128,9 @@ namespace WoWEditor6.Storage
                 break;
             }
 
+            if (FieldLoadingScreenHasWidescreen >= DbcStorage.LoadingScreen.NumFields)
+                FieldLoadingScreenHasWidescreen = -1;
+
             if (FieldLoadingScreenPath < 0)
                 throw new InvalidOperationException("Unable to find the loading screen asset path");
         }

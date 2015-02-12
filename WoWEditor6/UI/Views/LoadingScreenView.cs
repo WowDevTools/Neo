@@ -76,14 +76,21 @@ namespace WoWEditor6.UI.Views
                 {
                     var path = loadRow.GetString(Storage.MapFormatGuess.FieldLoadingScreenPath);
                     mWidescreen = false;
-                    if (loadRow.GetInt32(Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen) == 1)
-                    {
-                        path = path.Replace(".BLP", "WIDE.BLP");
-                        mWidescreen = true;
-                    }
-                   
+
                     if (string.IsNullOrEmpty(path) == false)
+                    {
+                        if (Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen >= 0 && loadRow.GetInt32(Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen) == 1)
+                        {
+                            var widePath = path.ToUpperInvariant().Replace(".BLP", "WIDE.BLP");
+                            if (IO.FileManager.Instance.Provider.Exists(widePath))
+                            {
+                                path = widePath;
+                                mWidescreen = true;
+                            }
+                        }
+
                         loadScreenPath = path;
+                    }
                 }
             }
 
