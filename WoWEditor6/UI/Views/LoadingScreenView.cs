@@ -74,6 +74,10 @@ namespace WoWEditor6.UI.Views
                 if(loadRow != null)
                 {
                     var path = loadRow.GetString(Storage.MapFormatGuess.FieldLoadingScreenPath);
+                    if (loadRow.GetInt32(Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen) == 1)
+                    {
+                        path = path.Replace(".BLP", "WIDE.BLP");
+                    }
                     if (string.IsNullOrEmpty(path) == false)
                         loadScreenPath = path;
                 }
@@ -103,7 +107,7 @@ namespace WoWEditor6.UI.Views
             var newHeight = fac * bmp.Height;
             var ofsx = (mSize.X - newWidth) / 2.0f;
             var ofsy = (mSize.Y - newHeight) / 2.0f;
-            mTargetRectangle = new RectangleF(ofsx, ofsy, newWidth, newHeight);
+            mTargetRectangle = new RectangleF(0, 0, mSize.X, mSize.Y);
         }
     }
 }
