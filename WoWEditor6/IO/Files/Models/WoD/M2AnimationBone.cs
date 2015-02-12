@@ -37,23 +37,27 @@ namespace WoWEditor6.IO.Files.Models.WoD
             var boneMatrix = Matrix.RotationQuaternion(rotation) *
                 Matrix.Scaling(scaling) * Matrix.Translation(position);
 
-            /*var billboard = (Bone.flags & 0x8) != 0;
+            var billboard = (Bone.flags & 0x08) != 0;
             if (billboard)
             {
-                Vector3 up = WorldFrame.Instance.ActiveCamera.Up;
-                Vector3 right = WorldFrame.Instance.ActiveCamera.Right;
+                // Should really get this from somewhere else...
+                var camera = WorldFrame.Instance.ActiveCamera;
 
-                boneMatrix.M21 = right.X;
-                boneMatrix.M22 = right.Y;
-                boneMatrix.M23 = right.Z;
+                boneMatrix.M11 = camera.Forward.X;
+                boneMatrix.M12 = camera.Forward.Y;
+                boneMatrix.M13 = camera.Forward.Z;
 
-                boneMatrix.M31 = up.X;
-                boneMatrix.M32 = up.Y;
-                boneMatrix.M33 = up.Z;
+                boneMatrix.M21 = camera.Right.X;
+                boneMatrix.M22 = camera.Right.Y;
+                boneMatrix.M23 = camera.Right.Z;
 
-                // TODO: UpdateMatrix needs to be called every frame to make this work.
-                // TODO: Must not rotate this bone in case billboarding was applied
-            }*/
+                boneMatrix.M31 = camera.Up.X;
+                boneMatrix.M32 = camera.Up.Y;
+                boneMatrix.M33 = camera.Up.Z;
+
+                // TODO: Must not rotate this bone with the
+                // instance matrix in case billboarding was applied
+            }
 
             boneMatrix = mInvPivot * boneMatrix * mPivot;
 
