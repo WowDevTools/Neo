@@ -508,7 +508,7 @@
     </Exec>
   </Target>
   <Target Name="WmoPixel" BeforeTargets="PrepareForBuild" Label="WmoPixel" Inputs="$(ProjectDir)\Resources\Shaders\WmoPixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WmoPixel.dxc;$(ProjectDir)\Resources\Shaders\WmoPixelBlend.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\WmoPixel.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixel.dxc main_blend ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixelBlend.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WmoPixel.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoPixel.dxc&quot; main_blend ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoPixelBlend.dxc&quot;">
     </Exec>
 	<Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WmoPixel.hlsl&quot; main_indoor ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoPixelIndoor.dxc&quot; main_blend_indoor ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoPixelBlendIndoor.dxc&quot;">	
 	</Exec>
