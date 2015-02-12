@@ -31,6 +31,10 @@ namespace WoWEditor6.Scene
 
         public Vector3 Position { get; private set; }
 
+        public Vector3 Up { get { return mUp; } }
+        public Vector3 Right { get { return mRight; } }
+        public Vector3 Forward { get { return mForward; } }
+
         protected Camera()
         {
             mUp = Vector3.UnitZ;
