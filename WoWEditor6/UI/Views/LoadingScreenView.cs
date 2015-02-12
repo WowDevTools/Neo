@@ -14,6 +14,7 @@ namespace WoWEditor6.UI.Views
         private TextureBitmap mLoadingBarFill;
         private RectangleF mTargetRectangle;
         private float mProgress;
+        private bool mWidescreen;
 
         public void OnRender(RenderTarget target)
         {
@@ -74,8 +75,22 @@ namespace WoWEditor6.UI.Views
                 if(loadRow != null)
                 {
                     var path = loadRow.GetString(Storage.MapFormatGuess.FieldLoadingScreenPath);
+                    mWidescreen = false;
+
                     if (string.IsNullOrEmpty(path) == false)
+                    {
+                        if (Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen >= 0 && loadRow.GetInt32(Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen) == 1)
+                        {
+                            var widePath = path.ToUpperInvariant().Replace(".BLP", "WIDE.BLP");
+                            if (IO.FileManager.Instance.Provider.Exists(widePath))
+                            {
+                                path = widePath;
+                                mWidescreen = true;
+                            }
+                        }
+
                         loadScreenPath = path;
+                    }
                 }
             }
 
@@ -99,10 +114,14 @@ namespace WoWEditor6.UI.Views
             var facx = mSize.X / bmp.Width;
             var facy = mSize.Y / bmp.Height;
             var fac = Math.Min(facx, facy);
-            var newWidth = fac * bmp.Width;
             var newHeight = fac * bmp.Height;
-            var ofsx = (mSize.X - newWidth) / 2.0f;
             var ofsy = (mSize.Y - newHeight) / 2.0f;
+
+            var newWidth = fac * bmp.Width;
+            if (mWidescreen) newWidth *= ( 16.0f / 9.0f );
+            else newWidth *= ( 4.0f / 3.0f );
+	
+            var ofsx = (mSize.X - newWidth) / 2.0f;
             mTargetRectangle = new RectangleF(ofsx, ofsy, newWidth, newHeight);
         }
     }

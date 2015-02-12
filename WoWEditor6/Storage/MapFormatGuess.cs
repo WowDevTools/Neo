@@ -10,6 +10,7 @@ namespace WoWEditor6.Storage
         public static int FieldMapName { get; private set; }
         public static int FieldMapTitle { get; private set; }
         public static int FieldLoadingScreenPath { get; private set; }
+        public static int FieldLoadingScreenHasWidescreen { get; private set; }
         public static int FieldMapLoadingScreen { get; private set; }
 
         public static void Initialize()
@@ -117,13 +118,18 @@ namespace WoWEditor6.Storage
             }
 
             FieldLoadingScreenPath = -1;
+            FieldLoadingScreenHasWidescreen = -1;
             for (var i = 0; i < loadingScreenFields.Count; ++i)
             {
                 if (!loadingScreenFields[i]) continue;
 
                 FieldLoadingScreenPath = i;
+                FieldLoadingScreenHasWidescreen = i + 1;
                 break;
             }
+
+            if (FieldLoadingScreenHasWidescreen >= DbcStorage.LoadingScreen.NumFields)
+                FieldLoadingScreenHasWidescreen = -1;
 
             if (FieldLoadingScreenPath < 0)
                 throw new InvalidOperationException("Unable to find the loading screen asset path");

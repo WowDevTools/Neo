@@ -58,7 +58,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                         {
                             case 0x4D4F4750:
                                 mHeader = reader.Read<Mogp>();
-                                IsIndoor = (mHeader.flags & 0x2000) != 0;
+                                IsIndoor = (mHeader.flags & 0x2000) != 0 && (mHeader.flags & 0x8) == 0;
                                 if (!LoadGroupChunks(reader, size - SizeCache<Mogp>.Size))
                                     return false;
 
@@ -75,7 +75,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 }
                 catch(Exception e)
                 {
-                    Log.Error("Unable to load WMO group: " + e.Message);
+                    Log.Error("Unable to load WMO group: " + e);
                     return false;
                 }
             }
@@ -176,9 +176,6 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         private void LoadColors(BinaryReader reader, int size)
         {
-            if ((mHeader.flags & 4) == 0)
-                return;
-
             var numColors = size / 4;
             mColors = reader.ReadArray<uint>(numColors);
         }
@@ -216,26 +213,29 @@ namespace WoWEditor6.IO.Files.Models.WoD
             }
 
             mVertices = new WmoVertex[mPositions.Length];
-            if ((mHeader.flags & 4) == 0)
+            if (mColors == null)
             {
                 mColors = new uint[mPositions.Length];
                 for (var i = 0; i < mPositions.Length; ++i)
-                    mColors[i] = ((mHeader.flags & 0x2000) != 0) ? 0x7F7F7F7Fu : 0x00000000u;
+                    mColors[i] = IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
             }
 
             if (mColors.Length < mVertices.Length)
             {
                 var colors = mColors;
                 mColors = new uint[mVertices.Length];
-                Buffer.BlockCopy(colors, 0, mColors, 0, colors.Length * 4);
+                if (colors.Length > 0)
+                    Buffer.BlockCopy(colors, 0, mColors, 0, colors.Length * 4);
+
                 for (var i = colors.Length; i < mColors.Length; ++i)
-                    colors[i] = ((mHeader.flags & 0x2000) != 0) ? 0x7F7F7F7Fu : 0x00000000u;
+                    mColors[i] = IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
             }
 
             var parentAmbient = parent.AmbientColor;
             var ar = parentAmbient & 0xFF;
             var ag = (parentAmbient >> 8) & 0xFF;
             var ab = (parentAmbient >> 16) & 0xFF;
+            var aa = (parentAmbient >> 24) & 0xFF;
 
             var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);
@@ -243,11 +243,14 @@ namespace WoWEditor6.IO.Files.Models.WoD
             for (var i = 0; i < mVertices.Length; ++i)
             {
                 var clr = mColors[i];
-                var r = Math.Min((clr & 0xFF) + ar, 255);
-                var g = Math.Min(((clr >> 8) & 0xFF) + ag, 255);
-                var b = Math.Min(((clr >> 16) & 0xFF) + ab, 255);
-                clr &= 0xFF000000;
-                clr |= r | (g << 8) | (b << 16);
+                if (parent.UseParentAmbient && IsIndoor)
+                {
+                    var r = Math.Min((clr & 0xFF) + ar, 255);
+                    var g = Math.Min(((clr >> 8) & 0xFF) + ag, 255);
+                    var b = Math.Min(((clr >> 16) & 0xFF) + ab, 255);
+                    var a = Math.Min(((clr >> 24) & 0xFF) + aa, 255);
+                    clr = r | (g << 8) | (b << 16) | (a << 24);
+                }
                 var v = mPositions[i];
 
                 mVertices[i] = new WmoVertex
