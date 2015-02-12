@@ -20,6 +20,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         public virtual string FileName { get { return mFileName; } }
 
         public uint AmbientColor { get { return mHeader.ambientColor; } }
+        public bool UseParentAmbient { get { return (mHeader.flags & 2) == 0; } }
 
         public override void Dispose()
         {
@@ -91,7 +92,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 }
                 catch(Exception e)
                 {
-                    Log.Error("Unable to load WMO: " + e.Message);
+                    Log.Error("Unable to load WMO: " + e);
                     return false;
                 }
 
