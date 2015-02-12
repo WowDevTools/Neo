@@ -58,6 +58,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                         {
                             case 0x4D4F4750:
                                 mHeader = reader.Read<Mogp>();
+                                IsIndoor = (mHeader.flags & 0x2000) != 0;
                                 if (!LoadGroupChunks(reader, size - SizeCache<Mogp>.Size))
                                     return false;
 
@@ -225,7 +226,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             {
                 mColors = new uint[mPositions.Length];
                 for (var i = 0; i < mPositions.Length; ++i)
-                    mColors[i] = ((mHeader.flags & 0x2000) != 0) ? 0x7F7F7F7Fu : 0x00000000u;
+                    mColors[i] = ((mHeader.flags & 0x2000) != 0) ? 0x007F7F7Fu : 0x00000000u;
             }
 
             if (mColors.Length < mVertices.Length)
@@ -234,7 +235,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 mColors = new uint[mVertices.Length];
                 Buffer.BlockCopy(colors, 0, mColors, 0, colors.Length * 4);
                 for (var i = colors.Length; i < mColors.Length; ++i)
-                    colors[i] = ((mHeader.flags & 0x2000) != 0) ? 0x7F7F7F7Fu : 0x00000000u;
+                    colors[i] = ((mHeader.flags & 0x2000) != 0) ? 0x007F7F7Fu : 0x00000000u;
             }
 
             var parentAmbient = parent.AmbientColor;
@@ -248,11 +249,14 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             for (var i = 0; i < mVertices.Length; ++i)
             {
                 var clr = mColors[i];
-                var r = Math.Min((clr & 0xFF) + ar, 255);
-                var g = Math.Min(((clr >> 8) & 0xFF) + ag, 255);
-                var b = Math.Min(((clr >> 16) & 0xFF) + ab, 255);
-                clr &= 0xFF000000;
-                clr |= r | (g << 8) | (b << 16);
+                if (parent.UseParentAmbient && ((mHeader.flags & 0x2000) != 0))
+                {
+                    var r = Math.Min((clr & 0xFF) + ar, 255);
+                    var g = Math.Min(((clr >> 8) & 0xFF) + ag, 255);
+                    var b = Math.Min(((clr >> 16) & 0xFF) + ab, 255);
+                    clr &= 0xFF000000;
+                    clr |= r | (g << 8) | (b << 16);
+                }
                 var v = mPositions[i];
 
                 mVertices[i] = new WmoVertex

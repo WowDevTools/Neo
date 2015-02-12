@@ -17,7 +17,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public readonly int wmoAreaTable;
         public readonly Vector3 bboxMin;
         public readonly Vector3 bboxMax;
-        public readonly int liquidType;
+        public readonly int flags;
     }
 
     [StructLayout(LayoutKind.Sequential)]

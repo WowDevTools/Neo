@@ -510,6 +510,8 @@
   <Target Name="WmoPixel" BeforeTargets="PrepareForBuild" Label="WmoPixel" Inputs="$(ProjectDir)\Resources\Shaders\WmoPixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WmoPixel.dxc;$(ProjectDir)\Resources\Shaders\WmoPixelBlend.dxc">
     <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\WmoPixel.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixel.dxc main_blend ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixelBlend.dxc">
     </Exec>
+	<Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\WmoPixel.hlsl main_indoor ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixelIndoor.dxc main_blend_indoor ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixelBlendIndoor.dxc">	
+	</Exec>
   </Target>
   <Target Name="WmoVertex" BeforeTargets="PrepareForBuild" Label="WmoVertex" Inputs="$(ProjectDir)\Resources\Shaders\WmoVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WmoVertex.dxc">
     <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\WmoVertex.hlsl main vs_5_0 $(ProjectDir)\Resources\Shaders\WmoVertex.dxc">

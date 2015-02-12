@@ -3,6 +3,7 @@ struct PixelInput
     float4 position : SV_Position;
     float3 normal : NORMAL0;
     float2 texCoord : TEXCOORD0;
+    float4 modelPassParams : TEXCOORD1; // x = unlit, y = unfogged
 };
 
 float3 getDiffuseLight(float3 normal) {
@@ -25,10 +26,11 @@ float4 main(PixelInput input) : SV_Target{
     float4 color = baseTexture.Sample(baseSampler, input.texCoord);
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
-    color.rgb *= lightColor;
+
+    float unlit = input.modelPassParams.x;
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
 
     return color;
-
 }
 
 float4 main_blend(PixelInput input) : SV_Target{
@@ -38,10 +40,11 @@ float4 main_blend(PixelInput input) : SV_Target{
 
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
-    color.rgb *= lightColor;
+
+    float unlit = input.modelPassParams.x;
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
 
     return color;
-
 }
 
 float4 main_blend_alpha_test(PixelInput input) : SV_Target{
@@ -51,7 +54,9 @@ float4 main_blend_alpha_test(PixelInput input) : SV_Target{
 
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
-    color.rgb *= lightColor;
+
+    float unlit = input.modelPassParams.x;
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
 
     return color;
 }

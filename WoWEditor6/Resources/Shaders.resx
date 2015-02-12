@@ -148,8 +148,14 @@
   <data name="WmoPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WmoPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="WmoPixelIndoor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\WmoPixelIndoor.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="WmoPixelBlend" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WmoPixelBlend.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="WmoPixelBlendIndoor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\WmoPixelBlendIndoor.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="WmoVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WmoVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>

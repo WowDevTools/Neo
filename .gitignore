@@ -210,3 +210,5 @@ ModelManifest.xml
 /WoWEditor6/M2PixelBlend.dxc
 /WoWEditor6/Resources/Shaders/M2PixelBlendAlpha.dxc
 /WoWEditor6/Resources/Shaders/M2PixelPortraitBlendAlpha.dxc
+/WoWEditor6/Resources/Shaders/WmoPixelIndoor.dxc
+/WoWEditor6/Resources/Shaders/WmoPixelBlendIndoor.dxc
