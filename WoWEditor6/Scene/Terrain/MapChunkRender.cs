@@ -165,9 +165,15 @@ namespace WoWEditor6.Scene.Terrain
             ColorSampler = new Sampler(context)
             {
                 AddressMode = SharpDX.Direct3D11.TextureAddressMode.Wrap,
-                Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
+                Filter = SharpDX.Direct3D11.Filter.Anisotropic,
+                MaximumAnisotropy = 16,
             };
-            AlphaSampler = new Sampler(context) {AddressMode = SharpDX.Direct3D11.TextureAddressMode.Clamp};
+            AlphaSampler = new Sampler(context)
+            {
+                AddressMode = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                Filter = SharpDX.Direct3D11.Filter.Anisotropic,
+                MaximumAnisotropy = 16,
+            };
         }
 
         public static void InitIndices()
