@@ -25,6 +25,12 @@ namespace WoWEditor6.Graphics
             get { return mDescription.Filter; }
         }
 
+        public int MaximumAnisotropy
+        {
+            set { mDescription.MaximumAnisotropy = value; mChanged = true; }
+            get { return mDescription.MaximumAnisotropy; }
+        }
+
         public Sampler(GxContext context)
         {
             mContext = context;

@@ -128,9 +128,11 @@ float4 main(PixelInput input) : SV_Target{
     color += alpha.b * c2;
     color += alpha.a * c3;
 
-    color.rgb *= input.color.bgr * 2;
-    color.rgb += input.addColor.bgr;
+	float4 textureColor = color;
+
     color.rgb *= getDiffuseLight(input.normal, input.worldPosition);
+	color.rgb *= input.color.bgr * 2;
+    color.rgb += input.addColor.bgr * textureColor;
     color.rgb *= alpha.r;
     color.rgb = saturate(color.rgb);
 
