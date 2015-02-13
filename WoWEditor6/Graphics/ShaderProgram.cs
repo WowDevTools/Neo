@@ -7,7 +7,7 @@ using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
 {
-    class ShaderProgram
+    class ShaderProgram : IDisposable
     {
         private static readonly ShaderResourceView[] ShaderViews = new ShaderResourceView[64];
 
@@ -99,6 +99,12 @@ namespace WoWEditor6.Graphics
             if (result.HasErrors)
                 throw new ArgumentException(result.Message, "code");
 
+            if (mVertexShader != null)
+                mVertexShader.Dispose();
+
+            if (VertexShaderCode != null)
+                VertexShaderCode.Dispose();
+
             VertexShaderCode = result.Bytecode;
             mVertexShader = new VertexShader(mContext.Device, VertexShaderCode.Data);
         }
@@ -111,6 +117,9 @@ namespace WoWEditor6.Graphics
                 if (result.HasErrors)
                     throw new ArgumentException(result.Message, "code");
 
+                if (mPixelShader != null)
+                    mPixelShader.Dispose();
+
                 mPixelShader = new PixelShader(mContext.Device, result.Bytecode.Data);
             }
         }
@@ -118,6 +127,12 @@ namespace WoWEditor6.Graphics
         public void SetVertexShader(byte[] code)
         {
             var result = ShaderBytecode.FromStream(new MemoryStream(code));
+
+            if (mVertexShader != null)
+                mVertexShader.Dispose();
+
+            if (VertexShaderCode != null)
+                VertexShaderCode.Dispose();
 
             VertexShaderCode = result;
             mVertexShader = new VertexShader(mContext.Device, VertexShaderCode.Data);
@@ -127,6 +142,9 @@ namespace WoWEditor6.Graphics
         {
             using(var result = ShaderBytecode.FromStream(new MemoryStream(code)))
             {
+                if (mPixelShader != null)
+                    mPixelShader.Dispose();
+
                 mPixelShader = new PixelShader(mContext.Device, result);
             }
         }
@@ -135,6 +153,18 @@ namespace WoWEditor6.Graphics
         {
             mContext.Context.VertexShader.Set(mVertexShader);
             mContext.Context.PixelShader.Set(mPixelShader);
+        }
+
+        public virtual void Dispose()
+        {
+            if (mVertexShader != null)
+                mVertexShader.Dispose();
+
+            if (mPixelShader != null)
+                mPixelShader.Dispose();
+
+            if (VertexShaderCode != null)
+                VertexShaderCode.Dispose();
         }
     }
 }

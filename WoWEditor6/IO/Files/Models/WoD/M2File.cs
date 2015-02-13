@@ -42,11 +42,6 @@ namespace WoWEditor6.IO.Files.Models.WoD
             mRootPath = Path.GetDirectoryName(mFileName);
         }
 
-        public override void Dispose()
-        {
-            mTextures = new Graphics.Texture[0];
-        }
-
         public override bool Load()
         {
             using (var strm = FileManager.Instance.Provider.OpenFile(mFileName))

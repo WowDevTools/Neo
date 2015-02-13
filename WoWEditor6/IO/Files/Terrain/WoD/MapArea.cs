@@ -597,6 +597,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
 
             mWmoInstances.Clear();
+            base.Dispose();
         }
     }
 }

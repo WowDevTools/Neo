@@ -27,6 +27,11 @@ namespace WoWEditor6.IO.Files.Terrain
             FullVertices = new AdtVertex[145 * 256];
         }
 
+        public virtual void Dispose()
+        {
+            DoodadInstances.Clear();
+        }
+
         public abstract void Save();
 
         public abstract Graphics.Texture GetTexture(int index);
@@ -34,8 +39,6 @@ namespace WoWEditor6.IO.Files.Terrain
         public abstract MapChunk GetChunk(int index);
 
         public abstract bool Intersect(ref Ray ray, out MapChunk chunk, out float distance);
-
-        public abstract void Dispose();
 
         public abstract bool OnChangeTerrain(Editing.TerrainChangeParameters parameters);
         public abstract void OnUpdateModelPositions(Editing.TerrainChangeParameters parameters);

@@ -40,7 +40,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public readonly ushort Flags;
     }
 
-    class LoadedModel
+    struct LoadedModel
     {
         public readonly string FileName;
         public readonly int Uuid;

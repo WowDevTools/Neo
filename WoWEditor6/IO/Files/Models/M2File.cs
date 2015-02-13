@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models
 {
-    abstract class M2File : IDisposable
+    abstract class M2File
     {
         public M2Vertex[] Vertices { get; protected set; }
         public List<M2RenderPass> Passes { get; private set; }
@@ -19,8 +18,6 @@ namespace WoWEditor6.IO.Files.Models
             Passes = new List<M2RenderPass>();
             Indices = new ushort[0];
         }
-
-        public abstract void Dispose();
 
         public abstract bool Load();
     }

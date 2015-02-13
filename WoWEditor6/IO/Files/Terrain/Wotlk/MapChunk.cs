@@ -33,6 +33,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
+
         public void SaveChunk(BinaryWriter writer)
         {
             var basePos = (int) writer.BaseStream.Position;
@@ -321,11 +326,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 distance = minDist;
 
             return hasHit;
-        }
-
-        public override void Dispose()
-        {
-
         }
 
         protected override bool HandleMccvPaint(TerrainChangeParameters parameters)

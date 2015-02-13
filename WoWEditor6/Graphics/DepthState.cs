@@ -1,8 +1,9 @@
-﻿using SharpDX.Direct3D11;
+﻿using System;
+using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
 {
-    class DepthState
+    class DepthState : IDisposable
     {
         private DepthStencilState mState;
         private DepthStencilStateDescription mDescription;
@@ -70,10 +71,17 @@ namespace WoWEditor6.Graphics
                 if (!mChanged) return mState;
                 if (mState != null)
                     mState.Dispose();
+
                 mState = new DepthStencilState(mContext.Device, mDescription);
                 mChanged = false;
                 return mState;
             }
+        }
+
+        public virtual void Dispose()
+        {
+            if (mState != null)
+                mState.Dispose();
         }
     }
 }
