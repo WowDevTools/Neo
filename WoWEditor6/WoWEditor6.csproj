@@ -456,65 +456,65 @@
     <Error Condition="!Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SharpDX.2.6.3\build\SharpDX.targets'))" />
   </Target>
   <Target Name="M2Pixel" BeforeTargets="PrepareForBuild" Label="M2Pixel" Inputs="$(ProjectDir)\Resources\Shaders\M2Pixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2Pixel.dxc;$(ProjectDir)\Resources\Shaders\M2PixelBlend.dxc;$(ProjectDir)\Resources\Shaders\M2PixelBlendAlpha.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\M2Pixel.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\M2Pixel.dxc main_blend ps_5_0 $(ProjectDir)\Resources\Shaders\M2PixelBlend.dxc main_blend_alpha_test ps_5_0 $(ProjectDir)\Resources\Shaders\M2PixelBlendAlpha.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2Pixel.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2Pixel.dxc&quot; main_blend ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelBlend.dxc&quot; main_blend_alpha_test ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelBlendAlpha.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="M2PixelPortrait" BeforeTargets="PrepareForBuild" Label="M2PixelPortrait" Inputs="$(ProjectDir)\Resources\Shaders\M2PixelPortrait.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2PixelPortrait.dxc;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlend.dxc;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlendAlpha.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\M2PixelPortrait.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\M2PixelPortrait.dxc main_blend ps_5_0 $(ProjectDir)\Resources\Shaders\M2PixelPortraitBlend.dxc main_blend_alpha_test ps_5_0 $(ProjectDir)\Resources\Shaders\M2PixelPortraitBlendAlpha.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortrait.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortrait.dxc&quot; main_blend ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlend.dxc&quot; main_blend_alpha_test ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlendAlpha.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="M2VertexInstanced" BeforeTargets="PrepareForBuild" Label="M2VertexInstanced" Inputs="$(ProjectDir)\Resources\Shaders\M2VertexInstanced.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2VertexInstanced.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\M2VertexInstanced.hlsl main vs_5_0 $(ProjectDir)\Resources\Shaders\M2VertexInstanced.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2VertexInstanced.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2VertexInstanced.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="M2VertexPortrait" BeforeTargets="PrepareForBuild" Label="M2VertexPortrait" Inputs="$(ProjectDir)\Resources\Shaders\M2VertexPortrait.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2VertexPortrait.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\M2VertexPortrait.hlsl main vs_5_0 $(ProjectDir)\Resources\Shaders\M2VertexPortrait.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2VertexPortrait.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2VertexPortrait.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="MapLowPixel" BeforeTargets="PrepareForBuild" Label="MapLowPixel" Inputs="$(ProjectDir)\Resources\Shaders\MapLowPixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\MapLowPixel.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\MapLowPixel.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\MapLowPixel.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\MapLowPixel.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\MapLowPixel.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="MapLowVertex" BeforeTargets="PrepareForBuild" Label="MapLowVertex" Inputs="$(ProjectDir)\Resources\Shaders\MapLowVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\MapLowVertex.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\MapLowVertex.hlsl main vs_5_0 $(ProjectDir)\Resources\Shaders\MapLowVertex.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\MapLowVertex.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\MapLowVertex.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="SkyPixel" BeforeTargets="PrepareForBuild" Label="SkyPixel" Inputs="$(ProjectDir)\Resources\Shaders\SkyPixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\SkyPixel.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\SkyPixel.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\SkyPixel.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\SkyPixel.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\SkyPixel.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="SkyVertex" BeforeTargets="PrepareForBuild" Label="SkyVertex" Inputs="$(ProjectDir)\Resources\Shaders\SkyVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\SkyVertex.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\SkyVertex.hlsl main vs_5_0 $(ProjectDir)\Resources\Shaders\SkyVertex.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\SkyVertex.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\SkyVertex.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="TerrainPixel" BeforeTargets="PrepareForBuild" Label="TerrainPixel" Inputs="$(ProjectDir)\Resources\Shaders\TerrainPixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\TerrainPixel.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\TerrainPixel.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\TerrainPixel.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\TerrainPixel.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\TerrainPixel.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="TerrainPixelNew" BeforeTargets="PrepareForBuild" Label="TerrainPixelNew" Inputs="$(ProjectDir)\Resources\Shaders\TerrainPixelNew.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\TerrainPixelNew.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\TerrainPixelNew.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\TerrainPixelNew.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\TerrainPixelNew.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\TerrainPixelNew.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="TerrainVertex" BeforeTargets="PrepareForBuild" Label="TerrainVertex" Inputs="$(ProjectDir)\Resources\Shaders\TerrainVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\TerrainVertex.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\TerrainVertex.hlsl main vs_5_0 $(ProjectDir)\Resources\Shaders\TerrainVertex.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\TerrainVertex.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\TerrainVertex.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="TexturedQuadPixel" BeforeTargets="PrepareForBuild" Label="TexturedQuadPixel" Inputs="$(ProjectDir)\Resources\Shaders\TextureQuadPixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\TextureQuadPixel.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\TextureQuadPixel.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\TextureQuadPixel.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\TextureQuadPixel.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\TextureQuadPixel.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="TexturedQuadVertex" BeforeTargets="PrepareForBuild" Label="TexturedQuadVertex" Inputs="$(ProjectDir)\Resources\Shaders\TexturedQuadVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\TexturedQuadVertex.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\TexturedQuadVertex.hlsl main vs_5_0 $(ProjectDir)\Resources\Shaders\TexturedQuadVertex.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\TexturedQuadVertex.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\TexturedQuadVertex.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="WmoPixel" BeforeTargets="PrepareForBuild" Label="WmoPixel" Inputs="$(ProjectDir)\Resources\Shaders\WmoPixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WmoPixel.dxc;$(ProjectDir)\Resources\Shaders\WmoPixelBlend.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\WmoPixel.hlsl main ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixel.dxc main_blend ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixelBlend.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WmoPixel.hlsl&quot; main ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoPixel.dxc&quot; main_blend ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoPixelBlend.dxc&quot;">
     </Exec>
-	<Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\WmoPixel.hlsl main_indoor ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixelIndoor.dxc main_blend_indoor ps_5_0 $(ProjectDir)\Resources\Shaders\WmoPixelBlendIndoor.dxc">	
+	<Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WmoPixel.hlsl&quot; main_indoor ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoPixelIndoor.dxc&quot; main_blend_indoor ps_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoPixelBlendIndoor.dxc&quot;">	
 	</Exec>
   </Target>
   <Target Name="WmoVertex" BeforeTargets="PrepareForBuild" Label="WmoVertex" Inputs="$(ProjectDir)\Resources\Shaders\WmoVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WmoVertex.dxc">
-    <Exec Command="$(ProjectDir)\tools\ShaderCompiler.exe $(ProjectDir)\Resources\Shaders\WmoVertex.hlsl main vs_5_0 $(ProjectDir)\Resources\Shaders\WmoVertex.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WmoVertex.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\WmoVertex.dxc&quot;">
     </Exec>
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
