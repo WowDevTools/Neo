@@ -24,7 +24,7 @@ namespace WoWEditor6.UI.Components
         private Texture2D mMapTexture;
         private Bitmap mPaintBitmap;
 
-        private Scene.Models.M2.M2ModelRenderer mRenderer;
+        private M2Renderer mRenderer;
 
 
         public ModelRenderControl()
@@ -39,7 +39,7 @@ namespace WoWEditor6.UI.Components
             if (file.Load() == false)
                 return;
 
-            mRenderer = new Scene.Models.M2.M2ModelRenderer(file);
+            mRenderer = new M2Renderer(file);
         }
 
         public void SetCreatureDisplayEntry(int entry)
@@ -84,10 +84,10 @@ namespace WoWEditor6.UI.Components
                 return;
             }
 
-            mRenderer = new M2ModelRenderer(file);
-            for (var i = 0; i < mRenderer.Textures.Length; ++i)
+            mRenderer = new M2Renderer(file);
+            for (var i = 0; i < mRenderer.PortraitRenderer.Textures.Length; ++i)
             {
-                var tex = mRenderer.Textures[i];
+                var tex = mRenderer.PortraitRenderer.Textures[i];
                 var root = mRenderer.Model.ModelRoot;
 
                 switch (tex.TextureType)
@@ -210,8 +210,7 @@ namespace WoWEditor6.UI.Components
             ctx.Context.Rasterizer.SetViewport(new Viewport(0, 0, ClientSize.Width, ClientSize.Height, 0.0f, 1.0f));
 
             ctx.Context.VertexShader.SetConstantBuffer(0, mMatrixBuffer.Native);
-
-            mRenderer.OnFrame();
+            mRenderer.RenderPortrait();
 
             mTarget.Remove();
             ctx.Context.Rasterizer.SetViewport(vp);

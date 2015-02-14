@@ -26,7 +26,9 @@ namespace WoWEditor6.Scene.Models.M2
         private static RasterState gCullState;
 
         private readonly IM2Animator mAnimator;
-        private readonly M2File mModel;
+        public M2File Model { get; private set; }
+
+        public TextureInfo[] Textures { get; private set; }
 
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
 
@@ -35,7 +37,8 @@ namespace WoWEditor6.Scene.Models.M2
 
         public M2PortraitRenderer(M2File model)
         {
-            mModel = model;
+            Model = model;
+            Textures = model.TextureInfos.ToArray();
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
             mAnimator.SetAnimationByIndex(0);
             mAnimator.Update();
@@ -66,7 +69,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
 
-            foreach (var pass in mModel.Passes)
+            foreach (var pass in Model.Passes)
             {
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
                 Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
