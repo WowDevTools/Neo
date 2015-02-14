@@ -8,30 +8,39 @@ namespace WoWEditor6.Scene.Models.M2
 {
     class M2Renderer : IDisposable
     {
-        public M2BatchRenderer BatchRenderer { get; private set; }
-        public M2PortraitRenderer PortraitRenderer { get; private set; }
-        public M2AlphaRenderer AlphaRenderer { get; private set; }
+        private readonly M2BatchRenderer mBatchRenderer;
+        private readonly M2PortraitRenderer mPortraitRenderer;
+        private readonly M2AlphaRenderer mAlphaRenderer;
 
         public VertexBuffer VertexBuffer { get; private set; }
         public IndexBuffer IndexBuffer { get; private set; }
+        public ConstantBuffer AnimBuffer { get; private set; }
 
         public M2File Model { get; private set; }
 
-        public Dictionary<int, M2RenderInstance> FullInstances { get; private set; }
+        private readonly Matrix[] mAnimationMatrices = new Matrix[256];
+        private readonly Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
+
         public List<M2RenderInstance> VisibleInstances { get; private set; }
 
         private bool mIsSyncLoaded;
         private bool mIsSyncLoadRequested;
         private bool mSkipRendering;
 
+        public IM2Animator Animator { get; private set; }
+
         public M2Renderer(M2File model)
         {
             Model = model;
-            FullInstances = new Dictionary<int, M2RenderInstance>();
             VisibleInstances = new List<M2RenderInstance>();
-            BatchRenderer = new M2BatchRenderer(model);
-            AlphaRenderer = new M2AlphaRenderer(model);
-            PortraitRenderer = new M2PortraitRenderer(model);
+
+            Animator = ModelFactory.Instance.CreateAnimator(model);
+            Animator.SetAnimationByIndex(0);
+            StaticAnimationThread.Instance.AddAnimator(Animator);
+
+            mBatchRenderer = new M2BatchRenderer(model);
+            mAlphaRenderer = new M2AlphaRenderer(model);
+            mPortraitRenderer = new M2PortraitRenderer(model);
         }
 
         public void RenderBatch()
@@ -42,8 +51,26 @@ namespace WoWEditor6.Scene.Models.M2
                     return;
             }
 
-            if (!mSkipRendering)
-                BatchRenderer.OnFrame(this);
+            if (mSkipRendering)
+                return;
+
+            if (Animator.GetBones(mAnimationMatrices))
+                AnimBuffer.UpdateData(mAnimationMatrices);
+
+            if (Model.HasOpaquePass)
+                mBatchRenderer.OnFrame(this);
+        }
+
+        public void RenderAlphaInstance(M2RenderInstance instance)
+        {
+            if (mIsSyncLoaded == false)
+            {
+                if (!BeginSyncLoad())
+                    return;
+            }
+
+            if (!mSkipRendering && Model.HasBlendPass)
+                mAlphaRenderer.OnFrame(this, instance);
         }
 
         public void RenderPortrait()
@@ -55,36 +82,24 @@ namespace WoWEditor6.Scene.Models.M2
             }
 
             if (!mSkipRendering)
-                PortraitRenderer.OnFrame(this);
-        }
-
-        public void RenderAlphaInstance(M2RenderInstance instance)
-        {
-            if (mIsSyncLoaded == false)
-            {
-                if (!BeginSyncLoad())
-                    return;
-            }
-
-            if (!mSkipRendering)
-                AlphaRenderer.OnFrame(this, instance);
+                mPortraitRenderer.OnFrame(this);
         }
 
         public bool RemoveInstance(int uuid)
         {
             bool lastInstance = false;
-            lock (FullInstances)
+            lock (mFullInstances)
             {
                 M2RenderInstance inst;
-                if (FullInstances.TryGetValue(uuid, out inst) == false)
+                if (mFullInstances.TryGetValue(uuid, out inst) == false)
                     return false;
 
                 --inst.NumReferences;
                 if (inst.NumReferences > 0)
                     return false;
 
-                FullInstances.Remove(uuid);
-                if (FullInstances.Count == 0)
+                mFullInstances.Remove(uuid);
+                if (mFullInstances.Count == 0)
                     lastInstance = true;
             }
 
@@ -107,16 +122,16 @@ namespace WoWEditor6.Scene.Models.M2
         {
             M2RenderInstance inst;
             // ReSharper disable once InconsistentlySynchronizedField
-            if (FullInstances.TryGetValue(uuid, out inst))
+            if (mFullInstances.TryGetValue(uuid, out inst))
             {
                 ++inst.NumReferences;
                 return inst;
             }
 
             var instance = new M2RenderInstance(uuid, position, rotation, scaling, this);
-            lock (FullInstances)
+            lock (mFullInstances)
             {
-                FullInstances.Add(uuid, instance);
+                mFullInstances.Add(uuid, instance);
                 if (!WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox))
                     return instance;
 
@@ -129,9 +144,9 @@ namespace WoWEditor6.Scene.Models.M2
         public void PushMapReference(M2Instance instance)
         {
             M2RenderInstance inst;
-            lock (FullInstances)
+            lock (mFullInstances)
             {
-                if (FullInstances.TryGetValue(instance.Uuid, out inst) == false)
+                if (mFullInstances.TryGetValue(instance.Uuid, out inst) == false)
                     return;
             }
 
@@ -147,9 +162,9 @@ namespace WoWEditor6.Scene.Models.M2
             lock (VisibleInstances)
                 VisibleInstances.Clear();
 
-            lock (FullInstances)
+            lock (mFullInstances)
             {
-                foreach (var pair in FullInstances)
+                foreach (var pair in mFullInstances)
                     pair.Value.IsUpdated = false;
             }
         }
@@ -183,26 +198,32 @@ namespace WoWEditor6.Scene.Models.M2
             var ctx = WorldFrame.Instance.GraphicsContext;
             VertexBuffer = new VertexBuffer(ctx);
             IndexBuffer = new IndexBuffer(ctx);
+            AnimBuffer = new ConstantBuffer(ctx);
 
             VertexBuffer.UpdateData(Model.Vertices);
             IndexBuffer.UpdateData(Model.Indices);
+            AnimBuffer.UpdateData(mAnimationMatrices);
 
-            BatchRenderer.OnSyncLoad();
-            AlphaRenderer.OnSyncLoad();
-            PortraitRenderer.OnSyncLoad();
+            mBatchRenderer.OnSyncLoad();
+            mAlphaRenderer.OnSyncLoad();
+            mPortraitRenderer.OnSyncLoad();
         }
 
         public virtual void Dispose()
         {
             mSkipRendering = true;
-            if (BatchRenderer != null)
-                BatchRenderer.Dispose();
+            if (mBatchRenderer != null)
+                mBatchRenderer.Dispose();
 
-            if (PortraitRenderer != null)
-                PortraitRenderer.Dispose();
+            if (mAlphaRenderer != null)
+                mAlphaRenderer.Dispose();
+
+            if (mPortraitRenderer != null)
+                mPortraitRenderer.Dispose();
 
             var vb = VertexBuffer;
             var ib = IndexBuffer;
+            var ab = AnimBuffer;
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
@@ -210,7 +231,11 @@ namespace WoWEditor6.Scene.Models.M2
                     vb.Dispose();
                 if (ib != null)
                     ib.Dispose();
+                if (ab != null)
+                    ab.Dispose();
             });
+
+            StaticAnimationThread.Instance.RemoveAnimator(Animator);
         }
     }
 }

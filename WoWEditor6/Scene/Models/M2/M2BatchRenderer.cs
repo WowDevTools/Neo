@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
@@ -26,51 +27,39 @@ namespace WoWEditor6.Scene.Models.M2
         public static Mesh Mesh { get; private set; }
         public static Sampler Sampler { get; private set; }
 
-        private static BlendState gBlendState;
+        private static BlendState BlendState;
 
         private static ShaderProgram gNoBlendProgram;
-        private static ShaderProgram gMaskBlendProgram;
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
-        private readonly IM2Animator mAnimator;
         public M2File Model { get; private set; }
 
         private VertexBuffer mInstanceBuffer;
+        private readonly object mInstanceBufferLock = new object();
 
         private int mInstanceCount;
 
         private PerInstanceBuffer[] mActiveInstances = new PerInstanceBuffer[0];
-        private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-
-        private ConstantBuffer mAnimBuffer;
         private ConstantBuffer mPerPassBuffer;
 
         public M2BatchRenderer(M2File model)
         {
             Model = model;
-            mAnimator = ModelFactory.Instance.CreateAnimator(model);
-            mAnimator.SetAnimationByIndex(0);
-            StaticAnimationThread.Instance.AddAnimator(mAnimator);
         }
 
         public virtual void Dispose()
         {
-            var instanceBuffer = mInstanceBuffer;
-            var cb = mAnimBuffer;
+            var ib = mInstanceBuffer;
             var pb = mPerPassBuffer;
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                if (instanceBuffer != null)
-                    instanceBuffer.Dispose();
-                if (cb != null)
-                    cb.Dispose();
+                if (ib != null)
+                    ib.Dispose();
                 if (pb != null)
                     pb.Dispose();
             });
-
-            StaticAnimationThread.Instance.RemoveAnimator(mAnimator);
         }
 
         public void OnFrame(M2Renderer renderer)
@@ -83,17 +72,14 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
             Mesh.UpdateInstanceBuffer(mInstanceBuffer);
 
-            if (mAnimator.GetBones(mAnimationMatrices))
-                mAnimBuffer.UpdateData(mAnimationMatrices);
-
-            Mesh.UpdateBlendState(gBlendState);
-            Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
+            Mesh.UpdateBlendState(BlendState);
+            Mesh.Program.SetVertexConstantBuffer(2, renderer.AnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
 
             foreach (var pass in Model.Passes)
             {
                 // This renderer is only for opaque pass
-                if (pass.BlendMode != 0 && pass.BlendMode != 1)
+                if (pass.BlendMode != 0)
                     continue;
 
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
@@ -103,20 +89,13 @@ namespace WoWEditor6.Scene.Models.M2
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
                 Matrix uvAnimMat;
-                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
 
-                mPerPassBuffer.UpdateData(new PerModelPassBuffer
+                mPerPassBuffer.UpdateData(new PerModelPassBuffer()
                 {
                     uvAnimMatrix = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
                 });
-
-                var program = pass.BlendMode == 1 ? gMaskBlendProgram : gNoBlendProgram;
-                if (Mesh.Program != program)
-                {
-                    Mesh.Program = program;
-                    program.Bind();
-                }
 
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
@@ -142,18 +121,15 @@ namespace WoWEditor6.Scene.Models.M2
                 mInstanceCount = renderer.VisibleInstances.Count;
                 if (mInstanceCount == 0)
                     return;
-
-                mInstanceBuffer.UpdateData(mActiveInstances);
             }
+
+            mInstanceBuffer.UpdateData(mActiveInstances);
         }
 
         public void OnSyncLoad()
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
             mInstanceBuffer = new VertexBuffer(ctx);
-            mAnimBuffer = new ConstantBuffer(ctx);
-            mAnimBuffer.UpdateData(mAnimationMatrices);
-
             mPerPassBuffer = new ConstantBuffer(ctx);
             mPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {
@@ -192,10 +168,6 @@ namespace WoWEditor6.Scene.Models.M2
             gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
             gNoBlendProgram.SetPixelShader(Resources.Shaders.M2Pixel);
 
-            gMaskBlendProgram = new ShaderProgram(context);
-            gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
-            gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
-
             Mesh.Program = gNoBlendProgram;
 
             Sampler = new Sampler(context)
@@ -204,7 +176,7 @@ namespace WoWEditor6.Scene.Models.M2
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
             };
 
-            gBlendState = new BlendState(context)
+            BlendState = new BlendState(context)
             {
                 BlendEnabled = false
             };

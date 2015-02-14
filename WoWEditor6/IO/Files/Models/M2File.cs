@@ -19,6 +19,7 @@ namespace WoWEditor6.IO.Files.Models
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingSphere BoundingSphere { get; protected set; }
         public bool HasBlendPass { get; protected set; }
+        public bool HasOpaquePass { get; protected set; }
 
         public TextureInfo[] TextureInfos { get; protected set; }
 
@@ -32,6 +33,7 @@ namespace WoWEditor6.IO.Files.Models
             Passes = new List<M2RenderPass>();
             Indices = new ushort[0];
             HasBlendPass = false;
+            HasOpaquePass = false;
         }
 
         public abstract bool Load();
