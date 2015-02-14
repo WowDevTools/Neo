@@ -18,256 +18,88 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
             foreach (DataRow dRow in pDataTable.Rows)
             {
                 var creature = new Creature();
-                foreach (DataColumn dColumn in pDataTable.Columns)
-                    switch (dColumn.ColumnName)
-                    {
-                        case "entry":
-                            creature.EntryId = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "difficulty_entry_1":
-                            creature.DifficultyEntry1 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "difficulty_entry_2":
-                            creature.DifficultyEntry2 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "difficulty_entry_3":
-                            creature.DifficultyEntry3 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "KillCredit1":
-                            creature.KillCredit1 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "KillCredit2":
-                            creature.KillCredit2 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "modelid1":
-                            creature.ModelId1 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "modelid2":
-                            creature.ModelId2 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "modelid3":
-                            creature.ModelId3 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "modelid4":
-                            creature.ModelId4 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "name":
-                            creature.Name = dRow[dColumn].ToString();
-                            break;
-                        case "subname":
-                            creature.SubName = dRow[dColumn].ToString();
-                            break;
-                        case "IconName":
-                            creature.IconName = dRow[dColumn].ToString();
-                            break;
-                        case "gossip_menu_id":
-                            creature.GossipMenuId = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "minlevel":
-                            creature.MinLevel = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "maxlevel":
-                            creature.MaxLevel = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "exp":
-                            creature.Experience = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "faction":
-                            creature.Faction = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "npcflag":
-                            creature.NpcFlag = (NpcFlag)Enum.Parse(typeof(NpcFlag), dRow[dColumn].ToString());
-                            break;
-                        case "speed_walk":
-                            creature.SpeedWalk = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "speed_run":
-                            creature.SpeedRun = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "scale":
-                            creature.Scale = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "rank":
-                            creature.Rank = (Rank)Enum.Parse(typeof(Rank), dRow[dColumn].ToString());
-                            break;
-                        case "dmgschool":
-                            creature.DamageSchool = (DamageSchool)Enum.Parse(typeof(DamageSchool), dRow[dColumn].ToString());
-                            break;
-                        case "baseattacktime":
-                            creature.BaseAttackTime = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "rangeattacktime":
-                            creature.RangeAttackTime = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "BaseVariance":
-                            creature.BaseVariance = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "RangeVariance":
-                            creature.RangeVariance = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "unit_class":
-                            creature.UnitClass = (UnitClass)Enum.Parse(typeof(UnitClass), dRow[dColumn].ToString());
-                            break;
-                        case "unit_flags":
-                            creature.UnitFlags = (UnitFlags)Enum.Parse(typeof(UnitFlags), dRow[dColumn].ToString());
-                            break;
-                        case "unit_flags2":
-                            creature.UnitFlags2 = (UnitFlags2)Enum.Parse(typeof(UnitFlags2), dRow[dColumn].ToString());
-                            break;
-                        case "dynamicflags":
-                            creature.DynamicFlags = (DynamicFlags)Enum.Parse(typeof(DynamicFlags), dRow[dColumn].ToString());
-                            break;
-                        case "family":
-                            creature.Family = (Family)Enum.Parse(typeof(Family), dRow[dColumn].ToString());
-                            break;
-                        case "trainer_type":
-                            creature.TrainerType = (TrainerType)Enum.Parse(typeof(TrainerType), dRow[dColumn].ToString());
-                            break;
-                        case "trainer_spell":
-                            creature.TrainerSpell = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "trainer_class":
-                            creature.TrainerClass = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "trainer_race":
-                            creature.TrainerRace = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "type":
-                            creature.Type = (CreatureType)Enum.Parse(typeof(EnumType), dRow[dColumn].ToString());
-                            break;
-                        case "type_flags":
-                            creature.TypeFlags = (TypeFlags)Enum.Parse(typeof(TypeFlags), dRow[dColumn].ToString());
-                            break;
-                        case "lootid":
-                            creature.LootId = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "pickpocketloot":
-                            creature.PickPocketLoot = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "skinloot":
-                            creature.SkinLoot = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "resistance1":
-                            creature.Resistance1 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "resistance2":
-                            creature.Resistance2 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "resistance3":
-                            creature.Resistance3 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "resistance4":
-                            creature.Resistance4 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "resistance5":
-                            creature.Resistance5 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "resistance6":
-                            creature.Resistance6 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "spell1":
-                            creature.Spell1 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "spell2":
-                            creature.Spell2 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "spell3":
-                            creature.Spell3 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "spell4":
-                            creature.Spell4 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "spell5":
-                            creature.Spell5 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "spell6":
-                            creature.Spell6 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "spell7":
-                            creature.Spell7 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "spell8":
-                            creature.Spell8 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "PetSpellDataId":
-                            creature.PetSpellDataId = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "VehicleId":
-                            creature.VehicleId = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "mingold":
-                            creature.MinGold = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "maxgold":
-                            creature.MaxGold = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "AIName":
-                            creature.AiName = (AiName)Enum.Parse(typeof(AiName), dRow[dColumn].ToString());
-                            break;
-                        case "MovementType":
-                            creature.MovementType = (MovementType)Enum.Parse(typeof(MovementType), dRow[dColumn].ToString());
-                            break;
-                        case "InhabitType":
-                            creature.InhabitType = (InhabitType)Enum.Parse(typeof(InhabitType), dRow[dColumn].ToString());
-                            break;
-                        case "HoverHeight":
-                            creature.HoverHeight = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "HealthModifier":
-                            creature.HealthModifier = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "ManaModifier":
-                            creature.ManaModifier = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "ArmorModifier":
-                            creature.ArmorModifier = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "DamageModifier":
-                            creature.DamageModifier = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "ExperienceModifier":
-                            creature.ExperienceModifier = float.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "RacialLeader":
-                            creature.RacialLeader = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "QuestItem1":
-                            creature.QuestItem1 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "QuestItem2":
-                            creature.QuestItem2 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "QuestItem3":
-                            creature.QuestItem3 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "QuestItem4":
-                            creature.QuestItem4 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "QuestItem5":
-                            creature.QuestItem5 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "QuestItem6":
-                            creature.QuestItem6 = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "movementID":
-                            creature.MovementId = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "RegenHealth":
-                            creature.RegenHealth = int.Parse(dRow[dColumn].ToString());
-                            break;
-                        case "mechanic_immune_mask":
-                            creature.MechanicImmuneMask = (MechanicImmuneMask)Enum.Parse(typeof(MechanicImmuneMask), dRow[dColumn].ToString());
-                            break;
-                        case "flags_extra":
-                            creature.FlagsExtra = (FlagsExtra)Enum.Parse(typeof(FlagsExtra), dRow[dColumn].ToString());
-                            break;
-                        case "ScriptName":
-                            creature.ScriptName = dRow[dColumn].ToString();
-                            break;
-                        case "VerifiedBuild":
-                            creature.VerifiedBuild = int.Parse(dRow[dColumn].ToString());
-                            break;
-                    }
+                creature.EntryId = int.Parse(dRow[0].ToString());
+                creature.DifficultyEntry1 = int.Parse(dRow[1].ToString());
+                creature.DifficultyEntry2 = int.Parse(dRow[2].ToString());
+                creature.DifficultyEntry3 = int.Parse(dRow[3].ToString());
+                creature.KillCredit1 = int.Parse(dRow[4].ToString());
+                creature.KillCredit2 = int.Parse(dRow[5].ToString());
+                creature.ModelId1 = int.Parse(dRow[6].ToString());
+                creature.ModelId2 = int.Parse(dRow[7].ToString());
+                creature.ModelId3 = int.Parse(dRow[8].ToString());
+                creature.ModelId4 = int.Parse(dRow[9].ToString());
+                creature.Name = dRow[10].ToString();
+                creature.SubName = dRow[11].ToString();
+                creature.IconName = dRow[12].ToString();
+                creature.GossipMenuId = int.Parse(dRow[13].ToString());
+                creature.MinLevel = int.Parse(dRow[14].ToString());
+                creature.MaxLevel = int.Parse(dRow[15].ToString());
+                creature.Experience = int.Parse(dRow[16].ToString());
+                creature.Faction = int.Parse(dRow[17].ToString());
+                creature.NpcFlag = (NpcFlag)Enum.Parse(typeof(NpcFlag), dRow[18].ToString());
+                creature.SpeedWalk = float.Parse(dRow[19].ToString());
+                creature.SpeedRun = float.Parse(dRow[20].ToString());
+                creature.Scale = float.Parse(dRow[21].ToString());
+                creature.Rank = (Rank)Enum.Parse(typeof(Rank), dRow[22].ToString());
+                creature.DamageSchool = (DamageSchool)Enum.Parse(typeof(DamageSchool), dRow[23].ToString());
+                creature.BaseAttackTime = int.Parse(dRow[24].ToString());
+                creature.RangeAttackTime = int.Parse(dRow[25].ToString());
+                creature.BaseVariance = float.Parse(dRow[26].ToString());
+                creature.RangeVariance = float.Parse(dRow[27].ToString());
+                creature.UnitClass = (UnitClass)Enum.Parse(typeof(UnitClass), dRow[28].ToString());
+                creature.UnitFlags = (UnitFlags)Enum.Parse(typeof(UnitFlags), dRow[29].ToString());
+                creature.UnitFlags2 = (UnitFlags2)Enum.Parse(typeof(UnitFlags2), dRow[30].ToString());
+                creature.DynamicFlags = (DynamicFlags)Enum.Parse(typeof(DynamicFlags), dRow[31].ToString());
+                creature.Family = (Family)Enum.Parse(typeof(Family), dRow[32].ToString());
+                creature.TrainerType = (TrainerType)Enum.Parse(typeof(TrainerType), dRow[33].ToString());
+                creature.TrainerSpell = int.Parse(dRow[34].ToString());
+                creature.TrainerClass = int.Parse(dRow[35].ToString());
+                creature.TrainerRace = int.Parse(dRow[36].ToString());
+                creature.Type = (CreatureType)Enum.Parse(typeof(EnumType), dRow[37].ToString());
+                creature.TypeFlags = (TypeFlags)Enum.Parse(typeof(TypeFlags), dRow[38].ToString());
+                creature.LootId = int.Parse(dRow[39].ToString());
+                creature.PickPocketLoot = int.Parse(dRow[40].ToString());
+                creature.SkinLoot = int.Parse(dRow[41].ToString());
+                creature.Resistance1 = int.Parse(dRow[42].ToString());
+                creature.Resistance2 = int.Parse(dRow[43].ToString());
+                creature.Resistance3 = int.Parse(dRow[44].ToString());
+                creature.Resistance4 = int.Parse(dRow[45].ToString());
+                creature.Resistance5 = int.Parse(dRow[46].ToString());
+                creature.Resistance6 = int.Parse(dRow[47].ToString());
+                creature.Spell1 = int.Parse(dRow[48].ToString());
+                creature.Spell2 = int.Parse(dRow[49].ToString());
+                creature.Spell3 = int.Parse(dRow[50].ToString());
+                creature.Spell4 = int.Parse(dRow[51].ToString());
+                creature.Spell5 = int.Parse(dRow[52].ToString());
+                creature.Spell6 = int.Parse(dRow[53].ToString());
+                creature.Spell7 = int.Parse(dRow[54].ToString());
+                creature.Spell8 = int.Parse(dRow[55].ToString());
+                creature.PetSpellDataId = int.Parse(dRow[56].ToString());
+                creature.VehicleId = int.Parse(dRow[57].ToString());
+                creature.MinGold = int.Parse(dRow[58].ToString());
+                creature.MaxGold = int.Parse(dRow[59].ToString());
+                creature.AiName = (AiName)Enum.Parse(typeof(AiName), dRow[60].ToString());
+                creature.MovementType = (MovementType)Enum.Parse(typeof(MovementType), dRow[61].ToString());
+                creature.InhabitType = (InhabitType)Enum.Parse(typeof(InhabitType), dRow[62].ToString());
+                creature.HoverHeight = float.Parse(dRow[63].ToString());
+                creature.HealthModifier = float.Parse(dRow[64].ToString());
+                creature.ManaModifier = float.Parse(dRow[65].ToString());
+                creature.ArmorModifier = float.Parse(dRow[66].ToString());
+                creature.DamageModifier = float.Parse(dRow[67].ToString());
+                creature.ExperienceModifier = float.Parse(dRow[68].ToString());
+                creature.RacialLeader = int.Parse(dRow[69].ToString());
+                creature.QuestItem1 = int.Parse(dRow[70].ToString());
+                creature.QuestItem2 = int.Parse(dRow[71].ToString());
+                creature.QuestItem3 = int.Parse(dRow[72].ToString());
+                creature.QuestItem4 = int.Parse(dRow[73].ToString());
+                creature.QuestItem5 = int.Parse(dRow[74].ToString());
+                creature.QuestItem6 = int.Parse(dRow[75].ToString());
+                creature.MovementId = int.Parse(dRow[76].ToString());
+                creature.RegenHealth = int.Parse(dRow[77].ToString());
+                creature.MechanicImmuneMask = (MechanicImmuneMask)Enum.Parse(typeof(MechanicImmuneMask), dRow[78].ToString());
+                creature.FlagsExtra = (FlagsExtra)Enum.Parse(typeof(FlagsExtra), dRow[79].ToString());
+                creature.ScriptName = dRow[80].ToString();
+                creature.VerifiedBuild = int.Parse(dRow[81].ToString());
                 mCreatures.Add(creature);
             }
         }
@@ -281,71 +113,30 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                 {
                     var creature = new SpawnedCreature();
                     var position = new Vector3();
-                    foreach (DataColumn dColumn in pDataTable.Columns)
-                        switch (dColumn.ColumnName)
-                        {
-                            case "guid":
-                                creature.SpawnGuid = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "id":
-                                creature.Creature = GetCreatureByEntry(int.Parse(dRow[dColumn].ToString()));
-                                break;
-                            case "map":
-                                creature.Map = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "spawnMask":
-                                creature.SpawnMask = (SpawnMask)Enum.Parse(typeof(SpawnMask), dRow[dColumn].ToString());
-                                break;
-                            case "phaseMask":
-                                creature.PhaseMask = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "modelid":
-                                creature.ModelId = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "equipment_id":
-                                creature.EquipmentId = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "position_x":
-                                position.X = float.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "position_y":
-                                position.Y = float.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "position_z":
-                                position.Z = float.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "orientation":
-                                creature.Orientation = float.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "spawntimesecs":
-                                creature.SpawnTimeSecs = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "spawndist":
-                                creature.SpawnDist = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "currentwaypoint":
-                                creature.CurrentWayPoint = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "curhealth":
-                                creature.CurrentHealth = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "curmana":
-                                creature.CurrentMana = int.Parse(dRow[dColumn].ToString());
-                                break;
-                            case "MovementType":
-                                creature.MovementType = (MovementType)Enum.Parse(typeof(MovementType), dRow[dColumn].ToString());
-                                break;
-                            case "npcflag":
-                                creature.NpcFlag = (NpcFlag)Enum.Parse(typeof(NpcFlag), dRow[dColumn].ToString());
-                                break;
-                            case "unit_flags":
-                                creature.UnitFlags = (UnitFlags)Enum.Parse(typeof(UnitFlags), dRow[dColumn].ToString());
-                                break;
-                            case "dynamicflags":
-                                creature.DynamicFlags = (DynamicFlags)Enum.Parse(typeof(DynamicFlags), dRow[dColumn].ToString());
-                                break;
-                        }
+                    creature.SpawnGuid = int.Parse(dRow[0].ToString());
+                    creature.Creature = GetCreatureByEntry(int.Parse(dRow[1].ToString()));
+                    creature.Map = int.Parse(dRow[2].ToString());
+                    creature.ZoneId = int.Parse(dRow[3].ToString());
+                    creature.AreaId = int.Parse(dRow[4].ToString());
+                    creature.SpawnMask = (SpawnMask)Enum.Parse(typeof(SpawnMask), dRow[5].ToString());
+                    creature.PhaseMask = int.Parse(dRow[6].ToString());
+                    creature.ModelId = int.Parse(dRow[7].ToString());
+                    creature.EquipmentId = int.Parse(dRow[8].ToString());
+                    position.X = float.Parse(dRow[9].ToString());
+                    position.Y = float.Parse(dRow[10].ToString());
+                    position.Z = float.Parse(dRow[11].ToString());
                     creature.Position = position;
+                    creature.Orientation = float.Parse(dRow[12].ToString());
+                    creature.SpawnTimeSecs = int.Parse(dRow[13].ToString());
+                    creature.SpawnDist = int.Parse(dRow[14].ToString());
+                    creature.CurrentWayPoint = int.Parse(dRow[15].ToString());
+                    creature.CurrentHealth = int.Parse(dRow[16].ToString());
+                    creature.CurrentMana = int.Parse(dRow[17].ToString());
+                    creature.MovementType = (MovementType)Enum.Parse(typeof(MovementType), dRow[18].ToString());
+                    creature.NpcFlag = (NpcFlag)Enum.Parse(typeof(NpcFlag), dRow[19].ToString());
+                    creature.UnitFlags = (UnitFlags)Enum.Parse(typeof(UnitFlags), dRow[20].ToString());
+                    creature.DynamicFlags = (DynamicFlags)Enum.Parse(typeof(DynamicFlags), dRow[21].ToString());
+                    creature.VerifiedBuild = int.Parse(dRow[22].ToString());
                     mSpawnedCreatures.Add(creature);
                 }
                 mLoadedMaps.Add(pMapId);
