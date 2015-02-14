@@ -145,8 +145,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 
         public Creature GetCreatureByEntry(int pEntryId)
         {
-            var retVal = mCreatures.First(creature => creature.EntryId == pEntryId);
-            return retVal;
+            return mCreatures.First(creature => creature.EntryId == pEntryId);
         }
 
         private bool MapAlreadyLoaded(int pMapId)
