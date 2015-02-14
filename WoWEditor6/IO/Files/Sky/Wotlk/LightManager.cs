@@ -41,6 +41,8 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
             fogStart /= 72.0f;
 
             WorldFrame.Instance.UpdateFogParams(mCurColors[(int)LightColor.Fog], fogStart);
+            WorldFrame.Instance.UpdateMapAmbient(mCurColors[(int)LightColor.Ambient]);
+            WorldFrame.Instance.UpdateMapDiffuse(mCurColors[(int)LightColor.Diffuse]);
 
             UpdateSkyTexture();
         }
