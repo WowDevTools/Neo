@@ -36,7 +36,7 @@ namespace WoWEditor6.UI
         public void GraphicsInit()
         {
             D2DDevice = new Device1(mDevice.Adapter, DeviceCreationFlags.BgraSupport,
-                SharpDX.Direct3D10.FeatureLevel.Level_10_1);
+                SharpDX.Direct3D10.FeatureLevel.Level_9_3);
         }
 
         public void OnResize(int width, int height)
