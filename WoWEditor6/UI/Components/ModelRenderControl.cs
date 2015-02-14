@@ -46,6 +46,7 @@ namespace WoWEditor6.UI.Components
 
         protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
             if (Site == null || Site.DesignMode == false)
             {
                 mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
@@ -67,8 +68,6 @@ namespace WoWEditor6.UI.Components
 
                 renderTimer.Start();
             }
-
-            base.OnLoad(e);
         }
 
         void OnResize(object sender, EventArgs args)

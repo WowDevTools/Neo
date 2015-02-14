@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.modelRenderControl1 = new Components.ModelRenderControl();
             this.label1 = new System.Windows.Forms.Label();
             this.Entry = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -37,11 +38,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.ModelId5 = new System.Windows.Forms.TextBox();
+            this.btnShowModelId4 = new System.Windows.Forms.Button();
+            this.btnShowModelId3 = new System.Windows.Forms.Button();
+            this.btnShowModelId2 = new System.Windows.Forms.Button();
+            this.btnShowModelId1 = new System.Windows.Forms.Button();
+            this.ModelId4 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.ModelId3 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -259,9 +260,18 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Location = new System.Drawing.Point(-4, -1);
+            this.panel1.Controls.Add(modelRenderControl1);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(659, 329);
             this.panel1.TabIndex = 2;
+            // 
+            // modelRenderControl1
+            // 
+            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.modelRenderControl1.Location = new System.Drawing.Point(0, 0);
+            this.modelRenderControl1.Name = "modelRenderControl1";
+            this.modelRenderControl1.Size = new System.Drawing.Size(659, 329);
+            this.modelRenderControl1.TabIndex = 0;
             // 
             // DiffEntry3
             // 
@@ -317,50 +327,54 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Difficulty Entry 1";
             // 
-            // button4
+            // btnShowModelId4
             // 
-            this.button4.Location = new System.Drawing.Point(426, 347);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(54, 20);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "Show";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnShowModelId4.Location = new System.Drawing.Point(426, 347);
+            this.btnShowModelId4.Name = "btnShowModelId4";
+            this.btnShowModelId4.Size = new System.Drawing.Size(54, 20);
+            this.btnShowModelId4.TabIndex = 11;
+            this.btnShowModelId4.Text = "Show";
+            this.btnShowModelId4.UseVisualStyleBackColor = true;
+            this.btnShowModelId4.Click += new System.EventHandler(this.btnShowModelId4_Click);
             // 
-            // button3
+            // btnShowModelId3
             // 
-            this.button3.Location = new System.Drawing.Point(306, 347);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(54, 20);
-            this.button3.TabIndex = 10;
-            this.button3.Text = "Show";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnShowModelId3.Location = new System.Drawing.Point(306, 347);
+            this.btnShowModelId3.Name = "btnShowModelId3";
+            this.btnShowModelId3.Size = new System.Drawing.Size(54, 20);
+            this.btnShowModelId3.TabIndex = 10;
+            this.btnShowModelId3.Text = "Show";
+            this.btnShowModelId3.UseVisualStyleBackColor = true;
+            this.btnShowModelId3.Click += new System.EventHandler(this.btnShowModelId3_Click);
             // 
-            // button2
+            // btnShowModelId2
             // 
-            this.button2.Location = new System.Drawing.Point(186, 347);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(54, 20);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Show";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnShowModelId2.Location = new System.Drawing.Point(186, 347);
+            this.btnShowModelId2.Name = "btnShowModelId2";
+            this.btnShowModelId2.Size = new System.Drawing.Size(54, 20);
+            this.btnShowModelId2.TabIndex = 9;
+            this.btnShowModelId2.Text = "Show";
+            this.btnShowModelId2.UseVisualStyleBackColor = true;
+            this.btnShowModelId2.Click += new System.EventHandler(this.btnShowModelId2_Click);
             // 
-            // button1
+            // btnShowModelId1
             // 
-            this.button1.Location = new System.Drawing.Point(66, 347);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(54, 20);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Show";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnShowModelId1.Location = new System.Drawing.Point(66, 347);
+            this.btnShowModelId1.Name = "btnShowModelId1";
+            this.btnShowModelId1.Size = new System.Drawing.Size(54, 20);
+            this.btnShowModelId1.TabIndex = 8;
+            this.btnShowModelId1.Text = "Show";
+            this.btnShowModelId1.UseVisualStyleBackColor = true;
+            this.btnShowModelId1.Click += new System.EventHandler(this.btnShowModelId1_Click);
             // 
-            // ModelId5
+            // ModelId4
             // 
-            this.ModelId5.BackColor = System.Drawing.SystemColors.Window;
-            this.ModelId5.Location = new System.Drawing.Point(366, 347);
-            this.ModelId5.Name = "ModelId5";
-            this.ModelId5.Size = new System.Drawing.Size(54, 20);
-            this.ModelId5.TabIndex = 7;
-            this.ModelId5.Text = "0";
+            this.ModelId4.BackColor = System.Drawing.SystemColors.Window;
+            this.ModelId4.Location = new System.Drawing.Point(366, 347);
+            this.ModelId4.Name = "ModelId4";
+            this.ModelId4.Size = new System.Drawing.Size(54, 20);
+            this.ModelId4.TabIndex = 7;
+            this.ModelId4.Text = "0";
             // 
             // label9
             // 
@@ -1815,17 +1829,17 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.button4);
+            this.tabPage1.Controls.Add(this.btnShowModelId4);
             this.tabPage1.Controls.Add(this.panel1);
-            this.tabPage1.Controls.Add(this.ModelId5);
+            this.tabPage1.Controls.Add(this.ModelId4);
             this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.button3);
+            this.tabPage1.Controls.Add(this.btnShowModelId3);
             this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.button2);
+            this.tabPage1.Controls.Add(this.btnShowModelId2);
             this.tabPage1.Controls.Add(this.ModelId1);
             this.tabPage1.Controls.Add(this.ModelId3);
             this.tabPage1.Controls.Add(this.label8);
-            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Controls.Add(this.btnShowModelId1);
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.ModelId2);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -2168,11 +2182,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox ModelId5;
+        private System.Windows.Forms.Button btnShowModelId4;
+        private System.Windows.Forms.Button btnShowModelId3;
+        private System.Windows.Forms.Button btnShowModelId2;
+        private System.Windows.Forms.Button btnShowModelId1;
+        private System.Windows.Forms.TextBox ModelId4;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox ModelId3;
         private System.Windows.Forms.Label label8;
@@ -2339,5 +2353,6 @@
         private System.Windows.Forms.ComboBox RegenHealth;
         private System.Windows.Forms.TabPage tapPage3;
         private System.Windows.Forms.TabPage tabPage4;
+        private Components.ModelRenderControl modelRenderControl1;
     }
 }
