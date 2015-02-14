@@ -10,7 +10,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         int Map { get; set; }
         int ZoneId { get; set; }
         int AreaId { get; set; }
-        int SpawnMask { get; set; }
+        goSpawnMask SpawnMask { get; set; }
         int PhaseMask { get; set; }
         Vector3 Position { get; set; }
         float Orientation { get; set; }
@@ -24,4 +24,14 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         string GetUpdateSqlQuery();
         string GetInsertSqlQuery();
     }
+
+    public enum goSpawnMask
+    {
+        NotSpawned = 0,
+        Normal10 = 1,
+        Normal25 = 2,
+        Heroic10 = 4,
+        Heroic25 = 8,
+        All = 15
+    };
 }

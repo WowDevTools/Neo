@@ -13,7 +13,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public int Map { get; set; }
         public int ZoneId { get; set; }
         public int AreaId { get; set; }
-        public int SpawnMask { get; set; }
+        public goSpawnMask SpawnMask { get; set; }
         public int PhaseMask { get; set; }
         public Vector3 Position { get; set; }
         public float Orientation { get; set; }
