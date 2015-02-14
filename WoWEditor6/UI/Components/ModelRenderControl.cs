@@ -11,10 +11,10 @@ namespace WoWEditor6.UI.Components
 {
     public partial class ModelRenderControl : UserControl
     {
-        private readonly PerspectiveCamera mCamera;
-        private readonly CameraControl mCamControl;
-        private readonly ConstantBuffer mMatrixBuffer;
-        private readonly RenderTarget mTarget;
+        private PerspectiveCamera mCamera;
+        private CameraControl mCamControl;
+        private ConstantBuffer mMatrixBuffer;
+        private RenderTarget mTarget;
         private Texture2D mResolveTexture;
         private Texture2D mMapTexture;
         private Bitmap mPaintBitmap;
@@ -25,24 +25,7 @@ namespace WoWEditor6.UI.Components
         public ModelRenderControl()
         {
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.Opaque | ControlStyles.UserPaint, true);
-            mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
-            mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
-
-            mCamera = new PerspectiveCamera();
-            mCamera.ViewChanged += ViewChanged;
-            mCamera.ProjectionChanged += ProjChanged;
-            mCamera.SetClip(0.2f, 1000.0f);
-            mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, -Vector3.UnitY);
-            mCamControl = new CameraControl(this);
-
             InitializeComponent();
-            MouseClick += OnClick;
-            Resize += OnResize;
-            renderTimer.Tick += OnRenderTimerTick;
-
-            OnResize(this, null);
-
-            renderTimer.Start();
         }
 
         public void SetModel(string model)
@@ -59,6 +42,33 @@ namespace WoWEditor6.UI.Components
             e.Graphics.Clear(System.Drawing.Color.Black);
             if (mPaintBitmap != null)
                 e.Graphics.DrawImage(mPaintBitmap, new PointF(0, 0));
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (Site == null || Site.DesignMode == false)
+            {
+                mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
+                mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
+
+                mCamera = new PerspectiveCamera();
+                mCamera.ViewChanged += ViewChanged;
+                mCamera.ProjectionChanged += ProjChanged;
+                mCamera.SetClip(0.2f, 1000.0f);
+                mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, -Vector3.UnitY);
+                mCamControl = new CameraControl(this);
+
+
+                MouseClick += OnClick;
+                Resize += OnResize;
+                renderTimer.Tick += OnRenderTimerTick;
+
+                OnResize(this, null);
+
+                renderTimer.Start();
+            }
+
+            base.OnLoad(e);
         }
 
         void OnResize(object sender, EventArgs args)
