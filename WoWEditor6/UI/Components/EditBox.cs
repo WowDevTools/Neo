@@ -10,7 +10,14 @@ namespace WoWEditor6.UI.Components
     {
         private readonly StaticText mTextDraw;
         private readonly StaticText mFullTextDraw;
-        private string mText;
+        private string mTextValueValue;
+
+        private string TextValue
+        {
+            get { return mTextValueValue; }
+            set { OnTextChanged(value); }
+        }
+
         private int mCaretPosition;
         private float mCaretOffset;
         private float mStartPosition;
@@ -26,6 +33,8 @@ namespace WoWEditor6.UI.Components
         public float Width { get { return mSize.X; } set { mSize.X = value; } }
 
         public string Text { get { return mFullTextDraw.Text; } set { SetNewText(value); } }
+
+        public event Action<EditBox, string> TextChanged;
 
         public EditBox()
         {
@@ -44,7 +53,7 @@ namespace WoWEditor6.UI.Components
             };
 
             mCaretOffset = Padding;
-            mText = "";
+            TextValue = "";
         }
 
         public void OnRender(RenderTarget target)
@@ -81,6 +90,13 @@ namespace WoWEditor6.UI.Components
             var mouseMsg = message as MouseMessage;
             if (mouseMsg != null && mouseMsg.Type == MessageType.MouseDown)
                 OnMouseDown(mouseMsg);
+        }
+
+        private void OnTextChanged(string val)
+        {
+            mTextValueValue = val;
+            if(TextChanged != null)
+                TextChanged(this, val ?? "");
         }
 
         private void OnMouseDown(MouseMessage msg)
@@ -151,7 +167,7 @@ namespace WoWEditor6.UI.Components
 
         private void EraseCharacter()
         {
-            if (mCaretPosition == 0 || mText.Length == 0)
+            if (mCaretPosition == 0 || TextValue.Length == 0)
                 return;
 
             mCaretVisible = true;
@@ -159,11 +175,11 @@ namespace WoWEditor6.UI.Components
             var layout = (TextLayout)mFullTextDraw;
             var metrics = layout.GetClusterMetrics();
             mCaretPosition -= 1;
-            mText = mText.Remove(mCaretPosition, 1);
-            mFullTextDraw.Text = mText;
+            TextValue = TextValue.Remove(mCaretPosition, 1);
+            mFullTextDraw.Text = TextValue;
             layout = mFullTextDraw;
 
-            if ((mCaretPosition == mText.Length && layout.Metrics.WidthIncludingTrailingWhitespace >= mSize.X - 2 * Padding))
+            if ((mCaretPosition == TextValue.Length && layout.Metrics.WidthIncludingTrailingWhitespace >= mSize.X - 2 * Padding))
             {
                 OnCaretAtEnd();
                 return;
@@ -186,14 +202,14 @@ namespace WoWEditor6.UI.Components
             var curOffset = mCaretOffset;
             var i = mCaretPosition;
             var fullText = "";
-            while(curOffset < mSize.X - Padding && i < mText.Length)
+            while(curOffset < mSize.X - Padding && i < TextValue.Length)
             {
-                fullText += mText[i];
+                fullText += TextValue[i];
                 curOffset += metrics[i].Width;
                 ++i;
             }
 
-            if(i == mText.Length)
+            if(i == TextValue.Length)
             {
                 BuildTextFromEnd();
                 return;
@@ -203,7 +219,7 @@ namespace WoWEditor6.UI.Components
             curOffset = mCaretOffset;
             while(curOffset > -20 && i >= 0)
             {
-                fullText = mText[i] + fullText;
+                fullText = TextValue[i] + fullText;
                 curOffset -= metrics[i].Width;
                 --i;
             }
@@ -214,7 +230,7 @@ namespace WoWEditor6.UI.Components
 
         private void SetNewText(string text)
         {
-            mText = text;
+            TextValue = text;
             mCaretPosition = text.Length;
             mFullTextDraw.Text = text;
 
@@ -235,14 +251,14 @@ namespace WoWEditor6.UI.Components
             mCaretVisible = true;
             mLastBlinkTime = DateTime.Now;
 
-            mText = mText.Insert(mCaretPosition, c.ToString());
+            TextValue = TextValue.Insert(mCaretPosition, c.ToString());
             mCaretPosition += 1;
-            mFullTextDraw.Text = mText;
+            mFullTextDraw.Text = TextValue;
             var layout = (TextLayout)mFullTextDraw;
             var metrics = layout.GetClusterMetrics();
             mCaretOffset += metrics[mCaretPosition - 1].Width;
 
-            if((mCaretPosition == mText.Length && layout.Metrics.WidthIncludingTrailingWhitespace >= mSize.X - 2 * Padding) || mCaretOffset > mSize.X - Padding)
+            if((mCaretPosition == TextValue.Length && layout.Metrics.WidthIncludingTrailingWhitespace >= mSize.X - 2 * Padding) || mCaretOffset > mSize.X - Padding)
             {
                 OnCaretAtEnd();
                 return;
@@ -257,9 +273,9 @@ namespace WoWEditor6.UI.Components
             var curOffset = mCaretOffset;
             var i = mCaretPosition;
             var fullText = "";
-            while (curOffset < mSize.X - Padding && i < mText.Length)
+            while (curOffset < mSize.X - Padding && i < TextValue.Length)
             {
-                fullText += mText[i];
+                fullText += TextValue[i];
                 curOffset += metrics[i].Width;
                 ++i;
             }
@@ -268,7 +284,7 @@ namespace WoWEditor6.UI.Components
             curOffset = mCaretOffset;
             while (curOffset > -20 && i >= 0)
             {
-                fullText = mText[i] + fullText;
+                fullText = TextValue[i] + fullText;
                 curOffset -= metrics[i].Width;
                 --i;
             }
@@ -296,7 +312,7 @@ namespace WoWEditor6.UI.Components
 
         private void MoveCaretRight()
         {
-            if (mCaretPosition >= mText.Length)
+            if (mCaretPosition >= TextValue.Length)
                 return;
 
             mCaretVisible = true;
@@ -322,7 +338,7 @@ namespace WoWEditor6.UI.Components
             var i = mCaretPosition - 1;
             while (curOffset >= -20 && i >= 0)
             {
-                finalText = mText[i] + finalText;
+                finalText = TextValue[i] + finalText;
                 curOffset -= metrics[i].Width;
                 --i;
             }
@@ -341,9 +357,9 @@ namespace WoWEditor6.UI.Components
             var curEnd = mStartPosition;
             var i = mCaretPosition;
             var fullText = "";
-            while (curEnd < mSize.X && i < mText.Length)
+            while (curEnd < mSize.X && i < TextValue.Length)
             {
-                fullText += mText[i];
+                fullText += TextValue[i];
                 curEnd += metrics[i].Width;
                 ++i;
             }
@@ -355,7 +371,7 @@ namespace WoWEditor6.UI.Components
         {
             mCaretVisible = true;
             mLastBlinkTime = DateTime.Now;
-            mCaretPosition = mText.Length;
+            mCaretPosition = TextValue.Length;
             OnCaretAtEnd();
         }
 
@@ -378,12 +394,12 @@ namespace WoWEditor6.UI.Components
         private void BuildTextFromEnd()
         {
             var metrics = ((TextLayout)mFullTextDraw).GetClusterMetrics();
-            var i = mText.Length - 1;
+            var i = TextValue.Length - 1;
             var fullText = "";
             var curOffset = mSize.X - Padding;
             while(curOffset > -30 && i >= 0)
             {
-                fullText = mText[i] + fullText;
+                fullText = TextValue[i] + fullText;
                 curOffset -= metrics[i].Width;
                 --i;
             }
