@@ -131,7 +131,10 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh = new Mesh(context)
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
-                DepthState = { DepthEnabled = true }
+                DepthState = {
+                    DepthEnabled = true,
+                    DepthWriteEnabled = false
+                }
             };
 
             Mesh.BlendState.Dispose();

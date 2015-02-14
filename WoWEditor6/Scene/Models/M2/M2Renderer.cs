@@ -144,18 +144,13 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void PushMapReference(M2Instance instance)
         {
-            M2RenderInstance inst;
-            lock (mFullInstances)
-            {
-                if (mFullInstances.TryGetValue(instance.Uuid, out inst) == false)
-                    return;
-            }
+            M2RenderInstance renderInstance = instance.RenderInstance;
+            if (Model.HasBlendPass)
+                renderInstance.UpdateDepth();
 
-            inst.IsUpdated = true;
-            inst.UpdateDepth();
-
+            renderInstance.IsUpdated = true;
             lock (VisibleInstances)
-                VisibleInstances.Add(inst);
+                VisibleInstances.Add(renderInstance);
         }
 
         public void ViewChanged()
