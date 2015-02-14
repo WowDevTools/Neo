@@ -28,60 +28,49 @@ namespace WoWEditor6.Scene.Models.M2
 
         private static readonly BlendState[] BlendStates = new BlendState[7];
         private static ShaderProgram gBlendProgram;
+        private static ShaderProgram gBlendTestProgram;
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
-        private readonly IM2Animator mAnimator;
         private readonly M2File mModel;
 
-        private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-
-        private ConstantBuffer mAnimBuffer;
         private ConstantBuffer mPerDrawCallBuffer;
         private ConstantBuffer mPerPassBuffer;
 
         public M2AlphaRenderer(M2File model)
         {
-            mModel = model;
-            mAnimator = ModelFactory.Instance.CreateAnimator(model);
-            mAnimator.SetAnimationByIndex(0);
-            mAnimator.Update();
+            mModel = model;;
         }
 
         public virtual void Dispose()
         {
-            var cb = mAnimBuffer;
             var pb = mPerPassBuffer;
+            var pd = mPerDrawCallBuffer;
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                if (cb != null)
-                    cb.Dispose();
                 if (pb != null)
                     pb.Dispose();
+                if (pd != null)
+                    pd.Dispose();
             });
         }
 
         public void OnFrame(M2Renderer renderer, M2RenderInstance instance)
         {
-            mAnimator.Update();
-
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);
 
             Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
             Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-            if (mAnimator.GetBones(mAnimationMatrices))
-                mAnimBuffer.UpdateData(mAnimationMatrices);
-
             mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
             {
                 instanceMat = instance.InstanceMatrix,
-                colorMod = new Color4(1.0f, 1.0f, 1.0f, 1.0f)
+                colorMod = instance.HighlightColor
             });
 
-            Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
+            Mesh.Program.SetVertexConstantBuffer(2, renderer.AnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(3, mPerDrawCallBuffer);
             Mesh.Program.SetVertexConstantBuffer(4, mPerPassBuffer);
 
@@ -95,11 +84,16 @@ namespace WoWEditor6.Scene.Models.M2
                 Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
                 Mesh.UpdateBlendState(BlendStates[pass.BlendMode]);
 
+                var oldProgram = Mesh.Program;
+                Mesh.Program = (pass.BlendMode != 1 ? gBlendProgram : gBlendTestProgram);
+                if (Mesh.Program != oldProgram)
+                    Mesh.Program.Bind();
+
                 var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
                 Matrix uvAnimMat;
-                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
 
                 mPerPassBuffer.UpdateData(new PerModelPassBuffer()
                 {
@@ -118,9 +112,6 @@ namespace WoWEditor6.Scene.Models.M2
         public void OnSyncLoad()
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
-            mAnimBuffer = new ConstantBuffer(ctx);
-            mAnimBuffer.UpdateData(mAnimationMatrices);
-
             mPerDrawCallBuffer = new ConstantBuffer(ctx);
             mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
             {
@@ -157,6 +148,10 @@ namespace WoWEditor6.Scene.Models.M2
             gBlendProgram = new ShaderProgram(context);
             gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlend);
             gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexAlpha);
+
+            gBlendTestProgram = new ShaderProgram(context);
+            gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
+            gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexAlpha);
 
             Mesh.Program = gBlendProgram;
 

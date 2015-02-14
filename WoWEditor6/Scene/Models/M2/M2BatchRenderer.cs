@@ -33,7 +33,6 @@ namespace WoWEditor6.Scene.Models.M2
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
-        private readonly IM2Animator mAnimator;
         public M2File Model { get; private set; }
 
         private VertexBuffer mInstanceBuffer;
@@ -42,36 +41,25 @@ namespace WoWEditor6.Scene.Models.M2
         private int mInstanceCount;
 
         private PerInstanceBuffer[] mActiveInstances = new PerInstanceBuffer[0];
-        private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-
-        private ConstantBuffer mAnimBuffer;
         private ConstantBuffer mPerPassBuffer;
 
         public M2BatchRenderer(M2File model)
         {
             Model = model;
-            mAnimator = ModelFactory.Instance.CreateAnimator(model);
-            mAnimator.SetAnimationByIndex(0);
-            StaticAnimationThread.Instance.AddAnimator(mAnimator);
         }
 
         public virtual void Dispose()
         {
-            var instanceBuffer = mInstanceBuffer;
-            var cb = mAnimBuffer;
+            var ib = mInstanceBuffer;
             var pb = mPerPassBuffer;
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                if (instanceBuffer != null)
-                    instanceBuffer.Dispose();
-                if (cb != null)
-                    cb.Dispose();
+                if (ib != null)
+                    ib.Dispose();
                 if (pb != null)
                     pb.Dispose();
             });
-
-            StaticAnimationThread.Instance.RemoveAnimator(mAnimator);
         }
 
         public void OnFrame(M2Renderer renderer)
@@ -84,11 +72,8 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
             Mesh.UpdateInstanceBuffer(mInstanceBuffer);
 
-            if (mAnimator.GetBones(mAnimationMatrices))
-                mAnimBuffer.UpdateData(mAnimationMatrices);
-
             Mesh.UpdateBlendState(BlendState);
-            Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
+            Mesh.Program.SetVertexConstantBuffer(2, renderer.AnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
 
             foreach (var pass in Model.Passes)
@@ -104,7 +89,7 @@ namespace WoWEditor6.Scene.Models.M2
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
                 Matrix uvAnimMat;
-                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
 
                 mPerPassBuffer.UpdateData(new PerModelPassBuffer()
                 {
@@ -136,18 +121,15 @@ namespace WoWEditor6.Scene.Models.M2
                 mInstanceCount = renderer.VisibleInstances.Count;
                 if (mInstanceCount == 0)
                     return;
-
-                mInstanceBuffer.UpdateData(mActiveInstances);
             }
+
+            mInstanceBuffer.UpdateData(mActiveInstances);
         }
 
         public void OnSyncLoad()
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
             mInstanceBuffer = new VertexBuffer(ctx);
-            mAnimBuffer = new ConstantBuffer(ctx);
-            mAnimBuffer.UpdateData(mAnimationMatrices);
-
             mPerPassBuffer = new ConstantBuffer(ctx);
             mPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {

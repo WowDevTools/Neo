@@ -143,6 +143,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
                 if (blendMode != 0)
                     HasBlendPass = true;
+                else
+                    HasOpaquePass = true;
 
                 Passes.Add(new M2RenderPass
                 {
@@ -184,30 +186,30 @@ namespace WoWEditor6.IO.Files.Models.WoD
             Passes.Sort((e1, e2) =>
             {
                 if (e1.BlendMode == 0 && e2.BlendMode != 0)
-                    return -1;
+                    return 1;
 
                 if (e1.BlendMode != 0 && e2.BlendMode == 0)
-                    return 1;
+                    return -1;
 
                 if (e1.BlendMode == e2.BlendMode && e1.BlendMode == 0)
-                    return e1.TexUnitNumber.CompareTo(e2.TexUnitNumber);
+                    return e2.TexUnitNumber.CompareTo(e1.TexUnitNumber);
 
                 if (e1.BlendMode == 2 && e2.BlendMode != 2)
-                    return 1;
+                    return -1;
 
                 if (e2.BlendMode == 2 && e1.BlendMode != 2)
-                    return -1;
+                    return 1;
 
                 var is1Additive = e1.BlendMode == 1 || e1.BlendMode == 6 || e1.BlendMode == 3;
                 var is2Additive = e2.BlendMode == 1 || e2.BlendMode == 6 || e2.BlendMode == 3;
 
                 if (is1Additive && !is2Additive)
-                    return 1;
-
-                if (is2Additive && !is1Additive)
                     return -1;
 
-                return e1.TexUnitNumber.CompareTo(e2.TexUnitNumber);
+                if (is2Additive && !is1Additive)
+                    return 1;
+
+                return e2.TexUnitNumber.CompareTo(e1.TexUnitNumber);
             });
         }
 

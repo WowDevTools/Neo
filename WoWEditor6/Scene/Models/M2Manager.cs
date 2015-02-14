@@ -9,8 +9,32 @@ namespace WoWEditor6.Scene.Models
 {
     class M2Manager
     {
+        private class InstanceSortComparer : IComparer<int>
+        {
+            private readonly IDictionary<int, M2RenderInstance> mInstances;
+
+            public InstanceSortComparer(IDictionary<int, M2RenderInstance> dict)
+            {
+                mInstances = dict;
+            }
+
+            public int Compare(int first, int second)
+            {
+                M2RenderInstance renderA, renderB;
+                if (mInstances.TryGetValue(first, out renderA) &&
+                    mInstances.TryGetValue(second, out renderB))
+                {
+                    int compare = renderB.Depth.CompareTo(renderA.Depth);
+                    if (compare != 0)
+                        return compare;
+                }
+                return first.CompareTo(second);
+            }
+        }
+
         private readonly Dictionary<int, M2Renderer> mRenderer = new Dictionary<int, M2Renderer>();
         private readonly Dictionary<int, M2RenderInstance> mVisibleInstances = new Dictionary<int, M2RenderInstance>();
+        private SortedDictionary<int, M2RenderInstance> mSortedInstances;
         private readonly object mAddLock = new object();
         private Thread mUnloadThread;
         private bool mIsRunning;
@@ -20,6 +44,8 @@ namespace WoWEditor6.Scene.Models
 
         public void Initialize()
         {
+            mSortedInstances = new SortedDictionary<int, M2RenderInstance>(
+                new InstanceSortComparer(mVisibleInstances));
             mUnloadThread = new Thread(UnloadProc);
             mUnloadThread.Start();
         }
@@ -47,8 +73,7 @@ namespace WoWEditor6.Scene.Models
                 foreach (var pair in mRenderer)
                     pair.Value.RenderBatch();
 
-                // TODO: Sort this by depth (instance.Renderer.Depth)
-                foreach (var instance in mVisibleInstances.Values)
+                foreach (var instance in mSortedInstances.Values)
                     instance.Renderer.RenderAlphaInstance(instance);
             }
 
@@ -69,6 +94,7 @@ namespace WoWEditor6.Scene.Models
                         renderer.PushMapReference(instance);
 
                     mVisibleInstances.Add(instance.Uuid, instance.RenderInstance);
+                    mSortedInstances.Add(instance.Uuid, instance.RenderInstance);
                 }
             }
         }
@@ -87,7 +113,9 @@ namespace WoWEditor6.Scene.Models
             IsViewDirty = true;
             lock(mAddLock)
             {
+                mSortedInstances.Clear();
                 mVisibleInstances.Clear();
+
                 foreach (var pair in mRenderer)
                     pair.Value.ViewChanged();
             }
@@ -104,7 +132,10 @@ namespace WoWEditor6.Scene.Models
             lock (mRenderer)
             {
                 lock (mAddLock)
+                {
+                    mSortedInstances.Remove(uuid);
                     mVisibleInstances.Remove(uuid);
+                }
 
                 M2Renderer renderer;
                 if (mRenderer.TryGetValue(hash, out renderer) == false)
