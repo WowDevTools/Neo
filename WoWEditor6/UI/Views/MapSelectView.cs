@@ -12,6 +12,7 @@ namespace WoWEditor6.UI.Views
         private readonly List<MapSelectQuad> mMapLabels = new List<MapSelectQuad>();
         private readonly Label mTitleLabel;
         private readonly Scrollbar mLabelScroll;
+        private readonly Checkbox mAlphabeticCheckbox;
         private Vector2 mSize;
 
         public MapSelectView()
@@ -29,6 +30,14 @@ namespace WoWEditor6.UI.Views
                 Vertical = true
             };
 
+            mAlphabeticCheckbox = new Checkbox
+            {
+                Checked = true,
+                Text = "Sort alphabetically",
+                Size = 16
+            };
+
+            mAlphabeticCheckbox.CheckChanged += (box, check) => OnChangeAlphabeticalOrder(check);
             mLabelScroll.ScrollChanged += OnScroll;
         }
 
@@ -45,6 +54,8 @@ namespace WoWEditor6.UI.Views
 
             mTitleLabel.OnRender(target);
             mLabelScroll.OnRender(target);
+
+            mAlphabeticCheckbox.OnRender(target);
         }
 
         public void OnMessage(Message message)
@@ -58,6 +69,8 @@ namespace WoWEditor6.UI.Views
 
             for (var i = mMapLabels.Count - 1; i >= 0; --i)
                 mMapLabels[i].OnMessage(message);
+
+            mAlphabeticCheckbox.OnMessage(message);
 
             mLabelScroll.OnMessage(message);
         }
@@ -83,6 +96,49 @@ namespace WoWEditor6.UI.Views
 
             mLabelScroll.Position = new Vector2(newSize.X - 15.0f, 102.0f);
             mLabelScroll.Size = newSize.Y - 104.0f;
+
+            mAlphabeticCheckbox.Position = new Vector2(newSize.X - 200, 60);
+        }
+
+        public void OnChangeAlphabeticalOrder(bool enabled)
+        {
+            mMapLabels.Clear();
+
+            var numHoriz = (int)Math.Floor((mSize.X - 60.0f) / 103.0f);
+
+            for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)
+            {
+                var row = Storage.DbcStorage.Map.GetRow(i);
+                var title = row.GetString(Storage.MapFormatGuess.FieldMapTitle);
+                mMapLabels.Add(new MapSelectQuad
+                {
+                    // ReSharper disable once PossibleLossOfFraction
+                    Position = new Vector2((i % numHoriz) * 103.0f + 30.0f, (i / numHoriz) * 103.0f + 103),
+                    Size = new Vector2(96.0f, 96.0f),
+                    Text = title,
+                    Tag = row
+                });
+
+                mMapLabels[i].Clicked += MapSelected;
+            }
+
+            if (enabled)
+            {
+                mMapLabels.Sort((a, b) => String.Compare(a.Text, b.Text, StringComparison.Ordinal));
+                for (var i = 0; i < mMapLabels.Count; ++i)
+                {
+                    var lbl = mMapLabels[i];
+                    // ReSharper disable once PossibleLossOfFraction
+                    lbl.Position = new Vector2((i % numHoriz) * 103.0f + 30.0f, (i / numHoriz) * 103.0f + 103);
+                }
+            }
+
+            var numRows = mMapLabels.Count / numHoriz;
+            if ((mMapLabels.Count % numHoriz) != 0)
+                ++numRows;
+
+            mLabelScroll.TotalSize = numRows * 103.0f + 6.0f;
+            mLabelScroll.VisibleSize = mSize.Y - 100;
         }
 
         public void OnShow()
@@ -108,6 +164,14 @@ namespace WoWEditor6.UI.Views
                 });
 
                 mMapLabels[i].Clicked += MapSelected;
+            }
+
+            mMapLabels.Sort((a, b) => String.Compare(a.Text, b.Text, StringComparison.Ordinal));
+            for (var i = 0; i < mMapLabels.Count; ++i)
+            {
+                var lbl = mMapLabels[i];
+                // ReSharper disable once PossibleLossOfFraction
+                lbl.Position = new Vector2((i % numHoriz)*103.0f + 30.0f, (i/numHoriz) * 103.0f + 103);
             }
 
             var numRows = mMapLabels.Count / numHoriz;

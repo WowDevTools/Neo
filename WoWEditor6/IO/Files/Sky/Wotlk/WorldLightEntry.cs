@@ -38,7 +38,7 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
             InnerRadius = ir;
             OuterRadius = or;
 
-            Position = new Vector3(pz + Metrics.MapMidPoint, px  + Metrics.MapMidPoint, py);
+            Position = new Vector3(px, pz, py);
 
             for (var i = 0; i < 18; ++i)
             {
