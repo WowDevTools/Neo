@@ -11,7 +11,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         int ZoneId{ get; set; }
         int AreaId{ get; set; }
         npcSpawnMask SpawnMask { get; set; }
-        int PhaseMask { get; set; }
+        int cPhaseMask { get; set; }
         int ModelId { get; set; }
         int EquipmentId { get; set; }
         Vector3 Position{ get; set; }
