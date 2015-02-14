@@ -47,27 +47,30 @@ namespace WoWEditor6.UI.Components
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (Site == null || Site.DesignMode == false)
-            {
-                mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
-                mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
+            if (Site != null && Site.DesignMode)
+                return;
 
-                mCamera = new PerspectiveCamera();
-                mCamera.ViewChanged += ViewChanged;
-                mCamera.ProjectionChanged += ProjChanged;
-                mCamera.SetClip(0.2f, 1000.0f);
-                mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, -Vector3.UnitY);
-                mCamControl = new CameraControl(this);
+            if (WorldFrame.Instance == null || WorldFrame.Instance.GraphicsContext == null)
+                return;
+
+            mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
+            mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
+
+            mCamera = new PerspectiveCamera();
+            mCamera.ViewChanged += ViewChanged;
+            mCamera.ProjectionChanged += ProjChanged;
+            mCamera.SetClip(0.2f, 1000.0f);
+            mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, -Vector3.UnitY);
+            mCamControl = new CameraControl(this);
 
 
-                MouseClick += OnClick;
-                Resize += OnResize;
-                renderTimer.Tick += OnRenderTimerTick;
+            MouseClick += OnClick;
+            Resize += OnResize;
+            renderTimer.Tick += OnRenderTimerTick;
 
-                OnResize(this, null);
+            OnResize(this, null);
 
-                renderTimer.Start();
-            }
+            renderTimer.Start();
         }
 
         void OnResize(object sender, EventArgs args)
