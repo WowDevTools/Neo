@@ -13,7 +13,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public int Map { get; set; }
         public int ZoneId { get; set; }
         public int AreaId { get; set; }
-        public int SpawnMask { get; set; }
+        public goSpawnMask SpawnMask { get; set; }
         public int PhaseMask { get; set; }
         public Vector3 Position { get; set; }
         public float Orientation { get; set; }
@@ -27,12 +27,12 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 
         public string GetUpdateSqlQuery()
         {
-            throw new NotImplementedException();
+            return "UPDATE creature SET id = '" + this.GameObject.EntryId + "', map = '" + this.Map + "', zoneId = '" + this.ZoneId + "', areaId = '" + this.AreaId + "', spawnMask = '" + this.SpawnMask + "', phaseMask = '" + this.PhaseMask + "', position_x = '" + this.Position.X + "', position_y = '" + this.Position.Y + "', position_z = '" + this.Position.Z + "', orientation = '" + this.Orientation + "', rotation0 = '" + this.Rotation0 + "', rotation1 = '" + this.Rotation1 + "', rotation 2 = '" + this.Rotation2 + "', rotation 3 = '" + this.Rotation3 + "', spawntimesecs = '" + this.SpawnTimeSecs + "', animprogress = '" + this.AnimProgress + "', state = '" + this.State + "' WHERE guid = '" + this.SpawnGuid + "';";
         }
 
         public string GetInsertSqlQuery()
         {
-            throw new NotImplementedException();
+            return "INSERT INTO creature VALUES ('" + this.SpawnGuid + "', '" + this.GameObject.EntryId + "', '" + this.Map + "', '" + this.ZoneId + "', '" + this.AreaId + "', '" + this.SpawnMask + "', '" + this.PhaseMask + "', '" + this.Position.X + "', '" + this.Position.Y + "', '" + this.Position.Z + "', '" + this.Orientation + "', '" + this.Rotation0 + "', '" + this.Rotation1 + "', '" + this.Rotation2 + "', '" + this.Rotation3 + "', '" + this.SpawnTimeSecs + "', '" + this.AnimProgress + "', '" + this.State + "');";
         }
     }
 }
