@@ -145,7 +145,7 @@ namespace WoWEditor6.Scene.Models.M2
         public void PushMapReference(M2Instance instance)
         {
             M2RenderInstance renderInstance = instance.RenderInstance;
-            if (renderInstance.Renderer.Model.HasBlendPass)
+            if (Model.HasBlendPass)
                 renderInstance.UpdateDepth();
 
             renderInstance.IsUpdated = true;
