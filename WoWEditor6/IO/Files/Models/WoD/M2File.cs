@@ -153,6 +153,9 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
                 blendMode %= 7;
 
+                if (blendMode != 0)
+                    HasBlendPass = true;
+
                 Passes.Add(new M2RenderPass
                 {
                     TextureIndices = texIndices,

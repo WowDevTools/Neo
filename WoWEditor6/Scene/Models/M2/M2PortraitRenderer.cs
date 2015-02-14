@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
@@ -6,7 +7,7 @@ using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
 {
-    class M2ModelRenderer
+    class M2PortraitRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer
@@ -25,51 +26,39 @@ namespace WoWEditor6.Scene.Models.M2
         private static RasterState gCullState;
 
         private readonly IM2Animator mAnimator;
-        private bool mIsSyncLoaded;
-        private bool mSkipRendering;
-        public TextureInfo[] Textures { get; private set; }
-        public M2File Model { get; private set; }
+        private readonly M2File mModel;
 
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-
-        private VertexBuffer mVertexBuffer;
-        private IndexBuffer mIndexBuffer;
 
         private ConstantBuffer mAnimBuffer;
         private ConstantBuffer mPerPassBuffer;
 
-        public M2ModelRenderer(M2File model)
+        public M2PortraitRenderer(M2File model)
         {
-            Model = model;
-            Textures = Model.TextureInfos.ToArray();
+            mModel = model;
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
             mAnimator.SetAnimationByIndex(0);
             mAnimator.Update();
         }
 
-        public void SetTexture(int index, Graphics.Texture texture)
+        public virtual void Dispose()
         {
-            if (index < Textures.Length)
-                Textures[index].Texture = texture;
+            if (mAnimBuffer != null)
+                mAnimBuffer.Dispose();
+
+            if (mPerPassBuffer != null)
+                mPerPassBuffer.Dispose();
         }
 
-        public void OnFrame()
+        public void OnFrame(M2Renderer renderer)
         {
-            if (mSkipRendering)
-                return;
-
-            if(mIsSyncLoaded == false)
-            {
-                SyncLoad();
-            }
-
             mAnimator.Update();
 
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);
 
-            Mesh.UpdateIndexBuffer(mIndexBuffer);
-            Mesh.UpdateVertexBuffer(mVertexBuffer);
+            Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
+            Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
             if (mAnimator.GetBones(mAnimationMatrices))
                 mAnimBuffer.UpdateData(mAnimationMatrices);
@@ -77,7 +66,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
 
-            foreach (var pass in Model.Passes)
+            foreach (var pass in mModel.Passes)
             {
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
                 Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
@@ -103,28 +92,14 @@ namespace WoWEditor6.Scene.Models.M2
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
                 Mesh.IndexCount = pass.IndexCount;
-                Mesh.Program.SetPixelTexture(0, Textures[pass.TextureIndices[0]].Texture);
+                Mesh.Program.SetPixelTexture(0, pass.Textures.First());
                 Mesh.Draw();
             }
         }
 
-        private void SyncLoad()
+        public void OnSyncLoad()
         {
-            mIsSyncLoaded = true;
-
-            if (Model.Vertices.Length == 0 || Model.Indices.Length == 0 || Model.Passes.Count == 0)
-            {
-                mSkipRendering = true;
-                return;
-            }
-
             var ctx = WorldFrame.Instance.GraphicsContext;
-            mVertexBuffer = new VertexBuffer(ctx);
-            mIndexBuffer = new IndexBuffer(ctx);
-
-            mVertexBuffer.UpdateData(Model.Vertices);
-            mIndexBuffer.UpdateData(Model.Indices);
-
             mAnimBuffer = new ConstantBuffer(ctx);
             mAnimBuffer.UpdateData(mAnimationMatrices);
 
