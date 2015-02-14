@@ -26,7 +26,7 @@ namespace WoWEditor6.Graphics
             };
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (Native != null)
                 Native.Dispose();
@@ -49,6 +49,7 @@ namespace WoWEditor6.Graphics
                 mDescription.SizeInBytes = length;
                 if (Native != null)
                     Native.Dispose();
+
                 using (var strm = new DataStream(length, true, true))
                 {
                     strm.Write(value);
@@ -67,6 +68,7 @@ namespace WoWEditor6.Graphics
                 mDescription.SizeInBytes = length;
                 if (Native != null)
                     Native.Dispose();
+
                 if (data != null)
                 {
                     using (var strm = new DataStream(length, true, true))

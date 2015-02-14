@@ -22,7 +22,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private readonly List<ChunkInfo> mChunkInfos = new List<ChunkInfo>();
         private readonly List<string> mTextureNames = new List<string>();
         private readonly List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
-        private readonly MapChunk[] mChunks = new MapChunk[256];
+        private readonly List<MapChunk> mChunks = new List<MapChunk>();
         private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
         private Mhdr mHeader;
         private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
@@ -145,7 +145,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 SaveChunk(0x4D4F4446, writer, out header.ofsModf);
                 SaveChunk(0x4D48324F, writer, out header.ofsMh2o);
 
-                for (var i = 0; i < 256; ++i)
+                for (var i = 0; i < mChunks.Count; ++i)
                 {
                     var startPos = writer.BaseStream.Position;
                     mChunks[i].SaveChunk(writer);
@@ -215,7 +215,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public override Terrain.MapChunk GetChunk(int index)
         {
-            if (index >= mChunks.Length)
+            if (index >= mChunks.Count)
                 throw new IndexOutOfRangeException();
 
             return mChunks[index];
@@ -248,11 +248,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             chunk = chunkHit;
             distance = mindistance;
             return hasHit;
-        }
-
-        public override void Dispose()
-        {
-
         }
 
         public override bool OnChangeTerrain(TerrainChangeParameters parameters)
@@ -365,7 +360,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 if (bbmax.Z > modelMax.Z)
                     modelMax.Z = bbmax.Z;
 
-                mChunks[i] = chunk;
+                mChunks.Add(chunk);
                 Array.Copy(chunk.Vertices, 0, FullVertices, i * 145, 145);
             }
 
@@ -527,6 +522,24 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             {
                 return false;
             }
+        }
+
+        public override void Dispose()
+        {
+            foreach (var chunk in mChunks)
+                chunk.Dispose();
+
+            mChunks.Clear();
+            mTextures.Clear();
+
+            foreach (var instance in mWmoInstances)
+                WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid);
+
+            foreach (var instance in DoodadInstances)
+                WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+
+            mWmoInstances.Clear();
+            base.Dispose();
         }
     }
 }

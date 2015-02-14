@@ -49,6 +49,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
+
         public void WriteBaseChunks(BinaryWriter writer)
         {
             var minHeight = Vertices.Select(v => v.Position.Z).Min();
@@ -709,11 +714,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
 
             return changed;
-        }
-
-        public override void Dispose()
-        {
-            Textures.Clear();
         }
 
         static MapChunk()

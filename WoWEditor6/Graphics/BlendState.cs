@@ -80,7 +80,7 @@ namespace WoWEditor6.Graphics
             mChanged = true;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (mState != null)
                 mState.Dispose();

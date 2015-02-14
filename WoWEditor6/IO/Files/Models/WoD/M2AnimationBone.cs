@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using SharpDX;
+using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
@@ -33,8 +34,32 @@ namespace WoWEditor6.IO.Files.Models.WoD
             var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
             var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
 
-            var boneMatrix = mInvPivot * Matrix.RotationQuaternion(rotation) * Matrix.Scaling(scaling) *
-                     Matrix.Translation(position) * mPivot;
+            var boneMatrix = Matrix.RotationQuaternion(rotation) *
+                Matrix.Scaling(scaling) * Matrix.Translation(position);
+
+            var billboard = (Bone.flags & 0x08) != 0;
+            if (billboard)
+            {
+                // Should really get this from somewhere else...
+                var camera = WorldFrame.Instance.ActiveCamera;
+
+                boneMatrix.M11 = camera.Forward.X;
+                boneMatrix.M12 = camera.Forward.Y;
+                boneMatrix.M13 = camera.Forward.Z;
+
+                boneMatrix.M21 = camera.Right.X;
+                boneMatrix.M22 = camera.Right.Y;
+                boneMatrix.M23 = camera.Right.Z;
+
+                boneMatrix.M31 = camera.Up.X;
+                boneMatrix.M32 = camera.Up.Y;
+                boneMatrix.M33 = camera.Up.Z;
+
+                // TODO: Must not rotate this bone with the
+                // instance matrix in case billboarding was applied
+            }
+
+            boneMatrix = mInvPivot * boneMatrix * mPivot;
 
             if (Bone.parentBone >= 0)
                 boneMatrix *= animator.GetBoneMatrix(time, Bone.parentBone);

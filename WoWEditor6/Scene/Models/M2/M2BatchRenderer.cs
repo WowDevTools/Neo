@@ -68,16 +68,14 @@ namespace WoWEditor6.Scene.Models.M2
             StaticAnimationThread.Instance.AddAnimator(mAnimator);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             mSkipRendering = true;
             var vb = mVertexBuffer;
             var ib = mIndexBuffer;
             var instanceBuffer = mInstanceBuffer;
             var cb = mAnimBuffer;
-            var uv = mPerPassBuffer;
-            if (mModel != null)
-                mModel.Dispose();
+            var pb = mPerPassBuffer;
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
@@ -89,8 +87,8 @@ namespace WoWEditor6.Scene.Models.M2
                     instanceBuffer.Dispose();
                 if (cb != null)
                     cb.Dispose();
-                if (uv != null)
-                    uv.Dispose();
+                if (pb != null)
+                    pb.Dispose();
             });
 
             StaticAnimationThread.Instance.RemoveAnimator(mAnimator);

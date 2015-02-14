@@ -37,7 +37,10 @@ namespace WoWEditor6.IO.Files.Terrain
             DoodadReferences = new int[0];
         }
 
-        public abstract void Dispose();
+        public virtual void Dispose()
+        {
+
+        }
 
         public virtual bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
         {
