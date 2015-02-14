@@ -37,6 +37,11 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
             mCurFloats[0] = mActiveSky.GetFloat(LightFloat.FogEnd);
             mCurFloats[1] = mActiveSky.GetFloat(LightFloat.FogScale);
 
+            var fogStart = mCurFloats[1] * mCurFloats[0];
+            fogStart /= 72.0f;
+
+            WorldFrame.Instance.UpdateFogParams(mCurColors[(int)LightColor.Fog], fogStart);
+
             UpdateSkyTexture();
         }
 
