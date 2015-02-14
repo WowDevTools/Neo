@@ -155,7 +155,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
                 blendMode %= 7;
 
-                if (blendMode != 0)
+                if (blendMode != 0 && blendMode != 1)
                     HasBlendPass = true;
 
                 Passes.Add(new M2RenderPass

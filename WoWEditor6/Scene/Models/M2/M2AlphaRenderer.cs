@@ -88,7 +88,7 @@ namespace WoWEditor6.Scene.Models.M2
             foreach (var pass in mModel.Passes)
             {
                 // This renderer is only for alpha blended pass
-                if (pass.BlendMode == 0)
+                if (pass.BlendMode == 0 || pass.BlendMode == 1)
                     continue;
 
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
