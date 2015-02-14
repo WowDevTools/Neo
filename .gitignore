@@ -193,6 +193,7 @@ ModelManifest.xml
 /WoWEditor6/Resources/Shaders/M2PixelPortrait.dxc
 /WoWEditor6/Resources/Shaders/M2PixelPortraitBlend.dxc
 /WoWEditor6/Resources/Shaders/M2VertexInstanced.dxc
+/WoWEditor6/Resources/Shaders/M2VertexAlpha.dxc
 /WoWEditor6/Resources/Shaders/M2VertexPortrait.dxc
 /WoWEditor6/Resources/Shaders/MapLowPixel.dxc
 /WoWEditor6/Resources/Shaders/MapLowVertex.dxc

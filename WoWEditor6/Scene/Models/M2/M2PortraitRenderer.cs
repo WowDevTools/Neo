@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
@@ -6,7 +7,7 @@ using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
 {
-    class M2ModelRenderer
+    class M2PortraitRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer
@@ -26,18 +27,13 @@ namespace WoWEditor6.Scene.Models.M2
 
         private readonly IM2Animator mAnimator;
         private readonly M2File mModel;
-        private bool mIsSyncLoaded;
-        private bool mSkipRendering;
 
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-
-        private VertexBuffer mVertexBuffer;
-        private IndexBuffer mIndexBuffer;
 
         private ConstantBuffer mAnimBuffer;
         private ConstantBuffer mPerPassBuffer;
 
-        public M2ModelRenderer(M2File model)
+        public M2PortraitRenderer(M2File model)
         {
             mModel = model;
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
@@ -45,23 +41,24 @@ namespace WoWEditor6.Scene.Models.M2
             mAnimator.Update();
         }
 
-        public void OnFrame()
+        public virtual void Dispose()
         {
-            if (mSkipRendering)
-                return;
+            if (mAnimBuffer != null)
+                mAnimBuffer.Dispose();
 
-            if(mIsSyncLoaded == false)
-            {
-                SyncLoad();
-            }
+            if (mPerPassBuffer != null)
+                mPerPassBuffer.Dispose();
+        }
 
+        public void OnFrame(M2Renderer renderer)
+        {
             mAnimator.Update();
 
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);
 
-            Mesh.UpdateIndexBuffer(mIndexBuffer);
-            Mesh.UpdateVertexBuffer(mVertexBuffer);
+            Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
+            Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
             if (mAnimator.GetBones(mAnimationMatrices))
                 mAnimBuffer.UpdateData(mAnimationMatrices);
@@ -100,23 +97,9 @@ namespace WoWEditor6.Scene.Models.M2
             }
         }
 
-        private void SyncLoad()
+        public void OnSyncLoad()
         {
-            mIsSyncLoaded = true;
-
-            if (mModel.Vertices.Length == 0 || mModel.Indices.Length == 0 || mModel.Passes.Count == 0)
-            {
-                mSkipRendering = true;
-                return;
-            }
-
             var ctx = WorldFrame.Instance.GraphicsContext;
-            mVertexBuffer = new VertexBuffer(ctx);
-            mIndexBuffer = new IndexBuffer(ctx);
-
-            mVertexBuffer.UpdateData(mModel.Vertices);
-            mIndexBuffer.UpdateData(mModel.Indices);
-
             mAnimBuffer = new ConstantBuffer(ctx);
             mAnimBuffer.UpdateData(mAnimationMatrices);
 

@@ -150,6 +150,9 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
                 blendMode %= 7;
 
+                if (blendMode != 0)
+                    HasBlendPass = true;
+
                 Passes.Add(new M2RenderPass
                 {
                     Textures = textures,

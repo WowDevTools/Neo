@@ -6,6 +6,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
+using WoWEditor6.Scene.Models.M2;
 
 namespace WoWEditor6.UI.Components
 {
@@ -19,7 +20,7 @@ namespace WoWEditor6.UI.Components
         private Texture2D mMapTexture;
         private Bitmap mPaintBitmap;
 
-        private Scene.Models.M2.M2ModelRenderer mRenderer;
+        private M2Renderer mRenderer;
 
 
         public ModelRenderControl()
@@ -51,7 +52,7 @@ namespace WoWEditor6.UI.Components
             if (file.Load() == false)
                 return;
 
-            mRenderer = new Scene.Models.M2.M2ModelRenderer(file);
+            mRenderer = new M2Renderer(file);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -127,7 +128,7 @@ namespace WoWEditor6.UI.Components
 
             ctx.Context.VertexShader.SetConstantBuffer(0, mMatrixBuffer.Native);
 
-            mRenderer.OnFrame();
+            mRenderer.RenderPortrait();
 
             mTarget.Remove();
             ctx.Context.Rasterizer.SetViewport(vp);

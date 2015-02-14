@@ -9,11 +9,12 @@ namespace WoWEditor6.Scene.Models
 {
     class M2Manager
     {
-        private readonly Dictionary<int, M2BatchRenderer> mRenderer = new Dictionary<int, M2BatchRenderer>();
+        private readonly Dictionary<int, M2Renderer> mRenderer = new Dictionary<int, M2Renderer>();
+        private readonly Dictionary<int, M2RenderInstance> mVisibleInstances = new Dictionary<int, M2RenderInstance>();
         private readonly object mAddLock = new object();
         private Thread mUnloadThread;
         private bool mIsRunning;
-        private readonly List<M2BatchRenderer> mUnloadList = new List<M2BatchRenderer>();
+        private readonly List<M2Renderer> mUnloadList = new List<M2Renderer>();
 
         public static bool IsViewDirty { get; private set; }
 
@@ -31,13 +32,24 @@ namespace WoWEditor6.Scene.Models
 
         public void OnFrame()
         {
+            if (WorldFrame.Instance.HighlightModelsInBrush)
+            {
+                var brushPosition = Editing.EditManager.Instance.MousePosition;
+                var highlightRadius = Editing.EditManager.Instance.OuterRadius;
+                UpdateBrushHighlighting(brushPosition, highlightRadius);
+            }
+
             M2BatchRenderer.Mesh.BeginDraw();
             M2BatchRenderer.Mesh.Program.SetPixelSampler(0, M2BatchRenderer.Sampler);
 
-            lock(mAddLock)
+            lock (mAddLock)
             {
                 foreach (var pair in mRenderer)
-                    pair.Value.OnFrame();
+                    pair.Value.RenderBatch();
+
+                // TODO: Sort this by depth (instance.Renderer.Depth)
+                foreach (var instance in mVisibleInstances.Values)
+                    instance.Renderer.RenderAlphaInstance(instance);
             }
 
             IsViewDirty = false;
@@ -52,10 +64,21 @@ namespace WoWEditor6.Scene.Models
                     if (instance == null || instance.RenderInstance == null || instance.RenderInstance.IsUpdated)
                         continue;
 
-                    M2BatchRenderer renderer;
+                    M2Renderer renderer;
                     if (mRenderer.TryGetValue(instance.Hash, out renderer))
                         renderer.PushMapReference(instance);
+
+                    mVisibleInstances.Add(instance.Uuid, instance.RenderInstance);
                 }
+            }
+        }
+
+        private void UpdateBrushHighlighting(Vector3 brushPosition, float radius)
+        {
+            lock (mAddLock)
+            {
+                foreach (var t in mVisibleInstances)
+                    t.Value.UpdateBrushHighlighting(brushPosition, radius);
             }
         }
 
@@ -64,6 +87,7 @@ namespace WoWEditor6.Scene.Models
             IsViewDirty = true;
             lock(mAddLock)
             {
+                mVisibleInstances.Clear();
                 foreach (var pair in mRenderer)
                     pair.Value.ViewChanged();
             }
@@ -79,7 +103,10 @@ namespace WoWEditor6.Scene.Models
         {
             lock (mRenderer)
             {
-                M2BatchRenderer renderer;
+                lock (mAddLock)
+                    mVisibleInstances.Remove(uuid);
+
+                M2Renderer renderer;
                 if (mRenderer.TryGetValue(hash, out renderer) == false)
                     return;
 
@@ -109,11 +136,11 @@ namespace WoWEditor6.Scene.Models
                 if (file == null)
                     return null;
 
-                var batch = new M2BatchRenderer(file);
+                var render = new M2Renderer(file);
                 lock (mAddLock)
-                    mRenderer.Add(hash, batch);
+                    mRenderer.Add(hash, render);
 
-                return batch.AddInstance(uuid, position, rotation, scaling);
+                return render.AddInstance(uuid, position, rotation, scaling);
             }
         }
 
@@ -121,7 +148,7 @@ namespace WoWEditor6.Scene.Models
         {
             while(mIsRunning)
             {
-                M2BatchRenderer element = null;
+                M2Renderer element = null;
                 lock(mUnloadList)
                 {
                     if(mUnloadList.Count > 0)

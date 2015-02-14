@@ -11,12 +11,14 @@ namespace WoWEditor6.IO.Files.Models
 
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingSphere BoundingSphere { get; protected set; }
+        public bool HasBlendPass { get; protected set; }
 
         protected M2File()
         {
             Vertices = new M2Vertex[0];
             Passes = new List<M2RenderPass>();
             Indices = new ushort[0];
+            HasBlendPass = false;
         }
 
         public abstract bool Load();

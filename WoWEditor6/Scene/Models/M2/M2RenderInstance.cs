@@ -17,6 +17,9 @@ namespace WoWEditor6.Scene.Models.M2
         private TimeSpan mHighlightStartTime;
 
         public BoundingBox BoundingBox;
+
+        public readonly M2Renderer Renderer;
+
         public bool IsUpdated { get; set; }
 
         public int Uuid { get; private set; }
@@ -26,16 +29,19 @@ namespace WoWEditor6.Scene.Models.M2
 
         public Color4 HighlightColor { get { return mHighlightColor; } }
 
+        public float Depth { get; private set; }
+
         public int NumReferences { get; set; }
 
-        public M2RenderInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scale, M2BatchRenderer renderer)
+        public M2RenderInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scale, M2Renderer renderer)
         {
             mScale = scale;
             mPosition = position;
             mRotation = rotation;
             NumReferences = 1;
             Uuid = uuid;
-            BoundingBox = renderer.BoundingBox;
+            Renderer = renderer;
+            BoundingBox = renderer.Model.BoundingBox;
             mOrigBoundingBox = BoundingBox;
             mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
                 MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix.Scaling(scale) * Matrix.Translation(position);
@@ -102,6 +108,12 @@ namespace WoWEditor6.Scene.Models.M2
                 UpdateHighlightColor(dst * fac + src * (1.0f - fac));
 
             mHighlightFinished = (fac >= 1.0f);
+        }
+
+        public void UpdateDepth()
+        {
+            var camera = WorldFrame.Instance.ActiveCamera;
+            Depth = (camera.Position - mPosition).LengthSquared();
         }
     }
 }
