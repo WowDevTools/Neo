@@ -28,6 +28,7 @@ namespace WoWEditor6.Scene.Models.M2
         private bool mSkipRendering;
 
         public IM2Animator Animator { get; private set; }
+        public M2PortraitRenderer PortraitRenderer { get { return mPortraitRenderer; } }
 
         public M2Renderer(M2File model)
         {
