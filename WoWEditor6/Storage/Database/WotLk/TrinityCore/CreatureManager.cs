@@ -119,7 +119,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                     creature.ZoneId = int.Parse(dRow[3].ToString());
                     creature.AreaId = int.Parse(dRow[4].ToString());
                     creature.SpawnMask = (npcSpawnMask)Enum.Parse(typeof(npcSpawnMask), dRow[5].ToString());
-                    creature.PhaseMask = int.Parse(dRow[6].ToString());
+                    creature.cPhaseMask = int.Parse(dRow[6].ToString());
                     creature.ModelId = int.Parse(dRow[7].ToString());
                     creature.EquipmentId = int.Parse(dRow[8].ToString());
                     position.X = float.Parse(dRow[9].ToString());
