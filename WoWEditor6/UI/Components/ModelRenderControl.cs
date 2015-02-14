@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
 using WoWEditor6.Graphics;
+using WoWEditor6.IO;
+using WoWEditor6.IO.Files;
 using WoWEditor6.Scene;
+using WoWEditor6.Scene.Models.M2;
+using WoWEditor6.Scene.Texture;
 
 namespace WoWEditor6.UI.Components
 {
@@ -35,6 +40,73 @@ namespace WoWEditor6.UI.Components
                 return;
 
             mRenderer = new Scene.Models.M2.M2ModelRenderer(file);
+        }
+
+        public void SetCreatureDisplayEntry(int entry)
+        {
+            var displayInfo = Storage.DbcStorage.CreatureDisplayInfo.GetRowById(entry);
+            if (displayInfo == null)
+                return;
+
+            var modelId = displayInfo.GetInt32(1);
+            var modelData = Storage.DbcStorage.CreatureModelData.GetRowById(modelId);
+            if (modelData == null)
+                return;
+
+            var modelPath = string.Empty;
+            if (FileManager.Instance.Version <= FileDataVersion.Warlords)
+            {
+                var fileDataId = modelData.GetInt32(2);
+                var modelPathEntry = Storage.DbcStorage.FileData.GetRowById(fileDataId);
+                if (modelPathEntry != null)
+                    modelPath = Path.Combine(modelPathEntry.GetString(2), modelPathEntry.GetString(1));
+            }
+            else
+                modelPath = modelData.GetString(2);
+
+            if (string.IsNullOrEmpty(modelPath))
+                return;
+
+            if (modelPath.ToUpperInvariant().EndsWith(".MDX"))
+                modelPath = Path.ChangeExtension(modelPath, ".m2");
+
+            if (FileManager.Instance.Provider.Exists(modelPath) == false)
+                return;
+
+            var file = IO.Files.Models.ModelFactory.Instance.CreateM2(modelPath);
+            try
+            {
+                if (file.Load() == false)
+                    return;
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
+            mRenderer = new M2ModelRenderer(file);
+            for (var i = 0; i < mRenderer.Textures.Length; ++i)
+            {
+                var tex = mRenderer.Textures[i];
+                var root = mRenderer.Model.ModelRoot;
+
+                switch (tex.TextureType)
+                {
+                    case 13:
+                    case 12:
+                    case 11:
+                        tex.Texture = TextureManager.Instance.GetTexture(GetSkinName(root, displayInfo, tex.TextureType - 11));
+                        break;
+                }
+            }
+        }
+
+        private string GetSkinName(string root, DbcRecord displayInfo, int index)
+        {
+            var skinString = displayInfo.GetString(6 + index);
+            return string.IsNullOrEmpty(skinString)
+                ? "default_texture"
+                : string.Format("{0}\\{1}.blp", root, skinString);
         }
 
         protected override void OnPaint(PaintEventArgs e)

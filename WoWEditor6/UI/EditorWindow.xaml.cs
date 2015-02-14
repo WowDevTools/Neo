@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using WoWEditor6.Scene;
 
 namespace WoWEditor6.UI
 {
@@ -19,7 +20,17 @@ namespace WoWEditor6.UI
 
         private void MenuSaveItem_Click(object sender, RoutedEventArgs e)
         {
-            Scene.WorldFrame.Instance.MapManager.OnSaveAllFiles();
+            WorldFrame.Instance.MapManager.OnSaveAllFiles();
+        }
+
+        private void ModelRenderTest_Click(object sender, RoutedEventArgs e)
+        {
+            if (WorldFrame.Instance.State == AppState.FileSystemInit ||
+                WorldFrame.Instance.State == AppState.Splash)
+                return;
+
+            var mrt = new ModelRenderTest();
+            mrt.Show();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

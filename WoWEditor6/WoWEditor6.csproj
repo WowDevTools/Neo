@@ -348,6 +348,9 @@
     <Compile Include="UI\InterfaceManager.cs" />
     <Compile Include="Settings\ToolbarButtons.cs" />
     <Compile Include="Settings\ToolbarSettings.cs" />
+    <Compile Include="UI\ModelRenderTest.xaml.cs">
+      <DependentUpon>ModelRenderTest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\RenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -470,6 +473,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ModelRenderTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

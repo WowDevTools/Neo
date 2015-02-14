@@ -25,9 +25,10 @@ namespace WoWEditor6.Scene.Models.M2
         private static RasterState gCullState;
 
         private readonly IM2Animator mAnimator;
-        private readonly M2File mModel;
         private bool mIsSyncLoaded;
         private bool mSkipRendering;
+        public TextureInfo[] Textures { get; private set; }
+        public M2File Model { get; private set; }
 
         private readonly Matrix[] mAnimationMatrices = new Matrix[256];
 
@@ -39,10 +40,17 @@ namespace WoWEditor6.Scene.Models.M2
 
         public M2ModelRenderer(M2File model)
         {
-            mModel = model;
+            Model = model;
+            Textures = Model.TextureInfos.ToArray();
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
             mAnimator.SetAnimationByIndex(0);
             mAnimator.Update();
+        }
+
+        public void SetTexture(int index, Graphics.Texture texture)
+        {
+            if (index < Textures.Length)
+                Textures[index].Texture = texture;
         }
 
         public void OnFrame()
@@ -69,7 +77,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
 
-            foreach (var pass in mModel.Passes)
+            foreach (var pass in Model.Passes)
             {
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
                 Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
@@ -95,7 +103,7 @@ namespace WoWEditor6.Scene.Models.M2
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
                 Mesh.IndexCount = pass.IndexCount;
-                Mesh.Program.SetPixelTexture(0, pass.Textures.First());
+                Mesh.Program.SetPixelTexture(0, Textures[pass.TextureIndices[0]].Texture);
                 Mesh.Draw();
             }
         }
@@ -104,7 +112,7 @@ namespace WoWEditor6.Scene.Models.M2
         {
             mIsSyncLoaded = true;
 
-            if (mModel.Vertices.Length == 0 || mModel.Indices.Length == 0 || mModel.Passes.Count == 0)
+            if (Model.Vertices.Length == 0 || Model.Indices.Length == 0 || Model.Passes.Count == 0)
             {
                 mSkipRendering = true;
                 return;
@@ -114,8 +122,8 @@ namespace WoWEditor6.Scene.Models.M2
             mVertexBuffer = new VertexBuffer(ctx);
             mIndexBuffer = new IndexBuffer(ctx);
 
-            mVertexBuffer.UpdateData(mModel.Vertices);
-            mIndexBuffer.UpdateData(mModel.Indices);
+            mVertexBuffer.UpdateData(Model.Vertices);
+            mIndexBuffer.UpdateData(Model.Indices);
 
             mAnimBuffer = new ConstantBuffer(ctx);
             mAnimBuffer.UpdateData(mAnimationMatrices);

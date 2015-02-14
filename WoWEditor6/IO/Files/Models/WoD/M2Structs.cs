@@ -134,7 +134,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
     [StructLayout(LayoutKind.Sequential)]
     struct M2Texture
     {
-        public readonly uint type;
+        public readonly int type;
         public readonly uint flags;
         public readonly int lenName;
         public readonly int ofsName;

@@ -10,7 +10,6 @@ namespace WoWEditor6.IO.Files.Models.WoD
     class M2File : Models.M2File
     {
         private string mModelName;
-        private readonly string mRootPath;
         private readonly string mFileName;
 
         private M2Header mHeader;
@@ -28,7 +27,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         public AnimationEntry[] Animations { get; private set; }
         public short[] AnimLookup { get; private set; }
 
-        public M2File(string fileName)
+        public M2File(string fileName) : base(fileName)
         {
             Bones = new M2AnimationBone[0];
             UvAnimations = new M2UVAnimation[0];
@@ -39,7 +38,6 @@ namespace WoWEditor6.IO.Files.Models.WoD
             AnimLookup = new short[0];
             mModelName = string.Empty;
             mFileName = fileName;
-            mRootPath = Path.GetDirectoryName(mFileName);
         }
 
         public override bool Load()
@@ -68,6 +66,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 Vertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];
+                TextureInfos = new TextureInfo[textures.Length];
                 for(var i = 0; i < textures.Length; ++i)
                 {
                     var tex = textures[i];
@@ -79,6 +78,12 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     }
                     else
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
+
+                    TextureInfos[i] = new TextureInfo
+                    {
+                        Texture = mTextures[i],
+                        TextureType = tex.type
+                    };
                 }
 
                 LoadSkins(reader);
@@ -90,7 +95,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         private void LoadSkins(BinaryReader reader)
         {
-            mSkin = new M2SkinFile(mRootPath, mModelName, 0);
+            mSkin = new M2SkinFile(ModelRoot, mModelName, 0);
             if (mSkin.Load() == false)
                 throw new InvalidOperationException("Unable to load skin file");
 
@@ -116,19 +121,26 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     startTriangle += ushort.MaxValue + 1;
 
                 var textures = new List<Graphics.Texture>();
+                var texIndices = new List<int>();
                 switch (texUnit.op_count)
                 {
                     case 2:
                         textures.Add(mTextures[texLookup[texUnit.texture]]);
                         textures.Add(mTextures[texLookup[texUnit.texture + 1]]);
+                        texIndices.Add(texLookup[texUnit.texture]);
+                        texIndices.Add(texLookup[texUnit.texture + 1]);
                         break;
                     case 3:
                         textures.Add(mTextures[texLookup[texUnit.texture]]);
                         textures.Add(mTextures[texLookup[texUnit.texture + 1]]);
                         textures.Add(mTextures[texLookup[texUnit.texture + 2]]);
+                        texIndices.Add(texLookup[texUnit.texture]);
+                        texIndices.Add(texLookup[texUnit.texture + 1]);
+                        texIndices.Add(texLookup[texUnit.texture + 2]);
                         break;
                     default:
                         textures.Add(mTextures[texLookup[texUnit.texture]]);
+                        texIndices.Add(texLookup[texUnit.texture]);
                         break;
                 }
 
@@ -143,6 +155,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
                 Passes.Add(new M2RenderPass
                 {
+                    TextureIndices = texIndices,
                     Textures = textures,
                     AlphaAnimIndex = transLookup[texUnit.transparency],
                     ColorAnimIndex = texUnit.colorIndex,

@@ -16,6 +16,9 @@
             <MenuItem Header="_File">
                 <MenuItem Header="Save" Click="MenuSaveItem_Click"></MenuItem>
             </MenuItem>
+            <MenuItem Header="_Debug">
+                <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"></MenuItem>
+            </MenuItem>
         </Menu>
         <avalon:DockingManager Grid.Row="1">
             <avalon:DockingManager.Theme>
