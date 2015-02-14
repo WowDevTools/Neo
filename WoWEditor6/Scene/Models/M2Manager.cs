@@ -92,9 +92,12 @@ namespace WoWEditor6.Scene.Models
                     M2Renderer renderer;
                     if (mRenderer.TryGetValue(instance.Hash, out renderer))
                         renderer.PushMapReference(instance);
+                    else
+                        continue;
 
                     mVisibleInstances.Add(instance.Uuid, instance.RenderInstance);
-                    mSortedInstances.Add(instance.Uuid, instance.RenderInstance);
+                    if (renderer.Model.HasBlendPass)
+                        mSortedInstances.Add(instance.Uuid, instance.RenderInstance);
                 }
             }
         }

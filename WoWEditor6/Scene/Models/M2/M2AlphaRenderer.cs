@@ -39,7 +39,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public M2AlphaRenderer(M2File model)
         {
-            mModel = model;;
+            mModel = model;
         }
 
         public virtual void Dispose()
@@ -64,7 +64,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
             Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-            mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
+            mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
             {
                 instanceMat = instance.InstanceMatrix,
                 colorMod = instance.HighlightColor

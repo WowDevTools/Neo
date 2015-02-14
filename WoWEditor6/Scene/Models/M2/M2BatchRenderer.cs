@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
@@ -27,8 +26,9 @@ namespace WoWEditor6.Scene.Models.M2
         public static Mesh Mesh { get; private set; }
         public static Sampler Sampler { get; private set; }
 
-        private static BlendState BlendState;
+        private static BlendState gBlendState;
 
+        private static ShaderProgram gMaskBlendProgram;
         private static ShaderProgram gNoBlendProgram;
         private static RasterState gNoCullState;
         private static RasterState gCullState;
@@ -36,7 +36,6 @@ namespace WoWEditor6.Scene.Models.M2
         public M2File Model { get; private set; }
 
         private VertexBuffer mInstanceBuffer;
-        private readonly object mInstanceBufferLock = new object();
 
         private int mInstanceCount;
 
@@ -72,14 +71,14 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
             Mesh.UpdateInstanceBuffer(mInstanceBuffer);
 
-            Mesh.UpdateBlendState(BlendState);
+            Mesh.UpdateBlendState(gBlendState);
             Mesh.Program.SetVertexConstantBuffer(2, renderer.AnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
 
             foreach (var pass in Model.Passes)
             {
                 // This renderer is only for opaque pass
-                if (pass.BlendMode != 0)
+                if (pass.BlendMode != 0 && pass.BlendMode != 1)
                     continue;
 
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
@@ -91,11 +90,18 @@ namespace WoWEditor6.Scene.Models.M2
                 Matrix uvAnimMat;
                 renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
 
-                mPerPassBuffer.UpdateData(new PerModelPassBuffer()
+                mPerPassBuffer.UpdateData(new PerModelPassBuffer
                 {
                     uvAnimMatrix = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
                 });
+
+                var program = pass.BlendMode == 0 ? gNoBlendProgram : gMaskBlendProgram;
+                if (program != Mesh.Program)
+                {
+                    Mesh.Program = program;
+                    program.Bind();
+                }
 
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
@@ -168,6 +174,10 @@ namespace WoWEditor6.Scene.Models.M2
             gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
             gNoBlendProgram.SetPixelShader(Resources.Shaders.M2Pixel);
 
+            gMaskBlendProgram = new ShaderProgram(context);
+            gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
+            gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
+
             Mesh.Program = gNoBlendProgram;
 
             Sampler = new Sampler(context)
@@ -176,7 +186,7 @@ namespace WoWEditor6.Scene.Models.M2
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
             };
 
-            BlendState = new BlendState(context)
+            gBlendState = new BlendState(context)
             {
                 BlendEnabled = false
             };
