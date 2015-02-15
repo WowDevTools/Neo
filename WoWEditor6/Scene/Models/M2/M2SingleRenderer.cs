@@ -106,6 +106,14 @@ namespace WoWEditor6.Scene.Models.M2
 
             foreach (var pass in mModel.Passes)
             {
+                if (!mModel.NeedsPerInstanceAnimation)
+                {
+                    // Prevent double rendering since this model pass
+                    // was already processed by the batch renderer
+                    if (pass.BlendMode == 0 || pass.BlendMode == 1)
+                        continue;
+                }
+
                 var program = gBlendProgram;
                 if (pass.BlendMode == 0)
                     program = gNoBlendProgram;
