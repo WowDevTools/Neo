@@ -48,6 +48,9 @@
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">
+                        <avalon:LayoutDocument Title="Welcome" CanClose="False" CanFloat="False">
+                            
+                        </avalon:LayoutDocument>
                         <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False">
                             <WindowsFormsHost>
                                 <local:RenderControl x:Name="RenderTarget">
