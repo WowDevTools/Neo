@@ -41,32 +41,22 @@ namespace WoWEditor6.IO.Files.Models.WoD
             var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
             var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
             var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
-
-            var boneMatrix = Matrix.RotationQuaternion(rotation) *
-                Matrix.Scaling(scaling) * Matrix.Translation(position);
+            var billboardMatrix = Matrix.Identity;
 
             if (IsBillboarded)
             {
-                Vector3 right   = new Vector3(view.M11, view.M12, view.M13);
-                Vector3 up      = new Vector3(view.M21, view.M22, view.M23);
+                Vector3 right = new Vector3(view.M11, view.M12, view.M13);
+                Vector3 up = new Vector3(view.M21, view.M22, view.M23);
                 Vector3 forward = new Vector3(view.M31, view.M32, view.M33);
 
-                boneMatrix.M11 = forward.X;
-                boneMatrix.M12 = forward.Y;
-                boneMatrix.M13 = forward.Z;
-
-                boneMatrix.M21 = right.X;
-                boneMatrix.M22 = right.Y;
-                boneMatrix.M23 = right.Z;
-
-                boneMatrix.M31 = up.X;
-                boneMatrix.M32 = up.Y;
-                boneMatrix.M33 = up.Z;
-
-                boneMatrix *= invRot;
+                billboardMatrix.Row1 = new Vector4(forward, billboardMatrix.M14);
+                billboardMatrix.Row2 = new Vector4(right, billboardMatrix.M24);
+                billboardMatrix.Row3 = new Vector4(up, billboardMatrix.M34);
+                billboardMatrix *= invRot;
             }
 
-            boneMatrix = mInvPivot * boneMatrix * mPivot;
+            var boneMatrix = mInvPivot * billboardMatrix * Matrix.RotationQuaternion(rotation)
+                * Matrix.Scaling(scaling) * Matrix.Translation(position) * mPivot;
 
             if (IsTransformed && Bone.parentBone >= 0)
                 boneMatrix *= animator.GetBoneMatrix(time, Bone.parentBone, ref invRot, ref view);
