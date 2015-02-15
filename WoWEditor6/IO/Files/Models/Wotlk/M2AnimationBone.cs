@@ -19,10 +19,13 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
         public bool IsBillboarded { get; private set; }
 
+        public bool IsTransformed { get; private set; }
+
         public M2AnimationBone(M2File file, ref M2Bone bone, BinaryReader reader)
         {
             Bone = bone;
             IsBillboarded = (bone.flags & 0x08) != 0;
+            IsTransformed = (bone.flags & 0x200) != 0;
 
             bone.pivot.Y = -bone.pivot.Y;
             mPivot = Matrix.Translation(bone.pivot);
@@ -67,7 +70,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
             boneMatrix = mInvPivot * boneMatrix * mPivot;
 
-            if (Bone.parentBone >= 0)
+            if (IsTransformed && Bone.parentBone >= 0)
                 boneMatrix *= animator.GetBoneMatrix(time, Bone.parentBone, ref invRot, ref view);
 
             matrix = boneMatrix;
