@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -103,6 +104,9 @@ namespace WoWEditor6.UI.Dialogs
             SensitivitySliderIndicator.Text = (SensitivitySlider.Value / 5.0f).ToString("F2");
 
             if (mInitialized)
+                return;
+
+            if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
             mInitialized = true;
