@@ -52,7 +52,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 Vector3 forward = new Vector3(view.M31, view.M32, view.M33);
 
                 billboardMatrix.Row1 = new Vector4(forward, billboardMatrix.M14);
-                billboardMatrix.Row2 = new Vector4(right, billboardMatrix.M24);
+                billboardMatrix.Row2 = new Vector4(-right, billboardMatrix.M24);
                 billboardMatrix.Row3 = new Vector4(up, billboardMatrix.M34);
                 billboardMatrix *= invRot;
             }
