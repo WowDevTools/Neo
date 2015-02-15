@@ -34,6 +34,7 @@ namespace WoWEditor6.Scene.Models
 
         private readonly Dictionary<int, M2Renderer> mRenderer = new Dictionary<int, M2Renderer>();
         private readonly Dictionary<int, M2RenderInstance> mVisibleInstances = new Dictionary<int, M2RenderInstance>();
+        private readonly Dictionary<int, M2RenderInstance> mNonBatchedInstances = new Dictionary<int, M2RenderInstance>();
         private SortedDictionary<int, M2RenderInstance> mSortedInstances;
         private readonly object mAddLock = new object();
         private Thread mUnloadThread;
@@ -70,11 +71,17 @@ namespace WoWEditor6.Scene.Models
 
             lock (mAddLock)
             {
-                foreach (var pair in mRenderer)
-                    pair.Value.RenderBatch();
+                // First draw all the instance batches
+                foreach (var renderer in mRenderer.Values)
+                    renderer.RenderBatch();
 
+                // Now draw those objects that need per instance animation
+                foreach (var instance in mNonBatchedInstances.Values)
+                    instance.Renderer.RenderSingleInstance(instance);
+
+                // Then draw those that have alpha blending and need ordering
                 foreach (var instance in mSortedInstances.Values)
-                    instance.Renderer.RenderAlphaInstance(instance);
+                    instance.Renderer.RenderSingleInstance(instance);
             }
 
             IsViewDirty = false;
@@ -89,12 +96,21 @@ namespace WoWEditor6.Scene.Models
                     if (instance == null || instance.RenderInstance == null || instance.RenderInstance.IsUpdated)
                         continue;
 
-                    M2RenderInstance renderInstance = instance.RenderInstance;
+                    var renderInstance = instance.RenderInstance;
                     renderInstance.Renderer.PushMapReference(instance);
-
                     mVisibleInstances.Add(instance.Uuid, renderInstance);
-                    if (renderInstance.Renderer.Model.HasBlendPass)
+
+                    var model = renderInstance.Renderer.Model;
+                    if (model.HasBlendPass)
+                    {
+                        // The model has an alpha pass and therefore needs to be ordered by depth
                         mSortedInstances.Add(instance.Uuid, renderInstance);
+                    }
+                    else if (model.NeedsPerInstanceAnimation)
+                    {
+                        // The model needs per instance animation and therefore cannot be batched
+                        mNonBatchedInstances.Add(instance.Uuid, renderInstance);
+                    }
                 }
             }
         }
@@ -103,8 +119,8 @@ namespace WoWEditor6.Scene.Models
         {
             lock (mAddLock)
             {
-                foreach (var t in mVisibleInstances)
-                    t.Value.UpdateBrushHighlighting(brushPosition, radius);
+                foreach (var instance in mVisibleInstances.Values)
+                    instance.UpdateBrushHighlighting(brushPosition, radius);
             }
         }
 
@@ -114,10 +130,11 @@ namespace WoWEditor6.Scene.Models
             lock(mAddLock)
             {
                 mSortedInstances.Clear();
+                mNonBatchedInstances.Clear();
                 mVisibleInstances.Clear();
 
-                foreach (var pair in mRenderer)
-                    pair.Value.ViewChanged();
+                foreach (var renderer in mRenderer.Values)
+                    renderer.ViewChanged();
             }
         }
 
@@ -134,6 +151,7 @@ namespace WoWEditor6.Scene.Models
                 lock (mAddLock)
                 {
                     mSortedInstances.Remove(uuid);
+                    mNonBatchedInstances.Remove(uuid);
                     mVisibleInstances.Remove(uuid);
                 }
 

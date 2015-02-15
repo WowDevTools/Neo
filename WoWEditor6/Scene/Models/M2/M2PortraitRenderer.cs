@@ -41,7 +41,7 @@ namespace WoWEditor6.Scene.Models.M2
             Textures = model.TextureInfos.ToArray();
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
             mAnimator.SetAnimationByIndex(0);
-            mAnimator.Update();
+            mAnimator.Update(Matrix.Identity, Matrix.Identity);
         }
 
         public virtual void Dispose()
@@ -55,7 +55,8 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void OnFrame(M2Renderer renderer)
         {
-            mAnimator.Update();
+            var camera = WorldFrame.Instance.ActiveCamera;
+            mAnimator.Update(Matrix.Identity, camera.View);
 
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);

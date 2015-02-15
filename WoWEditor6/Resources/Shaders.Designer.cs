@@ -123,9 +123,9 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
-        internal static byte[] M2VertexAlpha {
+        internal static byte[] M2VertexSingle {
             get {
-                object obj = ResourceManager.GetObject("M2VertexAlpha", resourceCulture);
+                object obj = ResourceManager.GetObject("M2VertexSingle", resourceCulture);
                 return ((byte[])(obj));
             }
         }

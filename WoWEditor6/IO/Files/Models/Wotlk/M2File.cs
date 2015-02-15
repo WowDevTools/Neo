@@ -182,6 +182,9 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             var bones = ReadArrayOf<M2Bone>(reader, mHeader.OfsBones, mHeader.NBones);
             Bones = bones.Select(b => new M2AnimationBone(this, ref b, reader)).ToArray();
 
+            if (Bones.Any(b => b.IsBillboarded))
+                NeedsPerInstanceAnimation = true;
+
             AnimLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
             Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
 
