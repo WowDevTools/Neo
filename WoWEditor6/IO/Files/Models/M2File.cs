@@ -34,9 +34,9 @@ namespace WoWEditor6.IO.Files.Models
             Vertices = new M2Vertex[0];
             Passes = new List<M2RenderPass>();
             Indices = new ushort[0];
-            HasBlendPass = false;
-            HasOpaquePass = false;
         }
+
+        public abstract int GetNumberOfBones();
 
         public abstract bool Load();
     }

@@ -50,7 +50,7 @@ namespace WoWEditor6.Scene.Models.M2
             mModel = model;
             if (model.NeedsPerInstanceAnimation)
             {
-                mAnimationMatrices = new Matrix[256];
+                mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
                 mAnimator = ModelFactory.Instance.CreateAnimator(model);
                 mAnimator.SetAnimationByIndex(0);
             }

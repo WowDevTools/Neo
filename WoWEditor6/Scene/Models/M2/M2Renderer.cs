@@ -18,7 +18,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public M2File Model { get; private set; }
 
-        private readonly Matrix[] mAnimationMatrices = new Matrix[256];
+        private readonly Matrix[] mAnimationMatrices;
         private readonly Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
 
         public List<M2RenderInstance> VisibleInstances { get; private set; }
@@ -37,6 +37,7 @@ namespace WoWEditor6.Scene.Models.M2
 
             if (!model.NeedsPerInstanceAnimation)
             {
+                mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
                 Animator = ModelFactory.Instance.CreateAnimator(model);
                 Animator.SetAnimationByIndex(0);
                 StaticAnimationThread.Instance.AddAnimator(Animator);

@@ -229,6 +229,11 @@ namespace WoWEditor6.IO.Files.Models.WoD
             });
         }
 
+        public override int GetNumberOfBones()
+        {
+            return Bones.Length;
+        }
+
         private static T[] ReadArrayOf<T>(BinaryReader reader, int offset, int count) where T : struct
         {
             if (count == 0)

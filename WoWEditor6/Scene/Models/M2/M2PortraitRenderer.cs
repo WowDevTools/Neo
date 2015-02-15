@@ -30,7 +30,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public TextureInfo[] Textures { get; private set; }
 
-        private readonly Matrix[] mAnimationMatrices = new Matrix[256];
+        private readonly Matrix[] mAnimationMatrices;
 
         private ConstantBuffer mAnimBuffer;
         private ConstantBuffer mPerPassBuffer;
@@ -39,6 +39,8 @@ namespace WoWEditor6.Scene.Models.M2
         {
             Model = model;
             Textures = model.TextureInfos.ToArray();
+
+            mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
             mAnimator.SetAnimationByIndex(0);
             mAnimator.Update(Matrix.Identity, Matrix.Identity);
