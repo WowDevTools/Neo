@@ -289,6 +289,9 @@
     <Compile Include="UI\Components\Button.cs" />
     <Compile Include="UI\Components\Checkbox.cs" />
     <Compile Include="UI\Components\EditBox.cs" />
+    <Compile Include="UI\Components\EntrySelectControl.xaml.cs">
+      <DependentUpon>EntrySelectControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\Frame.cs" />
     <Compile Include="UI\Components\ImageButton.cs" />
     <Compile Include="UI\Components\KeyboardMessage.cs" />
@@ -369,6 +372,7 @@
     <Compile Include="UI\Views\MapSelectView.cs" />
     <Compile Include="UI\Views\SplashView.cs" />
     <Compile Include="UI\Views\WorldView.cs" />
+    <Compile Include="UI\WpfImageSource.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Utils\ColorUtils.cs" />
     <Compile Include="Utils\DxtHelper.cs" />
@@ -456,6 +460,10 @@
     <Content Include="Resources\Shaders\WmoVertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Components\EntrySelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Dialogs\BrushSettingsWidget.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
