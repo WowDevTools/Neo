@@ -15,9 +15,16 @@
         <Menu IsMainMenu="True">
             <MenuItem Header="_File">
                 <MenuItem Header="Save" Click="MenuSaveItem_Click"></MenuItem>
+                <TextBlock TextWrapping="Wrap" Text="TextBlock"/>
             </MenuItem>
-            <MenuItem Header="_Debug">
-                <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"></MenuItem>
+            <avalon:MenuItemEx Header="Edit" RenderTransformOrigin="-1.176,0.611"/>
+            <MenuItem Header="View&#xD;&#xA;View"/>
+            <MenuItem Header="Extras" RenderTransformOrigin="-1.533,0.6"/>
+            <MenuItem Header="?" >
+                <MenuItem Header="About" Click="About_MenuItem_Click" HorizontalAlignment="Left" Width="140"/>
+            </MenuItem>
+            <MenuItem Header="_Debug" RenderTransformOrigin="2.52,0.6">
+                <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"/>
             </MenuItem>
         </Menu>
         <avalon:DockingManager Grid.Row="1">
@@ -43,7 +50,7 @@
                     <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="Brush Settings" CanClose="False" AutoHideWidth="340" x:Name="BrushSettingsPane">
                             <dialogs:BrushSettingsWidget VerticalAlignment="Top">
-                                
+
                             </dialogs:BrushSettingsWidget>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
@@ -63,7 +70,7 @@
                             <avalon:LayoutAnchorable Title="Log" AutoHideHeight="200" FloatingHeight="200">
                                 <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <FlowDocument x:Name="LogDocument" Background="DarkGray" FontFamily="Consolas" FontSize="8pt">
-                                        
+
                                     </FlowDocument>
                                 </FlowDocumentScrollViewer>
                             </avalon:LayoutAnchorable>

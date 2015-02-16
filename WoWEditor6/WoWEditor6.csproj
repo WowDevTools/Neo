@@ -308,6 +308,9 @@
     <Compile Include="UI\Components\StatusBar.cs" />
     <Compile Include="UI\Components\Toolbar.cs" />
     <Compile Include="UI\Components\WdlControl.cs" />
+    <Compile Include="UI\Dialogs\AboutBox.xaml.cs">
+      <DependentUpon>AboutBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Dialogs\BrushSettingsWidget.xaml.cs">
       <DependentUpon>BrushSettingsWidget.xaml</DependentUpon>
     </Compile>
@@ -429,6 +432,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Images\about.jpg" />
     <Content Include="Resources\Shaders\M2PixelPortrait.hlsl" />
     <Content Include="Resources\Shaders\M2VertexAlpha.hlsl" />
     <Content Include="Resources\Shaders\M2VertexPortrait.hlsl" />
@@ -456,6 +460,10 @@
     <Content Include="Resources\Shaders\WmoVertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Dialogs\AboutBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Dialogs\BrushSettingsWidget.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
