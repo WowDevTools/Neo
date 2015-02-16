@@ -296,6 +296,9 @@
     <Compile Include="UI\Components\ImageButton.cs" />
     <Compile Include="UI\Components\KeyboardMessage.cs" />
     <Compile Include="UI\Components\Label.cs" />
+    <Compile Include="UI\Components\LoadingScreenControl.xaml.cs">
+      <DependentUpon>LoadingScreenControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\MapSelectQuad.cs" />
     <Compile Include="UI\Components\Message.cs" />
     <Compile Include="UI\Components\ModelRenderControl.cs">
@@ -461,6 +464,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="UI\Components\EntrySelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Components\LoadingScreenControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Foreground="Black" FontSize="29" FontWeight="Bold">Please select your entry point on the map</Label>
         <Border Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
-            <Image x:Name="WdlPreviewImage" HorizontalAlignment="Left" VerticalAlignment="Top" MouseMove="WdlPreview_MouseMove"></Image>
+            <Image x:Name="WdlPreviewImage" HorizontalAlignment="Left" VerticalAlignment="Top" MouseMove="WdlPreview_MouseMove" MouseDown="WdlPreview_MouseDown" MouseUp="WdlPreview_MouseUp"></Image>
         </Border>
         <TextBlock x:Name="AdtPreviewLabel" Height="35" Width="Auto" FontSize="26" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0">ADT: 0/0</TextBlock>
     </Grid>

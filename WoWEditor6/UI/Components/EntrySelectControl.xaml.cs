@@ -10,6 +10,9 @@ namespace WoWEditor6.UI.Components
     /// </summary>
     public partial class EntrySelectControl
     {
+        private bool mIsClicked;
+        private int mSelectedMap;
+
         public EntrySelectControl()
         {
             InitializeComponent();
@@ -23,6 +26,7 @@ namespace WoWEditor6.UI.Components
         public void MapSelected(int mapId)
         {
             WdlPreviewImage.Source = WpfImageSource.FromBgra(17*64, 17*64, GetWdlColors(mapId));
+            mSelectedMap = mapId;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -52,6 +56,75 @@ namespace WoWEditor6.UI.Components
             var adty = (int) (facy * 64);
 
             AdtPreviewLabel.Text = string.Format("ADT: {0}/{1}", adtx, adty);
+        }
+
+        private void WdlPreview_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            mIsClicked = true;
+            WdlPreviewImage.CaptureMouse();
+        }
+
+        private void WdlPreview_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var position = e.GetPosition(WdlPreviewImage);
+
+            if (position.X > 0 && position.Y > 0 && position.X < WdlPreviewImage.ActualWidth &&
+                position.Y < WdlPreviewImage.ActualHeight && mIsClicked)
+            {
+                var facx = position.X / WdlPreviewImage.ActualWidth;
+                var facy = position.Y / WdlPreviewImage.ActualHeight;
+
+                var entryx = facx * 64 * Metrics.TileSize;
+                var entryy = facy * 64 * Metrics.TileSize;
+
+                OnEnterWorld((float) entryx, (float) entryy);
+            }
+
+
+            mIsClicked = false;
+            WdlPreviewImage.ReleaseMouseCapture();
+        }
+
+        private void OnEnterWorld(float x, float y)
+        {
+            var mapRow = Storage.DbcStorage.Map.GetRowById(mSelectedMap);
+            if (mapRow == null)
+                return;
+
+            var widescreen = false;
+            var loadScreenPath = "Interface\\Glues\\loading.blp";
+            var loadEntry = mapRow.GetInt32(Storage.MapFormatGuess.FieldMapLoadingScreen);
+            if (loadEntry != 0)
+            {
+                var loadRow = Storage.DbcStorage.LoadingScreen.GetRowById(loadEntry);
+                if (loadRow != null)
+                {
+                    var path = loadRow.GetString(Storage.MapFormatGuess.FieldLoadingScreenPath);
+                    widescreen = false;
+
+                    if (string.IsNullOrEmpty(path) == false)
+                    {
+                        if (Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen >= 0 && loadRow.GetInt32(Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen) == 1)
+                        {
+                            var widePath = path.ToUpperInvariant().Replace(".BLP", "WIDE.BLP");
+                            if (IO.FileManager.Instance.Provider.Exists(widePath))
+                            {
+                                path = widePath;
+                                widescreen = true;
+                            }
+                        }
+
+                        loadScreenPath = path;
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(loadScreenPath)) return;
+            var wnd = DataContext as EditorWindow;
+            if (wnd == null) return;
+            Visibility = Visibility.Collapsed;
+            wnd.LoadingScreenView.Visibility = Visibility.Visible;
+            wnd.LoadingScreenView.OnLoadStarted(loadScreenPath, widescreen);
         }
 
         private static uint[] GetWdlColors(int mapId)
