@@ -241,7 +241,7 @@
     <Compile Include="IO\Files\Models\WoD\M2Structs.cs" />
     <Compile Include="Scene\IntersectionParams.cs" />
     <Compile Include="Scene\Models\M2Manager.cs" />
-    <Compile Include="Scene\Models\M2\M2AlphaRenderer.cs" />
+    <Compile Include="Scene\Models\M2\M2SingleRenderer.cs" />
     <Compile Include="Scene\Models\M2\M2BatchRenderer.cs" />
     <Compile Include="Scene\Models\M2\M2PortraitRenderer.cs" />
     <Compile Include="Scene\Models\M2\M2Renderer.cs" />
@@ -434,7 +434,7 @@
   <ItemGroup>
     <None Include="Resources\Images\about.jpg" />
     <Content Include="Resources\Shaders\M2PixelPortrait.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexAlpha.hlsl" />
+    <Content Include="Resources\Shaders\M2VertexSingle.hlsl" />
     <Content Include="Resources\Shaders\M2VertexPortrait.hlsl" />
     <Content Include="StormLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -512,8 +512,8 @@
     <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2VertexInstanced.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2VertexInstanced.dxc&quot;">
     </Exec>
   </Target>
-  <Target Name="M2VertexAlpha" BeforeTargets="PrepareForBuild" Label="M2VertexAlpha" Inputs="$(ProjectDir)\Resources\Shaders\M2VertexAlpha.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2VertexAlpha.dxc">
-    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2VertexAlpha.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2VertexAlpha.dxc&quot;">
+  <Target Name="M2VertexSingle" BeforeTargets="PrepareForBuild" Label="M2VertexSingle" Inputs="$(ProjectDir)\Resources\Shaders\M2VertexSingle.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2VertexSingle.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2VertexSingle.hlsl&quot; main vs_5_0 &quot;$(ProjectDir)\Resources\Shaders\M2VertexSingle.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="M2VertexPortrait" BeforeTargets="PrepareForBuild" Label="M2VertexPortrait" Inputs="$(ProjectDir)\Resources\Shaders\M2VertexPortrait.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2VertexPortrait.dxc">

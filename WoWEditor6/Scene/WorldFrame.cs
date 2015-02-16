@@ -146,7 +146,7 @@ namespace WoWEditor6.Scene
             MapAreaLowRender.Initialize(context);
             WmoGroupRender.Initialize(context);
             M2BatchRenderer.Initialize(context);
-            M2AlphaRenderer.Initialize(context);
+            M2SingleRenderer.Initialize(context);
             M2PortraitRenderer.Initialize(context);
 
             StaticAnimationThread.Instance.Initialize();

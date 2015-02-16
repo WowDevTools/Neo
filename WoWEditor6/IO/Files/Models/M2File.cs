@@ -25,6 +25,8 @@ namespace WoWEditor6.IO.Files.Models
 
         public string ModelRoot { get; private set; }
 
+        public bool NeedsPerInstanceAnimation { get; protected set; }
+
         protected M2File(string path)
         {
             ModelRoot = Path.GetDirectoryName(path) ?? "";
@@ -32,9 +34,9 @@ namespace WoWEditor6.IO.Files.Models
             Vertices = new M2Vertex[0];
             Passes = new List<M2RenderPass>();
             Indices = new ushort[0];
-            HasBlendPass = false;
-            HasOpaquePass = false;
         }
+
+        public abstract int GetNumberOfBones();
 
         public abstract bool Load();
     }

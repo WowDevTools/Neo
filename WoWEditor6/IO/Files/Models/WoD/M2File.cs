@@ -181,6 +181,9 @@ namespace WoWEditor6.IO.Files.Models.WoD
             var bones = ReadArrayOf<M2Bone>(reader, mHeader.OfsBones, mHeader.NBones);
             Bones = bones.Select(b => new M2AnimationBone(this, ref b, reader)).ToArray();
 
+            if (Bones.Any(b => b.IsBillboarded))
+                NeedsPerInstanceAnimation = true;
+
             AnimLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
             Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
 
@@ -199,13 +202,13 @@ namespace WoWEditor6.IO.Files.Models.WoD
             Passes.Sort((e1, e2) =>
             {
                 if (e1.BlendMode == 0 && e2.BlendMode != 0)
-                    return 1;
-
-                if (e1.BlendMode != 0 && e2.BlendMode == 0)
                     return -1;
 
+                if (e1.BlendMode != 0 && e2.BlendMode == 0)
+                    return 1;
+
                 if (e1.BlendMode == e2.BlendMode && e1.BlendMode == 0)
-                    return e2.TexUnitNumber.CompareTo(e1.TexUnitNumber);
+                    return e1.TexUnitNumber.CompareTo(e2.TexUnitNumber);
 
                 if (e1.BlendMode == 2 && e2.BlendMode != 2)
                     return -1;
@@ -222,8 +225,13 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 if (is2Additive && !is1Additive)
                     return 1;
 
-                return e2.TexUnitNumber.CompareTo(e1.TexUnitNumber);
+                return e1.TexUnitNumber.CompareTo(e2.TexUnitNumber);
             });
+        }
+
+        public override int GetNumberOfBones()
+        {
+            return Bones.Length;
         }
 
         private static T[] ReadArrayOf<T>(BinaryReader reader, int offset, int count) where T : struct
