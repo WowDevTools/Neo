@@ -49,7 +49,7 @@
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">
-                        <avalon:LayoutAnchorable Title="Welcome" CanClose="False" CanFloat="False" CanAutoHide="False">
+                        <avalon:LayoutAnchorable Title="Welcome" CanClose="False" CanFloat="False" CanAutoHide="False" x:Name="WelcomeDocument">
                             <Grid SizeChanged="WelcomePanel_Resize">
                                 <controls:LoadingScreenControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="LoadingScreenView">
                                     
@@ -115,7 +115,7 @@
                                 </FlowDocumentScrollViewer>
                             </Grid>
                         </avalon:LayoutAnchorable>
-                        <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False">
+                        <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False" x:Name="MapEditorDocument">
                             <WindowsFormsHost>
                                 <local:RenderControl x:Name="RenderTarget">
 

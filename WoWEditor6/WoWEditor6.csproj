@@ -351,6 +351,7 @@
     <Compile Include="UI\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\EditorWindowController.cs" />
     <Compile Include="UI\FontCollection.cs" />
     <Compile Include="UI\IComponent.cs" />
     <Compile Include="UI\InterfaceManager.cs" />

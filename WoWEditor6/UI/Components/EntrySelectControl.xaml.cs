@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using SharpDX;
 
 namespace WoWEditor6.UI.Components
 {
@@ -124,7 +125,7 @@ namespace WoWEditor6.UI.Components
             if (wnd == null) return;
             Visibility = Visibility.Collapsed;
             wnd.LoadingScreenView.Visibility = Visibility.Visible;
-            wnd.LoadingScreenView.OnLoadStarted(loadScreenPath, widescreen);
+            wnd.LoadingScreenView.OnLoadStarted(mSelectedMap, loadScreenPath, widescreen, new Vector2(x, y));
         }
 
         private static uint[] GetWdlColors(int mapId)

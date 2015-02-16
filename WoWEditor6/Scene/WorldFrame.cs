@@ -88,7 +88,7 @@ namespace WoWEditor6.Scene
             MapManager = new MapManager();
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
-            mState = AppState.FileSystemInit;
+            mState = AppState.Idle;
         }
 
         public void UpdateBrush(float innerRadius, float outerRadius)

@@ -100,8 +100,14 @@ namespace WoWEditor6.Scene.Terrain
                 pair.Value.OnFrame();
         }
 
-        public void EnterWorld(Vector2 entryPoint, int mapId, string continent)
+        public void EnterWorld(Vector2 entryPoint, int mapId)
         {
+            var row = Storage.DbcStorage.Map.GetRowById(mapId);
+            if (row == null)
+                return;
+
+            var continent = row.GetString(Storage.MapFormatGuess.FieldMapName);
+
             MapChunkRender.InitIndices();
             WorldFrame.Instance.LeftHandedCamera = IO.FileManager.Instance.Version > IO.FileDataVersion.Cataclysm;
 
@@ -129,7 +135,7 @@ namespace WoWEditor6.Scene.Terrain
             Interlocked.Increment(ref mLoadStepsDone);
             var pct = (float) mLoadStepsDone / mTotalLoadSteps;
             if (IsInitialLoad)
-                InterfaceManager.Instance.GetViewForState<LoadingScreenView>(AppState.LoadingScreen).UpdateProgress(pct);
+                EditorWindowController.Instance.LoadingScreen.UpdateProgress(pct);
 
             if (mLoadStepsDone < mTotalLoadSteps || !IsInitialLoad) return;
 
@@ -272,6 +278,7 @@ namespace WoWEditor6.Scene.Terrain
 
             WorldFrame.Instance.OnEnterWorld(entryPoint);
             WorldFrame.Instance.Dispatcher.BeginInvoke(() => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height)));
+            EditorWindowController.Instance.OnEnterWorld();
         }
 
         private void LoadProc()

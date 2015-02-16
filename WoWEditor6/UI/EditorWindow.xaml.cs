@@ -19,6 +19,7 @@ namespace WoWEditor6.UI
         public EditorWindow()
         {
             InitializeComponent();
+            DataContext = new EditorWindowController(this);
         }
 
         public RenderControl DrawTarget { get { return RenderTarget; } }
