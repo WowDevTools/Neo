@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Interop;
 using System.Windows.Media;
 using Microsoft.Win32;
 using WoWEditor6.Scene;
@@ -114,12 +115,9 @@ namespace WoWEditor6.UI
             fd.SetOptions(options);
 
 
-            var wnd = InterfaceManager.Instance.RenderWindow;
+            var wnd = Dispatcher;
             var result = 0;
-            if (wnd.InvokeRequired)
-                wnd.Invoke(new Action(() => result = fd.Show(wnd.Handle)));
-            else
-                result = fd.Show(IntPtr.Zero);
+            wnd.Invoke(new Action(() => result = fd.Show(new WindowInteropHelper(this).Handle)));
 
             if (result != 0)
                 return;
@@ -197,7 +195,7 @@ namespace WoWEditor6.UI
                     VerticalAlignment = VerticalAlignment.Stretch,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     FontSize = 16,
-                    Foreground = System.Windows.Media.Brushes.White,
+                    Foreground = Brushes.White,
                     TextWrapping = TextWrapping.Wrap,
                     Margin = new Thickness(3,3,3,3)
                 };

@@ -67,6 +67,7 @@ namespace WoWEditor6.Scene
         private IntersectionParams mIntersection;
         private Point mLastCursorPosition;
         private bool mHighlightModels;
+        private RenderControl mWindow;
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
@@ -116,6 +117,7 @@ namespace WoWEditor6.Scene
 
         public void Initialize(RenderControl window, GxContext context)
         {
+            mWindow = window;
             mGlobalBuffer = new ConstantBuffer(context);
             mGlobalParamsBuffer = new ConstantBuffer(context);
             mGlobalParamsBufferStore = new GlobalParamsBuffer
@@ -266,7 +268,7 @@ namespace WoWEditor6.Scene
 
         private void UpdateCursorPosition(bool forced = false)
         {
-            var pos = InterfaceManager.Instance.RenderWindow.PointToClient(Cursor.Position);
+            var pos = mWindow.PointToClient(Cursor.Position);
             if (mIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
             {
                 mLastCursorPosition = new Point(pos.X, pos.Y);
@@ -292,7 +294,6 @@ namespace WoWEditor6.Scene
         private void UpdateAppState(AppState newState)
         {
             mState = newState;
-            InterfaceManager.Instance.UpdateState(newState);
         }
 
         private void SetActiveCamera(Camera camera)

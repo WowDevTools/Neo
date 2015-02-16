@@ -283,37 +283,37 @@
     <Compile Include="Storage\Database\WotLk\TrinityCore\SpawnedGameObject.cs" />
     <Compile Include="Storage\DBCStorage.cs" />
     <Compile Include="Storage\MapFormatGuess.cs" />
-    <Compile Include="UI\BitmapImage.cs" />
-    <Compile Include="UI\Brushes.cs" />
-    <Compile Include="UI\ComponentRoot.cs" />
-    <Compile Include="UI\Components\Button.cs" />
-    <Compile Include="UI\Components\Checkbox.cs" />
-    <Compile Include="UI\Components\EditBox.cs" />
+    <None Include="UI\old\BitmapImage.cs" />
+    <None Include="UI\old\Brushes.cs" />
+    <None Include="UI\old\ComponentRoot.cs" />
+    <None Include="UI\old\Button.cs" />
+    <None Include="UI\old\Checkbox.cs" />
+    <None Include="UI\old\EditBox.cs" />
     <Compile Include="UI\Components\EntrySelectControl.xaml.cs">
       <DependentUpon>EntrySelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Components\Frame.cs" />
-    <Compile Include="UI\Components\ImageButton.cs" />
-    <Compile Include="UI\Components\KeyboardMessage.cs" />
-    <Compile Include="UI\Components\Label.cs" />
+    <None Include="UI\old\Frame.cs" />
+    <None Include="UI\old\ImageButton.cs" />
+    <None Include="UI\old\KeyboardMessage.cs" />
+    <None Include="UI\old\Label.cs" />
     <Compile Include="UI\Components\LoadingScreenControl.xaml.cs">
       <DependentUpon>LoadingScreenControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Components\MapSelectQuad.cs" />
-    <Compile Include="UI\Components\Message.cs" />
+    <None Include="UI\old\MapSelectQuad.cs" />
+    <None Include="UI\old\Message.cs" />
     <Compile Include="UI\Components\ModelRenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Components\ModelRenderControl.Designer.cs">
       <DependentUpon>ModelRenderControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Components\MouseMessage.cs" />
-    <Compile Include="UI\Components\PerformanceControl.cs" />
-    <Compile Include="UI\Components\Scrollbar.cs" />
-    <Compile Include="UI\Components\Slider.cs" />
-    <Compile Include="UI\Components\StatusBar.cs" />
-    <Compile Include="UI\Components\Toolbar.cs" />
-    <Compile Include="UI\Components\WdlControl.cs" />
+    <None Include="UI\old\MouseMessage.cs" />
+    <None Include="UI\old\PerformanceControl.cs" />
+    <None Include="UI\old\Scrollbar.cs" />
+    <None Include="UI\old\Slider.cs" />
+    <None Include="UI\old\StatusBar.cs" />
+    <None Include="UI\old\Toolbar.cs" />
+    <None Include="UI\old\WdlControl.cs" />
     <Compile Include="UI\Dialogs\BrushSettingsWidget.xaml.cs">
       <DependentUpon>BrushSettingsWidget.xaml</DependentUpon>
     </Compile>
@@ -347,14 +347,14 @@
     <Compile Include="UI\Dialogs\TerrainSettingsWidget.xaml.cs">
       <DependentUpon>TerrainSettingsWidget.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\DrawSurface.cs" />
+    <None Include="UI\old\DrawSurface.cs" />
     <Compile Include="UI\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\EditorWindowController.cs" />
-    <Compile Include="UI\FontCollection.cs" />
-    <Compile Include="UI\IComponent.cs" />
-    <Compile Include="UI\InterfaceManager.cs" />
+    <None Include="UI\old\FontCollection.cs" />
+    <None Include="UI\old\IComponent.cs" />
+    <None Include="UI\old\InterfaceManager.cs" />
     <Compile Include="Settings\ToolbarButtons.cs" />
     <Compile Include="Settings\ToolbarSettings.cs" />
     <Compile Include="UI\ModelRenderTest.xaml.cs">
@@ -366,16 +366,16 @@
     <Compile Include="UI\RenderControl.Designer.cs">
       <DependentUpon>RenderControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\StaticText.cs" />
-    <Compile Include="UI\SolidBrush.cs" />
-    <Compile Include="UI\TextureBitmap.cs" />
-    <Compile Include="UI\Views\EntrySelectView.cs" />
-    <Compile Include="UI\Views\FileSystemInitView.cs" />
-    <Compile Include="UI\Views\IView.cs" />
-    <Compile Include="UI\Views\LoadingScreenView.cs" />
-    <Compile Include="UI\Views\MapSelectView.cs" />
-    <Compile Include="UI\Views\SplashView.cs" />
-    <Compile Include="UI\Views\WorldView.cs" />
+    <None Include="UI\old\StaticText.cs" />
+    <None Include="UI\old\SolidBrush.cs" />
+    <None Include="UI\old\TextureBitmap.cs" />
+    <None Include="UI\old\EntrySelectView.cs" />
+    <None Include="UI\old\FileSystemInitView.cs" />
+    <None Include="UI\old\IView.cs" />
+    <None Include="UI\old\LoadingScreenView.cs" />
+    <None Include="UI\old\MapSelectView.cs" />
+    <None Include="UI\old\SplashView.cs" />
+    <None Include="UI\old\WorldView.cs" />
     <Compile Include="UI\WpfImageSource.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Utils\ColorUtils.cs" />
@@ -499,6 +499,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />

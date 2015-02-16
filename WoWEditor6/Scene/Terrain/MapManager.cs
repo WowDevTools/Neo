@@ -5,7 +5,6 @@ using System.Threading;
 using SharpDX;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.UI;
-using WoWEditor6.UI.Views;
 
 namespace WoWEditor6.Scene.Terrain
 {
