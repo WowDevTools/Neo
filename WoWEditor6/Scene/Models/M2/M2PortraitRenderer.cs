@@ -43,7 +43,7 @@ namespace WoWEditor6.Scene.Models.M2
             mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
             mAnimator.SetAnimationByIndex(0);
-            mAnimator.Update(Matrix.Identity, Matrix.Identity);
+            mAnimator.Update(null);
         }
 
         public virtual void Dispose()
@@ -57,8 +57,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void OnFrame(M2Renderer renderer)
         {
-            var camera = WorldFrame.Instance.ActiveCamera;
-            mAnimator.Update(Matrix.Identity, camera.View);
+            mAnimator.Update(null);
 
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);

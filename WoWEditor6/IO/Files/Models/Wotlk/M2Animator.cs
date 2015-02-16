@@ -79,7 +79,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             ResetAnimationTimes();
         }
 
-        public void Update(Matrix invRot, Matrix view)
+        public void Update(BillboardParameters billboard)
         {
             if (mHasAnimation == false)
                 return;
@@ -119,7 +119,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     if (mBoneCalculated[i])
                         continue;
 
-                    mBones[i].UpdateMatrix(time, mAnimationId, out BoneMatrices[i], this, ref invRot, ref view);
+                    mBones[i].UpdateMatrix(time, mAnimationId, out BoneMatrices[i], this, billboard);
                     mBoneCalculated[i] = true;
                 }
             }
@@ -200,13 +200,13 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             }
         }
 
-        public Matrix GetBoneMatrix(int bone, ref Matrix invRot, ref Matrix view)
+        public Matrix GetBoneMatrix(int bone, BillboardParameters billboard)
         {
             uint time = (uint)(Environment.TickCount - mBoneStart);
-            return GetBoneMatrix(time, (short)bone, ref invRot, ref view);
+            return GetBoneMatrix(time, (short)bone, billboard);
         }
 
-        public Matrix GetBoneMatrix(uint time, short bone, ref Matrix invRot, ref Matrix view)
+        public Matrix GetBoneMatrix(uint time, short bone, BillboardParameters billboard)
         {
             lock (mBones)
             {
@@ -216,7 +216,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 if (mBoneCalculated[bone])
                     return BoneMatrices[bone];
 
-                mBones[bone].UpdateMatrix(time, mAnimationId, out BoneMatrices[bone], this, ref invRot, ref view);
+                mBones[bone].UpdateMatrix(time, mAnimationId, out BoneMatrices[bone], this, billboard);
                 mBoneCalculated[bone] = true;
                 return BoneMatrices[bone];
             }

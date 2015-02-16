@@ -82,7 +82,13 @@ namespace WoWEditor6.Scene.Models.M2
                 animator = mAnimator;
 
                 var camera = WorldFrame.Instance.ActiveCamera;
-                mAnimator.Update(instance.InverseRotation, camera.View);
+                mAnimator.Update(new BillboardParameters
+                {
+                    Forward = camera.Forward,
+                    Right = camera.Right,
+                    Up = camera.Up,
+                    InverseRotation = instance.InverseRotation
+                });
 
                 if (mAnimator.GetBones(mAnimationMatrices))
                     mAnimBuffer.UpdateData(mAnimationMatrices);

@@ -50,7 +50,7 @@ namespace WoWEditor6.Scene.Models.M2
                 lock(mAnimators)
                 {
                     foreach (var animator in mAnimators)
-                        animator.Update(Matrix.Identity, Matrix.Identity);
+                        animator.Update(null);
                 }
 
                 Thread.Sleep(20);
