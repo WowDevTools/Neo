@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using SharpDX;
-using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
@@ -36,30 +35,26 @@ namespace WoWEditor6.IO.Files.Models.WoD
         }
 
         public void UpdateMatrix(uint time, int animation, out Matrix matrix,
-            M2Animator animator, ref Matrix invRot, ref Matrix view)
+            M2Animator animator, BillboardParameters billboard)
         {
             var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
             var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
             var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
             var billboardMatrix = Matrix.Identity;
 
-            if (IsBillboarded)
+            if (IsBillboarded && billboard != null)
             {
-                Vector3 right = new Vector3(view.M11, view.M12, view.M13);
-                Vector3 up = new Vector3(view.M21, view.M22, view.M23);
-                Vector3 forward = new Vector3(view.M31, view.M32, view.M33);
-
-                billboardMatrix.Row1 = new Vector4(forward, billboardMatrix.M14);
-                billboardMatrix.Row2 = new Vector4(right, billboardMatrix.M24);
-                billboardMatrix.Row3 = new Vector4(up, billboardMatrix.M34);
-                billboardMatrix *= invRot;
+                billboardMatrix.Row1 = new Vector4(billboard.Forward, billboardMatrix.M14);
+                billboardMatrix.Row2 = new Vector4(billboard.Right, billboardMatrix.M24);
+                billboardMatrix.Row3 = new Vector4(billboard.Up, billboardMatrix.M34);
+                billboardMatrix *= billboard.InverseRotation;
             }
 
             var boneMatrix = mInvPivot * billboardMatrix * Matrix.RotationQuaternion(rotation)
                 * Matrix.Scaling(scaling) * Matrix.Translation(position) * mPivot;
 
             if (IsTransformed && Bone.parentBone >= 0)
-                boneMatrix *= animator.GetBoneMatrix(time, Bone.parentBone, ref invRot, ref view);
+                boneMatrix *= animator.GetBoneMatrix(time, Bone.parentBone, billboard);
 
             matrix = boneMatrix;
         }
