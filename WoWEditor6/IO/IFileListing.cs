@@ -20,7 +20,7 @@ namespace WoWEditor6.IO
 
         public IEnumerable<DirectoryEntry> Directories
         {
-            get { return Children.Values.OfType<DirectoryEntry>().OrderBy(d => d.Name); }
+            get { return Children.Values.OfType<DirectoryEntry>().Where(d => d.Children.Count > 0).OrderBy(d => d.Name); }
         }
 
         public string Name { get; set; }
