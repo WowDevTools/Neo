@@ -93,6 +93,8 @@ namespace WoWEditor6.IO.CASC
                 LoadEncodingFile();
                 LoadRootFile();
 
+                IO.FileManager.Instance.FileListing = new FileListing();
+
                 if (LoadComplete != null)
                     LoadComplete();
             });

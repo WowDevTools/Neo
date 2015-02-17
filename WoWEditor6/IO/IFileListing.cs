@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace WoWEditor6.IO
 {
+    class FileSystemEntry
+    {
+        public string Name { get; set; }
+    }
+
+    class DirectoryEntry : FileSystemEntry
+    {
+        public readonly Dictionary<string, FileSystemEntry> Children = new Dictionary<string, FileSystemEntry>(); 
+    }
+
+    class FileEntry : FileSystemEntry
+    {
+        
+    }
+
     interface IFileListing
     {
+        DirectoryEntry RootEntry { get; }
     }
 }

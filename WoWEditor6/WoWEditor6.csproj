@@ -140,6 +140,7 @@
     <Compile Include="Graphics\VertexElement.cs" />
     <Compile Include="Graphics\ViewFrustum.cs" />
     <Compile Include="IO\CASC\DataStream.cs" />
+    <Compile Include="IO\CASC\FileListing.cs" />
     <Compile Include="IO\CASC\FileManager.cs" />
     <Compile Include="IO\CASC\JenkinsHash.cs" />
     <Compile Include="IO\CASC\KeyValueConfig.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="IO\IFileListing.cs" />
     <Compile Include="IO\IFileProvider.cs" />
     <Compile Include="IO\MPQ\Archive.cs" />
+    <Compile Include="IO\MPQ\FileListing.cs" />
     <Compile Include="IO\MPQ\FileManager.cs" />
     <Compile Include="IO\MPQ\Imports.cs" />
     <Compile Include="IO\SizeCache.cs" />

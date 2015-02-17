@@ -9,6 +9,7 @@ namespace WoWEditor6.IO
         public static FileManager Instance { get; private set; }
 
         public IFileProvider Provider { get; private set; }
+        public IFileListing FileListing { get; set; }
         public string DataPath { get; set; }
         public bool Initialized { get; private set; }
 
