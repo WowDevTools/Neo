@@ -27,6 +27,8 @@ namespace WoWEditor6.Graphics
         public SampleDescription Multisampling { get { return mSwapChainDesc.SampleDescription; } }
         public Format BackBufferFormat { get { return mSwapChainDesc.ModeDescription.Format; } }
 
+        public event Action<float, float> Resize;
+
         public GxContext(RenderControl window)
         {
             mWindow = window;
@@ -125,6 +127,9 @@ namespace WoWEditor6.Graphics
 
             Context.OutputMerger.SetRenderTargets(mDepthBuffer, mRenderTarget);
             Context.Rasterizer.SetViewport(new Viewport(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height));
+
+            if (Resize != null)
+                Resize(mWindow.ClientSize.Width, mWindow.ClientSize.Height);
         }
 
         private void BuildMultisample()

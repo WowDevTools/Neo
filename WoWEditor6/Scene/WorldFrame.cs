@@ -118,6 +118,7 @@ namespace WoWEditor6.Scene
         public void Initialize(RenderControl window, GxContext context)
         {
             mWindow = window;
+            context.Resize += (w, h) => OnResize((int) w, (int) h);
             mGlobalBuffer = new ConstantBuffer(context);
             mGlobalParamsBuffer = new ConstantBuffer(context);
             mGlobalParamsBufferStore = new GlobalParamsBuffer
