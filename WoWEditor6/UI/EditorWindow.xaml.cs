@@ -336,5 +336,17 @@ namespace WoWEditor6.UI
         {
             InitMaps();
         }
+
+        private void About_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new Window
+            {
+                Title = "About", 
+                Height = 170, 
+                Width = 300, 
+                Content = new Dialogs.AboutBox()
+            };
+            window.ShowDialog();
+        }   
     }
 }
