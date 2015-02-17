@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using WoWEditor6.Graphics;
@@ -13,7 +12,6 @@ namespace WoWEditor6
         [STAThread]
         static void Main()
         {
-            
             AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
 
             Settings.KeyBindings.Initialize();
