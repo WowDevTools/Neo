@@ -96,7 +96,7 @@ namespace WoWEditor6.IO.Files.Sky.WoD
             return true;
         }
 
-        public bool GetAllColorsForTime(int time, Vector3[] colors)
+        public bool GetAllColorsForTime(int time, Color3[] colors)
         {
             if (mDataEntries.Count == 0)
                 return false;

@@ -20,7 +20,7 @@ namespace WoWEditor6.UI.Dialogs
             if (cb == null)
                 return;
 
-            WorldFrame.Instance.UpdateDrawBrushOnModels(cb.IsChecked ?? false);
+            // WorldFrame.Instance.UpdateDrawBrushOnModels(cb.IsChecked ?? false);
         }
 
         void HighlightModel_Click(object sender, RoutedEventArgs args)

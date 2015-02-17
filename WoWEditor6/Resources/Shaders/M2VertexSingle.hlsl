@@ -2,7 +2,23 @@ cbuffer GlobalParams : register(b0)
 {
     float4x4 matView;
     float4x4 matProj;
+
+    float4 ambientLight;
+    float4 diffuseLight;
+
+    float4 fogColor;
+    // x -> fogStart
+    // y -> fotEnd
+    // z -> farClip
+    float4 fogParams;
+
+    float4 mousePosition;
     float4 eyePosition;
+
+    // x -> innerRadius
+    // y -> outerRadius
+    // z -> brushTime
+    float4 brushParams;
 };
 
 cbuffer AnimationMatrices : register(b2)
@@ -39,7 +55,7 @@ struct VertexOutput
     float2 texCoord : TEXCOORD0;
     float depth : TEXCOORD1;
     float3 worldPosition : TEXCOORD2;
-    float4 colorMod : COLOR0;
+    float4 color : COLOR0;
     float4 modelPassParams : TEXCOORD3;
 };
 
@@ -72,7 +88,7 @@ VertexOutput main(VertexInput input) {
     float4 tcTransform = mul(float4(input.texCoord, 0, 1), uvAnimation);
     output.texCoord = tcTransform.xy / tcTransform.w;
     output.worldPosition = worldPos;
-    output.colorMod = colorMod;
+    output.color = colorMod;
     output.modelPassParams = modelPassParams;
 
     return output;

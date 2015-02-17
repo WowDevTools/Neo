@@ -1,3 +1,26 @@
+cbuffer GlobalParams : register(b0)
+{
+    float4x4 matView;
+    float4x4 matProj;
+
+    float4 ambientLight;
+    float4 diffuseLight;
+
+    float4 fogColor;
+    // x -> fogStart
+    // y -> fotEnd
+    // z -> farClip
+    float4 fogParams;
+
+    float4 mousePosition;
+    float4 eyePosition;
+
+    // x -> innerRadius
+    // y -> outerRadius
+    // z -> brushTime
+    float4 brushParams;
+};
+
 struct PixelInput
 {
     float4 position : SV_Position;
@@ -21,17 +44,6 @@ Texture2D texture2 : register(t4);
 Texture2D texture3 : register(t5);
 
 float3 sunDirection = float3(1, 1, -1);
-
-cbuffer GlobalParamsBuffer : register(b0)
-{
-    float4 ambientLight;
-    float4 diffuseLight;
-    float4 fogColor;
-    float4 fogParams;
-    float4 mousePosition;
-    float4 brushParams;
-	float4 eyePosition;
-};
 
 cbuffer TextureParamsBuffer : register(b2)
 {

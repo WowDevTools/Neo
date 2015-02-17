@@ -20,8 +20,8 @@ namespace WoWEditor6.IO.Files.Sky.WoD
         private Vector3 mLastPosition;
         private Vector2 mLastPosition2D;
 
-        private Vector3[] mColorValues = new Vector3[(int) LightColor.MaxLightType];
-        private readonly Vector3[] mColorValuesTemp = new Vector3[(int) LightColor.MaxLightType];
+        private Color3[] mColorValues = new Color3[(int)LightColor.MaxLightType];
+        private readonly Color3[] mColorValuesTemp = new Color3[(int)LightColor.MaxLightType];
         private float[] mFloatValues = new float[(int) LightFloat.MaxLightFloat];
         private readonly float[] mFloatValuesTemp = new float[(int) LightFloat.MaxLightFloat];
 
@@ -208,12 +208,12 @@ namespace WoWEditor6.IO.Files.Sky.WoD
             var time = Utils.TimeManager.Instance.GetTime();
             var ms = (int) (time.TotalMilliseconds / 10.0f);
             for (var i = 0; i < mColorValuesTemp.Length; ++i)
-                mColorValuesTemp[i] = new Vector3(1, 1, 1);
+                mColorValuesTemp[i] = new Color3(1, 1, 1);
 
             for (var i = 0; i < mFloatValuesTemp.Length; ++i)
                 mFloatValuesTemp[i] = 1.0f;
 
-            var curColors = new Vector3[(int) LightColor.MaxLightType];
+            var curColors = new Color3[(int) LightColor.MaxLightType];
             var curFloats = new float[(int) LightFloat.MaxLightFloat];
 
             for(var j = 0; j < mLights.Count && j < mWeights.Length; ++j)
@@ -259,7 +259,7 @@ namespace WoWEditor6.IO.Files.Sky.WoD
             }
 
             for (var i = 0; i < mColorValuesTemp.Length; ++i)
-                mColorValuesTemp[i] -= new Vector3(1, 1, 1);
+                mColorValuesTemp[i] -= new Color3(1, 1, 1);
             for (var i = 0; i < mFloatValuesTemp.Length; ++i)
                 mFloatValuesTemp[i] -= 1.0f;
 
@@ -344,11 +344,11 @@ namespace WoWEditor6.IO.Files.Sky.WoD
             mIsTextureDirty = true;
         }
 
-        private static uint ToRgbx(ref Vector3 value)
+        private static uint ToRgbx(ref Color3 value)
         {
-            var r = (uint)(value.X * 255.0f);
-            var g = (uint)(value.Y * 255.0f);
-            var b = (uint)(value.Z * 255.0f);
+            var r = (uint)(value.Red * 255.0f);
+            var g = (uint)(value.Green * 255.0f);
+            var b = (uint)(value.Blue * 255.0f);
             const uint a = 0xFFu;
 
             return r | (g << 8) | (b << 16) | (a << 24);
