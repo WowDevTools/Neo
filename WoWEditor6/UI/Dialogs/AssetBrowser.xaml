@@ -22,7 +22,7 @@
             <GridSplitter HorizontalAlignment="Stretch" Grid.Column="1"/>
             <TreeView Grid.Column="0" ItemsSource="{Binding Path=RootDirectory}" x:Name="AssetTreeView">
                 <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Path=ChildElements}">
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Directories}">
                         <TextBlock Text="{Binding Path=Name}"></TextBlock>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>

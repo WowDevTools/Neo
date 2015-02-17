@@ -18,6 +18,11 @@ namespace WoWEditor6.IO
             }
         }
 
+        public IEnumerable<DirectoryEntry> Directories
+        {
+            get { return Children.Values.OfType<DirectoryEntry>().OrderBy(d => d.Name); }
+        }
+
         public string Name { get; set; }
 
         protected FileSystemEntry()
