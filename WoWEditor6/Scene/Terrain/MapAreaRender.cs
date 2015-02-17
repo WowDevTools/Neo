@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene.Models;
@@ -82,7 +83,7 @@ namespace WoWEditor6.Scene.Terrain
             {
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
                 {
-                    if (!M2Manager.IsViewDirty)
+                    if (!M2Manager.IsViewDirty || WorldFrame.Instance.State != AppState.World)
                         return;
 
                     if (!WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))

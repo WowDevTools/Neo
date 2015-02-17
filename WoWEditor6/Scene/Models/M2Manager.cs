@@ -89,7 +89,7 @@ namespace WoWEditor6.Scene.Models
                     if (instance == null || instance.RenderInstance == null || instance.RenderInstance.IsUpdated)
                         continue;
 
-                    M2RenderInstance renderInstance = instance.RenderInstance;
+                    var renderInstance = instance.RenderInstance;
                     renderInstance.Renderer.PushMapReference(instance);
 
                     mVisibleInstances.Add(instance.Uuid, renderInstance);

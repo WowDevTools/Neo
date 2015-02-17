@@ -6,8 +6,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.RowSpan="2">
             <Image x:Name="LoadingScreenImage"></Image>
         </Border>
+        <Border VerticalAlignment="Center" Grid.Row="1" x:Name="LoadingFillBorder">
+            <Image VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="LoadingScreenBarFillImage"></Image>
+        </Border>
+        <Image VerticalAlignment="Center" Grid.Row="1" x:Name="LoadingScreenBarImage"></Image>
     </Grid>
 </UserControl>

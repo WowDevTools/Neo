@@ -9,7 +9,7 @@ namespace WoWEditor6.IO.CASC
 
         public DataStream(string file)
         {
-            Stream = File.OpenRead(file);
+            Stream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
 
         public void Dispose()

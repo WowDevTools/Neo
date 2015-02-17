@@ -101,6 +101,9 @@ namespace WoWEditor6.Scene
 
         public void OnResize(int width, int height)
         {
+            if (width == 0 || height == 0)
+                return;
+
             mMainCamera.SetAspect((float) width / height);
         }
 
@@ -167,6 +170,8 @@ namespace WoWEditor6.Scene
             mMainCamera.ViewChanged += ViewChanged;
             mMainCamera.ProjectionChanged += ProjectionChanged;
 
+            OnResize(mWindow.Width, mWindow.Height);
+
             ViewChanged(mMainCamera, mMainCamera.View);
             ProjectionChanged(mMainCamera, mMainCamera.Projection);
 
@@ -203,9 +208,12 @@ namespace WoWEditor6.Scene
             Editing.EditManager.Instance.UpdateChanges();
 
             // do not move before mCamControl.Update to have the latest view/projection
-            UpdateCursorPosition();
-            UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
-            UpdateBuffers();
+            if (State == AppState.World)
+            {
+                UpdateCursorPosition();
+                UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
+                UpdateBuffers();
+            }
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
             GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalParamsBuffer.Native);

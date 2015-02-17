@@ -28,11 +28,9 @@ namespace WoWEditor6
             var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.Send,
                 (sender, args) =>
                 {
-                    var watch = Stopwatch.StartNew();
                     context.BeginFrame();
                     WorldFrame.Instance.OnFrame();
                     context.EndFrame();
-                    Log.Debug(watch.ElapsedMilliseconds.ToString());
                 }, app.Dispatcher);
 
             app.Run(window);

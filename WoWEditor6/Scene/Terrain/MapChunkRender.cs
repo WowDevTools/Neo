@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using SharpDX;
 using WoWEditor6.Graphics;
