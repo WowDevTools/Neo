@@ -67,6 +67,7 @@ namespace WoWEditor6.Scene
         private IntersectionParams mIntersection;
         private Point mLastCursorPosition;
         private bool mHighlightModels;
+        private RenderControl mWindow;
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
@@ -88,7 +89,7 @@ namespace WoWEditor6.Scene
             MapManager = new MapManager();
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
-            mState = AppState.FileSystemInit;
+            mState = AppState.Idle;
         }
 
         public void UpdateBrush(float innerRadius, float outerRadius)
@@ -100,6 +101,9 @@ namespace WoWEditor6.Scene
 
         public void OnResize(int width, int height)
         {
+            if (width == 0 || height == 0)
+                return;
+
             mMainCamera.SetAspect((float) width / height);
         }
 
@@ -116,6 +120,8 @@ namespace WoWEditor6.Scene
 
         public void Initialize(RenderControl window, GxContext context)
         {
+            mWindow = window;
+            context.Resize += (w, h) => OnResize((int) w, (int) h);
             mGlobalBuffer = new ConstantBuffer(context);
             mGlobalParamsBuffer = new ConstantBuffer(context);
             mGlobalParamsBufferStore = new GlobalParamsBuffer
@@ -164,6 +170,8 @@ namespace WoWEditor6.Scene
             mMainCamera.ViewChanged += ViewChanged;
             mMainCamera.ProjectionChanged += ProjectionChanged;
 
+            OnResize(mWindow.Width, mWindow.Height);
+
             ViewChanged(mMainCamera, mMainCamera.View);
             ProjectionChanged(mMainCamera, mMainCamera.Projection);
 
@@ -200,9 +208,12 @@ namespace WoWEditor6.Scene
             Editing.EditManager.Instance.UpdateChanges();
 
             // do not move before mCamControl.Update to have the latest view/projection
-            UpdateCursorPosition();
-            UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
-            UpdateBuffers();
+            if (State == AppState.World)
+            {
+                UpdateCursorPosition();
+                UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
+                UpdateBuffers();
+            }
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
             GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalParamsBuffer.Native);
@@ -266,7 +277,7 @@ namespace WoWEditor6.Scene
 
         private void UpdateCursorPosition(bool forced = false)
         {
-            var pos = InterfaceManager.Instance.RenderWindow.PointToClient(Cursor.Position);
+            var pos = mWindow.PointToClient(Cursor.Position);
             if (mIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
             {
                 mLastCursorPosition = new Point(pos.X, pos.Y);
@@ -292,7 +303,6 @@ namespace WoWEditor6.Scene
         private void UpdateAppState(AppState newState)
         {
             mState = newState;
-            InterfaceManager.Instance.UpdateState(newState);
         }
 
         private void SetActiveCamera(Camera camera)

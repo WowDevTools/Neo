@@ -103,6 +103,9 @@ namespace WoWEditor6.UI.Dialogs
         {
             SensitivitySliderIndicator.Text = (SensitivitySlider.Value / 5.0f).ToString("F2");
 
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
             if (mInitialized)
                 return;
 

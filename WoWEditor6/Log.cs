@@ -93,24 +93,24 @@ namespace WoWEditor6
                 Sinks.Remove(sink);
         }
 
-        public static void Debug(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        public static void Debug(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Debug, GetTitle(fileName, line) + " - Debug: ", message);
+            AddMessage(LogLevel.Debug, GetTitle(fileName, line) + " - Debug: ", message == null ? "null" : message.ToString());
         }
 
-        public static void Warning(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        public static void Warning(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Warning, GetTitle(fileName, line) + " - Warning: ", message);
+            AddMessage(LogLevel.Warning, GetTitle(fileName, line) + " - Warning: ", message == null ? "null" : message.ToString());
         }
 
-        public static void Error(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        public static void Error(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Error, GetTitle(fileName, line) + " - ERROR: ", message);
+            AddMessage(LogLevel.Error, GetTitle(fileName, line) + " - ERROR: ", message == null ? "null" : message.ToString());
         }
 
-        public static void Fatal(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        public static void Fatal(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Fatal, GetTitle(fileName, line) + " - FATAL: ", message);
+            AddMessage(LogLevel.Fatal, GetTitle(fileName, line) + " - FATAL: ", message == null ? "null" : message.ToString());
         }
     }
 }

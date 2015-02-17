@@ -68,10 +68,10 @@ namespace WoWEditor6.Scene
             mViewNoTranspose = LeftHanded == false ? Matrix.LookAtRH(Position, mTarget, mUp) : Matrix.LookAtLH(Position, mTarget, mUp);
             Matrix.Invert(ref mViewNoTranspose, out mViewInverted);
             Matrix.Transpose(ref mViewNoTranspose, out mMatView);
+            mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
+
             if (ViewChanged != null)
                 ViewChanged(this, mMatView);
-
-            mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
         }
 
         protected void OnProjectionChanged()
@@ -79,10 +79,10 @@ namespace WoWEditor6.Scene
             mProjNoTranspose = mMatProjection;
             Matrix.Invert(ref mMatProjection, out mProjInverted);
             Matrix.Transpose(ref mMatProjection, out mMatProjection);
+            mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
+
             if (ProjectionChanged != null)
                 ProjectionChanged(this, mMatProjection);
-
-            mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
         }
 
         public void SetPosition(Vector3 position)

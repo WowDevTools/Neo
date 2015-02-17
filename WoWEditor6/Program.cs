@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using WoWEditor6.Graphics;
@@ -21,19 +22,15 @@ namespace WoWEditor6
             var context = new GxContext(window.DrawTarget);
             context.InitContext();
 
-            InterfaceManager.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
 
-            InterfaceManager.Instance.RenderWindow.OnLoadFinished();
-
             var app = new Application();
-            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.ApplicationIdle,
+            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.Send,
                 (sender, args) =>
                 {
                     context.BeginFrame();
                     WorldFrame.Instance.OnFrame();
-                    InterfaceManager.Instance.OnFrame();
                     context.EndFrame();
                 }, app.Dispatcher);
 

@@ -190,7 +190,7 @@ namespace WoWEditor6.IO.CASC
 
         private void LoadIndexFile(string file)
         {
-            using (var strm = File.OpenRead(file))
+            using (var strm = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 using (var reader = new BinaryReader(strm))
                 {

@@ -5,7 +5,6 @@ using System.Threading;
 using SharpDX;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.UI;
-using WoWEditor6.UI.Views;
 
 namespace WoWEditor6.Scene.Terrain
 {
@@ -100,8 +99,14 @@ namespace WoWEditor6.Scene.Terrain
                 pair.Value.OnFrame();
         }
 
-        public void EnterWorld(Vector2 entryPoint, int mapId, string continent)
+        public void EnterWorld(Vector2 entryPoint, int mapId)
         {
+            var row = Storage.DbcStorage.Map.GetRowById(mapId);
+            if (row == null)
+                return;
+
+            var continent = row.GetString(Storage.MapFormatGuess.FieldMapName);
+
             MapChunkRender.InitIndices();
             WorldFrame.Instance.LeftHandedCamera = IO.FileManager.Instance.Version > IO.FileDataVersion.Cataclysm;
 
@@ -129,7 +134,7 @@ namespace WoWEditor6.Scene.Terrain
             Interlocked.Increment(ref mLoadStepsDone);
             var pct = (float) mLoadStepsDone / mTotalLoadSteps;
             if (IsInitialLoad)
-                InterfaceManager.Instance.GetViewForState<LoadingScreenView>(AppState.LoadingScreen).UpdateProgress(pct);
+                EditorWindowController.Instance.LoadingScreen.UpdateProgress(pct);
 
             if (mLoadStepsDone < mTotalLoadSteps || !IsInitialLoad) return;
 
@@ -270,6 +275,7 @@ namespace WoWEditor6.Scene.Terrain
             if (IO.FileManager.Instance.Version > IO.FileDataVersion.Mists)
                 entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
 
+            EditorWindowController.Instance.OnEnterWorld();
             WorldFrame.Instance.OnEnterWorld(entryPoint);
             WorldFrame.Instance.Dispatcher.BeginInvoke(() => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height)));
         }
@@ -303,7 +309,7 @@ namespace WoWEditor6.Scene.Terrain
         {
             lock(mLoadedData)
             {
-                foreach (var data in mLoadedData)
+                /*foreach (var data in mLoadedData)
                 {
                     var index = data.IndexX + data.IndexY * 0xFF;
                     if (mAreas.ContainsKey(index))
@@ -317,7 +323,23 @@ namespace WoWEditor6.Scene.Terrain
                     mAreas.Add(index, tile);
                 }
 
-                mLoadedData.Clear();
+                mLoadedData.Clear();*/
+
+                if (mLoadedData.Count > 0)
+                {
+                    var data = mLoadedData[0];
+                    mLoadedData.RemoveAt(0);
+                    var index = data.IndexX + data.IndexY * 0xFF;
+                    if (mAreas.ContainsKey(index))
+                    {
+                        data.Dispose();
+                        return;
+                    }
+
+                    var tile = new MapAreaRender(data.IndexX, data.IndexY);
+                    tile.AsyncLoaded(data);
+                    mAreas.Add(index, tile);
+                }
             }
         }
 

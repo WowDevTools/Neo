@@ -69,6 +69,7 @@ namespace WoWEditor6.IO
                 mgr.LoadComplete += () =>
                 {
                     Initialized = true;
+                    Storage.DbcStorage.Initialize();
                     if (LoadComplete != null)
                         LoadComplete();
                 };
@@ -95,6 +96,7 @@ namespace WoWEditor6.IO
             mgr.LoadComplete += () =>
             {
                 Initialized = true;
+                Storage.DbcStorage.Initialize();
                 if (LoadComplete != null)
                     LoadComplete();
             };
