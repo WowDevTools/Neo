@@ -9,7 +9,7 @@ namespace WoWEditor6.IO.CASC
 
         public FileListing()
         {
-            RootEntry = new DirectoryEntry();
+            RootEntry = new DirectoryEntry {Name = "Files"};
 
             if (File.Exists("listfile.bin") == false)
             {

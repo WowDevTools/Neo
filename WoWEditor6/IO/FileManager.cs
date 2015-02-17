@@ -21,6 +21,11 @@ namespace WoWEditor6.IO
             Instance = new FileManager();
         }
 
+        FileManager()
+        {
+            FileListing = new DefaultFileListing();
+        }
+
         public Stream GetOutputStream(string path)
         {
             var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);

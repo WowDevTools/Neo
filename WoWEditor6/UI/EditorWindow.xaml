@@ -131,6 +131,17 @@
                         </avalon:LayoutDocument>
                     </avalon:LayoutDocumentPane>
                 </avalon:LayoutPanel>
+                <avalon:LayoutRoot.RightSide>
+                    <avalon:LayoutAnchorSide>
+                        <avalon:LayoutAnchorGroup>
+                            <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800">
+                                <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                                    
+                                </dialogs:AssetBrowser> 
+                            </avalon:LayoutAnchorable>
+                        </avalon:LayoutAnchorGroup>
+                    </avalon:LayoutAnchorSide>
+                </avalon:LayoutRoot.RightSide>
                 <avalon:LayoutRoot.BottomSide>
                     <avalon:LayoutAnchorSide>
                         <avalon:LayoutAnchorGroup>

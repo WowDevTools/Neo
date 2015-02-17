@@ -1,18 +1,37 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace WoWEditor6.IO
 {
-    class FileSystemEntry
+    public class FileSystemEntry
     {
+        public Dictionary<string, FileSystemEntry> Children { get; private set; }
+
+        public IEnumerable<FileSystemEntry> ChildElements
+        {
+            get
+            {
+                return
+                    Children.Values.OfType<DirectoryEntry>()
+                        .OrderBy(d => d.Name)
+                        .Concat(Children.Values.OfType<FileEntry>().OrderBy(f => f.Name).Cast<FileSystemEntry>());
+            }
+        }
+
         public string Name { get; set; }
+
+        protected FileSystemEntry()
+        {
+            Children = new Dictionary<string, FileSystemEntry>();
+        }
     }
 
-    class DirectoryEntry : FileSystemEntry
+    public class DirectoryEntry : FileSystemEntry
     {
-        public readonly Dictionary<string, FileSystemEntry> Children = new Dictionary<string, FileSystemEntry>(); 
+
     }
 
-    class FileEntry : FileSystemEntry
+    public class FileEntry : FileSystemEntry
     {
         
     }

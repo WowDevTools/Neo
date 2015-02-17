@@ -145,6 +145,7 @@
     <Compile Include="IO\CASC\JenkinsHash.cs" />
     <Compile Include="IO\CASC\KeyValueConfig.cs" />
     <Compile Include="IO\CASC\TokenConfig.cs" />
+    <Compile Include="IO\DefaultFileListing.cs" />
     <Compile Include="IO\Extensions.cs" />
     <Compile Include="IO\FileDataVersion.cs" />
     <Compile Include="IO\FileManager.cs" />
@@ -322,6 +323,9 @@
     <Compile Include="UI\Dialogs\AboutBox.xaml.cs">
       <DependentUpon>AboutBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Dialogs\AssetBrowser.xaml.cs">
+      <DependentUpon>AssetBrowser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Dialogs\BrushSettingsWidget.xaml.cs">
       <DependentUpon>BrushSettingsWidget.xaml</DependentUpon>
     </Compile>
@@ -489,6 +493,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Components\LoadingScreenControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dialogs\AssetBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,7 +9,7 @@ namespace WoWEditor6.IO.MPQ
 
         public FileListing(FileManager fileMgr)
         {
-            RootEntry = new DirectoryEntry();
+            RootEntry = new DirectoryEntry {Name = "Files"};
             Init(fileMgr);
         }
 
@@ -40,16 +40,16 @@ namespace WoWEditor6.IO.MPQ
                 return;
 
             var dir = Path.GetDirectoryName(file) ?? "";
-            var paths = dir.Split('\\');
+            var paths = dir.Split(new[] {'\\'}, StringSplitOptions.RemoveEmptyEntries);
             var curDir = RootEntry;
             foreach (var path in paths)
             {
-                if (curDir.Children.ContainsKey(path))
-                    curDir = curDir.Children[path] as DirectoryEntry;
+                if (curDir.Children.ContainsKey(path.ToLowerInvariant()))
+                    curDir = curDir.Children[path.ToLowerInvariant()] as DirectoryEntry;
                 else
                 {
                     var dirEnt = new DirectoryEntry {Name = path};
-                    curDir.Children.Add(path, dirEnt);
+                    curDir.Children.Add(path.ToLowerInvariant(), dirEnt);
                     curDir = dirEnt;
                 }
 
@@ -61,10 +61,10 @@ namespace WoWEditor6.IO.MPQ
                 return;
 
             var fileName = Path.GetFileName(file);
-            if (curDir.Children.ContainsKey(fileName))
+            if (curDir.Children.ContainsKey(fileName.ToLowerInvariant()))
                 return;
 
-            curDir.Children.Add(fileName, new FileEntry {Name = fileName});
+            curDir.Children.Add(fileName.ToLowerInvariant(), new FileEntry { Name = fileName });
         }
     }
 }
