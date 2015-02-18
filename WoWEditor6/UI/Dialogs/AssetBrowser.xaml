@@ -17,8 +17,22 @@
                 <ColumnDefinition Width="5"></ColumnDefinition>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="2">
+                <ListBox Padding="10,10,10,10" x:Name="SelectedFilesListView">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Content="{Binding Path=View}" Width="124" Height="124" BorderThickness="1" BorderBrush="Black" Padding="5,5,5,5"></Frame>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
             <GridSplitter HorizontalAlignment="Stretch" Grid.Column="1"/>
-            <TreeView Grid.Column="0" ItemsSource="{Binding Path=RootDirectory}" x:Name="AssetTreeView">
+            <TreeView Grid.Column="0" ItemsSource="{Binding Path=AssetBrowserRoot}" SelectedItemChanged="AssetBrowser_ItemChanged" x:Name="AssetTreeView">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Path=Directories}">
                         <TextBlock Text="{Binding Path=Name}"></TextBlock>
