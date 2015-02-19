@@ -42,7 +42,7 @@
                         </ListBox.ItemsPanel>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Frame Content="{Binding Path=View}" Width="124" Height="124" BorderThickness="1" BorderBrush="Black" Padding="5,5,5,5"></Frame>
+                                <Frame Content="{Binding Path=View}" Width="124" Height="Auto" Padding="5,5,5,5"></Frame>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
