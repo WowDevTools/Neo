@@ -9,16 +9,44 @@ namespace WoWEditor6.Scene.Models
 {
     class M2Manager
     {
-        private readonly Dictionary<int, M2BatchRenderer> mRenderer = new Dictionary<int, M2BatchRenderer>();
+        private class InstanceSortComparer : IComparer<int>
+        {
+            private readonly IDictionary<int, M2RenderInstance> mInstances;
+
+            public InstanceSortComparer(IDictionary<int, M2RenderInstance> dict)
+            {
+                mInstances = dict;
+            }
+
+            public int Compare(int first, int second)
+            {
+                M2RenderInstance renderA, renderB;
+                if (mInstances.TryGetValue(first, out renderA) &&
+                    mInstances.TryGetValue(second, out renderB))
+                {
+                    int compare = renderB.Depth.CompareTo(renderA.Depth);
+                    if (compare != 0)
+                        return compare;
+                }
+                return first.CompareTo(second);
+            }
+        }
+
+        private readonly Dictionary<int, M2Renderer> mRenderer = new Dictionary<int, M2Renderer>();
+        private readonly Dictionary<int, M2RenderInstance> mVisibleInstances = new Dictionary<int, M2RenderInstance>();
+        private readonly Dictionary<int, M2RenderInstance> mNonBatchedInstances = new Dictionary<int, M2RenderInstance>();
+        private SortedDictionary<int, M2RenderInstance> mSortedInstances;
         private readonly object mAddLock = new object();
         private Thread mUnloadThread;
         private bool mIsRunning;
-        private readonly List<M2BatchRenderer> mUnloadList = new List<M2BatchRenderer>();
+        private readonly List<M2Renderer> mUnloadList = new List<M2Renderer>();
 
         public static bool IsViewDirty { get; private set; }
 
         public void Initialize()
         {
+            mSortedInstances = new SortedDictionary<int, M2RenderInstance>(
+                new InstanceSortComparer(mVisibleInstances));
             mUnloadThread = new Thread(UnloadProc);
             mUnloadThread.Start();
         }
@@ -31,13 +59,29 @@ namespace WoWEditor6.Scene.Models
 
         public void OnFrame()
         {
+            if (WorldFrame.Instance.HighlightModelsInBrush)
+            {
+                var brushPosition = Editing.EditManager.Instance.MousePosition;
+                var highlightRadius = Editing.EditManager.Instance.OuterRadius;
+                UpdateBrushHighlighting(brushPosition, highlightRadius);
+            }
+
             M2BatchRenderer.Mesh.BeginDraw();
             M2BatchRenderer.Mesh.Program.SetPixelSampler(0, M2BatchRenderer.Sampler);
 
-            lock(mAddLock)
+            lock (mAddLock)
             {
-                foreach (var pair in mRenderer)
-                    pair.Value.OnFrame();
+                // First draw all the instance batches
+                foreach (var renderer in mRenderer.Values)
+                    renderer.RenderBatch();
+
+                // Now draw those objects that need per instance animation
+                foreach (var instance in mNonBatchedInstances.Values)
+                    instance.Renderer.RenderSingleInstance(instance);
+
+                // Then draw those that have alpha blending and need ordering
+                foreach (var instance in mSortedInstances.Values)
+                    instance.Renderer.RenderSingleInstance(instance);
             }
 
             IsViewDirty = false;
@@ -52,10 +96,31 @@ namespace WoWEditor6.Scene.Models
                     if (instance == null || instance.RenderInstance == null || instance.RenderInstance.IsUpdated)
                         continue;
 
-                    M2BatchRenderer renderer;
-                    if (mRenderer.TryGetValue(instance.Hash, out renderer))
-                        renderer.PushMapReference(instance);
+                    var renderInstance = instance.RenderInstance;
+                    renderInstance.Renderer.PushMapReference(instance);
+                    mVisibleInstances.Add(instance.Uuid, renderInstance);
+
+                    var model = renderInstance.Renderer.Model;
+                    if (model.HasBlendPass)
+                    {
+                        // The model has an alpha pass and therefore needs to be ordered by depth
+                        mSortedInstances.Add(instance.Uuid, renderInstance);
+                    }
+                    else if (model.NeedsPerInstanceAnimation)
+                    {
+                        // The model needs per instance animation and therefore cannot be batched
+                        mNonBatchedInstances.Add(instance.Uuid, renderInstance);
+                    }
                 }
+            }
+        }
+
+        private void UpdateBrushHighlighting(Vector3 brushPosition, float radius)
+        {
+            lock (mAddLock)
+            {
+                foreach (var instance in mVisibleInstances.Values)
+                    instance.UpdateBrushHighlighting(brushPosition, radius);
             }
         }
 
@@ -64,8 +129,12 @@ namespace WoWEditor6.Scene.Models
             IsViewDirty = true;
             lock(mAddLock)
             {
-                foreach (var pair in mRenderer)
-                    pair.Value.ViewChanged();
+                mSortedInstances.Clear();
+                mNonBatchedInstances.Clear();
+                mVisibleInstances.Clear();
+
+                foreach (var renderer in mRenderer.Values)
+                    renderer.ViewChanged();
             }
         }
 
@@ -79,7 +148,14 @@ namespace WoWEditor6.Scene.Models
         {
             lock (mRenderer)
             {
-                M2BatchRenderer renderer;
+                lock (mAddLock)
+                {
+                    mSortedInstances.Remove(uuid);
+                    mNonBatchedInstances.Remove(uuid);
+                    mVisibleInstances.Remove(uuid);
+                }
+
+                M2Renderer renderer;
                 if (mRenderer.TryGetValue(hash, out renderer) == false)
                     return;
 
@@ -109,11 +185,11 @@ namespace WoWEditor6.Scene.Models
                 if (file == null)
                     return null;
 
-                var batch = new M2BatchRenderer(file);
+                var render = new M2Renderer(file);
                 lock (mAddLock)
-                    mRenderer.Add(hash, batch);
+                    mRenderer.Add(hash, render);
 
-                return batch.AddInstance(uuid, position, rotation, scaling);
+                return render.AddInstance(uuid, position, rotation, scaling);
             }
         }
 
@@ -121,7 +197,7 @@ namespace WoWEditor6.Scene.Models
         {
             while(mIsRunning)
             {
-                M2BatchRenderer element = null;
+                M2Renderer element = null;
                 lock(mUnloadList)
                 {
                     if(mUnloadList.Count > 0)

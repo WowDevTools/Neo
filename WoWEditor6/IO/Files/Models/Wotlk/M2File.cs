@@ -10,7 +10,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
     class M2File : Models.M2File
     {
         private string mModelName;
-        private readonly string mRootPath;
         private readonly string mFileName;
 
         private M2Header mHeader;
@@ -28,7 +27,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public AnimationEntry[] Animations { get; private set; }
         public short[] AnimLookup { get; private set; }
 
-        public M2File(string fileName)
+        public M2File(string fileName) : base(fileName)
         {
             Bones = new M2AnimationBone[0];
             UvAnimations = new M2UVAnimation[0];
@@ -39,7 +38,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             AnimLookup = new short[0];
             mModelName = string.Empty;
             mFileName = fileName;
-            mRootPath = Path.GetDirectoryName(mFileName);
         }
 
         public override bool Load()
@@ -77,6 +75,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];
+                TextureInfos = new TextureInfo[textures.Length];
                 for (var i = 0; i < textures.Length; ++i)
                 {
                     var tex = textures[i];
@@ -88,6 +87,12 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     }
                     else
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
+
+                    TextureInfos[i] = new TextureInfo
+                    {
+                        Texture = mTextures[i],
+                        TextureType = tex.type
+                    };
                 }
 
                 LoadSkins(reader);
@@ -99,7 +104,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
         private void LoadSkins(BinaryReader reader)
         {
-            mSkin = new M2SkinFile(mRootPath, mModelName, 0);
+            mSkin = new M2SkinFile(ModelRoot, mModelName, 0);
             if (mSkin.Load() == false)
                 throw new InvalidOperationException("Unable to load skin file");
             
@@ -150,6 +155,11 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
                 blendMode %= 7;
 
+                if (blendMode != 0 && blendMode != 1)
+                    HasBlendPass = true;
+                else
+                    HasOpaquePass = true;
+
                 Passes.Add(new M2RenderPass
                 {
                     Textures = textures,
@@ -171,6 +181,9 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         {
             var bones = ReadArrayOf<M2Bone>(reader, mHeader.OfsBones, mHeader.NBones);
             Bones = bones.Select(b => new M2AnimationBone(this, ref b, reader)).ToArray();
+
+            if (Bones.Any(b => b.IsBillboarded))
+                NeedsPerInstanceAnimation = true;
 
             AnimLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
             Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
@@ -199,22 +212,27 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     return e1.TexUnitNumber.CompareTo(e2.TexUnitNumber);
 
                 if (e1.BlendMode == 2 && e2.BlendMode != 2)
-                    return 1;
+                    return -1;
 
                 if (e2.BlendMode == 2 && e1.BlendMode != 2)
-                    return -1;
+                    return 1;
 
                 var is1Additive = e1.BlendMode == 1 || e1.BlendMode == 6 || e1.BlendMode == 3;
                 var is2Additive = e2.BlendMode == 1 || e2.BlendMode == 6 || e2.BlendMode == 3;
 
                 if (is1Additive && !is2Additive)
-                    return 1;
+                    return -1;
 
                 if (is2Additive && !is1Additive)
-                    return -1;
+                    return 1;
 
                 return e1.TexUnitNumber.CompareTo(e2.TexUnitNumber);
             });
+        }
+
+        public override int GetNumberOfBones()
+        {
+            return Bones.Length;
         }
 
         private static T[] ReadArrayOf<T>(BinaryReader reader, int offset, int count) where T : struct

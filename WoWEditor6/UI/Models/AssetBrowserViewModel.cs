@@ -1,0 +1,218 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using WoWEditor6.Annotations;
+using WoWEditor6.IO;
+using WoWEditor6.UI.Components;
+
+namespace WoWEditor6.UI.Models
+{
+    public class AssetBrowserFilePreviewElement
+    {
+        public AssetBrowserFilePreview View { get; set; }
+    }
+
+    public class AssetBrowserViewModel : INotifyPropertyChanged
+    {
+        private readonly Dialogs.AssetBrowser mBrowser;
+        private AssetBrowserDirectory mRootDiretory;
+        private bool mShowTextures = true;
+        private bool mShowModels = true;
+        private bool mHideUnknown = true;
+        private bool mHideKnownFileNames = true;
+        private bool mShowSpecularTextures;
+        private AssetBrowserDirectory mCurrentDirectory;
+        private readonly ObservableCollection<AssetBrowserFilePreviewElement> mCurFiles = new ObservableCollection<AssetBrowserFilePreviewElement>();
+        private IEnumerable<AssetBrowserFilePreviewElement> mFullElements = new List<AssetBrowserFilePreviewElement>(); 
+
+        public bool ShowTextures { get { return mShowTextures; } set { mShowTextures = value; UpdateShowTextures(value); } }
+
+        public bool ShowModels { get { return mShowModels; } set { mShowModels = value; UpdateShowModels(value); } }
+        public bool HideKnownFileNames { get { return mHideKnownFileNames; } set { UpdateHideKnownFilenames(value); } }
+        public bool HideUnknownFiles { get { return mHideUnknown; } set { mHideUnknown = value; UpdateHideUnknownFiles(value); } }
+        public bool ShowSpecularTextures { get { return mShowSpecularTextures; } set { UpdateShowSpecularTextures(value); } }
+
+        public IEnumerable<AssetBrowserDirectory> AssetBrowserRoot { get { return new []{mRootDiretory}; } }
+
+
+        public AssetBrowserViewModel(Dialogs.AssetBrowser browser)
+        {
+            mBrowser = browser;
+            browser.Loaded += OnInitialized;
+            FileManager.Instance.LoadComplete += OnFilesLoaded;
+            mRootDiretory = new AssetBrowserDirectory(this, new DirectoryEntry {Name = ""}, null);
+        }
+
+        public void Handle_BrowserSelectionChanged(AssetBrowserDirectory newItem)
+        {
+            mCurrentDirectory = newItem;
+
+            if (newItem == null)
+                return;
+
+            mCurrentDirectory = newItem;
+            UpdateItems(true);
+        }
+
+        private void UpdateHideKnownFilenames(bool value)
+        {
+            mHideKnownFileNames = value;
+            foreach(var file in mFullElements)
+                file.View.UpdateState(this);
+        }
+
+        private void UpdateShowSpecularTextures(bool value)
+        {
+            mShowSpecularTextures = value;
+
+            var textures = mFullElements.Where(f => f.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp") || f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp"));
+            if (value)
+            {
+                foreach (var elem in textures.Where(elem => mCurFiles.Contains(elem) == false))
+                {
+                    mCurFiles.Add(elem);
+                }
+            }
+            else
+            {
+                foreach (var elem in textures.Where(elem => mCurFiles.Contains(elem)))
+                {
+                    mCurFiles.Remove(elem);
+                }
+            }
+        }
+
+        private void UpdateShowModels(bool value)
+        {
+            mShowModels = value;
+
+            var models = mFullElements.Where(f => f.View.FileEntry.Extension.Contains("m2"));
+            if (value)
+            {
+                foreach (var elem in models.Where(elem => mCurFiles.Contains(elem) == false))
+                {
+                    mCurFiles.Add(elem);
+                }
+            }
+            else
+            {
+                foreach (var elem in models.Where(elem => mCurFiles.Contains(elem)))
+                {
+                    mCurFiles.Remove(elem);
+                }
+            }
+        }
+
+        private void UpdateShowTextures(bool value)
+        {
+            mShowTextures = value;
+
+            var textures = mFullElements.Where(f => f.View.FileEntry.Extension.Contains("blp"));
+            if (value)
+            {
+                foreach (var elem in textures.Where(elem => mCurFiles.Contains(elem) == false))
+                {
+                    mCurFiles.Add(elem);
+                }
+            }
+            else
+            {
+                foreach (var elem in textures.Where(elem => mCurFiles.Contains(elem)))
+                {
+                    mCurFiles.Remove(elem);
+                }
+            }
+        }
+
+        private void UpdateHideUnknownFiles(bool value)
+        {
+            mHideKnownFileNames = value;
+            if (value == false)
+            {
+                foreach (var elem in mFullElements.Where(elem => mCurFiles.Contains(elem) == false))
+                {
+                    mCurFiles.Add(elem);
+                }
+            }
+            else
+            {
+                var toRemove =
+                    mFullElements.Where(
+                        f =>
+                            f.View.FileEntry.Extension.Contains("m2") == false &&
+                            f.View.FileEntry.Extension.Contains("blp") == false
+                );
+
+                foreach (var elem in toRemove)
+                    mCurFiles.Remove(elem);
+            }
+        }
+
+        private void UpdateItems(bool directoryChanged = false)
+        {
+            if (mCurrentDirectory == null)
+            {
+                mBrowser.SelectedFilesListView.ItemsSource = new object[0];
+                return;
+            }
+
+
+            var files =
+                mCurrentDirectory.Files.Select(
+                    f => new AssetBrowserFilePreviewElement {View = new AssetBrowserFilePreview(f, this)}).ToList();
+            var elements = files.Where(f =>
+            {
+                var ext = f.View.FileEntry.Extension.ToLowerInvariant();
+                if (ext.Contains("blp") && mShowTextures == false)
+                    return false;
+
+                if (ext.Contains("m2") && mShowModels == false)
+                    return false;
+
+                if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp") && mShowSpecularTextures == false)
+                    return false;
+
+                if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp") && mShowSpecularTextures == false)
+                    return false;
+
+                if (ext.Contains("m2") == false && ext.Contains("blp") == false && mHideUnknown)
+                    return false;
+
+                return true;
+            }).ToList();
+
+            if (directoryChanged == false && mCurFiles.Count() == elements.Count())
+                return;
+
+            mFullElements = files;
+
+            mCurFiles.Clear();
+            foreach(var elem in elements)
+               mCurFiles.Add(elem);
+        }
+
+        private void OnInitialized(object sender, EventArgs args)
+        {
+            mBrowser.SelectedFilesListView.ItemsSource = mCurFiles;
+        }
+
+        private void OnFilesLoaded()
+        {
+            mRootDiretory = new AssetBrowserDirectory(this, FileManager.Instance.FileListing.RootEntry, null);
+            mBrowser.Dispatcher.Invoke(() =>
+                OnPropertyChanged("AssetBrowserRoot"));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}

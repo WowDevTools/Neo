@@ -41,7 +41,7 @@ namespace WoWEditor6.UI.Dialogs
 
         private void showModelInRenderControl(int pModelId)
         {
-            if(!(pModelId == 0))
+            if(pModelId != 0)
             {
                 //modelRenderControl1.SetModel("");
             }

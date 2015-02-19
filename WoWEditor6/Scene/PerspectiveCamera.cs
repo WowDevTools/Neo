@@ -5,7 +5,7 @@ namespace WoWEditor6.Scene
     class PerspectiveCamera : Camera
     {
         private float mAspect = 1.0f;
-        private float mFov = 45.0f;
+        private float mFov = 55.0f;
 
         public float NearClip { get; private set; }
 

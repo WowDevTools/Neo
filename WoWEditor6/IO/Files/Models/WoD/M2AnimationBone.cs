@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using SharpDX;
-using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
@@ -17,9 +16,16 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         public M2Bone Bone { get; private set; }
 
+        public bool IsBillboarded { get; private set; }
+
+        public bool IsTransformed { get; private set; }
+
         public M2AnimationBone(M2File file, ref M2Bone bone, BinaryReader reader)
         {
             Bone = bone;
+            IsBillboarded = (bone.flags & 0x08) != 0;
+            IsTransformed = (bone.flags & 0x200) != 0;
+
             mPivot = Matrix.Translation(bone.pivot);
             mInvPivot = Matrix.Translation(-bone.pivot);
 
@@ -28,41 +34,27 @@ namespace WoWEditor6.IO.Files.Models.WoD
             mScaling = new M2Vector3AnimationBlock(file, bone.scaling, reader, Vector3.One);
         }
 
-        public void UpdateMatrix(uint time, int animation, out Matrix matrix, M2Animator animator)
+        public void UpdateMatrix(uint time, int animation, out Matrix matrix,
+            M2Animator animator, BillboardParameters billboard)
         {
             var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
             var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
             var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
+            var billboardMatrix = Matrix.Identity;
 
-            var boneMatrix = Matrix.RotationQuaternion(rotation) *
-                Matrix.Scaling(scaling) * Matrix.Translation(position);
-
-            var billboard = (Bone.flags & 0x08) != 0;
-            if (billboard)
+            if (IsBillboarded && billboard != null)
             {
-                // Should really get this from somewhere else...
-                var camera = WorldFrame.Instance.ActiveCamera;
-
-                boneMatrix.M11 = camera.Forward.X;
-                boneMatrix.M12 = camera.Forward.Y;
-                boneMatrix.M13 = camera.Forward.Z;
-
-                boneMatrix.M21 = camera.Right.X;
-                boneMatrix.M22 = camera.Right.Y;
-                boneMatrix.M23 = camera.Right.Z;
-
-                boneMatrix.M31 = camera.Up.X;
-                boneMatrix.M32 = camera.Up.Y;
-                boneMatrix.M33 = camera.Up.Z;
-
-                // TODO: Must not rotate this bone with the
-                // instance matrix in case billboarding was applied
+                billboardMatrix.Row1 = new Vector4(billboard.Forward, billboardMatrix.M14);
+                billboardMatrix.Row2 = new Vector4(billboard.Right, billboardMatrix.M24);
+                billboardMatrix.Row3 = new Vector4(billboard.Up, billboardMatrix.M34);
+                billboardMatrix *= billboard.InverseRotation;
             }
 
-            boneMatrix = mInvPivot * boneMatrix * mPivot;
+            var boneMatrix = mInvPivot * billboardMatrix * Matrix.RotationQuaternion(rotation)
+                * Matrix.Scaling(scaling) * Matrix.Translation(position) * mPivot;
 
-            if (Bone.parentBone >= 0)
-                boneMatrix *= animator.GetBoneMatrix(time, Bone.parentBone);
+            if (IsTransformed && Bone.parentBone >= 0)
+                boneMatrix *= animator.GetBoneMatrix(time, Bone.parentBone, billboard);
 
             matrix = boneMatrix;
         }

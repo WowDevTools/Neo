@@ -1,4 +1,6 @@
-﻿using WoWEditor6.IO.Files;
+﻿using WoWEditor6.IO;
+using WoWEditor6.IO.Files;
+using WoWEditor6.IO.Files.Sky;
 
 namespace WoWEditor6.Storage
 {
@@ -13,6 +15,9 @@ namespace WoWEditor6.Storage
         public static DbcFile ZoneLightPoint { get;private set;  }
         public static DbcFile LightIntBand { get;private set;  }
         public static DbcFile LightFloatBand { get;private set;  }
+        public static DbcFile CreatureDisplayInfo { get; private set; }
+        public static DbcFile CreatureModelData { get; private set; }
+        public static DbcFile FileData { get; private set; }
 
         static DbcStorage()
         {
@@ -25,6 +30,9 @@ namespace WoWEditor6.Storage
             ZoneLightPoint = new DbcFile();
             LightIntBand = new DbcFile();
             LightFloatBand = new DbcFile();
+            CreatureDisplayInfo = new DbcFile();
+            CreatureModelData = new DbcFile();
+            FileData = new DbcFile();
         }
 
         public static void Initialize()
@@ -32,18 +40,23 @@ namespace WoWEditor6.Storage
             Map.Load(@"DBFilesClient\Map.dbc");
             LoadingScreen.Load(@"DBFilesClient\LoadingScreens.dbc");
             Light.Load(@"DBFilesClient\Light.dbc");
+            CreatureDisplayInfo.Load(@"DBFilesClient\CreatureDisplayInfo.dbc");
+            CreatureModelData.Load(@"DBFilesClient\CreatureModelData.dbc");
 
-            if (IO.FileManager.Instance.Version <= IO.FileDataVersion.Mists)
+            if (FileManager.Instance.Version <= FileDataVersion.Mists)
                 InitLightsMop();
 
-            if(IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+            if(FileManager.Instance.Version == FileDataVersion.Lichking)
             {
                 LightIntBand.Load(@"DBFilesClient\LightIntBand.dbc");
                 LightFloatBand.Load(@"DBFilesClient\LightFloatBand.dbc");
             }
 
+            if(FileManager.Instance.Version <= FileDataVersion.Warlords)
+                FileData.Load(@"DBFilesClient\FileData.dbc");
+
             MapFormatGuess.Initialize();
-            IO.Files.Sky.SkyManager.Instance.Initialize();
+            SkyManager.Instance.Initialize();
         }
 
         private static void InitLightsMop()

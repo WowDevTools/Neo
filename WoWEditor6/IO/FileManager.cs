@@ -9,6 +9,7 @@ namespace WoWEditor6.IO
         public static FileManager Instance { get; private set; }
 
         public IFileProvider Provider { get; private set; }
+        public IFileListing FileListing { get; set; }
         public string DataPath { get; set; }
         public bool Initialized { get; private set; }
 
@@ -18,6 +19,11 @@ namespace WoWEditor6.IO
         static FileManager()
         {
             Instance = new FileManager();
+        }
+
+        FileManager()
+        {
+            FileListing = new DefaultFileListing();
         }
 
         public Stream GetOutputStream(string path)
@@ -69,6 +75,7 @@ namespace WoWEditor6.IO
                 mgr.LoadComplete += () =>
                 {
                     Initialized = true;
+                    Storage.DbcStorage.Initialize();
                     if (LoadComplete != null)
                         LoadComplete();
                 };
@@ -95,6 +102,7 @@ namespace WoWEditor6.IO
             mgr.LoadComplete += () =>
             {
                 Initialized = true;
+                Storage.DbcStorage.Initialize();
                 if (LoadComplete != null)
                     LoadComplete();
             };

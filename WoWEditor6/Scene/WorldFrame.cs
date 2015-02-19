@@ -16,23 +16,25 @@ namespace WoWEditor6.Scene
         [StructLayout(LayoutKind.Sequential)]
         struct GlobalParamsBuffer
         {
-            public Vector4 mapAmbient;
-            public Vector4 mapDiffuse;
-            public Vector4 fogColor;
-            public Vector4 fogParams;
-            public Vector4 mousePosition;
-            public Vector4 brushParameters;
-            public Vector4 eyePosition;
-            // X -> drawOnModels
-            public Vector4 brushSettings;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct GlobalBuffer
-        {
             public Matrix matView;
             public Matrix matProj;
+
+            public Color4 ambientLight;
+            public Color4 diffuseLight;
+
+            public Color4 fogColor;
+            // x -> fogStart
+            // y -> fotEnd
+            // z -> farClip
+            public Vector4 fogParams;
+
+            public Vector4 mousePosition;
             public Vector4 eyePosition;
+
+            // x -> innerRadius
+            // y -> outerRadius
+            // z -> brushTime
+            public Vector4 brushParams;
         }
 
         public static WorldFrame Instance { get; private set; }
@@ -57,25 +59,21 @@ namespace WoWEditor6.Scene
         private AppState mState;
         private readonly PerspectiveCamera mMainCamera = new PerspectiveCamera();
         public Camera ActiveCamera { get; private set; }
+
         private ConstantBuffer mGlobalBuffer;
-        private ConstantBuffer mGlobalParamsBuffer;
-        private GlobalParamsBuffer mGlobalParamsBufferStore;
-        private GlobalBuffer mGlobalBufferStore;
-        private bool mGlobalParamsChanged;
-        private bool mGlobalChanged;
+        private GlobalParamsBuffer mGlobalBufferStore;
+        private bool mGlobalBufferChanged;
+
         public CameraControl CamControl { get; private set; }
         private IntersectionParams mIntersection;
         private Point mLastCursorPosition;
-        private bool mHighlightModels;
+        private RenderControl mWindow;
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
         public GraphicsDispatcher Dispatcher { get; private set; }
-        public bool HighlightModelsInBrush
-        {
-            get { return mHighlightModels; }
-            set { OnUpdateHighlightModels(value); }
-        }
+
+        public bool HighlightModelsInBrush { get; set; }
 
         static WorldFrame()
         {
@@ -88,18 +86,25 @@ namespace WoWEditor6.Scene
             MapManager = new MapManager();
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
-            mState = AppState.FileSystemInit;
+            mState = AppState.Idle;
+            
+            // set the settings on creation
+            this.HighlightModelsInBrush = Properties.Settings.Default.HighlightModelsInBrush;
+            //this.UpdateDrawBrushOnModels = Properties.Settings.Default.UpdateDrawBrushOnModels; // todo: notimplemented!
         }
 
         public void UpdateBrush(float innerRadius, float outerRadius)
         {
-            mGlobalParamsBufferStore.brushParameters.X = innerRadius;
-            mGlobalParamsBufferStore.brushParameters.Y = outerRadius;
-            mGlobalParamsChanged = true;
+            mGlobalBufferStore.brushParams.X = innerRadius;
+            mGlobalBufferStore.brushParams.Y = outerRadius;
+            mGlobalBufferChanged = true;
         }
 
         public void OnResize(int width, int height)
         {
+            if (width == 0 || height == 0)
+                return;
+
             mMainCamera.SetAspect((float) width / height);
         }
 
@@ -108,35 +113,27 @@ namespace WoWEditor6.Scene
             lock (mGlobalBuffer)
             {
                 mGlobalBufferStore.eyePosition = new Vector4(position, 1.0f);
-                mGlobalParamsBufferStore.eyePosition = new Vector4(position, 1.0f);
-                mGlobalChanged = true;
-                mGlobalParamsChanged = true;
+                mGlobalBufferChanged = true;
             }
         }
 
         public void Initialize(RenderControl window, GxContext context)
         {
+            mWindow = window;
+            context.Resize += (w, h) => OnResize((int) w, (int) h);
             mGlobalBuffer = new ConstantBuffer(context);
-            mGlobalParamsBuffer = new ConstantBuffer(context);
-            mGlobalParamsBufferStore = new GlobalParamsBuffer
+            mGlobalBuffer = new ConstantBuffer(context);
+            mGlobalBufferStore = new GlobalParamsBuffer
             {
-                mapAmbient = new Vector4(0.5f, 0.5f, 0.5f, 1.0f),
-                mapDiffuse = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
-                fogColor = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
+                matView = Matrix.Identity,
+                matProj = Matrix.Identity,
+                ambientLight = new Color4(0.5f, 0.5f, 0.5f, 1.0f),
+                diffuseLight = new Color4(0.25f, 0.5f, 1.0f, 1.0f),
+                fogColor = new Color4(0.25f, 0.5f, 1.0f, 1.0f),
                 fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f),
-                brushParameters = new Vector4(45.0f, 55.0f, 0.0f, 0.0f),
                 mousePosition = new Vector4(float.MaxValue),
                 eyePosition = Vector4.Zero,
-                brushSettings = new Vector4(0, 1, 0, 0)
-            };
-
-            mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
-
-            mGlobalBufferStore = new GlobalBuffer
-            {
-                eyePosition = Vector4.Zero,
-                matProj = Matrix.Identity,
-                matView = Matrix.Identity
+                brushParams = new Vector4(45.0f, 55.0f, 0.0f, 0.0f),
             };
 
             mGlobalBuffer.UpdateData(mGlobalBufferStore);
@@ -146,7 +143,8 @@ namespace WoWEditor6.Scene
             MapAreaLowRender.Initialize(context);
             WmoGroupRender.Initialize(context);
             M2BatchRenderer.Initialize(context);
-            M2ModelRenderer.Initialize(context);
+            M2SingleRenderer.Initialize(context);
+            M2PortraitRenderer.Initialize(context);
 
             StaticAnimationThread.Instance.Initialize();
 
@@ -162,6 +160,8 @@ namespace WoWEditor6.Scene
 
             mMainCamera.ViewChanged += ViewChanged;
             mMainCamera.ProjectionChanged += ProjectionChanged;
+
+            OnResize(mWindow.Width, mWindow.Height);
 
             ViewChanged(mMainCamera, mMainCamera.View);
             ProjectionChanged(mMainCamera, mMainCamera.Projection);
@@ -199,12 +199,15 @@ namespace WoWEditor6.Scene
             Editing.EditManager.Instance.UpdateChanges();
 
             // do not move before mCamControl.Update to have the latest view/projection
-            UpdateCursorPosition();
-            UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
-            UpdateBuffers();
+            if (State == AppState.World)
+            {
+                UpdateCursorPosition();
+                UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
+                CheckUpdateGlobalBuffer();
+            }
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
-            GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalParamsBuffer.Native);
+            GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.Native);
             MapManager.OnFrame();
             WmoManager.OnFrame();
             M2Manager.OnFrame();
@@ -215,57 +218,44 @@ namespace WoWEditor6.Scene
             CamControl.HandleMouseWheel(delta);
         }
 
-        public void UpdateDrawBrushOnModels(bool enabled)
+        public void UpdateMapAmbient(Color3 ambient)
         {
-            mGlobalParamsBufferStore.brushSettings.X = enabled ? 1 : 0;
-            mGlobalParamsChanged = true;
-        }
-
-        public void UpdateMapAmbient(Vector3 ambient)
-        {
-            lock (mGlobalParamsBuffer)
+            lock (mGlobalBuffer)
             {
-                mGlobalParamsBufferStore.mapAmbient = new Vector4(ambient, 1.0f);
-                mGlobalParamsChanged = true;
+                mGlobalBufferStore.ambientLight = new Color4(ambient, 1.0f);
+                mGlobalBufferChanged = true;
             }
         }
 
-        public void UpdateMapDiffuse(Vector3 diffuse)
+        public void UpdateMapDiffuse(Color3 diffuse)
         {
-            lock (mGlobalParamsBuffer)
+            lock (mGlobalBuffer)
             {
-                mGlobalParamsBufferStore.mapDiffuse = new Vector4(diffuse, 1.0f);
-                mGlobalParamsChanged = true;
+                mGlobalBufferStore.diffuseLight = new Color4(diffuse, 1.0f);
+                mGlobalBufferChanged = true;
             }
         }
 
-        public void UpdateFogParams(Vector3 fogColor, float fogStart)
+        public void UpdateFogParams(Color3 fogColor, float fogStart)
         {
-            lock(mGlobalParamsBuffer)
+            lock (mGlobalBuffer)
             {
-                mGlobalParamsBufferStore.fogColor = new Vector4(fogColor, 1.0f);
-                mGlobalParamsBufferStore.fogParams = new Vector4(fogStart, 900.0f, mMainCamera.FarClip, 0.0f);
-                mGlobalParamsChanged = true;
+                mGlobalBufferStore.fogColor = new Color4(fogColor, 1.0f);
+                mGlobalBufferStore.fogParams = new Vector4(fogStart, 900.0f, mMainCamera.FarClip, 0.0f);
+                mGlobalBufferChanged = true;
             }
-        }
-
-        private void OnUpdateHighlightModels(bool enabled)
-        {
-            mHighlightModels = enabled;
-            mGlobalParamsBufferStore.brushSettings.Y = enabled ? 1 : 0;
-            mGlobalParamsChanged = true;
         }
 
         private void UpdateBrushTime(System.TimeSpan frameTime)
         {
             var timeSecs = frameTime.TotalMilliseconds / 1000.0;
-            mGlobalParamsBufferStore.brushParameters.Z = (float)timeSecs;
-            mGlobalParamsChanged = true;
+            mGlobalBufferStore.brushParams.Z = (float)timeSecs;
+            mGlobalBufferChanged = true;
         }
 
         private void UpdateCursorPosition(bool forced = false)
         {
-            var pos = InterfaceManager.Instance.RenderWindow.PointToClient(Cursor.Position);
+            var pos = mWindow.PointToClient(Cursor.Position);
             if (mIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
             {
                 mLastCursorPosition = new Point(pos.X, pos.Y);
@@ -280,8 +270,8 @@ namespace WoWEditor6.Scene
                 if (mIntersection.M2Hit)
                     Editing.EditManager.Instance.MousePosition = mIntersection.M2Position;
 
-                mGlobalParamsBufferStore.mousePosition = new Vector4(Editing.EditManager.Instance.MousePosition, 0.0f);
-                mGlobalParamsChanged = true;
+                mGlobalBufferStore.mousePosition = new Vector4(Editing.EditManager.Instance.MousePosition, 0.0f);
+                mGlobalBufferChanged = true;
 
                 Editing.EditManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;
                 Editing.EditManager.Instance.MousePosition = mIntersection.TerrainPosition;
@@ -291,7 +281,6 @@ namespace WoWEditor6.Scene
         private void UpdateAppState(AppState newState)
         {
             mState = newState;
-            InterfaceManager.Instance.UpdateState(newState);
         }
 
         private void SetActiveCamera(Camera camera)
@@ -305,7 +294,7 @@ namespace WoWEditor6.Scene
                 return;
 
             mGlobalBufferStore.matView = matView;
-            mGlobalChanged = true;
+            mGlobalBufferChanged = true;
 
             M2Manager.ViewChanged();
 
@@ -318,34 +307,24 @@ namespace WoWEditor6.Scene
                 return;
 
             mGlobalBufferStore.matProj = matProj;
-            mGlobalChanged = true;
 
             var perspectiveCamera = camera as PerspectiveCamera;
-            if (perspectiveCamera == null) return;
+            if (perspectiveCamera != null)
+                mGlobalBufferStore.fogParams.Z = perspectiveCamera.FarClip;
 
-            mGlobalParamsBufferStore.fogParams.Z = perspectiveCamera.FarClip;
-            mGlobalParamsChanged = true;
-
+            mGlobalBufferChanged = true;
             M2Manager.ViewChanged();
         }
 
-        private void UpdateBuffers()
+        private void CheckUpdateGlobalBuffer()
         {
-            if (mGlobalParamsChanged)
+            if (mGlobalBufferChanged)
             {
-                lock (mGlobalParamsBuffer)
+                lock (mGlobalBuffer)
                 {
-                    mGlobalParamsBuffer.UpdateData(mGlobalParamsBufferStore);
-                    mGlobalParamsChanged = false;
+                    mGlobalBuffer.UpdateData(mGlobalBufferStore);
+                    mGlobalBufferChanged = false;
                 }
-            }
-
-            if (!mGlobalChanged) return;
-
-            lock (mGlobalBuffer)
-            {
-                mGlobalBuffer.UpdateData(mGlobalBufferStore);
-                mGlobalChanged = false;
             }
         }
     }

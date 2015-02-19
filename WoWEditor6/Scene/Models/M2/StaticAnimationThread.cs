@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using SharpDX;
 using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
@@ -49,7 +50,7 @@ namespace WoWEditor6.Scene.Models.M2
                 lock(mAnimators)
                 {
                     foreach (var animator in mAnimators)
-                        animator.Update();
+                        animator.Update(null);
                 }
 
                 Thread.Sleep(20);

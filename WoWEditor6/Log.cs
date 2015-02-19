@@ -54,14 +54,34 @@ namespace WoWEditor6
         }
     }
 
+    class FileLogSink : ILogSink
+    {
+        public FileLogSink()
+        {
+            if (Directory.Exists("Logs") == false)
+                Directory.CreateDirectory("Logs");
+
+            File.Create("Logs\\Log.txt").Close();
+        }
+
+        public void AddMessage(LogLevel level, string title, string message)
+        {
+            lock (this)
+            {
+                File.AppendAllText("Logs\\Log.txt", string.Format("{0}{1}\r\n", title, message));
+            }
+        }
+    }
+
     static class Log
     {
         private static readonly List<ILogSink> Sinks = new List<ILogSink>();
-        private static LogLevel gLogLevel = LogLevel.Debug;
+        private const LogLevel LogLevel = WoWEditor6.LogLevel.Debug;
 
         static Log()
         {
             Sinks.Add(new ConsoleLogSink());
+            Sinks.Add(new FileLogSink());
         }
 
         private static string GetTitle(string fileName, int line)
@@ -71,7 +91,7 @@ namespace WoWEditor6
 
         private static void AddMessage(LogLevel level, string title, string message)
         {
-            if ((int) level > (int) gLogLevel)
+            if ((int) level > (int) LogLevel)
                 return;
 
             lock(Sinks)
@@ -93,24 +113,24 @@ namespace WoWEditor6
                 Sinks.Remove(sink);
         }
 
-        public static void Debug(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        public static void Debug(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Debug, GetTitle(fileName, line) + " - Debug: ", message);
+            AddMessage(LogLevel.Debug, GetTitle(fileName, line) + " - Debug: ", message == null ? "null" : message.ToString());
         }
 
-        public static void Warning(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        public static void Warning(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Warning, GetTitle(fileName, line) + " - Warning: ", message);
+            AddMessage(LogLevel.Warning, GetTitle(fileName, line) + " - Warning: ", message == null ? "null" : message.ToString());
         }
 
-        public static void Error(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        public static void Error(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Error, GetTitle(fileName, line) + " - ERROR: ", message);
+            AddMessage(LogLevel.Error, GetTitle(fileName, line) + " - ERROR: ", message == null ? "null" : message.ToString());
         }
 
-        public static void Fatal(string message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
+        public static void Fatal(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Fatal, GetTitle(fileName, line) + " - FATAL: ", message);
+            AddMessage(LogLevel.Fatal, GetTitle(fileName, line) + " - FATAL: ", message == null ? "null" : message.ToString());
         }
     }
 }

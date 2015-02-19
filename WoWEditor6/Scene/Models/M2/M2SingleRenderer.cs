@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
@@ -6,7 +7,7 @@ using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
 {
-    class M2ModelRenderer
+    class M2SingleRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer
@@ -15,76 +16,137 @@ namespace WoWEditor6.Scene.Models.M2
             public Vector4 modelPassParams;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        struct PerDrawCallBuffer
+        {
+            public Matrix instanceMat;
+            public Color4 colorMod;
+        }
+
         private static Mesh Mesh { get; set; }
         private static Sampler Sampler { get; set; }
 
         private static readonly BlendState[] BlendStates = new BlendState[7];
         private static ShaderProgram gNoBlendProgram;
         private static ShaderProgram gBlendProgram;
+        private static ShaderProgram gBlendTestProgram;
+
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
-        private readonly IM2Animator mAnimator;
+        private static DepthState gDepthWriteState;
+        private static DepthState gDepthNoWriteState;
+
         private readonly M2File mModel;
-        private bool mIsSyncLoaded;
-        private bool mSkipRendering;
+        private readonly IM2Animator mAnimator;
+        private readonly Matrix[] mAnimationMatrices;
 
-        private readonly Matrix[] mAnimationMatrices = new Matrix[256];
-
-        private VertexBuffer mVertexBuffer;
-        private IndexBuffer mIndexBuffer;
-
-        private ConstantBuffer mAnimBuffer;
+        private ConstantBuffer mPerDrawCallBuffer;
         private ConstantBuffer mPerPassBuffer;
+        private ConstantBuffer mAnimBuffer;
 
-        public M2ModelRenderer(M2File model)
+        public M2SingleRenderer(M2File model)
         {
             mModel = model;
-            mAnimator = ModelFactory.Instance.CreateAnimator(model);
-            mAnimator.SetAnimationByIndex(0);
-            mAnimator.Update();
+            if (model.NeedsPerInstanceAnimation)
+            {
+                mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
+                mAnimator = ModelFactory.Instance.CreateAnimator(model);
+                mAnimator.SetAnimationByIndex(0);
+            }
         }
 
-        public void OnFrame()
+        public virtual void Dispose()
         {
-            if (mSkipRendering)
-                return;
+            var pb = mPerPassBuffer;
+            var pd = mPerDrawCallBuffer;
+            var ab = mAnimBuffer;
 
-            if(mIsSyncLoaded == false)
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                SyncLoad();
-            }
+                if (pb != null)
+                    pb.Dispose();
+                if (pd != null)
+                    pd.Dispose();
+                if (ab != null)
+                    ab.Dispose();
+            });
+        }
 
-            mAnimator.Update();
+        public void OnFrame(M2Renderer renderer, M2RenderInstance instance)
+        {
+            var animator = renderer.Animator;
+            if (mAnimator != null)
+            {
+                // If we have our own animator, use that. Otherwise use the global one.
+                animator = mAnimator;
+
+                var camera = WorldFrame.Instance.ActiveCamera;
+                mAnimator.Update(new BillboardParameters
+                {
+                    Forward = camera.Forward,
+                    Right = camera.Right,
+                    Up = camera.Up,
+                    InverseRotation = instance.InverseRotation
+                });
+
+                if (mAnimator.GetBones(mAnimationMatrices))
+                    mAnimBuffer.UpdateData(mAnimationMatrices);
+            }
 
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);
 
-            Mesh.UpdateIndexBuffer(mIndexBuffer);
-            Mesh.UpdateVertexBuffer(mVertexBuffer);
+            Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
+            Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-            if (mAnimator.GetBones(mAnimationMatrices))
-                mAnimBuffer.UpdateData(mAnimationMatrices);
+            mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
+            {
+                instanceMat = instance.InstanceMatrix,
+                colorMod = instance.HighlightColor
+            });
 
-            Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
-            Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
+            Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer != null ? mAnimBuffer : renderer.AnimBuffer);
+            Mesh.Program.SetVertexConstantBuffer(3, mPerDrawCallBuffer);
+            Mesh.Program.SetVertexConstantBuffer(4, mPerPassBuffer);
 
             foreach (var pass in mModel.Passes)
             {
+                if (!mModel.NeedsPerInstanceAnimation)
+                {
+                    // Prevent double rendering since this model pass
+                    // was already processed by the batch renderer
+                    if (pass.BlendMode == 0 || pass.BlendMode == 1)
+                        continue;
+                }
+
+                var program = gBlendProgram;
+                if (pass.BlendMode == 0)
+                    program = gNoBlendProgram;
+                else if (pass.BlendMode == 1)
+                    program = gBlendTestProgram;
+
+                if (Mesh.Program != program)
+                {
+                    Mesh.Program = program;
+                    Mesh.Program.Bind();
+                }
+
+                var depthState = gDepthNoWriteState;
+                if (pass.BlendMode == 0 || pass.BlendMode == 1)
+                    depthState = gDepthWriteState;
+
+                Mesh.UpdateDepthState(depthState);
+
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
                 Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
                 Mesh.UpdateBlendState(BlendStates[pass.BlendMode]);
-
-                var oldProgram = Mesh.Program;
-                Mesh.Program = (pass.BlendMode > 0 ? gBlendProgram : gNoBlendProgram);
-                if (Mesh.Program != oldProgram)
-                    Mesh.Program.Bind();
 
                 var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
                 Matrix uvAnimMat;
-                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
 
                 mPerPassBuffer.UpdateData(new PerModelPassBuffer()
                 {
@@ -100,25 +162,14 @@ namespace WoWEditor6.Scene.Models.M2
             }
         }
 
-        private void SyncLoad()
+        public void OnSyncLoad()
         {
-            mIsSyncLoaded = true;
-
-            if (mModel.Vertices.Length == 0 || mModel.Indices.Length == 0 || mModel.Passes.Count == 0)
-            {
-                mSkipRendering = true;
-                return;
-            }
-
             var ctx = WorldFrame.Instance.GraphicsContext;
-            mVertexBuffer = new VertexBuffer(ctx);
-            mIndexBuffer = new IndexBuffer(ctx);
-
-            mVertexBuffer.UpdateData(mModel.Vertices);
-            mIndexBuffer.UpdateData(mModel.Indices);
-
-            mAnimBuffer = new ConstantBuffer(ctx);
-            mAnimBuffer.UpdateData(mAnimationMatrices);
+            mPerDrawCallBuffer = new ConstantBuffer(ctx);
+            mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
+            {
+                instanceMat = Matrix.Identity
+            });
 
             mPerPassBuffer = new ConstantBuffer(ctx);
             mPerPassBuffer.UpdateData(new PerModelPassBuffer()
@@ -126,14 +177,32 @@ namespace WoWEditor6.Scene.Models.M2
                 uvAnimMatrix = Matrix.Identity,
                 modelPassParams = Vector4.Zero
             });
+
+            if (mAnimator != null)
+            {
+                mAnimBuffer = new ConstantBuffer(ctx);
+                mAnimBuffer.UpdateData(mAnimationMatrices);
+            }
         }
 
         public static void Initialize(GxContext context)
         {
+            gDepthWriteState = new DepthState(context)
+            {
+                DepthEnabled = true,
+                DepthWriteEnabled = true
+            };
+
+            gDepthNoWriteState = new DepthState(context)
+            {
+                DepthEnabled = true,
+                DepthWriteEnabled = false
+            };
+
             Mesh = new Mesh(context)
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
-                DepthState = { DepthEnabled = true }
+                DepthState = gDepthNoWriteState
             };
 
             Mesh.BlendState.Dispose();
@@ -147,11 +216,19 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.AddElement("TEXCOORD", 0, 2);
             Mesh.AddElement("TEXCOORD", 1, 2);
 
-            var program = new ShaderProgram(context);
-            program.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-            program.SetPixelShader(Resources.Shaders.M2PixelPortrait);
+            gNoBlendProgram = new ShaderProgram(context);
+            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2Pixel);
+            gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
 
-            Mesh.Program = program;
+            gBlendProgram = new ShaderProgram(context);
+            gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlend);
+            gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
+
+            gBlendTestProgram = new ShaderProgram(context);
+            gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
+            gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
+
+            Mesh.Program = gBlendProgram;
 
             Sampler = new Sampler(context)
             {
@@ -221,14 +298,8 @@ namespace WoWEditor6.Scene.Models.M2
                 DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha
             };
 
-            gNoBlendProgram = program;
-
-            gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelPortraitBlend);
-            gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-
-            gNoCullState = new RasterState(context) {CullEnabled = false};
-            gCullState = new RasterState(context) {CullEnabled = true};
+            gNoCullState = new RasterState(context) { CullEnabled = false };
+            gCullState = new RasterState(context) { CullEnabled = true };
         }
     }
 }

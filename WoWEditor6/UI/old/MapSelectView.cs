@@ -223,7 +223,7 @@ namespace WoWEditor6.UI.Views
             if (mMapLabels.Count > 0)
                 return;
 
-            Storage.DbcStorage.Initialize();
+            //Storage.DbcStorage.Initialize();
 
             var numHoriz = (int) Math.Floor((mSize.X - 60.0f) / 103.0f);
 

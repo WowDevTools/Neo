@@ -27,7 +27,13 @@ namespace WoWEditor6.IO.MPQ
         public event Action LoadComplete;
 
         private Locale mLocale;
-        private List<Archive> mArchives = new List<Archive>();
+
+        public List<Archive> Archives { get; private set; }
+
+        public FileManager()
+        {
+            Archives = new List<Archive>();
+        }
 
         public async void InitFromPath(string dataPath)
         {
@@ -39,7 +45,9 @@ namespace WoWEditor6.IO.MPQ
 
                 var archives = baseArchives.ToList();
                 archives.Sort(Compare);
-                mArchives = archives;
+                Archives = archives;
+
+                IO.FileManager.Instance.FileListing = new FileListing(this);
 
                 if (LoadComplete != null)
                     LoadComplete();
@@ -49,7 +57,7 @@ namespace WoWEditor6.IO.MPQ
         public Stream OpenFile(string path)
         {
             var existing = IO.FileManager.Instance.GetExistingFile(path);
-            return existing ?? mArchives.Select(archive => archive.Open(path)).FirstOrDefault(ret => ret != null);
+            return existing ?? Archives.Select(archive => archive.Open(path)).FirstOrDefault(ret => ret != null);
         }
 
         public bool Exists(string path)
@@ -61,7 +69,7 @@ namespace WoWEditor6.IO.MPQ
 
             }
 
-            return mArchives.Any(archive => archive.Contains(path));
+            return Archives.Any(archive => archive.Contains(path));
         }
 
         private static int Compare(Archive a1, Archive a2)

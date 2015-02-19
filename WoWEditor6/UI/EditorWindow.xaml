@@ -6,6 +6,7 @@
              xmlns:avalon="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:local="clr-namespace:WoWEditor6.UI"
              xmlns:dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
+             xmlns:controls="clr-namespace:WoWEditor6.UI.Components"
              mc:Ignorable="d" Width="1600" Height="900" Title="WoWDev" Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
@@ -15,6 +16,18 @@
         <Menu IsMainMenu="True">
             <MenuItem Header="_File">
                 <MenuItem Header="Save" Click="MenuSaveItem_Click"></MenuItem>
+                <TextBlock TextWrapping="Wrap" Text="TextBlock"/>
+            </MenuItem>
+            <avalon:MenuItemEx Header="Edit" RenderTransformOrigin="-1.176,0.611"/>
+            <MenuItem Header="View&#xD;&#xA;View"/>
+            <MenuItem Header="Extras" RenderTransformOrigin="-1.533,0.6">
+                <MenuItem x:Name="MenuItem_Settings" Header="Settings" HorizontalAlignment="Left" Width="140" Click="MenuItem_Settings_Click"/>
+            </MenuItem>
+            <MenuItem Header="?" >
+                <MenuItem Header="About" Click="About_MenuItem_Click" HorizontalAlignment="Left" Width="140"/>
+            </MenuItem>
+            <MenuItem Header="_Debug" RenderTransformOrigin="2.52,0.6">
+                <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"/>
             </MenuItem>
         </Menu>
         <avalon:DockingManager Grid.Row="1">
@@ -31,21 +44,79 @@
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Key Bindings" CanClose="True" AutoHideWidth="340" x:Name="KeyBindingPane">
-                            <dialogs:KeyBindingWidget VerticalAlignment="Top">
-
-                            </dialogs:KeyBindingWidget>
-                        </avalon:LayoutAnchorable>
+                       
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Brush Settings" CanClose="False" AutoHideWidth="340" x:Name="BrushSettingsPane">
-                            <dialogs:BrushSettingsWidget VerticalAlignment="Top">
-                                
-                            </dialogs:BrushSettingsWidget>
-                        </avalon:LayoutAnchorable>
+    
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">
-                        <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False">
+                        <avalon:LayoutAnchorable Title="Welcome" CanClose="False" CanFloat="False" CanAutoHide="False" x:Name="WelcomeDocument">
+                            <Grid SizeChanged="WelcomePanel_Resize">
+                                <controls:LoadingScreenControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="LoadingScreenView">
+                                    
+                                </controls:LoadingScreenControl>
+                                <controls:EntrySelectControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="EntrySelectView" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditorWindow}}}">
+                                    
+                                </controls:EntrySelectControl>
+                                <Grid Visibility="Collapsed" Loaded="MapTileGrid_Loaded">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="75"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="400"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" FontSize="29" Foreground="Black" FontWeight="Bold">Please select the map you want to edit</Label>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1" Margin="0,0,25,0">
+                                        <TextBox Width="200" Height="26" FontSize="16" x:Name="MapFilterTextBox" TextChanged="FilterText_Changed"></TextBox>
+                                        <CheckBox Margin="5,0,0,0" Height="18" x:Name="MapSortTypeCheckBox" Click="MapSortCheck_Click">Sort Alphabetically</CheckBox>
+                                    </StackPanel>
+                                    <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                                        <WrapPanel x:Name="MapTileGrid">
+                                    
+                                        </WrapPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                                <FlowDocumentScrollViewer VerticalScrollBarVisibility="Auto" x:Name="LoadingDocument" Visibility="Collapsed">
+                                    <FlowDocument FontFamily="Segoe UI" FontSize="20">
+                                        <Paragraph TextAlignment="Center">
+                                            <Label VerticalAlignment="Center">Loading files</Label>
+                                            <LineBreak/>
+                                            <ProgressBar IsIndeterminate="True" Width="400" Height="10" VerticalAlignment="Center"></ProgressBar>
+                                        </Paragraph>
+                                    </FlowDocument>
+                                </FlowDocumentScrollViewer>
+                                <FlowDocumentScrollViewer VerticalScrollBarVisibility="Auto" x:Name="SplashDocument">
+                                    <FlowDocument FontFamily="Segoe UI" FontSize="20">
+                                        <Paragraph>
+                                            <Run FontSize="29" FontWeight="Bold">World of Warcraft Editor</Run>
+                                        </Paragraph>
+                                        <Paragraph>
+                                            <Run>Welcome to the newest version of the World of Warcraft map editor.</Run>
+                                        </Paragraph>
+                                        <Paragraph>
+                                            <Run>Before you can start please make sure you select the path to our World of Warcraft directory. Right now only two versions are supported.
+                                        Warlords of Draenor and Wrath of the Lich King. For both versions you should select the folder your WoW.exe is located in. The version will be
+                                        detected automatically.</Run>
+                                        </Paragraph>
+                                        <Paragraph>
+                                            <Run>Please do not select the data folder or the WoW.exe itself, just select the directory your WoW is installed in. If you want the path to be
+                                        taken from the registry entries (this is usually the location of the last instance of WoW you have been starting) use the button with the according
+                                        description.</Run>
+                                        </Paragraph>
+                                        <Paragraph>
+                                            <TextBox Width="400" FontSize="16" x:Name="PathTextBox"></TextBox>
+                                            <Button Margin="5,0,0,0" Height="23" Width="40" FontSize="14" Click="BrowseFolderButton_Click">...</Button>
+                                            <Button Margin="5,0,0,0" Height="23" Width="130" FontSize="14" Click="RegistryButton_Click">From Registry</Button>
+                                            <LineBreak/>
+                                            <Button FontSize="14" Height="23" Width="55" Margin="0,5,0,0" Click="LoadButton_Click">Load</Button>
+                                        </Paragraph>
+                                    </FlowDocument>
+                                </FlowDocumentScrollViewer>
+                            </Grid>
+                        </avalon:LayoutAnchorable>
+                        <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False" x:Name="MapEditorDocument">
                             <WindowsFormsHost>
                                 <local:RenderControl x:Name="RenderTarget">
 
@@ -54,13 +125,24 @@
                         </avalon:LayoutDocument>
                     </avalon:LayoutDocumentPane>
                 </avalon:LayoutPanel>
+                <avalon:LayoutRoot.RightSide>
+                    <avalon:LayoutAnchorSide>
+                        <avalon:LayoutAnchorGroup>
+                            <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800">
+                                <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                                    
+                                </dialogs:AssetBrowser> 
+                            </avalon:LayoutAnchorable>
+                        </avalon:LayoutAnchorGroup>
+                    </avalon:LayoutAnchorSide>
+                </avalon:LayoutRoot.RightSide>
                 <avalon:LayoutRoot.BottomSide>
                     <avalon:LayoutAnchorSide>
                         <avalon:LayoutAnchorGroup>
                             <avalon:LayoutAnchorable Title="Log" AutoHideHeight="200" FloatingHeight="200">
                                 <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <FlowDocument x:Name="LogDocument" Background="DarkGray" FontFamily="Consolas" FontSize="8pt">
-                                        
+
                                     </FlowDocument>
                                 </FlowDocumentScrollViewer>
                             </avalon:LayoutAnchorable>

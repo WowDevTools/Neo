@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="WoWEditor6.UI.Components.EntrySelectControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="559" d:DesignWidth="754">
+    <Grid SizeChanged="Grid_SizeChanged" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Foreground="Black" FontSize="29" FontWeight="Bold">Please select your entry point on the map</Label>
+        <Border Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
+            <Image x:Name="WdlPreviewImage" HorizontalAlignment="Left" VerticalAlignment="Top" MouseMove="WdlPreview_MouseMove" MouseDown="WdlPreview_MouseDown" MouseUp="WdlPreview_MouseUp"></Image>
+        </Border>
+        <TextBlock x:Name="AdtPreviewLabel" Height="35" Width="Auto" FontSize="26" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0">ADT: 0/0</TextBlock>
+    </Grid>
+</UserControl>  

@@ -2,6 +2,7 @@
 {
     enum AppState
     {
+        Idle,
         Splash,
         FileSystemInit,
         MapSelect,

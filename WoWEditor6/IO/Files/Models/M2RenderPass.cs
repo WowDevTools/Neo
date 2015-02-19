@@ -8,6 +8,7 @@ namespace WoWEditor6.IO.Files.Models
         public int StartIndex { get; set; }
         public int IndexCount { get; set; }
         public List<Graphics.Texture> Textures { get; set; }
+        public List<int> TextureIndices { get; set; } 
         public int TexAnimIndex { get; set; }
         public int TexUnitNumber { get; set; }
         public int ColorAnimIndex { get; set; }

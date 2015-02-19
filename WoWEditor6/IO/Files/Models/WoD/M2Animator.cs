@@ -79,7 +79,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
             ResetAnimationTimes();
         }
 
-        public void Update()
+        public void Update(BillboardParameters billboard)
         {
             if (mHasAnimation == false)
                 return;
@@ -119,7 +119,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     if (mBoneCalculated[i])
                         continue;
 
-                    mBones[i].UpdateMatrix(time, mAnimationId, out BoneMatrices[i], this);
+                    mBones[i].UpdateMatrix(time, mAnimationId, out BoneMatrices[i], this, billboard);
                     mBoneCalculated[i] = true;
                 }
             }
@@ -200,12 +200,13 @@ namespace WoWEditor6.IO.Files.Models.WoD
             }
         }
 
-        public Matrix GetBoneMatrix(int bone)
+        public Matrix GetBoneMatrix(int bone, BillboardParameters billboard)
         {
-            return GetBoneMatrix((uint)(Environment.TickCount - mBoneStart), (short) bone);
+            uint time = (uint)(Environment.TickCount - mBoneStart);
+            return GetBoneMatrix(time, (short)bone, billboard);
         }
 
-        public Matrix GetBoneMatrix(uint time, short bone)
+        public Matrix GetBoneMatrix(uint time, short bone, BillboardParameters billboard)
         {
             lock(mBones)
             {
@@ -215,7 +216,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 if (mBoneCalculated[bone])
                     return BoneMatrices[bone];
 
-                mBones[bone].UpdateMatrix(time, mAnimationId, out BoneMatrices[bone], this);
+                mBones[bone].UpdateMatrix(time, mAnimationId, out BoneMatrices[bone], this, billboard);
                 mBoneCalculated[bone] = true;
                 return BoneMatrices[bone];
             }

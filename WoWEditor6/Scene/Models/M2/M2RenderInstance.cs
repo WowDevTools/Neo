@@ -7,6 +7,9 @@ namespace WoWEditor6.Scene.Models.M2
     class M2RenderInstance
     {
         private Matrix mInstanceMatrix;
+        private Matrix mInverseMatrix;
+        private Matrix mInverseRotation;
+
         private Vector3 mPosition;
         private Vector3 mRotation;
         private Color4 mHighlightColor = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -17,39 +20,53 @@ namespace WoWEditor6.Scene.Models.M2
         private TimeSpan mHighlightStartTime;
 
         public BoundingBox BoundingBox;
+
+        public readonly M2Renderer Renderer;
+
         public bool IsUpdated { get; set; }
 
         public int Uuid { get; private set; }
 
         public Matrix InstanceMatrix { get { return mInstanceMatrix; } }
-        public Matrix InverseMatrix;
+        public Matrix InverseMatrix { get { return mInverseMatrix; } }
+        public Matrix InverseRotation { get { return mInverseRotation; } }
 
         public Color4 HighlightColor { get { return mHighlightColor; } }
 
+        public float Depth { get; private set; }
+
         public int NumReferences { get; set; }
 
-        public M2RenderInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scale, M2BatchRenderer renderer)
+        public M2RenderInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scale, M2Renderer renderer)
         {
             mScale = scale;
             mPosition = position;
             mRotation = rotation;
             NumReferences = 1;
             Uuid = uuid;
-            BoundingBox = renderer.BoundingBox;
+            Renderer = renderer;
+            BoundingBox = renderer.Model.BoundingBox;
             mOrigBoundingBox = BoundingBox;
-            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
-                MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix.Scaling(scale) * Matrix.Translation(position);
+
+            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
+                MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z));
+
+            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
+            mInstanceMatrix = rotationMatrix * Matrix.Scaling(scale) * Matrix.Translation(position);
             BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
-            Matrix.Invert(ref mInstanceMatrix, out InverseMatrix);
+            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
         }
 
         public void UpdatePosition(Vector3 position)
         {
             mPosition = position;
-            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
-                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z)) * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
 
-            Matrix.Invert(ref mInstanceMatrix, out InverseMatrix);
+            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
+            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
+
+            mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
+            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
             BoundingBox = mOrigBoundingBox.Transform(ref mInstanceMatrix);
         }
 
@@ -102,6 +119,12 @@ namespace WoWEditor6.Scene.Models.M2
                 UpdateHighlightColor(dst * fac + src * (1.0f - fac));
 
             mHighlightFinished = (fac >= 1.0f);
+        }
+
+        public void UpdateDepth()
+        {
+            var camera = WorldFrame.Instance.ActiveCamera;
+            Depth = (camera.Position - mPosition).LengthSquared();
         }
     }
 }
