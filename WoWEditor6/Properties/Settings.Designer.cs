@@ -26,72 +26,72 @@ namespace WoWEditor6.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string clientPathWoW3 {
+        public string client3 {
             get {
-                return ((string)(this["clientPathWoW3"]));
+                return ((string)(this["client3"]));
             }
             set {
-                this["clientPathWoW3"] = value;
+                this["client3"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string clientPathWoW4 {
+        public string client4 {
             get {
-                return ((string)(this["clientPathWoW4"]));
+                return ((string)(this["client4"]));
             }
             set {
-                this["clientPathWoW4"] = value;
+                this["client4"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string clientPathWoW5 {
+        public string client5 {
             get {
-                return ((string)(this["clientPathWoW5"]));
+                return ((string)(this["client5"]));
             }
             set {
-                this["clientPathWoW5"] = value;
+                this["client5"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string clientPathWoW6 {
+        public string client6 {
             get {
-                return ((string)(this["clientPathWoW6"]));
+                return ((string)(this["client6"]));
             }
             set {
-                this["clientPathWoW6"] = value;
+                this["client6"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool mouseInvX {
+        public bool HighlightModelsInBrush {
             get {
-                return ((bool)(this["mouseInvX"]));
+                return ((bool)(this["HighlightModelsInBrush"]));
             }
             set {
-                this["mouseInvX"] = value;
+                this["HighlightModelsInBrush"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool mouseInvY {
+        public bool UpdateDrawBrushOnModels {
             get {
-                return ((bool)(this["mouseInvY"]));
+                return ((bool)(this["UpdateDrawBrushOnModels"]));
             }
             set {
-                this["mouseInvY"] = value;
+                this["UpdateDrawBrushOnModels"] = value;
             }
         }
     }

@@ -87,6 +87,10 @@ namespace WoWEditor6.Scene
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
             mState = AppState.Idle;
+            
+            // set the settings on creation
+            this.HighlightModelsInBrush = Properties.Settings.Default.HighlightModelsInBrush;
+            //this.UpdateDrawBrushOnModels = Properties.Settings.Default.UpdateDrawBrushOnModels; // todo: notimplemented!
         }
 
         public void UpdateBrush(float innerRadius, float outerRadius)

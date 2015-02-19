@@ -330,9 +330,6 @@
     <Compile Include="UI\Dialogs\AssetBrowser.xaml.cs">
       <DependentUpon>AssetBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\BrushSettingsWidget.xaml.cs">
-      <DependentUpon>BrushSettingsWidget.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\Dialogs\CreatureEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -508,9 +505,6 @@
     </Page>
     <Page Include="UI\Dialogs\AssetBrowser.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Dialogs\BrushSettingsWidget.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Dialogs\ColorPickerControl.xaml">
