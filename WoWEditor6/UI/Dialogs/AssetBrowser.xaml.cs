@@ -29,12 +29,28 @@ namespace WoWEditor6.UI.Dialogs
 
         private void HideKnownFiles_Click(object sender, RoutedEventArgs e)
         {
-            
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            var cb = sender as CheckBox;
+            if (cb == null)
+                return;
+
+            viewModel.HideKnownFileNames = cb.IsChecked ?? false;
         }
 
         private void HideUnknownFiles_Click(object sender, RoutedEventArgs e)
         {
-            
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            var cb = sender as CheckBox;
+            if (cb == null)
+                return;
+
+            viewModel.HideUnknownFiles = cb.IsChecked ?? false;
         }
 
         private void ShowTextures_Click(object sender, RoutedEventArgs e)
@@ -61,6 +77,19 @@ namespace WoWEditor6.UI.Dialogs
                 return;
 
             viewModel.ShowModels = cb.IsChecked ?? false;
+        }
+
+        private void SpecularTextures_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            var cb = sender as CheckBox;
+            if (cb == null)
+                return;
+
+            viewModel.ShowSpecularTextures = cb.IsChecked ?? false;
         }
     }
 }

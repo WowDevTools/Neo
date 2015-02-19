@@ -30,6 +30,7 @@
                         </StackPanel>
                         <StackPanel Margin="5,5,5,0" Orientation="Horizontal">
                             <CheckBox IsChecked="True" Click="ShowTextures_Click">Textures</CheckBox>
+                            <CheckBox IsChecked="True" Margin="10,0,0,0" Click="SpecularTextures_Click">Specular Textures</CheckBox>
                             <CheckBox IsChecked="True" Margin="10,0,0,0" Click="ShowModels_Click">Models</CheckBox>
                         </StackPanel>
                     </StackPanel>
