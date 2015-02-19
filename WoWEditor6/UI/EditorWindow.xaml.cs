@@ -43,8 +43,6 @@ namespace WoWEditor6.UI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SculptingPane.ToggleAutoHide();
-            KeyBindingPane.ToggleAutoHide();
-            BrushSettingsPane.ToggleAutoHide();
             Log.AddSink(this);
         }
 
@@ -345,6 +343,18 @@ namespace WoWEditor6.UI
                 Height = 170, 
                 Width = 300, 
                 Content = new Dialogs.AboutBox()
+            };
+            window.ShowDialog();
+        }
+
+        private void MenuItem_Settings_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new Window
+            {
+                Title = "About",
+                Height = 400,
+                Width = 600,
+                Content = new Dialogs.Settings()
             };
             window.ShowDialog();
         }   

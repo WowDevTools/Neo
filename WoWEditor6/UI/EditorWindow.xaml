@@ -20,7 +20,9 @@
             </MenuItem>
             <avalon:MenuItemEx Header="Edit" RenderTransformOrigin="-1.176,0.611"/>
             <MenuItem Header="View&#xD;&#xA;View"/>
-            <MenuItem Header="Extras" RenderTransformOrigin="-1.533,0.6"/>
+            <MenuItem Header="Extras" RenderTransformOrigin="-1.533,0.6">
+                <MenuItem x:Name="MenuItem_Settings" Header="Settings" HorizontalAlignment="Left" Width="140" Click="MenuItem_Settings_Click"/>
+            </MenuItem>
             <MenuItem Header="?" >
                 <MenuItem Header="About" Click="About_MenuItem_Click" HorizontalAlignment="Left" Width="140"/>
             </MenuItem>
@@ -42,18 +44,10 @@
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Key Bindings" CanClose="True" AutoHideWidth="340" x:Name="KeyBindingPane">
-                            <dialogs:KeyBindingWidget VerticalAlignment="Top">
-
-                            </dialogs:KeyBindingWidget>
-                        </avalon:LayoutAnchorable>
+                       
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Brush Settings" CanClose="False" AutoHideWidth="340" x:Name="BrushSettingsPane">
-                            <dialogs:BrushSettingsWidget VerticalAlignment="Top">
-
-                            </dialogs:BrushSettingsWidget>
-                        </avalon:LayoutAnchorable>
+    
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">
                         <avalon:LayoutAnchorable Title="Welcome" CanClose="False" CanFloat="False" CanAutoHide="False" x:Name="WelcomeDocument">
