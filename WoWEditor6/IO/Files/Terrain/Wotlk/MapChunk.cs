@@ -52,8 +52,18 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             SaveNormals(writer, basePos, ref header);
             SaveMccv(writer, basePos, ref header);
             // INFO: SaveAlpha must be called before SaveLayers since SaveAlpha modifies the layer flags
-            SaveAlpha(writer, basePos, ref header);
+            int alphaChunkSize;
+            var alphaStream = SaveAlpha(ref header, out alphaChunkSize);
             SaveLayers(writer, basePos, ref header);
+
+            // Noggit panics when MCAL is not after MCLY even though there is no reason
+            // that any sane person would imply an order in an interchangeable file format,
+            // but lets make them happy anyway.
+            header.Mcal = (int)writer.BaseStream.Position - basePos;
+            writer.Write(0x4D43414C);
+            writer.Write(alphaChunkSize);
+            writer.Write(alphaStream.ToArray());
+
             SaveUnusedChunks(writer, basePos, ref header);
 
             var endPos = writer.BaseStream.Position;
@@ -737,17 +747,21 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             writer.WriteArray(mLayers);
         }
 
-        private void SaveAlpha(BinaryWriter writer, int basePosition, ref Mcnk header)
+        private MemoryStream SaveAlpha(ref Mcnk header, out int chunkSize)
         {
-            header.Mcal = (int) writer.BaseStream.Position - basePosition;
-            writer.Write(0x4D43414C);
-            var sizePos = writer.BaseStream.Position;
-            writer.Write(0);
+            //header.Mcal = (int) writer.BaseStream.Position - basePosition;
+            //writer.Write(0x4D43414C);
+            //var sizePos = writer.BaseStream.Position;
+            //writer.Write(0);
             if(mLayers.Length == 0)
             {
                 header.SizeAlpha = 8;
-                return;
+                chunkSize = 0;
+                return new MemoryStream();
             }
+
+            var strm = new MemoryStream();
+            var writer = new BinaryWriter(strm);
 
             var curPos = 0;
             mLayers[0].Flags &= ~0x300u;
@@ -768,12 +782,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 curPos += data.Length;
             }
 
-            var endPos = writer.BaseStream.Position;
-            writer.BaseStream.Position = sizePos;
-            writer.Write((int) (endPos - sizePos - 4));
-            writer.BaseStream.Position = endPos;
+            //var endPos = writer.BaseStream.Position;
+            //writer.BaseStream.Position = sizePos;
+            //writer.Write((int) (endPos - sizePos - 4));
+            //writer.BaseStream.Position = endPos;
 
+            chunkSize = (int)strm.Length;
             header.SizeAlpha = curPos + 8;
+            return strm;
         }
 
         private void SaveUnusedChunks(BinaryWriter writer, int basePosition, ref Mcnk header)
