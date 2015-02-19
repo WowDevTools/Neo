@@ -14,17 +14,53 @@ namespace WoWEditor6.UI.Dialogs
 
         public AssetBrowser()
         {
-            DataContext = new Models.AssetBrowserViewModel(this);
+            DataContext = new AssetBrowserViewModel(this);
             InitializeComponent();
         }
 
         private void AssetBrowser_ItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var viewModel = DataContext as Models.AssetBrowserViewModel;
+            var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
                 return;
 
             viewModel.Handle_BrowserSelectionChanged(AssetTreeView.SelectedItem as AssetBrowserDirectory);
+        }
+
+        private void HideKnownFiles_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void HideUnknownFiles_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void ShowTextures_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            var cb = sender as CheckBox;
+            if (cb == null)
+                return;
+
+            viewModel.ShowTextures = cb.IsChecked ?? false;
+        }
+
+        private void ShowModels_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            var cb = sender as CheckBox;
+            if (cb == null)
+                return;
+
+            viewModel.ShowModels = cb.IsChecked ?? false;
         }
     }
 }

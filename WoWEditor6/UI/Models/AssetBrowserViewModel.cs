@@ -12,6 +12,15 @@ namespace WoWEditor6.UI.Models
     {
         private readonly Dialogs.AssetBrowser mBrowser;
         private AssetBrowserDirectory mRootDiretory;
+        private bool mShowTextures = true;
+        private bool mShowModels = true;
+        private bool mHideUnknown = true;
+        private bool mHideKnownFileNames = true;
+        private AssetBrowserDirectory mCurrentDirectory;
+
+        public bool ShowTextures { get { return mShowTextures; } set { mShowTextures = value; UpdateItems(); } }
+
+        public bool ShowModels { get { return mShowModels; } set { mShowModels = value; UpdateItems(); } }
 
         public IEnumerable<AssetBrowserDirectory> AssetBrowserRoot { get { return new []{mRootDiretory}; } }
 
@@ -25,11 +34,39 @@ namespace WoWEditor6.UI.Models
 
         public void Handle_BrowserSelectionChanged(AssetBrowserDirectory newItem)
         {
+            mCurrentDirectory = newItem;
+
             if (newItem == null)
                 return;
 
-            var files = newItem.Files;
-            mBrowser.SelectedFilesListView.ItemsSource = files.Select(f => new { View = new Components.AssetBrowserFilePreview(f) });
+            mCurrentDirectory = newItem;
+            UpdateItems();
+        }
+
+        private void UpdateItems()
+        {
+            if (mCurrentDirectory == null)
+            {
+                mBrowser.SelectedFilesListView.ItemsSource = new object[0];
+                return;
+            }
+
+
+            var files = mCurrentDirectory.Files;
+            mBrowser.SelectedFilesListView.ItemsSource = files.Where(f =>
+            {
+                var ext = f.Extension.ToLowerInvariant();
+                if (ext.Contains("blp") && mShowTextures == false)
+                    return false;
+
+                if (ext.Contains("m2") && mShowModels == false)
+                    return false;
+
+                if (ext.Contains("m2") == false && ext.Contains("blp") == false && mHideUnknown)
+                    return false;
+
+                return true;
+            }).Select(f => new { View = new Components.AssetBrowserFilePreview(f) });
         }
 
         private void OnInitialized(object sender, EventArgs args)
