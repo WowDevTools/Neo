@@ -56,6 +56,21 @@ namespace WoWEditor6.IO.Files.Texture
             return loadInfo;
         }
 
+        public static TextureLoadInfo LoadToArgbImage(Stream file)
+        {
+            var loadInfo = LoadFirstLayer(file);
+            if (loadInfo == null)
+                return null;
+
+            if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
+                return loadInfo;
+
+            loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
+            loadInfo.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
+
+            return loadInfo;
+        }
+
         public static TextureLoadInfo LoadHeaderOnly(string file)
         {
             if (string.IsNullOrEmpty(file))
@@ -79,18 +94,21 @@ namespace WoWEditor6.IO.Files.Texture
                 return null;
 
             using (var strm = FileManager.Instance.Provider.OpenFile(file))
-            {
-                if (strm == null)
-                    return null;
+                return LoadFirstLayer(strm);
+        }
 
-                var reader = new BinaryReader(strm);
-                var header = reader.Read<BlpHeader>();
-                var loadInfo = ParseHeader(ref header);
-                var palette = new uint[0];
-                ParseLayer(0, ref palette, reader, header, loadInfo);
+        public static TextureLoadInfo LoadFirstLayer(Stream strm)
+        {
+            if (strm == null)
+                return null;
 
-                return loadInfo;
-            }
+            var reader = new BinaryReader(strm);
+            var header = reader.Read<BlpHeader>();
+            var loadInfo = ParseHeader(ref header);
+            var palette = new uint[0];
+            ParseLayer(0, ref palette, reader, header, loadInfo);
+
+            return loadInfo;
         }
 
         public static TextureLoadInfo Load(string file)

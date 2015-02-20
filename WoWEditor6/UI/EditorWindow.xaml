@@ -124,7 +124,7 @@
                             </WindowsFormsHost>
                         </avalon:LayoutDocument>
                         <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800">
-                            <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                            <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
                             </dialogs:AssetBrowser>
                         </avalon:LayoutAnchorable>

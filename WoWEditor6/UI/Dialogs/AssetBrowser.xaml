@@ -16,7 +16,18 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="5"></ColumnDefinition>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <Grid Column="3">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" FontSize="20" FontWeight="Bold">Preview</Label>
+                    <Image x:Name="TexturePreviewImage" Grid.Row="1" Stretch="Uniform" StretchDirection="DownOnly"></Image>
+                </Grid>
+            </Grid>
             <Grid Grid.Row="0" Grid.Column="2">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -24,17 +35,16 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal" Margin="5,0,5,0">
-                            <CheckBox IsChecked="True" Click="HideKnownFiles_Click">Hide Known Filenames</CheckBox>
+                        <WrapPanel Orientation="Horizontal" Margin="5,0,5,0">
                             <CheckBox IsChecked="True" Margin="10,0,0,0" Click="HideUnknownFiles_Click">Hide Unknown Files</CheckBox>
-                        </StackPanel>
-                        <StackPanel Margin="5,5,5,0" Orientation="Horizontal">
-                            <CheckBox IsChecked="True" Click="ShowTextures_Click">Textures</CheckBox>
+                            <CheckBox IsChecked="True" Margin="10,0,0,0" Click="ShowTextures_Click">Textures</CheckBox>
                             <CheckBox IsChecked="True" Margin="10,0,0,0" Click="SpecularTextures_Click">Specular Textures</CheckBox>
                             <CheckBox IsChecked="True" Margin="10,0,0,0" Click="ShowModels_Click">Models</CheckBox>
-                        </StackPanel>
+                            <TextBlock Margin="10,0,0,0"><Hyperlink x:Name="ExportOneFileLink" Click="ExportSelected_Click">Export selected</Hyperlink></TextBlock>
+                            <TextBlock Margin="10,0,0,0"><Hyperlink x:Name="ExportFolderLink" Click="ExportFolder_Click">Export folder</Hyperlink></TextBlock>
+                        </WrapPanel>
                     </StackPanel>
-                    <ListBox Padding="10,10,10,10" x:Name="SelectedFilesListView" Grid.Row="1">
+                    <ListBox Padding="10,10,10,10" x:Name="SelectedFilesListView" Grid.Row="1" SelectionChanged="FileBox_ItemSelected">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}" />
@@ -46,6 +56,12 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                    <Grid x:Name="BusyOverlayGrid" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Hidden">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
+                            <Label HorizontalAlignment="Center" FontSize="16" FontWeight="Bold">Processing</Label>
+                            <ProgressBar IsIndeterminate="True" Width="200" Height="15"></ProgressBar>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </Grid>
             <GridSplitter HorizontalAlignment="Stretch" Grid.Column="1"/>

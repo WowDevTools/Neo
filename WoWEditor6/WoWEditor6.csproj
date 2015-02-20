@@ -460,6 +460,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\Images\about.jpg" />
+    <None Include="Resources\Images\Page.png" />
     <Content Include="Resources\Shaders\M2PixelPortrait.hlsl" />
     <Content Include="Resources\Shaders\M2VertexSingle.hlsl" />
     <Content Include="Resources\Shaders\M2VertexPortrait.hlsl" />

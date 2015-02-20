@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
 using WoWEditor6.Annotations;
 using WoWEditor6.IO;
 using WoWEditor6.UI.Components;
@@ -22,7 +24,6 @@ namespace WoWEditor6.UI.Models
         private bool mShowTextures = true;
         private bool mShowModels = true;
         private bool mHideUnknown = true;
-        private bool mHideKnownFileNames = true;
         private bool mShowSpecularTextures;
         private AssetBrowserDirectory mCurrentDirectory;
         private readonly ObservableCollection<AssetBrowserFilePreviewElement> mCurFiles = new ObservableCollection<AssetBrowserFilePreviewElement>();
@@ -31,7 +32,6 @@ namespace WoWEditor6.UI.Models
         public bool ShowTextures { get { return mShowTextures; } set { mShowTextures = value; UpdateShowTextures(value); } }
 
         public bool ShowModels { get { return mShowModels; } set { mShowModels = value; UpdateShowModels(value); } }
-        public bool HideKnownFileNames { get { return mHideKnownFileNames; } set { UpdateHideKnownFilenames(value); } }
         public bool HideUnknownFiles { get { return mHideUnknown; } set { mHideUnknown = value; UpdateHideUnknownFiles(value); } }
         public bool ShowSpecularTextures { get { return mShowSpecularTextures; } set { UpdateShowSpecularTextures(value); } }
 
@@ -46,6 +46,56 @@ namespace WoWEditor6.UI.Models
             mRootDiretory = new AssetBrowserDirectory(this, new DirectoryEntry {Name = ""}, null);
         }
 
+        public async void HandleExportSelectedFile()
+        {
+            var selected = mBrowser.SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement;
+            if (selected == null)
+                return;
+
+            mBrowser.ExportFolderLink.IsEnabled = false;
+            mBrowser.ExportOneFileLink.IsEnabled = false;
+            mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
+            mBrowser.SelectedFilesListView.Visibility = Visibility.Hidden;
+
+            await Task.Factory.StartNew(() => FileManager.Instance.ExportFile(selected.View.FileEntry.FullPath));
+
+            mBrowser.ExportFolderLink.IsEnabled = true;
+            mBrowser.ExportOneFileLink.IsEnabled = true;
+            mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
+            mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
+        }
+
+        public async void HandleExportSelectedFolder()
+        {
+            var selected = mBrowser.AssetTreeView.SelectedItem as AssetBrowserDirectory;
+            if (selected == null)
+                return;
+
+            mBrowser.ExportFolderLink.IsEnabled = false;
+            mBrowser.ExportOneFileLink.IsEnabled = false;
+            mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
+            mBrowser.SelectedFilesListView.Visibility = Visibility.Hidden;
+
+            await Task.Factory.StartNew(() =>
+            {
+                foreach (var child in selected.Files)
+                    FileManager.Instance.ExportFile(child.FullPath);
+            });
+
+            mBrowser.ExportFolderLink.IsEnabled = true;
+            mBrowser.ExportOneFileLink.IsEnabled = true;
+            mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
+            mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
+        }
+
+        public void Handle_FileClicked(AssetBrowserFilePreviewElement element)
+        {
+            if (element.View.FileEntry.Extension.Contains("blp"))
+                mBrowser.TexturePreviewImage.Source = element.View.PreviewImage.Source;
+            else
+                mBrowser.TexturePreviewImage.Source = null;
+        }
+
         public void Handle_BrowserSelectionChanged(AssetBrowserDirectory newItem)
         {
             mCurrentDirectory = newItem;
@@ -55,13 +105,6 @@ namespace WoWEditor6.UI.Models
 
             mCurrentDirectory = newItem;
             UpdateItems(true);
-        }
-
-        private void UpdateHideKnownFilenames(bool value)
-        {
-            mHideKnownFileNames = value;
-            foreach(var file in mFullElements)
-                file.View.UpdateState(this);
         }
 
         private void UpdateShowSpecularTextures(bool value)
@@ -129,11 +172,18 @@ namespace WoWEditor6.UI.Models
 
         private void UpdateHideUnknownFiles(bool value)
         {
-            mHideKnownFileNames = value;
+            mHideUnknown = value;
             if (value == false)
             {
                 foreach (var elem in mFullElements.Where(elem => mCurFiles.Contains(elem) == false))
                 {
+                    if ((elem.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp") ||
+                         elem.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp")) &&
+                        mShowSpecularTextures == false)
+                    {
+                        continue;
+                    }
+
                     mCurFiles.Add(elem);
                 }
             }
@@ -162,7 +212,7 @@ namespace WoWEditor6.UI.Models
 
             var files =
                 mCurrentDirectory.Files.Select(
-                    f => new AssetBrowserFilePreviewElement {View = new AssetBrowserFilePreview(f, this)}).ToList();
+                    f => new AssetBrowserFilePreviewElement {View = new AssetBrowserFilePreview(f)}).ToList();
             var elements = files.Where(f =>
             {
                 var ext = f.View.FileEntry.Extension.ToLowerInvariant();

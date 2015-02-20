@@ -29,6 +29,15 @@ namespace WoWEditor6.UI
             return texLoadInfo == null ? ErrorBitmap : FromBgra(texLoadInfo.Width, texLoadInfo.Height, texLoadInfo.Layers[0]);
         }
 
+        public static BitmapSource FromGdiImage(Bitmap bmp)
+        {
+            var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            var ret = BitmapSource.Create(bmp.Width, bmp.Height, 96, 96, PixelFormats.Bgra32, null, bmpd.Scan0, bmp.Width * bmp.Height * 4, bmp.Width * 4);
+            bmp.UnlockBits(bmpd);
+
+            return ret;
+        }
+
         static WpfImageSource()
         {
             var bmp = new Bitmap(200, 200, PixelFormat.Format32bppArgb);

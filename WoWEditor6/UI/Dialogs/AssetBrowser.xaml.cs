@@ -27,19 +27,6 @@ namespace WoWEditor6.UI.Dialogs
             viewModel.Handle_BrowserSelectionChanged(AssetTreeView.SelectedItem as AssetBrowserDirectory);
         }
 
-        private void HideKnownFiles_Click(object sender, RoutedEventArgs e)
-        {
-            var viewModel = DataContext as AssetBrowserViewModel;
-            if (viewModel == null)
-                return;
-
-            var cb = sender as CheckBox;
-            if (cb == null)
-                return;
-
-            viewModel.HideKnownFileNames = cb.IsChecked ?? false;
-        }
-
         private void HideUnknownFiles_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as AssetBrowserViewModel;
@@ -90,6 +77,36 @@ namespace WoWEditor6.UI.Dialogs
                 return;
 
             viewModel.ShowSpecularTextures = cb.IsChecked ?? false;
+        }
+
+        private void FileBox_ItemSelected(object sender, RoutedEventArgs e)
+        {
+            if (SelectedFilesListView.SelectedItem == null)
+                return;
+
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            viewModel.Handle_FileClicked(SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement);
+        }
+
+        private void ExportSelected_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            viewModel.HandleExportSelectedFile();
+        }
+
+        private void ExportFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            viewModel.HandleExportSelectedFolder();
         }
     }
 }

@@ -10,7 +10,7 @@
             <RowDefinition Height="124"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="PreviewImage" Grid.Row="0"></Image>
-        <TextBlock x:Name="FileNameBlock" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=Name, Mode=OneWay}" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" Padding="3,2,3,2" Grid.Row="1"></TextBlock>
+        <Image VerticalAlignment="Stretch" StretchDirection="DownOnly" Stretch="Uniform" x:Name="PreviewImage" Grid.Row="0"></Image>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=Name, Mode=OneWay}" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" Padding="3,2,3,2" Grid.Row="1"></TextBlock>
     </Grid>
 </UserControl>
