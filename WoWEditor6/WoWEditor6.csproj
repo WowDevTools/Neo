@@ -206,6 +206,7 @@
     <Compile Include="IO\Files\Terrain\Wotlk\MapArea.cs" />
     <Compile Include="IO\Files\Terrain\Wotlk\MapChunk.cs" />
     <Compile Include="IO\Files\Terrain\Wotlk\MapStructs.cs" />
+    <Compile Include="IO\Files\Texture\BlpWriter.cs" />
     <Compile Include="IO\Files\Texture\TextureLoader.cs" />
     <Compile Include="IO\IFileListing.cs" />
     <Compile Include="IO\IFileProvider.cs" />

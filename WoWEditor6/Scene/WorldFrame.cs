@@ -82,14 +82,13 @@ namespace WoWEditor6.Scene
 
         private WorldFrame()
         {
-            HighlightModelsInBrush = true;
             MapManager = new MapManager();
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
             mState = AppState.Idle;
             
             // set the settings on creation
-            this.HighlightModelsInBrush = Properties.Settings.Default.HighlightModelsInBrush;
+            HighlightModelsInBrush = Properties.Settings.Default.HighlightModelsInBrush;
             //this.UpdateDrawBrushOnModels = Properties.Settings.Default.UpdateDrawBrushOnModels; // todo: notimplemented!
         }
 
@@ -139,6 +138,7 @@ namespace WoWEditor6.Scene
             mGlobalBuffer.UpdateData(mGlobalBufferStore);
 
             Dispatcher = new GraphicsDispatcher();
+            Dispatcher.AssignToThread();
             MapChunkRender.Initialize(context);
             MapAreaLowRender.Initialize(context);
             WmoGroupRender.Initialize(context);

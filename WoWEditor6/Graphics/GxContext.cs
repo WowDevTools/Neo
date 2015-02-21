@@ -88,7 +88,7 @@ namespace WoWEditor6.Graphics
             modeDesc.Height = mWindow.ClientSize.Height;
             mSwapChainDesc.ModeDescription = modeDesc;
 
-#if DEBUG
+#if DEBUG || true
             Device = new Device(Adapter, DeviceCreationFlags.Debug);
 #else
             Device = new Device(Adapter);

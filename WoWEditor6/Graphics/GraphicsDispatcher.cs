@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace WoWEditor6.Graphics
 {
     class GraphicsDispatcher
     {
         private readonly List<Action> mFrames = new List<Action>();
+        private int mAssignedThread;
+
+        public bool InvokeRequired { get { return Thread.CurrentThread.ManagedThreadId != mAssignedThread; } }
+
+        public void AssignToThread()
+        {
+            mAssignedThread = Thread.CurrentThread.ManagedThreadId;
+        }
 
         public void ProcessFrame()
         {

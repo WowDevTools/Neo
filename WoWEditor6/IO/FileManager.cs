@@ -56,7 +56,7 @@ namespace WoWEditor6.IO
             }
         }
 
-        private Stream GetExportStream(string path)
+        public Stream GetExportStream(string path)
         {
             var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Export", path);
             try

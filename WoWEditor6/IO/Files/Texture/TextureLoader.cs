@@ -19,14 +19,14 @@ namespace WoWEditor6.IO.Files.Texture
     [StructLayout(LayoutKind.Sequential)]
     unsafe struct BlpHeader
     {
-        private readonly int Magic;
-        private readonly int Version;
-        public readonly byte Compression;
-        public readonly byte AlphaDepth;
-        public readonly byte AlphaCompression;
-        public readonly byte MipLevels;
-        public readonly int Width;
-        public readonly int Height;
+        public int Magic;
+        public int Version;
+        public byte Compression;
+        public byte AlphaDepth;
+        public byte AlphaCompression;
+        public byte MipLevels;
+        public int Width;
+        public int Height;
         public fixed int Offsets [16];
         public fixed int Sizes [16];
     }
