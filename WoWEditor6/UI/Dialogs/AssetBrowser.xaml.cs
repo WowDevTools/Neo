@@ -108,5 +108,14 @@ namespace WoWEditor6.UI.Dialogs
 
             viewModel.HandleExportSelectedFolder();
         }
+
+        private void ImportFile_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as AssetBrowserViewModel;
+            if (viewModel == null)
+                return;
+
+            viewModel.HandleImportFile();
+        }
     }
 }

@@ -42,6 +42,7 @@
                             <CheckBox IsChecked="True" Margin="10,0,0,0" Click="ShowModels_Click">Models</CheckBox>
                             <TextBlock Margin="10,0,0,0"><Hyperlink x:Name="ExportOneFileLink" Click="ExportSelected_Click">Export selected</Hyperlink></TextBlock>
                             <TextBlock Margin="10,0,0,0"><Hyperlink x:Name="ExportFolderLink" Click="ExportFolder_Click">Export folder</Hyperlink></TextBlock>
+                            <TextBlock Margin="10,0,0,0"><Hyperlink Click="ImportFile_Click">Import File</Hyperlink></TextBlock>
                         </WrapPanel>
                     </StackPanel>
                     <ListBox Padding="10,10,10,10" x:Name="SelectedFilesListView" Grid.Row="1" SelectionChanged="FileBox_ItemSelected">
