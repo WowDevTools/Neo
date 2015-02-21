@@ -185,6 +185,8 @@ namespace WoWEditor6.IO.CASC
             var buildKey = buildKeys.FirstOrDefault();
             if (buildKey == default(string)) throw new InvalidOperationException(".build.info is missing a build key");
 
+            Log.Debug(string.Format("Using build key {0}", buildKey));
+
             var buildCfgPath = Path.Combine(mDataDir, "..\\..\\Data\\config", buildKey.Substring(0, 2), buildKey.Substring(2, 2), buildKey);
             using (var buildCfg = new StreamReader(File.OpenRead(buildCfgPath)))
                 mBuildConfig.Load(buildCfg);
@@ -194,6 +196,7 @@ namespace WoWEditor6.IO.CASC
         {
             using (var strm = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
+                Log.Debug(string.Format("Using index {0}", Path.GetFileName(file)));
                 using (var reader = new BinaryReader(strm))
                 {
                     var h2Len = reader.ReadInt32();
@@ -238,6 +241,8 @@ namespace WoWEditor6.IO.CASC
             var encKeyStr = mBuildConfig["root"].FirstOrDefault();
             if (encKeyStr == null) throw new InvalidOperationException("Build config is missing root key");
             var encodingKey = encKeyStr.HexToBytes().ToArray();
+
+            Log.Debug(string.Format("Root file key is {0}", encKeyStr));
 
             EncodingEntry encEntry;
             if (mEncodingData.TryGetValue(new Binary(encodingKey), out encEntry) == false || encEntry.Keys.Length == 0)
@@ -291,6 +296,8 @@ namespace WoWEditor6.IO.CASC
         {
             var encodingKeyStr = mBuildConfig["encoding"].ElementAtOrDefault(1);
             if (encodingKeyStr == null) throw new InvalidOperationException("Build config is missing encoding key");
+
+            Log.Debug(string.Format("Encoding file key is {0}", encodingKeyStr));
 
             var encodingKey = new Binary(encodingKeyStr.HexToBytes().Take(9).ToArray());
             if (mIndexData.ContainsKey(encodingKey) == false)
