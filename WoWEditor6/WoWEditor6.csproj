@@ -503,7 +503,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Application.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Components\AssetBrowserFilePreview.xaml">
@@ -559,7 +558,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Themes\DarkTheme.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
