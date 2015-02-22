@@ -43,7 +43,7 @@ namespace WoWEditor6.UI
         private void Debug_Click(object sender, RoutedEventArgs e)
         {
             var camera = WorldFrame.Instance.ActiveCamera;
-            var font = FontCollection.GetFont("Arial Narrow", 30, System.Drawing.FontStyle.Regular);
+            var font = FontCollection.GetFont("2002", 30, System.Drawing.FontStyle.Regular);
             var worldText = new WorldText(font, System.Drawing.Brushes.AntiqueWhite)
             {
                 Position = camera.Position,

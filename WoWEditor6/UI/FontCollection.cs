@@ -2,60 +2,76 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Linq;
 
 namespace WoWEditor6.UI
 {
     public static class FontCollection
     {
-        private static PrivateFontCollection gFontCollection = new PrivateFontCollection();
-        private static List<WeakReference<Font>> gFontsList = new List<WeakReference<Font>>();
+        private static readonly PrivateFontCollection gCollection = new PrivateFontCollection();
+        private static readonly List<WeakReference<Font>> gFontsList = new List<WeakReference<Font>>();
 
         public unsafe static void Initialize()
         {
-            gFontCollection = new PrivateFontCollection();
-            var fileListing = IO.FileManager.Instance.FileListing;
-            foreach (var file in fileListing.RootEntry.Children["Fonts"].Children.Values)
+            IO.FileManager.Instance.LoadComplete += () =>
             {
-                using (var stream = IO.FileManager.Instance.Provider.OpenFile(@"Fonts\" + file.Name))
+                var fileListing = IO.FileManager.Instance.FileListing;
+                foreach (var file in fileListing.RootEntry.Children["Fonts"].Children.Values)
                 {
-                    if (stream == null)
-                        continue;
+                    using (var stream = IO.FileManager.Instance.Provider.OpenFile(@"Fonts\" + file.Name))
+                    {
+                        if (stream == null)
+                        {
+                            Log.Warning("Unable to load font file: " + file.Name);
+                            continue;
+                        }
 
-                    var fileBuffer = new byte[stream.Length];
-                    stream.Read(fileBuffer, 0, (int)stream.Length);
+                        var fileBuffer = new byte[stream.Length];
+                        stream.Read(fileBuffer, 0, (int)stream.Length);
 
-                    fixed (byte* ptr = fileBuffer)
-                        gFontCollection.AddMemoryFont((IntPtr)ptr, (int)stream.Length);
-
-                    Log.Debug("Loaded font file: " + file.Name);
+                        fixed (byte* ptr = fileBuffer)
+                            gCollection.AddMemoryFont((IntPtr)ptr, (int)stream.Length);
+                    }
                 }
-            }
+
+                foreach (var font in gCollection.Families)
+                    Log.Debug("Loaded font: " + font.Name);
+            };
         }
 
-        public static Font GetFont(string name, int height, FontStyle style)
+        public static Font GetFont(string name, float size, FontStyle style)
         {
             Font font = null;
             var upperName = name.ToUpperInvariant();
 
-            gFontsList.RemoveAll(fontRef =>
+            lock (gFontsList)
             {
-                Font curFont;
-                if (!fontRef.TryGetTarget(out curFont))
-                    return true;
+                gFontsList.RemoveAll(fontRef =>
+                {
+                    Font curFont;
+                    if (!fontRef.TryGetTarget(out curFont))
+                        return true;
 
-                if (curFont.Name.ToUpperInvariant() == upperName &&
-                    curFont.Height == height && curFont.Style == style)
-                    font = curFont;
+                    if (curFont.Name.ToUpperInvariant() == upperName &&
+                        curFont.Size == size && curFont.Style == style)
+                        font = curFont;
 
-                return false;
-            });
+                    return false;
+                });
 
-            if (font != null)
+                if (font != null)
+                    return font;
+
+                var family = gCollection.Families.FirstOrDefault(
+                    f => f.Name.ToUpperInvariant() == upperName);
+
+                if (family == null)
+                    family = new FontFamily(name);
+
+                font = new Font(family, size, style, GraphicsUnit.Pixel);
+                gFontsList.Add(new WeakReference<Font>(font));
                 return font;
-
-            font = new Font(name, height, style, GraphicsUnit.Pixel);
-            gFontsList.Add(new WeakReference<Font>(font));
-            return font;
+            }
         }
     }
 }

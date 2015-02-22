@@ -14,6 +14,7 @@ namespace WoWEditor6
             System.Windows.Forms.Application.EnableVisualStyles();
             AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
 
+            FontCollection.Initialize();
             Settings.KeyBindings.Initialize();
 
             var window = new EditorWindow();
