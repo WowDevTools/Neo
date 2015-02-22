@@ -45,27 +45,42 @@ namespace WoWEditor6.UI.Models
             var sourceName = mDialog.PathTextBox.Text;
             var targetName = mDialog.TargetNameBox.Text;
 
-            using (var img = Image.FromFile(sourceName) as Bitmap)
+            if (importType == ImportType.Texture)
             {
-                if (img == null)
-                    return;
-
-                using (var output = FileManager.Instance.GetOutputStream(targetName))
+                using (var img = Image.FromFile(sourceName) as Bitmap)
                 {
-                    var texType = mDialog.TextureTypeBox.SelectedIndex;
-                    var format = Format.BC1_UNorm;
-                    var hasMips = true;
-                    if (texType == 1)
-                        format = Format.BC3_UNorm;
-                    else if (texType == 2)
-                    {
-                        format = Format.BC2_UNorm;
-                        hasMips = false;
-                    }
+                    if (img == null)
+                        return;
 
-                    IO.Files.Texture.BlpWriter.Write(output, img, format, hasMips);
+                    using (var output = FileManager.Instance.GetOutputStream(targetName))
+                    {
+                        var texType = mDialog.TextureTypeBox.SelectedIndex;
+                        var format = Format.BC1_UNorm;
+                        var hasMips = true;
+                        if (texType == 1)
+                            format = Format.BC3_UNorm;
+                        else if (texType == 2)
+                        {
+                            format = Format.BC2_UNorm;
+                            hasMips = false;
+                        }
+
+                        IO.Files.Texture.BlpWriter.Write(output, img, format, hasMips);
+                    }
                 }
             }
+            else
+            {
+                using (var output = FileManager.Instance.GetOutputStream(targetName))
+                {
+                    using (var input = File.OpenRead(sourceName))
+                    {
+                        input.CopyTo(output);
+                    }
+                }
+            }
+
+            mDialog.Close();
         }
 
         public void HandleFileImportSettings()
