@@ -46,6 +46,12 @@ namespace WoWEditor6.UI.Models
             mRootDiretory = new AssetBrowserDirectory(this, new DirectoryEntry {Name = ""}, null);
         }
 
+        public void HandleImportFile()
+        {
+            var model = new ImportFileViewModel();
+            model.ShowModal();
+        }
+
         public async void HandleExportSelectedFile()
         {
             var selected = mBrowser.SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement;

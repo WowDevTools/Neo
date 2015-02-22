@@ -4,14 +4,14 @@ using System.Runtime.InteropServices;
 
 namespace WoWEditor6.Win32
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
-    struct ComdlgFilterspec
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4)]
+    public struct COMDLG_FILTERSPEC
     {
         [MarshalAs(UnmanagedType.LPWStr)]
-        public readonly string pszName;
+        public string pszName;
 
         [MarshalAs(UnmanagedType.LPWStr)]
-        public readonly string pszSpec;
+        public string pszSpec;
     }
 
     [ComImport, Guid("d57c7288-d4ad-4768-be02-9d969532d960"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -21,7 +21,7 @@ namespace WoWEditor6.Win32
         int Show([In] IntPtr parent);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetFileTypes([In] uint cFileTypes, [In] ComdlgFilterspec[] rgFilterSpec);
+        void SetFileTypes([In] uint cFileTypes, IntPtr rgFilterSpec);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         void SetFileTypeIndex([In] uint iFileType);

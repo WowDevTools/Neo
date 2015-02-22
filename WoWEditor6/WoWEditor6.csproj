@@ -351,6 +351,9 @@
     <Compile Include="UI\Dialogs\GameObjectEditor.Designer.cs">
       <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Dialogs\ImportFileDialog.xaml.cs">
+      <DependentUpon>ImportFileDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Dialogs\KeyBindingControl.xaml.cs">
       <DependentUpon>KeyBindingControl.xaml</DependentUpon>
     </Compile>
@@ -381,6 +384,7 @@
     </Compile>
     <Compile Include="UI\Models\AssetBrowserModel.cs" />
     <Compile Include="UI\Models\AssetBrowserViewModel.cs" />
+    <Compile Include="UI\Models\ImportFileViewModel.cs" />
     <Compile Include="UI\RenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -515,6 +519,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Dialogs\ColorPickerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dialogs\ImportFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
