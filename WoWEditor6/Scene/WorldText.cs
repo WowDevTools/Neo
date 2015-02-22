@@ -123,6 +123,9 @@ namespace WoWEditor6.Scene
             var right = camera.Right * mWidth * 0.5f;
             var up = camera.Up * mHeight * 0.5f;
 
+            if (camera.LeftHanded)
+                right = -right;
+
             gVertexBuffer.UpdateData(new[]
             {
                 new WorldTextVertex(center - (right + up) * scale, 0.0f, 1.0f),

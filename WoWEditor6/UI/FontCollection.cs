@@ -65,10 +65,10 @@ namespace WoWEditor6.UI
                 var family = gCollection.Families.FirstOrDefault(
                     f => f.Name.ToUpperInvariant() == upperName);
 
-                if (family == null)
-                    family = new FontFamily(name);
+                font = (family != null)
+                    ? new Font(family, size, style, GraphicsUnit.Pixel)
+                    : new Font(name, size, style, GraphicsUnit.Pixel);
 
-                font = new Font(family, size, style, GraphicsUnit.Pixel);
                 gFontsList.Add(new WeakReference<Font>(font));
                 return font;
             }
