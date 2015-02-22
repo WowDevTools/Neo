@@ -76,6 +76,7 @@ namespace WoWEditor6.IO.CASC
         private readonly Dictionary<uint, DataStream> mDataStreams = new Dictionary<uint, DataStream>();
         private readonly Dictionary<Binary, EncodingEntry> mEncodingData = new Dictionary<Binary, EncodingEntry>();
         private readonly Dictionary<ulong, List<RootEntry>> mRootData = new Dictionary<ulong, List<RootEntry>>();
+        private readonly JenkinsHash mHashProvider = new JenkinsHash();
 
         public event Action LoadComplete;
 
@@ -108,8 +109,7 @@ namespace WoWEditor6.IO.CASC
                     return true;
             }
 
-            path = path.ToUpperInvariant();
-            var hash = (new JenkinsHash()).Compute(path);
+            var hash = mHashProvider.Compute(path);
             List<RootEntry> roots;
             if (mRootData.TryGetValue(hash, out roots) == false)
                 return false;
@@ -139,13 +139,11 @@ namespace WoWEditor6.IO.CASC
         {
             try
             {
-
                 var existing = IO.FileManager.Instance.GetExistingFile(path);
                 if (existing != null)
                     return existing;
 
-                path = path.ToUpperInvariant();
-                var hash = (new JenkinsHash()).Compute(path);
+                var hash = mHashProvider.Compute(path);
                 List<RootEntry> roots;
                 if (mRootData.TryGetValue(hash, out roots) == false)
                     return null;
@@ -173,7 +171,7 @@ namespace WoWEditor6.IO.CASC
                         using (var reader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
                         {
                             strm.Stream.Position = indexKey.Offset + 30;
-                            return BlteGetData(reader, indexKey.Size - 30, enc.Size);
+                            return BlteGetData(reader, indexKey.Size - 30);
                         }
                     }
                 }

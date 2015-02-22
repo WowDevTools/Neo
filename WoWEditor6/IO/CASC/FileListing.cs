@@ -39,13 +39,13 @@ namespace WoWEditor6.IO.CASC
                         for (var i = 0; i < numDirs; ++i)
                         {
                             var dir = ReadDirectory(reader);
-                            RootEntry.Children.Add(dir.Name, dir);
+                            RootEntry.Children.Add(dir.Name.ToLowerInvariant(), dir);
                         }
 
                         for (var i = 0; i < numFiles; ++i)
                         {
                             var name = reader.ReadString();
-                            RootEntry.Children.Add(name, new FileEntry {Name = name});
+                            RootEntry.Children.Add(name.ToLowerInvariant(), new FileEntry {Name = name});
                         }
                     }
                 }
@@ -63,13 +63,13 @@ namespace WoWEditor6.IO.CASC
             for (var i = 0; i < numDirs; ++i)
             {
                 var dir = ReadDirectory(reader);
-                ret.Children.Add(dir.Name, dir);
+                ret.Children.Add(dir.Name.ToLowerInvariant(), dir);
             }
 
             for (var i = 0; i < numFiles; ++i)
             {
                 var fname = reader.ReadString();
-                ret.Children.Add(fname, new FileEntry { Name = fname });
+                ret.Children.Add(fname.ToLowerInvariant(), new FileEntry { Name = fname });
             }
 
             return ret;

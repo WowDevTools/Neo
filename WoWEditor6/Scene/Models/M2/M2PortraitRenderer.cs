@@ -124,7 +124,7 @@ namespace WoWEditor6.Scene.Models.M2
                 mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
                 var color = mAnimator.GetColorValue(pass.ColorAnimIndex);
                 var alpha = mAnimator.GetAlphaValue(pass.AlphaAnimIndex);
-                color.W = alpha;
+                color.W *= alpha;
 
                 //Log.Debug(color);
 
