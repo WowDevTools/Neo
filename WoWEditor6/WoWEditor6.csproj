@@ -117,6 +117,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application.xaml.cs">
+      <DependentUpon>Application.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Editing\EditManager.cs" />
     <Compile Include="Editing\EditMode.cs" />
     <Compile Include="Editing\TerrainChangeManager.cs" />
@@ -498,6 +501,10 @@
     <Content Include="Resources\Shaders\WmoVertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Application.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Components\AssetBrowserFilePreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

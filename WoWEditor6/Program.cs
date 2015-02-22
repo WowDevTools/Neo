@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Threading;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
