@@ -42,6 +42,7 @@ namespace WoWEditor6.Scene
         public MapManager MapManager { get; private set; }
         public WmoManager WmoManager { get; private set; }
         public M2Manager M2Manager { get; private set; }
+        public WorldTextManager WorldTextManager { get; private set; }
 
         public bool LeftHandedCamera
         {
@@ -85,6 +86,7 @@ namespace WoWEditor6.Scene
             MapManager = new MapManager();
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
+            WorldTextManager = new WorldTextManager();
             mState = AppState.Idle;
             
             // set the settings on creation
@@ -145,11 +147,13 @@ namespace WoWEditor6.Scene
             M2BatchRenderer.Initialize(context);
             M2SingleRenderer.Initialize(context);
             M2PortraitRenderer.Initialize(context);
+            WorldText.Initialize(context);
 
             StaticAnimationThread.Instance.Initialize();
 
             WmoManager.Initialize();
             M2Manager.Initialize();
+            WorldTextManager.Initialize();
 
             GraphicsContext = context;
 
@@ -188,6 +192,7 @@ namespace WoWEditor6.Scene
             WmoManager.Shutdown();
             StaticAnimationThread.Instance.Shutdown();
             M2Manager.Shutdown();
+            WorldTextManager.Shutdown();
         }
 
         public void OnFrame()
@@ -211,6 +216,7 @@ namespace WoWEditor6.Scene
             MapManager.OnFrame();
             WmoManager.OnFrame();
             M2Manager.OnFrame();
+            WorldTextManager.OnFrame();
         }
 
         public void OnMouseWheel(int delta)

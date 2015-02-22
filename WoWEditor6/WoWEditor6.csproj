@@ -270,6 +270,8 @@
     <Compile Include="Scene\Texture\TextureArrayManager.cs" />
     <Compile Include="Scene\Texture\TextureManager.cs" />
     <Compile Include="Scene\WorldFrame.cs" />
+    <Compile Include="Scene\WorldText.cs" />
+    <Compile Include="Scene\WorldTextManager.cs" />
     <Compile Include="Settings\KeyBindings.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\Creature.cs" />
@@ -466,6 +468,8 @@
     <Content Include="Resources\Shaders\M2PixelPortrait.hlsl" />
     <Content Include="Resources\Shaders\M2VertexSingle.hlsl" />
     <Content Include="Resources\Shaders\M2VertexPortrait.hlsl" />
+    <Content Include="Resources\Shaders\WorldTextVertex.hlsl" />
+    <Content Include="Resources\Shaders\WorldTextPixel.hlsl" />
     <Content Include="StormLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -612,6 +616,14 @@
   </Target>
   <Target Name="WmoVertex" BeforeTargets="PrepareForBuild" Label="WmoVertex" Inputs="$(ProjectDir)\Resources\Shaders\WmoVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WmoVertex.dxc">
     <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WmoVertex.hlsl&quot; main vs_4_0 &quot;$(ProjectDir)\Resources\Shaders\WmoVertex.dxc&quot;">
+    </Exec>
+  </Target>
+  <Target Name="WorldTextPixel" BeforeTargets="PrepareForBuild" Label="WorldTextPixel" Inputs="$(ProjectDir)\Resources\Shaders\WorldTextPixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WorldTextPixel.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WorldTextPixel.hlsl&quot; main ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\WorldTextPixel.dxc&quot;">
+    </Exec>
+  </Target>
+  <Target Name="WorldTextVertex" BeforeTargets="PrepareForBuild" Label="WorldTextVertex" Inputs="$(ProjectDir)\Resources\Shaders\WorldTextVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WorldTextVertex.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WorldTextVertex.hlsl&quot; main vs_4_0 &quot;$(ProjectDir)\Resources\Shaders\WorldTextVertex.dxc&quot;">
     </Exec>
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -47,7 +47,7 @@ namespace WoWEditor6.Graphics
                 MipLevels = loadInfo.Layers.Count,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default
+                Usage = loadInfo.Usage
             };
 
             if (mTexture != gDefaultTexture)

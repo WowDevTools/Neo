@@ -123,16 +123,6 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
-        internal static byte[] M2VertexSingle {
-            get {
-                object obj = ResourceManager.GetObject("M2VertexSingle", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
         internal static byte[] M2VertexInstanced {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced", resourceCulture);
@@ -146,6 +136,16 @@ namespace WoWEditor6.Resources {
         internal static byte[] M2VertexPortrait {
             get {
                 object obj = ResourceManager.GetObject("M2VertexPortrait", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -286,6 +286,26 @@ namespace WoWEditor6.Resources {
         internal static byte[] WmoVertex {
             get {
                 object obj = ResourceManager.GetObject("WmoVertex", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        internal static byte[] WorldTextPixel {
+            get {
+                object obj = ResourceManager.GetObject("WorldTextPixel", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        internal static byte[] WorldTextVertex {
+            get {
+                object obj = ResourceManager.GetObject("WorldTextVertex", resourceCulture);
                 return ((byte[])(obj));
             }
         }
