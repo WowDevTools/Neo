@@ -27,6 +27,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
         public AnimationEntry[] Animations { get; private set; }
         public short[] AnimLookup { get; private set; }
 
+        public string FileName { get { return mFileName; } }
+
         public M2File(string fileName) : base(fileName)
         {
             Bones = new M2AnimationBone[0];

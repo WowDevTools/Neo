@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
@@ -9,6 +10,7 @@ namespace WoWEditor6.Graphics
         private readonly List<VertexElement> mElements = new List<VertexElement>();
         private ShaderProgram mProgram;
         private InputLayout mLayout;
+        private PrimitiveTopology mTopology = PrimitiveTopology.TriangleList;
         private readonly GxContext mContext;
 
         public VertexBuffer VertexBuffer { get; set; }
@@ -23,6 +25,7 @@ namespace WoWEditor6.Graphics
         public RasterState RasterizerState { get; set; }
         public BlendState BlendState { get; set; }
         public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }
+        public PrimitiveTopology Topology { get { return mTopology; } set { UpdateTopology(value); } }
 
         public Mesh(GxContext context)
         {
@@ -38,11 +41,11 @@ namespace WoWEditor6.Graphics
         {
             var ctx = mContext.Context;
             if (VertexBuffer != null)
-                ctx.InputAssembler.SetVertexBuffers(0, new[] {VertexBuffer.Native}, new[] {Stride}, new[] {0});
+                ctx.InputAssembler.SetVertexBuffers(0, new[] { VertexBuffer.Native }, new[] { Stride }, new[] { 0 });
 
             ctx.InputAssembler.SetIndexBuffer(IndexBuffer.Native, IndexBuffer.IndexFormat, 0);
             ctx.InputAssembler.InputLayout = mLayout;
-            ctx.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
+            ctx.InputAssembler.PrimitiveTopology = mTopology;
             ctx.OutputMerger.DepthStencilState = DepthState.State;
             ctx.Rasterizer.State = RasterizerState.Native;
             ctx.OutputMerger.BlendState = BlendState.Native;
@@ -57,6 +60,11 @@ namespace WoWEditor6.Graphics
         public void Draw(int numInstances)
         {
             mContext.Context.DrawIndexedInstanced(IndexCount, numInstances, StartIndex, StartVertex, 0);
+        }
+
+        public void DrawNonIndexed()
+        {
+            mContext.Context.Draw(IndexCount, StartVertex);
         }
 
         public void UpdateInstanceBuffer(VertexBuffer buffer)
@@ -75,7 +83,7 @@ namespace WoWEditor6.Graphics
 
         public void UpdateVertexBuffer(VertexBuffer vb)
         {
-            mContext.Context.InputAssembler.SetVertexBuffers(0, new[] {vb.Native}, new[] {Stride}, new[] {0});
+            mContext.Context.InputAssembler.SetVertexBuffers(0, new[] { vb.Native }, new[] { Stride }, new[] { 0 });
         }
 
         public void UpdateBlendState(BlendState state)
@@ -119,6 +127,12 @@ namespace WoWEditor6.Graphics
 
             mLayout = InputLayoutCache.GetLayout(mContext, mElements.Select(e => e.Element).ToArray(), this, program);
             mProgram = program;
+        }
+
+        private void UpdateTopology(PrimitiveTopology topology)
+        {
+            mTopology = topology;
+            mContext.Context.InputAssembler.PrimitiveTopology = topology;
         }
     }
 }

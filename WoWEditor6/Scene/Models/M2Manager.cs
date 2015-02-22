@@ -66,14 +66,15 @@ namespace WoWEditor6.Scene.Models
                 UpdateBrushHighlighting(brushPosition, highlightRadius);
             }
 
-            M2BatchRenderer.Mesh.BeginDraw();
-            M2BatchRenderer.Mesh.Program.SetPixelSampler(0, M2BatchRenderer.Sampler);
-
             lock (mAddLock)
             {
+                M2BatchRenderer.BeginDraw();
+
                 // First draw all the instance batches
                 foreach (var renderer in mRenderer.Values)
                     renderer.RenderBatch();
+
+                M2SingleRenderer.BeginDraw();
 
                 // Now draw those objects that need per instance animation
                 foreach (var instance in mNonBatchedInstances.Values)

@@ -5,6 +5,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 {
     class M2AnimationBone
     {
+        private readonly M2Bone mBone;
         private readonly Matrix mInvPivot;
         private readonly Matrix mPivot;
 
@@ -12,18 +13,14 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         private readonly M2Quaternion16AnimationBlock mRotation;
         private readonly M2Vector3AnimationBlock mScaling;
 
-        public M2AnimationBone ParentBone { get; set; }
-
-        public M2Bone Bone { get; private set; }
-
         public bool IsBillboarded { get; private set; }
 
         public bool IsTransformed { get; private set; }
 
         public M2AnimationBone(M2File file, ref M2Bone bone, BinaryReader reader)
         {
-            Bone = bone;
-            IsBillboarded = (bone.flags & 0x08) != 0;
+            mBone = bone;
+            IsBillboarded = (bone.flags & 0x08) != 0;  // Some billboards have 0x40 for cylindrical?
             IsTransformed = (bone.flags & 0x200) != 0;
 
             bone.pivot.Y = -bone.pivot.Y;
@@ -38,25 +35,29 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public void UpdateMatrix(uint time, int animation, out Matrix matrix,
             M2Animator animator, BillboardParameters billboard)
         {
-            var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
-            position.Y = -position.Y;
-            var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
-            var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
-            var billboardMatrix = Matrix.Identity;
-
+            var boneMatrix = Matrix.Identity;
             if (IsBillboarded && billboard != null)
             {
-                billboardMatrix.Row1 = new Vector4(billboard.Forward, billboardMatrix.M14);
-                billboardMatrix.Row2 = new Vector4(billboard.Right, billboardMatrix.M24);
-                billboardMatrix.Row3 = new Vector4(billboard.Up, billboardMatrix.M34);
-                billboardMatrix *= billboard.InverseRotation;
+                var billboardMatrix = Matrix.Identity;
+                billboardMatrix.Row1 = new Vector4(billboard.Forward, 0);
+                billboardMatrix.Row2 = new Vector4(billboard.Right, 0);
+                billboardMatrix.Row3 = new Vector4(billboard.Up, 0);
+                boneMatrix = billboard.InverseRotation * billboardMatrix;
             }
 
-            var boneMatrix = mInvPivot * billboardMatrix * Matrix.RotationQuaternion(rotation)
-                * Matrix.Scaling(scaling) * Matrix.Translation(position) * mPivot;
+            if (IsTransformed)
+            {
+                var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
+                position.Y = -position.Y;
+                var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
+                var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
+                boneMatrix *= Matrix.RotationQuaternion(rotation) * Matrix.Scaling(scaling) * Matrix.Translation(position);
+            }
 
-            if (IsTransformed && Bone.parentBone >= 0)
-                boneMatrix *= animator.GetBoneMatrix(time, Bone.parentBone, billboard);
+            boneMatrix = mInvPivot * boneMatrix * mPivot;
+
+            if (mBone.parentBone >= 0)
+                boneMatrix *= animator.GetBoneMatrix(time, mBone.parentBone, billboard);
 
             matrix = boneMatrix;
         }

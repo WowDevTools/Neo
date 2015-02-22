@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using SharpDX.Direct3D11;
 using WoWEditor6.Utils;
 
 namespace WoWEditor6.IO.Files.Texture
@@ -9,6 +10,7 @@ namespace WoWEditor6.IO.Files.Texture
     class TextureLoadInfo
     {
         public SharpDX.DXGI.Format Format;
+        public ResourceUsage Usage = ResourceUsage.Default;
         public int Width;
         public int Height;
         public int BlockSize;

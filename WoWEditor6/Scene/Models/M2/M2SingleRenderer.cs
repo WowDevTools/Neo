@@ -23,8 +23,8 @@ namespace WoWEditor6.Scene.Models.M2
             public Color4 colorMod;
         }
 
-        private static Mesh Mesh { get; set; }
-        private static Sampler Sampler { get; set; }
+        private static Mesh gMesh;
+        private static Sampler gSampler;
 
         private static readonly BlendState[] BlendStates = new BlendState[7];
         private static ShaderProgram gNoBlendProgram;
@@ -73,6 +73,12 @@ namespace WoWEditor6.Scene.Models.M2
             });
         }
 
+        public static void BeginDraw()
+        {
+            gMesh.BeginDraw();
+            gMesh.Program.SetPixelSampler(0, gSampler);
+        }
+
         public void OnFrame(M2Renderer renderer, M2RenderInstance instance)
         {
             var animator = renderer.Animator;
@@ -94,11 +100,8 @@ namespace WoWEditor6.Scene.Models.M2
                     mAnimBuffer.UpdateData(mAnimationMatrices);
             }
 
-            Mesh.BeginDraw();
-            Mesh.Program.SetPixelSampler(0, Sampler);
-
-            Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
-            Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
+            gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
+            gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
             mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
             {
@@ -106,9 +109,9 @@ namespace WoWEditor6.Scene.Models.M2
                 colorMod = instance.HighlightColor
             });
 
-            Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer != null ? mAnimBuffer : renderer.AnimBuffer);
-            Mesh.Program.SetVertexConstantBuffer(3, mPerDrawCallBuffer);
-            Mesh.Program.SetVertexConstantBuffer(4, mPerPassBuffer);
+            gMesh.Program.SetVertexConstantBuffer(2, mAnimBuffer ?? renderer.AnimBuffer);
+            gMesh.Program.SetVertexConstantBuffer(3, mPerDrawCallBuffer);
+            gMesh.Program.SetVertexConstantBuffer(4, mPerPassBuffer);
 
             foreach (var pass in mModel.Passes)
             {
@@ -126,21 +129,21 @@ namespace WoWEditor6.Scene.Models.M2
                 else if (pass.BlendMode == 1)
                     program = gBlendTestProgram;
 
-                if (Mesh.Program != program)
+                if (gMesh.Program != program)
                 {
-                    Mesh.Program = program;
-                    Mesh.Program.Bind();
+                    gMesh.Program = program;
+                    gMesh.Program.Bind();
                 }
 
                 var depthState = gDepthNoWriteState;
                 if (pass.BlendMode == 0 || pass.BlendMode == 1)
                     depthState = gDepthWriteState;
 
-                Mesh.UpdateDepthState(depthState);
+                gMesh.UpdateDepthState(depthState);
 
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
-                Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
-                Mesh.UpdateBlendState(BlendStates[pass.BlendMode]);
+                gMesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
+                gMesh.UpdateBlendState(BlendStates[pass.BlendMode]);
 
                 var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
@@ -154,11 +157,11 @@ namespace WoWEditor6.Scene.Models.M2
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
                 });
 
-                Mesh.StartVertex = 0;
-                Mesh.StartIndex = pass.StartIndex;
-                Mesh.IndexCount = pass.IndexCount;
-                Mesh.Program.SetPixelTexture(0, pass.Textures.First());
-                Mesh.Draw();
+                gMesh.StartVertex = 0;
+                gMesh.StartIndex = pass.StartIndex;
+                gMesh.IndexCount = pass.IndexCount;
+                gMesh.Program.SetPixelTexture(0, pass.Textures.First());
+                gMesh.Draw();
             }
         }
 
@@ -199,22 +202,22 @@ namespace WoWEditor6.Scene.Models.M2
                 DepthWriteEnabled = false
             };
 
-            Mesh = new Mesh(context)
+            gMesh = new Mesh(context)
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
                 DepthState = gDepthNoWriteState
             };
 
-            Mesh.BlendState.Dispose();
-            Mesh.IndexBuffer.Dispose();
-            Mesh.VertexBuffer.Dispose();
+            gMesh.BlendState.Dispose();
+            gMesh.IndexBuffer.Dispose();
+            gMesh.VertexBuffer.Dispose();
 
-            Mesh.AddElement("POSITION", 0, 3);
-            Mesh.AddElement("BLENDWEIGHT", 0, 4, DataType.Byte, true);
-            Mesh.AddElement("BLENDINDEX", 0, 4, DataType.Byte);
-            Mesh.AddElement("NORMAL", 0, 3);
-            Mesh.AddElement("TEXCOORD", 0, 2);
-            Mesh.AddElement("TEXCOORD", 1, 2);
+            gMesh.AddElement("POSITION", 0, 3);
+            gMesh.AddElement("BLENDWEIGHT", 0, 4, DataType.Byte, true);
+            gMesh.AddElement("BLENDINDEX", 0, 4, DataType.Byte);
+            gMesh.AddElement("NORMAL", 0, 3);
+            gMesh.AddElement("TEXCOORD", 0, 2);
+            gMesh.AddElement("TEXCOORD", 1, 2);
 
             gNoBlendProgram = new ShaderProgram(context);
             gNoBlendProgram.SetPixelShader(Resources.Shaders.M2Pixel);
@@ -228,9 +231,9 @@ namespace WoWEditor6.Scene.Models.M2
             gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
             gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
 
-            Mesh.Program = gBlendProgram;
+            gMesh.Program = gBlendProgram;
 
-            Sampler = new Sampler(context)
+            gSampler = new Sampler(context)
             {
                 AddressMode = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
