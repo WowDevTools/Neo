@@ -45,8 +45,7 @@ namespace WoWEditor6.UI
             var worldText = new WorldText
             {
                 Position = WorldFrame.Instance.ActiveCamera.Position,
-                Text = "Testing!",
-                Scaling = 10.0f
+                Text = "Testing!"
             };
 
             WorldFrame.Instance.WorldTextManager.AddText(worldText);

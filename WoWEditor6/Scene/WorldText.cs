@@ -89,6 +89,8 @@ namespace WoWEditor6.Scene
 
             if (brush != null)
                 mBrush = brush;
+
+            Scaling = 1.0f;
         }
 
         public void Dispose()
@@ -122,7 +124,7 @@ namespace WoWEditor6.Scene
                 return;
 
             var center = Position;
-            var scale = Scaling * 0.01f;
+            var scale = Scaling / 10.0f;
             var right = camera.Right * mWidth * 0.5f;
             var up = camera.Up * mHeight * 0.5f;
 
