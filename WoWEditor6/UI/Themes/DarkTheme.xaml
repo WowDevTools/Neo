@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Xceed.Wpf.AvalonDock.Themes.Metro;component/Theme.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!-- TODO IMPLEMENT YOUR STYLE HERE -->
+</ResourceDictionary>

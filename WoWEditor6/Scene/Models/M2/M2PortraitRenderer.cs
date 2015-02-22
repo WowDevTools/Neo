@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
+using WoWEditor6.IO;
 using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
@@ -14,6 +15,7 @@ namespace WoWEditor6.Scene.Models.M2
         {
             public Matrix uvAnimMatrix;
             public Vector4 modelPassParams;
+            public Vector4 ColorValue;
         }
 
         private static Mesh Mesh { get; set; }
@@ -22,6 +24,9 @@ namespace WoWEditor6.Scene.Models.M2
         private static readonly BlendState[] BlendStates = new BlendState[7];
         private static ShaderProgram gNoBlendProgram;
         private static ShaderProgram gBlendProgram;
+        private static ShaderProgram gBlendMaskProgram;
+        private static ShaderProgram g2PassProgram;
+        private static ShaderProgram g3PassProgram;
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
@@ -70,6 +75,7 @@ namespace WoWEditor6.Scene.Models.M2
 
             Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
+            Mesh.Program.SetPixelConstantBuffer(0, mPerPassBuffer);
 
             foreach (var pass in Model.Passes)
             {
@@ -78,26 +84,63 @@ namespace WoWEditor6.Scene.Models.M2
                 Mesh.UpdateBlendState(BlendStates[pass.BlendMode]);
 
                 var oldProgram = Mesh.Program;
-                Mesh.Program = (pass.BlendMode > 0 ? gBlendProgram : gNoBlendProgram);
-                if (Mesh.Program != oldProgram)
+                ShaderProgram newProgram;
+                switch (pass.BlendMode)
+                {
+                    case 0:
+                        newProgram = gNoBlendProgram;
+                        break;
+                    case 1:
+                        newProgram = gBlendMaskProgram;
+                        break;
+                    default:
+                        switch (pass.TextureIndices.Count)
+                        {
+                            case 2:
+                                newProgram = g2PassProgram;
+                                break;
+
+                            case 3:
+                                newProgram = g3PassProgram;
+                                break;
+
+                            default:
+                                newProgram = gBlendProgram;
+                                break;
+                        }
+                        break;
+                }
+
+                if (newProgram != oldProgram)
+                {
+                    Mesh.Program = newProgram;
                     Mesh.Program.Bind();
+                }
 
                 var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
                 Matrix uvAnimMat;
                 mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                var color = mAnimator.GetColorValue(pass.ColorAnimIndex);
+                var alpha = mAnimator.GetAlphaValue(pass.AlphaAnimIndex);
+                color.W = alpha;
 
-                mPerPassBuffer.UpdateData(new PerModelPassBuffer()
+                //Log.Debug(color);
+
+                mPerPassBuffer.UpdateData(new PerModelPassBuffer
                 {
                     uvAnimMatrix = uvAnimMat,
-                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
+                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
+                    ColorValue = color
                 });
 
                 Mesh.StartVertex = 0;
                 Mesh.StartIndex = pass.StartIndex;
                 Mesh.IndexCount = pass.IndexCount;
-                Mesh.Program.SetPixelTexture(0, pass.Textures.First());
+                for(var i = 0; i < pass.TextureIndices.Count; ++i)
+                    Mesh.Program.SetPixelTexture(i, Textures[pass.TextureIndices[i]].Texture);
+
                 Mesh.Draw();
             }
         }
@@ -114,13 +157,15 @@ namespace WoWEditor6.Scene.Models.M2
                 uvAnimMatrix = Matrix.Identity,
                 modelPassParams = Vector4.Zero
             });
+
+            gCullState.CullCounterClock = FileManager.Instance.Version >= FileDataVersion.Lichking;
         }
 
         public static void Initialize(GxContext context)
         {
             Mesh = new Mesh(context)
             {
-                Stride = IO.SizeCache<M2Vertex>.Size,
+                Stride = SizeCache<M2Vertex>.Size,
                 DepthState = { DepthEnabled = true }
             };
 
@@ -215,8 +260,20 @@ namespace WoWEditor6.Scene.Models.M2
             gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelPortraitBlend);
             gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
 
+            gBlendMaskProgram = new ShaderProgram(context);
+            gBlendMaskProgram.SetPixelShader(Resources.Shaders.M2PixelPortraitBlendAlpha);
+            gBlendMaskProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
+
+            g2PassProgram = new ShaderProgram(context);
+            g2PassProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
+            g2PassProgram.SetPixelShader(Resources.Shaders.M2PixelPortrait2Pass);
+
+            g3PassProgram = new ShaderProgram(context);
+            g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
+            g3PassProgram.SetPixelShader(Resources.Shaders.M2PixelPortrait3Pass);
+
             gNoCullState = new RasterState(context) {CullEnabled = false};
-            gCullState = new RasterState(context) {CullEnabled = true};
+            gCullState = new RasterState(context) {CullEnabled = true, CullCounterClock = true};
         }
     }
 }

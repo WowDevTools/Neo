@@ -193,4 +193,10 @@
   <data name="WorldTextVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WorldTextVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="M2PixelPortrait3Pass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2PixelPortrait3Pass.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2PixelPortrait2Pass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2PixelPortrait2Pass.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

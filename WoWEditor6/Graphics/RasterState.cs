@@ -25,6 +25,12 @@ namespace WoWEditor6.Graphics
             set { mDescription.CullMode = value ? CullMode.Back : CullMode.None; mChanged = true; }
         }
 
+        public bool CullCounterClock
+        {
+            get { return !mDescription.IsFrontCounterClockwise; }
+            set { mDescription.IsFrontCounterClockwise = !value; mChanged = true; }
+        }
+
         public bool Wireframe
         {
             get { return mDescription.FillMode == FillMode.Wireframe; }
