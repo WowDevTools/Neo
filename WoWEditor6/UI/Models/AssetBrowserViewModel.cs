@@ -97,9 +97,23 @@ namespace WoWEditor6.UI.Models
         public void Handle_FileClicked(AssetBrowserFilePreviewElement element)
         {
             if (element.View.FileEntry.Extension.Contains("blp"))
+            {
                 mBrowser.TexturePreviewImage.Source = element.View.PreviewImage.Source;
+                mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
+                mBrowser.TexturePreviewImage.Visibility = Visibility.Visible;
+            }
+            else if (element.View.FileEntry.Extension.Contains("m2"))
+            {
+                mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
+                mBrowser.ModelPreviewRender.SetModel(element.View.FileEntry.FullPath);
+                mBrowser.ModelPreviewControl.Visibility = Visibility.Visible;
+            }
             else
+            {
+                mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
+                mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
                 mBrowser.TexturePreviewImage.Source = null;
+            }
         }
 
         public void Handle_BrowserSelectionChanged(AssetBrowserDirectory newItem)

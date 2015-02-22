@@ -132,9 +132,12 @@ namespace WoWEditor6.UI.Components
             mCamera.ViewChanged += ViewChanged;
             mCamera.ProjectionChanged += ProjChanged;
             mCamera.SetClip(0.2f, 1000.0f);
-            mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, -Vector3.UnitY);
-            mCamControl = new CameraControl(this);
-
+            mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
+            mCamControl = new CameraControl(this)
+            {
+                TurnFactor = 0.1f, 
+                SpeedFactor = 20.0f
+            };
 
             MouseClick += OnClick;
             Resize += OnResize;
@@ -183,7 +186,10 @@ namespace WoWEditor6.UI.Components
         void OnRenderTimerTick(object sender, EventArgs args)
         {
             mCamControl.Update(mCamera, false);
-            WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
+            if (WorldFrame.Instance.Dispatcher.InvokeRequired)
+                WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
+            else
+                OnRenderModel();
         }
 
         void ViewChanged(Camera cam, Matrix matView)

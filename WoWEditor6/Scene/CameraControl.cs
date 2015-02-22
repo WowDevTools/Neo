@@ -15,12 +15,24 @@ namespace WoWEditor6.Scene
         private Point mLastCursorPos;
         private DateTime mLastUpdate = DateTime.Now;
 
-        private const float SpeedFactor = 100.0f;
-        private const float SpeedFactorWheel = 0.5f;
+        private float mSpeedFactor = 100.0f;
+        private float mSpeedFactorWheel = 0.5f;
         public bool InvertX { get; set; }
         public bool InvertY { get; set; }
 
         public float TurnFactor { get; set; }
+
+        public float SpeedFactor
+        {
+            get { return mSpeedFactor; }
+            set { mSpeedFactor = value; }
+        }
+
+        public float SpeedFactorWheel
+        {
+            get { return mSpeedFactorWheel; }
+            set { mSpeedFactorWheel = value; }
+        }
 
         public event PositionChangedHandler PositionChanged;
 
@@ -52,40 +64,40 @@ namespace WoWEditor6.Scene
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveForward(diff * SpeedFactor);
+                cam.MoveForward(diff * mSpeedFactor);
             }
 
             if (KeyHelper.AreKeysDown(keyState, camBind.Backward))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveForward(-diff * SpeedFactor);
+                cam.MoveForward(-diff * mSpeedFactor);
             }
 
             if (KeyHelper.AreKeysDown(keyState, camBind.Right))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveRight(diff * SpeedFactor);
+                cam.MoveRight(diff * mSpeedFactor);
             }
 
             if (KeyHelper.AreKeysDown(keyState, camBind.Left))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveRight(-diff * SpeedFactor);
+                cam.MoveRight(-diff * mSpeedFactor);
             }
 
             if (KeyHelper.AreKeysDown(keyState, camBind.Up))
             {
                 positionChanged = true;
-                cam.MoveUp(diff * SpeedFactor);
+                cam.MoveUp(diff * mSpeedFactor);
             }
 
             if (KeyHelper.AreKeysDown(keyState, camBind.Down))
             {
                 positionChanged = true;
-                cam.MoveUp(-diff * SpeedFactor);
+                cam.MoveUp(-diff * mSpeedFactor);
             }
 
             if (KeyHelper.IsKeyDown(keyState, Keys.RButton))
@@ -116,7 +128,7 @@ namespace WoWEditor6.Scene
             if (KeyHelper.IsKeyDown(keyState, Keys.RButton))
             {
                 var cam = WorldFrame.Instance.ActiveCamera;
-                cam.MoveForward(delta * SpeedFactorWheel);
+                cam.MoveForward(delta * mSpeedFactorWheel);
                 WorldFrame.Instance.MapManager.UpdatePosition(cam.Position, true);
             }
         }
