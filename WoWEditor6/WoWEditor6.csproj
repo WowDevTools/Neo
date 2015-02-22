@@ -277,6 +277,7 @@
     <Compile Include="Scene\WorldTextManager.cs" />
     <Compile Include="Settings\KeyBindings.cs" />
     <Compile Include="Singleton.cs" />
+    <Compile Include="Storage\AnimationType.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\Creature.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\CreatureManager.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\GameObject.cs" />

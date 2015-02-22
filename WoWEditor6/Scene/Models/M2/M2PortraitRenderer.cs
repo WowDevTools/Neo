@@ -5,6 +5,7 @@ using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO;
 using WoWEditor6.IO.Files.Models;
+using WoWEditor6.Storage;
 
 namespace WoWEditor6.Scene.Models.M2
 {
@@ -47,7 +48,7 @@ namespace WoWEditor6.Scene.Models.M2
 
             mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
             mAnimator = ModelFactory.Instance.CreateAnimator(model);
-            mAnimator.SetAnimationByIndex(0);
+            mAnimator.SetAnimation(AnimationType.Stand);
             mAnimator.Update(null);
         }
 

@@ -187,6 +187,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 NeedsPerInstanceAnimation = true;
 
             AnimLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
+            if (mHeader.NAnimLookup > 0)
+                Log.Debug(mFileName + ": " + mHeader.NAnimLookup);
             Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
 
             var uvAnims = ReadArrayOf<M2TexAnim>(reader, mHeader.OfsUvAnimation, mHeader.NUvAnimation);

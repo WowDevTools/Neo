@@ -44,24 +44,22 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             SetAlphaData(file.Transparencies);
         }
 
-        public void SetAnimation(uint animation)
+        public bool SetAnimation(uint animation)
         {
             if (animation >= mAnimationLookup.Length)
-            {
-                Log.Warning("Tried to access animation by id outside of the lookup array. Ignoring animation");
-                return;
-            }
+                return false;
 
             if (mAnimationLookup[animation] < 0)
             {
                 Log.Warning("Animation not found in model. Skipping");
-                return;
+                return false;
             }
 
             mAnimationId = mAnimationLookup[animation];
             mAnimation = mAnimations[mAnimationId];
             mHasAnimation = true;
             ResetAnimationTimes();
+            return true;
         }
 
         public void SetAnimationByIndex(uint index)
@@ -76,6 +74,11 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             mAnimationId = (int)index;
             mHasAnimation = true;
             ResetAnimationTimes();
+        }
+
+        public bool SetAnimation(Storage.AnimationType animation)
+        {
+            return SetAnimation((uint)animation);
         }
 
         public void Update(BillboardParameters billboard)

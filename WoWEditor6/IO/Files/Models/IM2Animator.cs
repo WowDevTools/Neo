@@ -14,7 +14,8 @@ namespace WoWEditor6.IO.Files.Models
     {
         void Update(BillboardParameters billboard);
 
-        void SetAnimation(uint animation);
+        bool SetAnimation(uint animation);
+        bool SetAnimation(Storage.AnimationType animation);
         void SetAnimationByIndex(uint animation);
         void ResetAnimationTimes();
         Vector4 GetColorValue(int texAnim);
