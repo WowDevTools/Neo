@@ -79,7 +79,7 @@ namespace WoWEditor6.Scene.Terrain
             mAreaLowManager.Shutdown();
         }
 
-        public void OnFrame()
+        public void OnFrame(Camera camera)
         {
             ProcessLoadedTiles();
 
@@ -122,7 +122,7 @@ namespace WoWEditor6.Scene.Terrain
             MapChunkRender.ChunkMesh.Program = HasNewBlend ? MapChunkRender.BlendNew : MapChunkRender.BlendOld;
 
             IsInitialLoad = true;
-
+            UI.FontCollection.Initialize();
             IO.Files.Sky.SkyManager.Instance.OnEnterWorld(mapId);
             mAreaLowManager.OnEnterWorld(Continent, ref entryPoint);
 

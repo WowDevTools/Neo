@@ -40,6 +40,20 @@ namespace WoWEditor6.UI
             mrt.Show();
         }
 
+        private void Debug_Click(object sender, RoutedEventArgs e)
+        {
+            var camera = WorldFrame.Instance.ActiveCamera;
+            var font = FontCollection.GetFont("Arial Narrow", 30, System.Drawing.FontStyle.Regular);
+            var worldText = new WorldText(font, System.Drawing.Brushes.AntiqueWhite)
+            {
+                Position = camera.Position,
+                Text = "Testing!",
+                Scaling = 10.0f
+            };
+
+            WorldFrame.Instance.WorldTextManager.AddText(worldText);
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SculptingPane.ToggleAutoHide();

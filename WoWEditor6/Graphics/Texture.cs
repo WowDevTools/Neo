@@ -36,6 +36,14 @@ namespace WoWEditor6.Graphics
 
         public void LoadFromLoadInfo(IO.Files.Texture.TextureLoadInfo loadInfo)
         {
+            var totalMips = loadInfo.Layers.Count;
+            if (loadInfo.GenerateMipMaps)
+            {
+                var l2H = (int)Math.Log(loadInfo.Height, 2);
+                var l2W = (int)Math.Log(loadInfo.Width, 2);
+                totalMips = Math.Min(l2H, l2W) + 1;
+            }
+
             var texDesc = new Texture2DDescription
             {
                 ArraySize = 1,
@@ -44,7 +52,7 @@ namespace WoWEditor6.Graphics
                 Format = loadInfo.Format,
                 Height = loadInfo.Height,
                 Width = loadInfo.Width,
-                MipLevels = loadInfo.Layers.Count,
+                MipLevels = totalMips,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
                 Usage = loadInfo.Usage
@@ -58,27 +66,47 @@ namespace WoWEditor6.Graphics
                     NativeView.Dispose();
             }
 
-            var boxes = new DataBox[texDesc.MipLevels];
-            var streams = new DataStream[texDesc.MipLevels];
+            var boxes = new DataBox[loadInfo.Layers.Count];
+            var streams = new DataStream[loadInfo.Layers.Count];
+
             try
             {
-                for(var i = 0; i < texDesc.MipLevels; ++i)
+                if (!loadInfo.GenerateMipMaps)
                 {
-                    streams[i] = new DataStream(loadInfo.Layers[i].Length, true, true);
-                    streams[i].WriteRange(loadInfo.Layers[i]);
-                    streams[i].Position = 0;
-                    boxes[i] = new DataBox(streams[i].DataPointer, loadInfo.RowPitchs[i], 0);
+                    for (var i = 0; i < loadInfo.Layers.Count; ++i)
+                    {
+                        streams[i] = new DataStream(loadInfo.Layers[i].Length, true, true);
+                        streams[i].WriteRange(loadInfo.Layers[i]);
+                        streams[i].Position = 0;
+                        boxes[i] = new DataBox(streams[i].DataPointer, loadInfo.RowPitchs[i], 0);
+                    }
+
+                    mTexture = new Texture2D(mContext.Device, texDesc, boxes);
+                }
+                else
+                {
+                    texDesc.Usage = ResourceUsage.Default;
+                    texDesc.OptionFlags |= ResourceOptionFlags.GenerateMipMaps;
+                    texDesc.BindFlags |= BindFlags.RenderTarget;
+
+                    mTexture = new Texture2D(mContext.Device, texDesc);
+                    mContext.Context.UpdateSubresource(loadInfo.Layers[0], mTexture, 0, loadInfo.RowPitchs[0]);
                 }
 
-                mTexture = new Texture2D(mContext.Device, texDesc, boxes);
                 var srvd = new ShaderResourceViewDescription
                 {
                     Dimension = SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
                     Format = loadInfo.Format,
-                    Texture2D = new ShaderResourceViewDescription.Texture2DResource { MipLevels = boxes.Length, MostDetailedMip = 0 }
+                    Texture2D = new ShaderResourceViewDescription.Texture2DResource
+                    {
+                        MipLevels = texDesc.MipLevels,
+                        MostDetailedMip = 0
+                    }
                 };
 
                 NativeView = new ShaderResourceView(mContext.Device, mTexture, srvd);
+                if (loadInfo.GenerateMipMaps)
+                    mContext.Context.GenerateMips(NativeView);
             }
             finally
             {

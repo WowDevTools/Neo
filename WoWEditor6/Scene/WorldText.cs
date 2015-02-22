@@ -22,11 +22,9 @@ namespace WoWEditor6.Scene
         [StructLayout(LayoutKind.Sequential)]
         struct WorldTextVertex
         {
-            public WorldTextVertex(float x, float y, float z, float u, float v)
+            public WorldTextVertex(Vector3 pos, float u, float v)
             {
-                position.X = x;
-                position.Y = y;
-                position.Z = z;
+                position = pos;
                 texCoord.X = u;
                 texCoord.Y = v;
             }
@@ -45,19 +43,10 @@ namespace WoWEditor6.Scene
         private static ShaderProgram gWorldTextShader;
         private static Graphics.BlendState gBlendState;
 
-        private ConstantBuffer mPerDrawCallBuffer;
+        private static ConstantBuffer gPerDrawCallBuffer;
 
-        public Vector3 Position
-        {
-            get { return mPosition; }
-            set { UpdatePosition(value); }
-        }
-
-        public float Scale
-        {
-            get { return mScaling; }
-            set { UpdateScaling(value); }
-        }
+        public Vector3 Position { get; set; }
+        public float Scaling { get; set; }
 
         public Font Font
         {
@@ -77,10 +66,6 @@ namespace WoWEditor6.Scene
             set { UpdateText(value); }
         }
 
-        private Vector3 mPosition;
-        private float mScaling = 1.0f;
-        private Matrix mTransform;
-
         private string mText;
         private float mWidth;
         private float mHeight;
@@ -88,7 +73,7 @@ namespace WoWEditor6.Scene
         private Font mFont;
         private Brush mBrush;
 
-        private static readonly Bitmap gBitmap = new Bitmap(1, 1);
+        private static readonly Bitmap Bitmap = new Bitmap(1, 1);
         private static System.Drawing.Graphics gGraphics;
 
         private Graphics.Texture mTexture;
@@ -107,18 +92,16 @@ namespace WoWEditor6.Scene
         {
             if (mTexture != null)
                 mTexture.Dispose();
-
-            if (mPerDrawCallBuffer != null)
-                mPerDrawCallBuffer.Dispose();
         }
 
         public static void BeginDraw()
         {
             gMesh.BeginDraw();
             gMesh.Program.SetPixelSampler(0, gSampler);
+            gMesh.Program.SetVertexConstantBuffer(1, gPerDrawCallBuffer);
         }
 
-        public void OnFrame()
+        public void OnFrame(Camera camera)
         {
             if (!mIsInitialized)
             {
@@ -135,18 +118,25 @@ namespace WoWEditor6.Scene
             if (!mShouldDraw)
                 return;
 
-            mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
-            {
-                matTransform = mTransform
-            });
+            var center = Position;
+            var scale = Scaling * 0.01f;
+            var right = camera.Right * mWidth * 0.5f;
+            var up = camera.Up * mHeight * 0.5f;
 
-            gMesh.Program.SetVertexConstantBuffer(1, mPerDrawCallBuffer);
-            gMesh.Program.SetPixelTexture(0, mTexture);
+            gVertexBuffer.UpdateData(new[]
+            {
+                new WorldTextVertex(center - (right + up) * scale, 0.0f, 1.0f),
+                new WorldTextVertex(center + (right - up) * scale, 1.0f, 1.0f),
+                new WorldTextVertex(center - (right - up) * scale, 0.0f, 0.0f),
+                new WorldTextVertex(center + (right + up) * scale, 1.0f, 0.0f) 
+            });
 
             gMesh.IndexCount = 4;
             gMesh.StartVertex = 0;
             gMesh.StartIndex = 0;
             gMesh.Topology = SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
+
+            gMesh.Program.SetPixelTexture(0, mTexture);
             gMesh.DrawNonIndexed();
         }
 
@@ -177,25 +167,6 @@ namespace WoWEditor6.Scene
             mIsDirty = true;
         }
 
-        private void UpdatePosition(Vector3 position)
-        {
-            mPosition = position;
-            UpdateMatrix();
-        }
-
-        private void UpdateScaling(float scaling)
-        {
-            mScaling = scaling;
-            UpdateMatrix();
-        }
-
-        private void UpdateMatrix()
-        {
-            float scale = mScaling * 0.001f;
-            var matScaling = Matrix.Scaling(mWidth * scale, 1.0f, mHeight * scale);
-            mTransform = matScaling * Matrix.Translation(mPosition);
-        }
-
         private unsafe void OnRenderText()
         {
             var size = gGraphics.MeasureString(mText, mFont);
@@ -204,7 +175,6 @@ namespace WoWEditor6.Scene
 
             mWidth = size.Width;
             mHeight = size.Height;
-            UpdateMatrix();
 
             if (width == 0 || height == 0)
             {
@@ -260,7 +230,8 @@ namespace WoWEditor6.Scene
                 Format = Format.R8G8B8A8_UNorm,
                 Usage = ResourceUsage.Immutable,
                 Width = width,
-                Height = height
+                Height = height,
+                GenerateMipMaps = true
             };
 
             texLoadInfo.Layers.Add(buffer);
@@ -273,17 +244,11 @@ namespace WoWEditor6.Scene
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
             mTexture = new Graphics.Texture(ctx);
-
-            mPerDrawCallBuffer = new ConstantBuffer(ctx);
-            mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
-            {
-                matTransform = Matrix.Identity
-            });
         }
 
         public static void Initialize(GxContext context)
         {
-            gGraphics = System.Drawing.Graphics.FromImage(gBitmap);
+            gGraphics = System.Drawing.Graphics.FromImage(Bitmap);
 
             gSampler = new Sampler(context)
             {
@@ -307,18 +272,11 @@ namespace WoWEditor6.Scene
 
             gDepthState = new DepthState(context)
             {
-                DepthEnabled = false,
+                DepthEnabled = true,
                 DepthWriteEnabled = false
             };
 
             gVertexBuffer = new VertexBuffer(context);
-            gVertexBuffer.UpdateData(new[]
-            {
-                new WorldTextVertex(-0.5f, 0.0f, +0.5f, 0.0f, 0.0f),
-                new WorldTextVertex(+0.5f, 0.0f, +0.5f, 1.0f, 0.0f),
-                new WorldTextVertex(-0.5f, 0.0f, -0.5f, 0.0f, 1.0f),
-                new WorldTextVertex(+0.5f, 0.0f, -0.5f, 1.0f, 1.0f) 
-            });
 
             gMesh = new Mesh(context)
             {
@@ -342,6 +300,12 @@ namespace WoWEditor6.Scene
             gWorldTextShader.SetVertexShader(Resources.Shaders.WorldTextVertex);
             gWorldTextShader.SetPixelShader(Resources.Shaders.WorldTextPixel);
             gMesh.Program = gWorldTextShader;
+
+            gPerDrawCallBuffer = new ConstantBuffer(context);
+            gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
+            {
+                matTransform = Matrix.Identity
+            });
         }
     }
 }

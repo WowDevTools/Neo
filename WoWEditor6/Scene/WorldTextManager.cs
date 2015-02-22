@@ -11,29 +11,22 @@ namespace WoWEditor6.Scene
 
         public void Initialize()
         {
-            /*var font = new Font("Arial", 200);
-            var worldText = new WorldText(font, Brushes.White)
-            {
-                Position = new Vector3(17011.38f, 15896.24f, 192.6388f),
-                Text = "Testing Testing BLAA!"
-            };
 
-            AddText(worldText);*/
         }
 
         public void Shutdown()
         {
-
+            DisposeAll();
         }
 
-        public void OnFrame()
+        public void OnFrame(Camera camera)
         {
             WorldText.BeginDraw();
 
             lock (mWorldTexts)
             {
                 foreach (var text in mWorldTexts)
-                    text.OnFrame();
+                    text.OnFrame(camera);
             }
         }
 
@@ -42,6 +35,25 @@ namespace WoWEditor6.Scene
             lock (mWorldTexts)
             {
                 mWorldTexts.Add(text);
+            }
+        }
+
+        public void RemoveText(WorldText text)
+        {
+            lock (mWorldTexts)
+            {
+                mWorldTexts.Remove(text);
+            }
+        }
+
+        private void DisposeAll()
+        {
+            lock (mWorldTexts)
+            {
+                foreach (var text in mWorldTexts)
+                    text.Dispose();
+
+                mWorldTexts.Clear();
             }
         }
     }

@@ -379,6 +379,7 @@
     <None Include="UI\old\InterfaceManager.cs" />
     <Compile Include="Settings\ToolbarButtons.cs" />
     <Compile Include="Settings\ToolbarSettings.cs" />
+    <Compile Include="UI\FontCollection.cs" />
     <Compile Include="UI\ModelRenderTest.xaml.cs">
       <DependentUpon>ModelRenderTest.xaml</DependentUpon>
     </Compile>

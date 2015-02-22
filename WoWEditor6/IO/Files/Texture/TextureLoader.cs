@@ -14,6 +14,7 @@ namespace WoWEditor6.IO.Files.Texture
         public int Width;
         public int Height;
         public int BlockSize;
+        public bool GenerateMipMaps;
         public readonly List<byte[]> Layers = new List<byte[]>();
         public readonly List<int> RowPitchs = new List<int>();
     }

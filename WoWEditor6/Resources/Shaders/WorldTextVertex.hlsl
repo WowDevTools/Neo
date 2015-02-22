@@ -47,6 +47,5 @@ VertexOutput main(VertexInput input) {
     VertexOutput output = (VertexOutput) 0;
     output.position = position;
     output.texCoord = input.texCoord;
-
     return output;
 }

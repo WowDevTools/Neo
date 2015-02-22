@@ -213,10 +213,11 @@ namespace WoWEditor6.Scene
 
             GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
             GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.Native);
-            MapManager.OnFrame();
-            WmoManager.OnFrame();
-            M2Manager.OnFrame();
-            WorldTextManager.OnFrame();
+
+            MapManager.OnFrame(ActiveCamera);
+            WmoManager.OnFrame(ActiveCamera);
+            M2Manager.OnFrame(ActiveCamera);
+            WorldTextManager.OnFrame(ActiveCamera);
         }
 
         public void OnMouseWheel(int delta)

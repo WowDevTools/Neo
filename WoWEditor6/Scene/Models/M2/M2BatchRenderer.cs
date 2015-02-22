@@ -40,7 +40,7 @@ namespace WoWEditor6.Scene.Models.M2
         private int mInstanceCount;
 
         private PerInstanceBuffer[] mActiveInstances = new PerInstanceBuffer[0];
-        private ConstantBuffer mPerPassBuffer;
+        private static ConstantBuffer gPerPassBuffer;
 
         public M2BatchRenderer(M2File model)
         {
@@ -50,14 +50,10 @@ namespace WoWEditor6.Scene.Models.M2
         public virtual void Dispose()
         {
             var ib = mInstanceBuffer;
-            var pb = mPerPassBuffer;
-
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
                 if (ib != null)
                     ib.Dispose();
-                if (pb != null)
-                    pb.Dispose();
             });
         }
 
@@ -65,6 +61,7 @@ namespace WoWEditor6.Scene.Models.M2
         {
             gMesh.BeginDraw();
             gMesh.Program.SetPixelSampler(0, gSampler);
+            gMesh.Program.SetVertexConstantBuffer(2, gPerPassBuffer);
         }
 
         public void OnFrame(M2Renderer renderer)
@@ -76,9 +73,7 @@ namespace WoWEditor6.Scene.Models.M2
             gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
             gMesh.UpdateInstanceBuffer(mInstanceBuffer);
-
-            gMesh.Program.SetVertexConstantBuffer(2, renderer.AnimBuffer);
-            gMesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
+            gMesh.Program.SetVertexConstantBuffer(1, renderer.AnimBuffer);
 
             foreach (var pass in Model.Passes)
             {
@@ -103,7 +98,7 @@ namespace WoWEditor6.Scene.Models.M2
                 Matrix uvAnimMat;
                 renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
 
-                mPerPassBuffer.UpdateData(new PerModelPassBuffer
+                gPerPassBuffer.UpdateData(new PerModelPassBuffer
                 {
                     uvAnimMatrix = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
@@ -142,12 +137,6 @@ namespace WoWEditor6.Scene.Models.M2
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
             mInstanceBuffer = new VertexBuffer(ctx);
-            mPerPassBuffer = new ConstantBuffer(ctx);
-            mPerPassBuffer.UpdateData(new PerModelPassBuffer()
-            {
-                uvAnimMatrix = Matrix.Identity,
-                modelPassParams = Vector4.Zero
-            });
         }
 
         public static void Initialize(GxContext context)
@@ -186,6 +175,13 @@ namespace WoWEditor6.Scene.Models.M2
             gMaskBlendProgram = new ShaderProgram(context);
             gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced);
             gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
+
+            gPerPassBuffer = new ConstantBuffer(context);
+            gPerPassBuffer.UpdateData(new PerModelPassBuffer()
+            {
+                uvAnimMatrix = Matrix.Identity,
+                modelPassParams = Vector4.Zero
+            });
 
             gMesh.Program = gNoBlendProgram;
 

@@ -21,18 +21,18 @@ cbuffer GlobalParams : register(b0)
     float4 brushParams;
 };
 
-cbuffer AnimationMatrices : register(b2)
+cbuffer AnimationMatrices : register(b1)
 {
     row_major float4x4 Bones[256];
 }
 
-cbuffer PerDrawCallBuffer : register(b3)
+cbuffer PerDrawCallBuffer : register(b2)
 {
     row_major float4x4 matInstance;
     float4 colorMod;
 }
 
-cbuffer PerModelPassBuffer : register(b4)
+cbuffer PerModelPassBuffer : register(b3)
 {
     row_major float4x4 uvAnimation;
     float4 modelPassParams;

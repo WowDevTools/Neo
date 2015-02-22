@@ -93,7 +93,7 @@ namespace WoWEditor6.Scene.Models
             batch.AddInstance(uuid, position, rotation);
         }
 
-        public void OnFrame()
+        public void OnFrame(Camera camera)
         {
             WmoGroupRender.Mesh.BeginDraw();
             WmoGroupRender.Mesh.Program.SetPixelSampler(0, WmoGroupRender.Sampler);

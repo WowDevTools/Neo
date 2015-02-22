@@ -57,7 +57,7 @@ namespace WoWEditor6.Scene.Models
             mUnloadThread.Join();
         }
 
-        public void OnFrame()
+        public void OnFrame(Camera camera)
         {
             if (WorldFrame.Instance.HighlightModelsInBrush)
             {

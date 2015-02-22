@@ -40,10 +40,10 @@ namespace WoWEditor6.Scene.Models.M2
         private readonly M2File mModel;
         private readonly IM2Animator mAnimator;
         private readonly Matrix[] mAnimationMatrices;
-
-        private ConstantBuffer mPerDrawCallBuffer;
-        private ConstantBuffer mPerPassBuffer;
         private ConstantBuffer mAnimBuffer;
+
+        private static ConstantBuffer gPerDrawCallBuffer;
+        private static ConstantBuffer gPerPassBuffer;
 
         public M2SingleRenderer(M2File model)
         {
@@ -58,16 +58,9 @@ namespace WoWEditor6.Scene.Models.M2
 
         public virtual void Dispose()
         {
-            var pb = mPerPassBuffer;
-            var pd = mPerDrawCallBuffer;
             var ab = mAnimBuffer;
-
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                if (pb != null)
-                    pb.Dispose();
-                if (pd != null)
-                    pd.Dispose();
                 if (ab != null)
                     ab.Dispose();
             });
@@ -77,6 +70,8 @@ namespace WoWEditor6.Scene.Models.M2
         {
             gMesh.BeginDraw();
             gMesh.Program.SetPixelSampler(0, gSampler);
+            gMesh.Program.SetVertexConstantBuffer(2, gPerDrawCallBuffer);
+            gMesh.Program.SetVertexConstantBuffer(3, gPerPassBuffer);
         }
 
         public void OnFrame(M2Renderer renderer, M2RenderInstance instance)
@@ -103,15 +98,13 @@ namespace WoWEditor6.Scene.Models.M2
             gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-            mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
+            gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
             {
                 instanceMat = instance.InstanceMatrix,
                 colorMod = instance.HighlightColor
             });
 
-            gMesh.Program.SetVertexConstantBuffer(2, mAnimBuffer ?? renderer.AnimBuffer);
-            gMesh.Program.SetVertexConstantBuffer(3, mPerDrawCallBuffer);
-            gMesh.Program.SetVertexConstantBuffer(4, mPerPassBuffer);
+            gMesh.Program.SetVertexConstantBuffer(1, mAnimBuffer ?? renderer.AnimBuffer);
 
             foreach (var pass in mModel.Passes)
             {
@@ -151,7 +144,7 @@ namespace WoWEditor6.Scene.Models.M2
                 Matrix uvAnimMat;
                 animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
 
-                mPerPassBuffer.UpdateData(new PerModelPassBuffer()
+                gPerPassBuffer.UpdateData(new PerModelPassBuffer()
                 {
                     uvAnimMatrix = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
@@ -168,19 +161,6 @@ namespace WoWEditor6.Scene.Models.M2
         public void OnSyncLoad()
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
-            mPerDrawCallBuffer = new ConstantBuffer(ctx);
-            mPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
-            {
-                instanceMat = Matrix.Identity
-            });
-
-            mPerPassBuffer = new ConstantBuffer(ctx);
-            mPerPassBuffer.UpdateData(new PerModelPassBuffer()
-            {
-                uvAnimMatrix = Matrix.Identity,
-                modelPassParams = Vector4.Zero
-            });
-
             if (mAnimator != null)
             {
                 mAnimBuffer = new ConstantBuffer(ctx);
@@ -230,6 +210,19 @@ namespace WoWEditor6.Scene.Models.M2
             gBlendTestProgram = new ShaderProgram(context);
             gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
             gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
+
+            gPerDrawCallBuffer = new ConstantBuffer(context);
+            gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
+            {
+                instanceMat = Matrix.Identity
+            });
+
+            gPerPassBuffer = new ConstantBuffer(context);
+            gPerPassBuffer.UpdateData(new PerModelPassBuffer()
+            {
+                uvAnimMatrix = Matrix.Identity,
+                modelPassParams = Vector4.Zero
+            });
 
             gMesh.Program = gBlendProgram;
 

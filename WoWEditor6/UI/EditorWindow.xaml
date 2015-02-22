@@ -28,6 +28,7 @@
             </MenuItem>
             <MenuItem Header="_Debug" RenderTransformOrigin="2.52,0.6">
                 <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"/>
+                <MenuItem Header="Click me" Click="Debug_Click"/>
             </MenuItem>
         </Menu>
         <avalon:DockingManager Grid.Row="1">
