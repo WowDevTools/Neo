@@ -168,7 +168,7 @@ namespace WoWEditor6.IO.CASC
                     using (var reader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
                     {
                         strm.Stream.Position = indexKey.Offset + 30;
-                        return BlteGetData(reader, indexKey.Size - 30);
+                        return BlteGetData(reader, indexKey.Size - 30, enc.Size);
                     }
                 }
             }
@@ -318,6 +318,7 @@ namespace WoWEditor6.IO.CASC
 
                     for (var i = 0; i < numEntries; ++i)
                     {
+                        var curPos = reader.BaseStream.Position;
                         var keys = reader.ReadUInt16();
                         while (keys != 0)
                         {
@@ -343,14 +344,7 @@ namespace WoWEditor6.IO.CASC
                             keys = reader.ReadUInt16();
                         }
 
-                        try
-                        {
-                            var curb = reader.BaseStream.ReadByte();
-                            while (curb == 0) curb = reader.BaseStream.ReadByte();
-
-                            reader.BaseStream.Position -= 1;
-                        }
-                        catch (EndOfStreamException) { }
+                        reader.BaseStream.Position = curPos + 0x1000;
                     }
                 }
             }
@@ -382,6 +376,110 @@ namespace WoWEditor6.IO.CASC
                 mDataStreams.Add(index, ret);
                 return ret;
             }
+        }
+
+        private static MemoryStream BlteGetData(BinaryReader reader, long size, long uncompressedSize)
+        {
+            if (reader.ReadUInt32() != 0x45544C42)
+                throw new InvalidOperationException("Invalid file in archive. Invalid BLTE header");
+
+            var sizeFrameHeader = reader.ReadUInt32Be();
+            uint numChunks;
+            var totalSize = 0L;
+            if (sizeFrameHeader == 0)
+            {
+                numChunks = 1;
+                totalSize = size - 8;
+            }
+            else
+            {
+                if (reader.ReadByte() != 0x0F)
+                    throw new InvalidOperationException("Unknown error in BLTE: unk1 != 0x0F. This is not good im told.");
+
+                var sizes = reader.ReadBytes(3);
+                numChunks = (uint)((sizes[0] << 16) | (sizes[1] >> 8) | sizes[2]);
+            }
+
+            if (numChunks == 0)
+                return new MemoryStream();
+
+            var chunks = new BlteChunk[numChunks];
+            for (var i = 0; i < numChunks; ++i)
+            {
+                var chunk = new BlteChunk();
+                chunks[i] = chunk;
+                if (sizeFrameHeader != 0)
+                {
+                    chunk.SizeCompressed = reader.ReadUInt32Be();
+                    chunk.SizeUncompressed = reader.ReadUInt32Be();
+                    reader.BaseStream.Position += 16;
+                }
+                else
+                {
+                    chunk.SizeCompressed = totalSize;
+                    chunk.SizeUncompressed = totalSize - 1;
+                }
+            }
+
+            var data = new byte[uncompressedSize];
+            var idx = 0;
+
+            for (var i = 0; i < numChunks; ++i)
+            {
+                var code = reader.ReadByte();
+                switch (code)
+                {
+                    case 0x4E:
+                    {
+                        var numRead = 0;
+                        while (numRead < (int) chunks[i].SizeCompressed - 1)
+                        {
+                            var read = reader.Read(data, idx, (int) (chunks[i].SizeCompressed - 1) - numRead);
+                            numRead += read;
+                            idx += read;
+                        }
+                        break;
+                    }
+
+                    case 0x5A:
+                        {
+                            if (sizeFrameHeader != 0)
+                            {
+                                var curPos = reader.BaseStream.Position;
+                                reader.BaseStream.Position += 2;
+                                using (var strm = new DeflateStream(reader.BaseStream, CompressionMode.Decompress, true))
+                                {
+                                    var numRead = 0;
+                                    while (numRead < (int)chunks[i].SizeUncompressed)
+                                    {
+                                        var read = strm.Read(data, idx, (int)chunks[i].SizeUncompressed - numRead);
+                                        numRead += read;
+                                        idx += numRead;
+                                    }
+                                }
+                                reader.BaseStream.Position = curPos + (chunks[i].SizeCompressed - 1);
+                            }
+                            else
+                            {
+                                reader.BaseStream.Position += 2;
+                                using (var strm = new DeflateStream(reader.BaseStream, CompressionMode.Decompress))
+                                {
+                                    var numRemain = uncompressedSize - idx;
+                                    while (numRemain > 0)
+                                    {
+                                        var read = strm.Read(data, idx, (int) numRemain);
+                                        numRemain -= read;
+                                        if (read == 0)
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+
+            return new MemoryStream(data);
         }
 
         private static MemoryStream BlteGetData(BinaryReader reader, long size)
@@ -435,8 +533,10 @@ namespace WoWEditor6.IO.CASC
                 switch (code)
                 {
                     case 0x4E:
+                    {
                         data.AddRange(reader.ReadBytes((int)(chunks[i].SizeCompressed - 1)));
                         break;
+                    }
 
                     case 0x5A:
                         {
