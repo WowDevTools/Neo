@@ -39,7 +39,7 @@ namespace WoWEditor6.UI
             };
         }
 
-        public static Font GetFont(string name, float size, FontStyle style)
+        public static Font GetFont(string name, float size, FontStyle style = FontStyle.Regular)
         {
             Font font = null;
             var upperName = name.ToUpperInvariant();

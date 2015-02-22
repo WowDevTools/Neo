@@ -70,8 +70,8 @@ namespace WoWEditor6.Scene
         private float mWidth;
         private float mHeight;
 
-        private Font mFont;
-        private Brush mBrush;
+        private Font mFont = UI.FontCollection.GetFont("Friz Quadrata TT", 30);
+        private Brush mBrush = Brushes.AntiqueWhite;
 
         private static readonly Bitmap Bitmap = new Bitmap(1, 1);
         private static System.Drawing.Graphics gGraphics;
@@ -82,10 +82,13 @@ namespace WoWEditor6.Scene
         private bool mShouldDraw = false;
         private bool mIsInitialized = false;
 
-        public WorldText(Font font, Brush brush)
+        public WorldText(Font font = null, Brush brush = null)
         {
-            mBrush = brush;
-            mFont = font;
+            if (font != null)
+                mFont = font;
+
+            if (brush != null)
+                mBrush = brush;
         }
 
         public void Dispose()
