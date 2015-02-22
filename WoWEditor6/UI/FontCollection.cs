@@ -16,11 +16,11 @@ namespace WoWEditor6.UI
             IO.FileManager.Instance.LoadComplete += () =>
             {
                 var fileListing = IO.FileManager.Instance.FileListing;
-                foreach (var file in fileListing.RootEntry.Children["Fonts"].Children.Values)
+                foreach (var file in fileListing.RootEntry.Children["fonts"].Children.Values)
                 {
-                    using (var stream = IO.FileManager.Instance.Provider.OpenFile(@"Fonts\" + file.Name))
+                    using (var stream = IO.FileManager.Instance.Provider.OpenFile("Fonts\\" + file.Name))
                     {
-                        if (stream == null)
+                        if (stream == null || stream.Length == 0)
                         {
                             Log.Warning("Unable to load font file: " + file.Name);
                             continue;
@@ -30,7 +30,7 @@ namespace WoWEditor6.UI
                         stream.Read(fileBuffer, 0, (int)stream.Length);
 
                         fixed (byte* ptr = fileBuffer)
-                            gCollection.AddMemoryFont((IntPtr)ptr, (int)stream.Length);
+                            gCollection.AddMemoryFont((IntPtr)ptr, fileBuffer.Length);
                     }
                 }
 
