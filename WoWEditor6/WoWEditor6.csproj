@@ -404,6 +404,7 @@
     <None Include="UI\old\MapSelectView.cs" />
     <None Include="UI\old\SplashView.cs" />
     <None Include="UI\old\WorldView.cs" />
+    <Compile Include="UI\Themes\DarkTheme.cs" />
     <Compile Include="UI\WpfImageSource.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Utils\ColorUtils.cs" />
@@ -554,6 +555,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\ModelRenderTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Themes\DarkTheme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -18,11 +18,11 @@ namespace WoWEditor6
     /// <summary>
     /// Interaction logic for Application.xaml
     /// </summary>
-    public partial class Application
+    public partial class Application : System.Windows.Application
     {
         public Application()
         {
-            InitializeComponent();
+
         }
     }
 }
