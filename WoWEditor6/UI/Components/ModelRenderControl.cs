@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -26,10 +27,18 @@ namespace WoWEditor6.UI.Components
 
         private M2Renderer mRenderer;
 
+        public override bool Focused
+        {
+            get
+            {
+                return base.Focused || IsFocusedElementInTree(flowLayoutPanel1);
+            }
+        }
+
 
         public ModelRenderControl()
         {
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.Opaque | ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.Opaque | ControlStyles.UserPaint | ControlStyles.Selectable, true);
             InitializeComponent();
         }
 
@@ -40,6 +49,10 @@ namespace WoWEditor6.UI.Components
                 return;
 
             mRenderer = new M2Renderer(file);
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
+            {
+                mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
+            });
         }
 
         public void SetCreatureDisplayEntry(int entry)
@@ -139,7 +152,7 @@ namespace WoWEditor6.UI.Components
                 SpeedFactor = 20.0f
             };
 
-            MouseClick += OnClick;
+            MouseDown += OnClick;
             Resize += OnResize;
             renderTimer.Tick += OnRenderTimerTick;
 
@@ -243,6 +256,21 @@ namespace WoWEditor6.UI.Components
             mPaintBitmap = bmp;
             ctx.Context.UnmapSubresource(mMapTexture, 0);
             Invalidate();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            mCamControl.InvertX = checkBox1.Checked;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            mCamControl.InvertY = checkBox2.Checked;
+        }
+
+        private bool IsFocusedElementInTree(Control control)
+        {
+            return control.Focused || control.Controls.OfType<Control>().Any(IsFocusedElementInTree);
         }
     }
 }

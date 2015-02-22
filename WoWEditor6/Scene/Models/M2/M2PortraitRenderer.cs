@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
+using WoWEditor6.IO;
 using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
@@ -114,6 +115,8 @@ namespace WoWEditor6.Scene.Models.M2
                 uvAnimMatrix = Matrix.Identity,
                 modelPassParams = Vector4.Zero
             });
+
+            gCullState.CullCounterClock = FileManager.Instance.Version >= FileDataVersion.Lichking;
         }
 
         public static void Initialize(GxContext context)
@@ -216,7 +219,7 @@ namespace WoWEditor6.Scene.Models.M2
             gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
 
             gNoCullState = new RasterState(context) {CullEnabled = false};
-            gCullState = new RasterState(context) {CullEnabled = true};
+            gCullState = new RasterState(context) {CullEnabled = true, CullCounterClock = true};
         }
     }
 }
