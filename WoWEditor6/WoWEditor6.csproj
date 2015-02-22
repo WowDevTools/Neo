@@ -443,8 +443,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Shaders.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Shaders.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Shaders.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -574,8 +574,8 @@
     <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2Pixel.hlsl&quot; main ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2Pixel.dxc&quot; main_blend ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelBlend.dxc&quot; main_blend_alpha_test ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelBlendAlpha.dxc&quot;">
     </Exec>
   </Target>
-  <Target Name="M2PixelPortrait" BeforeTargets="PrepareForBuild" Label="M2PixelPortrait" Inputs="$(ProjectDir)\Resources\Shaders\M2PixelPortrait.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2PixelPortrait.dxc;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlend.dxc;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlendAlpha.dxc">
-    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortrait.hlsl&quot; main ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortrait.dxc&quot; main_blend ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlend.dxc&quot; main_blend_alpha_test ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlendAlpha.dxc&quot;">
+  <Target Name="M2PixelPortrait" BeforeTargets="PrepareForBuild" Label="M2PixelPortrait" Inputs="$(ProjectDir)\Resources\Shaders\M2PixelPortrait.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2PixelPortrait.dxc;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlend.dxc;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlendAlpha.dxc;$(ProjectDir)\Resources\Shaders\M2PixelPortrait2Pass.dxc;$(ProjectDir)\Resources\Shaders\M2PixelPortrait3Pass.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortrait.hlsl&quot; main ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortrait.dxc&quot; main_blend ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlend.dxc&quot; main_blend_alpha_test ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortraitBlendAlpha.dxc&quot; main_blend_2_pass ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortrait2Pass.dxc&quot; main_blend_3_pass ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\M2PixelPortrait3Pass.dxc&quot;">
     </Exec>
   </Target>
   <Target Name="M2VertexInstanced" BeforeTargets="PrepareForBuild" Label="M2VertexInstanced" Inputs="$(ProjectDir)\Resources\Shaders\M2VertexInstanced.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2VertexInstanced.dxc">

@@ -137,40 +137,50 @@ namespace WoWEditor6.IO.CASC
 
         public Stream OpenFile(string path)
         {
-            var existing = IO.FileManager.Instance.GetExistingFile(path);
-            if (existing != null)
-                return existing;
-            
-            path = path.ToUpperInvariant();
-            var hash = (new JenkinsHash()).Compute(path);
-            List<RootEntry> roots;
-            if (mRootData.TryGetValue(hash, out roots) == false)
-                return null;
-
-            foreach(var root in roots)
+            try
             {
-                EncodingEntry enc;
-                if (mEncodingData.TryGetValue(root.Md5, out enc) == false)
-                    continue;
 
-                if (enc.Keys.Length == 0)
-                    continue;
+                var existing = IO.FileManager.Instance.GetExistingFile(path);
+                if (existing != null)
+                    return existing;
 
-                IndexEntry indexKey = null;
-                var found = enc.Keys.Any(key => mIndexData.TryGetValue(new Binary(key.ToArray().Take(9).ToArray()), out indexKey));
+                path = path.ToUpperInvariant();
+                var hash = (new JenkinsHash()).Compute(path);
+                List<RootEntry> roots;
+                if (mRootData.TryGetValue(hash, out roots) == false)
+                    return null;
 
-                if (found == false)
-                    continue;
-
-                var strm = GetDataStream(indexKey.Index);
-                lock(strm)
+                foreach (var root in roots)
                 {
-                    using (var reader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
+                    EncodingEntry enc;
+                    if (mEncodingData.TryGetValue(root.Md5, out enc) == false)
+                        continue;
+
+                    if (enc.Keys.Length == 0)
+                        continue;
+
+                    IndexEntry indexKey = null;
+                    var found =
+                        enc.Keys.Any(
+                            key => mIndexData.TryGetValue(new Binary(key.ToArray().Take(9).ToArray()), out indexKey));
+
+                    if (found == false)
+                        continue;
+
+                    var strm = GetDataStream(indexKey.Index);
+                    lock (strm)
                     {
-                        strm.Stream.Position = indexKey.Offset + 30;
-                        return BlteGetData(reader, indexKey.Size - 30, enc.Size);
+                        using (var reader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
+                        {
+                            strm.Stream.Position = indexKey.Offset + 30;
+                            return BlteGetData(reader, indexKey.Size - 30, enc.Size);
+                        }
                     }
                 }
+            }
+            catch (Exception)
+            {
+                return null;
             }
 
             return null;
