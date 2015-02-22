@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using SharpDX;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {

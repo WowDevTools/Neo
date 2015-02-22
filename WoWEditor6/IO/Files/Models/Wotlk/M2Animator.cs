@@ -1,6 +1,5 @@
 ﻿using System;
 using SharpDX;
-using WoWEditor6.IO.Files.Models.WoD;
 
 namespace WoWEditor6.IO.Files.Models.Wotlk
 {
@@ -128,21 +127,21 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             lock (mUvAnimations)
             {
                 for (var i = 0; i < mUvAnimations.Length; ++i)
-                    mUvAnimations[i].UpdateMatrix(mAnimationId, time, out UvMatrices[i]);
+                    mUvAnimations[i].UpdateMatrix(0, time, out UvMatrices[i]);
             }
 
             time = (uint)(now - mTexColorStart);
             lock (mTexColorAnimations)
             {
                 for (var i = 0; i < mTexColorAnimations.Length; ++i)
-                    mTexColorAnimations[i].UpdateValue(mAnimationId, time, out Colors[i]);
+                    mTexColorAnimations[i].UpdateValue(0, time, out Colors[i]);
             }
 
             time = (uint)(now - mAlphaStart);
             lock (mAlphaAnimations)
             {
                 for (var i = 0; i < mAlphaAnimations.Length; ++i)
-                    mAlphaAnimations[i].UpdateValue(mAnimationId, time, out Transparencies[i]);
+                    mAlphaAnimations[i].UpdateValue(0, time, out Transparencies[i]);
             }
 
             mIsDirty = true;
