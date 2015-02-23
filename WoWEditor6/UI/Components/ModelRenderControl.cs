@@ -66,36 +66,7 @@ namespace WoWEditor6.UI.Components
                 return;
 
             mRenderer = new M2Renderer(file);
-            var bboxMin = file.BoundingBox.Minimum.Z;
-            var bboxMax = file.BoundingBox.Maximum.Z;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
-            {
-                mCamera.SetParameters(new Vector3(file.BoundingRadius * 1.5f, 0, bboxMin + (bboxMax - bboxMin) / 2),
-                    new Vector3(0, 0, bboxMin + (bboxMax - bboxMin) / 2), Vector3.UnitZ, Vector3.UnitY);
-
-                comboBox1.Items.Clear();
-                var values = Enum.GetValues(typeof (AnimationType));
-                foreach (int anim in values)
-                {
-                    if (anim >= file.AnimationLookup.Length)
-                        continue;
-
-                    if (file.AnimationLookup[anim] < 0)
-                        continue;
-
-                    comboBox1.Items.Add(new AnimationIndexEntry
-                    {
-                        AnimationIndex = anim,
-                        Name = Enum.GetName(typeof(AnimationType), anim)
-                    });
-                }
-
-                if (comboBox1.Items.Count > 0)
-                {
-                    comboBox1.SelectedIndex = 0;
-                    mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)((AnimationIndexEntry) comboBox1.Items[0]).AnimationIndex);
-                }
-            });
+            SetModelCameraParameters(file);
         }
 
         public void SetCreatureDisplayEntry(int entry)
@@ -155,6 +126,42 @@ namespace WoWEditor6.UI.Components
                         break;
                 }
             }
+
+            SetModelCameraParameters(file);
+        }
+
+        private void SetModelCameraParameters(M2File file)
+        {
+            var bboxMin = file.BoundingBox.Minimum.Z;
+            var bboxMax = file.BoundingBox.Maximum.Z;
+            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
+            {
+                mCamera.SetParameters(new Vector3(file.BoundingRadius * 1.5f, 0, bboxMin + (bboxMax - bboxMin) / 2),
+                    new Vector3(0, 0, bboxMin + (bboxMax - bboxMin) / 2), Vector3.UnitZ, Vector3.UnitY);
+
+                comboBox1.Items.Clear();
+                var values = Enum.GetValues(typeof(AnimationType));
+                foreach (int anim in values)
+                {
+                    if (anim >= file.AnimationLookup.Length)
+                        continue;
+
+                    if (file.AnimationLookup[anim] < 0)
+                        continue;
+
+                    comboBox1.Items.Add(new AnimationIndexEntry
+                    {
+                        AnimationIndex = anim,
+                        Name = Enum.GetName(typeof(AnimationType), anim)
+                    });
+                }
+
+                if (comboBox1.Items.Count > 0)
+                {
+                    comboBox1.SelectedIndex = 0;
+                    mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)((AnimationIndexEntry)comboBox1.Items[0]).AnimationIndex);
+                }
+            });
         }
 
         private string GetSkinName(string root, DbcRecord displayInfo, int index)
