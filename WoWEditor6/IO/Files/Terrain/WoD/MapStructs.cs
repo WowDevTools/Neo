@@ -39,10 +39,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
     [StructLayout(LayoutKind.Sequential)]
     struct Mcly
     {
-        public readonly int TextureId;
-        public readonly int Flags;
-        public readonly int OfsMcal;
-        public readonly short EffectId;
-        public readonly short Padding;
+        public int TextureId;
+        public int Flags;
+        public int OfsMcal;
+        public short EffectId;
+        public short Padding;
     }
 }

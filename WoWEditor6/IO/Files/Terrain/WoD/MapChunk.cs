@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
+using WoWEditor6.Editing;
 using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Terrain.WoD
@@ -29,6 +30,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
         private static readonly uint[] Indices = new uint[768];
+        private string[] mTextureNames = new string[0];
 
         public bool HasMccv { get; private set; }
 
@@ -118,6 +120,83 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 if (parent != null)
                     parent.UpdateBoundingBox(BoundingBox);
             }
+
+            return changed;
+        }
+
+        public override bool OnTextureTerrain(TextureChangeParameters parameters)
+        {
+            var diffVec = new Vector2(mMidPoint.X, mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
+            var dsquare = Vector2.Dot(diffVec, diffVec);
+
+            var maxRadius = parameters.OuterRadius + Metrics.ChunkRadius;
+
+            if (dsquare > maxRadius * maxRadius)
+                return false;
+
+            var layer = -1;
+            var minPos = BoundingBox.Minimum;
+            var changed = false;
+
+            for (var i = 0; i < 64; ++i)
+            {
+                for (var j = 0; j < 64; ++j)
+                {
+                    var xpos = minPos.X + j * Metrics.ChunkSize / 64.0f;
+                    var ypos = minPos.Y + i * Metrics.ChunkSize / 64.0f;
+
+                    var distSq = (xpos - parameters.Center.X) * (xpos - parameters.Center.X) +
+                                 (ypos - parameters.Center.Y) * (ypos - parameters.Center.Y);
+
+                    if (distSq > parameters.OuterRadius * parameters.OuterRadius)
+                        continue;
+
+                    if (layer < 0)
+                    {
+                        layer = FindTextureLayer(parameters.Texture);
+                        if (layer < 0)
+                            return false;
+                    }
+
+                    changed = true;
+
+                    var dist = (float)Math.Sqrt(distSq);
+                    if (dist < parameters.InnerRadius)
+                    {
+                        float newVal = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
+                        newVal += parameters.Amount;
+                        newVal = Math.Min(Math.Max(newVal, 0), 255);
+                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
+                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
+                    }
+                    else if (dist < parameters.OuterRadius)
+                    {
+                        float saturation;
+                        switch (parameters.FalloffMode)
+                        {
+                            case TextureFalloffMode.Linear:
+                                saturation = 1.0f - ((dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
+                                break;
+
+                            case TextureFalloffMode.Trigonometric:
+                                saturation = (float)Math.Cos((Math.PI / 2.0f) * (dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
+                                break;
+
+                            default:
+                                goto case TextureFalloffMode.Linear;
+                        }
+
+                        float newVal = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
+                        newVal += parameters.Amount * saturation;
+                        newVal = Math.Min(Math.Max(newVal, 0), 255);
+                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
+                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
+                    }
+                }
+            }
+
+            if (changed)
+                IsAlphaChanged = true;
 
             return changed;
         }
@@ -714,6 +793,49 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
 
             return changed;
+        }
+
+        private int FindTextureLayer(string texture)
+        {
+            for (var i = 0; i < mTextureNames.Length; ++i)
+            {
+                if (string.Equals(texture, mTextureNames[i], StringComparison.InvariantCultureIgnoreCase))
+                    return i;
+            }
+
+            if (mTextureNames.Length == 4)
+                return -1;
+
+            return AddTextureLayer(texture);
+        }
+
+        private int AddTextureLayer(string textureName)
+        {
+            var old = mTextureNames;
+            mTextureNames = new string[mTextureNames.Length + 1];
+            for (var i = 0; i < old.Length; ++i)
+                mTextureNames[i] = old[i];
+
+            mTextureNames[mTextureNames.Length - 1] = textureName;
+
+            MapArea parent;
+            if (mParent.TryGetTarget(out parent) == false)
+                throw new InvalidOperationException("Couldnt get parent of map chunk");
+
+            var texId = parent.GetOrAddTexture(textureName);
+            var layer = new Mcly
+            {
+                Flags = 0,
+                TextureId = texId,
+                EffectId = -1,
+                OfsMcal = 0,
+                Padding = 0
+            };
+
+            mLayerInfos.Add(layer);
+
+            Textures.Add(parent.GetTexture(texId));
+            return mLayerInfos.Count - 1;
         }
 
         static MapChunk()

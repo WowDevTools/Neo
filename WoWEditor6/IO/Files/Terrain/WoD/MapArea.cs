@@ -105,7 +105,16 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public override bool OnTextureTerrain(TextureChangeParameters parameters)
         {
-            throw new NotImplementedException();
+            var changed = false;
+            foreach (var chunk in mChunks)
+            {
+                if (chunk == null) continue;
+
+                if (chunk.OnTextureTerrain(parameters))
+                    changed = true;
+            }
+
+            return changed;
         }
 
         public void UpdateBoundingBox(BoundingBox chunkBox)
@@ -183,6 +192,18 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             chunk = chunkHit;
             distance = mindistance;
             return hasHit;
+        }
+
+        public int GetOrAddTexture(string texture)
+        {
+            for (var i = 0; i < mTextureNames.Count; ++i)
+            {
+                if (string.Equals(mTextureNames[i], texture, StringComparison.InvariantCultureIgnoreCase))
+                    return i;
+            }
+
+            mTextureNames.Add(texture);
+            return mTextureNames.Count - 1;
         }
 
         public string GetTextureName(int index)

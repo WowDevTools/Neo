@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using SharpDX;
+using SharpDX.DXGI;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene.Models;
@@ -95,6 +95,12 @@ namespace WoWEditor6.Scene.Terrain
             if (M2Manager.IsViewDirty)
                 PushDoodadReferences();
 
+            if (mData.IsAlphaChanged)
+            {
+                mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
+                mData.IsAlphaChanged = false;
+            }
+
             ChunkMesh.StartVertex = mData.StartVertex;
             ChunkMesh.Program.SetPixelTexture(0, mAlphaTexture);
             ChunkMesh.Program.SetPixelTexture(1, mHoleTexture);
@@ -120,9 +126,9 @@ namespace WoWEditor6.Scene.Terrain
         private void SyncLoad()
         {
             mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
-            mAlphaTexture.UpdateMemory(64, 64, SharpDX.DXGI.Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
+            mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
             mHoleTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
-            mHoleTexture.UpdateMemory(8, 8, SharpDX.DXGI.Format.R8_UNorm, mData.HoleValues, 8);
+            mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
             mScaleBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
             mScaleBuffer.UpdateData(mData.TextureScales);
             mShaderTextures = mData.Textures.ToArray();
@@ -209,7 +215,7 @@ namespace WoWEditor6.Scene.Terrain
             }
 
             ChunkMesh.IndexBuffer.UpdateData(indices);
-            ChunkMesh.IndexBuffer.IndexFormat = SharpDX.DXGI.Format.R32_UInt;
+            ChunkMesh.IndexBuffer.IndexFormat = Format.R32_UInt;
         }
     }
 }

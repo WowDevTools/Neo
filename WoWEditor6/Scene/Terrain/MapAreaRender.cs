@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene.Models;
-
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace WoWEditor6.Scene.Terrain
 {

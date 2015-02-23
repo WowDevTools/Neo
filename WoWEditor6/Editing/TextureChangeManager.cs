@@ -5,6 +5,13 @@ using WoWEditor6.Utils;
 
 namespace WoWEditor6.Editing
 {
+    enum TextureFalloffMode
+    {
+        Flat,
+        Linear,
+        Trigonometric
+    }
+
     class TextureChangeParameters
     {
         public Vector3 Center;
@@ -12,6 +19,7 @@ namespace WoWEditor6.Editing
         public float InnerRadius;
         public float OuterRadius;
         public float Amount;
+        public TextureFalloffMode FalloffMode;
     }
 
     class TextureChangeManager
@@ -21,9 +29,18 @@ namespace WoWEditor6.Editing
         public float Amount { get; set; }
         public string SelectedTexture { get; set; }
 
+        public TextureFalloffMode FalloffMode { get; set; }
+
         static TextureChangeManager()
         {
             Instance = new TextureChangeManager();
+        }
+
+        private TextureChangeManager()
+        {
+            FalloffMode = TextureFalloffMode.Linear;
+            Amount = 0.0f;
+            SelectedTexture = string.Empty;
         }
 
         public void OnChange(TimeSpan diff)
@@ -38,7 +55,8 @@ namespace WoWEditor6.Editing
                 InnerRadius = EditManager.Instance.InnerRadius,
                 OuterRadius = EditManager.Instance.OuterRadius,
                 Texture = SelectedTexture,
-                Amount = Amount
+                Amount = Amount,
+                FalloffMode = FalloffMode
             };
 
             WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);

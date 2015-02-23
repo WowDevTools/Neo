@@ -27,6 +27,8 @@ namespace WoWEditor6.IO.Files.Terrain
 
         public int[] DoodadReferences { get; protected set; }
 
+        public bool IsAlphaChanged { get; set; }
+
         protected MapChunk()
         {
             HoleValues = new byte[64];
@@ -41,6 +43,8 @@ namespace WoWEditor6.IO.Files.Terrain
         {
 
         }
+
+        public abstract bool OnTextureTerrain(Editing.TextureChangeParameters parameters);
 
         public virtual bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
         {

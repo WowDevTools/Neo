@@ -173,6 +173,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             return mTextures[index];
         }
 
+        public string GetTextureName(int index)
+        {
+            if(index >= mTextureNames.Count)
+                throw new IndexOutOfRangeException();
+
+            return mTextureNames[index];
+        }
+
         public override void AsyncLoad()
         {
             using (var file = FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, IndexX, IndexY)))
@@ -278,9 +286,31 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
         }
 
+        public int GetOrAddTexture(string textureName)
+        {
+            for (var i = 0; i < mTextureNames.Count; ++i)
+            {
+                if (string.Equals(mTextureNames[i], textureName, StringComparison.InvariantCultureIgnoreCase))
+                    return i;
+            }
+
+            mTextureNames.Add(textureName);
+            mTextures.Add(TextureManager.Instance.GetTexture(textureName));
+            return mTextureNames.Count - 1;
+        }
+
         public override bool OnTextureTerrain(TextureChangeParameters parameters)
         {
-            throw new NotImplementedException();
+            var changed = false;
+            foreach (var chunk in mChunks)
+            {
+                if (chunk == null) continue;
+
+                if (chunk.OnTextureTerrain(parameters))
+                    changed = true;
+            }
+
+            return changed;
         }
 
         private void InitChunkInfos(BinaryReader reader)
@@ -313,7 +343,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             var bytes = reader.ReadBytes(size);
             var fullString = Encoding.ASCII.GetString(bytes);
             mTextureNames.AddRange(fullString.Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries));
-            mTextureNames.ForEach(t => mTextures.Add(TextureManager.Instance.GetTexture(t)));
+            for (var i = 0; i < mTextureNames.Count; ++i)
+            {
+                mTextures.Add(TextureManager.Instance.GetTexture(mTextureNames[i]));
+                mTextureNames[i] = mTextureNames[i].ToLowerInvariant();
+            }
         }
 
         private void InitChunks(BinaryReader reader)
