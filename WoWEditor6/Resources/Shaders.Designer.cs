@@ -73,6 +73,26 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] M2Pixel2Pass {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel2Pass", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel3Pass {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel3Pass", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] M2PixelBlend {
             get {
                 object obj = ResourceManager.GetObject("M2PixelBlend", resourceCulture);

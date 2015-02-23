@@ -36,6 +36,7 @@ cbuffer PerModelPassBuffer : register(b3)
 {
     row_major float4x4 uvAnimation;
     float4 modelPassParams;
+	float4 animatedColor;
 }
 
 struct VertexInput
@@ -53,10 +54,11 @@ struct VertexOutput
     float4 position : SV_Position;
     float3 normal : NORMAL0;
     float2 texCoord : TEXCOORD0;
-    float depth : TEXCOORD1;
-    float3 worldPosition : TEXCOORD2;
+	float2 texCoord1 : TEXCOORD1;
+    float depth : TEXCOORD2;
+    float3 worldPosition : TEXCOORD3;
     float4 color : COLOR0;
-    float4 modelPassParams : TEXCOORD3;
+    float4 modelPassParams : TEXCOORD4;
 };
 
 VertexOutput main(VertexInput input) {
@@ -87,6 +89,7 @@ VertexOutput main(VertexInput input) {
     output.normal = normal;
     float4 tcTransform = mul(float4(input.texCoord, 0, 1), uvAnimation);
     output.texCoord = tcTransform.xy / tcTransform.w;
+	output.texCoord1 = input.texCoord2;
     output.worldPosition = worldPos;
     output.color = colorMod;
     output.modelPassParams = modelPassParams;

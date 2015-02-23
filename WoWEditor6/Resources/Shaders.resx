@@ -199,4 +199,10 @@
   <data name="M2PixelPortrait2Pass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2PixelPortrait2Pass.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="M2Pixel2Pass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel2Pass.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel3Pass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel3Pass.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

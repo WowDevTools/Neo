@@ -21,6 +21,7 @@ namespace WoWEditor6.Scene.Models.M2
         {
             public Matrix uvAnimMatrix;
             public Vector4 modelPassParams;
+            public Vector4 animatedColor;
         }
 
         private static Mesh gMesh;
@@ -62,6 +63,7 @@ namespace WoWEditor6.Scene.Models.M2
             gMesh.BeginDraw();
             gMesh.Program.SetPixelSampler(0, gSampler);
             gMesh.Program.SetVertexConstantBuffer(2, gPerPassBuffer);
+            gMesh.Program.SetPixelConstantBuffer(1, gPerPassBuffer);
         }
 
         public void OnFrame(M2Renderer renderer)
@@ -97,11 +99,14 @@ namespace WoWEditor6.Scene.Models.M2
 
                 Matrix uvAnimMat;
                 renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                var color = renderer.Animator.GetColorValue(pass.ColorAnimIndex);
+                color.W *= renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex);
 
                 gPerPassBuffer.UpdateData(new PerModelPassBuffer
                 {
                     uvAnimMatrix = uvAnimMat,
-                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
+                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
+                    animatedColor = color
                 });
 
                 gMesh.StartVertex = 0;

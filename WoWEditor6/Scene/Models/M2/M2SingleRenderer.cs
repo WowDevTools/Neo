@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
 using WoWEditor6.Graphics;
@@ -15,6 +14,7 @@ namespace WoWEditor6.Scene.Models.M2
         {
             public Matrix uvAnimMatrix;
             public Vector4 modelPassParams;
+            public Vector4 animatedColor;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -31,6 +31,8 @@ namespace WoWEditor6.Scene.Models.M2
         private static ShaderProgram gNoBlendProgram;
         private static ShaderProgram gBlendProgram;
         private static ShaderProgram gBlendTestProgram;
+        private static ShaderProgram g2PassProgram;
+        private static ShaderProgram g3PassProgram;
 
         private static RasterState gNoCullState;
         private static RasterState gCullState;
@@ -74,6 +76,7 @@ namespace WoWEditor6.Scene.Models.M2
             gMesh.Program.SetPixelSampler(0, gSampler);
             gMesh.Program.SetVertexConstantBuffer(2, gPerDrawCallBuffer);
             gMesh.Program.SetVertexConstantBuffer(3, gPerPassBuffer);
+            gMesh.Program.SetPixelConstantBuffer(1, gPerPassBuffer);
         }
 
         public void OnFrame(M2Renderer renderer, M2RenderInstance instance)
@@ -118,15 +121,37 @@ namespace WoWEditor6.Scene.Models.M2
                         continue;
                 }
 
-                var program = gBlendProgram;
-                if (pass.BlendMode == 0)
-                    program = gNoBlendProgram;
-                else if (pass.BlendMode == 1)
-                    program = gBlendTestProgram;
-
-                if (gMesh.Program != program)
+                var oldProgram = gMesh.Program;
+                ShaderProgram newProgram;
+                switch (pass.BlendMode)
                 {
-                    gMesh.Program = program;
+                    case 0:
+                        newProgram = gNoBlendProgram;
+                        break;
+                    case 1:
+                        newProgram = gBlendTestProgram;
+                        break;
+                    default:
+                        switch (pass.Textures.Count)
+                        {
+                            case 2:
+                                newProgram = g2PassProgram;
+                                break;
+
+                            case 3:
+                                newProgram = g3PassProgram;
+                                break;
+
+                            default:
+                                newProgram = gBlendProgram;
+                                break;
+                        }
+                        break;
+                }
+
+                if (newProgram != oldProgram)
+                {
+                    gMesh.Program = newProgram;
                     gMesh.Program.Bind();
                 }
 
@@ -145,17 +170,23 @@ namespace WoWEditor6.Scene.Models.M2
 
                 Matrix uvAnimMat;
                 animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                var color = animator.GetColorValue(pass.ColorAnimIndex);
+                var alpha = animator.GetAlphaValue(pass.AlphaAnimIndex);
+                color.W *= alpha;
 
                 gPerPassBuffer.UpdateData(new PerModelPassBuffer()
                 {
                     uvAnimMatrix = uvAnimMat,
-                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f)
+                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
+                    animatedColor = color
                 });
 
                 gMesh.StartVertex = 0;
                 gMesh.StartIndex = pass.StartIndex;
                 gMesh.IndexCount = pass.IndexCount;
-                gMesh.Program.SetPixelTexture(0, pass.Textures.First());
+                for(var i = 0; i < pass.Textures.Count && i < 3; ++i)
+                    gMesh.Program.SetPixelTexture(i, pass.Textures[i]);
+
                 gMesh.Draw();
             }
         }
@@ -212,6 +243,14 @@ namespace WoWEditor6.Scene.Models.M2
             gBlendTestProgram = new ShaderProgram(context);
             gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
             gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
+
+            g2PassProgram = new ShaderProgram(context);
+            g2PassProgram.SetPixelShader(Resources.Shaders.M2Pixel2Pass);
+            g2PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
+
+            g3PassProgram = new ShaderProgram(context);
+            g3PassProgram.SetPixelShader(Resources.Shaders.M2Pixel3Pass);
+            g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
 
             gPerDrawCallBuffer = new ConstantBuffer(context);
             gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
