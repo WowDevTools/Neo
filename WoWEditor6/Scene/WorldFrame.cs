@@ -18,6 +18,7 @@ namespace WoWEditor6.Scene
         {
             public Matrix matView;
             public Matrix matProj;
+            public Vector4 viewport;
 
             public Color4 ambientLight;
             public Color4 diffuseLight;
@@ -128,6 +129,7 @@ namespace WoWEditor6.Scene
             {
                 matView = Matrix.Identity,
                 matProj = Matrix.Identity,
+                viewport = Vector4.Zero,
                 ambientLight = new Color4(0.5f, 0.5f, 0.5f, 1.0f),
                 diffuseLight = new Color4(0.25f, 0.5f, 1.0f, 1.0f),
                 fogColor = new Color4(0.25f, 0.5f, 1.0f, 1.0f),
@@ -272,12 +274,7 @@ namespace WoWEditor6.Scene
                 MapManager.Intersect(mIntersection);
 
                 Editing.EditManager.Instance.MousePosition = mIntersection.TerrainPosition;
-                if (mIntersection.WmoHit)
-                    Editing.EditManager.Instance.MousePosition = mIntersection.WmoPosition;
-                if (mIntersection.M2Hit)
-                    Editing.EditManager.Instance.MousePosition = mIntersection.M2Position;
-
-                mGlobalBufferStore.mousePosition = new Vector4(Editing.EditManager.Instance.MousePosition, 0.0f);
+                mGlobalBufferStore.mousePosition = new Vector4(mIntersection.TerrainPosition, 0.0f);
                 mGlobalBufferChanged = true;
 
                 Editing.EditManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;
@@ -313,7 +310,9 @@ namespace WoWEditor6.Scene
             if (camera != ActiveCamera)
                 return;
 
+            var vp = GraphicsContext.Viewport;
             mGlobalBufferStore.matProj = matProj;
+            mGlobalBufferStore.viewport = new Vector4(vp.Width, vp.Height, vp.MinDepth, vp.MaxDepth);
 
             var perspectiveCamera = camera as PerspectiveCamera;
             if (perspectiveCamera != null)

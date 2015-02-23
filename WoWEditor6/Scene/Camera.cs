@@ -6,13 +6,12 @@ namespace WoWEditor6.Scene
 {
     class Camera
     {
-        private Matrix mMatView;
-        // ReSharper disable once InconsistentNaming
-        protected Matrix mMatProjection;
-        private Matrix mViewNoTranspose;
-        private Matrix mProjNoTranspose;
-        private Matrix mViewInverted;
-        private Matrix mProjInverted;
+        private Matrix mView;
+        private Matrix mProj;
+
+        private Matrix mViewProj;
+        private Matrix mViewInverse;
+        private Matrix mProjInverse;
 
         private Vector3 mTarget;
         private Vector3 mUp;
@@ -24,10 +23,12 @@ namespace WoWEditor6.Scene
 
         public bool LeftHanded { get; set; }
 
-        public Matrix View { get { return mMatView; } }
-        public Matrix Projection { get { return mMatProjection; } }
-        public Matrix ViewInverse { get { return mViewInverted; } }
-        public Matrix ProjectionInverse { get { return mProjInverted; } }
+        public Matrix View { get { return mView; } }
+        public Matrix Projection { get { return mProj; } }
+        public Matrix ViewProjection { get { return mViewProj; } }
+
+        public Matrix ViewInverse { get { return mViewInverse; } }
+        public Matrix ProjectionInverse { get { return mProjInverse; } }
 
         public Vector3 Position { get; private set; }
 
@@ -65,24 +66,29 @@ namespace WoWEditor6.Scene
         {
             mForward = mTarget - Position;
             mForward.Normalize();
-            mViewNoTranspose = LeftHanded == false ? Matrix.LookAtRH(Position, mTarget, mUp) : Matrix.LookAtLH(Position, mTarget, mUp);
-            Matrix.Invert(ref mViewNoTranspose, out mViewInverted);
-            Matrix.Transpose(ref mViewNoTranspose, out mMatView);
-            mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
+
+            mView = (LeftHanded == false)
+                ? Matrix.LookAtRH(Position, mTarget, mUp)
+                : Matrix.LookAtLH(Position, mTarget, mUp);
+            Matrix.Invert(ref mView, out mViewInverse);
+
+            mFrustum.Update(mView, mProj);
+            mViewProj = mView * mProj;
 
             if (ViewChanged != null)
-                ViewChanged(this, mMatView);
+                ViewChanged(this, mView);
         }
 
-        protected void OnProjectionChanged()
+        protected void OnProjectionChanged(ref Matrix matProj)
         {
-            mProjNoTranspose = mMatProjection;
-            Matrix.Invert(ref mMatProjection, out mProjInverted);
-            Matrix.Transpose(ref mMatProjection, out mMatProjection);
-            mFrustum.Update(mViewNoTranspose, mProjNoTranspose);
+            mProj = matProj;
+            Matrix.Invert(ref mProj, out mProjInverse);
+
+            mFrustum.Update(mView, mProj);
+            mViewProj = mView * mProj;
 
             if (ProjectionChanged != null)
-                ProjectionChanged(this, mMatProjection);
+                ProjectionChanged(this, mProj);
         }
 
         public void SetPosition(Vector3 position)

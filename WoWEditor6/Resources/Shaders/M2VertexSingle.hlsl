@@ -1,7 +1,8 @@
 cbuffer GlobalParams : register(b0)
 {
-    float4x4 matView;
-    float4x4 matProj;
+    row_major float4x4 matView;
+    row_major float4x4 matProj;
+    float4 viewport;
 
     float4 ambientLight;
     float4 diffuseLight;
@@ -36,7 +37,7 @@ cbuffer PerModelPassBuffer : register(b3)
 {
     row_major float4x4 uvAnimation;
     float4 modelPassParams;
-	float4 animatedColor;
+    float4 animatedColor;
 }
 
 struct VertexInput
@@ -54,7 +55,7 @@ struct VertexOutput
     float4 position : SV_Position;
     float3 normal : NORMAL0;
     float2 texCoord : TEXCOORD0;
-	float2 texCoord1 : TEXCOORD1;
+    float2 texCoord1 : TEXCOORD1;
     float depth : TEXCOORD2;
     float3 worldPosition : TEXCOORD3;
     float4 color : COLOR0;
@@ -79,7 +80,6 @@ VertexOutput main(VertexInput input) {
     normal = mul(normal, (float3x3)matInstance);
 
     float4 worldPos = position;
-
     position = mul(position, matView);
     position = mul(position, matProj);
 
@@ -89,7 +89,7 @@ VertexOutput main(VertexInput input) {
     output.normal = normal;
     float4 tcTransform = mul(float4(input.texCoord, 0, 1), uvAnimation);
     output.texCoord = tcTransform.xy / tcTransform.w;
-	output.texCoord1 = input.texCoord2;
+    output.texCoord1 = input.texCoord2;
     output.worldPosition = worldPos;
     output.color = colorMod;
     output.modelPassParams = modelPassParams;

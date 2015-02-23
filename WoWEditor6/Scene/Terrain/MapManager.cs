@@ -198,8 +198,8 @@ namespace WoWEditor6.Scene.Terrain
 
         public void Intersect(IntersectionParams parameters)
         {
-            var ray = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
-                ref parameters.InverseProjection);
+            var ray = Picking.Build(ref parameters.ScreenPosition,
+                ref parameters.InverseView, ref parameters.InverseProjection);
 
             var hasHit = false;
             var minDist = float.MaxValue;

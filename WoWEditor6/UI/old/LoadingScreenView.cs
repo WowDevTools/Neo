@@ -120,7 +120,7 @@ namespace WoWEditor6.UI.Views
             var newWidth = fac * bmp.Width;
             if (mWidescreen) newWidth *= ( 16.0f / 9.0f );
             else newWidth *= ( 4.0f / 3.0f );
-	
+
             var ofsx = (mSize.X - newWidth) / 2.0f;
             mTargetRectangle = new RectangleF(ofsx, ofsy, newWidth, newHeight);
         }

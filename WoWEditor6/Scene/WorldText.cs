@@ -13,6 +13,14 @@ namespace WoWEditor6.Scene
 {
     class WorldText : IDisposable
     {
+        public enum TextDrawMode
+        {
+            TextDraw2D,
+            TextDraw2D_World,
+            TextDraw3D,
+            TextDraw3D_NoDepthTest
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         struct PerDrawCallBuffer
         {
@@ -39,14 +47,17 @@ namespace WoWEditor6.Scene
 
         private static RasterState gRasterState;
         private static DepthState gDepthState;
+        private static DepthState gNoDepthState;
 
         private static ShaderProgram gWorldTextShader;
+        private static ShaderProgram gWorldTextShader2D;
         private static Graphics.BlendState gBlendState;
 
         private static ConstantBuffer gPerDrawCallBuffer;
 
         public Vector3 Position { get; set; }
         public float Scaling { get; set; }
+        public TextDrawMode DrawMode { get; set; }
 
         public Font Font
         {
@@ -91,6 +102,7 @@ namespace WoWEditor6.Scene
                 mBrush = brush;
 
             Scaling = 1.0f;
+            DrawMode = TextDrawMode.TextDraw3D;
         }
 
         public void Dispose()
@@ -123,6 +135,78 @@ namespace WoWEditor6.Scene
             if (!mShouldDraw)
                 return;
 
+            switch (DrawMode)
+            {
+                case TextDrawMode.TextDraw2D:
+                    DrawText2D(camera, false);
+                    break;
+
+                case TextDrawMode.TextDraw2D_World:
+                    DrawText2D(camera, true);
+                    break;
+
+                case TextDrawMode.TextDraw3D:
+                    DrawText3D(camera, false);
+                    break;
+
+                case TextDrawMode.TextDraw3D_NoDepthTest:
+                    DrawText3D(camera, true);
+                    break;
+            }
+        }
+
+        private static Vector3 WorldToScreenCoords(Camera camera, Vector3 world)
+        {
+            var viewport = WorldFrame.Instance.GraphicsContext.Viewport;
+            var screenCoords = Vector3.TransformCoordinate(world, camera.ViewProjection);
+
+            screenCoords.X = viewport.X + (1.0f + screenCoords.X) * viewport.Width / 2.0f;
+            screenCoords.Y = viewport.Y + (1.0f - screenCoords.Y) * viewport.Height / 2.0f;
+            screenCoords.Z = viewport.MinDepth + screenCoords.Z * (viewport.MaxDepth - viewport.MinDepth);
+            return screenCoords;
+        }
+
+        private void DrawText2D(Camera camera, bool world)
+        {
+            var center = Position;
+            if (world)
+            {
+                center = WorldToScreenCoords(camera, center);
+                if (center.Z >= 1.0f)
+                    return;
+            }
+
+            var scale = Scaling / 1.5f;
+            var right = new Vector3(mWidth, 0, 0) * 0.5f;
+            var up = new Vector3(0, mHeight, 0) * 0.5f;
+
+            gVertexBuffer.UpdateData(new[]
+            {
+                new WorldTextVertex(center - (right + up) * scale, 0.0f, 0.0f),
+                new WorldTextVertex(center + (right - up) * scale, 1.0f, 0.0f),
+                new WorldTextVertex(center - (right - up) * scale, 0.0f, 1.0f),
+                new WorldTextVertex(center + (right + up) * scale, 1.0f, 1.0f) 
+            });
+
+            gMesh.UpdateDepthState(gNoDepthState);
+
+            gMesh.IndexCount = 4;
+            gMesh.StartVertex = 0;
+            gMesh.StartIndex = 0;
+            gMesh.Topology = SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
+
+            if (gMesh.Program != gWorldTextShader2D)
+            {
+                gMesh.Program = gWorldTextShader2D;
+                gMesh.Program.Bind();
+            }
+
+            gMesh.Program.SetPixelTexture(0, mTexture);
+            gMesh.DrawNonIndexed();
+        }
+
+        private void DrawText3D(Camera camera, bool noDepth)
+        {
             var center = Position;
             var scale = Scaling / 10.0f;
             var right = camera.Right * mWidth * 0.5f;
@@ -133,16 +217,24 @@ namespace WoWEditor6.Scene
 
             gVertexBuffer.UpdateData(new[]
             {
-                new WorldTextVertex(center - (right + up) * scale, 0.0f, 1.0f),
-                new WorldTextVertex(center + (right - up) * scale, 1.0f, 1.0f),
-                new WorldTextVertex(center - (right - up) * scale, 0.0f, 0.0f),
-                new WorldTextVertex(center + (right + up) * scale, 1.0f, 0.0f) 
+                new WorldTextVertex(center - (right + up) * scale, 0.0f, 0.0f),
+                new WorldTextVertex(center + (right - up) * scale, 1.0f, 0.0f),
+                new WorldTextVertex(center - (right - up) * scale, 0.0f, 1.0f),
+                new WorldTextVertex(center + (right + up) * scale, 1.0f, 1.0f) 
             });
+
+            gMesh.UpdateDepthState(noDepth ? gNoDepthState : gDepthState);
 
             gMesh.IndexCount = 4;
             gMesh.StartVertex = 0;
             gMesh.StartIndex = 0;
             gMesh.Topology = SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
+
+            if (gMesh.Program != gWorldTextShader)
+            {
+                gMesh.Program = gWorldTextShader;
+                gMesh.Program.Bind();
+            }
 
             gMesh.Program.SetPixelTexture(0, mTexture);
             gMesh.DrawNonIndexed();
@@ -284,6 +376,12 @@ namespace WoWEditor6.Scene
                 DepthWriteEnabled = false
             };
 
+            gNoDepthState = new DepthState(context)
+            {
+                DepthEnabled = false,
+                DepthWriteEnabled = false
+            };
+
             gVertexBuffer = new VertexBuffer(context);
 
             gMesh = new Mesh(context)
@@ -296,17 +394,21 @@ namespace WoWEditor6.Scene
             gMesh.IndexBuffer.Dispose();
             gMesh.VertexBuffer.Dispose();
 
-            gMesh.AddElement("POSITION", 0, 3);
-            gMesh.AddElement("TEXCOORD", 0, 2);
-
-            gMesh.DepthState = gDepthState;
             gMesh.RasterizerState = gRasterState;
             gMesh.BlendState = gBlendState;
             gMesh.VertexBuffer = gVertexBuffer;
+            gMesh.DepthState = gDepthState;
+
+            gMesh.AddElement("POSITION", 0, 3);
+            gMesh.AddElement("TEXCOORD", 0, 2);
 
             gWorldTextShader = new ShaderProgram(context);
             gWorldTextShader.SetVertexShader(Resources.Shaders.WorldTextVertex);
             gWorldTextShader.SetPixelShader(Resources.Shaders.WorldTextPixel);
+
+            gWorldTextShader2D = new ShaderProgram(context);
+            gWorldTextShader2D.SetVertexShader(Resources.Shaders.WorldTextVertexOrtho);
+            gWorldTextShader2D.SetPixelShader(Resources.Shaders.WorldTextPixel);
             gMesh.Program = gWorldTextShader;
 
             gPerDrawCallBuffer = new ConstantBuffer(context);

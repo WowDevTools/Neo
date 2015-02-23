@@ -257,13 +257,12 @@ namespace WoWEditor6.UI.Components
 
         void ViewChanged(Camera cam, Matrix matView)
         {
-            mMatrixBuffer.UpdateData(new[] {cam.View, cam.Projection});
-
+            mMatrixBuffer.UpdateData(cam.ViewProjection);
         }
 
         void ProjChanged(Camera cam, Matrix matProj)
         {
-            mMatrixBuffer.UpdateData(new[] {cam.View, cam.Projection});
+            mMatrixBuffer.UpdateData(cam.ViewProjection);
         }
 
         unsafe void OnRenderModel()
