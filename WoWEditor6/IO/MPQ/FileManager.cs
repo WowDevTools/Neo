@@ -123,8 +123,38 @@ namespace WoWEditor6.IO.MPQ
 
             var patchNum1 = name1.Substring(i1 + 6);
             var patchNum2 = name2.Substring(i2 + 6);
+            // no number -> for example patch.MPQ
+            if (name1[i1 + 5] == '.' || patchNum1.Length == 0)
+                patchNum1 = "0.MPQ";
+
+            if (name2[i2 + 5] == '.' || patchNum2.Length == 0)
+                patchNum2 = "0.MPQ";
+
+            var isLocalePatch1 = char.IsDigit(patchNum1[0]) == false;
+            var isLocalePatch2 = char.IsDigit(patchNum2[0]) == false;
+
+            if (isLocalePatch1 && !isLocalePatch2)
+                return 1;
+
+            if (isLocalePatch2 && !isLocalePatch1)
+                return -1;
+
+            if (isLocalePatch1)
+            {
+                var extIndex1 = patchNum1.LastIndexOf('.');
+                var extIndex2 = patchNum2.LastIndexOf('.');
+
+                var hasNum1 = extIndex1 >= 1 && char.IsDigit(patchNum1[extIndex1 - 1]);
+                var hasNum2 = extIndex2 >= 1 && char.IsDigit(patchNum2[extIndex2 - 1]);
+
+                if (hasNum1 && !hasNum2)
+                    return -1;
+                if (hasNum2 && !hasNum1)
+                    return 1;
+            }
 
             return -string.Compare(patchNum1, patchNum2, StringComparison.OrdinalIgnoreCase);
+
         }
 
         private bool GetLocale(string dataPath)
