@@ -46,10 +46,11 @@
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
-                       
-                    </avalon:LayoutAnchorablePane>
-                    <avalon:LayoutAnchorablePane DockWidth="340">
-    
+                        <avalon:LayoutAnchorable Title="Texturing" CanClose="False" AutoHideWidth="340" x:Name="TexturingPane">
+                            <dialogs:TexturingWidget>
+                                
+                            </dialogs:TexturingWidget>
+                        </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">
                         <avalon:LayoutAnchorable Title="Welcome" CanClose="False" CanFloat="False" CanAutoHide="False" x:Name="WelcomeDocument">
@@ -125,7 +126,7 @@
                                 </local:RenderControl>
                             </WindowsFormsHost>
                         </avalon:LayoutDocument>
-                        <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800">
+                        <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800" x:Name="AssetBrowserDocument">
                             <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
                             </dialogs:AssetBrowser>

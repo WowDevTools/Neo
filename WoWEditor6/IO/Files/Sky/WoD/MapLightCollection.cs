@@ -101,6 +101,32 @@ namespace WoWEditor6.IO.Files.Sky.WoD
 
             foreach (var pair in zoneLightMap)
                 pair.Value.CreatePolygon();
+
+            InitGlobalLight();
+        }
+
+        private void InitGlobalLight()
+        {
+            var globalLightElem = Storage.DbcStorage.Light.GetRow(0).Get<LightEntry>(0);
+            var globalLight = new LightEntryData(globalLightElem);
+            globalLight.Position = new SharpDX.Vector3(globalLight.Position.X / 36.0f, globalLight.Position.Y / 36.0f,
+                    globalLight.Position.Z / 36.0f);
+            globalLight.Position.Z = 64.0f * Metrics.TileSize - globalLight.Position.Z;
+            globalLight.InnerRadius /= 36.0f;
+            globalLight.OuterRadius /= 36.0f;
+
+            var globalParams = Storage.DbcStorage.LightParams.GetRowById(globalLight.RefParams).Get<LightParamsEntry>(0);
+            var globalMapLight = new MapLight(globalLight, ref globalParams);
+
+            for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)
+            {
+                var mapid = Storage.DbcStorage.Map.GetRow(i).GetInt32(0);
+                if (mLights.ContainsKey(mapid) || mZoneLights.ContainsKey(mapid))
+                    continue;
+
+                mLights.Add(mapid, new List<MapLight> { globalMapLight });
+            }
+
         }
     }
 }

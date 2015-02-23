@@ -19,8 +19,8 @@ namespace WoWEditor6.UI
     {
         public EditorWindow()
         {
-            InitializeComponent();
             DataContext = new EditorWindowController(this);
+            InitializeComponent();
         }
 
         public RenderControl DrawTarget { get { return RenderTarget; } }
@@ -54,6 +54,7 @@ namespace WoWEditor6.UI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SculptingPane.ToggleAutoHide();
+            TexturingPane.ToggleAutoHide();
             Log.AddSink(this);
         }
 

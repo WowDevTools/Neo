@@ -189,11 +189,21 @@
     <Compile Include="IO\Files\Models\Wotlk\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\Wotlk\WmoStructures.cs" />
     <Compile Include="IO\Files\Sky\SkyManager.cs" />
-    <Compile Include="IO\Files\Sky\WoD\LightManager.cs" />
-    <Compile Include="IO\Files\Sky\WoD\LightStructs.cs" />
-    <Compile Include="IO\Files\Sky\WoD\MapLight.cs" />
-    <Compile Include="IO\Files\Sky\WoD\MapLightCollection.cs" />
-    <Compile Include="IO\Files\Sky\WoD\ZoneLight.cs" />
+    <Compile Include="IO\Files\Sky\WoD\LightManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\Files\Sky\WoD\LightStructs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\Files\Sky\WoD\MapLight.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\Files\Sky\WoD\MapLightCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\Files\Sky\WoD\ZoneLight.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IO\Files\Sky\Wotlk\LightManager.cs" />
     <Compile Include="IO\Files\Sky\Wotlk\MapSky.cs" />
     <Compile Include="IO\Files\Sky\Wotlk\WorldLightEntry.cs" />
@@ -395,6 +405,7 @@
     <Compile Include="UI\Models\AssetBrowserModel.cs" />
     <Compile Include="UI\Models\AssetBrowserViewModel.cs" />
     <Compile Include="UI\Models\ImportFileViewModel.cs" />
+    <Compile Include="UI\Models\TexturingViewModel.cs" />
     <Compile Include="UI\RenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

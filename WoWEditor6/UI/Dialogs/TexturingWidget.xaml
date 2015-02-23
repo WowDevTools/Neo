@@ -6,17 +6,55 @@
              mc:Ignorable="d" d:DesignWidth="288" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="210"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <Label>Amount</Label>
-                <Slider VerticalAlignment="Center" Width="200"></Slider>
-                <Label>1</Label>
+                <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="6" Value="1"></Slider>
+                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=AmountSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
             </StackPanel>
-            <Button Margin="0,5,0,0" Width="170">Select From Asset Browser</Button>
+            <StackPanel Orientation="Horizontal">
+                <Label>Inner Radius</Label>
+                <Slider x:Name="InnerRadiusSlider" VerticalAlignment="Center" Width="180" Margin="3,0,0,0" Minimum="1" Maximum="{Binding ElementName=OuterRadiusSlider, Path=Value}" Value="45"></Slider>
+                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=InnerRadiusSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Outer Radius</Label>
+                <Slider x:Name="OuterRadiusSlider" VerticalAlignment="Center" Width="180" Minimum="1" Maximum="200" Value="55"></Slider>
+                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=OuterRadiusSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
+            </StackPanel>
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Width="96" Height="96" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.RowSpan="3">
+                    <Image x:Name="TexturePreviewImage"></Image>
+                </Border>
+                <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick">Select From Assets</Button>
+                <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="1">Enable Texturing</Button>
+            </Grid>
         </StackPanel>
-        <TabControl Grid.Row="1"></TabControl>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Current Tile">
+                
+            </TabItem>
+            <TabItem Header="Selected Tile">
+                
+            </TabItem>
+            <TabItem Header="Recent">
+                
+            </TabItem>
+            <TabItem Header="Favorites">
+                
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>
