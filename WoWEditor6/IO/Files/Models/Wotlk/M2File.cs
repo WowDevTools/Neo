@@ -47,6 +47,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 var reader = new BinaryReader(strm);
                 mHeader = reader.Read<M2Header>();
 
+                BoundingRadius = mHeader.BoundingRadius;
+
                 if ((mHeader.GlobalFlags & 0x08) != 0)
                 {
                     mRemapBlend = true;
@@ -130,19 +132,26 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     startTriangle += ushort.MaxValue + 1;
 
                 var textures = new List<Graphics.Texture>();
+                var texIndices = new List<int>();
                 switch (texUnit.op_count)
                 {
                     case 2:
                         textures.Add(mTextures[texLookup[texUnit.texture]]);
                         textures.Add(mTextures[texLookup[texUnit.texture + 1]]);
+                        texIndices.Add(texLookup[texUnit.texture]);
+                        texIndices.Add(texLookup[texUnit.texture + 1]);
                         break;
                     case 3:
                         textures.Add(mTextures[texLookup[texUnit.texture]]);
                         textures.Add(mTextures[texLookup[texUnit.texture + 1]]);
                         textures.Add(mTextures[texLookup[texUnit.texture + 2]]);
+                        texIndices.Add(texLookup[texUnit.texture]);
+                        texIndices.Add(texLookup[texUnit.texture + 1]);
+                        texIndices.Add(texLookup[texUnit.texture + 2]);
                         break;
                     default:
                         textures.Add(mTextures[texLookup[texUnit.texture]]);
+                        texIndices.Add(texLookup[texUnit.texture]);
                         break;
                 }
 
@@ -162,6 +171,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
                 Passes.Add(new M2RenderPass
                 {
+                    TextureIndices = texIndices,
                     Textures = textures,
                     AlphaAnimIndex = transLookup[texUnit.transparency],
                     ColorAnimIndex = texUnit.colorIndex,

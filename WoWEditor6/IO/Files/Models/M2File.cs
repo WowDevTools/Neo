@@ -27,6 +27,8 @@ namespace WoWEditor6.IO.Files.Models
 
         public bool NeedsPerInstanceAnimation { get; protected set; }
 
+        public float BoundingRadius { get; protected set; }
+
         protected M2File(string path)
         {
             ModelRoot = Path.GetDirectoryName(path) ?? "";
