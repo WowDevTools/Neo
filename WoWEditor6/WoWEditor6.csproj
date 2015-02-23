@@ -215,7 +215,9 @@
     <Compile Include="IO\IFileProvider.cs" />
     <Compile Include="IO\MPQ\Archive.cs" />
     <Compile Include="IO\MPQ\FileListing.cs" />
-    <Compile Include="IO\MPQ\FileManager.cs" />
+    <Compile Include="IO\MPQ\FileManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IO\MPQ\Imports.cs" />
     <Compile Include="IO\SizeCache.cs" />
     <Compile Include="Log.cs" />
@@ -374,6 +376,9 @@
       <DependentUpon>TerrainSettingsWidget.xaml</DependentUpon>
     </Compile>
     <None Include="UI\old\DrawSurface.cs" />
+    <Compile Include="UI\Dialogs\TexturingWidget.xaml.cs">
+      <DependentUpon>TexturingWidget.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
@@ -548,6 +553,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Dialogs\TerrainSettingsWidget.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dialogs\TexturingWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
