@@ -26,11 +26,11 @@ namespace WoWEditor6.Scene
 
         private void UpdateProjection()
         {
-            mMatProjection = LeftHanded == false
+            var matProjection = (LeftHanded == false)
                 ? Matrix.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip)
                 : Matrix.PerspectiveFovLH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
 
-            OnProjectionChanged();
+            OnProjectionChanged(ref matProjection);
         }
 
         public void SetFarClip(float clip)

@@ -1,36 +1,18 @@
-cbuffer GlobalParams : register(b0)
+cbuffer MatrixBuffer : register(b0)
 {
-    float4x4 matView;
-    float4x4 matProj;
-
-    float4 ambientLight;
-    float4 diffuseLight;
-
-    float4 fogColor;
-    // x -> fogStart
-    // y -> fotEnd
-    // z -> farClip
-    float4 fogParams;
-
-    float4 mousePosition;
-    float4 eyePosition;
-
-    // x -> innerRadius
-    // y -> outerRadius
-    // z -> brushTime
-    float4 brushParams;
+    row_major float4x4 matViewProj;
 };
 
-cbuffer AnimationMatrices : register(b2)
+cbuffer AnimationMatrices : register(b1)
 {
     row_major float4x4 Bones[256];
 }
 
-cbuffer PerModelPassBuffer : register(b3)
+cbuffer PerModelPassBuffer : register(b2)
 {
     row_major float4x4 uvAnimation;
     float4 modelPassParams;
-	float4 colorBuffer;
+    float4 colorBuffer;
 }
 
 struct VertexInput
@@ -48,7 +30,7 @@ struct VertexOutput
     float4 position : SV_Position;
     float3 normal : NORMAL0;
     float2 texCoord : TEXCOORD0;
-	float2 texCoord1 : TEXCOORD1;
+    float2 texCoord1 : TEXCOORD1;
     float4 modelPassParams : TEXCOORD2;
 };
 
@@ -66,15 +48,14 @@ VertexOutput main(VertexInput input) {
     normal += mul(input.normal, (float3x3)Bones[input.bones.z]) * input.boneWeights.z;
     normal += mul(input.normal, (float3x3)Bones[input.bones.w]) * input.boneWeights.w;
 
-    position = mul(position, matView);
-    position = mul(position, matProj);
+    position = mul(position, matViewProj);
 
     VertexOutput output = (VertexOutput) 0;
     output.position = position;
     output.normal = normal;
     float4 tcTransform = mul(float4(input.texCoord, 0, 1), uvAnimation);
     output.texCoord = tcTransform.xy / tcTransform.w;
-	output.texCoord1 = input.texCoord2;
+    output.texCoord1 = input.texCoord2;
     output.modelPassParams = modelPassParams;
 
     return output;

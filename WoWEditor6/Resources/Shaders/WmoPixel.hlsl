@@ -1,7 +1,8 @@
 cbuffer GlobalParams : register(b0)
 {
-    float4x4 matView;
-    float4x4 matProj;
+    row_major float4x4 matView;
+    row_major float4x4 matProj;
+    float4 viewport;
 
     float4 ambientLight;
     float4 diffuseLight;
@@ -63,18 +64,18 @@ float4 main(PSInput input) : SV_Target{
 }
 
 float4 main_indoor(PSInput input) : SV_Target{
-	float4 color = batchTexture.Sample(batchSampler, input.texCoord);
-	float3 lightColor = getDiffuseLight(input.normal);
-	float3 groupColor = input.color.bgr;
-	float3 finalColor = input.color.a * lightColor + (1 - input.color.a) * groupColor;
-	finalColor = saturate(finalColor);
-	color.rgb *= finalColor;
+    float4 color = batchTexture.Sample(batchSampler, input.texCoord);
+    float3 lightColor = getDiffuseLight(input.normal);
+    float3 groupColor = input.color.bgr;
+    float3 finalColor = input.color.a * lightColor + (1 - input.color.a) * groupColor;
+    finalColor = saturate(finalColor);
+    color.rgb *= finalColor;
 
-	float fogDepth = input.depth - fogParams.x;
-	fogDepth /= (fogParams.y - fogParams.x);
-	float fog = 1.0f - pow(saturate(fogDepth), 1.5);
+    float fogDepth = input.depth - fogParams.x;
+    fogDepth /= (fogParams.y - fogParams.x);
+    float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
-	color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+    color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
     return color;
 }
 
@@ -97,20 +98,20 @@ float4 main_blend(PSInput input) : SV_Target {
 }
 
 float4 main_blend_indoor(PSInput input) : SV_Target{
-	float4 color = batchTexture.Sample(batchSampler, input.texCoord);
-	if (color.a < (5 / 255.0f))
-		discard;
+    float4 color = batchTexture.Sample(batchSampler, input.texCoord);
+    if (color.a < (5 / 255.0f))
+        discard;
 
-	float3 lightColor = getDiffuseLight(input.normal);
-	float3 groupColor = input.color.bgr;
-	float3 finalColor = input.color.a * lightColor + (1 - input.color.a) * groupColor;
-	finalColor = saturate(finalColor);
-	color.rgb *= finalColor;
+    float3 lightColor = getDiffuseLight(input.normal);
+    float3 groupColor = input.color.bgr;
+    float3 finalColor = input.color.a * lightColor + (1 - input.color.a) * groupColor;
+    finalColor = saturate(finalColor);
+    color.rgb *= finalColor;
 
-	float fogDepth = input.depth - fogParams.x;
-	fogDepth /= (fogParams.y - fogParams.x);
-	float fog = 1.0f - pow(saturate(fogDepth), 1.5);
+    float fogDepth = input.depth - fogParams.x;
+    fogDepth /= (fogParams.y - fogParams.x);
+    float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
-	color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
+    color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
     return color;
 }

@@ -7,8 +7,10 @@ using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Microsoft.Win32;
+using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.Win32;
+using Color = System.Windows.Media.Color;
 
 namespace WoWEditor6.UI
 {
@@ -45,7 +47,8 @@ namespace WoWEditor6.UI
             var worldText = new WorldText
             {
                 Position = WorldFrame.Instance.ActiveCamera.Position,
-                Text = "Testing!"
+                Text = "Testing!",
+                DrawMode = WorldText.TextDrawMode.TextDraw3D
             };
 
             WorldFrame.Instance.WorldTextManager.AddText(worldText);

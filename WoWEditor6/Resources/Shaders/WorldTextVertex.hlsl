@@ -1,7 +1,8 @@
 cbuffer GlobalParams : register(b0)
 {
-    float4x4 matView;
-    float4x4 matProj;
+    row_major float4x4 matView;
+    row_major float4x4 matProj;
+    float4 viewport;
 
     float4 ambientLight;
     float4 diffuseLight;
@@ -43,6 +44,19 @@ VertexOutput main(VertexInput input) {
     position = mul(position, matTransform);
     position = mul(position, matView);
     position = mul(position, matProj);
+
+    VertexOutput output = (VertexOutput) 0;
+    output.position = position;
+    output.texCoord.x = input.texCoord.x;
+    output.texCoord.y = 1.0f - input.texCoord.y;
+    return output;
+}
+
+VertexOutput main_orthographic(VertexInput input) {
+    float4 position = float4(input.position, 1);
+    position = mul(position, matTransform);
+    position.x = (position.x * 2.0f) / viewport.x - 1.0f;
+    position.y = 1.0f - (position.y * 2.0f) / viewport.y;
 
     VertexOutput output = (VertexOutput) 0;
     output.position = position;

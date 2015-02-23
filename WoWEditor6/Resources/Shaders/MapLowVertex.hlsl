@@ -1,7 +1,8 @@
 cbuffer GlobalParams : register(b0)
 {
-    float4x4 matView;
-    float4x4 matProj;
+    row_major float4x4 matView;
+    row_major float4x4 matProj;
+    float4 viewport;
 
     float4 ambientLight;
     float4 diffuseLight;

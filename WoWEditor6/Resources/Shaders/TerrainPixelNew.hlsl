@@ -1,7 +1,8 @@
 cbuffer GlobalParams : register(b0)
 {
-    float4x4 matView;
-    float4x4 matProj;
+    row_major float4x4 matView;
+    row_major float4x4 matProj;
+    float4 viewport;
 
     float4 ambientLight;
     float4 diffuseLight;
@@ -103,32 +104,32 @@ float4 applyBrush(float4 color, float3 worldPos) {
 }
 
 float3 getDiffuseLight(float3 normal, float3 worldPos) {
-	float3 lightDir = normalize(-float3(-1, 1, -1));
-	normal = normalize(normal);
+    float3 lightDir = normalize(-float3(-1, 1, -1));
+    normal = normalize(normal);
     float light = dot(normal, lightDir);
     if (light < 0.0)
         light = 0.0;
     if (light > 0.5)
         light = 0.5 + (light - 0.5) * 0.65;
 
-	float3 r = normalize(2 * dot(normal, -lightDir) * normal - lightDir);
-	float3 v = normalize(normalize(worldPos - eyePosition.xyz));
+    float3 r = normalize(2 * dot(normal, -lightDir) * normal - lightDir);
+    float3 v = normalize(normalize(worldPos - eyePosition.xyz));
 
-	float rdv = dot(r, v);
-	float3 specular = float3(1, 1, 1) * max(pow(rdv, 8), 0) * 0.2;
+    float rdv = dot(r, v);
+    float3 specular = float3(1, 1, 1) * max(pow(rdv, 8), 0) * 0.2;
 
     float3 diffuse = diffuseLight.rgb * light;
     diffuse += ambientLight.rgb;
-	diffuse += specular;
+    diffuse += specular;
     diffuse = saturate(diffuse);
     return diffuse;
 }
 
 float4 main(PixelInput input) : SV_Target{
     float4 alpha = alphaTexture.Sample(alphaSampler, input.texCoordAlpha);
-	float holeValue = holeTexture.Sample(alphaSampler, input.texCoordAlpha).r;
-	if (holeValue < 0.5)
-		discard;
+    float holeValue = holeTexture.Sample(alphaSampler, input.texCoordAlpha).r;
+    if (holeValue < 0.5)
+        discard;
 
     float4 c0 = texture0.Sample(colorSampler, input.texCoord.yx * texScales.x);
     float4 c1 = texture1.Sample(colorSampler, input.texCoord.yx * texScales.y);
@@ -140,10 +141,10 @@ float4 main(PixelInput input) : SV_Target{
     color += alpha.b * c2;
     color += alpha.a * c3;
 
-	float4 textureColor = color;
+    float4 textureColor = color;
 
     color.rgb *= getDiffuseLight(input.normal, input.worldPosition);
-	color.rgb *= input.color.bgr * 2;
+    color.rgb *= input.color.bgr * 2;
     color.rgb += input.addColor.bgr * textureColor;
     color.rgb *= alpha.r;
     color.rgb = saturate(color.rgb);
@@ -155,7 +156,7 @@ float4 main(PixelInput input) : SV_Target{
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
 
     color = applyBrush(color, input.worldPosition);
-	color.a = holeValue;
+    color.a = holeValue;
 
     return color;
 }

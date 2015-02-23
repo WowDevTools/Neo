@@ -662,8 +662,8 @@
     <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WorldTextPixel.hlsl&quot; main ps_4_0 &quot;$(ProjectDir)\Resources\Shaders\WorldTextPixel.dxc&quot;">
     </Exec>
   </Target>
-  <Target Name="WorldTextVertex" BeforeTargets="PrepareForBuild" Label="WorldTextVertex" Inputs="$(ProjectDir)\Resources\Shaders\WorldTextVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WorldTextVertex.dxc">
-    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WorldTextVertex.hlsl&quot; main vs_4_0 &quot;$(ProjectDir)\Resources\Shaders\WorldTextVertex.dxc&quot;">
+  <Target Name="WorldTextVertex" BeforeTargets="PrepareForBuild" Label="WorldTextVertex" Inputs="$(ProjectDir)\Resources\Shaders\WorldTextVertex.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\WorldTextVertex.dxc;$(ProjectDir)\Resources\Shaders\WorldTextVertexOrtho.dxc">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\WorldTextVertex.hlsl&quot; main vs_4_0 &quot;$(ProjectDir)\Resources\Shaders\WorldTextVertex.dxc&quot; main_orthographic vs_4_0 &quot;$(ProjectDir)\Resources\Shaders\WorldTextVertexOrtho.dxc&quot;">
     </Exec>
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -74,8 +74,8 @@ namespace WoWEditor6.Scene.Models.M2
             if (Animator.GetBones(mAnimationMatrices))
                 mAnimBuffer.UpdateData(mAnimationMatrices);
 
-            Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
-            Mesh.Program.SetVertexConstantBuffer(3, mPerPassBuffer);
+            Mesh.Program.SetVertexConstantBuffer(1, mAnimBuffer);
+            Mesh.Program.SetVertexConstantBuffer(2, mPerPassBuffer);
             Mesh.Program.SetPixelConstantBuffer(0, mPerPassBuffer);
 
             foreach (var pass in Model.Passes)
