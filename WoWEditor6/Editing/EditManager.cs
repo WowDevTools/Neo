@@ -1,6 +1,8 @@
 ﻿using System;
 using SharpDX;
 using WoWEditor6.Scene;
+using WoWEditor6.UI;
+using WoWEditor6.UI.Models;
 
 namespace WoWEditor6.Editing
 {
@@ -16,21 +18,13 @@ namespace WoWEditor6.Editing
         public float InnerRadius
         {
             get { return mInnerRadius; }
-            set
-            {
-                mInnerRadius = value;
-                WorldFrame.Instance.UpdateBrush(mInnerRadius, mOuterRadius);
-            }
+            set { HandleInnerRadiusChanged(value); }
         }
 
         public float OuterRadius
         {
             get { return mOuterRadius; }
-            set
-            {
-                mOuterRadius = value;
-                WorldFrame.Instance.UpdateBrush(mInnerRadius, mOuterRadius);
-            }
+            set { HandleOuterRadiusChanged(value); }
         }
 
         public Vector3 MousePosition { get; set; }
@@ -76,6 +70,22 @@ namespace WoWEditor6.Editing
         public void DisableTexturing()
         {
             CurrentMode &= ~EditMode.Texturing;
+        }
+
+        private void HandleInnerRadiusChanged(float value)
+        {
+            mInnerRadius = value;
+            WorldFrame.Instance.UpdateBrush(mInnerRadius, mOuterRadius);
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleInnerRadiusChanged(value);
+        }
+
+        private void HandleOuterRadiusChanged(float value)
+        {
+            mOuterRadius = value;
+            WorldFrame.Instance.UpdateBrush(mInnerRadius, mOuterRadius);
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleOuterRadiusChanged(value);
         }
     }
 }

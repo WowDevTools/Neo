@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:WoWEditor6.UI.Dialogs" x:Class="WoWEditor6.UI.Dialogs.Settings" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600">
-
     <DockPanel LastChildFill="True">
         <Grid>
             <TabControl>
@@ -20,30 +19,32 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Pathes"/>
-
-
                 <TabItem Header="Keybindings">
-
                     <local:KeyBindingWidget Margin="10,10,10,10 " />
-
                 </TabItem>
-
                 <TabItem Header="Render options" Margin="-2,0" >
-
-        <Grid>
-        <Border Padding="10,10,10,10">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                                <CheckBox x:Name="CheckBox_DrawBrushModels" Click="CheckBox_DrawBrushModels_Click" >Draw Brush on Models</CheckBox>
-                <CheckBox x:Name="CheckBox_HighlightModel"  Click="CheckBox_HighlightModel_Click">Highlight Models in Brush</CheckBox>
-            </StackPanel>
-        </Border>
-    </Grid>
-
+                    <Grid>
+                        <Border Padding="10,10,10,10">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                                <CheckBox x:Name="CheckBoxDrawBrushModels" Click="CheckBox_DrawBrushModels_Click" >Draw Brush on Models</CheckBox>
+                                <CheckBox x:Name="CheckBoxHighlightModel"  Click="CheckBox_HighlightModel_Click" Margin="0,5,0,0">Highlight Models in Brush</CheckBox>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox x:Name="UseDayNightCycle" VerticalAlignment="Center" IsChecked="True" Click="ChangeUseDayNight_Click">Use Day/Night Cycle</CheckBox>
+                                    <StackPanel Orientation="Horizontal" x:Name="DefaultTimePanel" Visibility="Collapsed">
+                                        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">Fixed Time:</TextBlock>
+                                        <TextBox x:Name="DefaultDayTimeTextBox" Width="60" Margin="5,0,0,0" Height="18" TextChanged="DayNightDefaultTime_Changed">1440</TextBox>
+                                        <TextBlock VerticalAlignment="Center" x:Name="DefaultDayNightTimeIndicator">= 12:00</TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" x:Name="DayNightCycleScalingPanel" Visibility="Visible">
+                                        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">Change speed: </TextBlock>
+                                        <Slider Margin="5,0,0,0" x:Name="DayNightScalingSlider" Width="100" Minimum="1" Maximum="20" Value="10" VerticalAlignment="Center" ValueChanged="DayNightScaling_Changed"></Slider>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                 </TabItem>
-
-
             </TabControl>
-
         </Grid>
     </DockPanel>
 

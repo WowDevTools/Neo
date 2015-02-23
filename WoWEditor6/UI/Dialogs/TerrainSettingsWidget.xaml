@@ -44,12 +44,12 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Width="80">Inner Radius</Label>
-                    <Slider Name="InnerRadiusSlider" ValueChanged="InnerRadiusSlider_ValueChanged" Width="200" Margin="5,0,0,0" Minimum="1" Maximum="{Binding ElementName=OuterRadiusSlider, Path=Value}" Value="45"></Slider>
+                    <Slider Name="InnerRadiusSlider" ValueChanged="InnerRadiusSlider_ValueChanged" Width="200" Margin="5,0,0,0" Minimum="0.2" Maximum="{Binding ElementName=OuterRadiusSlider, Path=Value}" Value="45"></Slider>
                     <TextBlock Margin="5,0,0,0" Text="{Binding ElementName=InnerRadiusSlider, Path=Value, StringFormat={}{0:F0}}"></TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Width="80">Outer Radius</Label>
-                    <Slider Name="OuterRadiusSlider" ValueChanged="OuterRadiusSlider_ValueChanged" Width="200" Margin="5,0,0,0" Minimum="1" Maximum="200" Value="55"></Slider>
+                    <Slider Name="OuterRadiusSlider" ValueChanged="OuterRadiusSlider_ValueChanged" Width="200" Margin="5,0,0,0" Minimum="0.2" Maximum="200" Value="55"></Slider>
                     <TextBlock Margin="5,0,0,0" Text="{Binding ElementName=OuterRadiusSlider, Path=Value, StringFormat={}{0:F0}}"></TextBlock>
                 </StackPanel>
             </StackPanel>

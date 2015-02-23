@@ -12,17 +12,17 @@
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <Label>Amount</Label>
-                <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="6" Value="1"></Slider>
+                <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="6" Value="1" ValueChanged="Handle_AmountSliderChanged"></Slider>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=AmountSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label>Inner Radius</Label>
-                <Slider x:Name="InnerRadiusSlider" VerticalAlignment="Center" Width="180" Margin="3,0,0,0" Minimum="1" Maximum="{Binding ElementName=OuterRadiusSlider, Path=Value}" Value="45"></Slider>
+                <Slider x:Name="InnerRadiusSlider" VerticalAlignment="Center" Width="180" Margin="3,0,0,0" Minimum="0.1" Maximum="{Binding ElementName=OuterRadiusSlider, Path=Value}" Value="45" ValueChanged="Handle_InnerRadiusSliderChanged"></Slider>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=InnerRadiusSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label>Outer Radius</Label>
-                <Slider x:Name="OuterRadiusSlider" VerticalAlignment="Center" Width="180" Minimum="1" Maximum="200" Value="55"></Slider>
+                <Slider x:Name="OuterRadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="200" Value="55" ValueChanged="Handle_OuterRadiusSliderChanged"></Slider>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=OuterRadiusSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
             </StackPanel>
             <Grid Margin="0,10,0,0">

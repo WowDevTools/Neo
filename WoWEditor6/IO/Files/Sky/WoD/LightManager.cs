@@ -206,7 +206,10 @@ namespace WoWEditor6.IO.Files.Sky.WoD
         private void LoadColors()
         {
             var time = Utils.TimeManager.Instance.GetTime();
-            var ms = (int) (time.TotalMilliseconds / 10.0f);
+            var ms = (int) (time.TotalMilliseconds * Properties.Settings.Default.DayNightScaling / 10.0f);
+            if (Properties.Settings.Default.UseDayNightCycle == false)
+                ms = Properties.Settings.Default.DefaultDayTime;
+
             for (var i = 0; i < mColorValuesTemp.Length; ++i)
                 mColorValuesTemp[i] = new Color3(1, 1, 1);
 

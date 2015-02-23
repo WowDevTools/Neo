@@ -19,7 +19,7 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
                     mLights.Add(new WorldLightEntry(row));
             }
 
-            if (mLights.Count == 0)
+            if (mLights.Count == 0 && Storage.DbcStorage.Light.NumRows > 0)
                 mLights.Add(new WorldLightEntry(Storage.DbcStorage.Light.GetRow(0)));
 
             SortLights();

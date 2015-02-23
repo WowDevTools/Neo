@@ -20,5 +20,14 @@
     <Setting Name="UpdateDrawBrushOnModels" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="UseDayNightCycle" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DefaultDayTime" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1440</Value>
+    </Setting>
+    <Setting Name="DayNightScaling" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

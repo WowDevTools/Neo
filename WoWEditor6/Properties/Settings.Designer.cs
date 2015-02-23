@@ -94,5 +94,41 @@ namespace WoWEditor6.Properties {
                 this["UpdateDrawBrushOnModels"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseDayNightCycle {
+            get {
+                return ((bool)(this["UseDayNightCycle"]));
+            }
+            set {
+                this["UseDayNightCycle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1440")]
+        public int DefaultDayTime {
+            get {
+                return ((int)(this["DefaultDayTime"]));
+            }
+            set {
+                this["DefaultDayTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public float DayNightScaling {
+            get {
+                return ((float)(this["DayNightScaling"]));
+            }
+            set {
+                this["DayNightScaling"] = value;
+            }
+        }
     }
 }

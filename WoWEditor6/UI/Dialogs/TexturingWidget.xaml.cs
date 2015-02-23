@@ -35,5 +35,35 @@ namespace WoWEditor6.UI.Dialogs
 
             model.HandleSelectFromAssets();
         }
+
+        private void Handle_AmountSliderChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleAmountSlider((float) newValue);
+        }
+
+        private void Handle_InnerRadiusSliderChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleInnerRadiusSlider((float) newValue);
+        }
+
+        private void Handle_OuterRadiusSliderChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleOuterRadiusSlider((float)newValue);
+        }
     }
 }

@@ -28,7 +28,9 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
                 return;
 
             var time = Utils.TimeManager.Instance.GetTime();
-            var ms = (uint)(time.TotalMilliseconds / 10.0f);
+            var ms = (uint)(time.TotalMilliseconds * Properties.Settings.Default.DayNightScaling / 10.0f);
+            if (Properties.Settings.Default.UseDayNightCycle == false)
+                ms = (uint)Properties.Settings.Default.DefaultDayTime;
 
             mActiveSky.Update(mLastPosition, ms);
             for (var i = 0; i < 18; ++i)
