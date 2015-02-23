@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using WoWEditor6.Resources;
 using WoWEditor6.UI.Models;
 
 namespace WoWEditor6.UI.Components
@@ -11,7 +12,7 @@ namespace WoWEditor6.UI.Components
     public partial class AssetBrowserFilePreview
     {
         private static readonly BitmapSource PageImageSource =
-            WpfImageSource.FromGdiImage(WoWEditor6.Resources.Images.Page_Icon_48);
+            WpfImageSource.FromGdiImage(Images.Page_Icon_48);
 
         public AssetBrowserFile FileEntry { get; private set; }
 

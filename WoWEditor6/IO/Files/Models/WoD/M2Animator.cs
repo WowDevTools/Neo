@@ -37,7 +37,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         {
             mHasAnimation = false;
             mAnimations = file.Animations;
-            mAnimationLookup = file.AnimLookup;
+            mAnimationLookup = file.AnimationLookup;
 
             SetBoneData(file.Bones);
             SetUvData(file.UvAnimations);

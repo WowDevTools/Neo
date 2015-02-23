@@ -3,6 +3,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using SharpDX;
+using WoWEditor6.IO;
+using WoWEditor6.IO.Files.Terrain;
+using WoWEditor6.Storage;
 
 namespace WoWEditor6.UI.Components
 {
@@ -88,27 +91,27 @@ namespace WoWEditor6.UI.Components
 
         private void OnEnterWorld(float x, float y)
         {
-            var mapRow = Storage.DbcStorage.Map.GetRowById(mSelectedMap);
+            var mapRow = DbcStorage.Map.GetRowById(mSelectedMap);
             if (mapRow == null)
                 return;
 
             var widescreen = false;
             var loadScreenPath = "Interface\\Glues\\loading.blp";
-            var loadEntry = mapRow.GetInt32(Storage.MapFormatGuess.FieldMapLoadingScreen);
+            var loadEntry = mapRow.GetInt32(MapFormatGuess.FieldMapLoadingScreen);
             if (loadEntry != 0)
             {
-                var loadRow = Storage.DbcStorage.LoadingScreen.GetRowById(loadEntry);
+                var loadRow = DbcStorage.LoadingScreen.GetRowById(loadEntry);
                 if (loadRow != null)
                 {
-                    var path = loadRow.GetString(Storage.MapFormatGuess.FieldLoadingScreenPath);
+                    var path = loadRow.GetString(MapFormatGuess.FieldLoadingScreenPath);
                     widescreen = false;
 
                     if (string.IsNullOrEmpty(path) == false)
                     {
-                        if (Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen >= 0 && loadRow.GetInt32(Storage.MapFormatGuess.FieldLoadingScreenHasWidescreen) == 1)
+                        if (MapFormatGuess.FieldLoadingScreenHasWidescreen >= 0 && loadRow.GetInt32(MapFormatGuess.FieldLoadingScreenHasWidescreen) == 1)
                         {
                             var widePath = path.ToUpperInvariant().Replace(".BLP", "WIDE.BLP");
-                            if (IO.FileManager.Instance.Provider.Exists(widePath))
+                            if (FileManager.Instance.Provider.Exists(widePath))
                             {
                                 path = widePath;
                                 widescreen = true;
@@ -131,12 +134,12 @@ namespace WoWEditor6.UI.Components
         private static uint[] GetWdlColors(int mapId)
         {
             var colors = new uint[17*64*17*64];
-            var record = Storage.DbcStorage.Map.GetRowById(mapId);
+            var record = DbcStorage.Map.GetRowById(mapId);
             if (record == null)
                 return colors;
 
-            var mapName = record.GetString(Storage.MapFormatGuess.FieldMapName);
-            var wdlFile = new IO.Files.Terrain.WdlFile();
+            var mapName = record.GetString(MapFormatGuess.FieldMapName);
+            var wdlFile = new WdlFile();
             wdlFile.Load(mapName);
             for (var i = 0; i < 64; ++i)
             {
@@ -153,7 +156,7 @@ namespace WoWEditor6.UI.Components
             return colors;
         }
 
-        private static unsafe void LoadEntry(IO.Files.Terrain.MareEntry entry, uint[] textureData, ref int i, ref int j)
+        private static unsafe void LoadEntry(MareEntry entry, uint[] textureData, ref int i, ref int j)
         {
             for (var k = 0; k < 17; ++k)
             {

@@ -31,7 +31,7 @@ namespace WoWEditor6.Scene.Models.M2
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
-        private readonly IM2Animator mAnimator;
+        public IM2Animator Animator { get; private set; }
         public M2File Model { get; private set; }
 
         public TextureInfo[] Textures { get; private set; }
@@ -47,9 +47,9 @@ namespace WoWEditor6.Scene.Models.M2
             Textures = model.TextureInfos.ToArray();
 
             mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
-            mAnimator = ModelFactory.Instance.CreateAnimator(model);
-            mAnimator.SetAnimation(AnimationType.Stand);
-            mAnimator.Update(null);
+            Animator = ModelFactory.Instance.CreateAnimator(model);
+            Animator.SetAnimation(AnimationType.Stand);
+            Animator.Update(null);
         }
 
         public virtual void Dispose()
@@ -63,7 +63,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void OnFrame(M2Renderer renderer)
         {
-            mAnimator.Update(null);
+            Animator.Update(null);
 
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);
@@ -71,7 +71,7 @@ namespace WoWEditor6.Scene.Models.M2
             Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
             Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-            if (mAnimator.GetBones(mAnimationMatrices))
+            if (Animator.GetBones(mAnimationMatrices))
                 mAnimBuffer.UpdateData(mAnimationMatrices);
 
             Mesh.Program.SetVertexConstantBuffer(2, mAnimBuffer);
@@ -122,9 +122,9 @@ namespace WoWEditor6.Scene.Models.M2
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
                 Matrix uvAnimMat;
-                mAnimator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
-                var color = mAnimator.GetColorValue(pass.ColorAnimIndex);
-                var alpha = mAnimator.GetAlphaValue(pass.AlphaAnimIndex);
+                Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                var color = Animator.GetColorValue(pass.ColorAnimIndex);
+                var alpha = Animator.GetAlphaValue(pass.AlphaAnimIndex);
                 color.W *= alpha;
 
                 //Log.Debug(color);

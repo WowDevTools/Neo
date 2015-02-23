@@ -25,7 +25,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
         public uint[] GlobalSequences { get; private set; }
         public AnimationEntry[] Animations { get; private set; }
-        public short[] AnimLookup { get; private set; }
 
         public M2File(string fileName) : base(fileName)
         {
@@ -35,7 +34,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             Transparencies = new M2AlphaAnimation[0];
             GlobalSequences = new uint[0];
             Animations = new AnimationEntry[0];
-            AnimLookup = new short[0];
+            AnimationLookup = new short[0];
             mModelName = string.Empty;
             mFileName = fileName;
         }
@@ -47,7 +46,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 var reader = new BinaryReader(strm);
                 mHeader = reader.Read<M2Header>();
 
-                BoundingRadius = mHeader.BoundingRadius;
+                BoundingRadius = mHeader.VertexRadius;
 
                 if ((mHeader.GlobalFlags & 0x08) != 0)
                 {
@@ -195,7 +194,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             if (Bones.Any(b => b.IsBillboarded))
                 NeedsPerInstanceAnimation = true;
 
-            AnimLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
+            AnimationLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
             Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
 
             var uvAnims = ReadArrayOf<M2TexAnim>(reader, mHeader.OfsUvAnimation, mHeader.NUvAnimation);

@@ -29,6 +29,8 @@ namespace WoWEditor6.IO.Files.Models
 
         public float BoundingRadius { get; protected set; }
 
+        public short[] AnimationLookup { get; protected set; }
+
         protected M2File(string path)
         {
             ModelRoot = Path.GetDirectoryName(path) ?? "";
