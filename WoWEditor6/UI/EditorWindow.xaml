@@ -61,7 +61,7 @@
                                 <controls:EntrySelectControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="EntrySelectView" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditorWindow}}}">
                                     
                                 </controls:EntrySelectControl>
-                                <Grid Visibility="Collapsed" Loaded="MapTileGrid_Loaded">
+                                <Grid x:Name="MapOverviewGrid" Visibility="Collapsed" Loaded="MapTileGrid_Loaded">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="75"></RowDefinition>
                                         <RowDefinition Height="*"></RowDefinition>

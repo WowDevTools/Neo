@@ -18,6 +18,9 @@
         <Border Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" BorderBrush="Black" ClipToBounds="True">
             <Image x:Name="WdlPreviewImage" HorizontalAlignment="Left" VerticalAlignment="Top" MouseMove="WdlPreview_MouseMove" MouseDown="WdlPreview_MouseDown" MouseUp="WdlPreview_MouseUp"></Image>
         </Border>
-        <TextBlock x:Name="AdtPreviewLabel" Height="35" Width="Auto" FontSize="26" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0">ADT: 0/0</TextBlock>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <TextBlock x:Name="AdtPreviewLabel" Height="35" Width="Auto" FontSize="26" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Top">ADT: 0/0</TextBlock>
+            <Button Width="75" Margin="15,25,0,0" HorizontalAlignment="Left" Click="BackButton_Click">Back</Button>
+        </StackPanel>
     </Grid>
 </UserControl>  

@@ -29,8 +29,15 @@ namespace WoWEditor6.UI
                         var fileBuffer = new byte[stream.Length];
                         stream.Read(fileBuffer, 0, (int)stream.Length);
 
-                        fixed (byte* ptr = fileBuffer)
-                            gCollection.AddMemoryFont((IntPtr)ptr, fileBuffer.Length);
+                        try
+                        {
+                            fixed (byte* ptr = fileBuffer)
+                                gCollection.AddMemoryFont((IntPtr) ptr, fileBuffer.Length);
+                        }
+                        catch (Exception)
+                        {
+                            Log.Debug("Unable to add font to font collection: " + file.Name);
+                        }
                     }
                 }
 

@@ -104,7 +104,6 @@ namespace WoWEditor6.UI.Components
                 if (loadRow != null)
                 {
                     var path = loadRow.GetString(MapFormatGuess.FieldLoadingScreenPath);
-                    widescreen = false;
 
                     if (string.IsNullOrEmpty(path) == false)
                     {
@@ -217,6 +216,11 @@ namespace WoWEditor6.UI.Components
                     textureData[(i * 17 + k) * (64 * 17) + j * 17 + l] = 0xFF000000 | (r << 16) | (g << 8) | (b << 0);
                 }
             }
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditorWindowController.Instance.ShowMapOverview();
         }
     }
 }

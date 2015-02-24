@@ -1,4 +1,5 @@
-﻿using WoWEditor6.UI.Components;
+﻿using System.Windows;
+using WoWEditor6.UI.Components;
 using WoWEditor6.UI.Models;
 
 namespace WoWEditor6.UI
@@ -17,6 +18,15 @@ namespace WoWEditor6.UI
         {
             Instance = this;
             mWindow = window;
+        }
+
+        public void ShowMapOverview()
+        {
+            mWindow.SplashDocument.Visibility = Visibility.Collapsed;
+            mWindow.LoadingDocument.Visibility = Visibility.Collapsed;
+            mWindow.EntrySelectView.Visibility = Visibility.Collapsed;
+            mWindow.LoadingScreenView.Visibility = Visibility.Collapsed;
+            mWindow.MapOverviewGrid.Visibility = Visibility.Visible;
         }
 
         public void ShowAssetBrowser()
