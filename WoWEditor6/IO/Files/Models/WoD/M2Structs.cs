@@ -187,7 +187,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
     struct M2TexUnit
     {
         public readonly ushort flags;
-        public readonly ushort shaderId;
+        public readonly short shaderId;
         public readonly ushort submeshIndex;
         public readonly ushort submeshIndex2;
         public readonly short colorIndex;

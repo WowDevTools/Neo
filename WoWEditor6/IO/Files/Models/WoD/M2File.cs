@@ -172,7 +172,10 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     BlendMode = blendMode,
                     StartIndex = startTriangle,
                     TexAnimIndex = uvIndex,
-                    TexUnitNumber = texUnit.texUnitNumber
+                    TexUnitNumber = texUnit.texUnitNumber,
+                    OpCount = texUnit.op_count,
+                    VertexShaderType = GetVertexShaderType( texUnit.shaderId, texUnit.op_count ),
+                    PixelShaderType = GetPixelShaderType( texUnit.shaderId, texUnit.op_count ),
                 });
             }
 

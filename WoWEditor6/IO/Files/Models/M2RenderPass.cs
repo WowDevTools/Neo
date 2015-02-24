@@ -16,5 +16,11 @@ namespace WoWEditor6.IO.Files.Models
 
         public uint RenderFlag { get; set; }
         public uint BlendMode { get; set; }
+
+        public uint OpCount { get; set; }
+        public M2VertexShaderType VertexShaderType { get; set; }
+        public M2HullShaderType HullShaderType { get; set; }
+        public M2DomainShaderType DomainShaderType { get; set; }
+        public M2PixelShaderType PixelShaderType { get; set; }
     }
 }
