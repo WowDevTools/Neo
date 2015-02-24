@@ -66,7 +66,7 @@ float4 main(PixelInput input) : SV_Target {
     lightColor.rgb = saturate(lightColor.rgb);
    
     float unlit = input.modelPassParams.x;
-    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
@@ -85,14 +85,14 @@ float4 main_blend(PixelInput input) : SV_Target{
     lightColor.rgb = saturate(lightColor.rgb);
 
     float unlit = input.modelPassParams.x;
-    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
     float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
 
-    color.rgb = fog * fogColor.rgb + (1.0 - fog) * color.rgb;
-    return input.color * color;
+	color.a *= (1 - fog);
+	return input.color * color;
 }
 
 float4 main_blend_2_pass(PixelInput input) : SV_Target{
@@ -108,16 +108,14 @@ float4 main_blend_2_pass(PixelInput input) : SV_Target{
     lightColor.rgb = saturate(lightColor.rgb);
 
     float unlit = input.modelPassParams.x;
-    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
     float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
 
-    color.rgb = fog * fogColor.rgb + (1.0 - fog) * color.rgb;
+	color.a *= (1 - fog);
     return input.color * color;
-
-    return color;
 }
 
 float4 main_blend_3_pass(PixelInput input) : SV_Target{
@@ -134,16 +132,14 @@ float4 main_blend_3_pass(PixelInput input) : SV_Target{
         lightColor.rgb = saturate(lightColor.rgb);
 
     float unlit = input.modelPassParams.x;
-    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
     float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
 
-    color.rgb = fog * fogColor.rgb + (1.0 - fog) * color.rgb;
+	color.a *= (1 - fog);
     return input.color * color;
-
-    return color;
 }
 
 float4 main_blend_alpha_test(PixelInput input) : SV_Target{
@@ -156,7 +152,7 @@ float4 main_blend_alpha_test(PixelInput input) : SV_Target{
     lightColor.rgb = saturate(lightColor.rgb);
 
     float unlit = input.modelPassParams.x;
-    color.rgb *= unlit * lightColor + (1.0 - unlit) * float4(1, 1, 1, 1);
+    color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
