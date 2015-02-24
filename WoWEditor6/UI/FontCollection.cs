@@ -27,7 +27,7 @@ namespace WoWEditor6.UI
                         }
 
                         var fileBuffer = new byte[stream.Length];
-                        stream.Read(fileBuffer, 0, (int)stream.Length);
+                        stream.Read(fileBuffer, 0, fileBuffer.Length);
 
                         try
                         {
@@ -36,7 +36,7 @@ namespace WoWEditor6.UI
                         }
                         catch (Exception)
                         {
-                            Log.Debug("Unable to add font to font collection: " + file.Name);
+                            Log.Error("Unable to add font to font collection: " + file.Name);
                         }
                     }
                 }

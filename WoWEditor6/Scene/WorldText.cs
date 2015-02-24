@@ -43,6 +43,7 @@ namespace WoWEditor6.Scene
 
         private static Mesh gMesh;
         private static Sampler gSampler;
+        private static Sampler gSampler2D;
         private static VertexBuffer gVertexBuffer;
 
         private static RasterState gRasterState;
@@ -114,7 +115,6 @@ namespace WoWEditor6.Scene
         public static void BeginDraw()
         {
             gMesh.BeginDraw();
-            gMesh.Program.SetPixelSampler(0, gSampler);
             gMesh.Program.SetVertexConstantBuffer(1, gPerDrawCallBuffer);
         }
 
@@ -176,7 +176,7 @@ namespace WoWEditor6.Scene
                     return;
             }
 
-            var scale = Scaling / 1.5f;
+            var scale = Scaling;
             var right = new Vector3(mWidth, 0, 0) * 0.5f;
             var up = new Vector3(0, mHeight, 0) * 0.5f;
 
@@ -201,6 +201,7 @@ namespace WoWEditor6.Scene
                 gMesh.Program.Bind();
             }
 
+            gMesh.Program.SetPixelSampler(0, gSampler2D);
             gMesh.Program.SetPixelTexture(0, mTexture);
             gMesh.DrawNonIndexed();
         }
@@ -236,13 +237,14 @@ namespace WoWEditor6.Scene
                 gMesh.Program.Bind();
             }
 
+            gMesh.Program.SetPixelSampler(0, gSampler);
             gMesh.Program.SetPixelTexture(0, mTexture);
             gMesh.DrawNonIndexed();
         }
 
         private void UpdateText(string text)
         {
-            if (mText != null && mText.Equals(text))
+            if (text.Equals(mText))
                 return;
 
             mText = text;
@@ -251,7 +253,7 @@ namespace WoWEditor6.Scene
 
         private void UpdateFont(Font font)
         {
-            if (mFont != null && mFont.Equals(font))
+            if (font.Equals(mFont))
                 return;
 
             mFont = font;
@@ -260,7 +262,7 @@ namespace WoWEditor6.Scene
 
         private void UpdateBrush(Brush brush)
         {
-            if (mBrush != null && mBrush.Equals(brush))
+            if (brush.Equals(mBrush))
                 return;
 
             mBrush = brush;
@@ -354,6 +356,12 @@ namespace WoWEditor6.Scene
             {
                 AddressMode = TextureAddressMode.Wrap,
                 Filter = Filter.MinMagMipLinear
+            };
+
+            gSampler2D = new Sampler(context)
+            {
+                AddressMode = TextureAddressMode.Wrap,
+                Filter = Filter.MinMagMipPoint
             };
 
             gBlendState = new Graphics.BlendState(context)

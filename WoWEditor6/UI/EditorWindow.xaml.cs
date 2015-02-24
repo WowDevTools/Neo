@@ -42,12 +42,24 @@ namespace WoWEditor6.UI
             mrt.Show();
         }
 
-        private void Debug_Click(object sender, RoutedEventArgs e)
+        private void Add2DText_Click(object sender, RoutedEventArgs e)
         {
             var worldText = new WorldText
             {
                 Position = WorldFrame.Instance.ActiveCamera.Position,
-                Text = "Testing!",
+                Text = "This is a 2D text!",
+                DrawMode = WorldText.TextDrawMode.TextDraw2D_World
+            };
+
+            WorldFrame.Instance.WorldTextManager.AddText(worldText);
+        }
+
+        private void Add3DText_Click(object sender, RoutedEventArgs e)
+        {
+            var worldText = new WorldText
+            {
+                Position = WorldFrame.Instance.ActiveCamera.Position,
+                Text = "This is a 3D text!",
                 DrawMode = WorldText.TextDrawMode.TextDraw3D
             };
 
