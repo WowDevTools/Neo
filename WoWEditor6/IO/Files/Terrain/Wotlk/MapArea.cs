@@ -20,7 +20,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
     class MapArea : Terrain.MapArea
     {
         private readonly List<ChunkInfo> mChunkInfos = new List<ChunkInfo>();
-        private readonly List<string> mTextureNames = new List<string>();
         private readonly List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
         private readonly List<MapChunk> mChunks = new List<MapChunk>();
         private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
@@ -175,10 +174,10 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public string GetTextureName(int index)
         {
-            if(index >= mTextureNames.Count)
+            if(index >= TextureNames.Count)
                 throw new IndexOutOfRangeException();
 
-            return mTextureNames[index];
+            return TextureNames[index];
         }
 
         public override void AsyncLoad()
@@ -288,15 +287,15 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public int GetOrAddTexture(string textureName)
         {
-            for (var i = 0; i < mTextureNames.Count; ++i)
+            for (var i = 0; i < TextureNames.Count; ++i)
             {
-                if (string.Equals(mTextureNames[i], textureName, StringComparison.InvariantCultureIgnoreCase))
+                if (string.Equals(TextureNames[i], textureName, StringComparison.InvariantCultureIgnoreCase))
                     return i;
             }
 
-            mTextureNames.Add(textureName);
+            TextureNames.Add(textureName);
             mTextures.Add(TextureManager.Instance.GetTexture(textureName));
-            return mTextureNames.Count - 1;
+            return TextureNames.Count - 1;
         }
 
         public override bool OnTextureTerrain(TextureChangeParameters parameters)
@@ -342,11 +341,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             var size = reader.ReadInt32();
             var bytes = reader.ReadBytes(size);
             var fullString = Encoding.ASCII.GetString(bytes);
-            mTextureNames.AddRange(fullString.Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries));
-            for (var i = 0; i < mTextureNames.Count; ++i)
+            TextureNames.AddRange(fullString.Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries));
+            for (var i = 0; i < TextureNames.Count; ++i)
             {
-                mTextures.Add(TextureManager.Instance.GetTexture(mTextureNames[i]));
-                mTextureNames[i] = mTextureNames[i].ToLowerInvariant();
+                mTextures.Add(TextureManager.Instance.GetTexture(TextureNames[i]));
+                TextureNames[i] = TextureNames[i].ToLowerInvariant();
             }
         }
 

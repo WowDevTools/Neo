@@ -16,6 +16,8 @@ namespace WoWEditor6.IO.Files.Terrain
 
         public AdtVertex[] FullVertices { get; private set; }
 
+        public List<string> TextureNames { get; private set; } 
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
@@ -25,6 +27,7 @@ namespace WoWEditor6.IO.Files.Terrain
             IsValid = true;
             DoodadInstances = new List<M2Instance>();
             FullVertices = new AdtVertex[145 * 256];
+            TextureNames = new List<string>();
         }
 
         public virtual void Dispose()

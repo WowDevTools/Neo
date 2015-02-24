@@ -27,7 +27,6 @@ namespace WoWEditor6.Scene.Terrain
         private readonly List<int> mCurrentValidLinks = new List<int>();
 
         public string Continent { get; private set; }
-        public int MapId { get; private set; }
         public WdtFile CurrentWdt { get; private set; }
         public bool HasNewBlend { get; private set; }
         public bool IsInitialLoad { get; private set; }
@@ -111,7 +110,6 @@ namespace WoWEditor6.Scene.Terrain
             WorldFrame.Instance.LeftHandedCamera = IO.FileManager.Instance.Version > IO.FileDataVersion.Cataclysm;
 
             mEntryPoint = entryPoint;
-            MapId = mapId;
             Continent = continent;
             WorldFrame.Instance.State = AppState.LoadingScreen;
 
@@ -363,6 +361,13 @@ namespace WoWEditor6.Scene.Terrain
             var ix = (int) Math.Floor(cx / Metrics.TileSize);
             var iy = (int) Math.Floor(cy / Metrics.TileSize);
 
+            if (mAreas.ContainsKey(ix + iy * 0xFF))
+            {
+                var curArea = mAreas[ix + iy * 0xFF];
+                if (EditorWindowController.Instance.TexturingModel.IsTileSelected == false)
+                    EditorWindowController.Instance.TexturingModel.SetSelectedTileTextures(curArea.AreaFile.TextureNames);
+            }
+
             var countPref = mCurrentValidLinks.Count;
             mCurrentValidLinks.RemoveAll(index =>
             {
@@ -436,6 +441,15 @@ namespace WoWEditor6.Scene.Terrain
                 var area = AdtFactory.Instance.CreateArea(Continent, x, y);
                 lock (mDataToLoad)
                     mDataToLoad.Add(area);
+            }
+
+            lock (mAreas)
+            {
+                if (mAreas.ContainsKey(ix + iy * 0xFF) == false)
+                    return;
+
+                var curArea = mAreas[ix + iy * 0xFF];
+                EditorWindowController.Instance.TexturingModel.SetSelectedTileTextures(curArea.AreaFile.TextureNames);
             }
         }
 

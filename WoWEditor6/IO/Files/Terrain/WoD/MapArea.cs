@@ -28,7 +28,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private BinaryReader mTexReader;
         private BinaryReader mObjReader;
 
-        private readonly List<string> mTextureNames = new List<string>();
         private readonly List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
         private readonly List<float> mTextureScales = new List<float>();
 
@@ -196,22 +195,22 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public int GetOrAddTexture(string texture)
         {
-            for (var i = 0; i < mTextureNames.Count; ++i)
+            for (var i = 0; i < TextureNames.Count; ++i)
             {
-                if (string.Equals(mTextureNames[i], texture, StringComparison.InvariantCultureIgnoreCase))
+                if (string.Equals(TextureNames[i], texture, StringComparison.InvariantCultureIgnoreCase))
                     return i;
             }
 
-            mTextureNames.Add(texture);
-            return mTextureNames.Count - 1;
+            TextureNames.Add(texture);
+            return TextureNames.Count - 1;
         }
 
         public string GetTextureName(int index)
         {
-            if (index >= mTextureNames.Count)
+            if (index >= TextureNames.Count)
                 throw new IndexOutOfRangeException();
 
-            return mTextureNames[index];
+            return TextureNames[index];
         }
 
         public float GetTextureScale(int index)
@@ -480,10 +479,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             var size = mTexReader.ReadInt32();
             var bytes = mTexReader.ReadBytes(size);
             var fullString = Encoding.ASCII.GetString(bytes);
-            mTextureNames.AddRange(fullString.Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries));
-            mTextureNames.ForEach(t => mTextures.Add(TextureManager.Instance.GetTexture(t)));
+            TextureNames.AddRange(fullString.Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries));
+            TextureNames.ForEach(t => mTextures.Add(TextureManager.Instance.GetTexture(t)));
 
-            mTextureNames.ForEach(t =>
+            TextureNames.ForEach(t =>
             {
                 var loadInfo = Texture.TextureLoader.LoadHeaderOnly(t);
                 var width = 256;

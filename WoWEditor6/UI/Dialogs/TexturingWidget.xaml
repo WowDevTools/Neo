@@ -41,10 +41,12 @@
                 <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick">Select From Assets</Button>
                 <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="1">Enable Texturing</Button>
             </Grid>
+            
         </StackPanel>
         <TabControl Grid.Row="1">
             <TabItem Header="Current Tile">
-                
+                <ListBox x:Name="CurrentTileWrapPanel">
+                </ListBox>
             </TabItem>
             <TabItem Header="Selected Tile">
                 

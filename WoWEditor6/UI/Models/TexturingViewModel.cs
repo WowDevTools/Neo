@@ -1,4 +1,7 @@
-﻿using WoWEditor6.UI.Dialogs;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using WoWEditor6.UI.Dialogs;
 
 namespace WoWEditor6.UI.Models
 {
@@ -6,11 +9,32 @@ namespace WoWEditor6.UI.Models
     {
         private readonly TexturingWidget mWidget;
         private bool mIsValueChangedSurpressed;
+        private bool mIsTileSelected;
+
+        public bool IsTileSelected { get { return mIsTileSelected; } }
 
         public TexturingViewModel(TexturingWidget widget)
         {
             EditorWindowController.Instance.TexturingModel = this;
             mWidget = widget;
+        }
+
+        public void SetSelectedTileTextures(IEnumerable<string> textures)
+        {
+            mWidget.CurrentTileWrapPanel.Items.Clear();
+             
+            foreach (var tex in textures)
+            {
+                mWidget.CurrentTileWrapPanel.Items.Add(new Image
+                {
+                    Source = WpfImageSource.FromTexture(tex),
+                    Width = 96,
+                    Height = 96,
+                    Margin = new Thickness(5, 5, 0, 0)
+                });
+            }
+
+            mIsTileSelected = true;
         }
 
         public void HandleSelectFromAssets()

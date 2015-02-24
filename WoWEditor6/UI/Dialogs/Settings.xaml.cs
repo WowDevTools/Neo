@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WoWEditor6.Scene;
 
 namespace WoWEditor6.UI.Dialogs
@@ -19,13 +8,13 @@ namespace WoWEditor6.UI.Dialogs
     /// <summary>
     /// Interaction logic for Settings.xaml
     /// </summary>
-    public partial class Settings : UserControl
+    public partial class Settings
     {
         public Settings()
         {
             InitializeComponent();
-            this.CheckBoxHighlightModel.IsChecked = Properties.Settings.Default.HighlightModelsInBrush;
-            this.CheckBoxDrawBrushModels.IsChecked = Properties.Settings.Default.UpdateDrawBrushOnModels;
+            CheckBoxHighlightModel.IsChecked = Properties.Settings.Default.HighlightModelsInBrush;
+            CheckBoxDrawBrushModels.IsChecked = Properties.Settings.Default.UpdateDrawBrushOnModels;
             DayNightScalingSlider.Value = Properties.Settings.Default.DayNightScaling * 10.0f;
             UseDayNightCycle.IsChecked = Properties.Settings.Default.UseDayNightCycle;
             ChangeUseDayNight_Click(UseDayNightCycle, new RoutedEventArgs());
