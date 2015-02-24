@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using WoWEditor6.UI.Dialogs;
 
 namespace WoWEditor6.UI.Models
@@ -25,12 +28,20 @@ namespace WoWEditor6.UI.Models
              
             foreach (var tex in textures)
             {
-                mWidget.CurrentTileWrapPanel.Items.Add(new Image
+                var img = new Image
                 {
-                    Source = WpfImageSource.FromTexture(tex),
                     Width = 96,
                     Height = 96,
                     Margin = new Thickness(5, 5, 0, 0)
+                };
+
+                mWidget.CurrentTileWrapPanel.Items.Add(img);
+
+                var texName = tex;
+                Task.Factory.StartNew(() =>
+                {
+                    var wpfImage = WpfImageSource.FromTexture(texName);
+                    Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => img.Source = wpfImage));
                 });
             }
 

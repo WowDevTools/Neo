@@ -361,12 +361,12 @@ namespace WoWEditor6.Scene.Terrain
             var ix = (int) Math.Floor(cx / Metrics.TileSize);
             var iy = (int) Math.Floor(cy / Metrics.TileSize);
 
-            if (mAreas.ContainsKey(ix + iy * 0xFF))
-            {
-                var curArea = mAreas[ix + iy * 0xFF];
-                if (EditorWindowController.Instance.TexturingModel.IsTileSelected == false)
-                    EditorWindowController.Instance.TexturingModel.SetSelectedTileTextures(curArea.AreaFile.TextureNames);
-            }
+            //if (mAreas.ContainsKey(ix + iy * 0xFF))
+            //{
+            //    var curArea = mAreas[ix + iy * 0xFF];
+            //    if (EditorWindowController.Instance.TexturingModel.IsTileSelected == false)
+            //        EditorWindowController.Instance.TexturingModel.SetSelectedTileTextures(curArea.AreaFile.TextureNames);
+            //}
 
             var countPref = mCurrentValidLinks.Count;
             mCurrentValidLinks.RemoveAll(index =>
@@ -443,14 +443,14 @@ namespace WoWEditor6.Scene.Terrain
                     mDataToLoad.Add(area);
             }
 
-            lock (mAreas)
-            {
-                if (mAreas.ContainsKey(ix + iy * 0xFF) == false)
-                    return;
+            //lock (mAreas)
+            //{
+            //    if (mAreas.ContainsKey(ix + iy * 0xFF) == false)
+            //        return;
 
-                var curArea = mAreas[ix + iy * 0xFF];
-                EditorWindowController.Instance.TexturingModel.SetSelectedTileTextures(curArea.AreaFile.TextureNames);
-            }
+            //    var curArea = mAreas[ix + iy * 0xFF];
+            //    EditorWindowController.Instance.TexturingModel.SetSelectedTileTextures(curArea.AreaFile.TextureNames);
+            //}
         }
 
         private void UnloadProc()
