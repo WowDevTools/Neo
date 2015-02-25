@@ -102,7 +102,7 @@ namespace WoWEditor6.Graphics
             InitRenderTarget();
             InitDepthBuffer();
 
-            Context.OutputMerger.SetRenderTargets(mDepthBuffer, mRenderTarget);
+            Context.OutputMerger.SetTargets(mDepthBuffer, mRenderTarget);
             Context.Rasterizer.SetViewport(new Viewport(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height));
 
             Texture.InitDefaultTexture(this);
@@ -124,7 +124,7 @@ namespace WoWEditor6.Graphics
             InitRenderTarget();
             InitDepthBuffer();
 
-            Context.OutputMerger.SetRenderTargets(mDepthBuffer, mRenderTarget);
+            Context.OutputMerger.SetTargets(mDepthBuffer, mRenderTarget);
             Context.Rasterizer.SetViewport(new Viewport(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height));
 
             if (Resize != null)
