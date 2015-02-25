@@ -343,50 +343,50 @@
     <None Include="UI\old\StatusBar.cs" />
     <None Include="UI\old\Toolbar.cs" />
     <None Include="UI\old\WdlControl.cs" />
-    <Compile Include="UI\Dialogs\AboutBox.xaml.cs">
+    <Compile Include="UI\Widgets\AboutBox.xaml.cs">
       <DependentUpon>AboutBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\AssetBrowser.xaml.cs">
+    <Compile Include="UI\Widgets\AssetBrowser.xaml.cs">
       <DependentUpon>AssetBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\CreatureEditor.cs">
+    <Compile Include="UI\Widgets\CreatureEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Dialogs\CreatureEditor.Designer.cs">
+    <Compile Include="UI\Widgets\CreatureEditor.Designer.cs">
       <DependentUpon>CreatureEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\CreatureEditorControl.cs">
+    <Compile Include="UI\Widgets\CreatureEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Dialogs\CreatureEditorControl.Designer.cs">
+    <Compile Include="UI\Widgets\CreatureEditorControl.Designer.cs">
       <DependentUpon>CreatureEditorControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\GameObjectEditor.cs">
+    <Compile Include="UI\Widgets\GameObjectEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Dialogs\GameObjectEditor.Designer.cs">
+    <Compile Include="UI\Widgets\GameObjectEditor.Designer.cs">
       <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\ImportFileDialog.xaml.cs">
+    <Compile Include="UI\Widgets\ImportFileDialog.xaml.cs">
       <DependentUpon>ImportFileDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\KeyBindingControl.xaml.cs">
+    <Compile Include="UI\Widgets\KeyBindingControl.xaml.cs">
       <DependentUpon>KeyBindingControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\KeyBindingWidget.xaml.cs">
+    <Compile Include="UI\Widgets\KeyBindingWidget.xaml.cs">
       <DependentUpon>KeyBindingWidget.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\ColorPickerControl.xaml.cs">
+    <Compile Include="UI\Widgets\ColorPickerControl.xaml.cs">
       <DependentUpon>ColorPickerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\settings.xaml.cs">
+    <Compile Include="UI\Widgets\settings.xaml.cs">
       <DependentUpon>settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\TerrainSettingsWidget.xaml.cs">
+    <Compile Include="UI\Widgets\TerrainSettingsWidget.xaml.cs">
       <DependentUpon>TerrainSettingsWidget.xaml</DependentUpon>
     </Compile>
     <None Include="UI\old\DrawSurface.cs" />
-    <Compile Include="UI\Dialogs\TexturingWidget.xaml.cs">
+    <Compile Include="UI\Widgets\TexturingWidget.xaml.cs">
       <DependentUpon>TexturingWidget.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\EditorWindow.xaml.cs">
@@ -471,13 +471,13 @@
     <EmbeddedResource Include="UI\Components\ModelRenderControl.resx">
       <DependentUpon>ModelRenderControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dialogs\CreatureEditor.resx">
+    <EmbeddedResource Include="UI\Widgets\CreatureEditor.resx">
       <DependentUpon>CreatureEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dialogs\CreatureEditorControl.resx">
+    <EmbeddedResource Include="UI\Widgets\CreatureEditorControl.resx">
       <DependentUpon>CreatureEditorControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dialogs\GameObjectEditor.resx">
+    <EmbeddedResource Include="UI\Widgets\GameObjectEditor.resx">
       <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\RenderControl.resx">
@@ -529,7 +529,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\AboutBox.xaml">
+    <Page Include="UI\Widgets\AboutBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -541,35 +541,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\AssetBrowser.xaml">
+    <Page Include="UI\Widgets\AssetBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\ColorPickerControl.xaml">
+    <Page Include="UI\Widgets\ColorPickerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\ImportFileDialog.xaml">
+    <Page Include="UI\Widgets\ImportFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\KeyBindingControl.xaml">
+    <Page Include="UI\Widgets\KeyBindingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\KeyBindingWidget.xaml">
+    <Page Include="UI\Widgets\KeyBindingWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\settings.xaml">
+    <Page Include="UI\Widgets\settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\Dialogs\TerrainSettingsWidget.xaml">
+    <Page Include="UI\Widgets\TerrainSettingsWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Dialogs\TexturingWidget.xaml">
+    <Page Include="UI\Widgets\TexturingWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

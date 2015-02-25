@@ -53,5 +53,14 @@ namespace WoWEditor6.UI.Dialogs
 
             model.HandleOuterRadiusSlider((float)newValue);
         }
+
+        private void EnableTexturing_Click(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.SwitchToTexturing();
+        }
     }
 }

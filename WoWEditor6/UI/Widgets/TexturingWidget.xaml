@@ -42,7 +42,7 @@
                     </WindowsFormsHost>
                 </Border>
                 <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick">Select From Assets</Button>
-                <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="1">Enable Texturing</Button>
+                <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="1" Click="EnableTexturing_Click">Enable Texturing</Button>
             </Grid>
             
         </StackPanel>

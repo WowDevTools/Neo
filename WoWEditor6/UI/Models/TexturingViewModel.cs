@@ -142,6 +142,11 @@ namespace WoWEditor6.UI.Models
             mWidget.AmountSlider.Value = newAmount;
         }
 
+        public void SwitchToTexturing()
+        {
+            Editing.EditManager.Instance.EnableTexturing();
+        }
+
         private void OnWorldClick(IntersectionParams intersectionParams, MouseEventArgs args)
         {
             if (args.Button != MouseButtons.Left)
@@ -175,7 +180,12 @@ namespace WoWEditor6.UI.Models
 
         private void OnTextureSelected(PictureBox box)
         {
+            var texName = box.Tag as string;
+            if (string.IsNullOrEmpty(texName))
+                return;
+
             mWidget.TexturePreviewImage.Image = box.Image;
+            Editing.TextureChangeManager.Instance.SelectedTexture = texName;
         }
 
         private void SetEventHandlers(PictureBox box)
