@@ -25,6 +25,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public MapChunk(int indexX, int indexY, WeakReference<MapArea> parent)
         {
+            MapArea area;
+            parent.TryGetTarget(out area);
+            Parent = new WeakReference<Terrain.MapArea>(area);
             IndexX = indexX;
             IndexY = indexY;
             mParent = parent;

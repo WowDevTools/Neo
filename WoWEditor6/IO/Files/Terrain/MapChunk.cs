@@ -29,6 +29,8 @@ namespace WoWEditor6.IO.Files.Terrain
 
         public bool IsAlphaChanged { get; set; }
 
+        public WeakReference<MapArea> Parent { get; protected set; }
+
         protected MapChunk()
         {
             HoleValues = new byte[64];

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Threading;
 using WoWEditor6.UI.Components;
 using WoWEditor6.UI.Models;
 
@@ -13,6 +14,8 @@ namespace WoWEditor6.UI
         public LoadingScreenControl LoadingScreen { get { return mWindow.LoadingScreenView; } }
         public TexturingViewModel TexturingModel { get; set; }
         public AssetBrowserViewModel AssetBrowserModel { get; set; }
+
+        public Dispatcher WindowDispatcher { get { return mWindow.Dispatcher; } }
 
         public EditorWindowController(EditorWindow window)
         {

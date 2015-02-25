@@ -69,7 +69,13 @@ namespace WoWEditor6.UI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SculptingPane.ToggleAutoHide();
-            TexturingPane.ToggleAutoHide();
+            EventHandler method = null;
+            method = (s, args) =>
+            {
+                EditorWindowController.Instance.TexturingModel.Widget.SelectedTileWrapPanel.HandleCreated -= method;
+                Dispatcher.BeginInvoke(new Action(() => TexturingPane.ToggleAutoHide()));
+            };
+            EditorWindowController.Instance.TexturingModel.Widget.SelectedTileWrapPanel.HandleCreated += method;
             Log.AddSink(this);
         }
 

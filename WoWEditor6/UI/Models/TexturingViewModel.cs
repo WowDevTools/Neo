@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Threading;
+using System.Windows.Forms;
+using WoWEditor6.IO.Files.Terrain;
+using WoWEditor6.IO.Files.Texture;
+using WoWEditor6.Scene;
 using WoWEditor6.UI.Dialogs;
+using WoWEditor6.Utils;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace WoWEditor6.UI.Models
 {
@@ -12,40 +17,79 @@ namespace WoWEditor6.UI.Models
     {
         private readonly TexturingWidget mWidget;
         private bool mIsValueChangedSurpressed;
-        private bool mIsTileSelected;
+        private WeakReference<MapArea> mLastArea;
 
-        public bool IsTileSelected { get { return mIsTileSelected; } }
+        public TexturingWidget Widget { get { return mWidget; } }
 
         public TexturingViewModel(TexturingWidget widget)
         {
-            EditorWindowController.Instance.TexturingModel = this;
+            if (EditorWindowController.Instance != null)
+                EditorWindowController.Instance.TexturingModel = this;
+
             mWidget = widget;
+            if (WorldFrame.Instance != null)
+                WorldFrame.Instance.OnWorldClicked += OnWorldClick;
         }
 
-        public void SetSelectedTileTextures(IEnumerable<string> textures)
+        public unsafe void SetSelectedTileTextures(IEnumerable<string> textures)
         {
-            mWidget.CurrentTileWrapPanel.Items.Clear();
-             
+            mWidget.SelectedTileWrapPanel.Controls.Clear();
+
+            var loadTasks = new List<Tuple<string, PictureBox>>();
+
             foreach (var tex in textures)
             {
-                var img = new Image
+                var pnl = new Panel
+                {
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Padding(5, 5, 0, 0)
+                };
+
+                var pb = new PictureBox
                 {
                     Width = 96,
                     Height = 96,
-                    Margin = new Thickness(5, 5, 0, 0)
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(2, 2),
+                    Tag = tex
                 };
 
-                mWidget.CurrentTileWrapPanel.Items.Add(img);
+                pnl.Controls.Add(pb);
+
+                SetEventHandlers(pb);
+
+                mWidget.SelectedTileWrapPanel.Controls.Add(pnl);
 
                 var texName = tex;
-                Task.Factory.StartNew(() =>
-                {
-                    var wpfImage = WpfImageSource.FromTexture(texName);
-                    Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => img.Source = wpfImage));
-                });
+                loadTasks.Add(new Tuple<string, PictureBox>(texName, pb));
             }
 
-            mIsTileSelected = true;
+            new Thread(() =>
+            {
+                foreach (var pair in loadTasks)
+                {
+                    var img = pair.Item2;
+                    var loadInfo = TextureLoader.LoadToArgbImage(pair.Item1);
+                    if (loadInfo == null)
+                        continue;
+
+                    var bmp = new Bitmap(loadInfo.Width, loadInfo.Height, PixelFormat.Format32bppArgb);
+                    var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly,
+                        PixelFormat.Format32bppArgb);
+
+                    fixed (byte* ptr = loadInfo.Layers[0])
+                        UnsafeNativeMethods.CopyMemory((byte*) bmpd.Scan0, ptr, bmp.Width * bmp.Height * 4);
+
+                    bmp.UnlockBits(bmpd);
+
+                    EditorWindowController.Instance.WindowDispatcher.BeginInvoke(new Action(() =>
+                    {
+                        img.Image = bmp;
+                        img.CreateControl();
+                    }));
+                }
+            }).Start();
         }
 
         public void HandleSelectFromAssets()
@@ -96,6 +140,66 @@ namespace WoWEditor6.UI.Models
                 return;
 
             mWidget.AmountSlider.Value = newAmount;
+        }
+
+        private void OnWorldClick(IntersectionParams intersectionParams, MouseEventArgs args)
+        {
+            if (args.Button != MouseButtons.Left)
+                return;
+
+            var keys = new byte[256];
+            UnsafeNativeMethods.GetKeyboardState(keys);
+            if (KeyHelper.IsKeyDown(keys, Keys.ControlKey) || KeyHelper.IsKeyDown(keys, Keys.ShiftKey))
+                return;
+
+            if (intersectionParams.ChunkHit == null)
+            {
+                mLastArea = null;
+                return;
+            }
+
+            MapArea area;
+            if (intersectionParams.ChunkHit.Parent.TryGetTarget(out area) == false)
+                return;
+
+            if (mLastArea != null)
+            {
+                MapArea lastArea;
+                if (mLastArea.TryGetTarget(out lastArea) && lastArea == area)
+                    return;
+            }
+
+            mLastArea = intersectionParams.ChunkHit.Parent;
+            SetSelectedTileTextures(area.TextureNames);
+        }
+
+        private void OnTextureSelected(PictureBox box)
+        {
+            mWidget.TexturePreviewImage.Image = box.Image;
+        }
+
+        private void SetEventHandlers(PictureBox box)
+        {
+            box.Cursor = Cursors.Hand;
+            box.MouseEnter += (sender, args) =>
+            {
+                var panel = box.Parent as Panel;
+                if (panel == null)
+                    return;
+
+                panel.BackColor = Color.Black;
+            };
+
+            box.MouseLeave += (sender, args) =>
+            {
+                var panel = box.Parent as Panel;
+                if (panel == null)
+                    return;
+
+                panel.BackColor = Color.Transparent;
+            };
+
+            box.Click += (sender, args) => OnTextureSelected(box);
         }
     }
 }

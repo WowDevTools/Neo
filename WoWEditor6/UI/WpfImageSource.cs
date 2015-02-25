@@ -29,6 +29,12 @@ namespace WoWEditor6.UI
             return texLoadInfo == null ? ErrorBitmap : FromBgra(texLoadInfo.Width, texLoadInfo.Height, texLoadInfo.Layers[0]);
         }
 
+        public static BitmapSource FromTexture(string file, int width, int height)
+        {
+            var texLoadInfo = TextureLoader.LoadToBestMatchingImage(file, width, height);
+            return texLoadInfo == null ? ErrorBitmap : FromBgra(width, height, texLoadInfo.Layers[0]);
+        }
+
         public static BitmapSource FromGdiImage(Bitmap bmp)
         {
             var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -42,7 +48,7 @@ namespace WoWEditor6.UI
         {
             var bmp = new Bitmap(200, 200, PixelFormat.Format32bppArgb);
             var g = System.Drawing.Graphics.FromImage(bmp);
-            var font = new System.Drawing.Font("Segoe UI", 26);
+            var font = new Font("Segoe UI", 26);
             g.Clear(System.Drawing.Color.Black);
             var len = g.MeasureString("Invalid image", font);
             g.DrawString("Invalid Image", font, System.Drawing.Brushes.Red, new PointF(100 - len.Width / 2.0f, 100 - len.Height / 2.0f));

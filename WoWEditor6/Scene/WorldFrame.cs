@@ -1,5 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene.Models;
@@ -8,6 +12,7 @@ using WoWEditor6.Scene.Models.WMO;
 using WoWEditor6.Scene.Terrain;
 using WoWEditor6.Scene.Texture;
 using WoWEditor6.UI;
+using Matrix = SharpDX.Matrix;
 
 namespace WoWEditor6.Scene
 {
@@ -74,6 +79,8 @@ namespace WoWEditor6.Scene
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
         public GxContext GraphicsContext { get; private set; }
         public GraphicsDispatcher Dispatcher { get; private set; }
+
+        public event Action<IntersectionParams, MouseEventArgs> OnWorldClicked;
 
         public bool HighlightModelsInBrush { get; set; }
 
@@ -177,6 +184,8 @@ namespace WoWEditor6.Scene
 
             if (!LeftHandedCamera)
                 CamControl.InvertY = true;
+
+            window.MouseDown += OnRenderWindowMouseDown;
         }
 
         public void OnEnterWorld(Vector3 position)
@@ -332,6 +341,18 @@ namespace WoWEditor6.Scene
                     mGlobalBufferChanged = false;
                 }
             }
+        }
+
+        private void OnRenderWindowMouseDown(object sender, MouseEventArgs mouseEventArgs)
+        {
+            var pos = mWindow.PointToClient(Cursor.Position);
+            var intersection = new IntersectionParams(ActiveCamera.ViewInverse, ActiveCamera.ProjectionInverse,
+                new Vector2(pos.X, pos.Y));
+
+            MapManager.Intersect(intersection);
+
+            if (OnWorldClicked != null)
+                OnWorldClicked(intersection, mouseEventArgs);
         }
     }
 }

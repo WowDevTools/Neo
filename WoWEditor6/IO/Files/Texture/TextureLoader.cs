@@ -14,7 +14,7 @@ namespace WoWEditor6.IO.Files.Texture
         public int Width;
         public int Height;
         public int BlockSize;
-        public bool GenerateMipMaps = false;
+        public bool GenerateMipMaps;
         public readonly List<byte[]> Layers = new List<byte[]>();
         public readonly List<int> RowPitchs = new List<int>();
     }
@@ -74,6 +74,65 @@ namespace WoWEditor6.IO.Files.Texture
             return loadInfo;
         }
 
+        public static TextureLoadInfo LoadToBestMatchingImage(string file, int targetWidth, int targetHeight)
+        {
+            using (var strm = FileManager.Instance.Provider.OpenFile(file))
+                return strm == null ? null : LoadToBestMatchingImage(strm, targetWidth, targetHeight);
+        }
+
+        public static unsafe TextureLoadInfo LoadToBestMatchingImage(Stream file, int targetWidth, int targetHeight)
+        {
+            if (file == null)
+                return null;
+
+            var reader = new BinaryReader(file);
+            var header = reader.Read<BlpHeader>();
+
+            var layer = 0;
+            if (header.MipLevels != 0)
+            {
+                for (; layer < 16; ++layer)
+                {
+                    var w = Math.Max(header.Width >> layer, 1);
+                    var h = Math.Max(header.Height >> layer, 1);
+
+                    var lw = Math.Max(header.Width >> (layer + 1), 1);
+                    var lh = Math.Max(header.Height >> (layer + 1), 1);
+
+                    if (w == h && lw == lh && lw == w && w == 1)
+                        break;
+
+                    if (w >= targetWidth && lw <= targetWidth && h >= targetHeight && lh <= targetHeight)
+                        break;
+                }
+            }
+
+            if (layer != 0 && (header.Sizes[layer] == 0 || header.Offsets[layer] == 0))
+            {
+                for (; layer > 0; --layer)
+                {
+                    if (header.Sizes[layer] != 0 && header.Offsets[layer] != 0)
+                        break;
+                }
+            }
+
+            file.Position = 0;
+            var loadInfo = LoadLayer(file, layer);
+            if (loadInfo == null)
+                return null;
+
+            loadInfo.Width = Math.Max(loadInfo.Width >> layer, 1);
+            loadInfo.Height = Math.Max(loadInfo.Height >> layer, 1);
+
+            if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
+                return loadInfo;
+
+            loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
+            loadInfo.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
+
+            return loadInfo;
+        }
+
         public static TextureLoadInfo LoadHeaderOnly(string file)
         {
             if (string.IsNullOrEmpty(file))
@@ -111,6 +170,31 @@ namespace WoWEditor6.IO.Files.Texture
             var palette = new uint[0];
             ParseLayer(0, ref palette, reader, header, loadInfo);
 
+            return loadInfo;
+        }
+
+        public static TextureLoadInfo LoadLayer(string file, int layer)
+        {
+            if (string.IsNullOrEmpty(file))
+                return null;
+
+            using (var strm = FileManager.Instance.Provider.OpenFile(file))
+                return LoadLayer(strm, layer);
+        }
+
+        public static unsafe TextureLoadInfo LoadLayer(Stream strm, int layer)
+        {
+            if (strm == null || layer >= 16)
+                return null;
+
+            var reader = new BinaryReader(strm);
+            var header = reader.Read<BlpHeader>();
+            if (header.Sizes[layer] == 0 || header.Offsets[layer] == 0)
+                return null;
+
+            var loadInfo = ParseHeader(ref header);
+            var palette = new uint[0];
+            ParseLayer(layer, ref palette, reader, header, loadInfo);
             return loadInfo;
         }
 

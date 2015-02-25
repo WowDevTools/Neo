@@ -306,22 +306,6 @@ namespace WoWEditor6.Scene.Terrain
         {
             lock(mLoadedData)
             {
-                /*foreach (var data in mLoadedData)
-                {
-                    var index = data.IndexX + data.IndexY * 0xFF;
-                    if (mAreas.ContainsKey(index))
-                    {
-                        data.Dispose();
-                        continue;
-                    }
-
-                    var tile = new MapAreaRender(data.IndexX, data.IndexY);
-                    tile.AsyncLoaded(data);
-                    mAreas.Add(index, tile);
-                }
-
-                mLoadedData.Clear();*/
-
                 if (mLoadedData.Count > 0)
                 {
                     var data = mLoadedData[0];
@@ -360,13 +344,6 @@ namespace WoWEditor6.Scene.Terrain
 
             var ix = (int) Math.Floor(cx / Metrics.TileSize);
             var iy = (int) Math.Floor(cy / Metrics.TileSize);
-
-            //if (mAreas.ContainsKey(ix + iy * 0xFF))
-            //{
-            //    var curArea = mAreas[ix + iy * 0xFF];
-            //    if (EditorWindowController.Instance.TexturingModel.IsTileSelected == false)
-            //        EditorWindowController.Instance.TexturingModel.SetSelectedTileTextures(curArea.AreaFile.TextureNames);
-            //}
 
             var countPref = mCurrentValidLinks.Count;
             mCurrentValidLinks.RemoveAll(index =>
@@ -442,15 +419,6 @@ namespace WoWEditor6.Scene.Terrain
                 lock (mDataToLoad)
                     mDataToLoad.Add(area);
             }
-
-            //lock (mAreas)
-            //{
-            //    if (mAreas.ContainsKey(ix + iy * 0xFF) == false)
-            //        return;
-
-            //    var curArea = mAreas[ix + iy * 0xFF];
-            //    EditorWindowController.Instance.TexturingModel.SetSelectedTileTextures(curArea.AreaFile.TextureNames);
-            //}
         }
 
         private void UnloadProc()
