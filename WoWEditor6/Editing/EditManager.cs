@@ -27,6 +27,8 @@ namespace WoWEditor6.Editing
             set { HandleOuterRadiusChanged(value); }
         }
 
+        public bool IsTexturing { get { return (CurrentMode & EditMode.Texturing) != 0; } }
+
         public Vector3 MousePosition { get; set; }
         public bool IsTerrainHovered { get; set; }
 
@@ -40,7 +42,7 @@ namespace WoWEditor6.Editing
         public void UpdateChanges()
         {
             var diff = DateTime.Now - mLastChange;
-            if (diff.TotalMilliseconds < 20)
+            if (diff.TotalMilliseconds < (IsTexturing ? 40 : 20))
                 return;
 
             mLastChange = DateTime.Now;

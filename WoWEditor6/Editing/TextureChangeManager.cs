@@ -55,7 +55,7 @@ namespace WoWEditor6.Editing
                 InnerRadius = EditManager.Instance.InnerRadius,
                 OuterRadius = EditManager.Instance.OuterRadius,
                 Texture = SelectedTexture,
-                Amount = Amount,
+                Amount = 4 + Amount,
                 FalloffMode = FalloffMode
             };
 
@@ -65,6 +65,7 @@ namespace WoWEditor6.Editing
         private bool CheckRequirements(out bool isInverted)
         {
             isInverted = false;
+
             if (EditManager.Instance.IsTerrainHovered == false)
                 return false;
 

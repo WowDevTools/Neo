@@ -13,7 +13,7 @@
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <Label>Amount</Label>
-                <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="6" Value="1" ValueChanged="Handle_AmountSliderChanged"></Slider>
+                <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="10" Value="1" ValueChanged="Handle_AmountSliderChanged"></Slider>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=AmountSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
