@@ -595,7 +595,7 @@
     <Error Condition="!Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SharpDX.2.6.3\build\SharpDX.targets'))" />
   </Target>
   <Target Name="ShaderCompiler" BeforeTargets="PrepareForBuild" Label="Shader Compilation">
-    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\ShaderBuildDefinition.xml&quot; &quot;$(ProjectDir)\&quot;">
+    <Exec Command="&quot;$(ProjectDir)\tools\ShaderCompiler.exe&quot; &quot;$(ProjectDir)\Resources\Shaders\ShaderBuildDefinition.xml&quot; &quot;$(ProjectDir)\&quot; &quot;$(Configuration)&quot;">
     </Exec>
   </Target>
   <!-- <Target Name="M2Pixel" BeforeTargets="PrepareForBuild" Label="M2Pixel" Inputs="$(ProjectDir)\Resources\Shaders\M2Pixel.hlsl" Outputs="$(ProjectDir)\Resources\Shaders\M2Pixel.dxc;$(ProjectDir)\Resources\Shaders\M2PixelBlend.dxc;$(ProjectDir)\Resources\Shaders\M2PixelBlendAlpha.dxc;$(ProjectDir)\Resources\Shaders\M2Pixel2Pass.dxc;$(ProjectDir)\Resources\Shaders\M2Pixel3Pass.dxc">
