@@ -89,6 +89,9 @@ namespace WoWEditor6.IO
             try
             {
                 var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);
+                if (!File.Exists(fullPath))
+                    return null;
+
                 using (var strm = File.OpenRead(fullPath))
                 {
                     var retStream = new MemoryStream();
