@@ -189,7 +189,9 @@ namespace WoWEditor6.Scene.Models.M2
 
             Sampler = new Sampler(context)
             {
-                AddressMode = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
             };
 

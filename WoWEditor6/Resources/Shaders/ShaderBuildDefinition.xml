@@ -5,28 +5,13 @@
     <Profile>ps_4_0</Profile>
     <Permutations>
       <ShaderPermutation>
-        <EntryPoint>main</EntryPoint>
-        <TargetFile>Resources\Shaders\M2Pixel.dxc</TargetFile>
+        <EntryPoint>main_PS_Combiners_Opaque</EntryPoint>
+        <TargetFile>Resources\Shaders\M2Pixel_PS_Combiners_Opaque.dxc</TargetFile>
         <Definitions/>
       </ShaderPermutation>
       <ShaderPermutation>
-        <EntryPoint>main_blend_alpha_test</EntryPoint>
-        <TargetFile>Resources\Shaders\M2PixelBlendAlpha.dxc</TargetFile>
-        <Definitions/>
-      </ShaderPermutation>
-      <ShaderPermutation>
-        <EntryPoint>main_blend</EntryPoint>
-        <TargetFile>Resources\Shaders\M2PixelBlend.dxc</TargetFile>
-        <Definitions/>
-      </ShaderPermutation>
-      <ShaderPermutation>
-        <EntryPoint>main_blend_2_pass</EntryPoint>
-        <TargetFile>Resources\Shaders\M2Pixel2Pass.dxc</TargetFile>
-        <Definitions/>
-      </ShaderPermutation>
-      <ShaderPermutation>
-        <EntryPoint>main_blend_3_pass</EntryPoint>
-        <TargetFile>Resources\Shaders\M2Pixel3Pass.dxc</TargetFile>
+        <EntryPoint>main_PS_Combiners_Mod</EntryPoint>
+        <TargetFile>Resources\Shaders\M2Pixel_PS_Combiners_Mod.dxc</TargetFile>
         <Definitions/>
       </ShaderPermutation>
     </Permutations>
@@ -69,8 +54,8 @@
     <Profile>vs_4_0</Profile>
     <Permutations>
       <ShaderPermutation>
-        <EntryPoint>main</EntryPoint>
-        <TargetFile>Resources\Shaders\M2VertexInstanced.dxc</TargetFile>
+        <EntryPoint>main_VS_Diffuse_T1</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1.dxc</TargetFile>
         <Definitions/>
       </ShaderPermutation>
     </Permutations>
@@ -81,8 +66,8 @@
     <Profile>vs_4_0</Profile>
     <Permutations>
       <ShaderPermutation>
-        <EntryPoint>main</EntryPoint>
-        <TargetFile>Resources\Shaders\M2VertexSingle.dxc</TargetFile>
+        <EntryPoint>main_VS_Diffuse_T1</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexSingle_VS_Diffuse_T1.dxc</TargetFile>
         <Definitions/>
       </ShaderPermutation>
     </Permutations>

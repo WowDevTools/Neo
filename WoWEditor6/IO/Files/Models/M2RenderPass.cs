@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WoWEditor6.Scene.Models.M2;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace WoWEditor6.IO.Files.Models

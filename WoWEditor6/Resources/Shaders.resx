@@ -208,4 +208,16 @@
   <data name="WorldTextVertexOrtho" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WorldTextVertexOrtho.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="M2Pixel_PS_Combiners_Mod" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

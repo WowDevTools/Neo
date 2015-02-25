@@ -9,14 +9,34 @@ namespace WoWEditor6.Graphics
         private readonly GxContext mContext;
         private bool mChanged;
 
-        public TextureAddressMode AddressMode
+        public TextureAddressMode AddressU
         {
             set
             {
-                mDescription.AddressU = mDescription.AddressV = mDescription.AddressW = value;
+                mDescription.AddressU = value;
                 mChanged = true;
             }
             get { return mDescription.AddressU; }
+        }
+
+        public TextureAddressMode AddressV
+        {
+            set
+            {
+                mDescription.AddressV = value;
+                mChanged = true;
+            }
+            get { return mDescription.AddressV; }
+        }
+
+        public TextureAddressMode AddressW
+        {
+            set
+            {
+                mDescription.AddressW = value;
+                mChanged = true;
+            }
+            get { return mDescription.AddressW; }
         }
 
         public Filter Filter

@@ -12,9 +12,13 @@ namespace WoWEditor6.Scene.Models.M2
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer
         {
-            public Matrix uvAnimMatrix;
+            public Matrix uvAnimMatrix1;
+            public Matrix uvAnimMatrix2;
+            public Matrix uvAnimMatrix3;
+            public Matrix uvAnimMatrix4;
             public Vector4 modelPassParams;
             public Vector4 animatedColor;
+            public Vector4 transparency;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -25,7 +29,10 @@ namespace WoWEditor6.Scene.Models.M2
         }
 
         private static Mesh gMesh;
-        private static Sampler gSampler;
+        private static Sampler gSamplerWrapU;
+        private static Sampler gSamplerWrapV;
+        private static Sampler gSamplerWrapBoth;
+        private static Sampler gSamplerClampBoth;
 
         private static readonly BlendState[] BlendStates = new BlendState[7];
         private static ShaderProgram gNoBlendProgram;
@@ -33,6 +40,8 @@ namespace WoWEditor6.Scene.Models.M2
         private static ShaderProgram gBlendTestProgram;
         private static ShaderProgram g2PassProgram;
         private static ShaderProgram g3PassProgram;
+
+        private static ShaderProgram gCustomProgram;
 
         private static RasterState gNoCullState;
         private static RasterState gCullState;
@@ -73,7 +82,10 @@ namespace WoWEditor6.Scene.Models.M2
         public static void BeginDraw()
         {
             gMesh.BeginDraw();
-            gMesh.Program.SetPixelSampler(0, gSampler);
+            gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
+            gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
+            gMesh.Program.SetPixelSampler(2, gSamplerWrapBoth);
+            gMesh.Program.SetPixelSampler(3, gSamplerWrapBoth);
             gMesh.Program.SetVertexConstantBuffer(2, gPerDrawCallBuffer);
             gMesh.Program.SetVertexConstantBuffer(3, gPerPassBuffer);
             gMesh.Program.SetPixelConstantBuffer(1, gPerPassBuffer);
@@ -109,6 +121,7 @@ namespace WoWEditor6.Scene.Models.M2
                 colorMod = instance.HighlightColor
             });
 
+            
             gMesh.Program.SetVertexConstantBuffer(1, mAnimBuffer ?? renderer.AnimBuffer);
 
             foreach (var pass in mModel.Passes)
@@ -121,40 +134,14 @@ namespace WoWEditor6.Scene.Models.M2
                         continue;
                 }
 
-                var oldProgram = gMesh.Program;
-                ShaderProgram newProgram;
-                switch (pass.BlendMode)
-                {
-                    case 0:
-                        newProgram = gNoBlendProgram;
-                        break;
-                    case 1:
-                        newProgram = gBlendTestProgram;
-                        break;
-                    default:
-                        switch (pass.Textures.Count)
-                        {
-                            case 2:
-                                newProgram = g2PassProgram;
-                                break;
+                // TODO: Since this isn't choosing among static programs anymore, cache a different way (comparison func?)
+                var ctx = WorldFrame.Instance.GraphicsContext;
+                gCustomProgram.SetVertexShader(ctx.M2Shaders.GetVertexShader_Single(pass.VertexShaderType));
+                gCustomProgram.SetPixelShader(ctx.M2Shaders.GetPixelShader(pass.PixelShaderType));
 
-                            case 3:
-                                newProgram = g3PassProgram;
-                                break;
-
-                            default:
-                                newProgram = gBlendProgram;
-                                break;
-                        }
-                        break;
-                }
-
-                if (newProgram != oldProgram)
-                {
-                    gMesh.Program = newProgram;
-                    gMesh.Program.Bind();
-                }
-
+                gMesh.Program = gCustomProgram;
+                gCustomProgram.Bind();
+                             
                 var depthState = gDepthNoWriteState;
                 if (pass.BlendMode == 0 || pass.BlendMode == 1)
                     depthState = gDepthWriteState;
@@ -167,25 +154,53 @@ namespace WoWEditor6.Scene.Models.M2
 
                 var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
+                var alphakey = (pass.BlendMode == 1 ) ? 1.0f : 0.0f;
 
-                Matrix uvAnimMat;
-                animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                // These are per texture
+                float[] transparencyFloats = new float[4] { 0, 0, 0, 0 };
+                for( var i = 0; i < pass.OpCount; ++i )
+                {
+                    transparencyFloats[i] = animator.GetAlphaValue(pass.AlphaAnimIndex + i);
+                }
+
+                Matrix _uvAnimMatrix1 = Matrix.Identity;
+                Matrix _uvAnimMatrix2 = Matrix.Identity;
+                Matrix _uvAnimMatrix3 = Matrix.Identity;
+                Matrix _uvAnimMatrix4 = Matrix.Identity;
+
+                animator.GetUvAnimMatrix(pass.TexAnimIndex + 0, out _uvAnimMatrix1);
+                if( pass.OpCount >= 2 ) animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out _uvAnimMatrix2);
+                if( pass.OpCount >= 3 ) animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out _uvAnimMatrix3);
+                if( pass.OpCount >= 4 ) animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out _uvAnimMatrix4);
+
                 var color = animator.GetColorValue(pass.ColorAnimIndex);
-                var alpha = animator.GetAlphaValue(pass.AlphaAnimIndex);
-                color.W *= alpha;
-
+                
                 gPerPassBuffer.UpdateData(new PerModelPassBuffer()
                 {
-                    uvAnimMatrix = uvAnimMat,
-                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
+                    uvAnimMatrix1 = _uvAnimMatrix1,
+                    uvAnimMatrix2 = _uvAnimMatrix2,
+                    uvAnimMatrix3 = _uvAnimMatrix3,
+                    uvAnimMatrix4 = _uvAnimMatrix4,
+                    transparency = new Vector4( transparencyFloats[0], transparencyFloats[1], transparencyFloats[2], transparencyFloats[3] ),
+                    modelPassParams = new Vector4(unlit, unfogged, alphakey, 0.0f),
                     animatedColor = color
                 });
 
                 gMesh.StartVertex = 0;
                 gMesh.StartIndex = pass.StartIndex;
                 gMesh.IndexCount = pass.IndexCount;
-                for(var i = 0; i < pass.Textures.Count && i < 3; ++i)
+
+                for (var i = 0; i < pass.OpCount && i < 4; ++i)
+                {
+                    Graphics.Texture.SamplerFlagType SamplerType = mModel.TextureInfos[pass.TextureIndices[i]].SamplerFlags;
+
+                    if (SamplerType == Graphics.Texture.SamplerFlagType.WrapBoth) gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
+                    else if (SamplerType == Graphics.Texture.SamplerFlagType.WrapU) gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
+                    else if (SamplerType == Graphics.Texture.SamplerFlagType.WrapV) gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
+                    else if (SamplerType == Graphics.Texture.SamplerFlagType.ClampBoth) gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
+
                     gMesh.Program.SetPixelTexture(i, pass.Textures[i]);
+                }
 
                 gMesh.Draw();
             }
@@ -232,25 +247,13 @@ namespace WoWEditor6.Scene.Models.M2
             gMesh.AddElement("TEXCOORD", 0, 2);
             gMesh.AddElement("TEXCOORD", 1, 2);
 
-            gNoBlendProgram = new ShaderProgram(context);
-            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2Pixel);
-            gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
+            // all combinations are set in this one each time
+            gCustomProgram = new ShaderProgram(context);
+            gCustomProgram.SetVertexShader(Resources.Shaders.M2VertexSingle_VS_Diffuse_T1);
+            gCustomProgram.SetPixelShader(Resources.Shaders.M2Pixel_PS_Combiners_Mod);
 
-            gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlend);
-            gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
-
-            gBlendTestProgram = new ShaderProgram(context);
-            gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlpha);
-            gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
-
-            g2PassProgram = new ShaderProgram(context);
-            g2PassProgram.SetPixelShader(Resources.Shaders.M2Pixel2Pass);
-            g2PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
-
-            g3PassProgram = new ShaderProgram(context);
-            g3PassProgram.SetPixelShader(Resources.Shaders.M2Pixel3Pass);
-            g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingle);
+            gMesh.InitLayout(gCustomProgram);
+            gMesh.Program = gCustomProgram;
 
             gPerDrawCallBuffer = new ConstantBuffer(context);
             gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
@@ -259,18 +262,50 @@ namespace WoWEditor6.Scene.Models.M2
             });
 
             gPerPassBuffer = new ConstantBuffer(context);
+
             gPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {
-                uvAnimMatrix = Matrix.Identity,
+                uvAnimMatrix1 = Matrix.Identity,
+                uvAnimMatrix2 = Matrix.Identity,
+                uvAnimMatrix3 = Matrix.Identity,
+                uvAnimMatrix4 = Matrix.Identity,
                 modelPassParams = Vector4.Zero
             });
 
-            gMesh.Program = gBlendProgram;
-
-            gSampler = new Sampler(context)
+            gSamplerWrapU = new Sampler(context)
             {
-                AddressMode = SharpDX.Direct3D11.TextureAddressMode.Wrap,
-                Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                Filter = SharpDX.Direct3D11.Filter.Anisotropic,
+                MaximumAnisotropy = 16
+            };
+
+            gSamplerWrapV = new Sampler(context)
+            {
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                Filter = SharpDX.Direct3D11.Filter.Anisotropic,
+                MaximumAnisotropy = 16
+            };
+
+            gSamplerWrapBoth = new Sampler(context)
+            {
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                Filter = SharpDX.Direct3D11.Filter.Anisotropic,
+                MaximumAnisotropy = 16
+            };
+
+            gSamplerClampBoth = new Sampler(context)
+            {
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                Filter = SharpDX.Direct3D11.Filter.Anisotropic,
+                MaximumAnisotropy = 16
             };
 
             for (var i = 0; i < BlendStates.Length; ++i)

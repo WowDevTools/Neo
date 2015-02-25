@@ -2,6 +2,7 @@
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using WoWEditor6.Scene.Models.M2;
 using WoWEditor6.UI;
 using Device = SharpDX.Direct3D11.Device;
 
@@ -28,6 +29,9 @@ namespace WoWEditor6.Graphics
         public Format BackBufferFormat { get { return mSwapChainDesc.ModeDescription.Format; } }
 
         public event Action<float, float> Resize;
+
+        private M2ShadersClass mM2Shaders;
+        public  M2ShadersClass M2Shaders { get { return mM2Shaders; } }
 
         public GxContext(RenderControl window)
         {
@@ -78,6 +82,7 @@ namespace WoWEditor6.Graphics
                 Flags = SwapChainFlags.None,
                 IsWindowed = true,
                 OutputHandle = mWindow.Handle,
+                SampleDescription = new SampleDescription(1, 0),
                 SwapEffect = SwapEffect.Discard,
                 Usage = Usage.RenderTargetOutput
             };
@@ -102,12 +107,19 @@ namespace WoWEditor6.Graphics
             InitRenderTarget();
             InitDepthBuffer();
 
-            Context.OutputMerger.SetTargets(mDepthBuffer, mRenderTarget);
+            Context.OutputMerger.SetRenderTargets(mDepthBuffer, mRenderTarget);
             Context.Rasterizer.SetViewport(new Viewport(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height));
 
             Texture.InitDefaultTexture(this);
 
             mWindow.Resize += OnResize;
+        }
+
+        public void InitShaders()
+        {
+            // TODO: should they all go here?
+            mM2Shaders = new M2ShadersClass();
+            mM2Shaders.Initialize(this.Context);
         }
 
         private void OnResize(object sender, EventArgs args)
@@ -124,7 +136,7 @@ namespace WoWEditor6.Graphics
             InitRenderTarget();
             InitDepthBuffer();
 
-            Context.OutputMerger.SetTargets(mDepthBuffer, mRenderTarget);
+            Context.OutputMerger.SetRenderTargets(mDepthBuffer, mRenderTarget);
             Context.Rasterizer.SetViewport(new Viewport(0, 0, mWindow.ClientSize.Width, mWindow.ClientSize.Height));
 
             if (Resize != null)
@@ -133,10 +145,6 @@ namespace WoWEditor6.Graphics
 
         private void BuildMultisample()
         {
-#if DEBUG
-            mHasMultisample = false;
-            mSwapChainDesc.SampleDescription = new SampleDescription(1, 0);
-#else
             var maxCount = 1;
             var maxQuality = 0;
             for (var i = 0; i <= Device.MultisampleCountMaximum; ++i)
@@ -150,7 +158,6 @@ namespace WoWEditor6.Graphics
 
             mSwapChainDesc.SampleDescription = new SampleDescription(maxCount, maxQuality);
             mHasMultisample = maxQuality > 0 || maxCount > 1;
-#endif
         }
 
         private void InitRenderTarget()

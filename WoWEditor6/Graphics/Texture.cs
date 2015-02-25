@@ -14,6 +14,14 @@ namespace WoWEditor6.Graphics
         private Texture2D mTexture;
         private readonly GxContext mContext;
 
+        public enum SamplerFlagType
+        {
+            WrapBoth,
+            WrapU,
+            WrapV,
+            ClampBoth
+        }
+        
         public ShaderResourceView NativeView { get; private set; }
 
         public Texture(GxContext context)

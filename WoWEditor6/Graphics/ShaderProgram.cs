@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,9 @@ namespace WoWEditor6.Graphics
         private readonly GxContext mContext;
 
         public ShaderBytecode VertexShaderCode { get; private set; }
+
+        private static Hashtable mVertexShaderCache = new Hashtable();
+        private static Hashtable mPixelShaderCache = new Hashtable();
 
         public ShaderProgram(GxContext context)
         {
@@ -93,60 +97,47 @@ namespace WoWEditor6.Graphics
             mContext.Context.PixelShader.SetConstantBuffers(slot, buffers.Select(b => b.Native).ToArray());
         }
 
-        public void SetVertexShader(string code, string entry)
-        {
-            var result = ShaderBytecode.Compile(Encoding.UTF8.GetBytes(code), entry, "vs_5_0", ShaderFlags.OptimizationLevel3);
-            if (result.HasErrors)
-                throw new ArgumentException(result.Message, "code");
-
-            if (mVertexShader != null)
-                mVertexShader.Dispose();
-
-            if (VertexShaderCode != null)
-                VertexShaderCode.Dispose();
-
-            VertexShaderCode = result.Bytecode;
-            mVertexShader = new VertexShader(mContext.Device, VertexShaderCode.Data);
-        }
-
-        public void SetPixelShader(string code, string entry)
-        {
-            using (var result = ShaderBytecode.Compile(Encoding.UTF8.GetBytes(code), entry, "ps_5_0",
-                ShaderFlags.OptimizationLevel3))
-            {
-                if (result.HasErrors)
-                    throw new ArgumentException(result.Message, "code");
-
-                if (mPixelShader != null)
-                    mPixelShader.Dispose();
-
-                mPixelShader = new PixelShader(mContext.Device, result.Bytecode.Data);
-            }
-        }
-
         public void SetVertexShader(byte[] code)
         {
-            var result = ShaderBytecode.FromStream(new MemoryStream(code));
+            if (!mVertexShaderCache.ContainsKey(code))
+            {
+                var result = ShaderBytecode.FromStream(new MemoryStream(code));
 
-            if (mVertexShader != null)
-                mVertexShader.Dispose();
+                if (mVertexShader != null)
+                    mVertexShader.Dispose();
 
-            if (VertexShaderCode != null)
-                VertexShaderCode.Dispose();
+                if (VertexShaderCode != null)
+                    VertexShaderCode.Dispose();
 
-            VertexShaderCode = result;
-            mVertexShader = new VertexShader(mContext.Device, VertexShaderCode.Data);
+                VertexShaderCode = result;
+                mVertexShaderCache[code] = new VertexShader(mContext.Device, VertexShaderCode.Data);
+            }
+            mVertexShader = (VertexShader)mVertexShaderCache[code];
         }
 
         public void SetPixelShader(byte[] code)
         {
-            using(var result = ShaderBytecode.FromStream(new MemoryStream(code)))
+            if (!mPixelShaderCache.ContainsKey(code))
             {
-                if (mPixelShader != null)
-                    mPixelShader.Dispose();
+                using (var result = ShaderBytecode.FromStream(new MemoryStream(code)))
+                {
+                    if (mPixelShader != null)
+                        mPixelShader.Dispose();
 
-                mPixelShader = new PixelShader(mContext.Device, result);
+                    mPixelShaderCache[code] = new PixelShader(mContext.Device, result.Data);
+                }
             }
+            mPixelShader = (PixelShader)mPixelShaderCache[code];
+        }
+
+        public void SetPixelShader(PixelShader ps)
+        {
+            mPixelShader = ps;
+        }
+
+        public void SetVertexShader(VertexShader vs)
+        {
+            mVertexShader = vs;
         }
 
         public void Bind()

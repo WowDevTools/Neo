@@ -164,6 +164,7 @@ namespace WoWEditor6.Scene.Terrain
             BlendNew.SetPixelShader(Resources.Shaders.TerrainPixelNew);
 
             ChunkMesh.Program = BlendNew;
+            ChunkMesh.InitLayout(BlendNew);
 
             BlendOld = new ShaderProgram(context);
             BlendOld.SetVertexShader(Resources.Shaders.TerrainVertex);
@@ -171,13 +172,17 @@ namespace WoWEditor6.Scene.Terrain
 
             ColorSampler = new Sampler(context)
             {
-                AddressMode = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 Filter = SharpDX.Direct3D11.Filter.Anisotropic,
                 MaximumAnisotropy = 16,
             };
             AlphaSampler = new Sampler(context)
             {
-                AddressMode = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 Filter = SharpDX.Direct3D11.Filter.Anisotropic,
                 MaximumAnisotropy = 16,
             };

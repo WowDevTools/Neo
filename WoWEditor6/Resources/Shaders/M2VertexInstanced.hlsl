@@ -29,7 +29,10 @@ cbuffer AnimationMatrices : register(b1)
 
 cbuffer PerModelPassBuffer : register(b2)
 {
-    row_major float4x4 uvAnimation;
+    row_major float4x4 uvAnimation1;
+	row_major float4x4 uvAnimation2;
+	row_major float4x4 uvAnimation3;
+	row_major float4x4 uvAnimation4;
     float4 modelPassParams;
     float4 animatedColor;
 }
@@ -40,7 +43,7 @@ struct VertexInput
     float4 boneWeights : BLENDWEIGHT0;
     int4 bones : BLENDINDEX0;
     float3 normal : NORMAL0;
-    float2 texCoord : TEXCOORD0;
+    float2 texCoord1 : TEXCOORD0;
     float2 texCoord2 : TEXCOORD1;
 
     float4 mat0 : TEXCOORD2;
@@ -54,16 +57,19 @@ struct VertexOutput
 {
     float4 position : SV_Position;
     float3 normal : NORMAL0;
-    float2 texCoord : TEXCOORD0;
-    float2 texCoord1 : TEXCOORD1;
-    float depth : TEXCOORD2;
-    float3 worldPosition : TEXCOORD3;
+    float2 texCoord1 : TEXCOORD0;
+    float2 texCoord2 : TEXCOORD1;
+	float2 texCoord3 : TEXCOORD2;
+	float2 texCoord4 : TEXCOORD3;
+    float depth : TEXCOORD4;
+    float3 worldPosition : TEXCOORD5;
     float4 color : COLOR0;
-    float4 modelPassParams : TEXCOORD4;
+    float4 modelPassParams : TEXCOORD6;
 };
 
-VertexOutput main(VertexInput input) {
-    float4x4 matInstance = float4x4(input.mat0, input.mat1, input.mat2, input.mat3);
+VertexOutput fillCommonOutput( VertexInput input )
+{
+	float4x4 matInstance = float4x4(input.mat0, input.mat1, input.mat2, input.mat3);
 
     float3x3 matNormal = (float3x3)matInstance;
 
@@ -80,22 +86,33 @@ VertexOutput main(VertexInput input) {
     normal += mul(input.normal, (float3x3)Bones[input.bones.w]) * input.boneWeights.w;
 
     position = mul(position, matInstance);
-    normal = mul(normal, matNormal);
+    normal = mul(normal, (float3x3)matInstance);
 
-    float4 worldPos = position;
+    float3 worldPos = position;
     position = mul(position, matView);
     position = mul(position, matProj);
 
-    VertexOutput output = (VertexOutput) 0;
+	VertexOutput output = (VertexOutput) 0;
     output.position = position;
     output.depth = distance(worldPos, eyePosition);
     output.normal = normal;
-    float4 tcTransform = mul(float4(input.texCoord, 0, 1), uvAnimation);
-    output.texCoord = tcTransform.xy / tcTransform.w;
-    output.texCoord1 = input.texCoord2;
     output.worldPosition = worldPos;
-    output.color = input.colorMod;
+
+    output.color = float4( input.colorMod.rgb * animatedColor.rgb * 0.5f, input.colorMod.a * animatedColor.a );
     output.modelPassParams = modelPassParams;
-    
-    return output;
+
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	output.texCoord1 = input.texCoord1;
+
+	return output;
+
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+	
+	return output;
 }
