@@ -82,7 +82,6 @@ namespace WoWEditor6.Graphics
                 Flags = SwapChainFlags.None,
                 IsWindowed = true,
                 OutputHandle = mWindow.Handle,
-                SampleDescription = new SampleDescription(1, 0),
                 SwapEffect = SwapEffect.Discard,
                 Usage = Usage.RenderTargetOutput
             };
@@ -145,6 +144,10 @@ namespace WoWEditor6.Graphics
 
         private void BuildMultisample()
         {
+#if DEBUG
+            mHasMultisample = false;
+            mSwapChainDesc.SampleDescription = new SampleDescription(1, 0);
+#else
             var maxCount = 1;
             var maxQuality = 0;
             for (var i = 0; i <= Device.MultisampleCountMaximum; ++i)
@@ -158,6 +161,7 @@ namespace WoWEditor6.Graphics
 
             mSwapChainDesc.SampleDescription = new SampleDescription(maxCount, maxQuality);
             mHasMultisample = maxQuality > 0 || maxCount > 1;
+#endif
         }
 
         private void InitRenderTarget()
