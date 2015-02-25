@@ -310,10 +310,6 @@
     <None Include="listfile.bin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1.dxc" />
     <None Include="UI\old\BitmapImage.cs" />
     <None Include="UI\old\Brushes.cs" />
     <None Include="UI\old\ComponentRoot.cs" />
