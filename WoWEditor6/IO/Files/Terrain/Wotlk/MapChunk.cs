@@ -670,7 +670,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
 
             
-            Textures = mLayers.Select(l => parent.GetTexture(l.TextureId)).ToList().AsReadOnly();
+            Textures = mLayers.Select(l => parent.GetTexture(l.TextureId)).ToList();
             mTextureNames = mLayers.Select(l => parent.GetTextureName(l.TextureId)).ToArray();
         }
 
