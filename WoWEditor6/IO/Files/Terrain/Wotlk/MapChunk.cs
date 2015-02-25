@@ -1079,6 +1079,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             mLayers[layers.Length] = layer;
 
             Textures.Add(parent.GetTexture(texId));
+            TexturesChanged = true;
             return mLayers.Length - 1;
         }
 

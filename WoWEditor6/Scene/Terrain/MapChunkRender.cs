@@ -101,6 +101,12 @@ namespace WoWEditor6.Scene.Terrain
                 mData.IsAlphaChanged = false;
             }
 
+            if (mData.TexturesChanged)
+            {
+                mShaderTextures = mData.Textures.ToArray();
+                mData.TexturesChanged = false;
+            }
+
             ChunkMesh.StartVertex = mData.StartVertex;
             ChunkMesh.Program.SetPixelTexture(0, mAlphaTexture);
             ChunkMesh.Program.SetPixelTexture(1, mHoleTexture);

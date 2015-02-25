@@ -836,6 +836,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mLayerInfos.Add(layer);
 
             Textures.Add(parent.GetTexture(texId));
+            TexturesChanged = true;
             return mLayerInfos.Count - 1;
         }
 

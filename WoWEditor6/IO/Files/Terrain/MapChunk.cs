@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using SharpDX;
 using WoWEditor6.Scene;
 
@@ -28,6 +29,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public int[] DoodadReferences { get; protected set; }
 
         public bool IsAlphaChanged { get; set; }
+        public bool TexturesChanged { get; set; }
 
         public WeakReference<MapArea> Parent { get; protected set; }
 
