@@ -90,28 +90,37 @@ namespace WoWEditor6.Graphics
 
         public void UpdateBlendState(BlendState state)
         {
-            if (state == BlendState)
-                return;
+            //if (state == BlendState)
+                //return;
 
-            mContext.Context.OutputMerger.BlendState = state.Native;
+            if( mContext.Context.OutputMerger.BlendState != state.Native )
+            {
+                mContext.Context.OutputMerger.BlendState = state.Native;
+            }
             BlendState = state;
         }
 
         public void UpdateRasterizerState(RasterState state)
         {
-            if (state == RasterizerState)
-                return;
+            //if (state == RasterizerState)
+                //return;
 
-            mContext.Context.Rasterizer.State = state.Native;
+            if (mContext.Context.Rasterizer.State != state.Native)
+            {
+                mContext.Context.Rasterizer.State = state.Native;
+            }
             RasterizerState = state;
         }
 
         public void UpdateDepthState(DepthState state)
         {
-            if (state == DepthState)
-                return;
+            //if (state == DepthState)
+                //return;
 
-            mContext.Context.OutputMerger.DepthStencilState = state.State;
+            if( mContext.Context.OutputMerger.DepthStencilState != state.State )
+            {
+                mContext.Context.OutputMerger.DepthStencilState = state.State;
+            }
             DepthState = state;
         }
 

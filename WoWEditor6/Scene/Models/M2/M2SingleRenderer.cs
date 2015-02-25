@@ -35,11 +35,6 @@ namespace WoWEditor6.Scene.Models.M2
         private static Sampler gSamplerClampBoth;
 
         private static readonly BlendState[] BlendStates = new BlendState[7];
-        private static ShaderProgram gNoBlendProgram;
-        private static ShaderProgram gBlendProgram;
-        private static ShaderProgram gBlendTestProgram;
-        private static ShaderProgram g2PassProgram;
-        private static ShaderProgram g3PassProgram;
 
         private static ShaderProgram gCustomProgram;
 
@@ -157,7 +152,7 @@ namespace WoWEditor6.Scene.Models.M2
                 var alphakey = (pass.BlendMode == 1 ) ? 1.0f : 0.0f;
 
                 // These are per texture
-                float[] transparencyFloats = new float[4] { 0, 0, 0, 0 };
+                float[] transparencyFloats = new float[4] { 1, 1, 1, 1 };
                 for( var i = 0; i < pass.OpCount; ++i )
                 {
                     transparencyFloats[i] = animator.GetAlphaValue(pass.AlphaAnimIndex + i);

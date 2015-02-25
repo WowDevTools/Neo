@@ -160,18 +160,6 @@
   <data name="WmoVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WmoVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="M2Pixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2Pixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="M2PixelBlend" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2PixelBlend.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="M2PixelBlendAlpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2PixelBlendAlpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="M2VertexInstanced" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2VertexInstanced.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="M2PixelPortrait" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2PixelPortrait.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -184,9 +172,6 @@
   <data name="M2VertexPortrait" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2VertexPortrait.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="M2VertexSingle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2VertexSingle.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="WorldTextPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WorldTextPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -198,12 +183,6 @@
   </data>
   <data name="M2PixelPortrait2Pass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2PixelPortrait2Pass.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="M2Pixel2Pass" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2Pixel2Pass.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="M2Pixel3Pass" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\M2Pixel3Pass.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="WorldTextVertexOrtho" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\WorldTextVertexOrtho.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -219,5 +198,155 @@
   </data>
   <data name="M2VertexSingle_VS_Diffuse_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2VertexSingle_VS_Diffuse_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_Add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_Add.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_AddAlpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_AddAlpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_AddAlpha_Alpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_AddAlpha_Alpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_AddNA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_AddNA.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_Add_Alpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_Add_Alpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_Dual_Crossfade" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_Dual_Crossfade.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_Masked_Dual_Crossfade" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_Masked_Dual_Crossfade.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_Mod" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_Mod.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_Mod2x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_Mod2x.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_Mod2xNA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_Mod2xNA.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Mod_Opaque" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Mod_Opaque.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_AddAlpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_AddAlpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_AddAlpha_Alpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_AddAlpha_Alpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_AddAlpha_Wgt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_AddAlpha_Wgt.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_Alpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_Alpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_Alpha_Alpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_Alpha_Alpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_Mod" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_Mod.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_Mod2x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_Mod2x.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_Mod2xNA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_Mod2xNA.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_ModNA_Alpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_ModNA_Alpha.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2Pixel_PS_Combiners_Opaque_Opaque" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2Pixel_PS_Combiners_Opaque_Opaque.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_Env" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_Env.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_Env_Env" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_Env_Env.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_Env_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_Env_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1_Env" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1_Env.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1_Env_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1_Env_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1_Env_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1_Env_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1_T1_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1_T1_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T1_T2_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T1_T2_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_Env" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_Env.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_Env_Env" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_Env_Env.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_Env_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_Env_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1_Env" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1_Env.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1_Env_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1_Env_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1_Env_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1_Env_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1_T1_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1_T1_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1_T1_T1_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1_T1_T1_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T1_T2_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T1_T2_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -38,8 +38,6 @@ namespace WoWEditor6.Scene.Models.M2
 
         private static ShaderProgram gCustomProgram;
 
-        private static ShaderProgram gMaskBlendProgram;
-        private static ShaderProgram gNoBlendProgram;
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
@@ -112,7 +110,7 @@ namespace WoWEditor6.Scene.Models.M2
                 var alphakey = (pass.BlendMode == 1) ? 1.0f : 0.0f;
 
                 // These are per texture
-                float[] transparencyFloats = new float[4] { 0, 0, 0, 0 };
+                float[] transparencyFloats = new float[4] { 1, 1, 1, 1 };
                 for (var i = 0; i < pass.OpCount; ++i)
                 {
                     transparencyFloats[i] = renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex + i);

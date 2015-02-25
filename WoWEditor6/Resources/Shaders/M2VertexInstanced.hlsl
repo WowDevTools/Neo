@@ -33,7 +33,7 @@ cbuffer PerModelPassBuffer : register(b2)
 	row_major float4x4 uvAnimation2;
 	row_major float4x4 uvAnimation3;
 	row_major float4x4 uvAnimation4;
-    float4 modelPassParams;
+    float4 modelPassParams; // x = unlit, y = unfogged, z = alphakey
     float4 animatedColor;
 }
 
@@ -64,55 +64,231 @@ struct VertexOutput
     float depth : TEXCOORD4;
     float3 worldPosition : TEXCOORD5;
     float4 color : COLOR0;
-    float4 modelPassParams : TEXCOORD6;
 };
+
+static matrix worldViewMat = (matrix)0;
 
 VertexOutput fillCommonOutput( VertexInput input )
 {
-	float4x4 matInstance = float4x4(input.mat0, input.mat1, input.mat2, input.mat3);
+    float4 position = float4( input.position, 1.0f );
 
-    float3x3 matNormal = (float3x3)matInstance;
+	matrix bonematrix = input.boneWeights.x * Bones[ input.bones.x ];
+	if( input.boneWeights.y > 0 ) bonematrix += input.boneWeights.y * Bones[ input.bones.y ];
+	if( input.boneWeights.z > 0 ) bonematrix += input.boneWeights.z * Bones[ input.bones.z ];
+	if( input.boneWeights.w > 0 ) bonematrix += input.boneWeights.w * Bones[ input.bones.w ];
 
-    float4 basePosition = float4(input.position, 1.0);
-    float4 position = mul(basePosition, Bones[input.bones.x]) * input.boneWeights.x;
-    position += mul(basePosition, Bones[input.bones.y]) * input.boneWeights.y;
-    position += mul(basePosition, Bones[input.bones.z]) * input.boneWeights.z;
-    position += mul(basePosition, Bones[input.bones.w]) * input.boneWeights.w;
+	// x World matrix from instance data
+	matrix worldMatrixInstance = mul( bonematrix, float4x4( input.mat0, input.mat1, input.mat2, input.mat3 ) );
 
-    float3 normal = float3(0, 0, 0);
-    normal += mul(input.normal, (float3x3)Bones[input.bones.x]) * input.boneWeights.x;
-    normal += mul(input.normal, (float3x3)Bones[input.bones.y]) * input.boneWeights.y;
-    normal += mul(input.normal, (float3x3)Bones[input.bones.z]) * input.boneWeights.z;
-    normal += mul(input.normal, (float3x3)Bones[input.bones.w]) * input.boneWeights.w;
+	// Transform via combined bones + world matrix
+	position = mul( position, worldMatrixInstance );
+	
+	// static for env (pass in bool to skip?)
+	worldViewMat = mul( worldMatrixInstance, matView );
 
-    position = mul(position, matInstance);
-    normal = mul(normal, (float3x3)matInstance);
-
-    float3 worldPos = position;
+    float3 worldPos = position.xyz;
     position = mul(position, matView);
     position = mul(position, matProj);
 
 	VertexOutput output = (VertexOutput) 0;
     output.position = position;
     output.depth = distance(worldPos, eyePosition);
-    output.normal = normal;
+    output.normal = mul( input.normal, worldMatrixInstance );
     output.worldPosition = worldPos;
 
-    output.color = float4( input.colorMod.rgb * animatedColor.rgb * 0.5f, input.colorMod.a * animatedColor.a );
-    output.modelPassParams = modelPassParams;
+    output.color = float4( animatedColor.rgb * 0.5f, animatedColor.a );//input.colorMod.rgb * animatedColor.rgb * 0.5f, input.colorMod.a * animatedColor.a );
 
 	return output;
+}
+
+float2 getEnv( VertexInput input )
+{
+	float2 env;
+
+	float3 u = normalize( mul( input.position, worldViewMat ) );
+	float3 n = normalize( mul( input.normal, worldViewMat ) );
+	float3 r = reflect( u, n );
+	float m = 2.0 * sqrt( r.x*r.x + r.y*r.y + (r.z+1.0)*(r.z+1.0) );
+	env.x = r.x/m + 0.5f;
+	env.y = r.y/m + 0.5f;
+
+	return env;
 }
 
 VertexOutput main_VS_Diffuse_T1( VertexInput input )
 {
 	VertexOutput output = fillCommonOutput( input );
-	output.texCoord1 = input.texCoord1;
-
-	return output;
-
+	
 	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
 	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1_T2( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( input.texCoord2, 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1_Env( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( getEnv( input ), 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1_Env_T1( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( getEnv( input ), 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+
+	float4 texCoord3Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation3 );
+	output.texCoord3 = texCoord3Alt.xy / texCoord3Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1_T1( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1_Env_T2( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( getEnv( input ), 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+
+	float4 texCoord3Alt = mul( float4( input.texCoord2, 0, 1), uvAnimation3 );
+	output.texCoord3 = texCoord3Alt.xy / texCoord3Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_Env( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( getEnv( input ), 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_Env_T1( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( getEnv( input ), 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_Env_Env( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( getEnv( input ), 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( getEnv( input ), 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T2( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord2, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1_T1_T1( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+
+	float4 texCoord3Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation3 );
+	output.texCoord3 = texCoord3Alt.xy / texCoord3Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1_T2_T1( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( input.texCoord2, 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+
+	float4 texCoord3Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation3 );
+	output.texCoord3 = texCoord3Alt.xy / texCoord3Alt.w;
+	
+	return output;
+}
+
+VertexOutput main_VS_Diffuse_T1_T1_T1_T2( VertexInput input )
+{
+	VertexOutput output = fillCommonOutput( input );
+	
+	float4 texCoord1Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation1 );
+	output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+	float4 texCoord2Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation2 );
+	output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+
+	float4 texCoord3Alt = mul( float4( input.texCoord1, 0, 1), uvAnimation3 );
+	output.texCoord3 = texCoord3Alt.xy / texCoord3Alt.w;
+
+	float4 texCoord4Alt = mul( float4( input.texCoord2, 0, 1), uvAnimation4 );
+	output.texCoord4 = texCoord4Alt.xy / texCoord4Alt.w;
 	
 	return output;
 }

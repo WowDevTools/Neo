@@ -142,8 +142,14 @@ namespace WoWEditor6.Graphics
 
         public void Bind()
         {
-            mContext.Context.VertexShader.Set(mVertexShader);
-            mContext.Context.PixelShader.Set(mPixelShader);
+            if (mContext.Context.VertexShader.Get() != mVertexShader)
+            {
+                mContext.Context.VertexShader.Set(mVertexShader);
+            }
+            if (mContext.Context.PixelShader.Get() != mPixelShader)
+            {
+                mContext.Context.PixelShader.Set(mPixelShader);
+            }
         }
 
         public virtual void Dispose()

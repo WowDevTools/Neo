@@ -224,18 +224,83 @@ namespace WoWEditor6.Scene.Models.M2
 
         private void InitializePixelShaders(DeviceContext ctx)
         {
+            // enum order
             mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque));
             mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod2x));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod2xNA));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Opaque));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Mod));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Mod2x));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Add));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Mod2xNA));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_AddNA));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Opaque));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_AddAlpha));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_AddAlpha_Alpha));
+            mPixelShaders.Add(null);//PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha_Add));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_AddAlpha));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_AddAlpha_Alpha));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Alpha_Alpha));
+            mPixelShaders.Add(null);//PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha_3s));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_AddAlpha_Wgt));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Add_Alpha));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_ModNA_Alpha));
+            mPixelShaders.Add(null);//PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_AddAlpha_Wgt));
+            mPixelShaders.Add(null);//PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod_Add_Wgt));
+            mPixelShaders.Add(null);//PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha_UnshAlpha));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Dual_Crossfade));
+            mPixelShaders.Add(null);//PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha_Alpha));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Masked_Dual_Crossfade));
+            mPixelShaders.Add(new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Opaque_Alpha));
+            mPixelShaders.Add(null);//new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Guild));
+            mPixelShaders.Add(null);//new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Guild_NoBorder));
+            mPixelShaders.Add(null);//new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Guild_Opaque));
+            mPixelShaders.Add(null);//new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Combiners_Mod_Depth));
+            mPixelShaders.Add(null);//new PixelShader(ctx.Device, Resources.Shaders.M2Pixel_PS_Illum));
+
         }
 
         private void InitializeVertexShaders_Instanced(DeviceContext ctx)
         {
             mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_Env));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1_T2));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1_Env));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_Env_T1));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_Env_Env));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1_Env_T1));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1_T1));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1_T1_T1));
+            mVertexShaders_Instanced.Add(null);//new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_EdgeFade_T1));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T2));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1_Env_T2));
+            mVertexShaders_Instanced.Add(null);//VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_EdgeFade_T1_T2));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2));
+            mVertexShaders_Instanced.Add(null);//VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_EdgeFade_Env));
+            mVertexShaders_Instanced.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1_T2_T1));
         }
 
         private void InitializeVertexShaders_Single(DeviceContext ctx)
         {
             mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_Env));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1_T2));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1_Env));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_Env_T1));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_Env_Env));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1_Env_T1));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1_T1));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1_T1_T1));
+            mVertexShaders_Single.Add(null);//VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_EdgeFade_T1));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T2));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1_Env_T2));
+            mVertexShaders_Single.Add(null);//VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1_T1_T1_T2));
+            mVertexShaders_Single.Add(null);//VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_EdgeFade_Env));
+            mVertexShaders_Single.Add(new VertexShader(ctx.Device, Resources.Shaders.M2VertexSingle_VS_Diffuse_T1_T2_T1));
         }
 
         public VertexShader GetVertexShader_Instanced(M2VertexShaderType VertexShaderType)
@@ -243,33 +308,23 @@ namespace WoWEditor6.Scene.Models.M2
             int nVertexShaderType = (int)VertexShaderType;
             if (nVertexShaderType < mVertexShaders_Instanced.Count)
             {
-                return mVertexShaders_Instanced[nVertexShaderType];
+                VertexShader vs = mVertexShaders_Instanced[nVertexShaderType];
+                if (vs != null) return vs;
             }
-            else if (mVertexShaders_Instanced.Count > 0)
-            {
-                return mVertexShaders_Instanced[0];
-            }
-            else
-            {
-                return mVertexShaders_Instanced[(int)M2VertexShaderType.VS_Diffuse_T1];
-            }
+
+            return mVertexShaders_Instanced[(int)M2VertexShaderType.VS_Diffuse_T1];
         }
 
         public VertexShader GetVertexShader_Single(M2VertexShaderType VertexShaderType)
         {
             int nVertexShaderType = (int)VertexShaderType;
-            if (nVertexShaderType < mVertexShaders_Instanced.Count)
+             if (nVertexShaderType < mVertexShaders_Single.Count)
             {
-                return mVertexShaders_Single[nVertexShaderType];
+                VertexShader vs = mVertexShaders_Single[nVertexShaderType];
+                if (vs != null) return vs;
             }
-            else if (mVertexShaders_Single.Count > 0)
-            {
-                return mVertexShaders_Single[0];
-            }
-            else
-            {
-                return mVertexShaders_Single[(int)M2VertexShaderType.VS_Diffuse_T1];
-            }
+
+            return mVertexShaders_Single[(int)M2VertexShaderType.VS_Diffuse_T1];
         }
 
         public PixelShader GetPixelShader(M2PixelShaderType PixelShaderType)
@@ -277,16 +332,11 @@ namespace WoWEditor6.Scene.Models.M2
             int nPixelShaderType = (int)PixelShaderType;
             if (nPixelShaderType < mPixelShaders.Count)
             {
-                return mPixelShaders[nPixelShaderType];
+                PixelShader ps = mPixelShaders[nPixelShaderType];
+                if (ps != null) return ps;
             }
-            else if (mPixelShaders.Count > 0)
-            {
-                return mPixelShaders[0];
-            }
-            else
-            {
-                return mPixelShaders[(int)M2PixelShaderType.PS_Combiners_Opaque];
-            }
+            
+            return mPixelShaders[(int)M2PixelShaderType.PS_Combiners_Opaque];
         }
     }
 }

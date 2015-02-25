@@ -63,9 +63,9 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] M2Pixel {
+        internal static byte[] M2Pixel_PS_Combiners_Mod {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel", resourceCulture);
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,9 +73,119 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod {
+        internal static byte[] M2Pixel_PS_Combiners_Mod_Add {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod", resourceCulture);
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Add", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_Add_Alpha {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Add_Alpha", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_AddAlpha {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_AddAlpha", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_AddAlpha_Alpha {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_AddAlpha_Alpha", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_AddNA {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_AddNA", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_Dual_Crossfade {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Dual_Crossfade", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_Masked_Dual_Crossfade {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Masked_Dual_Crossfade", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_Mod {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Mod", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_Mod2x {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Mod2x", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_Mod2xNA {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Mod2xNA", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod_Opaque {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Opaque", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Mod1 {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -93,9 +203,9 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] M2Pixel2Pass {
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_AddAlpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel2Pass", resourceCulture);
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_AddAlpha", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -103,9 +213,9 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] M2Pixel3Pass {
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_AddAlpha_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel3Pass", resourceCulture);
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_AddAlpha_Alpha", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -113,9 +223,9 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] M2PixelBlend {
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_AddAlpha_Wgt {
             get {
-                object obj = ResourceManager.GetObject("M2PixelBlend", resourceCulture);
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_AddAlpha_Wgt", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -123,9 +233,89 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] M2PixelBlendAlpha {
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2PixelBlendAlpha", resourceCulture);
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Alpha", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_Alpha_Alpha {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Alpha_Alpha", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_Mod {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Mod", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_Mod2x {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Mod2x", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_Mod2xNA {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Mod2xNA", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_ModNA_Alpha {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_ModNA_Alpha", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Opaque_Opaque {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Opaque", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2Pixel_PS_Combiners_Opaque1 {
+            get {
+                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -183,9 +373,29 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] M2VertexInstanced {
+        internal static byte[] M2VertexInstanced_VS_Diffuse_Env {
             get {
-                object obj = ResourceManager.GetObject("M2VertexInstanced", resourceCulture);
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_Env", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_Env_Env {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_Env_Env", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_Env_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_Env_T1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -203,6 +413,106 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_Env {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_Env", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_Env_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_Env_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_Env_T2 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_Env_T2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T1_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T1_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T2 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T2_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T2_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T11 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T11", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexInstanced_VS_Diffuse_T2 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] M2VertexPortrait {
             get {
                 object obj = ResourceManager.GetObject("M2VertexPortrait", resourceCulture);
@@ -213,9 +523,29 @@ namespace WoWEditor6.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] M2VertexSingle {
+        internal static byte[] M2VertexSingle_VS_Diffuse_Env {
             get {
-                object obj = ResourceManager.GetObject("M2VertexSingle", resourceCulture);
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_Env", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_Env_Env {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_Env_Env", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_Env_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_Env_T1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -226,6 +556,106 @@ namespace WoWEditor6.Resources {
         internal static byte[] M2VertexSingle_VS_Diffuse_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T1_Env {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_Env", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T1_Env_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_Env_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T1_Env_T2 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_Env_T2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T1_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T1_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T1_T1_T2 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T1_T1_T2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T2 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T2_T1 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T2_T1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T11 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T11", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] M2VertexSingle_VS_Diffuse_T2 {
+            get {
+                object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T2", resourceCulture);
                 return ((byte[])(obj));
             }
         }
