@@ -29,6 +29,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private readonly Vector4[] mShadingFloats = new Vector4[145];
 
         private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
+        private readonly Dictionary<uint, DataChunk> mOriginalObjChunks = new Dictionary<uint, DataChunk>(); 
         private static readonly uint[] Indices = new uint[768];
         private string[] mTextureNames = new string[0];
 
@@ -102,6 +103,20 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             writer.BaseStream.Position = startPos - SizeCache<Mcnk>.Size;
             writer.Write(mHeader);
             writer.BaseStream.Position = endPos;
+        }
+
+        public void WriteObjChunks(BinaryWriter writer)
+        {
+            var totalSize = mOriginalObjChunks.Sum(pair => pair.Value.Size + 8);
+            writer.Write(0x4D434E4B);
+            writer.Write(totalSize);
+
+            foreach (var chunk in mOriginalObjChunks)
+            {
+                writer.Write(chunk.Key);
+                writer.Write(chunk.Value.Size);
+                writer.Write(chunk.Value.Data);
+            }
         }
 
         public override bool OnTerrainChange(TerrainChangeParameters parameters)
@@ -354,6 +369,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                         break;
                 }
 
+                mObjReader.BaseStream.Position = cur;
+                var data = mObjReader.ReadBytes(size);
+                mOriginalObjChunks.Add(id, new DataChunk { Data = data, Signature = id, Size = size });
                 mObjReader.BaseStream.Position = cur + size;
             }
         }

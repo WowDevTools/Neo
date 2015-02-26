@@ -40,10 +40,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
 
         private readonly Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
+        private readonly Dictionary<uint, DataChunk> mObjOrigChunks = new Dictionary<uint, DataChunk>(); 
 
         private bool mWasChanged;
 
-        private Mddf[] mDoodadDefs;
+        private Mddf[] mDoodadDefs = new Mddf[0];
 
         public MapArea(string continent, int ix, int iy)
         {
@@ -69,6 +70,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
 
             WriteBaseFile();
+            WriteObjFile();
         }
 
         public override void OnUpdateModelPositions(TerrainChangeParameters parameters)
@@ -301,6 +303,26 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
                 var data = mReader.ReadBytes(size);
                 mBaseChunks.Add(signature, new DataChunk
+                {
+                    Data = data,
+                    Signature = signature,
+                    Size = size
+                });
+            }
+
+            mObjReader.BaseStream.Position = 0;
+            while (mObjReader.BaseStream.Position + 8 < mObjReader.BaseStream.Length)
+            {
+                var signature = mObjReader.ReadUInt32();
+                var size = mObjReader.ReadInt32();
+                if (signature == 0x4D434E4B)
+                {
+                    mObjReader.BaseStream.Position += size;
+                    continue;
+                }
+
+                var data = mObjReader.ReadBytes(size);
+                mObjOrigChunks.Add(signature, new DataChunk
                 {
                     Data = data,
                     Signature = signature,
@@ -569,6 +591,45 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     chunk.WriteBaseChunks(writer);
                 }
             }
+        }
+
+        private void WriteObjFile()
+        {
+            using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}_obj0.adt", Continent, IndexX, IndexY)))
+            {
+                var writer = new BinaryWriter(strm);
+                CreateOrUpdateObjChunk(0x4D444446, mDoodadDefs);
+
+                foreach (var pair in mObjOrigChunks)
+                {
+                    writer.Write(pair.Value.Signature);
+                    writer.Write(pair.Value.Size);
+                    writer.Write(pair.Value.Data);
+                }
+
+                foreach (var chunk in mChunks.Where(chunk => chunk != null))
+                {
+                    chunk.WriteObjChunks(writer);
+                }
+            }
+        }
+
+        private unsafe void CreateOrUpdateObjChunk<T>(uint signature, T[] values) where T : struct
+        {
+            var chunk = mObjOrigChunks.ContainsKey(signature) ? mObjOrigChunks[signature] : new DataChunk {Signature = signature};
+
+            var totalSize = values.Length * SizeCache<T>.Size;
+            chunk.Data = new byte[totalSize];
+            chunk.Size = totalSize;
+
+            var ptr = SizeCache<T>.GetUnsafePtr(ref values[0]);
+            fixed (byte* bptr = chunk.Data)
+                UnsafeNativeMethods.CopyMemory(bptr, (byte*) ptr, totalSize);
+
+            if (mObjOrigChunks.ContainsKey(signature))
+                mObjOrigChunks[signature] = chunk;
+            else
+                mObjOrigChunks.Add(signature, chunk);
         }
 
         private static bool SeekNextMcnk(BinaryReader reader) { return SeekChunk(reader, 0x4D434E4B, false); }
