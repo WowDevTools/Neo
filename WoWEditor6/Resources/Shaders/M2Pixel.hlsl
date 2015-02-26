@@ -78,16 +78,16 @@ float3 applyFog( float3 finalColor, PixelInput input )
 	return ( fog * fogColor.rgb + ( 1.0f - fog ) * finalColor.rgb );
 }
 
-float4 commonFinalize( float4 finalColor, PixelInput input )
+float4 commonFinalize( float4 finalizeColor, PixelInput input )
 {
 	if( modelPassParams.x ) /* not unlit */
 	{
-		finalColor.rgb *= getDiffuseLight( input.normal );
+		finalizeColor.rgb *= getDiffuseLight( input.normal );
 	}
 
-	finalColor.rgb = applyFog( finalColor.rgb, input );
+	finalizeColor.rgb = applyFog( finalizeColor.rgb, input );
 	
-	return finalColor;
+	return finalizeColor;
 }
 
 float4 main_PS_Combiners_Opaque( PixelInput input ) : SV_Target
