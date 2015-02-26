@@ -1042,7 +1042,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     return i;
             }
 
-            if (mTextureNames.Length == 4)
+            if (mTextureNames.Length >= 4)
                 return -1;
 
             return AddTextureLayer(texture);

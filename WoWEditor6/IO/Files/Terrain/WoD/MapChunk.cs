@@ -104,7 +104,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             writer.BaseStream.Position = endPos;
         }
 
-        public override bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
+        public override bool OnTerrainChange(TerrainChangeParameters parameters)
         {
             var changed = base.OnTerrainChange(parameters);
 
@@ -137,6 +137,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             var layer = -1;
             var minPos = BoundingBox.Minimum;
+            var maxPos = BoundingBox.Maximum;
             var changed = false;
 
             for (var i = 0; i < 64; ++i)
@@ -144,7 +145,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 for (var j = 0; j < 64; ++j)
                 {
                     var xpos = minPos.X + j * Metrics.ChunkSize / 64.0f;
-                    var ypos = minPos.Y + i * Metrics.ChunkSize / 64.0f;
+                    var ypos = maxPos.Y - i * Metrics.ChunkSize / 64.0f;
 
                     var distSq = (xpos - parameters.Center.X) * (xpos - parameters.Center.X) +
                                  (ypos - parameters.Center.Y) * (ypos - parameters.Center.Y);
@@ -452,8 +453,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     throw new InvalidOperationException("Parent got disposed but loading was still invoked");
 
                 TextureScales = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
+                mTextureNames = new string[mLayerInfos.Count];
                 for (var i = 0; i < mLayerInfos.Count && i < 4; ++i)
                 {
+                    var texName = parent.GetTextureName(mLayerInfos[i].TextureId);
+                    mTextureNames[i] = texName;
                     textures.Add(parent.GetTexture(mLayerInfos[i].TextureId));
                     TextureScales[i] = parent.GetTextureScale(mLayerInfos[i].TextureId);
                 }
@@ -705,7 +709,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
         }
 
-        protected override bool HandleMccvPaint(Editing.TerrainChangeParameters parameters)
+        protected override bool HandleMccvPaint(TerrainChangeParameters parameters)
         {
             var amount = (parameters.Amount / 75.0f) * (float)parameters.TimeDiff.TotalSeconds;
             var changed = false;
@@ -804,7 +808,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     return i;
             }
 
-            if (mTextureNames.Length == 4)
+            if (mTextureNames.Length >= 4)
                 return -1;
 
             return AddTextureLayer(texture);

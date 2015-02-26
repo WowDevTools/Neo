@@ -202,6 +202,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
 
             TextureNames.Add(texture);
+            mTextures.Add(TextureManager.Instance.GetTexture(texture));
             return TextureNames.Count - 1;
         }
 
