@@ -136,7 +136,18 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 else
                     header.ofsMddf = 0;
 
-                SaveChunk(0x4D544558, writer, out header.ofsMtex);
+                header.ofsMtex = (int) (writer.BaseStream.Position - 20);
+                writer.Write(0x4D544558);
+                var textureData = new List<byte>();
+                writer.Write(TextureNames.Sum(t =>
+                {
+                    var data = Encoding.ASCII.GetBytes(t);
+                    textureData.AddRange(data);
+                    textureData.Add(0);
+                    return data.Length + 1;
+                }));
+                writer.Write(textureData.ToArray());
+
                 SaveChunk(0x4D4D4458, writer, out header.ofsMmdx);
                 SaveChunk(0x4D4D4944, writer, out header.ofsMmid);
                 SaveChunk(0x4D574D4F, writer, out header.ofsMwmo);
@@ -151,7 +162,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     var endPos = writer.BaseStream.Position;
                     chunkInfos[i].OfsMcnk = (int)startPos;
                     chunkInfos[i].SizeMcnk = (int)(endPos - startPos);
-                    //chunkInfos[i].Flags = chunkInfos[i].AsyncId = 0;
                 }
 
                 SaveChunk(0x4D545846, writer, out header.ofsMtxf);
@@ -308,6 +318,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 if (chunk.OnTextureTerrain(parameters))
                     changed = true;
             }
+
+            if (changed)
+                mWasChanged = true;
 
             return changed;
         }
