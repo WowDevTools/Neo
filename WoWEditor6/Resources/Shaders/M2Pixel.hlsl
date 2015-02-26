@@ -70,12 +70,12 @@ float3 getDiffuseLight(float3 normal)
 static float4 combinedColor = float4( 0.0f, 0.0f, 0.0f, 0.0f );
 static float4 finalColor = float4( 0.0f, 0.0f, 0.0f, 0.0f );
 
-float3 applyFog( float3 textureColor, PixelInput input )
+float3 applyFog( float3 finalColor, PixelInput input )
 {
 	float fogDepth = input.depth - fogParams.x;
 	fogDepth /= ( fogParams.y - fogParams.x );
 	float fog = pow( saturate( fogDepth ), 1.5f ) * modelPassParams.y;
-	return ( fog * fogColor.rgb + ( 1.0f - fog ) * textureColor.rgb );
+	return ( fog * fogColor.rgb + ( 1.0f - fog ) * finalColor.rgb );
 }
 
 float4 commonFinalize( float4 finalColor, PixelInput input )
