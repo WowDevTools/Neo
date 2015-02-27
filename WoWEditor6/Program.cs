@@ -24,7 +24,7 @@ namespace WoWEditor6
             WorldFrame.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
 
-            var app = new Application();
+            /*var app = new Application();
             var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.Send,
                 (sender, args) =>
                 {
@@ -33,7 +33,21 @@ namespace WoWEditor6
                     context.EndFrame();
                 }, app.Dispatcher);
             
-            app.Run(window);
+            app.Run(window);*/
+
+            var wnd = new MainWindow();
+            wnd.elementHost1.Child = window;
+            wnd.Show();
+            var isClosed = false;
+            wnd.FormClosing += (sender, args) => isClosed = true;
+
+            while (isClosed == false)
+            {
+                context.BeginFrame();
+                WorldFrame.Instance.OnFrame();
+                context.EndFrame();
+                System.Windows.Forms.Application.DoEvents();
+            }
 
             WorldFrame.Instance.Shutdown();
         }
