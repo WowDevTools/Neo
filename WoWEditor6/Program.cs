@@ -4,6 +4,7 @@ using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
 
+
 namespace WoWEditor6
 {
     class Program
@@ -21,6 +22,9 @@ namespace WoWEditor6
             var context = new GxContext(window.DrawTarget);
             context.InitContext();
 
+            // TODO: move all shader initializations somehwere?
+            context.InitShaders();
+    
             WorldFrame.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
 

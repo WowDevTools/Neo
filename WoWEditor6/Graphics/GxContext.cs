@@ -2,6 +2,7 @@
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using WoWEditor6.Scene.Models.M2;
 using WoWEditor6.UI;
 using Device = SharpDX.Direct3D11.Device;
 
@@ -28,6 +29,9 @@ namespace WoWEditor6.Graphics
         public Format BackBufferFormat { get { return mSwapChainDesc.ModeDescription.Format; } }
 
         public event Action<float, float> Resize;
+
+        private M2ShadersClass mM2Shaders;
+        public  M2ShadersClass M2Shaders { get { return mM2Shaders; } }
 
         public GxContext(RenderControl window)
         {
@@ -110,12 +114,19 @@ namespace WoWEditor6.Graphics
             mWindow.Resize += OnResize;
         }
 
+        public void InitShaders()
+        {
+            // TODO: should they all go here?
+            mM2Shaders = new M2ShadersClass();
+            mM2Shaders.Initialize(this.Context);
+        }
+
         private void OnResize(object sender, EventArgs args)
         {
             if (Device == null)
                 return;
 
-            Context.OutputMerger.SetRenderTargets(null, (RenderTargetView)null);
+            Context.OutputMerger.SetTargets((DepthStencilView)null, (RenderTargetView)null);
             mRenderTarget.Dispose();
             mDepthBuffer.Dispose();
             mDepthTexture.Dispose();

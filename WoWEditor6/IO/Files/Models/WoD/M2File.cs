@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SharpDX;
+using WoWEditor6.Scene.Models.M2;
 
 namespace WoWEditor6.IO.Files.Models.WoD
 {
@@ -82,10 +83,18 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     else
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
 
+                    Graphics.Texture.SamplerFlagType _SamplerFlags;
+
+                    if (tex.flags == 3) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapBoth;
+                    else if (tex.flags == 2) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapV;
+                    else if (tex.flags == 1) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapU;
+                    else _SamplerFlags = Graphics.Texture.SamplerFlagType.ClampBoth;
+
                     TextureInfos[i] = new TextureInfo
                     {
                         Texture = mTextures[i],
-                        TextureType = tex.type
+                        TextureType = tex.type,
+                        SamplerFlags = _SamplerFlags
                     };
                 }
 
@@ -114,10 +123,10 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 var mesh = mSkin.SubMeshes[texUnit.submeshIndex];
 
                 int uvIndex;
-                if (texUnit.textureAnim >= uvAnimLookup.Length || uvAnimLookup[texUnit.textureAnim] < 0)
+                if (texUnit.textureAnimIndex >= uvAnimLookup.Length || uvAnimLookup[texUnit.textureAnimIndex] < 0)
                     uvIndex = -1;
                 else
-                    uvIndex = uvAnimLookup[texUnit.textureAnim];
+                    uvIndex = uvAnimLookup[texUnit.textureAnimIndex];
 
                 var startTriangle = (int) mesh.startTriangle;
                 if ((mesh.unk1 & 1) != 0)
@@ -165,7 +174,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 {
                     TextureIndices = texIndices,
                     Textures = textures,
-                    AlphaAnimIndex = transLookup[texUnit.transparency],
+                    AlphaAnimIndex = texUnit.transparencyIndex,
                     ColorAnimIndex = texUnit.colorIndex,
                     IndexCount = mesh.nTriangles,
                     RenderFlag = flag,
@@ -174,8 +183,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     TexAnimIndex = uvIndex,
                     TexUnitNumber = texUnit.texUnitNumber,
                     OpCount = texUnit.op_count,
-                    VertexShaderType = GetVertexShaderType( texUnit.shaderId, texUnit.op_count ),
-                    PixelShaderType = GetPixelShaderType( texUnit.shaderId, texUnit.op_count ),
+                    VertexShaderType = M2ShadersClass.GetVertexShaderType(texUnit.shaderId, texUnit.op_count),
+                    PixelShaderType = M2ShadersClass.GetPixelShaderType(texUnit.shaderId, texUnit.op_count),
                 });
             }
 

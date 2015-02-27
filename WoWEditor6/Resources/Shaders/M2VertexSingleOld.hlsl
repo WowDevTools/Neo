@@ -1,8 +1,27 @@
-// M2VertexPortrait.hlsl
+// M2VertexSingleOld.hlsl
 
-cbuffer MatrixBuffer : register(b0)
+cbuffer GlobalParams : register(b0)
 {
-    row_major float4x4 matViewProj;
+    row_major float4x4 matView;
+    row_major float4x4 matProj;
+    float4 viewport;
+
+    float4 ambientLight;
+    float4 diffuseLight;
+
+    float4 fogColor;
+    // x -> fogStart
+    // y -> fotEnd
+    // z -> farClip
+    float4 fogParams;
+
+    float4 mousePosition;
+    float4 eyePosition;
+
+    // x -> innerRadius
+    // y -> outerRadius
+    // z -> brushTime
+    float4 brushParams;
 };
 
 cbuffer AnimationMatrices : register(b1)
@@ -10,7 +29,13 @@ cbuffer AnimationMatrices : register(b1)
     row_major float4x4 Bones[256];
 }
 
-cbuffer PerModelPassBuffer : register(b2)
+cbuffer PerDrawCallBuffer : register(b2)
+{
+    row_major float4x4 matInstance;
+    float4 colorMod;
+}
+
+cbuffer PerModelPassBuffer : register(b3)
 {
     row_major float4x4 uvAnimation;
     row_major float4x4 uvAnimation2;
@@ -36,6 +61,9 @@ struct VertexOutput
     float3 normal : NORMAL0;
     float2 texCoord1 : TEXCOORD0;
     float2 texCoord2 : TEXCOORD1;
+    float depth : TEXCOORD2;
+    float3 worldPosition : TEXCOORD3;
+    float4 color : COLOR0;
 };
 
 VertexOutput main(VertexInput input)
@@ -52,14 +80,22 @@ VertexOutput main(VertexInput input)
     normal += mul(input.normal, (float3x3)Bones[input.bones.z]) * input.boneWeights.z;
     normal += mul(input.normal, (float3x3)Bones[input.bones.w]) * input.boneWeights.w;
 
-    position = mul(position, matViewProj);
+    position = mul(position, matInstance);
+    normal = mul(normal, (float3x3)matInstance);
+
+    float4 worldPos = position;
+    position = mul(position, matView);
+    position = mul(position, matProj);
 
     VertexOutput output = (VertexOutput) 0;
     output.position = position;
+    output.depth = distance(worldPos, eyePosition);
     output.normal = normal;
     float4 tcTransform = mul(float4(input.texCoord1, 0, 1), uvAnimation);
     output.texCoord1 = tcTransform.xy / tcTransform.w;
     output.texCoord2 = input.texCoord2;
+    output.worldPosition = worldPos;
+    output.color = colorMod;
 
     return output;
 }

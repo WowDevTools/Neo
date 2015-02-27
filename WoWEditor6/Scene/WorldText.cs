@@ -354,13 +354,17 @@ namespace WoWEditor6.Scene
 
             gSampler = new Sampler(context)
             {
-                AddressMode = TextureAddressMode.Wrap,
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 Filter = Filter.MinMagMipLinear
             };
 
             gSampler2D = new Sampler(context)
             {
-                AddressMode = TextureAddressMode.Wrap,
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 Filter = Filter.MinMagMipPoint
             };
 
@@ -418,6 +422,7 @@ namespace WoWEditor6.Scene
             gWorldTextShader2D.SetVertexShader(Resources.Shaders.WorldTextVertexOrtho);
             gWorldTextShader2D.SetPixelShader(Resources.Shaders.WorldTextPixel);
             gMesh.Program = gWorldTextShader;
+            gMesh.InitLayout(gWorldTextShader);
 
             gPerDrawCallBuffer = new ConstantBuffer(context);
             gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer

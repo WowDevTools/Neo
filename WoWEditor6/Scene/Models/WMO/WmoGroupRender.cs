@@ -138,6 +138,9 @@ namespace WoWEditor6.Scene.Models.WMO
             gIndoorBlendProgram.SetPixelShader(Resources.Shaders.WmoPixelBlendIndoor);
 
             Mesh.Program = gNoBlendProgram;
+
+            Mesh.InitLayout(gNoBlendProgram);
+
         }
     }
 }

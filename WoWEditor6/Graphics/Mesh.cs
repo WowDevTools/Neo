@@ -2,6 +2,7 @@
 using System.Linq;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using SharpDX.D3DCompiler;
 
 namespace WoWEditor6.Graphics
 {
@@ -26,6 +27,7 @@ namespace WoWEditor6.Graphics
         public BlendState BlendState { get; set; }
         public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }
         public PrimitiveTopology Topology { get { return mTopology; } set { UpdateTopology(value); } }
+        public InputLayout Layout { get { return mLayout; } set { UpdateLayout(value); } }
 
         public Mesh(GxContext context)
         {
@@ -88,28 +90,25 @@ namespace WoWEditor6.Graphics
 
         public void UpdateBlendState(BlendState state)
         {
-            if (state == BlendState)
-                return;
+            if (mContext.Context.OutputMerger.BlendState != state.Native)
+                mContext.Context.OutputMerger.BlendState = state.Native;
 
-            mContext.Context.OutputMerger.BlendState = state.Native;
             BlendState = state;
         }
 
         public void UpdateRasterizerState(RasterState state)
         {
-            if (state == RasterizerState)
-                return;
+            if (mContext.Context.Rasterizer.State != state.Native)
+                mContext.Context.Rasterizer.State = state.Native;
 
-            mContext.Context.Rasterizer.State = state.Native;
             RasterizerState = state;
         }
 
         public void UpdateDepthState(DepthState state)
         {
-            if (state == DepthState)
-                return;
+            if (mContext.Context.OutputMerger.DepthStencilState != state.State)
+                mContext.Context.OutputMerger.DepthStencilState = state.State;
 
-            mContext.Context.OutputMerger.DepthStencilState = state.State;
             DepthState = state;
         }
 
@@ -120,19 +119,39 @@ namespace WoWEditor6.Graphics
             AddElement(new VertexElement(semantic, index, components, type, normalized, slot, instanceData));
         }
 
+        private void UpdateLayout(InputLayout Layout)
+        {
+            mLayout = Layout;
+
+            if (mContext.Context.InputAssembler.InputLayout != Layout)
+            {
+                mContext.Context.InputAssembler.InputLayout = Layout;
+            }
+        }
+
+        public void InitLayout(ShaderProgram program)
+        {
+            if (mLayout != null) return;
+            mLayout = new InputLayout(mContext.Device, program.VertexShaderCode.Data, mElements.Select(e => e.Element).ToArray());
+        }
+
         private void UpdateProgram(ShaderProgram program)
         {
             if (program == mProgram)
                 return;
 
-            mLayout = InputLayoutCache.GetLayout(mContext, mElements.Select(e => e.Element).ToArray(), this, program);
+            //mLayout = InputLayoutCache.GetLayout(mContext, mElements.Select(e => e.Element).ToArray(), this, program);
             mProgram = program;
         }
 
         private void UpdateTopology(PrimitiveTopology topology)
         {
             mTopology = topology;
-            mContext.Context.InputAssembler.PrimitiveTopology = topology;
+
+            if (mContext.Context.InputAssembler.PrimitiveTopology != topology)
+            {
+                mContext.Context.InputAssembler.PrimitiveTopology = topology;
+            }
         }
     }
 }

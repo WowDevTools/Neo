@@ -135,6 +135,7 @@ namespace WoWEditor6.Scene.Terrain
             program.SetVertexShader(Resources.Shaders.MapLowVertex);
             program.SetPixelShader(Resources.Shaders.MapLowPixel);
             Mesh.Program = program;
+            Mesh.InitLayout(program);
         }
     }
 }

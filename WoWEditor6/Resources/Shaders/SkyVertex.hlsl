@@ -1,3 +1,5 @@
+// SkyVertex.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -39,7 +41,8 @@ struct VertexOutput
     float2 texCoord : TEXCOORD0;
 };
 
-VertexOutput main(VertexInput input) {
+VertexOutput main(VertexInput input)
+{
     float4 position = float4(input.position + translation.xyz, 1.0);
     position = mul(position, matView);
     position = mul(position, matProj);

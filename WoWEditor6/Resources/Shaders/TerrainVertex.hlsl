@@ -1,3 +1,5 @@
+// TerrainVertex.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -44,7 +46,8 @@ struct VertexOutput
     float3 worldPosition : TEXCOORD3;
 };
 
-VertexOutput main(VertexInput input) {
+VertexOutput main(VertexInput input)
+{
     VertexOutput output = (VertexOutput) 0;
 
     float4 position = float4(input.position, 1.0);

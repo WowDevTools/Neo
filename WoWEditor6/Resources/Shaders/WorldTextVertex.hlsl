@@ -1,3 +1,5 @@
+// WorldTextVertex.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -39,7 +41,8 @@ struct VertexOutput
     float2 texCoord : TEXCOORD0;
 };
 
-VertexOutput main(VertexInput input) {
+VertexOutput main(VertexInput input)
+{
     float4 position = float4(input.position, 1);
     position = mul(position, matTransform);
     position = mul(position, matView);
@@ -52,7 +55,8 @@ VertexOutput main(VertexInput input) {
     return output;
 }
 
-VertexOutput main_orthographic(VertexInput input) {
+VertexOutput main_orthographic(VertexInput input)
+{
     float4 position = float4(input.position, 1);
     position = mul(position, matTransform);
     position.x = (position.x * 2.0f) / viewport.x - 1.0f;

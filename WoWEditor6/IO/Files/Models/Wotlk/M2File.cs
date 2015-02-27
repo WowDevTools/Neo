@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SharpDX;
+using WoWEditor6.Scene.Models.M2;
 
 namespace WoWEditor6.IO.Files.Models.Wotlk
 {
@@ -89,10 +90,18 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     else
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
 
+                    Graphics.Texture.SamplerFlagType _SamplerFlags;
+
+                    if (tex.flags == 3) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapBoth;
+                    else if (tex.flags == 2) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapV;
+                    else if (tex.flags == 1) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapU;
+                    else _SamplerFlags = Graphics.Texture.SamplerFlagType.ClampBoth;
+
                     TextureInfos[i] = new TextureInfo
                     {
                         Texture = mTextures[i],
-                        TextureType = tex.type
+                        TextureType = tex.type,
+                        SamplerFlags = _SamplerFlags
                     };
                 }
 
@@ -121,10 +130,10 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 var mesh = mSkin.SubMeshes[texUnit.submeshIndex];
 
                 int uvIndex;
-                if (texUnit.textureAnim >= uvAnimLookup.Length || uvAnimLookup[texUnit.textureAnim] < 0)
+                if (texUnit.textureAnimIndex >= uvAnimLookup.Length || uvAnimLookup[texUnit.textureAnimIndex] < 0)
                     uvIndex = -1;
                 else
-                    uvIndex = uvAnimLookup[texUnit.textureAnim];
+                    uvIndex = uvAnimLookup[texUnit.textureAnimIndex];
 
                 var startTriangle = (int)mesh.startTriangle;
                 if ((mesh.unk1 & 1) != 0)
@@ -147,6 +156,16 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                         texIndices.Add(texLookup[texUnit.texture]);
                         texIndices.Add(texLookup[texUnit.texture + 1]);
                         texIndices.Add(texLookup[texUnit.texture + 2]);
+                        break;
+                    case 4:
+                        textures.Add(mTextures[texLookup[texUnit.texture]]);
+                        textures.Add(mTextures[texLookup[texUnit.texture + 1]]);
+                        textures.Add(mTextures[texLookup[texUnit.texture + 2]]);
+                        textures.Add(mTextures[texLookup[texUnit.texture + 3]]);
+                        texIndices.Add(texLookup[texUnit.texture]);
+                        texIndices.Add(texLookup[texUnit.texture + 1]);
+                        texIndices.Add(texLookup[texUnit.texture + 2]);
+                        texIndices.Add(texLookup[texUnit.texture + 3]);
                         break;
                     default:
                         textures.Add(mTextures[texLookup[texUnit.texture]]);
@@ -172,7 +191,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 {
                     TextureIndices = texIndices,
                     Textures = textures,
-                    AlphaAnimIndex = transLookup[texUnit.transparency],
+                    AlphaAnimIndex = texUnit.transparencyIndex,
                     ColorAnimIndex = texUnit.colorIndex,
                     IndexCount = mesh.nTriangles,
                     RenderFlag = flag,
@@ -181,8 +200,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     TexAnimIndex = uvIndex,
                     TexUnitNumber = texUnit.texUnitNumber,
                     OpCount = texUnit.op_count,
-                    VertexShaderType = GetVertexShaderType( texUnit.shaderId, texUnit.op_count ),
-                    PixelShaderType = GetPixelShaderType( texUnit.shaderId, texUnit.op_count ),
+                    VertexShaderType = M2ShadersClass.GetVertexShaderTypeOld(texUnit.shaderId, texUnit.op_count),
+                    PixelShaderType = M2ShadersClass.GetPixelShaderTypeOld(texUnit.shaderId, texUnit.op_count),
                 });
             }
 

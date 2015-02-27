@@ -1,3 +1,5 @@
+// MapLowPixel.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -22,7 +24,14 @@ cbuffer GlobalParams : register(b0)
     float4 brushParams;
 };
 
-float4 main(float4 position : SV_Position, float depth : TEXCOORD0) : SV_Target{
-    clip(depth - (fogParams.y / fogParams.z));
+struct PixelInput
+{
+    float4 position : SV_Position;
+    float depth : TEXCOORD0;
+};
+
+float4 main(PixelInput input) : SV_Target
+{
+    clip(input.depth - (fogParams.y / fogParams.z));
     return float4(fogColor.rgb, 1.0);
 }
