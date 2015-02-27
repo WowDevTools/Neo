@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 using SharpDX;
 using WoWEditor6.Scene;
 using Point = System.Windows.Point;
@@ -43,8 +44,8 @@ namespace WoWEditor6.UI.Components
 
         public void UpdateProgress(float pct)
         {
-            Dispatcher.Invoke(() =>
-                LoadingScreenBarFillImage.Width = (LoadingScreenBarImage.Width - 70) * pct);
+            Dispatcher.BeginInvoke(new Action(() =>
+                LoadingScreenBarFillImage.Width = (LoadingScreenBarImage.Width - 70) * pct));
         }
     }
 }
