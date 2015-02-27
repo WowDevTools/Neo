@@ -1,3 +1,5 @@
+// M2PixelOld.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -24,13 +26,13 @@ cbuffer GlobalParams : register(b0)
 
 cbuffer PerModelPassBuffer : register(b1)
 {
-	row_major float4x4 uvAnimation1;
-	row_major float4x4 uvAnimation2;
-	row_major float4x4 uvAnimation3;
-	row_major float4x4 uvAnimation4;
-	float4 modelPassParams; // x = unlit, y = unfogged, z = alphakey
-	float4 animatedColor;
-	float4 transparency;
+    row_major float4x4 uvAnimation1;
+    row_major float4x4 uvAnimation2;
+    row_major float4x4 uvAnimation3;
+    row_major float4x4 uvAnimation4;
+    float4 modelPassParams; // x = unlit, y = unfogged, z = alphakey
+    float4 animatedColor;
+    float4 transparency;
 }
 
 struct PixelInput
@@ -42,10 +44,10 @@ struct PixelInput
     float depth : TEXCOORD2;
     float3 worldPosition : TEXCOORD3;
     float4 color : COLOR0;
-    float4 modelPassParams : TEXCOORD4; // x = unlit, y = unfogged
 };
 
-float3 getDiffuseLight(float3 normal) {
+float3 getDiffuseLight(float3 normal)
+{
     float light = dot(normal, normalize(-float3(-1, 1, -1)));
     if (light < 0.0)
         light = 0.0;
@@ -63,24 +65,26 @@ Texture2D pass1Texture : register(t1);
 Texture2D pass2Texture : register(t2);
 SamplerState baseSampler : register(s0);
 
-float4 main(PixelInput input) : SV_Target {
+float4 main(PixelInput input) : SV_Target
+{
     float4 color = baseTexture.Sample(baseSampler, input.texCoord);
     color.rgb *= animatedColor.rgb;
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
    
-    float unlit = input.modelPassParams.x;
+    float unlit = modelPassParams.x;
     color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
-    float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
+    float fog = pow(saturate(fogDepth), 1.5) * modelPassParams.y;
 
     color.rgb = fog * fogColor.rgb + (1.0 - fog) * color.rgb;
     return input.color * color;
 }
 
-float4 main_blend(PixelInput input) : SV_Target{
+float4 main_blend(PixelInput input) : SV_Target
+{
     float4 color = baseTexture.Sample(baseSampler, input.texCoord);
     if (color.a < 3.0f / 255.0f)
         discard;
@@ -88,18 +92,19 @@ float4 main_blend(PixelInput input) : SV_Target{
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
 
-    float unlit = input.modelPassParams.x;
+    float unlit = modelPassParams.x;
     color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
-    float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
+    float fog = pow(saturate(fogDepth), 1.5) * modelPassParams.y;
 
-	color.a *= (1 - fog);
-	return input.color * color;
+    color.a *= (1 - fog);
+    return input.color * color;
 }
 
-float4 main_blend_2_pass(PixelInput input) : SV_Target{
+float4 main_blend_2_pass(PixelInput input) : SV_Target
+{
     float4 color = baseTexture.Sample(baseSampler, input.texCoord);
     float4 color2 = pass1Texture.Sample(baseSampler, input.texCoord1);
     color.a *= color2.a;
@@ -111,18 +116,19 @@ float4 main_blend_2_pass(PixelInput input) : SV_Target{
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
 
-    float unlit = input.modelPassParams.x;
+    float unlit = modelPassParams.x;
     color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
-    float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
+    float fog = pow(saturate(fogDepth), 1.5) * modelPassParams.y;
 
-	color.a *= (1 - fog);
+    color.a *= (1 - fog);
     return input.color * color;
 }
 
-float4 main_blend_3_pass(PixelInput input) : SV_Target{
+float4 main_blend_3_pass(PixelInput input) : SV_Target
+{
     float4 color = baseTexture.Sample(baseSampler, input.texCoord);
     float4 color2 = pass1Texture.Sample(baseSampler, input.texCoord1);
     float4 color3 = pass2Texture.Sample(baseSampler, input.texCoord);
@@ -135,18 +141,19 @@ float4 main_blend_3_pass(PixelInput input) : SV_Target{
     float3 lightColor = getDiffuseLight(input.normal);
         lightColor.rgb = saturate(lightColor.rgb);
 
-    float unlit = input.modelPassParams.x;
+    float unlit = modelPassParams.x;
     color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
-    float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
+    float fog = pow(saturate(fogDepth), 1.5) * modelPassParams.y;
 
-	color.a *= (1 - fog);
+    color.a *= (1 - fog);
     return input.color * color;
 }
 
-float4 main_blend_alpha_test(PixelInput input) : SV_Target{
+float4 main_blend_alpha_test(PixelInput input) : SV_Target
+{
     float4 color = baseTexture.Sample(baseSampler, input.texCoord);
     color.rgb *= animatedColor.rgb;
     if (color.a < 0.5)
@@ -155,12 +162,12 @@ float4 main_blend_alpha_test(PixelInput input) : SV_Target{
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb = saturate(lightColor.rgb);
 
-    float unlit = input.modelPassParams.x;
+    float unlit = modelPassParams.x;
     color.rgb *= unlit * lightColor + (1.0 - unlit) * float3(1, 1, 1);
 
     float fogDepth = input.depth - fogParams.x;
     fogDepth /= (fogParams.y - fogParams.x);
-    float fog = pow(saturate(fogDepth), 1.5) * input.modelPassParams.y;
+    float fog = pow(saturate(fogDepth), 1.5) * modelPassParams.y;
 
     color.rgb = fog * fogColor.rgb + (1.0 - fog) * color.rgb;
     return input.color * color;

@@ -1,3 +1,5 @@
+// WmoVertex.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -27,7 +29,7 @@ cbuffer InstanceBuffer : register(b1)
     float4x4 matInstance;
 };
 
-struct VSInput
+struct VertexInput
 {
     float3 position : POSITION0;
     float3 normal : NORMAL0;
@@ -35,7 +37,7 @@ struct VSInput
     float4 color : COLOR0;
 };
 
-struct VSOutput
+struct VertexOutput
 {
     float4 position : SV_Position;
     float3 normal : NORMAL0;
@@ -45,8 +47,9 @@ struct VSOutput
     float3 worldPosition : TEXCOORD2;
 };
 
-VSOutput main(VSInput input) {
-    VSOutput output = (VSOutput) 0;
+VertexOutput main(VertexInput input)
+{
+    VertexOutput output = (VertexOutput) 0;
 
     output.position = float4(input.position, 1.0);
     float4 posTransformed = mul(output.position, matInstance);

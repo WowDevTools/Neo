@@ -132,8 +132,6 @@ namespace WoWEditor6.Scene.Models.M2
                 var alpha = Animator.GetAlphaValue(pass.AlphaAnimIndex);
                 color.W *= alpha;
 
-                //Log.Debug(color);
-
                 mPerPassBuffer.UpdateData(new PerModelPassBuffer
                 {
                     uvAnimMatrix1 = uvAnimMat,

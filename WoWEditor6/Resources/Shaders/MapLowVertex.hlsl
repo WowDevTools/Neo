@@ -1,3 +1,5 @@
+// MapLowVertex.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -22,19 +24,20 @@ cbuffer GlobalParams : register(b0)
     float4 brushParams;
 };
 
-struct VSInput
+struct VertexInput
 {
     float3 position : POSITION0;
 };
 
-struct VSOutput
+struct VertexOutput
 {
     float4 position : SV_Position;
     float depth : TEXCOORD0;
 };
 
-VSOutput main(VSInput input) {
-    VSOutput output = (VSOutput) 0;
+VertexOutput main(VertexInput input)
+{
+    VertexOutput output = (VertexOutput) 0;
     output.position = float4(input.position, 1.0);
     output.position = mul(output.position, matView);
     output.position = mul(output.position, matProj);

@@ -1,3 +1,5 @@
+// WmoPixel.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -25,7 +27,7 @@ cbuffer GlobalParams : register(b0)
 Texture2D batchTexture : register(t0);
 SamplerState batchSampler : register(s0);
 
-struct PSInput
+struct PixelInput
 {
     float4 position : SV_Position;
     float3 normal : NORMAL0;
@@ -35,7 +37,8 @@ struct PSInput
     float3 worldPosition : TEXCOORD2;
 };
 
-float3 getDiffuseLight(float3 normal) {
+float3 getDiffuseLight(float3 normal)
+{
     float light = dot(normal, normalize(-float3(-1, 1, -1)));
     if (light < 0.0)
         light = 0.0;
@@ -48,7 +51,8 @@ float3 getDiffuseLight(float3 normal) {
     return diffuse;
 }
 
-float4 main(PSInput input) : SV_Target{
+float4 main(PixelInput input) : SV_Target
+{
     float4 color = batchTexture.Sample(batchSampler, input.texCoord);
     float3 lightColor = getDiffuseLight(input.normal);
     lightColor.rgb += input.color.bgr * 2;
@@ -63,7 +67,8 @@ float4 main(PSInput input) : SV_Target{
     return color;
 }
 
-float4 main_indoor(PSInput input) : SV_Target{
+float4 main_indoor(PixelInput input) : SV_Target
+{
     float4 color = batchTexture.Sample(batchSampler, input.texCoord);
     float3 lightColor = getDiffuseLight(input.normal);
     float3 groupColor = input.color.bgr;
@@ -79,7 +84,8 @@ float4 main_indoor(PSInput input) : SV_Target{
     return color;
 }
 
-float4 main_blend(PSInput input) : SV_Target {
+float4 main_blend(PixelInput input) : SV_Target
+{
     float4 color = batchTexture.Sample(batchSampler, input.texCoord);
     if (color.a < (5.0f / 255.0f))
         discard;
@@ -97,7 +103,8 @@ float4 main_blend(PSInput input) : SV_Target {
     return color;
 }
 
-float4 main_blend_indoor(PSInput input) : SV_Target{
+float4 main_blend_indoor(PixelInput input) : SV_Target
+{
     float4 color = batchTexture.Sample(batchSampler, input.texCoord);
     if (color.a < (5 / 255.0f))
         discard;

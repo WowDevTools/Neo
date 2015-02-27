@@ -72,14 +72,11 @@ namespace WoWEditor6.Scene.Models.M2
         {
             gMesh.BeginDraw();
 
-            if( IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking )
-            {
+            // TODO: Get rid of this switch
+            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
                 gMesh.InitLayout(gNoBlendProgram);
-            }
             else
-            {
                 gMesh.InitLayout(gCustomProgram);
-            }
             
             gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
@@ -123,55 +120,60 @@ namespace WoWEditor6.Scene.Models.M2
                 var alphakey = (pass.BlendMode == 1) ? 1.0f : 0.0f;
 
                 // These are per texture
-                float[] transparencyFloats = new float[4] { 1, 1, 1, 1 };
+                var alphaValues = new float[] { 1, 1, 1, 1 };
                 for (var i = 0; i < pass.OpCount; ++i)
-                {
-                    transparencyFloats[i] = renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex + i);
-                }
+                    alphaValues[i] = renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex + i);
 
-                Matrix _uvAnimMatrix1 = Matrix.Identity;
-                Matrix _uvAnimMatrix2 = Matrix.Identity;
-                Matrix _uvAnimMatrix3 = Matrix.Identity;
-                Matrix _uvAnimMatrix4 = Matrix.Identity;
+                var uvAnimMatrix1 = Matrix.Identity;
+                var uvAnimMatrix2 = Matrix.Identity;
+                var uvAnimMatrix3 = Matrix.Identity;
+                var uvAnimMatrix4 = Matrix.Identity;
 
-                renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 0, out _uvAnimMatrix1);
-                if (pass.OpCount >= 2) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out _uvAnimMatrix2);
-                if (pass.OpCount >= 3) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out _uvAnimMatrix3);
-                if (pass.OpCount >= 4) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out _uvAnimMatrix4);
-
-                var color = renderer.Animator.GetColorValue(pass.ColorAnimIndex);
+                renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 0, out uvAnimMatrix1);
+                if (pass.OpCount >= 2) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
+                if (pass.OpCount >= 3) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
+                if (pass.OpCount >= 4) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
 
                 gPerPassBuffer.UpdateData(new PerModelPassBuffer
                 {
-                    uvAnimMatrix1 = _uvAnimMatrix1,
-                    uvAnimMatrix2 = _uvAnimMatrix2,
-                    uvAnimMatrix3 = _uvAnimMatrix3,
-                    uvAnimMatrix4 = _uvAnimMatrix4,
-                    transparency = new Vector4(transparencyFloats[0], transparencyFloats[1], transparencyFloats[2], transparencyFloats[3]),
+                    uvAnimMatrix1 = uvAnimMatrix1,
+                    uvAnimMatrix2 = uvAnimMatrix2,
+                    uvAnimMatrix3 = uvAnimMatrix3,
+                    uvAnimMatrix4 = uvAnimMatrix4,
+                    transparency = new Vector4(alphaValues[0], alphaValues[1], alphaValues[2], alphaValues[3]),
                     modelPassParams = new Vector4(unlit, unfogged, alphakey, 0.0f),
-                    animatedColor = color
+                    animatedColor = renderer.Animator.GetColorValue(pass.ColorAnimIndex)
                 });
-
-                gMesh.StartVertex = 0;
-                gMesh.StartIndex = pass.StartIndex;
-                gMesh.IndexCount = pass.IndexCount;
 
                 for (var i = 0; i < pass.OpCount && i < 4; ++i)
                 {
-                    Graphics.Texture.SamplerFlagType SamplerType = Model.TextureInfos[pass.TextureIndices[i]].SamplerFlags;
-
-                    if (SamplerType == Graphics.Texture.SamplerFlagType.WrapBoth) gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
-                    else if (SamplerType == Graphics.Texture.SamplerFlagType.WrapU) gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
-                    else if (SamplerType == Graphics.Texture.SamplerFlagType.WrapV) gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
-                    else if (SamplerType == Graphics.Texture.SamplerFlagType.ClampBoth) gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
+                    switch (Model.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
+                    {
+                        case Graphics.Texture.SamplerFlagType.WrapBoth:
+                            gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
+                            break;
+                        case Graphics.Texture.SamplerFlagType.WrapU:
+                            gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
+                            break;
+                        case Graphics.Texture.SamplerFlagType.WrapV:
+                            gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
+                            break;
+                        case Graphics.Texture.SamplerFlagType.ClampBoth:
+                            gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
+                            break;
+                    }
 
                     gMesh.Program.SetPixelTexture(i, pass.Textures[i]);
                 }
 
+                gMesh.StartVertex = 0;
+                gMesh.StartIndex = pass.StartIndex;
+                gMesh.IndexCount = pass.IndexCount;
                 gMesh.Draw(mInstanceCount);
             }
         }
 
+        // TODO: Get rid of this
         public void OnFrame_Old(M2Renderer renderer)
         {
             UpdateVisibleInstances(renderer);

@@ -1,3 +1,5 @@
+// TerrainPixelNew.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -51,12 +53,14 @@ cbuffer TextureScaleParams : register(b2)
     float4 texScales;
 };
 
-float4 sinusInterpolate(float4 src, float4 dst, float pct) {
+float4 sinusInterpolate(float4 src, float4 dst, float pct)
+{
     float sinval = sin(pct * 3.1415926 / 2.0f);
     return sinval * dst + (1 - sinval) * src;
 }
 
-float4 applyBrush(float4 color, float3 worldPos) {
+float4 applyBrush(float4 color, float3 worldPos)
+{
     float3 dirVec = worldPos - mousePosition.xyz;
     float dsq = dot(dirVec.xy, dirVec.xy);
     float dz = dirVec.z * dirVec.z;
@@ -103,7 +107,8 @@ float4 applyBrush(float4 color, float3 worldPos) {
     return sinusInterpolate(color, brushColor, fac);
 }
 
-float3 getDiffuseLight(float3 normal, float3 worldPos) {
+float3 getDiffuseLight(float3 normal, float3 worldPos)
+{
     float3 lightDir = normalize(-float3(-1, 1, -1));
     normal = normalize(normal);
     float light = dot(normal, lightDir);
@@ -125,7 +130,8 @@ float3 getDiffuseLight(float3 normal, float3 worldPos) {
     return diffuse;
 }
 
-float4 main(PixelInput input) : SV_Target{
+float4 main(PixelInput input) : SV_Target
+{
     float4 alpha = alphaTexture.Sample(alphaSampler, input.texCoordAlpha);
     float holeValue = holeTexture.Sample(alphaSampler, input.texCoordAlpha).r;
     if (holeValue < 0.5)
@@ -154,7 +160,6 @@ float4 main(PixelInput input) : SV_Target{
     float fog = 1.0f - pow(saturate(fogDepth), 1.5);
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
-
     color = applyBrush(color, input.worldPosition);
     color.a = holeValue;
 

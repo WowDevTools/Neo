@@ -1,3 +1,5 @@
+// M2VertexSingleOld.hlsl
+
 cbuffer GlobalParams : register(b0)
 {
     row_major float4x4 matView;
@@ -35,12 +37,12 @@ cbuffer PerDrawCallBuffer : register(b2)
 
 cbuffer PerModelPassBuffer : register(b3)
 {
-	row_major float4x4 uvAnimation;
-	row_major float4x4 uvAnimation2;
-	row_major float4x4 uvAnimation3;
-	row_major float4x4 uvAnimation4;
-	float4 modelPassParams; // x = unlit, y = unfogged, z = alphakey
-	float4 animatedColor;
+    row_major float4x4 uvAnimation;
+    row_major float4x4 uvAnimation2;
+    row_major float4x4 uvAnimation3;
+    row_major float4x4 uvAnimation4;
+    float4 modelPassParams; // x = unlit, y = unfogged, z = alphakey
+    float4 animatedColor;
 }
 
 struct VertexInput
@@ -49,7 +51,7 @@ struct VertexInput
     float4 boneWeights : BLENDWEIGHT0;
     int4 bones : BLENDINDEX0;
     float3 normal : NORMAL0;
-    float2 texCoord : TEXCOORD0;
+    float2 texCoord1 : TEXCOORD0;
     float2 texCoord2 : TEXCOORD1;
 };
 
@@ -57,16 +59,15 @@ struct VertexOutput
 {
     float4 position : SV_Position;
     float3 normal : NORMAL0;
-    float2 texCoord : TEXCOORD0;
-    float2 texCoord1 : TEXCOORD1;
+    float2 texCoord1 : TEXCOORD0;
+    float2 texCoord2 : TEXCOORD1;
     float depth : TEXCOORD2;
     float3 worldPosition : TEXCOORD3;
     float4 color : COLOR0;
-    float4 modelPassParams : TEXCOORD4;
 };
 
-VertexOutput main(VertexInput input) {
-
+VertexOutput main(VertexInput input)
+{
     float4 basePosition = float4(input.position, 1.0);
     float4 position = mul(basePosition, Bones[input.bones.x]) * input.boneWeights.x;
     position += mul(basePosition, Bones[input.bones.y]) * input.boneWeights.y;
@@ -90,12 +91,11 @@ VertexOutput main(VertexInput input) {
     output.position = position;
     output.depth = distance(worldPos, eyePosition);
     output.normal = normal;
-    float4 tcTransform = mul(float4(input.texCoord, 0, 1), uvAnimation);
-    output.texCoord = tcTransform.xy / tcTransform.w;
-    output.texCoord1 = input.texCoord2;
+    float4 tcTransform = mul(float4(input.texCoord1, 0, 1), uvAnimation);
+    output.texCoord1 = tcTransform.xy / tcTransform.w;
+    output.texCoord2 = input.texCoord2;
     output.worldPosition = worldPos;
     output.color = colorMod;
-    output.modelPassParams = modelPassParams;
 
     return output;
 }

@@ -40,7 +40,7 @@ namespace WoWEditor6.Scene.Models.M2
             {
                 mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
                 Animator = ModelFactory.Instance.CreateAnimator(model);
-                if(Animator.SetAnimation(AnimationType.Stand) == false)
+                if (Animator.SetAnimation(AnimationType.Stand) == false)
                     Animator.SetAnimationByIndex(0);
                 StaticAnimationThread.Instance.AddAnimator(Animator);
             }
@@ -64,18 +64,14 @@ namespace WoWEditor6.Scene.Models.M2
             if (Animator.GetBones(mAnimationMatrices))
                 AnimBuffer.UpdateData(mAnimationMatrices);
 
-            if (Model.HasOpaquePass)
-            {
-                if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
-                {
-                    mBatchRenderer.OnFrame_Old(this);
-                }
-                else
-                {
-                    mBatchRenderer.OnFrame(this);
+            if (!Model.HasOpaquePass)
+                return;
 
-                }
-            }
+            // TODO: We *really* need to get rid of this!
+            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+                mBatchRenderer.OnFrame_Old(this);
+            else
+                mBatchRenderer.OnFrame(this);
         }
 
         public void RenderSingleInstance(M2RenderInstance instance)
@@ -86,17 +82,14 @@ namespace WoWEditor6.Scene.Models.M2
                     return;
             }
 
-            if (!mSkipRendering)
-            {
-                if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
-                {
-                    mSingleRenderer.OnFrame_Old(this, instance);
-                }
-                else
-                {
-                    mSingleRenderer.OnFrame(this, instance);
-                }
-            }
+            if (mSkipRendering)
+                return;
+
+            // TODO: We *really* need to get rid of this!
+            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+                mSingleRenderer.OnFrame_Old(this, instance);
+            else
+                mSingleRenderer.OnFrame(this, instance);
         }
 
         public void RenderPortrait()
@@ -169,7 +162,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void PushMapReference(M2Instance instance)
         {
-            M2RenderInstance renderInstance = instance.RenderInstance;
+            var renderInstance = instance.RenderInstance;
             if (Model.HasBlendPass)
                 renderInstance.UpdateDepth();
 

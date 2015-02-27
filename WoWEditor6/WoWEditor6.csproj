@@ -310,63 +310,6 @@
     <None Include="listfile.bin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Shaders\M2Pixel2PassOld.dxc" />
-    <None Include="Resources\Shaders\M2Pixel3PassOld.dxc" />
-    <None Include="Resources\Shaders\M2PixelBlendAlphaOld.dxc" />
-    <None Include="Resources\Shaders\M2PixelBlendOld.dxc" />
-    <None Include="Resources\Shaders\M2PixelOld.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Add.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_AddAlpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_AddAlpha_Alpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_AddNA.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Add_Alpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Dual_Crossfade.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Masked_Dual_Crossfade.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Mod.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Mod2x.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Mod2xNA.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Opaque.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_AddAlpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_AddAlpha_Alpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_AddAlpha_Wgt.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Alpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Alpha_Alpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Mod.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Mod2x.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Mod2xNA.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_ModNA_Alpha.dxc" />
-    <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Opaque.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstancedOld.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_Env.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_Env_Env.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_Env_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_Env.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_Env_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_Env_T2.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_T1_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_T2.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_T2_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T2.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingleOld.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_Env.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_Env_Env.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_Env_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_Env.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_Env_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_Env_T2.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_T1_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_T1_T1_T2.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_T2.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_T2_T1.dxc" />
-    <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_T2.dxc" />
     <None Include="UI\old\BitmapImage.cs" />
     <None Include="UI\old\Brushes.cs" />
     <None Include="UI\old\ComponentRoot.cs" />
@@ -544,9 +487,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Shaders\M2PixelOld.hlsl" />
-    <Content Include="Resources\Shaders\M2PixelPortraitOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexInstancedOld.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexPortraitOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexSingleOld.hlsl" />
     <Content Include="Tools\ShaderCompiler.exe" />
     <Content Include="Tools\ShaderProcessor.pdb" />
@@ -580,7 +521,7 @@
     <Content Include="Resources\Shaders\TerrainPixelNew.hlsl" />
     <Content Include="Resources\Shaders\TerrainVertex.hlsl" />
     <Content Include="Resources\Shaders\TexturedQuadVertex.hlsl" />
-    <Content Include="Resources\Shaders\TextureQuadPixel.hlsl" />
+    <Content Include="Resources\Shaders\TexturedQuadPixel.hlsl" />
     <Content Include="Resources\Shaders\WmoPixel.hlsl" />
     <Content Include="Resources\Shaders\WmoVertex.hlsl" />
   </ItemGroup>

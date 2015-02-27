@@ -121,9 +121,6 @@
   <data name="TexturedQuadVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\TexturedQuadVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="TextureQuadPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Shaders\TextureQuadPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="TerrainVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\TerrainVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -369,5 +366,8 @@
   </data>
   <data name="M2VertexSingleOld" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2VertexSingleOld.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TexturedQuadPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\TexturedQuadPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
