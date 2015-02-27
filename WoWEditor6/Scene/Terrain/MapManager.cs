@@ -304,24 +304,29 @@ namespace WoWEditor6.Scene.Terrain
 
         private void ProcessLoadedTiles()
         {
+            MapArea data = null;
+            var index = 0;
             lock(mLoadedData)
             {
                 if (mLoadedData.Count > 0)
                 {
-                    var data = mLoadedData[0];
+                    data = mLoadedData[0];
                     mLoadedData.RemoveAt(0);
-                    var index = data.IndexX + data.IndexY * 0xFF;
+                    index = data.IndexX + data.IndexY * 0xFF;
                     if (mAreas.ContainsKey(index))
                     {
                         data.Dispose();
                         return;
                     }
-
-                    var tile = new MapAreaRender(data.IndexX, data.IndexY);
-                    tile.AsyncLoaded(data);
-                    mAreas.Add(index, tile);
                 }
             }
+
+            if (data == null) 
+                return;
+
+            var tile = new MapAreaRender(data.IndexX, data.IndexY);
+            tile.AsyncLoaded(data);
+            mAreas.Add(index, tile);
         }
 
         private void LightUpdateProc()

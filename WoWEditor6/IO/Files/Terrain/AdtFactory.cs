@@ -15,7 +15,7 @@ namespace WoWEditor6.IO.Files.Terrain
 
         public MapArea CreateArea(string continent, int ix, int iy)
         {
-            switch(Version)
+            switch (Version)
             {
                 case FileDataVersion.Warlords:
                     return new WoD.MapArea(continent, ix, iy);

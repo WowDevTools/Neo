@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Windows.Threading;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Texture;
 
@@ -34,13 +33,10 @@ namespace WoWEditor6.Scene.Texture
         private readonly object mWorkEvent = new object();
         private bool mIsRunning = true;
         private readonly List<Thread> mThreads = new List<Thread>();
-
-        private Dispatcher mDispatcher;
         
         public void Initialize(GxContext context)
         {
             mContext = context;
-            mDispatcher = Dispatcher.CurrentDispatcher;
 
             for(var i = 0; i < 2; ++i)
             {
@@ -119,7 +115,7 @@ namespace WoWEditor6.Scene.Texture
                 {
                     var loadInfo = TextureLoader.Load(workItem.FileName);
                     if (loadInfo != null)
-                        mDispatcher.BeginInvoke(new Action(() => workItem.Texture.LoadFromLoadInfo(loadInfo)));
+                        WorldFrame.Instance.Dispatcher.BeginInvoke(() => workItem.Texture.LoadFromLoadInfo(loadInfo));
                     else
                         Log.Warning("Load failed: " + workItem.FileName);
                 }

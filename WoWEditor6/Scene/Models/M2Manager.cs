@@ -91,13 +91,13 @@ namespace WoWEditor6.Scene.Models
 
         public void PushMapReferences(M2Instance[] instances)
         {
-            lock (mAddLock)
+            foreach (var instance in instances)
             {
-                foreach (var instance in instances)
-                {
-                    if (instance == null || instance.RenderInstance == null || instance.RenderInstance.IsUpdated)
-                        continue;
+                if (instance == null || instance.RenderInstance == null || instance.RenderInstance.IsUpdated)
+                    continue;
 
+                lock (mAddLock)
+                {
                     var renderInstance = instance.RenderInstance;
                     renderInstance.Renderer.PushMapReference(instance);
                     mVisibleInstances.Add(instance.Uuid, renderInstance);

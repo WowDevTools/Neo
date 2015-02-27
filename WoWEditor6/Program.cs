@@ -32,7 +32,7 @@ namespace WoWEditor6
                     WorldFrame.Instance.OnFrame();
                     context.EndFrame();
                 }, app.Dispatcher);
-
+            
             app.Run(window);
 
             WorldFrame.Instance.Shutdown();

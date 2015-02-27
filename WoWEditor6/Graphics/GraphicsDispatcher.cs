@@ -35,7 +35,7 @@ namespace WoWEditor6.Graphics
 
                 curFrame();
                 ++numFrames;
-            } while (Environment.TickCount - start < 30 && numFrames < 10);
+            } while (Environment.TickCount - start < 30 && numFrames < 15);
         }
 
         public void BeginInvoke(Action frame)
