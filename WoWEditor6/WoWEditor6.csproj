@@ -310,6 +310,11 @@
     <None Include="listfile.bin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\Shaders\M2Pixel2PassOld.dxc" />
+    <None Include="Resources\Shaders\M2Pixel3PassOld.dxc" />
+    <None Include="Resources\Shaders\M2PixelBlendAlphaOld.dxc" />
+    <None Include="Resources\Shaders\M2PixelBlendOld.dxc" />
+    <None Include="Resources\Shaders\M2PixelOld.dxc" />
     <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod.dxc" />
     <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_Add.dxc" />
     <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Mod_AddAlpha.dxc" />
@@ -334,6 +339,7 @@
     <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha.dxc" />
     <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_ModNA_Alpha.dxc" />
     <None Include="Resources\Shaders\M2Pixel_PS_Combiners_Opaque_Opaque.dxc" />
+    <None Include="Resources\Shaders\M2VertexInstancedOld.dxc" />
     <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_Env.dxc" />
     <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_Env_Env.dxc" />
     <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_Env_T1.dxc" />
@@ -347,6 +353,7 @@
     <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_T2.dxc" />
     <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_T2_T1.dxc" />
     <None Include="Resources\Shaders\M2VertexInstanced_VS_Diffuse_T2.dxc" />
+    <None Include="Resources\Shaders\M2VertexSingleOld.dxc" />
     <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_Env.dxc" />
     <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_Env_Env.dxc" />
     <None Include="Resources\Shaders\M2VertexSingle_VS_Diffuse_Env_T1.dxc" />
@@ -536,6 +543,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Shaders\M2PixelOld.hlsl" />
+    <Content Include="Resources\Shaders\M2PixelPortraitOld.hlsl" />
+    <Content Include="Resources\Shaders\M2VertexInstancedOld.hlsl" />
+    <Content Include="Resources\Shaders\M2VertexPortraitOld.hlsl" />
+    <Content Include="Resources\Shaders\M2VertexSingleOld.hlsl" />
     <Content Include="Tools\ShaderCompiler.exe" />
     <Content Include="Tools\ShaderProcessor.pdb" />
     <None Include="Properties\Settings.settings">

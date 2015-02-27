@@ -200,8 +200,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     TexAnimIndex = uvIndex,
                     TexUnitNumber = texUnit.texUnitNumber,
                     OpCount = texUnit.op_count,
-                    VertexShaderType = M2ShadersClass.GetVertexShaderType(texUnit.shaderId, texUnit.op_count),
-                    PixelShaderType = M2ShadersClass.GetPixelShaderType(texUnit.shaderId, texUnit.op_count),
+                    VertexShaderType = M2ShadersClass.GetVertexShaderTypeOld(texUnit.shaderId, texUnit.op_count),
+                    PixelShaderType = M2ShadersClass.GetPixelShaderTypeOld(texUnit.shaderId, texUnit.op_count),
                 });
             }
 

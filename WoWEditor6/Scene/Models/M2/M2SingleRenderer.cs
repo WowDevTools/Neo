@@ -38,6 +38,12 @@ namespace WoWEditor6.Scene.Models.M2
 
         private static ShaderProgram gCustomProgram;
 
+        private static ShaderProgram gNoBlendProgram;
+        private static ShaderProgram gBlendProgram;
+        private static ShaderProgram gBlendTestProgram;
+        private static ShaderProgram g2PassProgram;
+        private static ShaderProgram g3PassProgram;
+
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
@@ -77,6 +83,16 @@ namespace WoWEditor6.Scene.Models.M2
         public static void BeginDraw()
         {
             gMesh.BeginDraw();
+
+            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+            {
+                gMesh.InitLayout(gNoBlendProgram);
+            }
+            else
+            {
+                gMesh.InitLayout(gCustomProgram);
+            }
+
             gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(2, gSamplerWrapBoth);
@@ -201,6 +217,118 @@ namespace WoWEditor6.Scene.Models.M2
             }
         }
 
+        public void OnFrame_Old(M2Renderer renderer, M2RenderInstance instance)
+        {
+            var animator = renderer.Animator;
+            if (mAnimator != null)
+            {
+                // If we have our own animator, use that. Otherwise use the global one.
+                animator = mAnimator;
+
+                var camera = WorldFrame.Instance.ActiveCamera;
+                mAnimator.Update(new BillboardParameters
+                {
+                    Forward = camera.Forward,
+                    Right = camera.Right,
+                    Up = camera.Up,
+                    InverseRotation = instance.InverseRotation
+                });
+
+                if (mAnimator.GetBones(mAnimationMatrices))
+                    mAnimBuffer.UpdateData(mAnimationMatrices);
+            }
+
+            gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
+            gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
+
+            gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
+            {
+                instanceMat = instance.InstanceMatrix,
+                colorMod = instance.HighlightColor
+            });
+
+            gMesh.Program.SetVertexConstantBuffer(1, mAnimBuffer ?? renderer.AnimBuffer);
+
+            foreach (var pass in mModel.Passes)
+            {
+                if (!mModel.NeedsPerInstanceAnimation)
+                {
+                    // Prevent double rendering since this model pass
+                    // was already processed by the batch renderer
+                    if (pass.BlendMode == 0 || pass.BlendMode == 1)
+                        continue;
+                }
+
+                var oldProgram = gMesh.Program;
+                ShaderProgram newProgram;
+                switch (pass.BlendMode)
+                {
+                    case 0:
+                        newProgram = gNoBlendProgram;
+                        break;
+                    case 1:
+                        newProgram = gBlendTestProgram;
+                        break;
+                    default:
+                        switch (pass.Textures.Count)
+                        {
+                            case 2:
+                                newProgram = g2PassProgram;
+                                break;
+
+                            case 3:
+                                newProgram = g3PassProgram;
+                                break;
+
+                            default:
+                                newProgram = gBlendProgram;
+                                break;
+                        }
+                        break;
+                }
+
+                if (newProgram != oldProgram)
+                {
+                    gMesh.Program = newProgram;
+                    gMesh.Program.Bind();
+                }
+
+                var depthState = gDepthNoWriteState;
+                if (pass.BlendMode == 0 || pass.BlendMode == 1)
+                    depthState = gDepthWriteState;
+
+                gMesh.UpdateDepthState(depthState);
+
+                var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
+                gMesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
+                gMesh.UpdateBlendState(BlendStates[pass.BlendMode]);
+
+                var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
+                var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
+
+                Matrix uvAnimMat;
+                animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                var color = animator.GetColorValue(pass.ColorAnimIndex);
+                var alpha = animator.GetAlphaValue(pass.AlphaAnimIndex);
+                color.W *= alpha;
+
+                gPerPassBuffer.UpdateData(new PerModelPassBuffer()
+                {
+                    uvAnimMatrix1 = uvAnimMat,
+                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
+                    animatedColor = color
+                });
+
+                gMesh.StartVertex = 0;
+                gMesh.StartIndex = pass.StartIndex;
+                gMesh.IndexCount = pass.IndexCount;
+                for (var i = 0; i < pass.Textures.Count && i < 3; ++i)
+                    gMesh.Program.SetPixelTexture(i, pass.Textures[i]);
+
+                gMesh.Draw();
+            }
+        }
+
         public void OnSyncLoad()
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
@@ -247,8 +375,27 @@ namespace WoWEditor6.Scene.Models.M2
             gCustomProgram.SetVertexShader(Resources.Shaders.M2VertexSingle_VS_Diffuse_T1);
             gCustomProgram.SetPixelShader(Resources.Shaders.M2Pixel_PS_Combiners_Mod);
 
-            gMesh.InitLayout(gCustomProgram);
             gMesh.Program = gCustomProgram;
+
+            gNoBlendProgram = new ShaderProgram(context);
+            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2PixelOld);
+            gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
+
+            gBlendProgram = new ShaderProgram(context);
+            gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendOld);
+            gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
+
+            gBlendTestProgram = new ShaderProgram(context);
+            gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlphaOld);
+            gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
+
+            g2PassProgram = new ShaderProgram(context);
+            g2PassProgram.SetPixelShader(Resources.Shaders.M2Pixel2PassOld);
+            g2PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
+
+            g3PassProgram = new ShaderProgram(context);
+            g3PassProgram.SetPixelShader(Resources.Shaders.M2Pixel3PassOld);
+            g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
             gPerDrawCallBuffer = new ConstantBuffer(context);
             gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()

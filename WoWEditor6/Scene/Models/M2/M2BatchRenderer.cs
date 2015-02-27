@@ -38,6 +38,9 @@ namespace WoWEditor6.Scene.Models.M2
 
         private static ShaderProgram gCustomProgram;
 
+        private static ShaderProgram gMaskBlendProgram;
+        private static ShaderProgram gNoBlendProgram;
+
         private static RasterState gNoCullState;
         private static RasterState gCullState;
 
@@ -68,6 +71,16 @@ namespace WoWEditor6.Scene.Models.M2
         public static void BeginDraw()
         {
             gMesh.BeginDraw();
+
+            if( IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking )
+            {
+                gMesh.InitLayout(gNoBlendProgram);
+            }
+            else
+            {
+                gMesh.InitLayout(gCustomProgram);
+            }
+            
             gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(2, gSamplerWrapBoth);
@@ -159,6 +172,57 @@ namespace WoWEditor6.Scene.Models.M2
             }
         }
 
+        public void OnFrame_Old(M2Renderer renderer)
+        {
+            UpdateVisibleInstances(renderer);
+            if (mInstanceCount == 0)
+                return;
+
+            gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
+            gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
+            gMesh.UpdateInstanceBuffer(mInstanceBuffer);
+            gMesh.Program.SetVertexConstantBuffer(1, renderer.AnimBuffer);
+
+            foreach (var pass in Model.Passes)
+            {
+                // This renderer is only for opaque pass
+                if (pass.BlendMode != 0 && pass.BlendMode != 1)
+                    continue;
+
+                var program = pass.BlendMode == 0 ? gNoBlendProgram : gMaskBlendProgram;
+                if (program != gMesh.Program)
+                {
+                    gMesh.Program = program;
+                    program.Bind();
+                }
+
+                var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
+                gMesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
+                gMesh.UpdateBlendState(BlendStates[pass.BlendMode]);
+
+                var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
+                var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
+
+                Matrix uvAnimMat;
+                renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                var color = renderer.Animator.GetColorValue(pass.ColorAnimIndex);
+                color.W *= renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex);
+
+                gPerPassBuffer.UpdateData(new PerModelPassBuffer
+                {
+                    uvAnimMatrix1 = uvAnimMat,
+                    modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
+                    animatedColor = color
+                });
+
+                gMesh.StartVertex = 0;
+                gMesh.StartIndex = pass.StartIndex;
+                gMesh.IndexCount = pass.IndexCount;
+                gMesh.Program.SetPixelTexture(0, pass.Textures.First());
+                gMesh.Draw(mInstanceCount);
+            }
+        }
+
         private void UpdateVisibleInstances(M2Renderer renderer)
         {
             lock (renderer.VisibleInstances)
@@ -220,9 +284,17 @@ namespace WoWEditor6.Scene.Models.M2
             gCustomProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1);
             gCustomProgram.SetPixelShader(Resources.Shaders.M2Pixel_PS_Combiners_Opaque);
 
-            gMesh.InitLayout(gCustomProgram);
             gMesh.Program = gCustomProgram;
 
+            // Old versions for temporary WOTLK compatibility.. can we figure out how to map these to the actual types??
+            gNoBlendProgram = new ShaderProgram(context);
+            gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
+            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2PixelOld);
+
+            gMaskBlendProgram = new ShaderProgram(context);
+            gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
+            gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlphaOld);
+            
             gPerPassBuffer = new ConstantBuffer(context);
 
             gPerPassBuffer.UpdateData(new PerModelPassBuffer()
@@ -233,8 +305,6 @@ namespace WoWEditor6.Scene.Models.M2
                 uvAnimMatrix4 = Matrix.Identity,
                 modelPassParams = Vector4.Zero
             });
-
-            
 
             gSamplerWrapU = new Sampler(context)
             {

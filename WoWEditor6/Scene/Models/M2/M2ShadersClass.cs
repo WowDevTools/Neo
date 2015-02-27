@@ -215,6 +215,24 @@ namespace WoWEditor6.Scene.Models.M2
             }
         }
 
+        public static M2VertexShaderType GetVertexShaderTypeOld(short shader_id, ushort op_count)
+        {
+            if (shader_id == 0) return M2VertexShaderType.VS_Diffuse_T1;
+            if (shader_id == 1) return M2VertexShaderType.VS_Diffuse_T1;
+            if (shader_id == 2) return M2VertexShaderType.VS_Diffuse_T1_T2;
+
+            return M2VertexShaderType.VS_Diffuse_T1;
+        }
+
+        public static M2PixelShaderType GetPixelShaderTypeOld(short shader_id, ushort op_count)
+        {
+            if (shader_id == 0) return M2PixelShaderType.PS_Combiners_Opaque;
+            if (shader_id == 1) return M2PixelShaderType.PS_Combiners_Mod;
+            if (shader_id == 2) return M2PixelShaderType.PS_Combiners_Opaque_Mod;
+
+            return M2PixelShaderType.PS_Combiners_Opaque;
+        }
+
         public void Initialize( DeviceContext ctx )
         {
             InitializePixelShaders( ctx );

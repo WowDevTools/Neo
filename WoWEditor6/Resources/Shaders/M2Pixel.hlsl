@@ -93,6 +93,7 @@ float4 commonFinalize( float4 finalizeColor, PixelInput input )
 float4 main_PS_Combiners_Opaque( PixelInput input ) : SV_Target
 {
 	float4 textureColor1 = texture1.Sample( sampler1, input.texCoord1 );
+	clip((modelPassParams.z && textureColor1.a <= 0.5f) ? -1 : 1);
 
 	float4 r0 = textureColor1;
 	r0.rgb *= input.color.rgb;

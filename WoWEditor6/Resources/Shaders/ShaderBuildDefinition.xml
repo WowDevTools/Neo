@@ -128,6 +128,38 @@
   </ShaderDefinition>
 
   <ShaderDefinition>
+    <SourceName>Resources\Shaders\M2PixelOld.hlsl</SourceName>
+    <Profile>ps_4_0</Profile>
+    <Permutations>
+      <ShaderPermutation>
+        <EntryPoint>main</EntryPoint>
+        <TargetFile>Resources\Shaders\M2PixelOld.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
+        <EntryPoint>main_blend_alpha_test</EntryPoint>
+        <TargetFile>Resources\Shaders\M2PixelBlendAlphaOld.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
+        <EntryPoint>main_blend</EntryPoint>
+        <TargetFile>Resources\Shaders\M2PixelBlendOld.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
+        <EntryPoint>main_blend_2_pass</EntryPoint>
+        <TargetFile>Resources\Shaders\M2Pixel2PassOld.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
+        <EntryPoint>main_blend_3_pass</EntryPoint>
+        <TargetFile>Resources\Shaders\M2Pixel3PassOld.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+    </Permutations>
+  </ShaderDefinition>
+  
+  <ShaderDefinition>
     <SourceName>Resources\Shaders\M2PixelPortrait.hlsl</SourceName>
     <Profile>ps_4_0</Profile>
     <Permutations>
@@ -313,6 +345,30 @@
     </Permutations>
   </ShaderDefinition>
 
+  <ShaderDefinition>
+    <SourceName>Resources\Shaders\M2VertexInstancedOld.hlsl</SourceName>
+    <Profile>vs_4_0</Profile>
+    <Permutations>
+      <ShaderPermutation>
+        <EntryPoint>main</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexInstancedOld.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+    </Permutations>
+  </ShaderDefinition>
+
+  <ShaderDefinition>
+    <SourceName>Resources\Shaders\M2VertexSingleOld.hlsl</SourceName>
+    <Profile>vs_4_0</Profile>
+    <Permutations>
+      <ShaderPermutation>
+        <EntryPoint>main</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexSingleOld.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+    </Permutations>
+  </ShaderDefinition>
+  
   <ShaderDefinition>
     <SourceName>Resources\Shaders\M2VertexPortrait.hlsl</SourceName>
     <Profile>vs_4_0</Profile>
