@@ -256,6 +256,7 @@ namespace WoWEditor6.Scene
 
         public void UpdateFogParams(Color3 fogColor, float fogStart)
         {
+            fogStart = Math.Min(fogStart, 899.0f);
             lock (mGlobalBuffer)
             {
                 mGlobalBufferStore.fogColor = new Color4(fogColor, 1.0f);

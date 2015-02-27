@@ -80,6 +80,8 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
             if (timeValues.Count == 0)
                 return 0.0f;
 
+            time %= 2880;
+
             if (timeValues[0] > time)
                 time = timeValues[0];
 

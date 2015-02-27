@@ -13,8 +13,11 @@ namespace WoWEditor6.Scene.Models.WMO
         public BoundingBox[] GroupBoxes { get; private set; }
         public Matrix InstanceMatrix { get { return mInstanceMatrix; } }
 
+        public int ReferenceCount;
+
         public WmoInstance(int uuid, Vector3 position, Vector3 rotation, WmoRootRender model)
         {
+            ReferenceCount = 1;
             Uuid = uuid;
             BoundingBox = model.BoundingBox;
             mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),

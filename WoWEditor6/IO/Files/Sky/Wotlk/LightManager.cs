@@ -42,7 +42,7 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
 
             var fogStart = mCurFloats[1] * mCurFloats[0];
             fogStart /= 72.0f;
-            fogStart = Math.Max(fogStart, 0);
+            fogStart = Math.Max(fogStart, 20);
 
             WorldFrame.Instance.UpdateFogParams(mCurColors[(int)LightColor.Fog], fogStart);
             WorldFrame.Instance.UpdateMapAmbient(mCurColors[(int)LightColor.Ambient]);
