@@ -201,8 +201,18 @@
         <Definitions/>
       </ShaderPermutation>
       <ShaderPermutation>
+        <EntryPoint>main_VS_Diffuse_EdgeFade_T1</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexInstanced_VS_Diffuse_EdgeFade_T1.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
         <EntryPoint>main_VS_Diffuse_T1_T2</EntryPoint>
         <TargetFile>Resources\Shaders\M2VertexInstanced_VS_Diffuse_T1_T2.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
+        <EntryPoint>main_VS_Diffuse_EdgeFade_T1_T2</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexInstanced_VS_Diffuse_EdgeFade_T1_T2.dxc</TargetFile>
         <Definitions/>
       </ShaderPermutation>
       <ShaderPermutation>
@@ -228,6 +238,11 @@
       <ShaderPermutation>
         <EntryPoint>main_VS_Diffuse_Env</EntryPoint>
         <TargetFile>Resources\Shaders\M2VertexInstanced_VS_Diffuse_Env.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
+        <EntryPoint>main_VS_Diffuse_EdgeFade_Env</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexInstanced_VS_Diffuse_EdgeFade_Env.dxc</TargetFile>
         <Definitions/>
       </ShaderPermutation>
       <ShaderPermutation>
@@ -278,8 +293,18 @@
         <Definitions/>
       </ShaderPermutation>
       <ShaderPermutation>
+        <EntryPoint>main_VS_Diffuse_EdgeFade_T1</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexSingle_VS_Diffuse_EdgeFade_T1.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
         <EntryPoint>main_VS_Diffuse_T1_T2</EntryPoint>
         <TargetFile>Resources\Shaders\M2VertexSingle_VS_Diffuse_T1_T2.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
+        <EntryPoint>main_VS_Diffuse_EdgeFade_T1_T2</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2.dxc</TargetFile>
         <Definitions/>
       </ShaderPermutation>
       <ShaderPermutation>
@@ -305,6 +330,11 @@
       <ShaderPermutation>
         <EntryPoint>main_VS_Diffuse_Env</EntryPoint>
         <TargetFile>Resources\Shaders\M2VertexSingle_VS_Diffuse_Env.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+      <ShaderPermutation>
+        <EntryPoint>main_VS_Diffuse_EdgeFade_Env</EntryPoint>
+        <TargetFile>Resources\Shaders\M2VertexSingle_VS_Diffuse_EdgeFade_Env.dxc</TargetFile>
         <Definitions/>
       </ShaderPermutation>
       <ShaderPermutation>
