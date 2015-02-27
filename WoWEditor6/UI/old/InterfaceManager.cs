@@ -48,7 +48,9 @@ namespace WoWEditor6.UI
             Surface.OnResize(window.ClientSize.Width, window.ClientSize.Height);
             mQuadSampler = new Sampler(context)
             {
-                AddressMode = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipPoint
             };
 
@@ -217,6 +219,7 @@ namespace WoWEditor6.UI
             mMesh.AddElement("POSITION", 0, 2);
             mMesh.AddElement("TEXCOORD", 0, 2);
             mMesh.Program = program;
+            mMesh.InitLayout(program);
             mMesh.DepthState.DepthEnabled = false;
             mMesh.BlendState.BlendEnabled = true;
         }

@@ -196,8 +196,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
         public readonly ushort op_count;
         public readonly ushort texture;
         public readonly ushort texUnitNumber2;
-        public readonly short transparency;
-        public readonly short textureAnim;
+        public readonly short transparencyIndex;
+        public readonly short textureAnimIndex;
     }
 
     [StructLayout(LayoutKind.Sequential)]

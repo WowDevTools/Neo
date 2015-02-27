@@ -42,6 +42,7 @@ namespace WoWEditor6.Scene.Terrain
             program.SetPixelShader(Resources.Shaders.SkyPixel);
 
             mMesh.Program = program;
+            mMesh.InitLayout(program);
         }
 
         public void Render()

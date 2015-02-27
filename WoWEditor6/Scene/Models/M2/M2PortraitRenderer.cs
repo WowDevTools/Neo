@@ -14,9 +14,13 @@ namespace WoWEditor6.Scene.Models.M2
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer
         {
-            public Matrix uvAnimMatrix;
+            public Matrix uvAnimMatrix1;
+            public Matrix uvAnimMatrix2;
+            public Matrix uvAnimMatrix3;
+            public Matrix uvAnimMatrix4;
             public Vector4 modelPassParams;
-            public Vector4 ColorValue;
+            public Vector4 animatedColor;
+            public Vector4 transparency;
         }
 
         private static Mesh Mesh { get; set; }
@@ -65,6 +69,7 @@ namespace WoWEditor6.Scene.Models.M2
         {
             Animator.Update(null);
 
+            Mesh.InitLayout(Mesh.Program);
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);
 
@@ -131,9 +136,9 @@ namespace WoWEditor6.Scene.Models.M2
 
                 mPerPassBuffer.UpdateData(new PerModelPassBuffer
                 {
-                    uvAnimMatrix = uvAnimMat,
+                    uvAnimMatrix1 = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
-                    ColorValue = color
+                    animatedColor = color
                 });
 
                 Mesh.StartVertex = 0;
@@ -155,7 +160,7 @@ namespace WoWEditor6.Scene.Models.M2
             mPerPassBuffer = new ConstantBuffer(ctx);
             mPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {
-                uvAnimMatrix = Matrix.Identity,
+                uvAnimMatrix1 = Matrix.Identity,
                 modelPassParams = Vector4.Zero
             });
 
@@ -189,7 +194,9 @@ namespace WoWEditor6.Scene.Models.M2
 
             Sampler = new Sampler(context)
             {
-                AddressMode = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
+                AddressW = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
             };
 

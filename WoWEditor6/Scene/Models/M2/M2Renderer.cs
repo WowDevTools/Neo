@@ -65,7 +65,17 @@ namespace WoWEditor6.Scene.Models.M2
                 AnimBuffer.UpdateData(mAnimationMatrices);
 
             if (Model.HasOpaquePass)
-                mBatchRenderer.OnFrame(this);
+            {
+                if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+                {
+                    mBatchRenderer.OnFrame_Old(this);
+                }
+                else
+                {
+                    mBatchRenderer.OnFrame(this);
+
+                }
+            }
         }
 
         public void RenderSingleInstance(M2RenderInstance instance)
@@ -77,7 +87,16 @@ namespace WoWEditor6.Scene.Models.M2
             }
 
             if (!mSkipRendering)
-                mSingleRenderer.OnFrame(this, instance);
+            {
+                if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+                {
+                    mSingleRenderer.OnFrame_Old(this, instance);
+                }
+                else
+                {
+                    mSingleRenderer.OnFrame(this, instance);
+                }
+            }
         }
 
         public void RenderPortrait()
