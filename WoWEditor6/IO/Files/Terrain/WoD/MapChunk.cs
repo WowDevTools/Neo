@@ -25,11 +25,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly WeakReference<MapArea> mParent;
 
-        private readonly List<Mcly> mLayerInfos = new List<Mcly>();
+        private Mcly[] mLayerInfos = new Mcly[0];
         private readonly Vector4[] mShadingFloats = new Vector4[145];
 
         private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
         private readonly Dictionary<uint, DataChunk> mOriginalObjChunks = new Dictionary<uint, DataChunk>(); 
+        private readonly Dictionary<uint, DataChunk> mOriginalTexChunks = new Dictionary<uint, DataChunk>(); 
         private static readonly uint[] Indices = new uint[768];
         private string[] mTextureNames = new string[0];
 
@@ -112,6 +113,24 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             writer.Write(totalSize);
 
             foreach (var chunk in mOriginalObjChunks)
+            {
+                writer.Write(chunk.Key);
+                writer.Write(chunk.Value.Size);
+                writer.Write(chunk.Value.Data);
+            }
+        }
+
+        public void WriteTexChunks(BinaryWriter writer)
+        {
+            var alpha = SaveAlpha();
+            AddOrUpdateChunk(mOriginalTexChunks, 0x4D43414C, alpha.ToArray());
+            AddOrUpdateChunk(mOriginalTexChunks, 0x4D434C59, mLayerInfos);
+
+            var totalSize = mOriginalTexChunks.Sum(pair => pair.Value.Size + 8);
+            writer.Write(0x4D434E4B);
+            writer.Write(totalSize);
+
+            foreach (var chunk in mOriginalTexChunks)
             {
                 writer.Write(chunk.Key);
                 writer.Write(chunk.Value.Size);
@@ -459,6 +478,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                             break;
                     }
 
+                    mTexReader.BaseStream.Position = cur;
+                    var data = mTexReader.ReadBytes(size);
+                    mOriginalTexChunks.Add(id, new DataChunk { Data = data, Signature = id, Size = size });
                     mTexReader.BaseStream.Position = cur + size;
                 }
 
@@ -471,8 +493,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     throw new InvalidOperationException("Parent got disposed but loading was still invoked");
 
                 TextureScales = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
-                mTextureNames = new string[mLayerInfos.Count];
-                for (var i = 0; i < mLayerInfos.Count && i < 4; ++i)
+                mTextureNames = new string[mLayerInfos.Length];
+                for (var i = 0; i < mLayerInfos.Length && i < 4; ++i)
                 {
                     var texName = parent.GetTextureName(mLayerInfos[i].TextureId);
                     mTextureNames[i] = texName;
@@ -491,7 +513,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void LoadAlpha()
         {
-            var nLayers = Math.Min(mLayerInfos.Count, 4);
+            var nLayers = Math.Min(mLayerInfos.Length, 4);
             for(var i = 1; i < nLayers; ++i)
             {
                 if ((mLayerInfos[i].Flags & 0x200) != 0)
@@ -693,7 +715,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void LoadMcly(int size)
         {
-            mLayerInfos.AddRange(mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size));
+            mLayerInfos = mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size);
         }
 
         private unsafe DataChunk ChunkFromArray<T>(uint signature, T[] data) where T : struct
@@ -855,11 +877,95 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 Padding = 0
             };
 
-            mLayerInfos.Add(layer);
+            var layers = mLayerInfos;
+            mLayerInfos = new Mcly[layers.Length + 1];
+            for (var i = 0; i < layers.Length; ++i)
+                mLayerInfos[i] = layers[i];
+
+            mLayerInfos[layers.Length] = layer;
 
             Textures.Add(parent.GetTexture(texId));
             TexturesChanged = true;
-            return mLayerInfos.Count - 1;
+            return mLayerInfos.Length - 1;
+        }
+
+        private unsafe void AddOrUpdateChunk<T>(Dictionary<uint, DataChunk> chunks, uint signature, T[] data) where T : struct
+        {
+            var chunk = chunks.ContainsKey(signature) ? chunks[signature] : new DataChunk {Signature = signature};
+            var totalSize = SizeCache<T>.Size * data.Length;
+            chunk.Size = totalSize;
+            chunk.Data = new byte[totalSize];
+            if (chunk.Data.Length > 0)
+            {
+                var ptr = SizeCache<T>.GetUnsafePtr(ref data[0]);
+                fixed (byte* bptr = chunk.Data)
+                    UnsafeNativeMethods.CopyMemory(bptr, (byte*) ptr, totalSize);
+            }
+
+            if (chunks.ContainsKey(signature))
+                chunks[signature] = chunk;
+            else
+                chunks.Add(signature, chunk);
+        }
+
+        private MemoryStream SaveAlpha()
+        {
+            if (mLayerInfos.Length == 0)
+                return new MemoryStream();
+
+            var strm = new MemoryStream();
+            var writer = new BinaryWriter(strm);
+
+            var curPos = 0;
+            mLayerInfos[0].Flags &= ~0x300;
+            mLayerInfos[0].OfsMcal = 0;
+            for (var i = 1; i < mLayerInfos.Length; ++i)
+            {
+                bool compressed;
+                var data = GetSavedAlphaForLayer(i, out compressed);
+                mLayerInfos[i].OfsMcal = curPos;
+                if (compressed)
+                    mLayerInfos[i].Flags |= 0x300;
+                else
+                {
+                    mLayerInfos[i].Flags |= 0x100;
+                    mLayerInfos[i].Flags &= ~0x200;
+                }
+
+                writer.Write(data);
+                curPos += data.Length;
+            }
+
+            return strm;
+        }
+
+        private float CalculateAlphaHomogenity(int layer)
+        {
+            var numCompressable = 1;
+            var lastAlpha = (AlphaValues[0] >> (layer * 8)) & 0xFF;
+            for (var i = 1; i < 4096; ++i)
+            {
+                var value = (AlphaValues[i] >> (layer * 8)) & 0xFF;
+                if (value == lastAlpha)
+                    ++numCompressable;
+
+                lastAlpha = value;
+            }
+
+            return numCompressable / 4096.0f;
+        }
+
+        private byte[] GetSavedAlphaForLayer(int layer, out bool compressed)
+        {
+            compressed = false;
+            var homogenity = CalculateAlphaHomogenity(layer);
+            if (homogenity < float.MaxValue)
+            {
+                compressed = true;
+                return GetAlphaCompressed(layer);
+            }
+
+            return GetAlphaUncompressed(layer);
         }
 
         static MapChunk()

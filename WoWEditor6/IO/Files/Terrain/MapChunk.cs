@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Policy;
+using System.IO;
 using SharpDX;
 using WoWEditor6.Scene;
 
@@ -327,6 +327,117 @@ namespace WoWEditor6.IO.Files.Terrain
             }
 
             return changed;
+        }
+
+        private void CompressRow(Stream strm, int row, int layer)
+        {
+            var baseIndex = row * 64;
+
+            // step 1: find ranges of identical values
+            var ranges = new List<Tuple<int, int>>();
+            var lastValue = (byte)((AlphaValues[baseIndex] >> (layer * 8)) & 0xFF);
+            var curRangeStart = 0;
+            for (var i = 1; i < 64; ++i)
+            {
+                var cur = (byte)((AlphaValues[i + baseIndex] >> (layer * 8)) & 0xFF);
+                if (cur == lastValue)
+                    continue;
+
+                if (i - curRangeStart > 1)
+                    ranges.Add(new Tuple<int, int>(curRangeStart, i));
+
+                curRangeStart = i;
+                lastValue = cur;
+            }
+
+            // step 2: Write the ranges appropriately
+            var read = 0;
+            while (read < 64)
+            {
+                var range = ranges.Count > 0 ? ranges[0] : null;
+                if (range != null && range.Item1 == read)
+                {
+                    var value = (byte)((AlphaValues[read + baseIndex] >> (layer * 8)) & 0xFF);
+                    var repeatCount = range.Item2 - range.Item1;
+                    while (repeatCount >= 0x7F)
+                    {
+                        strm.WriteByte(0xFF);
+                        strm.WriteByte(value);
+                        repeatCount -= 0x7F;
+                    }
+
+                    if (repeatCount > 0)
+                    {
+                        strm.WriteByte((byte)(0x80 | repeatCount));
+                        strm.WriteByte(value);
+                    }
+
+                    ranges.RemoveAt(0);
+
+                    read = range.Item2;
+                }
+                else
+                {
+                    var nextRange = ranges.Count > 0 ? ranges[0] : null;
+                    int repeatCount;
+                    if (nextRange == null)
+                        repeatCount = 64 - read;
+                    else
+                        repeatCount = nextRange.Item1 - read;
+
+                    while (repeatCount >= 0x7F)
+                    {
+                        strm.WriteByte(0x7F);
+                        for (var i = 0; i < 0x7F; ++i)
+                            strm.WriteByte((byte)((AlphaValues[baseIndex + read++] >> (layer * 8)) & 0xFF));
+
+                        repeatCount -= 0x7F;
+                    }
+
+                    if (repeatCount > 0)
+                    {
+                        strm.WriteByte((byte)repeatCount);
+                        for (var i = 0; i < repeatCount; ++i)
+                            strm.WriteByte((byte)((AlphaValues[baseIndex + read++] >> (layer * 8)) & 0xFF));
+                    }
+                }
+            }
+        }
+
+        protected byte[] GetAlphaCompressed(int layer)
+        {
+            var strm = new MemoryStream();
+
+            for (var i = 0; i < 64; ++i)
+                CompressRow(strm, i, layer);
+
+            return strm.ToArray();
+        }
+
+        protected byte[] GetAlphaUncompressed(int layer)
+        {
+            if (WorldFrame.Instance.MapManager.HasNewBlend)
+            {
+                var ret = new byte[4096];
+                for (var i = 0; i < 4096; ++i)
+                    ret[i] = (byte)((AlphaValues[i] >> (layer * 8)) & 0xFF);
+                return ret;
+            }
+            else
+            {
+                var ret = new byte[2048];
+                for (var i = 0; i < 2048; ++i)
+                {
+                    var a1 = (byte)((AlphaValues[i * 2] >> (layer * 8)) & 0xFF);
+                    var a2 = (byte)((AlphaValues[i * 2 + 1] >> (layer * 8)) & 0xFF);
+
+                    var v1 = (uint)((a1 / 255.0f) * 15.0f);
+                    var v2 = (uint)((a2 / 255.0f) * 15.0f);
+                    ret[i] = (byte)((v2 << 4) | v1);
+                }
+
+                return ret;
+            }
         }
     }
 }

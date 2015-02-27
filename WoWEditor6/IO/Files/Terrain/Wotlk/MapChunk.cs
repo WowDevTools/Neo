@@ -159,7 +159,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 {
                     for (var j = 0; j < 8; ++j)
                     {
-                        byte mask = reader.ReadByte();
+                        var mask = reader.ReadByte();
                         for (var k = 0; k < 8; ++k)
                         {
                             AlphaValues[curPtr] &= 0xFFFFFF00;
@@ -193,7 +193,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 LoadUnusedChunk(0x4D435345, basePosition + mHeader.Mcse, mHeader.NumSoundEmitters * 0x1C, reader);
             if (mHeader.SizeLiquid > 8)
                 LoadUnusedChunk(0x4D434C51, basePosition + mHeader.Mclq, mHeader.SizeLiquid - 8, reader);
-
             if (mHeader.Mclv > 0)
                 LoadUnusedChunk(0x4D434C56, basePosition + mHeader.Mclv, 0, reader);
 
@@ -869,7 +868,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             //writer.BaseStream.Position = endPos;
 
             chunkSize = (int)strm.Length;
-            header.SizeAlpha = curPos + 8;
+            header.SizeAlpha = chunkSize + 8;
             return strm;
         }
 
@@ -922,116 +921,13 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         {
             compressed = false;
             var homogenity = CalculateAlphaHomogenity(layer);
-            //if (homogenity > 0.3f)
-            //{
-            //    compressed = true;
-            //    return GetAlphaCompressed(layer);
-            //}
+            if (false)
+            {
+                compressed = true;
+                return GetAlphaCompressed(layer);
+            }
 
             return GetAlphaUncompressed(layer);
-        }
-
-        private byte[] GetAlphaCompressed(int layer)
-        {
-            var strm = new MemoryStream();
-
-            // step 1: find ranges of identical values
-            var ranges = new List<Tuple<int, int>>();
-            var lastValue = (byte) ((AlphaValues[0] >> (layer * 8)) & 0xFF);
-            var curRangeStart = 0;
-            for(var i = 1; i < 4096; ++i)
-            {
-                var cur = (byte) ((AlphaValues[i] >> (layer * 8)) & 0xFF);
-                if (cur == lastValue)
-                    continue;
-                
-                if(i - curRangeStart > 1)
-                    ranges.Add(new Tuple<int, int>(curRangeStart, i));
-
-                curRangeStart = i;
-                lastValue = cur;
-            }
-
-            // step 2: Write the ranges appropriately
-            var read = 0;
-            while(read < 4096)
-            {
-                var range = ranges.Count > 0 ? ranges[0] : null;
-                if(range != null && range.Item1 == read)
-                {
-                    var value = (byte) ((AlphaValues[read] >> (layer * 8)) & 0xFF);
-                    var repeatCount = range.Item2 - range.Item1;
-                    while(repeatCount >= 0x7F)
-                    {
-                        strm.WriteByte(0xFF);
-                        strm.WriteByte(value);
-                        repeatCount -= 0x7F;
-                    }
-
-                    if(repeatCount > 0)
-                    {
-                        strm.WriteByte((byte)(0x80 | repeatCount));
-                        strm.WriteByte(value);
-                    }
-
-                    ranges.RemoveAt(0);
-
-                    read = range.Item2;
-                }
-                else
-                {
-                    var nextRange = ranges.Count > 0 ? ranges[0] : null;
-                    int repeatCount;
-                    if (nextRange == null)
-                        repeatCount = 4096 - read;
-                    else
-                        repeatCount = nextRange.Item1 - read;
-
-                    while(repeatCount >= 0x7F)
-                    {
-                        strm.WriteByte(0x7F);
-                        for (var i = 0; i < 0x7F; ++i)
-                            strm.WriteByte((byte) ((AlphaValues[read++] >> (layer * 8)) & 0xFF));
-
-                        repeatCount -= 0x7F;
-                    }
-
-                    if(repeatCount > 0)
-                    {
-                        strm.WriteByte((byte) repeatCount);
-                        for (var i = 0; i < repeatCount; ++i)
-                            strm.WriteByte((byte) ((AlphaValues[read++] >> (layer * 8)) & 0xFF));
-                    }
-                }
-            }
-
-            return strm.ToArray();
-        }
-
-        private byte[] GetAlphaUncompressed(int layer)
-        {
-            if(WorldFrame.Instance.MapManager.HasNewBlend)
-            {
-                var ret = new byte[4096];
-                for (var i = 0; i < 4096; ++i)
-                    ret[i] = (byte)((AlphaValues[i] >> (layer * 8)) & 0xFF);
-                return ret;
-            }
-            else
-            {
-                var ret = new byte[2048];
-                for(var i = 0; i < 2048; ++i)
-                {
-                    var a1 = (byte) ((AlphaValues[i * 2] >> (layer * 8)) & 0xFF);
-                    var a2 = (byte) ((AlphaValues[i * 2 + 1] >> (layer * 8)) & 0xFF);
-
-                    var v1 = (uint) ((a1 / 255.0f) * 15.0f);
-                    var v2 = (uint) ((a2 / 255.0f) * 15.0f);
-                    ret[i] = (byte) ((v2 << 4) | v1);
-                }
-                
-                return ret;
-            }
         }
 
         private int FindTextureLayer(string texture)
