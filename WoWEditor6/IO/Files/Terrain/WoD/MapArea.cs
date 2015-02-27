@@ -41,6 +41,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private readonly Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
         private readonly Dictionary<uint, DataChunk> mObjOrigChunks = new Dictionary<uint, DataChunk>(); 
+        private readonly Dictionary<uint, DataChunk> mTexOrigChunks = new Dictionary<uint, DataChunk>(); 
 
         private bool mWasChanged;
 
@@ -71,6 +72,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
             WriteBaseFile();
             WriteObjFile();
+            WriteTexFile();
         }
 
         public override void OnUpdateModelPositions(TerrainChangeParameters parameters)
@@ -323,6 +325,26 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
                 var data = mObjReader.ReadBytes(size);
                 mObjOrigChunks.Add(signature, new DataChunk
+                {
+                    Data = data,
+                    Signature = signature,
+                    Size = size
+                });
+            }
+
+            mTexReader.BaseStream.Position = 0;
+            while (mTexReader.BaseStream.Position + 8 < mTexReader.BaseStream.Length)
+            {
+                var signature = mTexReader.ReadUInt32();
+                var size = mTexReader.ReadInt32();
+                if (signature == 0x4D434E4B)
+                {
+                    mTexReader.BaseStream.Position += size;
+                    continue;
+                }
+
+                var data = mTexReader.ReadBytes(size);
+                mTexOrigChunks.Add(signature, new DataChunk
                 {
                     Data = data,
                     Signature = signature,
@@ -610,6 +632,26 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 foreach (var chunk in mChunks.Where(chunk => chunk != null))
                 {
                     chunk.WriteObjChunks(writer);
+                }
+            }
+        }
+
+        private void WriteTexFile()
+        {
+            using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}_tex0.adt", Continent, IndexX, IndexY)))
+            {
+                var writer = new BinaryWriter(strm);
+
+                foreach (var pair in mTexOrigChunks)
+                {
+                    writer.Write(pair.Value.Signature);
+                    writer.Write(pair.Value.Size);
+                    writer.Write(pair.Value.Data);
+                }
+
+                foreach (var chunk in mChunks.Where(chunk => chunk != null))
+                {
+                    chunk.WriteTexChunks(writer);
                 }
             }
         }

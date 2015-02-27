@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using WoWEditor6.IO.CASC;
 
 namespace WoWEditor6.IO
 {

@@ -45,6 +45,7 @@ namespace WoWEditor6.Scene.Models
 
         public void Initialize()
         {
+            mIsRunning = true;
             mSortedInstances = new SortedDictionary<int, M2RenderInstance>(
                 new InstanceSortComparer(mVisibleInstances));
             mUnloadThread = new Thread(UnloadProc);
