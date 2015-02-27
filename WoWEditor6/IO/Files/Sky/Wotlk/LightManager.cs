@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpDX;
 using WoWEditor6.Scene;
 
@@ -41,6 +42,7 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
 
             var fogStart = mCurFloats[1] * mCurFloats[0];
             fogStart /= 72.0f;
+            fogStart = Math.Max(fogStart, 0);
 
             WorldFrame.Instance.UpdateFogParams(mCurColors[(int)LightColor.Fog], fogStart);
             WorldFrame.Instance.UpdateMapAmbient(mCurColors[(int)LightColor.Ambient]);
