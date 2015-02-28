@@ -52,6 +52,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public void SaveChunk(BinaryWriter writer)
         {
+            int unusedSize;
             var basePos = (int) writer.BaseStream.Position;
             writer.Write(0x4D434E4B);
             writer.Write(0);
@@ -61,13 +62,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             writer.Write(header);
 
             SaveHeights(writer, basePos, ref header);
-            SaveNormals(writer, basePos, ref header);
             SaveMccv(writer, basePos, ref header);
+            SaveNormals(writer, basePos, ref header);
             // INFO: SaveAlpha must be called before SaveLayers since SaveAlpha modifies the layer flags
             int alphaChunkSize;
             var alphaStream = SaveAlpha(ref header, out alphaChunkSize);
             SaveLayers(writer, basePos, ref header);
-
+            SaveUnusedChunk(writer, 0x4D435246, basePos, out header.Mcrf, out unusedSize);
+            SaveUnusedChunk(writer, 0x4D435348, basePos, out header.Mcsh, out unusedSize);
             // Noggit panics when MCAL is not after MCLY even though there is no reason
             // that any sane person would imply an order in an interchangeable file format,
             // but lets make them happy anyway.
@@ -199,8 +201,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 LoadUnusedChunk(0x4D435246, basePosition + mHeader.Mcrf, (mHeader.NumDoodadRefs + mHeader.NumMapObjRefs) * 4, reader);
             if (mHeader.SizeShadow > 0)
                 LoadUnusedChunk(0x4D435348, basePosition + mHeader.Mcsh, mHeader.SizeShadow, reader);
-            if (mHeader.NumSoundEmitters > 0)
-                LoadUnusedChunk(0x4D435345, basePosition + mHeader.Mcse, mHeader.NumSoundEmitters * 0x1C, reader);
+            LoadUnusedChunk(0x4D435345, basePosition + mHeader.Mcse, mHeader.NumSoundEmitters * 0x1C, reader);
             if (mHeader.SizeLiquid > 8)
                 LoadUnusedChunk(0x4D434C51, basePosition + mHeader.Mclq, mHeader.SizeLiquid - 8, reader);
             if (mHeader.Mclv > 0)
@@ -808,8 +809,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private void SaveUnusedChunks(BinaryWriter writer, int basePosition, ref Mcnk header)
         {
             int unusedSize;
-            SaveUnusedChunk(writer, 0x4D435246, basePosition, out header.Mcrf, out unusedSize);
-            SaveUnusedChunk(writer, 0x4D435348, basePosition, out header.Mcsh, out unusedSize);
             SaveUnusedChunk(writer, 0x4D435345, basePosition, out header.Mcse, out unusedSize);
             SaveUnusedChunk(writer, 0x4D434C51, basePosition, out header.Mclq, out unusedSize);
             SaveUnusedChunk(writer, 0x4D434C56, basePosition, out header.Mclv, out unusedSize);
