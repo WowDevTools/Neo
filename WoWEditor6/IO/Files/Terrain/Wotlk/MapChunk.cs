@@ -853,7 +853,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         {
             compressed = false;
             var homogenity = CalculateAlphaHomogenity(layer);
-            if (false)
+            if (homogenity < float.MaxValue)
             {
                 compressed = true;
                 return GetAlphaCompressed(layer);

@@ -15,6 +15,7 @@ namespace WoWEditor6.IO.Files.Terrain
         protected float mMaxHeight = float.MinValue;
         protected bool mUpdateNormals;
         protected Mcly[] mLayers = new Mcly[0];
+        protected bool mIsYInverted = false;
 
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
@@ -500,7 +501,10 @@ namespace WoWEditor6.IO.Files.Terrain
                 for (var j = 0; j < 64; ++j)
                 {
                     var xpos = minPos.X + j * Metrics.ChunkSize / 64.0f;
-                    var ypos = maxPos.Y - i * Metrics.ChunkSize / 64.0f;
+                    //var ypos = maxPos.Y + ((mIsYInverted ? -1 : 1) * i * Metrics.ChunkSize / 64.0f);
+                    var ypos = minPos.Y + i * Metrics.ChunkSize / 64.0f;
+                    if (mIsYInverted)
+                        ypos = maxPos.Y - i * Metrics.ChunkSize / 64.0f;
 
                     var distSq = (xpos - parameters.Center.X) * (xpos - parameters.Center.X) +
                                  (ypos - parameters.Center.Y) * (ypos - parameters.Center.Y);

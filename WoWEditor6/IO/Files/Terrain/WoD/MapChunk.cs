@@ -35,6 +35,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
+            mIsYInverted = true;
             Parent = new WeakReference<Terrain.MapArea>(parent);
             mParent = new WeakReference<MapArea>(parent);
             mMainInfo = mainInfo;
