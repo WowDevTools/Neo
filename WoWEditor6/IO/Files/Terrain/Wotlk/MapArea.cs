@@ -19,11 +19,12 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
     class MapArea : Terrain.MapArea
     {
-        private readonly List<ChunkInfo> mChunkInfos = new List<ChunkInfo>();
-        private readonly List<MapChunk> mChunks = new List<MapChunk>();
-        private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
+        private List<ChunkInfo> mChunkInfos = new List<ChunkInfo>();
+        private List<MapChunk> mChunks = new List<MapChunk>();
+        private List<LoadedModel> mWmoInstances = new List<LoadedModel>();
+
         private Mhdr mHeader;
-        private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
+        private Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
         private Mcin[] mChunkOffsets;
         private Mddf[] mDoodadDefs;
 
@@ -545,22 +546,42 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            foreach (var chunk in mChunks)
-                chunk.Dispose();
+            if (mChunks != null)
+            {
+                foreach (var chunk in mChunks)
+                    chunk.Dispose();
 
-            mChunks.Clear();
-            mTextures.Clear();
+                mChunks.Clear();
+                mChunks = null;
+            }
 
-            foreach (var instance in mWmoInstances)
-                WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid);
+            if (mWmoInstances != null)
+            {
+                foreach (var instance in mWmoInstances)
+                    WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid);
 
-            foreach (var instance in DoodadInstances)
-                WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+                mWmoInstances.Clear();
+                mWmoInstances = null;
+            }
 
-            mWmoInstances.Clear();
-            base.Dispose();
+            if (mChunkInfos != null)
+            {
+                mChunkInfos.Clear();
+                mChunkInfos = null;
+            }
+
+            if (mSaveChunks != null)
+            {
+                mSaveChunks.Clear();
+                mSaveChunks = null;
+            }
+
+            mChunkOffsets = null;
+            mDoodadDefs = null;
+
+            base.Dispose(disposing);
         }
     }
 }

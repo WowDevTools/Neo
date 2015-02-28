@@ -8,7 +8,7 @@ namespace WoWEditor6.Graphics
         private DepthStencilState mState;
         private DepthStencilStateDescription mDescription;
         private bool mChanged;
-        private readonly GxContext mContext;
+        private GxContext mContext;
 
         public bool DepthEnabled
         {
@@ -64,7 +64,7 @@ namespace WoWEditor6.Graphics
             mChanged = true;
         }
 
-        public DepthStencilState State
+        public DepthStencilState Native
         {
             get
             {
@@ -78,10 +78,26 @@ namespace WoWEditor6.Graphics
             }
         }
 
-        public virtual void Dispose()
+        ~DepthState()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (mState != null)
+            {
                 mState.Dispose();
+                mState = null;
+            }
+
+            mContext = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

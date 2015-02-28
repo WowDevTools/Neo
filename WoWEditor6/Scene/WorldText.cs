@@ -106,10 +106,28 @@ namespace WoWEditor6.Scene
             DrawMode = TextDrawMode.TextDraw3D;
         }
 
-        public void Dispose()
+        ~WorldText()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (mTexture != null)
+            {
                 mTexture.Dispose();
+                mTexture = null;
+            }
+
+            mFont = null;
+            mBrush = null;
+            mText = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public static void BeginDraw()

@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpDX;
 using WoWEditor6.Utils;
+using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
 {
@@ -14,14 +15,20 @@ namespace WoWEditor6.Scene.Models.M2
         private Vector3 mRotation;
         private Color4 mHighlightColor = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
         private readonly Vector3 mScale;
-        private BoundingBox mOrigBoundingBox;
+
         private bool mIsHighlighted;
         private bool mHighlightFinished;
         private TimeSpan mHighlightStartTime;
 
-        public BoundingBox BoundingBox;
+        private M2File mModel;
+        private M2Renderer mRenderer;
+        private BoundingBox mBoundingBox;
 
-        public readonly M2Renderer Renderer;
+        public M2File Model { get { return mModel; } }
+
+        public M2Renderer Renderer { get { return mRenderer; } }
+
+        public BoundingBox BoundingBox { get { return mBoundingBox; } }
 
         public bool IsUpdated { get; set; }
 
@@ -44,16 +51,17 @@ namespace WoWEditor6.Scene.Models.M2
             mRotation = rotation;
             NumReferences = 1;
             Uuid = uuid;
-            Renderer = renderer;
-            BoundingBox = renderer.Model.BoundingBox;
-            mOrigBoundingBox = BoundingBox;
+
+            mRenderer = renderer;
+            mModel = mRenderer.Model;
+            mBoundingBox = mModel.BoundingBox;
 
             var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
                 MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z));
 
             Matrix.Invert(ref rotationMatrix, out mInverseRotation);
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(scale) * Matrix.Translation(position);
-            BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
+            mBoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
         }
 
@@ -67,12 +75,17 @@ namespace WoWEditor6.Scene.Models.M2
 
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
-            BoundingBox = mOrigBoundingBox.Transform(ref mInstanceMatrix);
+            mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
         }
 
         private void UpdateHighlightColor(Color4 highlightColor)
         {
             mHighlightColor = highlightColor;
+        }
+
+        public bool IsVisible(Camera camera)
+        {
+            return camera.Contains(ref mBoundingBox);
         }
 
         public void UpdateBrushHighlighting(Vector3 brushPosition, float radius)

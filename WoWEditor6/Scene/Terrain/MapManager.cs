@@ -262,19 +262,23 @@ namespace WoWEditor6.Scene.Terrain
         private void OnInitialLoadDone()
         {
             float height;
-            if (GetLandHeight(mEntryPoint.X, 64.0f * Metrics.TileSize - mEntryPoint.Y, out height) == false)
-                return;
+            if (GetLandHeight(mEntryPoint.X, 64.0f * Metrics.TileSize - mEntryPoint.Y, out height))
+            {
+                height += 50.0f;
+                IO.Files.Sky.SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint, height));
 
-            height += 50.0f;
-            IO.Files.Sky.SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint, height));
+                var entryPoint = new Vector3(mEntryPoint, height);
+                if (IO.FileManager.Instance.Version > IO.FileDataVersion.Mists)
+                    entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
 
-            var entryPoint = new Vector3(mEntryPoint, height);
-            if (IO.FileManager.Instance.Version > IO.FileDataVersion.Mists)
-                entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
+                EditorWindowController.Instance.OnEnterWorld();
+                WorldFrame.Instance.OnEnterWorld(entryPoint);
+                WorldFrame.Instance.Dispatcher.BeginInvoke(
+                    () => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height)));
+            }
 
-            EditorWindowController.Instance.OnEnterWorld();
-            WorldFrame.Instance.OnEnterWorld(entryPoint);
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height)));
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         private void LoadProc()

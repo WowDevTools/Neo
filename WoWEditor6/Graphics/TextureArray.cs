@@ -1,17 +1,46 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
 {
-    class TextureArray
+    class TextureArray : IDisposable
     {
         private Texture2D mTexture;
         private ShaderResourceView mView;
-        private readonly GxContext mDevice;
+        private GxContext mDevice;
 
         public TextureArray(GxContext context)
         {
             mDevice = context;
+        }
+
+        ~TextureArray()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mTexture != null)
+            {
+                mTexture.Dispose();
+                mTexture = null;
+            }
+
+            if (mView != null)
+            {
+                mView.Dispose();
+                mView = null;
+            }
+
+            mDevice = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void LoadFromData(SharpDX.DXGI.Format format, int width, int height, int numTextures, int numMips, params DataBox[] datas)
@@ -49,6 +78,7 @@ namespace WoWEditor6.Graphics
 
             if (mView != null)
                 mView.Dispose();
+
             mView = new ShaderResourceView(mDevice.Device, mTexture, srvd);
         }
     }

@@ -7,9 +7,9 @@ namespace WoWEditor6.Scene.Models.WMO
 {
     class WmoBatchRender : IDisposable
     {
-        private readonly WmoRootRender mRoot;
-        private readonly List<WmoInstance> mInstances = new List<WmoInstance>();
-        private readonly List<WmoInstance> mActiveInstances = new List<WmoInstance>();
+        private WmoRootRender mRoot;
+        private List<WmoInstance> mInstances = new List<WmoInstance>();
+        private List<WmoInstance> mActiveInstances = new List<WmoInstance>();
 
         private bool mInstancesChanged;
 
@@ -18,14 +18,36 @@ namespace WoWEditor6.Scene.Models.WMO
             mRoot = root;
         }
 
-        public void Dispose()
+        ~WmoBatchRender()
         {
-            lock (mInstances)
-                mInstances.Clear();
+            Dispose(false);
+        }
 
-            mActiveInstances.Clear();
+        private void Dispose(bool disposing)
+        {
+            if (mInstances != null)
+            {
+                mInstances.Clear();
+                mInstances = null;
+            }
+
+            if (mActiveInstances != null)
+            {
+                mActiveInstances.Clear();
+                mActiveInstances = null;
+            }
+
             if (mRoot != null)
+            {
                 mRoot.Dispose();
+                mRoot = null;
+            }
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public bool RemoveInstance(int uuid)

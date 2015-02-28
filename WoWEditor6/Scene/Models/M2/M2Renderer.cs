@@ -9,9 +9,9 @@ namespace WoWEditor6.Scene.Models.M2
 {
     class M2Renderer : IDisposable
     {
-        private readonly M2BatchRenderer mBatchRenderer;
-        private readonly M2PortraitRenderer mPortraitRenderer;
-        private readonly M2SingleRenderer mSingleRenderer;
+        private M2BatchRenderer mBatchRenderer;
+        private M2PortraitRenderer mPortraitRenderer;
+        private M2SingleRenderer mSingleRenderer;
 
         public VertexBuffer VertexBuffer { get; private set; }
         public IndexBuffer IndexBuffer { get; private set; }
@@ -19,14 +19,14 @@ namespace WoWEditor6.Scene.Models.M2
 
         public M2File Model { get; private set; }
 
-        private readonly Matrix[] mAnimationMatrices;
-        private readonly Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
+        private Matrix[] mAnimationMatrices;
+        private Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
 
         public List<M2RenderInstance> VisibleInstances { get; private set; }
 
         private bool mIsSyncLoaded;
-        private bool mIsSyncLoadRequested;
         private bool mSkipRendering;
+        private object mSyncLoadToken;
 
         public IM2Animator Animator { get; private set; }
         public M2PortraitRenderer PortraitRenderer { get { return mPortraitRenderer; } }
@@ -128,16 +128,7 @@ namespace WoWEditor6.Scene.Models.M2
             }
 
             lock (VisibleInstances)
-            {
-                for (var i = 0; i < VisibleInstances.Count; ++i)
-                {
-                    if (VisibleInstances[i].Uuid == uuid)
-                    {
-                        VisibleInstances.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
+                VisibleInstances.RemoveAll(inst => inst.Uuid == uuid);
 
             return lastInstance;
         }
@@ -156,7 +147,7 @@ namespace WoWEditor6.Scene.Models.M2
             lock (mFullInstances)
             {
                 mFullInstances.Add(uuid, instance);
-                if (!WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox))
+                if (!instance.IsVisible(WorldFrame.Instance.ActiveCamera))
                     return instance;
 
                 lock (VisibleInstances)
@@ -190,7 +181,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         private bool BeginSyncLoad()
         {
-            if (mIsSyncLoadRequested)
+            if (mSyncLoadToken != null)
                 return false;
 
             if (WorldFrame.Instance.MapManager.IsInitialLoad)
@@ -199,14 +190,14 @@ namespace WoWEditor6.Scene.Models.M2
                 return true;
             }
 
-            WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
-            mIsSyncLoadRequested = true;
+            mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
             return false;
         }
 
         private void SyncLoad()
         {
             mIsSyncLoaded = true;
+            mSyncLoadToken = null;
 
             if (Model.Vertices.Length == 0 || Model.Indices.Length == 0 || Model.Passes.Count == 0)
             {
@@ -232,17 +223,37 @@ namespace WoWEditor6.Scene.Models.M2
             mPortraitRenderer.OnSyncLoad();
         }
 
-        public virtual void Dispose()
+        ~M2Renderer()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             mSkipRendering = true;
             if (mBatchRenderer != null)
+            {
                 mBatchRenderer.Dispose();
+                mBatchRenderer = null;
+            }
 
             if (mSingleRenderer != null)
+            {
                 mSingleRenderer.Dispose();
+                mSingleRenderer = null;
+            }
 
             if (mPortraitRenderer != null)
+            {
                 mPortraitRenderer.Dispose();
+                mPortraitRenderer = null;
+            }
+
+            if (mFullInstances != null)
+            {
+                mFullInstances.Clear();
+                mFullInstances = null;
+            }
 
             var vb = VertexBuffer;
             var ib = IndexBuffer;
@@ -258,8 +269,30 @@ namespace WoWEditor6.Scene.Models.M2
                     ab.Dispose();
             });
 
+            VertexBuffer = null;
+            IndexBuffer = null;
+            AnimBuffer = null;
+
             if (Animator != null)
+            {
                 StaticAnimationThread.Instance.RemoveAnimator(Animator);
+                Animator = null;
+            }
+
+            // Sync load can be called even after the object has been disposed.
+            if (mSyncLoadToken != null)
+            {
+                WorldFrame.Instance.Dispatcher.Remove(mSyncLoadToken);
+                mSyncLoadToken = null;
+            }
+
+            mAnimationMatrices = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

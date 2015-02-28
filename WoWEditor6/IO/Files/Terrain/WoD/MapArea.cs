@@ -28,19 +28,18 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private BinaryReader mTexReader;
         private BinaryReader mObjReader;
 
-        private readonly List<float> mTextureScales = new List<float>();
+        private List<float> mTextureScales = new List<float>();
+        private List<ChunkStreamInfo> mMainChunks = new List<ChunkStreamInfo>();
+        private List<ChunkStreamInfo> mTexChunks = new List<ChunkStreamInfo>();
+        private List<ChunkStreamInfo> mObjChunks = new List<ChunkStreamInfo>();
 
-        private readonly List<ChunkStreamInfo> mMainChunks = new List<ChunkStreamInfo>();
-        private readonly List<ChunkStreamInfo> mTexChunks = new List<ChunkStreamInfo>();
-        private readonly List<ChunkStreamInfo> mObjChunks = new List<ChunkStreamInfo>();
+        private List<MapChunk> mChunks = new List<MapChunk>();
 
-        private readonly List<MapChunk> mChunks = new List<MapChunk>();
+        private List<LoadedModel> mWmoInstances = new List<LoadedModel>();
 
-        private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
-
-        private readonly Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
-        private readonly Dictionary<uint, DataChunk> mObjOrigChunks = new Dictionary<uint, DataChunk>(); 
-        private readonly Dictionary<uint, DataChunk> mTexOrigChunks = new Dictionary<uint, DataChunk>(); 
+        private Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
+        private Dictionary<uint, DataChunk> mObjOrigChunks = new Dictionary<uint, DataChunk>(); 
+        private Dictionary<uint, DataChunk> mTexOrigChunks = new Dictionary<uint, DataChunk>(); 
 
         private bool mWasChanged;
 
@@ -669,29 +668,88 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
             if (mMainStream != null)
+            {
                 mMainStream.Dispose();
+                mMainStream = null;
+            }
+
             if (mTexStream != null)
+            {
                 mTexStream.Dispose();
+                mTexStream = null;
+            }
+
             if (mObjStream != null)
+            {
                 mObjStream.Dispose();
+                mObjStream = null;
+            }
 
-            foreach (var chunk in mChunks)
-                chunk.Dispose();
+            if (mChunks != null)
+            {
+                foreach (var chunk in mChunks)
+                    chunk.Dispose();
 
-            mChunks.Clear();
-            mTextures.Clear();
+                mChunks.Clear();
+                mChunks = null;
+            }
 
-            foreach (var instance in mWmoInstances)
-                WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid);
+            if (mWmoInstances != null)
+            {
+                foreach (var instance in mWmoInstances)
+                    WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid);
 
-            foreach (var instance in DoodadInstances)
-                WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+                mWmoInstances.Clear();
+                mWmoInstances = null;
+            }
 
-            mWmoInstances.Clear();
-            base.Dispose();
+            if (mTextureScales != null)
+            {
+                mTextureScales.Clear();
+                mTextureScales = null;
+            }
+
+            if (mMainChunks != null)
+            {
+                mMainChunks.Clear();
+                mMainChunks = null;
+            }
+
+            if (mTexChunks != null)
+            {
+                mTexChunks.Clear();
+                mTexChunks = null;
+            }
+
+            if (mObjChunks != null)
+            {
+                mObjChunks.Clear();
+                mObjChunks = null;
+            }
+
+            if (mBaseChunks != null)
+            {
+                mBaseChunks.Clear();
+                mBaseChunks = null;
+            }
+
+            if (mObjOrigChunks != null)
+            {
+                mObjOrigChunks.Clear();
+                mObjOrigChunks = null;
+            }
+
+            if (mTexOrigChunks != null)
+            {
+                mTexOrigChunks.Clear();
+                mTexOrigChunks = null;
+            }
+
+            mDoodadDefs = null;
+            base.Dispose(disposing);
         }
     }
 }

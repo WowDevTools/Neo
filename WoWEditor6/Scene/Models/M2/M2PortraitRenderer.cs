@@ -40,7 +40,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public TextureInfo[] Textures { get; private set; }
 
-        private readonly Matrix[] mAnimationMatrices;
+        private Matrix[] mAnimationMatrices;
 
         private ConstantBuffer mAnimBuffer;
         private ConstantBuffer mPerPassBuffer;
@@ -56,13 +56,35 @@ namespace WoWEditor6.Scene.Models.M2
             Animator.Update(null);
         }
 
-        public virtual void Dispose()
+        ~M2PortraitRenderer()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (mAnimBuffer != null)
+            {
                 mAnimBuffer.Dispose();
+                mAnimBuffer = null;
+            }
 
             if (mPerPassBuffer != null)
+            {
                 mPerPassBuffer.Dispose();
+                mPerPassBuffer = null;
+            }
+
+            Model = null;
+            Textures = null;
+            Animator = null;
+            mAnimationMatrices = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void OnFrame(M2Renderer renderer)

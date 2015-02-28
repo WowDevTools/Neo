@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace WoWEditor6.IO
 {
@@ -46,55 +47,97 @@ namespace WoWEditor6.IO
             return (be >> 24) | (((be >> 16) & 0xFF) << 8) | (((be >> 8) & 0xFF) << 16) | ((be & 0xFF) << 24);
         }
 
+        public static string ReadWString(this BinaryReader br, long pos = -1, bool returnToOrig = true)
+        {
+            if (pos == -1)
+            {
+                StringBuilder sb = new StringBuilder();
+                ushort cur = br.ReadUInt16();
+                while (cur != 0)
+                {
+                    sb.Append((char)cur);
+                    cur = br.ReadUInt16();
+                }
+                return sb.ToString();
+            }
+            var orig = br.BaseStream.Position;
+            br.BaseStream.Seek(pos, SeekOrigin.Begin);
+
+            var s = ReadWString(br);
+
+            if (returnToOrig)
+            {
+                br.BaseStream.Seek(orig, SeekOrigin.Begin);
+            }
+
+            return s;
+        }
+
         public static T Read<T>(this BinaryReader br) where T : struct
         {
             if (SizeCache<T>.TypeRequiresMarshal)
+            {
                 throw new ArgumentException(
                     "Cannot read a generic structure type that requires marshaling support. Read the structure out manually.");
+            }
 
             // OPTIMIZATION!
             var ret = new T();
-            var bytes = br.ReadBytes(SizeCache<T>.Size);
-            if (bytes.Length != SizeCache<T>.Size)
-                throw new InvalidOperationException("Could not read enough bytes from the underlying stream");
-            fixed (byte* b = bytes)
+            fixed (byte* b = br.ReadBytes(SizeCache<T>.Size))
             {
                 var tPtr = (byte*)SizeCache<T>.GetUnsafePtr(ref ret);
-                UnsafeNativeMethods.CopyMemory(tPtr, b, SizeCache<T>.Size);
+                UnsafeNativeMethods.MoveMemory(tPtr, b, SizeCache<T>.Size);
             }
             return ret;
         }
 
-        public static string ReadWString(this BinaryReader br)
+        public static T[] Read<T>(this BinaryReader br, long addr, long count) where T : struct
         {
-            var chars = "";
-            do
+            br.BaseStream.Seek(addr, SeekOrigin.Begin);
+            return br.Read<T>(count);
+        }
+
+        public static T[] Read<T>(this BinaryReader br, long count) where T : struct
+        {
+            return br.Read<T>((int)count);
+        }
+
+        public static T[] Read<T>(this BinaryReader br, int count) where T : struct
+        {
+            if (SizeCache<T>.TypeRequiresMarshal)
             {
-                var numAvailable = (br.BaseStream.Length - br.BaseStream.Position) / 2;
-                if (numAvailable == 0)
-                    throw new EndOfStreamException();
+                throw new ArgumentException(
+                    "Cannot read a generic structure type that requires marshaling support. Read the structure out manually.");
+            }
 
-                numAvailable = Math.Min(numAvailable, 30);
+            if (count == 0)
+                return new T[0];
 
-                var chunk = br.ReadArray<ushort>((int)numAvailable);
-                var isDone = false;
-                for (var i = 0; i < numAvailable; ++i)
-                {
-                    var c = (char)chunk[i];
-                    if (c == 0)
-                    {
-                        isDone = true;
-                        break;
-                    }
-                    chars += c;
-                }
+            var ret = new T[count];
+            fixed (byte* pB = br.ReadBytes(SizeCache<T>.Size * count))
+            {
+                var genericPtr = (byte*)SizeCache<T>.GetUnsafePtr(ref ret[0]);
+                UnsafeNativeMethods.MoveMemory(genericPtr, pB, SizeCache<T>.Size * count);
+            }
+            return ret;
+        }
 
-                if (isDone)
-                    break;
+        public static void Write<T>(this BinaryWriter bw, T value) where T : struct
+        {
+            if (SizeCache<T>.TypeRequiresMarshal)
+            {
+                throw new ArgumentException(
+                    "Cannot write a generic structure type that requires marshaling support. Write the structure out manually.");
+            }
 
-            } while (true);
+            // fastest way to copy?
+            var buf = new byte[SizeCache<T>.Size];
 
-            return chars;
+            var valData = (byte*)SizeCache<T>.GetUnsafePtr(ref value);
+            fixed (byte* pB = buf)
+                UnsafeNativeMethods.MoveMemory(pB, valData, SizeCache<T>.Size);
+
+            bw.Write(buf);
         }
 
         public static T[] ReadArray<T>(this BinaryReader br, int count) where T : struct
@@ -133,25 +176,6 @@ namespace WoWEditor6.IO
                     UnsafeNativeMethods.CopyMemory(tPtr, &pB[i * SizeCache<T>.Size], SizeCache<T>.Size);
                 }
             }
-        }
-
-        public static void Write<T>(this BinaryWriter bw, T value) where T : struct
-        {
-            if (SizeCache<T>.TypeRequiresMarshal)
-                throw new ArgumentException(
-                    "Cannot write a generic structure type that requires marshaling support. Write the structure out manually.");
-
-            // fastest way to copy?
-            var buf = new byte[SizeCache<T>.Size];
-
-            var valData = (byte*)SizeCache<T>.GetUnsafePtr(ref value);
-
-            fixed (byte* pB = buf)
-            {
-                UnsafeNativeMethods.CopyMemory(pB, valData, SizeCache<T>.Size);
-            }
-
-            bw.Write(buf);
         }
 
         public static void WriteArray<T>(this BinaryWriter writer, T[] values) where T : struct

@@ -38,10 +38,17 @@ namespace WoWEditor6.Graphics
             } while (Environment.TickCount - start < 30 && numFrames < 15);
         }
 
-        public void BeginInvoke(Action frame)
+        public object BeginInvoke(Action frame)
         {
             lock (mFrames)
                 mFrames.Add(frame);
+            return frame;
+        }
+
+        public void Remove(object token)
+        {
+            lock (mFrames)
+                mFrames.Remove((Action)token);
         }
     }
 }

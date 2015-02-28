@@ -50,9 +50,9 @@ namespace WoWEditor6.Scene.Models.M2
         private static DepthState gDepthWriteState;
         private static DepthState gDepthNoWriteState;
 
-        private readonly M2File mModel;
-        private readonly IM2Animator mAnimator;
-        private readonly Matrix[] mAnimationMatrices;
+        private M2File mModel;
+        private IM2Animator mAnimator;
+        private Matrix[] mAnimationMatrices;
         private ConstantBuffer mAnimBuffer;
 
         private static ConstantBuffer gPerDrawCallBuffer;
@@ -71,14 +71,34 @@ namespace WoWEditor6.Scene.Models.M2
             }
         }
 
+        ~M2SingleRenderer()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mAnimBuffer != null)
+            {
+                var ab = mAnimBuffer;
+                WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
+                {
+                    if (ab != null)
+                        ab.Dispose();
+                });
+
+                mAnimBuffer = null;
+            }
+
+            mModel = null;
+            mAnimator = null;
+            mAnimationMatrices = null;
+        }
+
         public virtual void Dispose()
         {
-            var ab = mAnimBuffer;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
-            {
-                if (ab != null)
-                    ab.Dispose();
-            });
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public static void BeginDraw()
@@ -347,6 +367,10 @@ namespace WoWEditor6.Scene.Models.M2
             gMesh.BlendState.Dispose();
             gMesh.IndexBuffer.Dispose();
             gMesh.VertexBuffer.Dispose();
+
+            gMesh.BlendState = null;
+            gMesh.IndexBuffer = null;
+            gMesh.VertexBuffer = null;
 
             gMesh.AddElement("POSITION", 0, 3);
             gMesh.AddElement("BLENDWEIGHT", 0, 4, DataType.Byte, true);

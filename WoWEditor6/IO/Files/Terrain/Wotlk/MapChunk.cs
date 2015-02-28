@@ -10,13 +10,13 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 {
     class MapChunk : Terrain.MapChunk
     {
-        private readonly WeakReference<MapArea> mParent;
+        private WeakReference<MapArea> mParent;
         private Mcnk mHeader;
 
-        private readonly Vector4[] mShadingFloats = new Vector4[145];
+        private Vector4[] mShadingFloats = new Vector4[145];
         private byte[] mAlphaCompressed;
         private static readonly uint[] Indices = new uint[768];
-        private readonly Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
+        private Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
         private byte[] mNormalExtra;
 
         public bool HasMccv { get; private set; }
@@ -33,9 +33,21 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            base.Dispose();
+            if (mSaveChunks != null)
+            {
+                mSaveChunks.Clear();
+                mSaveChunks = null;
+            }
+
+            mParent = null;
+            mShadingFloats = null;
+            mAlphaCompressed = null;
+            mLayers = null;
+            mNormalExtra = null;
+
+            base.Dispose(disposing);
         }
 
         public void SaveChunk(BinaryWriter writer)

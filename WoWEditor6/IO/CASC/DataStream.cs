@@ -12,10 +12,24 @@ namespace WoWEditor6.IO.CASC
             Stream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
 
-        public void Dispose()
+        ~DataStream()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (Stream != null)
+            {
                 Stream.Close();
+                Stream = null;
+            }
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

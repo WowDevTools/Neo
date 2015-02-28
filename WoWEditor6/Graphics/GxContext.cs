@@ -8,13 +8,13 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace WoWEditor6.Graphics
 {
-    class GxContext
+    class GxContext : IDisposable
     {
         private readonly Factory1 mFactory;
         private readonly RenderControl mWindow;
         private SwapChainDescription mSwapChainDesc;
         private SwapChain mSwapChain;
-        private readonly Output mOutput;
+        private Output mOutput;
         private RenderTargetView mRenderTarget;
         private DepthStencilView mDepthBuffer;
         private Texture2D mDepthTexture;
@@ -216,6 +216,68 @@ namespace WoWEditor6.Graphics
                 dsvd.Texture2D = new DepthStencilViewDescription.Texture2DResource {MipSlice = 0};
 
             mDepthBuffer = new DepthStencilView(Device, mDepthTexture, dsvd);
+        }
+
+        ~GxContext()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mDepthBuffer != null)
+            {
+                mDepthBuffer.Dispose();
+                mDepthBuffer = null;
+            }
+
+            if (mRenderTarget != null)
+            {
+                mRenderTarget.Dispose();
+                mRenderTarget = null;
+            }
+
+            if (mDepthTexture != null)
+            {
+                mDepthTexture.Dispose();
+                mDepthTexture = null;
+            }
+
+            if (mSwapChain != null)
+            {
+                mSwapChain.Dispose();
+                mSwapChain = null;
+            }
+
+            if (mOutput != null)
+            {
+                mOutput.Dispose();
+                mOutput = null;
+            }
+
+            if (Adapter != null)
+            {
+                Adapter.Dispose();
+                Adapter = null;
+            }
+
+            if (Device != null)
+            {
+                Device.Dispose();
+                Device = null;
+            }
+
+            if (Context != null)
+            {
+                Context.Dispose();
+                Context = null;
+            }
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

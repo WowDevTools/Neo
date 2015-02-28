@@ -4,9 +4,9 @@ using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
 {
-    class RenderTarget
+    class RenderTarget : IDisposable
     {
-        private readonly GxContext mContext;
+        private GxContext mContext;
         private Texture2D mDepthTexture;
         private DepthStencilView mDepthView;
 
@@ -19,6 +19,58 @@ namespace WoWEditor6.Graphics
         public RenderTarget(GxContext context)
         {
             mContext = context;
+        }
+
+        ~RenderTarget()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mDepthView != null)
+            {
+                mDepthView.Dispose();
+                mDepthView = null;
+            }
+
+            if (mOldDepthView != null)
+            {
+                mOldDepthView.Dispose();
+                mOldDepthView = null;
+            }
+
+            if (mOldRenderTarget != null)
+            {
+                mOldRenderTarget.Dispose();
+                mOldRenderTarget = null;
+            }
+
+            if (mDepthTexture != null)
+            {
+                mDepthTexture.Dispose();
+                mDepthTexture = null;
+            }
+
+            if (Native != null)
+            {
+                Native.Dispose();
+                Native = null;
+            }
+
+            if (Texture != null)
+            {
+                Texture.Dispose();
+                Texture = null;
+            }
+
+            mContext = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void Clear()
