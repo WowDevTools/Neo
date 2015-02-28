@@ -30,6 +30,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             Indices = new List<ushort>();
             Vertices = new List<WmoVertex>();
 
+            DisableRendering = false;
+
             mFileName = fileName;
             mParent = new WeakReference<WmoRoot>(root);
         }
@@ -77,6 +79,18 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 {
                     Log.Error("Unable to load WMO group: " + e.Message);
                     return false;
+                }
+            }
+
+            WmoRoot root;
+            if( mParent.TryGetTarget(out root) )
+            {
+
+                Name = root.GetGroupNameByOffset(mHeader.groupName);
+    
+                if (Name == "antiportal")
+                {
+                    DisableRendering = true;
                 }
             }
 
