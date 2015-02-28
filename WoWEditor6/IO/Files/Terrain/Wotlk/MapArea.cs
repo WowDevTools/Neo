@@ -144,7 +144,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 SaveChunk(0x4D574944, writer, out header.ofsMwid);
                 SaveChunk(0x4D444446, writer, out header.ofsMddf);
 
-                /*if (mDoodadDefs != null && mDoodadDefs.Length > 0)
+                if (mDoodadDefs != null && mDoodadDefs.Length > 0)
                 {
                     header.ofsMddf = (int)(writer.BaseStream.Position - 20);
                     writer.Write(0x4D444446);
@@ -152,9 +152,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     writer.WriteArray(mDoodadDefs);
                 }
                 else
-                    header.ofsMddf = 0;*/
+                    header.ofsMddf = 0;
 
-                SaveChunk(0x4D4F4446, writer, out header.ofsModf);
                 SaveChunk(0x4D48324F, writer, out header.ofsMh2o);
 
                 for (var i = 0; i < mChunks.Count; ++i)
