@@ -243,6 +243,8 @@ namespace WoWEditor6.UI.Models
                     Image = await CreateBitmap(texture)
                 };
 
+                if (pb.Image == null)
+                    pnl.Visible = false;
 
                 pnl.Controls.Add(pb);
 
@@ -288,8 +290,10 @@ namespace WoWEditor6.UI.Models
                     Image = await CreateBitmap(tex)
                 };
 
-
                 pnl.Controls.Add(pb);
+
+                if (pb.Image == null)
+                    pnl.Visible = false;
 
                 SetEventHandlers(pb);
                 mWidget.FavoriteWrapPanel.Controls.Add(pnl);
