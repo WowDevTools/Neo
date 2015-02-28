@@ -14,6 +14,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         private readonly WeakReference<WmoRoot> mParent;
         private readonly string mFileName;
+        
         private Mogp mHeader;
         private bool mTexCoordsLoaded;
         private uint[] mColors = new uint[0];
@@ -29,6 +30,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
             Batches = new List<WmoBatch>();
             Indices = new List<ushort>();
             Vertices = new List<WmoVertex>();
+
+            DisableRendering = false;
 
             mFileName = fileName;
             mParent = new WeakReference<WmoRoot>(root);
@@ -77,6 +80,17 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 {
                     Log.Error("Unable to load WMO group: " + e);
                     return false;
+                }
+            }
+
+            WmoRoot root;
+            if (mParent.TryGetTarget(out root))
+            {
+                Name = root.GetGroupNameByOffset(mHeader.groupName);
+
+                if (Name == "antiportal")
+                {
+                    DisableRendering = true;
                 }
             }
 

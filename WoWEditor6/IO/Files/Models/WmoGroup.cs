@@ -10,5 +10,7 @@ namespace WoWEditor6.IO.Files.Models
         public IList<WmoBatch> Batches { get; protected set; }
         public IList<WmoVertex> Vertices { get; protected set; }
         public bool IsIndoor { get; protected set; }
+        public string Name { get; set; }
+        public bool DisableRendering { get; protected set; }
     }
 }

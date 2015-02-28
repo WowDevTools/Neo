@@ -101,7 +101,12 @@ namespace WoWEditor6.Scene.Models.M2
             }
 
             if (!mSkipRendering)
+            {
                 mPortraitRenderer.OnFrame(this);
+                //M2RenderInstance instance = new M2RenderInstance( 0, new Vector3( 0.0f, 0.0f, 0.0f ), new Vector3( 0.0f, 0.0f, 0.0f ), new Vector3( 0.0f, 0.0f, 0.0f ), this );
+
+                //mSingleRenderer.OnFrame(this, instance );
+            }
         }
 
         public bool RemoveInstance(int uuid)
