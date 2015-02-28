@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace WoWEditor6.Utils
 {
@@ -6,7 +7,7 @@ namespace WoWEditor6.Utils
     {
         public static TimeManager Instance { get; private set; }
 
-        private DateTime mStartTime = DateTime.Now;
+        private readonly Stopwatch mTimer = Stopwatch.StartNew();
 
         static TimeManager()
         {
@@ -15,12 +16,12 @@ namespace WoWEditor6.Utils
 
         public TimeSpan GetTime()
         {
-            return DateTime.Now - mStartTime;
+            return mTimer.Elapsed;
         }
 
         public void Reset()
         {
-            mStartTime = DateTime.Now;
+            mTimer.Restart();
         }
     }
 }
