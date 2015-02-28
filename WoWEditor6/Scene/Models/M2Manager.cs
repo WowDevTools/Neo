@@ -70,13 +70,10 @@ namespace WoWEditor6.Scene.Models
             lock (mAddLock)
             {
                 M2BatchRenderer.BeginDraw();
-
                 // First draw all the instance batches
                 foreach (var renderer in mRenderer.Values)
                     renderer.RenderBatch();
-
                 M2SingleRenderer.BeginDraw();
-
                 // Now draw those objects that need per instance animation
                 foreach (var instance in mNonBatchedInstances.Values)
                     instance.Renderer.RenderSingleInstance(instance);

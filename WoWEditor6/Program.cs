@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Threading;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
@@ -24,19 +25,8 @@ namespace WoWEditor6
             WorldFrame.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
 
-            /*var app = new Application();
-            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.Send,
-                (sender, args) =>
-                {
-                    context.BeginFrame();
-                    WorldFrame.Instance.OnFrame();
-                    context.EndFrame();
-                }, app.Dispatcher);
-            
-            app.Run(window);*/
 
-            var wnd = new MainWindow();
-            wnd.elementHost1.Child = window;
+            var wnd = new MainWindow {elementHost1 = {Child = window}};
             wnd.Show();
             var isClosed = false;
             wnd.FormClosing += (sender, args) => isClosed = true;
