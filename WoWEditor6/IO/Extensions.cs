@@ -36,9 +36,7 @@ namespace WoWEditor6.IO
         {
             var bytes = br.ReadBytes(size);
             fixed(byte* b = bytes)
-            {
-                UnsafeNativeMethods.CopyMemory((byte*) dest.ToPointer(), b, size);
-            }
+                UnsafeNativeMethods.CopyMemory((byte*)dest.ToPointer(), b, size);
         }
 
         public static uint ReadUInt32Be(this BinaryReader br)
@@ -86,7 +84,7 @@ namespace WoWEditor6.IO
             fixed (byte* b = br.ReadBytes(SizeCache<T>.Size))
             {
                 var tPtr = (byte*)SizeCache<T>.GetUnsafePtr(ref ret);
-                UnsafeNativeMethods.MoveMemory(tPtr, b, SizeCache<T>.Size);
+                UnsafeNativeMethods.CopyMemory(tPtr, b, SizeCache<T>.Size);
             }
             return ret;
         }
@@ -117,7 +115,7 @@ namespace WoWEditor6.IO
             fixed (byte* pB = br.ReadBytes(SizeCache<T>.Size * count))
             {
                 var genericPtr = (byte*)SizeCache<T>.GetUnsafePtr(ref ret[0]);
-                UnsafeNativeMethods.MoveMemory(genericPtr, pB, SizeCache<T>.Size * count);
+                UnsafeNativeMethods.CopyMemory(genericPtr, pB, SizeCache<T>.Size * count);
             }
             return ret;
         }
@@ -135,7 +133,7 @@ namespace WoWEditor6.IO
 
             var valData = (byte*)SizeCache<T>.GetUnsafePtr(ref value);
             fixed (byte* pB = buf)
-                UnsafeNativeMethods.MoveMemory(pB, valData, SizeCache<T>.Size);
+                UnsafeNativeMethods.CopyMemory(pB, valData, SizeCache<T>.Size);
 
             bw.Write(buf);
         }

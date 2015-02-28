@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Windows.Threading;
+using System.IO;
+using System.Reflection;
+using System.Runtime;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
@@ -16,6 +17,14 @@ namespace WoWEditor6
             System.Windows.Forms.Application.EnableVisualStyles();
             AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
 
+            var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var profilesDir = Path.Combine(baseDir, "JitProfiles");
+            if (!Directory.Exists(profilesDir))
+                Directory.CreateDirectory(profilesDir);
+
+            ProfileOptimization.SetProfileRoot(profilesDir);
+            ProfileOptimization.StartProfile("JitProfile.jpf");
+
             FontCollection.Initialize();
             Settings.KeyBindings.Initialize();
 
@@ -28,7 +37,6 @@ namespace WoWEditor6
     
             WorldFrame.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
-
 
             var wnd = new MainWindow {elementHost1 = {Child = window}};
             wnd.Show();
