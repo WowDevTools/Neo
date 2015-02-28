@@ -65,11 +65,6 @@ namespace WoWEditor6.Scene.Models.M2
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
         }
 
-        ~M2RenderInstance()
-        {
-            Log.Debug("Finalizing M2RenderInstance!");
-        }
-
         public void UpdatePosition(Vector3 position)
         {
             mPosition = position;
