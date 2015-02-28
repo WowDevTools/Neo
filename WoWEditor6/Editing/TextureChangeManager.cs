@@ -19,6 +19,7 @@ namespace WoWEditor6.Editing
         public float InnerRadius;
         public float OuterRadius;
         public float Amount;
+        public float TargetValue;
         public TextureFalloffMode FalloffMode;
     }
 
@@ -27,6 +28,7 @@ namespace WoWEditor6.Editing
         public static TextureChangeManager Instance { get; private set; }
         
         public float Amount { get; set; }
+        public float TargetValue { get; set; }
         public string SelectedTexture { get; set; }
 
         public TextureFalloffMode FalloffMode { get; set; }
@@ -40,6 +42,7 @@ namespace WoWEditor6.Editing
         {
             FalloffMode = TextureFalloffMode.Linear;
             Amount = 0.0f;
+            TargetValue = 255.0f;
             SelectedTexture = string.Empty;
         }
 
@@ -55,8 +58,10 @@ namespace WoWEditor6.Editing
                 InnerRadius = EditManager.Instance.InnerRadius,
                 OuterRadius = EditManager.Instance.OuterRadius,
                 Texture = SelectedTexture,
-                Amount = 4 + Amount,
-                FalloffMode = FalloffMode
+                //Amount = 4 + Amount,
+                Amount = Amount / 40.0f,
+                FalloffMode = FalloffMode,
+                TargetValue = TargetValue
             };
 
             WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);

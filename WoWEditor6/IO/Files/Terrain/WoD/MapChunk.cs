@@ -32,7 +32,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private readonly Dictionary<uint, DataChunk> mOriginalObjChunks = new Dictionary<uint, DataChunk>(); 
         private readonly Dictionary<uint, DataChunk> mOriginalTexChunks = new Dictionary<uint, DataChunk>(); 
         private static readonly uint[] Indices = new uint[768];
-        private string[] mTextureNames = new string[0];
 
         public bool HasMccv { get; private set; }
 
@@ -197,36 +196,40 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     changed = true;
 
                     var dist = (float)Math.Sqrt(distSq);
-                    if (dist < parameters.InnerRadius)
+                    var pressure = parameters.Amount;
+                    if (dist < parameters.OuterRadius && dist >= parameters.InnerRadius)
                     {
-                        float newVal = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
-                        newVal += parameters.Amount;
-                        newVal = Math.Min(Math.Max(newVal, 0), 255);
-                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
-                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
-                    }
-                    else if (dist < parameters.OuterRadius)
-                    {
-                        float saturation;
                         switch (parameters.FalloffMode)
                         {
                             case TextureFalloffMode.Linear:
-                                saturation = 1.0f - ((dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
+                                pressure = 1.0f - ((dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
                                 break;
 
                             case TextureFalloffMode.Trigonometric:
-                                saturation = (float)Math.Cos((Math.PI / 2.0f) * (dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
+                                pressure = (float)Math.Cos((Math.PI / 2.0f) * (dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
                                 break;
 
                             default:
                                 goto case TextureFalloffMode.Linear;
                         }
 
-                        float newVal = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
-                        newVal += parameters.Amount * saturation;
-                        newVal = Math.Min(Math.Max(newVal, 0), 255);
+                        pressure *= parameters.Amount;
+                    }
+
+                    if (layer > 0)
+                    {
+                        float cur = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
+                        var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * parameters.TargetValue, 0), 255);
                         AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
                         AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
+                    }
+
+                    for (var k = layer + 1; k < mLayerInfos.Length; ++k)
+                    {
+                        float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
+                        var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * (1 - parameters.TargetValue), 0), 255);
+                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * k));
+                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * k));
                     }
                 }
             }
@@ -493,11 +496,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     throw new InvalidOperationException("Parent got disposed but loading was still invoked");
 
                 TextureScales = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
-                mTextureNames = new string[mLayerInfos.Length];
+                TextureNames = new string[mLayerInfos.Length];
                 for (var i = 0; i < mLayerInfos.Length && i < 4; ++i)
                 {
                     var texName = parent.GetTextureName(mLayerInfos[i].TextureId);
-                    mTextureNames[i] = texName;
+                    TextureNames[i] = texName;
                     textures.Add(parent.GetTexture(mLayerInfos[i].TextureId));
                     TextureScales[i] = parent.GetTextureScale(mLayerInfos[i].TextureId);
                 }
@@ -842,13 +845,13 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private int FindTextureLayer(string texture)
         {
-            for (var i = 0; i < mTextureNames.Length; ++i)
+            for (var i = 0; i < TextureNames.Count; ++i)
             {
-                if (string.Equals(texture, mTextureNames[i], StringComparison.InvariantCultureIgnoreCase))
+                if (string.Equals(texture, TextureNames[i], StringComparison.InvariantCultureIgnoreCase))
                     return i;
             }
 
-            if (mTextureNames.Length >= 4)
+            if (TextureNames.Count >= 4)
                 return -1;
 
             return AddTextureLayer(texture);
@@ -856,12 +859,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private int AddTextureLayer(string textureName)
         {
-            var old = mTextureNames;
-            mTextureNames = new string[mTextureNames.Length + 1];
-            for (var i = 0; i < old.Length; ++i)
-                mTextureNames[i] = old[i];
+            var old = TextureNames;
+            TextureNames = new string[TextureNames.Count + 1];
+            for (var i = 0; i < old.Count; ++i)
+                TextureNames[i] = old[i];
 
-            mTextureNames[mTextureNames.Length - 1] = textureName;
+            TextureNames[TextureNames.Count - 1] = textureName;
 
             MapArea parent;
             if (mParent.TryGetTarget(out parent) == false)

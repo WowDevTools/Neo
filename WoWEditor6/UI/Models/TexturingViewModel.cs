@@ -18,6 +18,7 @@ namespace WoWEditor6.UI.Models
         private readonly TexturingWidget mWidget;
         private bool mIsValueChangedSurpressed;
         private WeakReference<MapArea> mLastArea;
+        private WeakReference<MapChunk> mLastChunk;
 
         public TexturingWidget Widget { get { return mWidget; } }
 
@@ -31,9 +32,9 @@ namespace WoWEditor6.UI.Models
                 WorldFrame.Instance.OnWorldClicked += OnWorldClick;
         }
 
-        public unsafe void SetSelectedTileTextures(IEnumerable<string> textures)
+        private unsafe void SetSelectedTileTextures(FlowLayoutPanel panel, IEnumerable<string> textures)
         {
-            mWidget.SelectedTileWrapPanel.Controls.Clear();
+            panel.Controls.Clear();
 
             var loadTasks = new List<Tuple<string, PictureBox>>();
 
@@ -59,7 +60,7 @@ namespace WoWEditor6.UI.Models
 
                 SetEventHandlers(pb);
 
-                mWidget.SelectedTileWrapPanel.Controls.Add(pnl);
+                panel.Controls.Add(pnl);
 
                 var texName = tex;
                 loadTasks.Add(new Tuple<string, PictureBox>(texName, pb));
@@ -167,15 +168,28 @@ namespace WoWEditor6.UI.Models
             if (intersectionParams.ChunkHit.Parent.TryGetTarget(out area) == false)
                 return;
 
+            var updateArea = true;
             if (mLastArea != null)
             {
                 MapArea lastArea;
                 if (mLastArea.TryGetTarget(out lastArea) && lastArea == area)
-                    return;
+                    updateArea = false;
+
             }
 
             mLastArea = intersectionParams.ChunkHit.Parent;
-            SetSelectedTileTextures(area.TextureNames);
+            if (updateArea)
+                SetSelectedTileTextures(mWidget.SelectedTileWrapPanel, area.TextureNames);
+
+            MapChunk lastChunk;
+            if (mLastChunk != null && mLastChunk.TryGetTarget(out lastChunk))
+            {
+                if (lastChunk == intersectionParams.ChunkHit)
+                    return;
+            }
+
+            mLastChunk = new WeakReference<MapChunk>(intersectionParams.ChunkHit);
+            SetSelectedTileTextures(mWidget.SelectedChunkWrapPanel, intersectionParams.ChunkHit.TextureNames);
         }
 
         private void OnTextureSelected(PictureBox box)

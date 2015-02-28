@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using WoWEditor6.Scene;
 using WoWEditor6.UI.Models;
 
@@ -61,6 +62,11 @@ namespace WoWEditor6.UI.Dialogs
                 return;
 
             model.SwitchToTexturing();
+        }
+
+        private void Handle_GradientSliderChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Editing.TextureChangeManager.Instance.TargetValue = (float) e.NewValue;
         }
     }
 }
