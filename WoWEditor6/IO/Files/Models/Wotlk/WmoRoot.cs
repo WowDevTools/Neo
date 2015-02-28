@@ -14,6 +14,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         private Dictionary<int, string> mTextureNames = new Dictionary<int, string>();
         private Dictionary<int, Graphics.Texture> mTextures = new Dictionary<int, Graphics.Texture>();
         private List<WmoMaterial> mMaterials = new List<WmoMaterial>();
+        private Dictionary<uint, string> mGroupNameTable = new Dictionary<uint, string>();
+        private List<Mogi> mGroupInfos = new List<Mogi>();
         private string mFileName;
         private List<WmoGroup> mGroups = new List<WmoGroup>();
 
@@ -53,6 +55,18 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 mGroups = null;
             }
 
+            if (mGroupNameTable != null)
+            {
+                mGroupNameTable.Clear();
+                mGroupNameTable = null;
+            }
+
+            if (mGroupInfos != null)
+            {
+                mGroupInfos.Clear();
+                mGroupInfos = null;
+            }
+
             mFileName = null;
         }
 
@@ -60,6 +74,11 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public string GetGroupNameByOffset(uint offset)
+        {
+            return mGroupNameTable[offset];
         }
 
         public override Graphics.Texture GetTexture(int index)
@@ -93,7 +112,9 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     var hasHeader = false;
                     var hasTextures = false;
                     var hasMaterials = false;
-                    while (hasHeader == false || hasTextures == false || hasMaterials == false)
+                    var hasGroupNames = false;
+                    var hasGroupInfos = false;
+                    while (hasHeader == false || hasTextures == false || hasMaterials == false || hasGroupNames == false || hasGroupInfos == false)
                     {
                         var signature = reader.ReadUInt32();
                         var size = reader.ReadInt32();
@@ -113,6 +134,16 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                             case 0x4D4F4D54:
                                 LoadMaterials(reader, size);
                                 hasMaterials = true;
+                                break;
+
+                            case 0x4D4F474E:
+                                LoadGroupNames(reader, size);
+                                hasGroupNames = true;
+                                break;
+
+                            case 0x4D4F4749:
+                                LoadGroupInfos(reader, size);
+                                hasGroupInfos = true;
                                 break;
                         }
 
@@ -150,6 +181,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             {
                 var groupName = string.Format("{0}_{1:D3}.wmo", rootPath, i);
                 var group = new WmoGroup(groupName, this);
+
                 if (group.Load())
                 {
                     mGroups.Add(group);
@@ -179,6 +211,32 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             var numMaterials = size / SizeCache<Momt>.Size;
             var materials = reader.ReadArray<Momt>(numMaterials);
             mMaterials = materials.Select(m => new WmoMaterial(this, m.shader, m.texture1, m.texture2, m.texture3, m.blendMode, m.flags1, m.flags)).ToList();
+        }
+
+        private void LoadGroupNames(BinaryReader reader, int size)
+        {
+            var strBytes = reader.ReadBytes(size);
+            uint curOffset = 0;
+            var curBytes = new List<byte>();
+            for (uint i = 0; i < strBytes.Length; ++i)
+            {
+                if (strBytes[i] != 0)
+                {
+                    curBytes.Add(strBytes[i]);
+                    continue;
+                }
+
+                mGroupNameTable.Add(curOffset, Encoding.UTF8.GetString(curBytes.ToArray()));
+                curBytes.Clear();
+                curOffset = i + 1;
+            }
+        }
+
+        private void LoadGroupInfos(BinaryReader reader, int size)
+        {
+            var numGroups = size / SizeCache<Mogi>.Size;
+            var groupInfos = reader.ReadArray<Mogi>(numGroups);
+            mGroupInfos = groupInfos.ToList();
         }
 
         private void ReadTextures(BinaryReader reader, int size)

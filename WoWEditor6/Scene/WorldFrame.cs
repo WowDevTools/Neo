@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using SharpDX;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene.Models;
@@ -12,6 +9,7 @@ using WoWEditor6.Scene.Models.WMO;
 using WoWEditor6.Scene.Terrain;
 using WoWEditor6.Scene.Texture;
 using WoWEditor6.UI;
+using WoWEditor6.Utils;
 using Matrix = SharpDX.Matrix;
 
 namespace WoWEditor6.Scene
@@ -191,7 +189,7 @@ namespace WoWEditor6.Scene
         public void OnEnterWorld(Vector3 position)
         {
             State = AppState.World;
-            Utils.TimeManager.Instance.Reset();
+            TimeManager.Instance.Reset();
             mMainCamera.SetParameters(position, position + Vector3.UnitX, Vector3.UnitZ, -Vector3.UnitY);
             UpdatePosition(position);
         }
@@ -218,7 +216,7 @@ namespace WoWEditor6.Scene
             if (State == AppState.World)
             {
                 UpdateCursorPosition();
-                UpdateBrushTime(Utils.TimeManager.Instance.GetTime());
+                UpdateBrushTime(TimeManager.Instance.GetTime());
                 CheckUpdateGlobalBuffer();
             }
 
@@ -256,6 +254,7 @@ namespace WoWEditor6.Scene
 
         public void UpdateFogParams(Color3 fogColor, float fogStart)
         {
+            fogStart = Math.Min(fogStart, 899.0f);
             lock (mGlobalBuffer)
             {
                 mGlobalBufferStore.fogColor = new Color4(fogColor, 1.0f);
@@ -264,7 +263,7 @@ namespace WoWEditor6.Scene
             }
         }
 
-        private void UpdateBrushTime(System.TimeSpan frameTime)
+        private void UpdateBrushTime(TimeSpan frameTime)
         {
             var timeSecs = frameTime.TotalMilliseconds / 1000.0;
             mGlobalBufferStore.brushParams.Z = (float)timeSecs;

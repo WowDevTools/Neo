@@ -28,9 +28,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private BinaryReader mTexReader;
         private BinaryReader mObjReader;
 
-        private List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
         private List<float> mTextureScales = new List<float>();
-
         private List<ChunkStreamInfo> mMainChunks = new List<ChunkStreamInfo>();
         private List<ChunkStreamInfo> mTexChunks = new List<ChunkStreamInfo>();
         private List<ChunkStreamInfo> mObjChunks = new List<ChunkStreamInfo>();
@@ -197,41 +195,12 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             return hasHit;
         }
 
-        public int GetOrAddTexture(string texture)
-        {
-            for (var i = 0; i < TextureNames.Count; ++i)
-            {
-                if (string.Equals(TextureNames[i], texture, StringComparison.InvariantCultureIgnoreCase))
-                    return i;
-            }
-
-            TextureNames.Add(texture);
-            mTextures.Add(TextureManager.Instance.GetTexture(texture));
-            return TextureNames.Count - 1;
-        }
-
-        public string GetTextureName(int index)
-        {
-            if (index >= TextureNames.Count)
-                throw new IndexOutOfRangeException();
-
-            return TextureNames[index];
-        }
-
         public float GetTextureScale(int index)
         {
             if (index >= mTextureScales.Count)
                 throw new IndexOutOfRangeException();
 
             return mTextureScales[index];
-        }
-
-        public override Graphics.Texture GetTexture(int index)
-        {
-            if (index >= mTextures.Count)
-                throw new IndexOutOfRangeException();
-
-            return mTextures[index];
         }
 
         public override Terrain.MapChunk GetChunk(int index)
@@ -726,12 +695,6 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
                 mChunks.Clear();
                 mChunks = null;
-            }
-
-            if (mTextures != null)
-            {
-                mTextures.Clear();
-                mTextures = null;
             }
 
             if (mWmoInstances != null)

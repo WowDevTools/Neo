@@ -88,7 +88,6 @@ namespace WoWEditor6.Scene.Terrain
 
                     foreach (var chunk in mChunks)
                         chunk.PushDoodadReferences();
-
                     return;
                 }
             }

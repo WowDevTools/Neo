@@ -15,11 +15,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private Vector4[] mShadingFloats = new Vector4[145];
         private byte[] mAlphaCompressed;
-        private Mcly[] mLayers = new Mcly[0];
         private static readonly uint[] Indices = new uint[768];
         private Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
         private byte[] mNormalExtra;
-        private string[] mTextureNames = new string[0];
 
         public bool HasMccv { get; private set; }
 
@@ -48,7 +46,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             mAlphaCompressed = null;
             mLayers = null;
             mNormalExtra = null;
-            mTextureNames = null;
 
             base.Dispose(disposing);
         }
@@ -287,83 +284,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 if (parent != null)
                     parent.UpdateBoundingBox(BoundingBox);
             }
-
-            return changed;
-        }
-
-        public override bool OnTextureTerrain(TextureChangeParameters parameters)
-        {
-            var diffVec = new Vector2(mMidPoint.X, mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
-            var dsquare = Vector2.Dot(diffVec, diffVec);
-
-            var maxRadius = parameters.OuterRadius + Metrics.ChunkRadius;
-
-            if (dsquare > maxRadius * maxRadius)
-                return false;
-
-            var layer = -1;
-            var minPos = BoundingBox.Minimum;
-            var changed = false;
-
-            for (var i = 0; i < 64; ++i)
-            {
-                for (var j = 0; j < 64; ++j)
-                {
-                    var xpos = minPos.X + j * Metrics.ChunkSize / 64.0f;
-                    var ypos = minPos.Y + i * Metrics.ChunkSize / 64.0f;
-
-                    var distSq = (xpos - parameters.Center.X) * (xpos - parameters.Center.X) +
-                                 (ypos - parameters.Center.Y) * (ypos - parameters.Center.Y);
-
-                    if (distSq > parameters.OuterRadius * parameters.OuterRadius)
-                        continue;
-
-                    if (layer < 0)
-                    {
-                        layer = FindTextureLayer(parameters.Texture);
-                        if (layer < 0)
-                            return false;
-                    }
-
-                    changed = true;
-
-                    var dist = (float)Math.Sqrt(distSq);
-                    if (dist < parameters.InnerRadius)
-                    {
-                        float newVal = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
-                        newVal += parameters.Amount;
-                        newVal = Math.Min(Math.Max(newVal, 0), 255);
-                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
-                        AlphaValues[i * 64 + j] |= (((uint) newVal) << (8 * layer));
-                    }
-                    else if (dist < parameters.OuterRadius)
-                    {
-                        float saturation;
-                        switch (parameters.FalloffMode)
-                        {
-                            case TextureFalloffMode.Linear:
-                                saturation = 1.0f - ((dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
-                                break;
-
-                            case TextureFalloffMode.Trigonometric:
-                                saturation = (float) Math.Cos((Math.PI / 2.0f) * (dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
-                                break;
-
-                            default:
-                                goto case TextureFalloffMode.Linear;
-                        }
-
-                        float newVal = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
-                        newVal += parameters.Amount * saturation;
-                        newVal = Math.Min(Math.Max(newVal, 0), 255);
-                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
-                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
-                    }
-                }
-            }
-
-            if (changed)
-                IsAlphaChanged = true;
 
             return changed;
         }
@@ -683,7 +603,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
             
             Textures = mLayers.Select(l => parent.GetTexture(l.TextureId)).ToList();
-            mTextureNames = mLayers.Select(l => parent.GetTextureName(l.TextureId)).ToArray();
+            TextureNames = mLayers.Select(l => parent.GetTextureName(l.TextureId)).ToArray();
         }
 
         private void LoadHoles()
@@ -943,28 +863,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             return GetAlphaUncompressed(layer);
         }
 
-        private int FindTextureLayer(string texture)
+        protected override int AddTextureLayer(string textureName)
         {
-            for (var i = 0; i < mTextureNames.Length; ++i)
-            {
-                if (string.Equals(texture, mTextureNames[i], StringComparison.InvariantCultureIgnoreCase))
-                    return i;
-            }
+            var old = TextureNames;
+            TextureNames = new string[old.Count + 1];
+            for (var i = 0; i < old.Count; ++i)
+                TextureNames[i] = old[i];
 
-            if (mTextureNames.Length >= 4)
-                return -1;
-
-            return AddTextureLayer(texture);
-        }
-
-        private int AddTextureLayer(string textureName)
-        {
-            var old = mTextureNames;
-            mTextureNames = new string[mTextureNames.Length + 1];
-            for (var i = 0; i < old.Length; ++i)
-                mTextureNames[i] = old[i];
-
-            mTextureNames[mTextureNames.Length - 1] = textureName;
+            TextureNames[TextureNames.Count - 1] = textureName;
 
             MapArea parent;
             if(mParent.TryGetTarget(out parent) == false)

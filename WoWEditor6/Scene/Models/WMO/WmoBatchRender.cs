@@ -56,7 +56,13 @@ namespace WoWEditor6.Scene.Models.WMO
             {
                 var instance = mInstances.FirstOrDefault(w => w.Uuid == uuid);
                 if (instance != null)
+                {
+                    --instance.ReferenceCount;
+                    if (instance.ReferenceCount > 0)
+                        return false;
+
                     mInstances.Remove(instance);
+                }
 
                 return mInstances.Count == 0;
             }
@@ -75,8 +81,15 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public void AddInstance(int uuid, Vector3 position, Vector3 rotation)
         {
-            if (mInstances.Any(w => w.Uuid == uuid))
-                return;
+            lock (mInstances)
+            {
+                var instance = mInstances.FirstOrDefault(w => w.Uuid == uuid);
+                if (instance != null)
+                {
+                    ++instance.ReferenceCount;
+                    return;
+                }
+            }
 
             var inst = new WmoInstance(uuid, position, rotation, mRoot);
 

@@ -1,4 +1,4 @@
-﻿<Window x:Class="WoWEditor6.UI.EditorWindow"
+﻿<UserControl x:Class="WoWEditor6.UI.EditorWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,7 +8,7 @@
              xmlns:dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
              xmlns:controls="clr-namespace:WoWEditor6.UI.Components"
              xmlns:themes="clr-namespace:WoWEditor6.UI.Themes"
-             mc:Ignorable="d" Width="1600" Height="900" Title="WoWDev" Loaded="Window_Loaded" Closed="Window_Closed">
+             mc:Ignorable="d" Width="1600" Height="900" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -22,7 +22,7 @@
             <avalon:MenuItemEx Header="Edit" RenderTransformOrigin="-1.176,0.611"/>
             <MenuItem Header="View&#xD;&#xA;View"/>
             <MenuItem Header="Extras" RenderTransformOrigin="-1.533,0.6">
-                <MenuItem x:Name="MenuItem_Settings" Header="Settings" HorizontalAlignment="Left" Width="140" Click="MenuItem_Settings_Click"/>
+                <MenuItem Header="Settings" HorizontalAlignment="Left" Width="140" Click="MenuItem_Settings_Click"/>
             </MenuItem>
             <MenuItem Header="?" >
                 <MenuItem Header="About" Click="About_MenuItem_Click" HorizontalAlignment="Left" Width="140"/>
@@ -150,4 +150,4 @@
             </avalon:LayoutRoot>
         </avalon:DockingManager>
     </Grid>
-</Window>
+</UserControl>

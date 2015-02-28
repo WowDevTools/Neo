@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using SharpDX;
+using WoWEditor6.Editing;
 using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Terrain
@@ -12,6 +14,7 @@ namespace WoWEditor6.IO.Files.Terrain
         protected float mMinHeight = float.MaxValue;
         protected float mMaxHeight = float.MinValue;
         protected bool mUpdateNormals;
+        protected Mcly[] mLayers = new Mcly[0];
 
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
@@ -22,6 +25,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public uint[] AlphaValues { get; private set; }
         public byte[] HoleValues { get; private set; }
         public IList<Graphics.Texture> Textures { get; protected set; }
+        public IList<string> TextureNames { get; protected set; } 
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
         public float[] TextureScales { get; protected set; }
@@ -70,9 +74,7 @@ namespace WoWEditor6.IO.Files.Terrain
             GC.SuppressFinalize(this);
         }
 
-        public abstract bool OnTextureTerrain(Editing.TextureChangeParameters parameters);
-
-        public virtual bool OnTerrainChange(Editing.TerrainChangeParameters parameters)
+        public virtual bool OnTerrainChange(TerrainChangeParameters parameters)
         {
             var diffVec = new Vector2(mMidPoint.X, mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
             var dsquare = Vector2.Dot(diffVec, diffVec);
@@ -90,19 +92,19 @@ namespace WoWEditor6.IO.Files.Terrain
             var changed = false;
             switch (parameters.Method)
             {
-                case Editing.TerrainChangeType.Elevate:
+                case TerrainChangeType.Elevate:
                     changed = HandleElevateTerrain(parameters);
                     break;
 
-                case Editing.TerrainChangeType.Flatten:
+                case TerrainChangeType.Flatten:
                     changed = HandleFlatten(parameters);
                     break;
 
-                case Editing.TerrainChangeType.Blur:
+                case TerrainChangeType.Blur:
                     changed = HandleBlur(parameters);
                     break;
 
-                case Editing.TerrainChangeType.Shading:
+                case TerrainChangeType.Shading:
                     changed = HandleMccvPaint(parameters);
                     break;
             }
@@ -161,9 +163,9 @@ namespace WoWEditor6.IO.Files.Terrain
             }
         }
 
-        protected abstract bool HandleMccvPaint(Editing.TerrainChangeParameters parameters);
+        protected abstract bool HandleMccvPaint(TerrainChangeParameters parameters);
 
-        private bool HandleBlur(Editing.TerrainChangeParameters parameters)
+        private bool HandleBlur(TerrainChangeParameters parameters)
         {
             var radius = parameters.OuterRadius;
             var amount = parameters.Amount / 550.0f;
@@ -209,25 +211,25 @@ namespace WoWEditor6.IO.Files.Terrain
                 var h = totalHeight / totalWeight;
                 switch(parameters.Algorithm)
                 {
-                    case Editing.TerrainAlgorithm.Flat:
+                    case TerrainAlgorithm.Flat:
                         p.Z = amount * p.Z + (1 - amount) * h;
                         break;
 
-                    case Editing.TerrainAlgorithm.Linear:
+                    case TerrainAlgorithm.Linear:
                     {
                         var nremain = 1 - (1 - amount) * (1 - dist / radius);
                         p.Z = nremain * p.Z + (1 - nremain) * h;
                     }
                         break;
 
-                    case Editing.TerrainAlgorithm.Quadratic:
+                    case TerrainAlgorithm.Quadratic:
                     {
                         var nremain = 1 - (float)Math.Pow(1 - amount, 1 + dist / radius);
                         p.Z = nremain * p.Z + (1 - nremain) * h;
                     }
                         break;
 
-                    case Editing.TerrainAlgorithm.Trigonometric:
+                    case TerrainAlgorithm.Trigonometric:
                     {
                         var nremain = 1 - (1 - amount) * (float)Math.Cos(dist / radius);
                         p.Z = nremain * p.Z + (1 - nremain) * h;
@@ -246,7 +248,7 @@ namespace WoWEditor6.IO.Files.Terrain
             return changed;
         }
 
-        private bool HandleFlatten(Editing.TerrainChangeParameters parameters)
+        private bool HandleFlatten(TerrainChangeParameters parameters)
         {
             var radius = parameters.OuterRadius;
             var amount = parameters.Amount / 550.0f;
@@ -267,25 +269,25 @@ namespace WoWEditor6.IO.Files.Terrain
 
                 switch (parameters.Algorithm)
                 {
-                    case Editing.TerrainAlgorithm.Flat:
+                    case TerrainAlgorithm.Flat:
                         p.Z = amount * p.Z + (1 - amount) * parameters.Center.Z;
                         break;
 
-                    case Editing.TerrainAlgorithm.Linear:
+                    case TerrainAlgorithm.Linear:
                     {
                         var nremain = 1 - (1 - amount) * (1 - factor);
                         p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
                         break;
                     }
 
-                    case Editing.TerrainAlgorithm.Quadratic:
+                    case TerrainAlgorithm.Quadratic:
                     {
                         var nremain = 1 - (float)Math.Pow(1 - amount, 1 + factor);
                         p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
                         break;
                     }
 
-                    case Editing.TerrainAlgorithm.Trigonometric:
+                    case TerrainAlgorithm.Trigonometric:
                     {
                         var nremain = 1 - (1 - amount) * (1 - (float)Math.Cos(factor * Math.PI / 2.0f));
                         p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
@@ -304,7 +306,7 @@ namespace WoWEditor6.IO.Files.Terrain
             return changed;
         }
 
-        private bool HandleElevateTerrain(Editing.TerrainChangeParameters parameters)
+        private bool HandleElevateTerrain(TerrainChangeParameters parameters)
         {
             var amount = parameters.Amount * (float) parameters.TimeDiff.TotalSeconds;
             var changed = false;
@@ -322,19 +324,19 @@ namespace WoWEditor6.IO.Files.Terrain
 
                 switch(parameters.Algorithm)
                 {
-                    case Editing.TerrainAlgorithm.Flat:
+                    case TerrainAlgorithm.Flat:
                         p.Z += amount * (parameters.Inverted ? -1 : 1);
                         break;
 
-                    case Editing.TerrainAlgorithm.Linear:
+                    case TerrainAlgorithm.Linear:
                         p.Z += (amount * (1.0f - factor)) * (parameters.Inverted ? -1 : 1);
                         break;
 
-                    case Editing.TerrainAlgorithm.Quadratic:
+                    case TerrainAlgorithm.Quadratic:
                         p.Z += (((-amount) / (radius * radius) * (dist * dist)) + amount) * (parameters.Inverted ? -1 : 1);
                         break;
 
-                    case Editing.TerrainAlgorithm.Trigonometric:
+                    case TerrainAlgorithm.Trigonometric:
                         var cs = Math.Cos(factor * Math.PI / 2);
                         p.Z += (amount * (float) cs) * (parameters.Inverted ? -1 : 1);
                         break;
@@ -425,6 +427,7 @@ namespace WoWEditor6.IO.Files.Terrain
                 }
             }
         }
+        protected abstract int AddTextureLayer(string textureName);
 
         protected byte[] GetAlphaCompressed(int layer)
         {
@@ -460,6 +463,103 @@ namespace WoWEditor6.IO.Files.Terrain
 
                 return ret;
             }
+        }
+
+        private int FindTextureLayer(string texture)
+        {
+            var texNames = TextureNames.ToArray();
+            for (var i = 0; i < texNames.Length; ++i)
+            {
+                if (string.Equals(texture, texNames[i], StringComparison.InvariantCultureIgnoreCase))
+                    return i;
+            }
+
+            if (texNames.Length >= 4)
+                return -1;
+
+            return AddTextureLayer(texture);
+        }
+
+        public bool OnTextureTerrain(TextureChangeParameters parameters)
+        {
+            var diffVec = new Vector2(mMidPoint.X, mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
+            var dsquare = Vector2.Dot(diffVec, diffVec);
+
+            var maxRadius = parameters.OuterRadius + Metrics.ChunkRadius;
+
+            if (dsquare > maxRadius * maxRadius)
+                return false;
+
+            var layer = -1;
+            var minPos = BoundingBox.Minimum;
+            var maxPos = BoundingBox.Maximum;
+            var changed = false;
+
+            for (var i = 0; i < 64; ++i)
+            {
+                for (var j = 0; j < 64; ++j)
+                {
+                    var xpos = minPos.X + j * Metrics.ChunkSize / 64.0f;
+                    var ypos = maxPos.Y - i * Metrics.ChunkSize / 64.0f;
+
+                    var distSq = (xpos - parameters.Center.X) * (xpos - parameters.Center.X) +
+                                 (ypos - parameters.Center.Y) * (ypos - parameters.Center.Y);
+
+                    if (distSq > parameters.OuterRadius * parameters.OuterRadius)
+                        continue;
+
+                    if (layer < 0)
+                    {
+                        layer = FindTextureLayer(parameters.Texture);
+                        if (layer < 0)
+                            return false;
+                    }
+
+                    changed = true;
+
+                    var dist = (float)Math.Sqrt(distSq);
+                    var pressure = parameters.Amount;
+                    if (dist < parameters.OuterRadius && dist >= parameters.InnerRadius)
+                    {
+                        switch (parameters.FalloffMode)
+                        {
+                            case TextureFalloffMode.Linear:
+                                pressure = 1.0f - ((dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
+                                break;
+
+                            case TextureFalloffMode.Trigonometric:
+                                pressure = (float)Math.Cos((Math.PI / 2.0f) * (dist - parameters.InnerRadius) / (parameters.OuterRadius - parameters.InnerRadius));
+                                break;
+
+                            default:
+                                goto case TextureFalloffMode.Linear;
+                        }
+
+                        pressure *= parameters.Amount;
+                    }
+
+                    if (layer > 0)
+                    {
+                        float cur = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
+                        var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * parameters.TargetValue, 0), 255);
+                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
+                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
+                    }
+
+                    for (var k = layer + 1; k < mLayers.Length; ++k)
+                    {
+                        float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
+                        var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * (1 - parameters.TargetValue), 0), 255);
+                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * k));
+                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * k));
+                    }
+                }
+            }
+
+            if (changed)
+                IsAlphaChanged = true;
+
+            return changed;
         }
     }
 }

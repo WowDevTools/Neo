@@ -7,14 +7,19 @@
              mc:Ignorable="d" d:DesignWidth="288" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="210"></RowDefinition>
+            <RowDefinition Height="220"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <Label>Amount</Label>
-                <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="10" Value="1" ValueChanged="Handle_AmountSliderChanged"></Slider>
+                <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="40" Value="20" ValueChanged="Handle_AmountSliderChanged"></Slider>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=AmountSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Opacity</Label>
+                <Slider x:Name="GradientSlider" VerticalAlignment="Center" Width="180" Margin="28,0,0,0" Minimum="0" Maximum="255" Value="255" ValueChanged="Handle_GradientSliderChanged"></Slider>
+                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=GradientSlider, Path=Value, StringFormat={}{0:F0}}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label>Inner Radius</Label>
@@ -34,15 +39,17 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Border Width="96" Height="96" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.RowSpan="3">
+                <Border Width="96" Height="96" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.RowSpan="4">
                     <WindowsFormsHost>
                         <forms:PictureBox x:Name="TexturePreviewImage" Dock="Fill" SizeMode="StretchImage"></forms:PictureBox>
                     </WindowsFormsHost>
                 </Border>
-                <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick">Select From Assets</Button>
-                <Button HorizontalAlignment="Left" Margin="5,10,0,0" Width="130" Grid.Column="1" Grid.Row="1" Click="EnableTexturing_Click">Enable Texturing</Button>
+                <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick">Select From Assets</Button>
+                <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="1" Click="EnableTexturing_Click">Enable Texturing</Button>
+                <CheckBox Grid.Column="1" Grid.Row="2" Margin="5,0,0,0" VerticalAlignment="Center" IsChecked="True" Visibility="Hidden">Preview Gradient</CheckBox>
             </Grid>
             
         </StackPanel>
@@ -55,6 +62,13 @@
                         </forms:FlowLayoutPanel>
                     </WindowsFormsHost>
                 </Grid>
+            </TabItem>
+            <TabItem Header="Selected Chunk">
+                <WindowsFormsHost>
+                    <forms:FlowLayoutPanel x:Name="SelectedChunkWrapPanel">
+                        
+                    </forms:FlowLayoutPanel>
+                </WindowsFormsHost>
             </TabItem>
             <TabItem Header="Recent">
                 

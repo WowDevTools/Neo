@@ -79,6 +79,9 @@ namespace WoWEditor6.Scene.Models.WMO
             if (mLoaded == false)
                 return;
 
+            if (Data.DisableRendering)
+                return;
+
             Mesh.StartVertex = BaseVertex;
 
             foreach(var batch in mBatches)

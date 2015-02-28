@@ -148,7 +148,7 @@ namespace WoWEditor6.UI
 
             var wnd = Dispatcher;
             var result = 0;
-            wnd.Invoke(new Action(() => result = fd.Show(new WindowInteropHelper(this).Handle)));
+            wnd.Invoke(new Action(() => result = fd.Show(/*new WindowInteropHelper(this).Handle))*/IntPtr.Zero)));
 
             if (result != 0)
                 return;
