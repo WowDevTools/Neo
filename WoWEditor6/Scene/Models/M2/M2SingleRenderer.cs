@@ -368,6 +368,10 @@ namespace WoWEditor6.Scene.Models.M2
             gMesh.IndexBuffer.Dispose();
             gMesh.VertexBuffer.Dispose();
 
+            gMesh.BlendState = null;
+            gMesh.IndexBuffer = null;
+            gMesh.VertexBuffer = null;
+
             gMesh.AddElement("POSITION", 0, 3);
             gMesh.AddElement("BLENDWEIGHT", 0, 4, DataType.Byte, true);
             gMesh.AddElement("BLENDINDEX", 0, 4, DataType.Byte);

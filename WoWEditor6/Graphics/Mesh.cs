@@ -45,9 +45,8 @@ namespace WoWEditor6.Graphics
             if (VertexBuffer != null)
                 ctx.InputAssembler.SetVertexBuffers(0, new[] {VertexBuffer.Native}, new[] {Stride}, new[] {0});
 
-            ctx.InputAssembler.SetIndexBuffer(IndexBuffer.Native, IndexBuffer.IndexFormat, 0);
-            ctx.InputAssembler.InputLayout = mLayout;
-            ctx.InputAssembler.PrimitiveTopology = mTopology;
+            if (IndexBuffer != null)
+                ctx.InputAssembler.SetIndexBuffer(IndexBuffer.Native, IndexBuffer.IndexFormat, 0);
 
             if (DepthState != null)
                 ctx.OutputMerger.DepthStencilState = DepthState.Native;
@@ -58,6 +57,8 @@ namespace WoWEditor6.Graphics
             if (BlendState != null)
                 ctx.OutputMerger.BlendState = BlendState.Native;
 
+            ctx.InputAssembler.InputLayout = mLayout;
+            ctx.InputAssembler.PrimitiveTopology = mTopology;
             mProgram.Bind();
         }
 
@@ -131,9 +132,7 @@ namespace WoWEditor6.Graphics
             mLayout = Layout;
 
             if (mContext.Context.InputAssembler.InputLayout != Layout)
-            {
                 mContext.Context.InputAssembler.InputLayout = Layout;
-            }
         }
 
         public void InitLayout(ShaderProgram program)

@@ -35,7 +35,8 @@ namespace WoWEditor6.Scene.Models
         private readonly Dictionary<int, M2Renderer> mRenderer = new Dictionary<int, M2Renderer>();
         private readonly Dictionary<int, M2RenderInstance> mVisibleInstances = new Dictionary<int, M2RenderInstance>();
         private readonly Dictionary<int, M2RenderInstance> mNonBatchedInstances = new Dictionary<int, M2RenderInstance>();
-        private SortedDictionary<int, M2RenderInstance> mSortedInstances;
+        private readonly SortedDictionary<int, M2RenderInstance> mSortedInstances;
+
         private readonly object mAddLock = new object();
         private Thread mUnloadThread;
         private bool mIsRunning;
@@ -43,11 +44,15 @@ namespace WoWEditor6.Scene.Models
 
         public static bool IsViewDirty { get; private set; }
 
+        public M2Manager()
+        {
+            mSortedInstances = new SortedDictionary<int, M2RenderInstance>(
+                new InstanceSortComparer(mVisibleInstances));
+        }
+
         public void Initialize()
         {
             mIsRunning = true;
-            mSortedInstances = new SortedDictionary<int, M2RenderInstance>(
-                new InstanceSortComparer(mVisibleInstances));
             mUnloadThread = new Thread(UnloadProc);
             mUnloadThread.Start();
         }
@@ -73,6 +78,7 @@ namespace WoWEditor6.Scene.Models
                 // First draw all the instance batches
                 foreach (var renderer in mRenderer.Values)
                     renderer.RenderBatch();
+
                 M2SingleRenderer.BeginDraw();
                 // Now draw those objects that need per instance animation
                 foreach (var instance in mNonBatchedInstances.Values)
@@ -95,20 +101,23 @@ namespace WoWEditor6.Scene.Models
 
                 lock (mAddLock)
                 {
-                    var renderInstance = instance.RenderInstance;
-                    renderInstance.Renderer.PushMapReference(instance);
-                    mVisibleInstances.Add(instance.Uuid, renderInstance);
+                    M2Renderer renderer;
+                    if (!mRenderer.TryGetValue(instance.Hash, out renderer))
+                        continue;
 
-                    var model = renderInstance.Renderer.Model;
+                    renderer.PushMapReference(instance);
+                    mVisibleInstances.Add(instance.Uuid, instance.RenderInstance);
+
+                    var model = renderer.Model;
                     if (model.HasBlendPass)
                     {
                         // The model has an alpha pass and therefore needs to be ordered by depth
-                        mSortedInstances.Add(instance.Uuid, renderInstance);
+                        mSortedInstances.Add(instance.Uuid, instance.RenderInstance);
                     }
                     else if (model.NeedsPerInstanceAnimation)
                     {
                         // The model needs per instance animation and therefore cannot be batched
-                        mNonBatchedInstances.Add(instance.Uuid, renderInstance);
+                        mNonBatchedInstances.Add(instance.Uuid, instance.RenderInstance);
                     }
                 }
             }
@@ -155,7 +164,7 @@ namespace WoWEditor6.Scene.Models
                 }
 
                 M2Renderer renderer;
-                if (mRenderer.TryGetValue(hash, out renderer) == false)
+                if (!mRenderer.TryGetValue(hash, out renderer))
                     return;
 
                 if (renderer.RemoveInstance(uuid))
@@ -174,11 +183,9 @@ namespace WoWEditor6.Scene.Models
             var hash = model.ToUpperInvariant().GetHashCode();
             lock(mRenderer)
             {
-                if (mRenderer.ContainsKey(hash))
-                {
-                    var renderer = mRenderer[hash];
+                M2Renderer renderer;
+                if (mRenderer.TryGetValue(hash, out renderer))
                     return renderer.AddInstance(uuid, position, rotation, scaling);
-                }
 
                 var file = LoadModel(model);
                 if (file == null)

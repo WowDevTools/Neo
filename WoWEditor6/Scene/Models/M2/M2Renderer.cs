@@ -128,16 +128,7 @@ namespace WoWEditor6.Scene.Models.M2
             }
 
             lock (VisibleInstances)
-            {
-                for (var i = 0; i < VisibleInstances.Count; ++i)
-                {
-                    if (VisibleInstances[i].Uuid == uuid)
-                    {
-                        VisibleInstances.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
+                VisibleInstances.RemoveAll(inst => inst.Uuid == uuid);
 
             return lastInstance;
         }
@@ -156,7 +147,7 @@ namespace WoWEditor6.Scene.Models.M2
             lock (mFullInstances)
             {
                 mFullInstances.Add(uuid, instance);
-                if (!WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox))
+                if (!instance.IsVisible(WorldFrame.Instance.ActiveCamera))
                     return instance;
 
                 lock (VisibleInstances)
