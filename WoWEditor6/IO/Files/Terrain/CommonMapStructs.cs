@@ -40,6 +40,16 @@ namespace WoWEditor6.IO.Files.Terrain
         public readonly ushort Flags;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    struct Mcly
+    {
+        public int TextureId;
+        public uint Flags;
+        public int OfsMcal;
+        public short EffectId;
+        public short Padding;
+    }
+
     struct LoadedModel
     {
         public readonly string FileName;

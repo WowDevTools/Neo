@@ -20,7 +20,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
     class MapArea : Terrain.MapArea
     {
         private readonly List<ChunkInfo> mChunkInfos = new List<ChunkInfo>();
-        private readonly List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
         private readonly List<MapChunk> mChunks = new List<MapChunk>();
         private readonly List<LoadedModel> mWmoInstances = new List<LoadedModel>();
         private Mhdr mHeader;
@@ -174,22 +173,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
         }
 
-        public override Graphics.Texture GetTexture(int index)
-        {
-            if (index >= mTextures.Count)
-                throw new IndexOutOfRangeException();
-
-            return mTextures[index];
-        }
-
-        public string GetTextureName(int index)
-        {
-            if(index >= TextureNames.Count)
-                throw new IndexOutOfRangeException();
-
-            return TextureNames[index];
-        }
-
         public override void AsyncLoad()
         {
             using (var file = FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, IndexX, IndexY)))
@@ -293,19 +276,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
                 chunk.UpdateNormals();
             }
-        }
-
-        public int GetOrAddTexture(string textureName)
-        {
-            for (var i = 0; i < TextureNames.Count; ++i)
-            {
-                if (string.Equals(TextureNames[i], textureName, StringComparison.InvariantCultureIgnoreCase))
-                    return i;
-            }
-
-            TextureNames.Add(textureName);
-            mTextures.Add(TextureManager.Instance.GetTexture(textureName));
-            return TextureNames.Count - 1;
         }
 
         public override bool OnTextureTerrain(TextureChangeParameters parameters)

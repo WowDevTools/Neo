@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
+using WoWEditor6.Scene.Texture;
 
 namespace WoWEditor6.IO.Files.Terrain
 {
@@ -22,6 +23,8 @@ namespace WoWEditor6.IO.Files.Terrain
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
 
+        protected IList<Graphics.Texture> mTextures = new List<Graphics.Texture>(); 
+
         protected MapArea()
         {
             IsValid = true;
@@ -37,7 +40,6 @@ namespace WoWEditor6.IO.Files.Terrain
 
         public abstract void Save();
 
-        public abstract Graphics.Texture GetTexture(int index);
         public abstract void AsyncLoad();
         public abstract MapChunk GetChunk(int index);
 
@@ -47,5 +49,34 @@ namespace WoWEditor6.IO.Files.Terrain
         public abstract void OnUpdateModelPositions(Editing.TerrainChangeParameters parameters);
         public abstract void UpdateNormals();
         public abstract bool OnTextureTerrain(Editing.TextureChangeParameters parameters);
+
+        public int GetOrAddTexture(string textureName)
+        {
+            for (var i = 0; i < TextureNames.Count; ++i)
+            {
+                if (string.Equals(TextureNames[i], textureName, StringComparison.InvariantCultureIgnoreCase))
+                    return i;
+            }
+
+            TextureNames.Add(textureName);
+            mTextures.Add(TextureManager.Instance.GetTexture(textureName));
+            return TextureNames.Count - 1;
+        }
+
+        public string GetTextureName(int index)
+        {
+            if (index >= TextureNames.Count)
+                throw new IndexOutOfRangeException();
+
+            return TextureNames[index];
+        }
+
+        public Graphics.Texture GetTexture(int index)
+        {
+            if (index >= mTextures.Count)
+                throw new IndexOutOfRangeException();
+
+            return mTextures[index];
+        }
     }
 }
