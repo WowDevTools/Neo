@@ -101,8 +101,24 @@ namespace WoWEditor6.UI
             return mBitmap;
         }
 
-        public void Dispose()
+        ~BitmapImage()
         {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mBitmap != null)
+            {
+                mBitmap.Dispose();
+                mBitmap = null;
+            }
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -27,10 +27,32 @@ namespace WoWEditor6.Scene.Terrain
             IndexY = indexY;
         }
 
-        public void Dispose()
+        ~MapAreaLowRender()
         {
-            var vertexBuffer = mVertexBuffer;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() => { if(vertexBuffer != null)vertexBuffer.Dispose(); });
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mVertexBuffer != null)
+            {
+                var vertexBuffer = mVertexBuffer;
+                WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
+                {
+                    if (vertexBuffer != null)
+                        vertexBuffer.Dispose();
+                });
+
+                mVertexBuffer = null;
+            }
+
+            mVertexData = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void OnFrame()

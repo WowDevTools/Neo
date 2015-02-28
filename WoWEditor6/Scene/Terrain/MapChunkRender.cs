@@ -16,13 +16,17 @@ namespace WoWEditor6.Scene.Terrain
         public static ShaderProgram BlendOld { get; private set; }
 
         private IO.Files.Terrain.MapChunk mData;
-        private bool mAsyncLoaded;
-        private bool mSyncLoaded;
-        private bool mSyncLoadRequested;
+
+        private bool mIsAsyncLoaded;
+        private bool mIsSyncLoaded;
+        private object mSyncLoadToken;
+
         private Graphics.Texture mAlphaTexture;
         private Graphics.Texture mHoleTexture;
+
         private BoundingBox mBoundingBox;
         private BoundingBox mModelBox;
+
         private ConstantBuffer mScaleBuffer;
         private Graphics.Texture[] mShaderTextures;
         private M2Instance[] mReferences;
@@ -34,18 +38,45 @@ namespace WoWEditor6.Scene.Terrain
             mBoundingBox = mData.BoundingBox;
         }
 
-        public void Dispose()
+        ~MapChunkRender()
         {
-            mShaderTextures = null;
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
             var alphaTex = mAlphaTexture;
+            var holeTex = mHoleTexture;
             var constBuffer = mScaleBuffer;
+
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                if (constBuffer != null) 
-                    constBuffer.Dispose();
+                if (holeTex != null)
+                    holeTex.Dispose();
                 if (alphaTex != null)
                     alphaTex.Dispose();
+                if (constBuffer != null)
+                    constBuffer.Dispose();
             });
+
+            // Sync load can be called even after the object has been disposed.
+            if (mSyncLoadToken != null)
+            {
+                WorldFrame.Instance.Dispatcher.Remove(mSyncLoadToken);
+                mSyncLoadToken = null;
+            }
+
+            mAlphaTexture = null;
+            mHoleTexture = null;
+            mScaleBuffer = null;
+            mShaderTextures = null;
+            mReferences = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void PushDoodadReferences()
@@ -59,7 +90,7 @@ namespace WoWEditor6.Scene.Terrain
 
         public void OnFrame()
         {
-            if (mAsyncLoaded == false)
+            if (mIsAsyncLoaded == false)
                 return;
 
             if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
@@ -74,22 +105,10 @@ namespace WoWEditor6.Scene.Terrain
                 }
             }
 
-            if(mSyncLoaded == false)
+            if (mIsSyncLoaded == false)
             {
-                if (mSyncLoadRequested)
+                if (!BeginSyncLoad())
                     return;
-
-                if (WorldFrame.Instance.MapManager.IsInitialLoad)
-                {
-                    SyncLoad();
-                    WorldFrame.Instance.MapManager.OnLoadProgress();
-                }
-                else
-                {
-                    WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
-                    mSyncLoadRequested = true;
-                    return;
-                }
             }
 
             if (M2Manager.IsViewDirty)
@@ -126,11 +145,29 @@ namespace WoWEditor6.Scene.Terrain
             for (var i = 0; i < mReferences.Length; ++i)
                 mReferences[i] = parent.AreaFile.DoodadInstances[chunk.DoodadReferences[i]];
 
-            mAsyncLoaded = true;
+            mIsAsyncLoaded = true;
+        }
+
+        private bool BeginSyncLoad()
+        {
+            if (mSyncLoadToken != null)
+                return false;
+
+            if (WorldFrame.Instance.MapManager.IsInitialLoad)
+            {
+                SyncLoad();
+                WorldFrame.Instance.MapManager.OnLoadProgress();
+                return true;
+            }
+
+            mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
+            return false;
         }
 
         private void SyncLoad()
         {
+            mSyncLoadToken = null;
+
             mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
             mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
             mHoleTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
@@ -138,7 +175,8 @@ namespace WoWEditor6.Scene.Terrain
             mScaleBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
             mScaleBuffer.UpdateData(mData.TextureScales);
             mShaderTextures = mData.Textures.ToArray();
-            mSyncLoaded = true;
+
+            mIsSyncLoaded = true;
         }
 
         public static void Initialize(GxContext context)

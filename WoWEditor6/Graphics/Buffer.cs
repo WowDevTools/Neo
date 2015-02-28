@@ -7,7 +7,7 @@ namespace WoWEditor6.Graphics
     abstract class Buffer : IDisposable
     {
         private BufferDescription mDescription;
-        private readonly GxContext mContext;
+        private GxContext mContext;
 
         public SharpDX.Direct3D11.Buffer Native { get; private set; }
 
@@ -26,10 +26,26 @@ namespace WoWEditor6.Graphics
             };
         }
 
-        public virtual void Dispose()
+        ~Buffer()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (Native != null)
+            {
                 Native.Dispose();
+                Native = null;
+            }
+
+            mContext = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void UpdateData<T>(T data) where T : struct

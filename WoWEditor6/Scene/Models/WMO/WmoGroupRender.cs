@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using SharpDX;
 using WoWEditor6.Graphics;
 
@@ -27,7 +28,7 @@ namespace WoWEditor6.Scene.Models.WMO
         public static Sampler Sampler { get; private set; }
         public static ConstantBuffer InstanceBuffer { get; private set; }
 
-        private readonly List<WmoRenderBatch> mBatches = new List<WmoRenderBatch>();
+        private List<WmoRenderBatch> mBatches = new List<WmoRenderBatch>();
 
         private bool mLoaded;
 
@@ -51,9 +52,26 @@ namespace WoWEditor6.Scene.Models.WMO
             }
         }
 
-        public void Dispose()
+        ~WmoGroupRender()
         {
-            
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mBatches != null)
+            {
+                mBatches.Clear();
+                mBatches = null;
+            }
+
+            Data = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void OnFrame()
@@ -140,7 +158,6 @@ namespace WoWEditor6.Scene.Models.WMO
             Mesh.Program = gNoBlendProgram;
 
             Mesh.InitLayout(gNoBlendProgram);
-
         }
     }
 }

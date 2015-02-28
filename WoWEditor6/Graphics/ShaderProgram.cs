@@ -14,7 +14,7 @@ namespace WoWEditor6.Graphics
 
         private VertexShader mVertexShader;
         private PixelShader mPixelShader;
-        private readonly GxContext mContext;
+        private GxContext mContext;
 
         public ShaderBytecode VertexShaderCode { get; private set; }
 
@@ -143,16 +143,18 @@ namespace WoWEditor6.Graphics
         public void Bind()
         {
             if (mContext.Context.VertexShader.Get() != mVertexShader)
-            {
                 mContext.Context.VertexShader.Set(mVertexShader);
-            }
+
             if (mContext.Context.PixelShader.Get() != mPixelShader)
-            {
                 mContext.Context.PixelShader.Set(mPixelShader);
-            }
         }
 
-        public virtual void Dispose()
+        ~ShaderProgram()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (mVertexShader != null)
                 mVertexShader.Dispose();
@@ -162,6 +164,14 @@ namespace WoWEditor6.Graphics
 
             if (VertexShaderCode != null)
                 VertexShaderCode.Dispose();
+
+            mContext = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

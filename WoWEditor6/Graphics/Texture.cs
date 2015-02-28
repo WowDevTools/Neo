@@ -12,7 +12,7 @@ namespace WoWEditor6.Graphics
         private static ShaderResourceView gDefaultView;
 
         private Texture2D mTexture;
-        private readonly GxContext mContext;
+        private GxContext mContext;
 
         public enum SamplerFlagType
         {
@@ -31,15 +31,29 @@ namespace WoWEditor6.Graphics
             mTexture = gDefaultTexture;
         }
 
-        public virtual void Dispose()
+        ~Texture()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (mTexture != gDefaultTexture)
             {
                 if (mTexture != null)
                     mTexture.Dispose();
+
                 if (NativeView != null)
                     NativeView.Dispose();
             }
+
+            mContext = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void LoadFromLoadInfo(IO.Files.Texture.TextureLoadInfo loadInfo)

@@ -5,8 +5,8 @@ namespace WoWEditor6.Utils
 {
     class TimerScope : IDisposable
     {
-        private readonly Stopwatch mWatch;
-        private readonly string mTask;
+        private Stopwatch mWatch;
+        private string mTask;
 
         public TimerScope(string task)
         {
@@ -14,10 +14,27 @@ namespace WoWEditor6.Utils
             mWatch = Stopwatch.StartNew();
         }
 
-        public void Dispose()
+        ~TimerScope()
         {
-            mWatch.Stop();
-            Log.Debug(string.Format("Task {0} finished in {1} milliseconds", mTask, mWatch.ElapsedMilliseconds));
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mWatch != null)
+            {
+                mWatch.Stop();
+                Log.Debug(string.Format("Task {0} finished in {1} milliseconds", mTask, mWatch.ElapsedMilliseconds));
+
+                mWatch = null;
+                mTask = null;
+            }
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

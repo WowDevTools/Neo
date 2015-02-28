@@ -11,26 +11,26 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 {
     sealed class MapChunk : Terrain.MapChunk
     {
-        private readonly ChunkStreamInfo mMainInfo;
-        private readonly ChunkStreamInfo mTexInfo;
-        private readonly ChunkStreamInfo mObjInfo;
+        private ChunkStreamInfo mMainInfo;
+        private ChunkStreamInfo mTexInfo;
+        private ChunkStreamInfo mObjInfo;
 
-        private readonly BinaryReader mReader;
-        private readonly BinaryReader mTexReader;
-        private readonly BinaryReader mObjReader;
+        private BinaryReader mReader;
+        private BinaryReader mTexReader;
+        private BinaryReader mObjReader;
 
         private Mcnk mHeader;
 
         private IntPtr mAlphaDataCompressed;
 
-        private readonly WeakReference<MapArea> mParent;
+        private WeakReference<MapArea> mParent;
 
         private Mcly[] mLayerInfos = new Mcly[0];
-        private readonly Vector4[] mShadingFloats = new Vector4[145];
+        private Vector4[] mShadingFloats = new Vector4[145];
 
-        private readonly Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
-        private readonly Dictionary<uint, DataChunk> mOriginalObjChunks = new Dictionary<uint, DataChunk>(); 
-        private readonly Dictionary<uint, DataChunk> mOriginalTexChunks = new Dictionary<uint, DataChunk>(); 
+        private Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
+        private Dictionary<uint, DataChunk> mOriginalObjChunks = new Dictionary<uint, DataChunk>(); 
+        private Dictionary<uint, DataChunk> mOriginalTexChunks = new Dictionary<uint, DataChunk>(); 
         private static readonly uint[] Indices = new uint[768];
         private string[] mTextureNames = new string[0];
 
@@ -54,9 +54,53 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            base.Dispose();
+            if (mReader != null)
+            {
+                mReader.Dispose();
+                mReader = null;
+            }
+
+            if (mTexReader != null)
+            {
+                mTexReader.Dispose();
+                mTexReader = null;
+            }
+
+            if (mObjReader != null)
+            {
+                mObjReader.Dispose();
+                mObjReader = null;
+            }
+
+            if (mOriginalMainChunks != null)
+            {
+                mOriginalMainChunks.Clear();
+                mOriginalMainChunks = null;
+            }
+
+            if (mOriginalObjChunks != null)
+            {
+                mOriginalObjChunks.Clear();
+                mOriginalObjChunks = null;
+            }
+
+            if (mOriginalTexChunks != null)
+            {
+                mOriginalTexChunks.Clear();
+                mOriginalTexChunks = null;
+            }
+
+            mMainInfo = null;
+            mTexInfo = null;
+            mObjInfo = null;
+            mParent = null;
+            mLayerInfos = null;
+            mShadingFloats = null;
+            mTextureNames = null;
+
+            base.Dispose(disposing);
         }
 
         public void WriteBaseChunks(BinaryWriter writer)

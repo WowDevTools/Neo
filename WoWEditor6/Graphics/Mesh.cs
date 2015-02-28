@@ -43,14 +43,21 @@ namespace WoWEditor6.Graphics
         {
             var ctx = mContext.Context;
             if (VertexBuffer != null)
-                ctx.InputAssembler.SetVertexBuffers(0, new[] { VertexBuffer.Native }, new[] { Stride }, new[] { 0 });
+                ctx.InputAssembler.SetVertexBuffers(0, new[] {VertexBuffer.Native}, new[] {Stride}, new[] {0});
 
             ctx.InputAssembler.SetIndexBuffer(IndexBuffer.Native, IndexBuffer.IndexFormat, 0);
             ctx.InputAssembler.InputLayout = mLayout;
             ctx.InputAssembler.PrimitiveTopology = mTopology;
-            ctx.OutputMerger.DepthStencilState = DepthState.State;
-            ctx.Rasterizer.State = RasterizerState.Native;
-            ctx.OutputMerger.BlendState = BlendState.Native;
+
+            if (DepthState != null)
+                ctx.OutputMerger.DepthStencilState = DepthState.Native;
+
+            if (RasterizerState != null)
+                ctx.Rasterizer.State = RasterizerState.Native;
+
+            if (BlendState != null)
+                ctx.OutputMerger.BlendState = BlendState.Native;
+
             mProgram.Bind();
         }
 
@@ -106,8 +113,8 @@ namespace WoWEditor6.Graphics
 
         public void UpdateDepthState(DepthState state)
         {
-            if (mContext.Context.OutputMerger.DepthStencilState != state.State)
-                mContext.Context.OutputMerger.DepthStencilState = state.State;
+            if (mContext.Context.OutputMerger.DepthStencilState != state.Native)
+                mContext.Context.OutputMerger.DepthStencilState = state.Native;
 
             DepthState = state;
         }
@@ -149,9 +156,7 @@ namespace WoWEditor6.Graphics
             mTopology = topology;
 
             if (mContext.Context.InputAssembler.PrimitiveTopology != topology)
-            {
                 mContext.Context.InputAssembler.PrimitiveTopology = topology;
-            }
         }
     }
 }

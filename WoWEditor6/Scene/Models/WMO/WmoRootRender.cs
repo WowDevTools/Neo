@@ -12,8 +12,9 @@ namespace WoWEditor6.Scene.Models.WMO
         public WmoRoot Data { get; private set; }
 
         private bool mAsyncLoaded;
-        private bool mSyncLoaded;
-        private bool mSyncLoadRequested;
+        private bool mIsSyncLoaded;
+        private object mSyncLoadToken;
+
         private BoundingBox mBoundingBox;
         private WmoVertex[] mVertices;
         private uint[] mIndices;
@@ -23,27 +24,59 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public BoundingBox BoundingBox { get { return mBoundingBox; } }
 
-        public IList<WmoGroupRender> Groups { get; private set; }
+        public List<WmoGroupRender> Groups { get; private set; }
 
-        public void Dispose()
+        ~WmoRootRender()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             mIndices = null;
             mVertices = null;
             mAsyncLoaded = false;
+
+            var vb = mVertexBuffer;
+            var ib = mIndexBuffer;
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                if (mVertexBuffer != null)
-                    mVertexBuffer.Dispose();
-                if (mIndexBuffer != null)
-                    mIndexBuffer.Dispose();
+                if (vb != null)
+                    vb.Dispose();
+                if (ib != null)
+                    ib.Dispose();
             });
 
-            foreach (var group in Groups)
-                group.Dispose();
+            mVertexBuffer = null;
+            mIndexBuffer = null;
 
-            Groups = new List<WmoGroupRender>();
-            if(Data != null)
+            if (Groups != null)
+            {
+                foreach (var group in Groups)
+                    group.Dispose();
+
+                Groups.Clear();
+                Groups = null;
+            }
+
+            if (Data != null)
+            {
                 Data.Dispose();
+                Data = null;
+            }
+
+            // Sync load can be called even after the object has been disposed.
+            if (mSyncLoadToken != null)
+            {
+                WorldFrame.Instance.Dispatcher.Remove(mSyncLoadToken);
+                mSyncLoadToken = null;
+            }
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void OnFrame(IEnumerable<WmoInstance> instances)
@@ -54,19 +87,10 @@ namespace WoWEditor6.Scene.Models.WMO
             if (mIndices.Length == 0 || mVertices.Length == 0)
                 return;
 
-            if (mSyncLoaded == false)
+            if (mIsSyncLoaded == false)
             {
-                if (mSyncLoadRequested)
+                if (!BeginSyncLoad())
                     return;
-
-                if (WorldFrame.Instance.MapManager.IsInitialLoad == false)
-                {
-                    WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
-                    mSyncLoadRequested = true;
-                    return;
-                }
-
-                SyncLoad();
             }
 
             var mesh = WmoGroupRender.Mesh;
@@ -94,15 +118,31 @@ namespace WoWEditor6.Scene.Models.WMO
             }
         }
 
+        private bool BeginSyncLoad()
+        {
+            if (mSyncLoadToken != null)
+                return false;
+
+            if (WorldFrame.Instance.MapManager.IsInitialLoad)
+            {
+                SyncLoad();
+                return true;
+            }
+
+            mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
+            return false;
+        }
+
         public void OnAsyncLoad(WmoRoot root)
         {
+            mAsyncLoaded = true;
+
             var indices = new List<ushort>();
             var vertices = new List<WmoVertex>();
 
             Data = root;
 
-            var groups = root.Groups.Select(@group => new WmoGroupRender(@group, this)).ToList();
-            Groups = groups.AsReadOnly();
+            Groups = root.Groups.Select(@group => new WmoGroupRender(@group, this)).ToList();
             mBoundingBox = Data.BoundingBox;
 
             foreach (var group in Groups)
@@ -115,12 +155,13 @@ namespace WoWEditor6.Scene.Models.WMO
 
             mVertices = vertices.ToArray();
             mIndices = indices.Select(i => (uint) i).ToArray();
-
-            mAsyncLoaded = true;
         }
 
         private void SyncLoad()
         {
+            mIsSyncLoaded = true;
+            mSyncLoadToken = null;
+
             if (mVertices == null || mIndices == null || Groups == null)
                 return;
 
@@ -138,8 +179,6 @@ namespace WoWEditor6.Scene.Models.WMO
 
             foreach (var group in Groups)
                 group.SyncLoad();
-
-            mSyncLoaded = true;
         }
     }
 }

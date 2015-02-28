@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
+using WoWEditor6.Scene;
 
 namespace WoWEditor6.IO.Files.Terrain
 {
@@ -30,9 +31,36 @@ namespace WoWEditor6.IO.Files.Terrain
             TextureNames = new List<string>();
         }
 
+        ~MapArea()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (DoodadInstances != null)
+            {
+                foreach (var instance in DoodadInstances)
+                    WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+
+                DoodadInstances.Clear();
+                DoodadInstances = null;
+            }
+
+            if (TextureNames != null)
+            {
+                TextureNames.Clear();
+                TextureNames = null;
+            }
+
+            FullVertices = null;
+            Continent = null;
+        }
+
         public virtual void Dispose()
         {
-            DoodadInstances.Clear();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public abstract void Save();

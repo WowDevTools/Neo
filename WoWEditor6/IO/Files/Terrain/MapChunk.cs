@@ -43,9 +43,31 @@ namespace WoWEditor6.IO.Files.Terrain
             DoodadReferences = new int[0];
         }
 
+        ~MapChunk()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (Textures != null)
+            {
+                Textures.Clear();
+                Textures = null;
+            }
+
+            Vertices = null;
+            AlphaValues = null;
+            HoleValues = null;
+            TextureScales = null;
+            DoodadReferences = null;
+            Parent = null;
+        }
+
         public virtual void Dispose()
         {
-
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public abstract bool OnTextureTerrain(Editing.TextureChangeParameters parameters);

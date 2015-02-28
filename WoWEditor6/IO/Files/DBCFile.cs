@@ -81,8 +81,8 @@ namespace WoWEditor6.IO.Files
         private int mStringTableSize;
         private Stream mStream;
         private BinaryReader mReader;
-        private readonly Dictionary<int, string> mStringTable = new Dictionary<int, string>();
-        private readonly Dictionary<int, int> mIdLookup = new Dictionary<int, int>();
+        private Dictionary<int, string> mStringTable = new Dictionary<int, string>();
+        private Dictionary<int, int> mIdLookup = new Dictionary<int, int>();
 
         public int NumRows { get; private set; }
         public int NumFields { get; private set; }
@@ -132,10 +132,42 @@ namespace WoWEditor6.IO.Files
             return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
         }
 
-        public void Dispose()
+        ~DbcFile()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (mStream != null)
+            {
                 mStream.Dispose();
+                mStream = null;
+            }
+
+            if (mReader != null)
+            {
+                mReader.Dispose();
+                mReader = null;
+            }
+
+            if (mStringTable != null)
+            {
+                mStringTable.Clear();
+                mStringTable = null;
+            }
+
+            if (mIdLookup != null)
+            {
+                mIdLookup.Clear();
+                mIdLookup = null;
+            }
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

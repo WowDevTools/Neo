@@ -11,7 +11,7 @@ namespace WoWEditor6.Scene.Terrain
         private bool mSyncLoaded;
 
         private VertexBuffer mVertexBuffer;
-        private readonly MapChunkRender[] mChunks = new MapChunkRender[256];
+        private MapChunkRender[] mChunks = new MapChunkRender[256];
         private BoundingBox mBoundingBox;
         private BoundingBox mModelBox;
         private bool mIsDirty;
@@ -124,24 +124,52 @@ namespace WoWEditor6.Scene.Terrain
             mAsyncLoaded = true;
         }
 
-        public void Dispose()
+        ~MapAreaRender()
         {
-            if(AreaFile != null)
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (AreaFile != null)
+            {
                 AreaFile.Dispose();
-            AreaFile = null;
+                AreaFile = null;
+            }
 
             mAsyncLoaded = false;
-            var vertexBuffer = mVertexBuffer;
-            mVertexBuffer = null;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() => { if (vertexBuffer != null) vertexBuffer.Dispose(); });
 
-            for(var i = 0; i < 256; ++i)
+            if (mVertexBuffer != null)
             {
-                if (mChunks[i] == null) continue;
+                var vertexBuffer = mVertexBuffer;
+                WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
+                {
+                    if (vertexBuffer != null)
+                        vertexBuffer.Dispose();
+                });
 
-                mChunks[i].Dispose();
-                mChunks[i] = null;
+                mVertexBuffer = null;
             }
+
+            if (mChunks != null)
+            {
+                for (var i = 0; i < 256; ++i)
+                {
+                    if (mChunks[i] == null)
+                        continue;
+
+                    mChunks[i].Dispose();
+                    mChunks[i] = null;
+                }
+
+                mChunks = null;
+            }
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

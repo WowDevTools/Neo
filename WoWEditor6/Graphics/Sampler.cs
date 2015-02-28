@@ -1,13 +1,36 @@
-﻿using SharpDX.Direct3D11;
+﻿using System;
+using SharpDX.Direct3D11;
 
 namespace WoWEditor6.Graphics
 {
-    class Sampler
+    class Sampler : IDisposable
     {
         private SamplerState mState;
         private SamplerStateDescription mDescription;
-        private readonly GxContext mContext;
+        private GxContext mContext;
         private bool mChanged;
+
+        ~Sampler()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mState != null)
+            {
+                mState.Dispose();
+                mState = null;
+            }
+
+            mContext = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         public TextureAddressMode AddressU
         {
@@ -78,6 +101,7 @@ namespace WoWEditor6.Graphics
                 if (!mChanged) return mState;
                 if (mState != null)
                     mState.Dispose();
+
                 mState = new SamplerState(mContext.Device, mDescription);
                 mChanged = false;
 

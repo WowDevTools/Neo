@@ -58,14 +58,33 @@ namespace WoWEditor6.Scene.Models.M2
             Model = model;
         }
 
+        ~M2BatchRenderer()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mInstanceBuffer != null)
+            {
+                var ib = mInstanceBuffer;
+                WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
+                {
+                    if (ib != null)
+                        ib.Dispose();
+                });
+
+                mInstanceBuffer = null;
+            }
+
+            Model = null;
+            mActiveInstances = null;
+        }
+
         public virtual void Dispose()
         {
-            var ib = mInstanceBuffer;
-            WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
-            {
-                if (ib != null)
-                    ib.Dispose();
-            });
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public static void BeginDraw()
@@ -267,6 +286,10 @@ namespace WoWEditor6.Scene.Models.M2
             gMesh.BlendState.Dispose();
             gMesh.IndexBuffer.Dispose();
             gMesh.VertexBuffer.Dispose();
+
+            gMesh.BlendState = null;
+            gMesh.IndexBuffer = null;
+            gMesh.VertexBuffer = null;
 
             gMesh.AddElement("POSITION", 0, 3);
             gMesh.AddElement("BLENDWEIGHT", 0, 4, DataType.Byte, true);

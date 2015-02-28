@@ -11,22 +11,55 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
     {
         private Mohd mHeader;
         // ReSharper disable once CollectionNeverQueried.Local
-        private readonly Dictionary<int, string> mTextureNames = new Dictionary<int, string>();
-        private readonly Dictionary<int, Graphics.Texture> mTextures = new Dictionary<int, Graphics.Texture>();
+        private Dictionary<int, string> mTextureNames = new Dictionary<int, string>();
+        private Dictionary<int, Graphics.Texture> mTextures = new Dictionary<int, Graphics.Texture>();
         private List<WmoMaterial> mMaterials = new List<WmoMaterial>();
         private string mFileName;
-        private readonly List<WmoGroup> mGroups = new List<WmoGroup>();
+        private List<WmoGroup> mGroups = new List<WmoGroup>();
 
         public virtual string FileName { get { return mFileName; } }
 
         public uint AmbientColor { get { return mHeader.ambientColor; } }
         public bool UseParentAmbient { get { return (mHeader.flags & 2) == 0; } }
 
+        ~WmoRoot()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (mMaterials != null)
+            {
+                mMaterials.Clear();
+                mMaterials = null;
+            }
+
+            if (mTextures != null)
+            {
+                mTextures.Clear();
+                mTextures = null;
+            }
+
+            if (mTextureNames != null)
+            {
+                mTextureNames.Clear();
+                mTextureNames = null;
+            }
+
+            if (mGroups != null)
+            {
+                mGroups.Clear();
+                mGroups = null;
+            }
+
+            mFileName = null;
+        }
+
         public override void Dispose()
         {
-            mMaterials.Clear();
-            mTextures.Clear();
-            mGroups.Clear();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public override Graphics.Texture GetTexture(int index)

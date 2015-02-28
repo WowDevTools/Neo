@@ -8,7 +8,7 @@ namespace WoWEditor6.Graphics
         private SharpDX.Direct3D11.BlendState mState;
         private BlendStateDescription mDescription;
         private bool mChanged;
-        private readonly GxContext mContext;
+        private GxContext mContext;
 
         public bool BlendEnabled
         {
@@ -80,10 +80,26 @@ namespace WoWEditor6.Graphics
             mChanged = true;
         }
 
-        public virtual void Dispose()
+        ~BlendState()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
         {
             if (mState != null)
+            {
                 mState.Dispose();
+                mState = null;
+            }
+
+            mContext = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
