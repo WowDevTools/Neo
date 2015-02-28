@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.IO.Files.Texture;
@@ -19,6 +22,8 @@ namespace WoWEditor6.UI.Models
         private bool mIsValueChangedSurpressed;
         private WeakReference<MapArea> mLastArea;
         private WeakReference<MapChunk> mLastChunk;
+        private readonly List<string> mRecentTextures = new List<string>();
+        private readonly List<string> mFavoriteTextures = new List<string>(); 
 
         public TexturingWidget Widget { get { return mWidget; } }
 
@@ -30,9 +35,11 @@ namespace WoWEditor6.UI.Models
             mWidget = widget;
             if (WorldFrame.Instance != null)
                 WorldFrame.Instance.OnWorldClicked += OnWorldClick;
+
+            IO.FileManager.Instance.LoadComplete += OnFilesLoaded;
         }
 
-        private unsafe void SetSelectedTileTextures(FlowLayoutPanel panel, IEnumerable<string> textures)
+        private void SetSelectedTileTextures(FlowLayoutPanel panel, IEnumerable<string> textures)
         {
             panel.Controls.Clear();
 
@@ -66,23 +73,12 @@ namespace WoWEditor6.UI.Models
                 loadTasks.Add(new Tuple<string, PictureBox>(texName, pb));
             }
 
-            new Thread(() =>
+            new Thread(async () =>
             {
                 foreach (var pair in loadTasks)
                 {
                     var img = pair.Item2;
-                    var loadInfo = TextureLoader.LoadToArgbImage(pair.Item1);
-                    if (loadInfo == null)
-                        continue;
-
-                    var bmp = new Bitmap(loadInfo.Width, loadInfo.Height, PixelFormat.Format32bppArgb);
-                    var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly,
-                        PixelFormat.Format32bppArgb);
-
-                    fixed (byte* ptr = loadInfo.Layers[0])
-                        UnsafeNativeMethods.CopyMemory((byte*) bmpd.Scan0, ptr, bmp.Width * bmp.Height * 4);
-
-                    bmp.UnlockBits(bmpd);
+                    var bmp = await CreateBitmap(pair.Item1);
 
                     EditorWindowController.Instance.WindowDispatcher.BeginInvoke(new Action(() =>
                     {
@@ -148,6 +144,169 @@ namespace WoWEditor6.UI.Models
             Editing.EditManager.Instance.EnableTexturing();
         }
 
+        public async void OnFavoriteButtonClicked()
+        {
+            var curTexture = mWidget.TexturePreviewImage.Tag as string;
+            if (string.IsNullOrEmpty(curTexture))
+                return;
+
+            curTexture = curTexture.ToLowerInvariant();
+            var index = mFavoriteTextures.IndexOf(curTexture);
+            if (index < 0)
+            {
+                var pnl = new Panel
+                {
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Padding(5, 5, 0, 0)
+                };
+
+                var pb = new PictureBox
+                {
+                    Width = 96,
+                    Height = 96,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(2, 2),
+                    Tag = curTexture,
+                    Image = await CreateBitmap(curTexture)
+                };
+
+
+                pnl.Controls.Add(pb);
+
+                SetEventHandlers(pb);
+                mFavoriteTextures.Insert(0, curTexture);
+                mWidget.FavoriteWrapPanel.Controls.Add(pnl);
+                mWidget.FavoriteWrapPanel.Controls.SetChildIndex(pnl, 0);
+                mWidget.FavoriteButton.Content = "Remove Favorite";
+            }
+            else
+            {
+                mWidget.FavoriteWrapPanel.Controls.RemoveAt(index);
+                mFavoriteTextures.RemoveAt(index);
+                mWidget.FavoriteButton.Content = "Add Favorite";
+            }
+
+            var coll = new StringCollection();
+            coll.AddRange(mFavoriteTextures.ToArray());
+            Properties.Settings.Default.FavoriteTextures = coll;
+            Properties.Settings.Default.Save();
+        }
+
+        private static unsafe Task<Bitmap> CreateBitmap(string name)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var loadInfo = TextureLoader.LoadToArgbImage(name);
+                if (loadInfo == null)
+                    return null;
+
+                var bmp = new Bitmap(loadInfo.Width, loadInfo.Height, PixelFormat.Format32bppArgb);
+                var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
+
+                fixed (byte* ptr = loadInfo.Layers[0])
+                    UnsafeNativeMethods.CopyMemory((byte*) bmpd.Scan0, ptr, bmp.Width * bmp.Height * 4);
+
+                bmp.UnlockBits(bmpd);
+                return bmp;
+            });
+        }
+
+        private async void AddRecentTexture(string texture, bool initial = false)
+        {
+            texture = texture.ToLowerInvariant();
+            if (mRecentTextures.Contains(texture))
+            {
+                var index = mRecentTextures.IndexOf(texture);
+                mRecentTextures.RemoveAt(index);
+                mRecentTextures.Add(texture);
+                var elem = mWidget.RecentWrapPanel.Controls[index];
+                mWidget.RecentWrapPanel.Controls.SetChildIndex(elem, 0);
+            }
+            else
+            {
+                var pnl = new Panel
+                {
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Padding(5, 5, 0, 0)
+                };
+
+                var pb = new PictureBox
+                {
+                    Width = 96,
+                    Height = 96,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(2, 2),
+                    Tag = texture,
+                    Image = await CreateBitmap(texture)
+                };
+
+
+                pnl.Controls.Add(pb);
+
+                SetEventHandlers(pb);
+
+                mRecentTextures.Insert(0, texture);
+                mWidget.RecentWrapPanel.Controls.Add(pnl);
+                mWidget.RecentWrapPanel.Controls.SetChildIndex(pnl, 0);
+            }
+
+            if (initial == false)
+            {
+                var newColl = new StringCollection();
+                newColl.AddRange(mRecentTextures.ToArray());
+                Properties.Settings.Default.RecentTextures = newColl;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private async void InitRecentTextures(IEnumerable textures)
+        {
+            foreach (string tex in textures)
+            {
+                if (mFavoriteTextures.Contains(tex.ToLowerInvariant()))
+                    continue;
+
+                mFavoriteTextures.Add(tex.ToLowerInvariant());
+
+                var pnl = new Panel
+                {
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Padding(5, 5, 0, 0)
+                };
+
+                var pb = new PictureBox
+                {
+                    Width = 96,
+                    Height = 96,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(2, 2),
+                    Tag = tex.ToLowerInvariant(),
+                    Image = await CreateBitmap(tex)
+                };
+
+
+                pnl.Controls.Add(pb);
+
+                SetEventHandlers(pb);
+                mWidget.FavoriteWrapPanel.Controls.Add(pnl);
+            }
+        }
+
+        private void OnFilesLoaded()
+        {
+            mWidget.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                foreach (var tex in Properties.Settings.Default.RecentTextures)
+                    AddRecentTexture(tex, true);
+
+                InitRecentTextures(Properties.Settings.Default.FavoriteTextures);
+            }));
+        }
+
         private void OnWorldClick(IntersectionParams intersectionParams, MouseEventArgs args)
         {
             if (args.Button != MouseButtons.Left)
@@ -199,7 +358,13 @@ namespace WoWEditor6.UI.Models
                 return;
 
             mWidget.TexturePreviewImage.Image = box.Image;
+            mWidget.TexturePreviewImage.Tag = texName;
             Editing.TextureChangeManager.Instance.SelectedTexture = texName;
+            AddRecentTexture(texName);
+
+            var nameLow = texName.ToLowerInvariant();
+            mWidget.FavoriteButton.Content = mFavoriteTextures.Contains(nameLow) ? "Remove Favorite" : "Add Favorite";
+            mWidget.FavoriteButton.IsEnabled = true;
         }
 
         private void SetEventHandlers(PictureBox box)

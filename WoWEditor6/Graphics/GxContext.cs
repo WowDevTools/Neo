@@ -118,7 +118,7 @@ namespace WoWEditor6.Graphics
         {
             // TODO: should they all go here?
             mM2Shaders = new M2ShadersClass();
-            mM2Shaders.Initialize(this.Context);
+            mM2Shaders.Initialize(Context);
         }
 
         private void OnResize(object sender, EventArgs args)

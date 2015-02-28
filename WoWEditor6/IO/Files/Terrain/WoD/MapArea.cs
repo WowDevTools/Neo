@@ -610,6 +610,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}_tex0.adt", Continent, IndexX, IndexY)))
             {
                 var writer = new BinaryWriter(strm);
+                var texData = TextureNames.SelectMany(t => Encoding.ASCII.GetBytes(t).Concat(new byte[] {0})).ToArray();
+                CreateOrUpdateTexChunk(0x4D544558, texData);
 
                 foreach (var pair in mTexOrigChunks)
                 {
@@ -641,6 +643,24 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 mObjOrigChunks[signature] = chunk;
             else
                 mObjOrigChunks.Add(signature, chunk);
+        }
+
+        private unsafe void CreateOrUpdateTexChunk<T>(uint signature, T[] values) where T : struct
+        {
+            var chunk = mTexOrigChunks.ContainsKey(signature) ? mTexOrigChunks[signature] : new DataChunk { Signature = signature };
+
+            var totalSize = values.Length * SizeCache<T>.Size;
+            chunk.Data = new byte[totalSize];
+            chunk.Size = totalSize;
+
+            var ptr = SizeCache<T>.GetUnsafePtr(ref values[0]);
+            fixed (byte* bptr = chunk.Data)
+                UnsafeNativeMethods.CopyMemory(bptr, (byte*)ptr, totalSize);
+
+            if (mTexOrigChunks.ContainsKey(signature))
+                mTexOrigChunks[signature] = chunk;
+            else
+                mTexOrigChunks.Add(signature, chunk);
         }
 
         private static bool SeekNextMcnk(BinaryReader reader) { return SeekChunk(reader, 0x4D434E4B, false); }

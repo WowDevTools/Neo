@@ -6,7 +6,6 @@ using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
 
-
 namespace WoWEditor6
 {
     class Program
@@ -17,7 +16,7 @@ namespace WoWEditor6
             System.Windows.Forms.Application.EnableVisualStyles();
             AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
 
-            var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? Directory.GetCurrentDirectory();
             var profilesDir = Path.Combine(baseDir, "JitProfiles");
             if (!Directory.Exists(profilesDir))
                 Directory.CreateDirectory(profilesDir);

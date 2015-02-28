@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
-             mc:Ignorable="d" d:DesignWidth="288" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+             mc:Ignorable="d" d:DesignWidth="340" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="220"></RowDefinition>
@@ -49,7 +49,8 @@
                 </Border>
                 <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick">Select From Assets</Button>
                 <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="1" Click="EnableTexturing_Click">Enable Texturing</Button>
-                <CheckBox Grid.Column="1" Grid.Row="2" Margin="5,0,0,0" VerticalAlignment="Center" IsChecked="True" Visibility="Hidden">Preview Gradient</CheckBox>
+                <!-- <CheckBox Grid.Column="1" Grid.Row="2" Margin="5,0,0,0" VerticalAlignment="Center" IsChecked="True" Visibility="Hidden">Preview Gradient</CheckBox> -->
+                <Button Grid.Row="2" Grid.Column="1" IsEnabled="False" HorizontalAlignment="Left" Width="130" Height="25" Margin="5,0,0,0" x:Name="FavoriteButton" Click="FavoriteButton_OnClick">Add Favorite</Button>
             </Grid>
             
         </StackPanel>
@@ -71,10 +72,18 @@
                 </WindowsFormsHost>
             </TabItem>
             <TabItem Header="Recent">
-                
+                <WindowsFormsHost>
+                    <forms:FlowLayoutPanel x:Name="RecentWrapPanel">
+                        
+                    </forms:FlowLayoutPanel>
+                </WindowsFormsHost>
             </TabItem>
             <TabItem Header="Favorites">
-                
+                <WindowsFormsHost>
+                    <forms:FlowLayoutPanel x:Name="FavoriteWrapPanel">
+
+                    </forms:FlowLayoutPanel>
+                </WindowsFormsHost>
             </TabItem>
         </TabControl>
     </Grid>

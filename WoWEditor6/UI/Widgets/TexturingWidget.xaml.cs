@@ -68,5 +68,14 @@ namespace WoWEditor6.UI.Dialogs
         {
             Editing.TextureChangeManager.Instance.TargetValue = (float) e.NewValue;
         }
+
+        private void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.OnFavoriteButtonClicked();
+        }
     }
 }
