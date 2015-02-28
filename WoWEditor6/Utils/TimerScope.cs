@@ -7,9 +7,11 @@ namespace WoWEditor6.Utils
     {
         private readonly Stopwatch mWatch;
         private readonly string mTask;
+        private readonly int mDelay;
 
-        public TimerScope(string task)
+        public TimerScope(string task, int minTimeForOutput = 0)
         {
+            mDelay = minTimeForOutput;
             mTask = task;
             mWatch = Stopwatch.StartNew();
         }
@@ -17,7 +19,8 @@ namespace WoWEditor6.Utils
         public void Dispose()
         {
             mWatch.Stop();
-            Log.Debug(string.Format("Task {0} finished in {1} milliseconds", mTask, mWatch.ElapsedMilliseconds));
+            if (mWatch.ElapsedMilliseconds >= mDelay)
+                Log.Debug(string.Format("Task {0} finished in {1} milliseconds", mTask, mWatch.ElapsedMilliseconds));
         }
     }
 }
