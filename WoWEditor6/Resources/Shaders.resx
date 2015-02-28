@@ -370,4 +370,22 @@
   <data name="TexturedQuadPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\TexturedQuadPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="M2VertexInstanced_VS_Diffuse_EdgeFade_Env" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_EdgeFade_Env.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_EdgeFade_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_EdgeFade_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexInstanced_VS_Diffuse_EdgeFade_T1_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexInstanced_VS_Diffuse_EdgeFade_T1_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_EdgeFade_Env" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_EdgeFade_Env.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_EdgeFade_T1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_EdgeFade_T1.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

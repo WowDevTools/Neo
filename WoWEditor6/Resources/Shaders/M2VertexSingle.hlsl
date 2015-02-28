@@ -116,6 +116,14 @@ float2 getEnv(VertexInput input)
     return env;
 }
 
+VertexOutput getEdgeFade( VertexOutput vo )
+{
+	float d = dot( -normalize( vo.position ), normalize( vo.normal ) );
+	d = clamp( ( d * d ) * 2.7f - 0.4f, 0.0, 1.0f );
+	vo.color.a *= d;
+	return vo;
+}
+
 VertexOutput main_VS_Diffuse_T1(VertexInput input)
 {
     VertexOutput output = fillCommonOutput(input);
@@ -126,10 +134,37 @@ VertexOutput main_VS_Diffuse_T1(VertexInput input)
     return output;
 }
 
+VertexOutput main_VS_Diffuse_EdgeFade_T1(VertexInput input)
+{
+    VertexOutput output = fillCommonOutput(input);
+    
+	output = getEdgeFade( output );
+
+    float4 texCoord1Alt = mul(float4(input.texCoord1, 0, 1), uvAnimation1);
+    output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+    
+    return output;
+}
+
 VertexOutput main_VS_Diffuse_T1_T2(VertexInput input)
 {
     VertexOutput output = fillCommonOutput(input);
     
+    float4 texCoord1Alt = mul(float4(input.texCoord1, 0, 1), uvAnimation1);
+    output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+    float4 texCoord2Alt = mul(float4(input.texCoord2, 0, 1), uvAnimation2);
+    output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+    
+    return output;
+}
+
+VertexOutput main_VS_Diffuse_EdgeFade_T1_T2(VertexInput input)
+{
+    VertexOutput output = fillCommonOutput(input);
+    
+	output = getEdgeFade( output );
+
     float4 texCoord1Alt = mul(float4(input.texCoord1, 0, 1), uvAnimation1);
     output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
 
@@ -168,6 +203,19 @@ VertexOutput main_VS_Diffuse_T1_Env_T1(VertexInput input)
     return output;
 }
 
+VertexOutput main_VS_Diffuse_T1_T1(VertexInput input)
+{
+    VertexOutput output = fillCommonOutput(input);
+    
+    float4 texCoord1Alt = mul(float4(input.texCoord1, 0, 1), uvAnimation1);
+    output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+
+    float4 texCoord2Alt = mul(float4(input.texCoord1, 0, 1), uvAnimation2);
+    output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
+
+    return output;
+}
+
 VertexOutput main_VS_Diffuse_T1_Env_T2(VertexInput input)
 {
     VertexOutput output = fillCommonOutput(input);
@@ -188,6 +236,18 @@ VertexOutput main_VS_Diffuse_Env(VertexInput input)
 {
     VertexOutput output = fillCommonOutput(input);
     
+    float4 texCoord1Alt = mul(float4(getEnv(input), 0, 1), uvAnimation1);
+    output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
+    
+    return output;
+}
+
+VertexOutput main_VS_Diffuse_EdgeFade_Env(VertexInput input)
+{
+    VertexOutput output = fillCommonOutput(input);
+    
+	output = getEdgeFade( output );
+
     float4 texCoord1Alt = mul(float4(getEnv(input), 0, 1), uvAnimation1);
     output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
     
@@ -215,19 +275,6 @@ VertexOutput main_VS_Diffuse_Env_Env(VertexInput input)
     output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
 
     float4 texCoord2Alt = mul(float4(getEnv(input), 0, 1), uvAnimation2);
-    output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
-    
-    return output;
-}
-
-VertexOutput main_VS_Diffuse_T1_T1(VertexInput input)
-{
-    VertexOutput output = fillCommonOutput(input);
-    
-    float4 texCoord1Alt = mul(float4(input.texCoord1, 0, 1), uvAnimation1);
-    output.texCoord1 = texCoord1Alt.xy / texCoord1Alt.w;
-
-    float4 texCoord2Alt = mul(float4(input.texCoord1, 0, 1), uvAnimation2);
     output.texCoord2 = texCoord2Alt.xy / texCoord2Alt.w;
     
     return output;
@@ -293,4 +340,3 @@ VertexOutput main_VS_Diffuse_T1_T1_T1_T2(VertexInput input)
     
     return output;
 }
-
