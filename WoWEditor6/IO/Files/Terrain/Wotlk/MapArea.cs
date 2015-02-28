@@ -125,16 +125,6 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
                 header.ofsMcin = (int)(mcinStart - 28);
 
-                if (mDoodadDefs != null && mDoodadDefs.Length > 0)
-                {
-                    header.ofsMddf = (int)(writer.BaseStream.Position - 20);
-                    writer.Write(0x4D444446);
-                    writer.Write(mDoodadDefs.Length * SizeCache<Mddf>.Size);
-                    writer.WriteArray(mDoodadDefs);
-                }
-                else
-                    header.ofsMddf = 0;
-
                 header.ofsMtex = (int) (writer.BaseStream.Position - 20);
                 writer.Write(0x4D544558);
                 var textureData = new List<byte>();
@@ -151,6 +141,18 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 SaveChunk(0x4D4D4944, writer, out header.ofsMmid);
                 SaveChunk(0x4D574D4F, writer, out header.ofsMwmo);
                 SaveChunk(0x4D574944, writer, out header.ofsMwid);
+                SaveChunk(0x4D444446, writer, out header.ofsMddf);
+
+                /*if (mDoodadDefs != null && mDoodadDefs.Length > 0)
+                {
+                    header.ofsMddf = (int)(writer.BaseStream.Position - 20);
+                    writer.Write(0x4D444446);
+                    writer.Write(mDoodadDefs.Length * SizeCache<Mddf>.Size);
+                    writer.WriteArray(mDoodadDefs);
+                }
+                else
+                    header.ofsMddf = 0;*/
+
                 SaveChunk(0x4D4F4446, writer, out header.ofsModf);
                 SaveChunk(0x4D48324F, writer, out header.ofsMh2o);
 
@@ -297,8 +299,11 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private void InitChunkInfos(BinaryReader reader)
         {
-            if(SeekChunk(reader, 0x4D43494E))
+            if (SeekChunk(reader, 0x4D43494E))
+            {
+                reader.ReadInt32();
                 mChunkOffsets = reader.ReadArray<Mcin>(256);
+            }
 
             reader.BaseStream.Position = 0;
             for (var i = 0; i < 256; ++i)
