@@ -549,12 +549,30 @@ namespace WoWEditor6.IO.Files.Terrain
                         AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
                     }
 
-                    for (var k = layer + 1; k < mLayers.Length; ++k)
+                    var nLayers = mLayers.Length - 2; // baseLayer and current layer
+                    if (nLayers > 0)
                     {
-                        float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
-                        var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * (1 - parameters.TargetValue), 0), 255);
-                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * k));
-                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * k));
+                        /*for (var k = layer + 1; k < mLayers.Length; ++k)
+                        {
+                            float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
+                            var newVal =
+                                Math.Min(Math.Max((1 - pressure) * cur + pressure * (1 - parameters.TargetValue), 0),
+                                    255);
+                            AlphaValues[i * 64 + j] &= ~(uint) (0xFF << (8 * k));
+                            AlphaValues[i * 64 + j] |= (((uint) newVal) << (8 * k));
+                        }*/
+
+                        var tarInverse = (1 - parameters.TargetValue) / nLayers;
+                        for (var k = 1; k < mLayers.Length; ++k)
+                        {
+                            if (k == layer)
+                                continue;
+
+                            float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
+                            var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * tarInverse, 0), 255);
+                            AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * k));
+                            AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * k));
+                        }
                     }
                 }
             }

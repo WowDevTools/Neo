@@ -163,6 +163,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 }));
                 writer.Write(textureData.ToArray());
 
+                header.ofsMmdx = (int) (writer.BaseStream.Position - 20);
                 var m2NameData = new List<byte>();
                 writer.Write(0x4D4D4458);
                 writer.Write(mDoodadNames.Sum(t =>
@@ -174,6 +175,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 }));
                 writer.Write(m2NameData.ToArray());
 
+                header.ofsMmid = (int) (writer.BaseStream.Position - 20);
                 writer.Write(0x4D4D4944);
                 writer.Write(mDoodadNameIds.Length * 4);
                 writer.WriteArray(mDoodadNameIds);
