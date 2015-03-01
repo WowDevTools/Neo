@@ -8,6 +8,7 @@
              xmlns:dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
              xmlns:controls="clr-namespace:WoWEditor6.UI.Components"
              xmlns:themes="clr-namespace:WoWEditor6.UI.Themes"
+             xmlns:widgets="clr-namespace:WoWEditor6.UI.Widgets"
              mc:Ignorable="d" Width="1600" Height="900" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
@@ -48,9 +49,9 @@
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="Texturing" CanClose="False" AutoHideWidth="340" x:Name="TexturingPane">
-                            <dialogs:TexturingWidget>
+                            <widgets:TexturingWidget>
                                 
-                            </dialogs:TexturingWidget>
+                            </widgets:TexturingWidget>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -7,11 +8,13 @@ using System.Drawing.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WoWEditor6.IO;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.IO.Files.Texture;
 using WoWEditor6.Scene;
-using WoWEditor6.UI.Dialogs;
+using WoWEditor6.UI.Widgets;
 using WoWEditor6.Utils;
+using CheckBox = System.Windows.Controls.CheckBox;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace WoWEditor6.UI.Models
@@ -24,6 +27,7 @@ namespace WoWEditor6.UI.Models
         private WeakReference<MapChunk> mLastChunk;
         private readonly List<string> mRecentTextures = new List<string>();
         private readonly List<string> mFavoriteTextures = new List<string>(); 
+        private readonly List<string> mTilesets = new List<string>(); 
 
         public TexturingWidget Widget { get { return mWidget; } }
 
@@ -36,10 +40,10 @@ namespace WoWEditor6.UI.Models
             if (WorldFrame.Instance != null)
                 WorldFrame.Instance.OnWorldClicked += OnWorldClick;
 
-            IO.FileManager.Instance.LoadComplete += OnFilesLoaded;
+            FileManager.Instance.LoadComplete += OnFilesLoaded;
         }
 
-        private void SetSelectedTileTextures(FlowLayoutPanel panel, IEnumerable<string> textures)
+        private void SetSelectedTileTextures(Control panel, IEnumerable<string> textures)
         {
             panel.Controls.Clear();
 
@@ -142,6 +146,90 @@ namespace WoWEditor6.UI.Models
         public void SwitchToTexturing()
         {
             Editing.EditManager.Instance.EnableTexturing();
+        }
+
+        public async void UpdateFilters()
+        {
+            var query = mWidget.TextureQueryBox.Text.ToLowerInvariant();
+            if (string.IsNullOrEmpty(query) || query.Length < 4)
+                return;
+
+            var selectedFilters = (from CheckBox cb in mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string)cb.Content).ToLowerInvariant()).ToList();
+
+            mWidget.SearchResultLayout.Controls.Clear();
+            var newValues =
+                mTilesets.Where(s => s.Contains(query) && (selectedFilters.Count == 0 || selectedFilters.Any(s.Contains)));
+
+            var toAdd = new List<Control>();
+            foreach (var tex in newValues)
+            {
+                var pnl = new Panel
+                {
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Padding(5, 5, 0, 0)
+                };
+
+                var pb = new PictureBox
+                {
+                    Width = 96,
+                    Height = 96,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(2, 2),
+                    Tag = tex,
+                    Image = await CreateBitmap(tex)
+                };
+
+
+                pnl.Controls.Add(pb);
+
+                SetEventHandlers(pb);
+                toAdd.Add(pnl);
+            }
+
+            mWidget.SearchResultLayout.Controls.AddRange(toAdd.ToArray());
+        }
+
+        public async void SearchForTexture(string query)
+        {
+            if (string.IsNullOrEmpty(query) || query.Length < 4)
+                return;
+
+            var selectedFilters = (from CheckBox cb in mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string) cb.Content).ToLowerInvariant()).ToList();
+
+            mWidget.SearchResultLayout.Controls.Clear();
+            query = query.ToLowerInvariant();
+            var newValues =
+                mTilesets.Where(s => s.Contains(query) && (selectedFilters.Count == 0 || selectedFilters.Any(s.Contains)));
+
+            var toAdd = new List<Control>();
+            foreach (var tex in newValues)
+            {
+                var pnl = new Panel
+                {
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Padding(5, 5, 0, 0)
+                };
+
+                var pb = new PictureBox
+                {
+                    Width = 96,
+                    Height = 96,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(2, 2),
+                    Tag = tex,
+                    Image = await CreateBitmap(tex)
+                };
+
+
+                pnl.Controls.Add(pb);
+
+                SetEventHandlers(pb);
+                toAdd.Add(pnl);
+            }
+
+            mWidget.SearchResultLayout.Controls.AddRange(toAdd.ToArray());
         }
 
         public async void OnFavoriteButtonClicked()
@@ -302,6 +390,9 @@ namespace WoWEditor6.UI.Models
 
         private void OnFilesLoaded()
         {
+            var tilesetRoot = FileManager.Instance.FileListing.RootEntry.Children["tileset"] as DirectoryEntry;
+            HandleTilesetDirectory(tilesetRoot, "Tileset");
+
             mWidget.Dispatcher.BeginInvoke(new Action(() =>
             {
                 foreach (var tex in Properties.Settings.Default.RecentTextures)
@@ -309,6 +400,30 @@ namespace WoWEditor6.UI.Models
 
                 InitRecentTextures(Properties.Settings.Default.FavoriteTextures);
             }));
+        }
+
+        private void HandleTilesetDirectory(DirectoryEntry dir, string curDir)
+        {
+            if (dir == null)
+                return;
+
+            foreach (var child in dir.Children)
+            {
+                var entry = child.Value as FileEntry;
+                if (entry != null)
+                {
+                    var name = entry.Name.ToLowerInvariant();
+                    if (name.Contains("_s.blp") || name.Contains("_h.blp") || !name.Contains(".blp"))
+                        continue;
+
+                    mTilesets.Add((curDir + "\\" + entry.Name).ToLowerInvariant());
+                }
+                else
+                {
+                    dir = (DirectoryEntry) child.Value;
+                    HandleTilesetDirectory(dir, curDir + "\\" + dir.Name);
+                }
+            }
         }
 
         private void OnWorldClick(IntersectionParams intersectionParams, MouseEventArgs args)

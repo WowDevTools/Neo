@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WoWEditor6.UI.Dialogs.TexturingWidget"
+﻿<UserControl x:Class="WoWEditor6.UI.Widgets.TexturingWidget"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -84,6 +84,42 @@
 
                     </forms:FlowLayoutPanel>
                 </WindowsFormsHost>
+            </TabItem>
+            <TabItem Header="Search">
+                <DockPanel Margin="10,10,10,10">
+                    <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Query String</Label>
+                    <TextBox DockPanel.Dock="Top"  Margin="0,5" FontSize="14" x:Name="TextureQueryBox" TextChanged="TextureQueryText_Changed"></TextBox>
+                    <Label DockPanel.Dock="Top"  Margin="0,10,0,0" FontSize="16" FontWeight="Bold">Filter</Label>
+                    <WrapPanel DockPanel.Dock="Top"  Orientation="Horizontal" x:Name="FilterWrapPanel">
+                        <CheckBox Margin="0,3,5,0">Brick</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Cobblestone</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Cracked</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Creep</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Crop</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Dirt</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Fern</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Flower</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Grass</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Ice</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Lava</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Leaf</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Mud</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Moss</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Road</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Rock</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Root</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Rubble</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Sand</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Shore</CheckBox>
+                        <CheckBox Margin="0,3,5,0">Weed</CheckBox>
+                    </WrapPanel>
+                    <Label DockPanel.Dock="Top"  Margin="0,10" FontSize="16" FontWeight="Bold">Result</Label>
+                    <WindowsFormsHost DockPanel.Dock="Top">
+                        <forms:FlowLayoutPanel x:Name="SearchResultLayout" AutoScroll="True">
+                            
+                        </forms:FlowLayoutPanel>
+                    </WindowsFormsHost>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </Grid>

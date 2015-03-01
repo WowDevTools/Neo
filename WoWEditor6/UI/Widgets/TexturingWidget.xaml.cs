@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using WoWEditor6.Scene;
 using WoWEditor6.UI.Models;
 
-namespace WoWEditor6.UI.Dialogs
+namespace WoWEditor6.UI.Widgets
 {
     /// <summary>
     /// Interaction logic for TexturingWidget.xaml
@@ -14,6 +13,18 @@ namespace WoWEditor6.UI.Dialogs
         {
             DataContext = new TexturingViewModel(this);
             InitializeComponent();
+
+            foreach(CheckBox cb in FilterWrapPanel.Children)
+                cb.Click += FilterCheckBoxClicked;
+        }
+
+        private void FilterCheckBoxClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.UpdateFilters();
         }
 
         private void Handle_AssetBrowserClick(object sender, RoutedEventArgs e)
@@ -76,6 +87,15 @@ namespace WoWEditor6.UI.Dialogs
                 return;
 
             model.OnFavoriteButtonClicked();
+        }
+
+        private void TextureQueryText_Changed(object sender, TextChangedEventArgs e)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.SearchForTexture(((TextBox) e.Source).Text);
         }
     }
 }
