@@ -2,7 +2,7 @@
 
 namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
-    class Creature : ICreature
+    public class Creature : ICreature
     {
         public int EntryId { get; set; }
         public int DifficultyEntry1 { get; set; }
@@ -64,7 +64,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public int VehicleId { get; set; }
         public int MinGold { get; set; }
         public int MaxGold { get; set; }
-        public AiName AiName { get; set; }
+        public string AiName { get; set; }
         public MovementType MovementType { get; set; }
         public InhabitType InhabitType { get; set; }
         public float HoverHeight { get; set; }

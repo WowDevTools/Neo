@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.modelRenderControl1 = new Components.ModelRenderControl();
+            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             this.label1 = new System.Windows.Forms.Label();
             this.Entry = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -209,6 +209,8 @@
             this.label71 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Exp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BaseAtkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAtkSpeed)).BeginInit();
@@ -240,6 +242,14 @@
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // modelRenderControl1
+            // 
+            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.modelRenderControl1.Location = new System.Drawing.Point(0, 0);
+            this.modelRenderControl1.Name = "modelRenderControl1";
+            this.modelRenderControl1.Size = new System.Drawing.Size(659, 329);
+            this.modelRenderControl1.TabIndex = 0;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -259,19 +269,11 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.Controls.Add(this.modelRenderControl1);
             this.panel1.Location = new System.Drawing.Point(-4, -1);
-            this.panel1.Controls.Add(modelRenderControl1);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(659, 329);
             this.panel1.TabIndex = 2;
-            // 
-            // modelRenderControl1
-            // 
-            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.modelRenderControl1.Location = new System.Drawing.Point(0, 0);
-            this.modelRenderControl1.Name = "modelRenderControl1";
-            this.modelRenderControl1.Size = new System.Drawing.Size(659, 329);
-            this.modelRenderControl1.TabIndex = 0;
             // 
             // DiffEntry3
             // 
@@ -2113,10 +2115,21 @@
             this.label16.TabIndex = 10;
             this.label16.Text = "Quest Items*";
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(1139, 564);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(110, 23);
+            this.btnSave.TabIndex = 111;
+            this.btnSave.Text = "Save and execute to DB";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // CreatureEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.tabControl1);
@@ -2125,7 +2138,8 @@
             this.Controls.Add(this.Entry);
             this.Controls.Add(this.label1);
             this.Name = "CreatureEditorControl";
-            this.Size = new System.Drawing.Size(2000, 558);
+            this.Size = new System.Drawing.Size(1252, 589);
+            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Exp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BaseAtkSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAtkSpeed)).EndInit();
@@ -2354,5 +2368,6 @@
         private System.Windows.Forms.TabPage tapPage3;
         private System.Windows.Forms.TabPage tabPage4;
         private Components.ModelRenderControl modelRenderControl1;
+        private System.Windows.Forms.Button btnSave;
     }
 }

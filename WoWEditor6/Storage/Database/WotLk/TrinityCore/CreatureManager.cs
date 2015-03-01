@@ -78,7 +78,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                 creature.VehicleId = int.Parse(dRow[57].ToString());
                 creature.MinGold = int.Parse(dRow[58].ToString());
                 creature.MaxGold = int.Parse(dRow[59].ToString());
-                creature.AiName = (AiName)Enum.Parse(typeof(AiName), dRow[60].ToString());
+                creature.AiName = dRow[60].ToString();
                 creature.MovementType = (MovementType)Enum.Parse(typeof(MovementType), dRow[61].ToString());
                 creature.InhabitType = (InhabitType)Enum.Parse(typeof(InhabitType), dRow[62].ToString());
                 creature.HoverHeight = float.Parse(dRow[63].ToString());

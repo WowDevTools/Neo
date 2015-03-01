@@ -62,7 +62,7 @@
         int VehicleId { get; set; }
         int MinGold { get; set; }
         int MaxGold { get; set; }
-        AiName AiName { get; set; }
+        string AiName { get; set; }
         MovementType MovementType { get; set; }
         InhabitType InhabitType { get; set; }
         float HoverHeight { get; set; }
@@ -316,18 +316,6 @@
         Unknown22 = 0x200000,
         Unknown23 = 0x400000,
         Unknown24 = 0x800000,
-    }
-
-    public enum AiName
-    {
-        NullAi,
-        AggressorAi,
-        ReactorAi,
-        GuardAi,
-        PetAi,
-        TotemAi,
-        EventAi,
-        SmartAi
     }
 
     public enum InhabitType
