@@ -3,7 +3,7 @@ using SharpDX;
 
 namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
-    class SpawnedCreature : ISpawnedCreature
+    public class SpawnedCreature : ISpawnedCreature
     {
         public int SpawnGuid { get; set; }
         // Also known as the field "id"

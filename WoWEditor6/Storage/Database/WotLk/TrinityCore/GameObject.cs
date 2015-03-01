@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
-    class GameObject : IGameObject
+    public class GameObject : IGameObject
     {
         public int EntryId { get; set; }
         public EnumType Type { get; set; }

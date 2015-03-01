@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
-    interface IGameObject
+    public interface IGameObject
     {
         int EntryId { get; set; }
         EnumType Type { get; set; }
@@ -55,7 +55,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         string GetInsertSqlQuery();
     }
 
-    enum EnumType
+    public enum EnumType
     {
         Door = 0,
         Button = 1,
@@ -95,7 +95,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         TrapDoor = 35
     }
 
-    enum Flags
+    public enum Flags
     {
         InUse = 0x1,
         Locked = 0x2,
