@@ -25,8 +25,10 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         private Mhdr mHeader;
         private Dictionary<uint, DataChunk> mSaveChunks = new Dictionary<uint, DataChunk>();
-        private Mcin[] mChunkOffsets;
-        private Mddf[] mDoodadDefs;
+        private Mcin[] mChunkOffsets = new Mcin[0];
+        private Mddf[] mDoodadDefs = new Mddf[0];
+        private int[] mDoodadNameIds = new int[0];
+        private readonly List<string> mDoodadNames = new List<string>(); 
 
         private bool mWasChanged;
 
@@ -35,6 +37,29 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             Continent = continent;
             IndexX = ix;
             IndexY = iy;
+        }
+
+        public override void AddDoodadInstance(int uuid, string modelName, BoundingBox box, Vector3 position, Vector3 rotation, float scale)
+        {
+            var mmidValue = mDoodadNames.Sum(s => s.Length + 1);
+            Array.Resize(ref mDoodadNameIds, mDoodadNameIds.Length + 1);
+            mDoodadNameIds[mDoodadNameIds.Length - 1] = mmidValue;
+            mDoodadNames.Add(modelName);
+
+            var mcrfValue = mDoodadDefs.Length;
+            Array.Resize(ref mDoodadDefs, mDoodadDefs.Length + 1);
+            mDoodadDefs[mDoodadDefs.Length - 1] = new Mddf
+            {
+                Position = new Vector3(position.X, position.Z, position.Y),
+                Mmid = mmidValue,
+                Flags = 0,
+                Scale = (ushort)(scale * 1024),
+                UniqueId = uuid,
+                Rotation = new Vector3(-rotation.X, 90 - rotation.Z, -rotation.Y)
+            };
+
+            foreach(var chunk in mChunks)
+                chunk.TryAddDoodad(mcrfValue, box);
         }
 
         public override void OnUpdateModelPositions(TerrainChangeParameters parameters)
@@ -138,8 +163,21 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 }));
                 writer.Write(textureData.ToArray());
 
-                SaveChunk(0x4D4D4458, writer, out header.ofsMmdx);
-                SaveChunk(0x4D4D4944, writer, out header.ofsMmid);
+                var m2NameData = new List<byte>();
+                writer.Write(0x4D4D4458);
+                writer.Write(mDoodadNames.Sum(t =>
+                {
+                    var data = Encoding.ASCII.GetBytes(t);
+                    m2NameData.AddRange(data);
+                    m2NameData.Add(0);
+                    return data.Length + 1;
+                }));
+                writer.Write(m2NameData.ToArray());
+
+                writer.Write(0x4D4D4944);
+                writer.Write(mDoodadNameIds.Length * 4);
+                writer.WriteArray(mDoodadNameIds);
+
                 SaveChunk(0x4D574D4F, writer, out header.ofsMwmo);
                 SaveChunk(0x4D574944, writer, out header.ofsMwid);
 
@@ -398,6 +436,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             var bytes = reader.ReadBytes(size);
             var fullString = Encoding.ASCII.GetString(bytes);
             var modelNames = fullString.Split('\0');
+            mDoodadNames.AddRange(modelNames.ToList());
             var modelNameLookup = new Dictionary<int, string>();
             var curOffset = 0;
             foreach (var name in modelNames)
@@ -410,7 +449,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 return;
 
             size = reader.ReadInt32();
-            var modelNameIds = reader.ReadArray<int>(size / 4);
+            mDoodadNameIds = reader.ReadArray<int>(size / 4);
 
             if (SeekChunk(reader, 0x4D444446) == false)
                 return;
@@ -422,10 +461,10 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             foreach (var entry in mDoodadDefs)
             {
                 ++index;
-                if (entry.Mmid >= modelNameIds.Length)
+                if (entry.Mmid >= mDoodadNameIds.Length)
                     continue;
 
-                var nameId = modelNameIds[entry.Mmid];
+                var nameId = mDoodadNameIds[entry.Mmid];
                 string modelName;
                 if (modelNameLookup.TryGetValue(nameId, out modelName) == false)
                     continue;

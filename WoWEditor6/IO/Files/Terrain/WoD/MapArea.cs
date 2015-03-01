@@ -688,6 +688,11 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             }
         }
 
+        public override void AddDoodadInstance(int uuid, string modelName, BoundingBox box, Vector3 position, Vector3 rotation, float scale)
+        {
+            
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (mMainStream != null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene;
@@ -37,6 +38,25 @@ namespace WoWEditor6.IO.Files.Terrain
         ~MapArea()
         {
             Dispose(false);
+        }
+
+        public abstract void AddDoodadInstance(int uuid, string modelName, BoundingBox box, Vector3 position, Vector3 rotation, float scale);
+
+        public int GetFreeM2Uuid()
+        {
+            if (DoodadInstances.Count >= (1 << 20) - 1)
+                return -1;
+
+            var upper = IndexY * 64 + IndexX;
+            var lower = DoodadInstances.Count + 1;
+            while (DoodadInstances.Any(i => i.Uuid == ((upper << 20) | lower)))
+            {
+                ++lower;
+                if (lower >= (1 << 20) - 1)
+                    return -1;
+            }
+
+            return (upper << 20) | lower;
         }
 
         protected virtual void Dispose(bool disposing)

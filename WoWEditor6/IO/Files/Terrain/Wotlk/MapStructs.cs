@@ -37,7 +37,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         public readonly int IndexX;
         public readonly int IndexY;
         public int NumLayers;
-        public readonly int NumDoodadRefs;
+        public int NumDoodadRefs;
         public int Mcvt;
         public int Mcnr;
         public int Mcly;

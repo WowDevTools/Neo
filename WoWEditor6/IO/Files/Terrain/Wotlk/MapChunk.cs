@@ -50,6 +50,21 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             base.Dispose(disposing);
         }
 
+        public void TryAddDoodad(int mcrfValue, BoundingBox box)
+        {
+            var chunkBox = new BoundingBox(new Vector3(BoundingBox.Minimum.X, BoundingBox.Minimum.Y, float.MinValue),
+                new Vector3(BoundingBox.Maximum.X, BoundingBox.Maximum.Y, float.MaxValue));
+
+            var intersects = chunkBox.Intersects(ref box);
+            if (intersects == false)
+                return;
+
+            var references = DoodadReferences;
+            Array.Resize(ref references, references.Length + 1);
+            references[references.Length - 1] = mcrfValue;
+            DoodadReferences = references;
+        }
+
         public void SaveChunk(BinaryWriter writer)
         {
             int unusedSize;
@@ -64,12 +79,20 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             SaveHeights(writer, basePos, ref header);
             SaveMccv(writer, basePos, ref header);
             SaveNormals(writer, basePos, ref header);
+
             // INFO: SaveAlpha must be called before SaveLayers since SaveAlpha modifies the layer flags
             int alphaChunkSize;
             var alphaStream = SaveAlpha(ref header, out alphaChunkSize);
             SaveLayers(writer, basePos, ref header);
-            SaveUnusedChunk(writer, 0x4D435246, basePos, out header.Mcrf, out unusedSize);
+
+            header.Mcrf = (int) writer.BaseStream.Position - basePos;
+            writer.Write(0x4D435246);
+            writer.Write(DoodadReferences.Length * 4);
+            writer.WriteArray(DoodadReferences);
+            header.NumDoodadRefs = DoodadReferences.Length;
+
             SaveUnusedChunk(writer, 0x4D435348, basePos, out header.Mcsh, out unusedSize);
+
             // Noggit panics when MCAL is not after MCLY even though there is no reason
             // that any sane person would imply an order in an interchangeable file format,
             // but lets make them happy anyway.

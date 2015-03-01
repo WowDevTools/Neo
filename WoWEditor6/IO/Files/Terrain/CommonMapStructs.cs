@@ -32,12 +32,12 @@ namespace WoWEditor6.IO.Files.Terrain
     [StructLayout(LayoutKind.Sequential)]
     struct Mddf
     {
-        public readonly int Mmid;
-        public readonly int UniqueId;
+        public int Mmid;
+        public int UniqueId;
         public Vector3 Position;
-        public readonly Vector3 Rotation;
-        public readonly ushort Scale;
-        public readonly ushort Flags;
+        public Vector3 Rotation;
+        public ushort Scale;
+        public ushort Flags;
     }
 
     [StructLayout(LayoutKind.Sequential)]
