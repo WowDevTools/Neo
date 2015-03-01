@@ -78,6 +78,8 @@ namespace WoWEditor6.Scene
         public GxContext GraphicsContext { get; private set; }
         public GraphicsDispatcher Dispatcher { get; private set; }
 
+        public IntersectionParams LastMouseIntersection { get { return mIntersection; } }
+
         public event Action<IntersectionParams, MouseEventArgs> OnWorldClicked;
 
         public bool HighlightModelsInBrush { get; set; }

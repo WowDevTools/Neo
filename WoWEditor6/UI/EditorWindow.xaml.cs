@@ -4,10 +4,8 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Interop;
 using System.Windows.Media;
 using Microsoft.Win32;
-using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.Win32;
 using Color = System.Windows.Media.Color;
@@ -68,6 +66,7 @@ namespace WoWEditor6.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ModelSpawnPane.ToggleAutoHide();
             SculptingPane.ToggleAutoHide();
             EventHandler method = null;
             method = (s, args) =>
@@ -128,11 +127,6 @@ namespace WoWEditor6.UI
                 var scrollView = border.Child as ScrollViewer;
                 if(scrollView != null) scrollView.ScrollToBottom();
             }));
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Log.RemoveSink(this);
         }
 
         private void BrowseFolderButton_Click(object sender, RoutedEventArgs e)

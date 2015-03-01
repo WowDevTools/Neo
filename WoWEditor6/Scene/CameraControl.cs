@@ -100,7 +100,7 @@ namespace WoWEditor6.Scene
                 cam.MoveUp(-diff * mSpeedFactor);
             }
 
-            if (KeyHelper.IsKeyDown(keyState, Keys.RButton))
+            if (KeyHelper.IsKeyDown(keyState, Keys.RButton) && !KeyHelper.IsKeyDown(keyState, Keys.ControlKey) && !KeyHelper.IsKeyDown(keyState, Keys.Menu))
             {
                 var curPos = Cursor.Position;
                 var dx = curPos.X - mLastCursorPos.X;

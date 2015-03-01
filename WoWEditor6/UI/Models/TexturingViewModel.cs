@@ -84,7 +84,7 @@ namespace WoWEditor6.UI.Models
                     var img = pair.Item2;
                     var bmp = await CreateBitmap(pair.Item1);
 
-                    EditorWindowController.Instance.WindowDispatcher.BeginInvoke(new Action(() =>
+                    await EditorWindowController.Instance.WindowDispatcher.BeginInvoke(new Action(() =>
                     {
                         img.Image = bmp;
                         img.CreateControl();

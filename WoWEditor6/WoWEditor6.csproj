@@ -168,6 +168,7 @@
     </Compile>
     <Compile Include="Editing\EditManager.cs" />
     <Compile Include="Editing\EditMode.cs" />
+    <Compile Include="Editing\ModelSpawnManager.cs" />
     <Compile Include="Editing\TerrainChangeManager.cs" />
     <Compile Include="Editing\TextureChangeManager.cs" />
     <Compile Include="Graphics\BlendState.cs" />
@@ -432,6 +433,9 @@
     <Compile Include="UI\Widgets\ColorPickerControl.xaml.cs">
       <DependentUpon>ColorPickerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Widgets\ModelSpawnWidget.xaml.cs">
+      <DependentUpon>ModelSpawnWidget.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Widgets\settings.xaml.cs">
       <DependentUpon>settings.xaml</DependentUpon>
     </Compile>
@@ -618,6 +622,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Widgets\KeyBindingWidget.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Widgets\ModelSpawnWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

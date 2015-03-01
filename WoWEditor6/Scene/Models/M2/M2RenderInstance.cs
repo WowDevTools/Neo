@@ -14,7 +14,7 @@ namespace WoWEditor6.Scene.Models.M2
         private Vector3 mPosition;
         private Vector3 mRotation;
         private Color4 mHighlightColor = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
-        private readonly Vector3 mScale;
+        private Vector3 mScale;
 
         private bool mIsHighlighted;
         private bool mHighlightFinished;
@@ -23,6 +23,9 @@ namespace WoWEditor6.Scene.Models.M2
         private M2File mModel;
         private M2Renderer mRenderer;
         private BoundingBox mBoundingBox;
+
+        public Vector3 Position { get { return mPosition; } }
+        public float Scale { get { return mScale.X; } }
 
         public M2File Model { get { return mModel; } }
 
@@ -69,6 +72,18 @@ namespace WoWEditor6.Scene.Models.M2
         {
             mPosition = position;
 
+            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
+            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
+
+            mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
+            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+            mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+        }
+
+        public void UpdateScale(float scale)
+        {
+            mScale = new Vector3(scale, scale, scale);
             var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
                 MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
             Matrix.Invert(ref rotationMatrix, out mInverseRotation);

@@ -4,7 +4,7 @@ namespace WoWEditor6.Utils
 {
     static class KeyHelper
     {
-        public static bool AreKeysDown(byte[] keyState, Keys[] keys)
+        public static bool AreKeysDown(byte[] keyState, params Keys[] keys)
         {
             if (keys.Length == 0)
                 return false;

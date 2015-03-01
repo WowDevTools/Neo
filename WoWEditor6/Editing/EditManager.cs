@@ -50,6 +50,8 @@ namespace WoWEditor6.Editing
                 TerrainChangeManager.Instance.OnChange(diff);
             else if ((CurrentMode & EditMode.Texturing) != 0)
                 TextureChangeManager.Instance.OnChange(diff);
+
+            ModelSpawnManager.Instance.OnUpdate(diff);
         }
 
         public void EnableSculpting()
