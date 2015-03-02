@@ -7,7 +7,6 @@ namespace WoWEditor6.Storage.Database
     {
 
         private readonly MySql.Data.MySqlClient.MySqlConnection mMySqlConn = new MySql.Data.MySqlClient.MySqlConnection();
-        private bool mIsConfigured;
 
         public string MySqlServer { get; set; }
         public string MySqlUser { get; set; }
@@ -16,7 +15,6 @@ namespace WoWEditor6.Storage.Database
 
         public MySqlConnector()
         {
-            mIsConfigured = false;
         }
 
         public void OpenConnection()
@@ -24,11 +22,18 @@ namespace WoWEditor6.Storage.Database
             if (string.IsNullOrEmpty(MySqlServer) || string.IsNullOrEmpty(MySqlUser) || string.IsNullOrEmpty(MySqlPassword) || string.IsNullOrEmpty(MySqlDatabase))
                 throw new ArgumentException();
 
-            if (!mIsConfigured && mMySqlConn.State != ConnectionState.Open)
+            if (mMySqlConn.State != ConnectionState.Open)
                 mMySqlConn.ConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", MySqlServer, MySqlUser, MySqlPassword, MySqlDatabase);
 
-            mMySqlConn.Open();
-
+            try
+            {
+                mMySqlConn.Open();
+            }
+            catch(MySql.Data.MySqlClient.MySqlException ex)
+            {
+                System.Windows.MessageBox.Show(ex.ToString());
+            }
+            
             if (mMySqlConn.State != ConnectionState.Open)
                 throw new TimeoutException("Can't connect to the server.");
         }
@@ -42,7 +47,6 @@ namespace WoWEditor6.Storage.Database
             MySqlUser = pMySqlUser;
             MySqlPassword = pMySqlPassword;
             MySqlDatabase = pMySqlDatabase;
-            mIsConfigured = true;
         }
 
         public void CloseConnection()

@@ -128,7 +128,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                     creature.Position = position;
                     creature.Orientation = float.Parse(dRow[12].ToString());
                     creature.SpawnTimeSecs = int.Parse(dRow[13].ToString());
-                    creature.SpawnDist = int.Parse(dRow[14].ToString());
+                    creature.SpawnDist = float.Parse(dRow[14].ToString());
                     creature.CurrentWayPoint = int.Parse(dRow[15].ToString());
                     creature.CurrentHealth = int.Parse(dRow[16].ToString());
                     creature.CurrentMana = int.Parse(dRow[17].ToString());
