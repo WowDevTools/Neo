@@ -83,12 +83,11 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             }
 
             WmoRoot root;
-            if( mParent.TryGetTarget(out root) )
+            if (mParent.TryGetTarget(out root))
             {
-
                 Name = root.GetGroupNameByOffset(mHeader.groupName);
-    
-                if (Name == "antiportal")
+
+                if (Name != null && Name == "antiportal")
                 {
                     DisableRendering = true;
                 }
