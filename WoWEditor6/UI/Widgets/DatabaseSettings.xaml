@@ -8,13 +8,13 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
         <Label x:Name="lbAddress">Address</Label>
-        <TextBox x:Name="tbAddress" Height="25" Width="200"></TextBox>
+        <TextBox x:Name="tbAddress" Height="25" Width="200">localhost</TextBox>
         <Label x:Name="lbUser">User</Label>
-        <TextBox x:Name="tbUser" Height="25" Width="200"></TextBox>
+        <TextBox x:Name="tbUser" Height="25" Width="200">root</TextBox>
         <Label x:Name="lbPassword">Password</Label>
         <TextBox x:Name="tbPassword" Height="25" Width="200"></TextBox>
         <Label x:Name="lbDatabase">World database</Label>
-        <TextBox x:Name="tbDatabase" Height="25" Width="200"></TextBox>
+        <TextBox x:Name="tbDatabase" Height="25" Width="200">world</TextBox>
         <Button x:Name="btnLogin" Click="btnLogin_Click">Connect</Button>
     </StackPanel>
 </UserControl>

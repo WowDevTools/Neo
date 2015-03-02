@@ -49,6 +49,13 @@ namespace WoWEditor6.Storage.Database
             MySqlDatabase = pMySqlDatabase;
         }
 
+        public bool CheckConnection()
+        {
+            if (mMySqlConn.State == ConnectionState.Open)
+                return true;
+            return false;
+        }
+
         public void CloseConnection()
         {
             if (mMySqlConn.State == ConnectionState.Open)

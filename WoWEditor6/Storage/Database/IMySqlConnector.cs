@@ -10,6 +10,7 @@ namespace WoWEditor6.Storage.Database
         string MySqlDatabase { get; set; }
         void OpenConnection();
         void Configuration(string pMySqlServer, string pMySqlUser, string pMySqlPassword, string pMySqlDatabase);
+        bool CheckConnection();
         void CloseConnection();
         DataTable QueryToDataTable(string pQuery);
     }
