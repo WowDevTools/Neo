@@ -365,10 +365,9 @@ namespace WoWEditor6.Scene
                     mSelectedInstance.DestroyWorldModelText();
 
                 if (selected != null)
-                {
                     selected.CreateWorldModelText();
-                    mSelectedInstance = selected;
-                }
+
+                mSelectedInstance = selected;
             }
 
             if (OnWorldClicked != null)

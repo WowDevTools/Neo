@@ -130,6 +130,20 @@ namespace WoWEditor6.Scene.Terrain
 
         private void Dispose(bool disposing)
         {
+            if (mChunks != null)
+            {
+                for (var i = 0; i < 256; ++i)
+                {
+                    if (mChunks[i] == null)
+                        continue;
+
+                    mChunks[i].Dispose();
+                    mChunks[i] = null;
+                }
+
+                mChunks = null;
+            }
+
             if (AreaFile != null)
             {
                 AreaFile.Dispose();
@@ -148,20 +162,6 @@ namespace WoWEditor6.Scene.Terrain
                 });
 
                 mVertexBuffer = null;
-            }
-
-            if (mChunks != null)
-            {
-                for (var i = 0; i < 256; ++i)
-                {
-                    if (mChunks[i] == null)
-                        continue;
-
-                    mChunks[i].Dispose();
-                    mChunks[i] = null;
-                }
-
-                mChunks = null;
             }
         }
 

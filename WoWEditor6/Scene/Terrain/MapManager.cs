@@ -25,6 +25,7 @@ namespace WoWEditor6.Scene.Terrain
         private bool mIsRunning;
         private readonly MapLowManager mAreaLowManager = new MapLowManager();
         private readonly List<int> mCurrentValidLinks = new List<int>();
+        private int mMainThread;
 
         public string Continent { get; private set; }
         public WdtFile CurrentWdt { get; private set; }
@@ -34,6 +35,7 @@ namespace WoWEditor6.Scene.Terrain
 
         public void Initialize()
         {
+            mMainThread = Thread.CurrentThread.ManagedThreadId;
             SkySphere = new SkySphere(999.0f, 25, 25, WorldFrame.Instance.GraphicsContext);
             mIsRunning = true;
             mLoadThread = new Thread(LoadProc);
@@ -148,6 +150,9 @@ namespace WoWEditor6.Scene.Terrain
 
         public void UpdatePosition(Vector3 position, bool updateTerrain)
         {
+            if(Thread.CurrentThread.ManagedThreadId != mMainThread)
+                throw new InvalidOperationException();
+
             WorldFrame.Instance.UpdatePosition(position);
             SkySphere.UpdatePosition(position);
 

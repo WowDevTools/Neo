@@ -61,8 +61,8 @@ namespace WoWEditor6.IO.Files.Models
 
             foreach (var submesh in mSubMeshes)
             {
-                if (ray.Intersects(ref submesh.BoundingSphere) == false)
-                    continue;
+                //if (ray.Intersects(ref submesh.BoundingSphere) == false)
+                //    continue;
 
                 for (var i = submesh.StartIndex; i < submesh.StartIndex + submesh.NumIndices; i += 3)
                 {

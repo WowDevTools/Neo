@@ -60,11 +60,14 @@ namespace WoWEditor6.Scene.Terrain
                     constBuffer.Dispose();
             });
 
-            // Sync load can be called even after the object has been disposed.
-            if (mSyncLoadToken != null)
+            lock (this)
             {
-                WorldFrame.Instance.Dispatcher.Remove(mSyncLoadToken);
-                mSyncLoadToken = null;
+                // Sync load can be called even after the object has been disposed.
+                if (mSyncLoadToken != null)
+                {
+                    WorldFrame.Instance.Dispatcher.Remove(mSyncLoadToken);
+                    mSyncLoadToken = null;
+                }
             }
 
             mAlphaTexture = null;
@@ -177,12 +180,15 @@ namespace WoWEditor6.Scene.Terrain
                 return true;
             }
 
-            mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
+            lock (this)
+                mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
             return false;
         }
 
         private void SyncLoad()
         {
+            if(mData == null || mData.HoleValues == null)
+                throw new InvalidOperationException();
             mSyncLoadToken = null;
 
             mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);

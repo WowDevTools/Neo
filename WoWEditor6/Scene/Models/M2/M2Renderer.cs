@@ -111,6 +111,9 @@ namespace WoWEditor6.Scene.Models.M2
 
         public bool RemoveInstance(int uuid)
         {
+            if (mFullInstances == null || VisibleInstances == null)
+                return false;
+
             var lastInstance = false;
             lock (mFullInstances)
             {

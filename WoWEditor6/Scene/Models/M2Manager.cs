@@ -214,6 +214,10 @@ namespace WoWEditor6.Scene.Models
 
         public void RemoveInstance(int hash, int uuid)
         {
+            if (mRenderer == null || mAddLock == null || mSortedInstances == null || mNonBatchedInstances == null ||
+                mVisibleInstances == null)
+                return;
+
             lock (mRenderer)
             {
                 lock (mAddLock)

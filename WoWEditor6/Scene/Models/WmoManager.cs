@@ -51,6 +51,9 @@ namespace WoWEditor6.Scene.Models
 
         public void RemoveInstance(string model, int uuid)
         {
+            if (mRenderer == null)
+                return;
+
             var hash = model.ToUpperInvariant().GetHashCode();
 
             WmoBatchRender batch;

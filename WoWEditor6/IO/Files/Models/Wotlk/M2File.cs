@@ -64,17 +64,26 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 if (mHeader.LenName > 0)
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
 
-                BoundingBox = new BoundingBox(mHeader.BoundingBoxMin, mHeader.BoundingBoxMax);
-
                 GlobalSequences = ReadArrayOf<uint>(reader, mHeader.OfsGlobalSequences, mHeader.NGlobalSequences);
                 Vertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
 
+                var minPos = new Vector3(float.MaxValue);
+                var maxPos = new Vector3(float.MinValue);
                 for(var i = 0; i < Vertices.Length; ++i)
                 {
                     var p = Vertices[i].position;
-                    Vertices[i].position = new Vector3(p.X, -p.Y, p.Z);
+                    p = new Vector3(p.X, -p.Y, p.Z);
+                    Vertices[i].position = p;
                     Vertices[i].normal = new Vector3(Vertices[i].normal.X, -Vertices[i].normal.Y, Vertices[i].normal.Z);
+                    if (p.X < minPos.X) minPos.X = p.X;
+                    if (p.Y < minPos.Y) minPos.Y = p.Y;
+                    if (p.Z < minPos.Z) minPos.Z = p.Z;
+                    if (p.X > maxPos.X) maxPos.X = p.X;
+                    if (p.Y > maxPos.Y) maxPos.Y = p.Y;
+                    if (p.Z > maxPos.Z) maxPos.Z = p.Z;
                 }
+
+                BoundingBox = new BoundingBox(minPos, maxPos);
 
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];
