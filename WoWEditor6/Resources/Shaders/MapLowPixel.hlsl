@@ -11,7 +11,7 @@ cbuffer GlobalParams : register(b0)
 
     float4 fogColor;
     // x -> fogStart
-    // y -> fotEnd
+    // y -> fogEnd
     // z -> farClip
     float4 fogParams;
 

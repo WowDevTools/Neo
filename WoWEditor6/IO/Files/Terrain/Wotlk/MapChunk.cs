@@ -64,6 +64,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             Array.Resize(ref references, references.Length + 1);
             references[references.Length - 1] = mcrfValue;
             DoodadReferences = references;
+
+            DoodadsChanged = true;
         }
 
         public void SaveChunk(BinaryWriter writer)
@@ -86,14 +88,14 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             var alphaStream = SaveAlpha(ref header, out alphaChunkSize);
             SaveLayers(writer, basePos, ref header);
 
-            /*header.Mcrf = (int) writer.BaseStream.Position - basePos;
+            header.Mcrf = (int) writer.BaseStream.Position - basePos;
             var references = DoodadReferences.Concat(mWmoRefs).ToArray();
             writer.Write(0x4D435246);
             writer.Write(references.Length * 4);
             writer.WriteArray(references);
-            header.NumDoodadRefs = DoodadReferences.Length;*/
+            header.NumDoodadRefs = DoodadReferences.Length;
 
-            SaveUnusedChunk(writer, 0x4D435246, basePos, out header.Mcrf, out unusedSize);
+            //SaveUnusedChunk(writer, 0x4D435246, basePos, out header.Mcrf, out unusedSize);
             SaveUnusedChunk(writer, 0x4D435348, basePos, out header.Mcsh, out unusedSize);
 
             // Noggit panics when MCAL is not after MCLY even though there is no reason

@@ -51,15 +51,29 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             mDoodadDefs[mDoodadDefs.Length - 1] = new Mddf
             {
                 Position = new Vector3(position.X, position.Z, position.Y),
-                Mmid = mmidValue,
+                Mmid = mDoodadNameIds.Length - 1,
                 Flags = 0,
                 Scale = (ushort)(scale * 1024),
                 UniqueId = uuid,
                 Rotation = new Vector3(-rotation.X, 90 - rotation.Z, -rotation.Y)
             };
 
+            var instance = WorldFrame.Instance.M2Manager.AddInstance(modelName, uuid, position, rotation,
+                new Vector3(scale));
+
+            DoodadInstances.Add(new M2Instance
+            {
+                Hash = modelName.ToUpperInvariant().GetHashCode(),
+                Uuid = uuid,
+                BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
+                RenderInstance = instance,
+                MddfIndex = mDoodadDefs.Length - 1
+            });
+
             foreach(var chunk in mChunks)
                 chunk.TryAddDoodad(mcrfValue, box);
+
+            mWasChanged = true;
         }
 
         public override void OnUpdateModelPositions(TerrainChangeParameters parameters)

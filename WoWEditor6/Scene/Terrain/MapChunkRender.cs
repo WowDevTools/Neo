@@ -30,6 +30,7 @@ namespace WoWEditor6.Scene.Terrain
         private ConstantBuffer mScaleBuffer;
         private Graphics.Texture[] mShaderTextures;
         private M2Instance[] mReferences;
+        private WeakReference<MapAreaRender> mParent;
 
         public static Mesh ChunkMesh { get; private set; }
 
@@ -71,6 +72,7 @@ namespace WoWEditor6.Scene.Terrain
             mScaleBuffer = null;
             mShaderTextures = null;
             mReferences = null;
+            mParent = null;
         }
 
         public virtual void Dispose()
@@ -81,6 +83,20 @@ namespace WoWEditor6.Scene.Terrain
 
         public void PushDoodadReferences()
         {
+            if (mData.DoodadsChanged)
+            {
+                MapAreaRender parent;
+                mParent.TryGetTarget(out parent);
+                if (parent != null)
+                {
+                    mReferences = new M2Instance[mData.DoodadReferences.Length];
+                    for (var i = 0; i < mReferences.Length; ++i)
+                        mReferences[i] = parent.AreaFile.DoodadInstances[mData.DoodadReferences[i]];
+                }
+
+                mData.DoodadsChanged = false;
+            }
+
             if (mReferences.Length == 0)
                 return;
 
@@ -146,6 +162,7 @@ namespace WoWEditor6.Scene.Terrain
                 mReferences[i] = parent.AreaFile.DoodadInstances[chunk.DoodadReferences[i]];
 
             mIsAsyncLoaded = true;
+            mParent = new WeakReference<MapAreaRender>(parent);
         }
 
         private bool BeginSyncLoad()

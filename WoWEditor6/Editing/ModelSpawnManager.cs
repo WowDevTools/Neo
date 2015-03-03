@@ -58,6 +58,8 @@ namespace WoWEditor6.Editing
                     Uuid = M2InstanceUuid
                 }
             };
+
+            WorldFrame.Instance.OnWorldClicked += OnTerrainClicked;
         }
 
         public void OnUpdate(TimeSpan diff)
@@ -97,6 +99,55 @@ namespace WoWEditor6.Editing
                 var newScale = mHoveredInstance.Scale + dx * 0.05f;
                 newScale = Math.Max(newScale, 0);
                 mHoveredInstance.UpdateScale(newScale);
+            }
+        }
+
+        private void OnTerrainClicked(IntersectionParams parameters, MouseEventArgs args)
+        {
+            if (args.Button != MouseButtons.Left)
+                return;
+
+            WorldFrame.Instance.OnWorldClicked -= OnTerrainClicked;
+            if (mHoveredInstance == null)
+                return;
+
+            SpawnModel();
+
+            WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
+            mHoveredInstance = null;
+            mSelectedModel = null;
+        }
+
+        private void SpawnModel()
+        {
+            var minPos = mHoveredInstance.BoundingBox.Minimum;
+            var maxPos = mHoveredInstance.BoundingBox.Maximum;
+
+            var adtMinX = (int)(minPos.X / Metrics.TileSize);
+            var adtMinY = (int) (minPos.Y / Metrics.TileSize);
+
+            var adtMaxX = (int) (maxPos.X / Metrics.TileSize);
+            var adtMaxY = (int) (maxPos.Y / Metrics.TileSize);
+
+            // if the model is only on one adt dont bother checking
+            // all adts for the UUID.
+            if (adtMinX == adtMaxX && adtMinY == adtMaxY)
+            {
+                var area = WorldFrame.Instance.MapManager.GetAreaByIndex(adtMinX, adtMinY);
+                if (area == null)
+                    return;
+
+                if (area.AreaFile == null || area.AreaFile.IsValid == false)
+                    return;
+
+                var modelBox = new BoundingBox
+                {
+                    Minimum = new Vector3(minPos.X, minPos.Y, float.MinValue),
+                    Maximum = new Vector3(maxPos.X, maxPos.Y, float.MaxValue)
+                };
+
+                area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, modelBox, mHoveredInstance.Position,
+                    new Vector3(0, 0, 0), mHoveredInstance.Scale);
             }
         }
     }

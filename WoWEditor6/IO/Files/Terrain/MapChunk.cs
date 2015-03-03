@@ -35,6 +35,7 @@ namespace WoWEditor6.IO.Files.Terrain
 
         public bool IsAlphaChanged { get; set; }
         public bool TexturesChanged { get; set; }
+        public bool DoodadsChanged { get; set; }
 
         public WeakReference<MapArea> Parent { get; protected set; }
 

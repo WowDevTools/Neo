@@ -44,6 +44,13 @@ namespace WoWEditor6.Scene.Terrain
             mUnloadThread.Start();
         }
 
+        public MapAreaRender GetAreaByIndex(int ix, int iy)
+        {
+            var index = iy * 0xFF + ix;
+            lock (mAreas)
+                return mAreas.ContainsKey(index) ? mAreas[index] : null;
+        }
+
         public void OnEditTerrain(Editing.TerrainChangeParameters parameters)
         {
             // ReSharper disable once InconsistentlySynchronizedField

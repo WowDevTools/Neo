@@ -92,6 +92,7 @@ namespace WoWEditor6.Scene.Models.M2
             Animator.Update(null);
 
             Mesh.InitLayout(Mesh.Program);
+            Mesh.BlendState = null;
             Mesh.BeginDraw();
             Mesh.Program.SetPixelSampler(0, Sampler);
 
