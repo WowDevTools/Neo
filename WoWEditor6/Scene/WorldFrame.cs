@@ -353,9 +353,6 @@ namespace WoWEditor6.Scene
             MapManager.Intersect(intersection);
             M2Manager.Intersect(intersection);
 
-            if(intersection.M2Hit)
-                Log.Debug(intersection.M2Model.ModelRoot);
-
             if (OnWorldClicked != null)
                 OnWorldClicked(intersection, mouseEventArgs);
         }

@@ -112,6 +112,14 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
             Indices = mSkin.Indices;
 
+            mSubMeshes = mSkin.SubMeshes.Select(sm => new M2SubMeshInfo
+            {
+                BoundingSphere =
+                    new BoundingSphere(sm.centerBoundingBox, sm.radius),
+                NumIndices = sm.nTriangles,
+                StartIndex = sm.startTriangle + (((sm.unk1 & 1) != 0) ? (ushort.MaxValue + 1) : 0)
+            }).ToArray();
+
             var texLookup = ReadArrayOf<ushort>(reader, mHeader.OfsTexLookup, mHeader.NTexLookup);
             var renderFlags = ReadArrayOf<uint>(reader, mHeader.OfsRenderFlags, mHeader.NRenderFlags);
             var uvAnimLookup = ReadArrayOf<short>(reader, mHeader.OfsUvAnimLookup, mHeader.NUvAnimLookup);
