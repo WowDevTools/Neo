@@ -187,8 +187,6 @@ namespace WoWEditor6.Scene.Terrain
 
         private void SyncLoad()
         {
-            if(mData == null || mData.HoleValues == null)
-                throw new InvalidOperationException();
             mSyncLoadToken = null;
 
             mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
