@@ -161,14 +161,12 @@ namespace WoWEditor6.Scene.Models.M2
                 return;
 
             var diff = mBoundingBox.Maximum - mBoundingBox.Minimum;
-            var size = diff.Length();
-            mWorldModelName.Scaling = size / 60.0f;
-
+            mWorldModelName.Scaling = diff.Length() / 60.0f;
             if (mWorldModelName.Scaling < 0.3f)
                 mWorldModelName.Scaling = 0.3f;
 
             var position = mBoundingBox.Minimum + (diff * 0.5f);
-            position.Z = 0.5f + mBoundingBox.Minimum.Z + (size * 1.1f);
+            position.Z = 1.0f + mBoundingBox.Minimum.Z + (diff.Z * 1.1f);
             mWorldModelName.Position = position;
         }
 
