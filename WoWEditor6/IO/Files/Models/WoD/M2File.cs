@@ -29,6 +29,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
 
         public string FileName { get { return mFileName; } }
 
+        public override string ModelName { get { return mModelName; } }
+
         public M2File(string fileName) : base(fileName)
         {
             Bones = new M2AnimationBone[0];

@@ -5,7 +5,7 @@ using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
 {
-    class M2RenderInstance
+    class M2RenderInstance : IDisposable
     {
         private Matrix mInstanceMatrix;
         private Matrix mInverseMatrix;
@@ -20,9 +20,11 @@ namespace WoWEditor6.Scene.Models.M2
         private bool mHighlightFinished;
         private TimeSpan mHighlightStartTime;
 
-        private readonly M2File mModel;
-        private readonly M2Renderer mRenderer;
+        private M2File mModel;
+        private M2Renderer mRenderer;
         private BoundingBox mBoundingBox;
+
+        private WorldText mWorldModelName;
 
         public Vector3 Position { get { return mPosition; } }
         public float Scale { get { return mScale.X; } }
@@ -69,6 +71,25 @@ namespace WoWEditor6.Scene.Models.M2
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
         }
 
+        ~M2RenderInstance()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            DestroyWorldModelText();
+
+            mModel = null;
+            mRenderer = null;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public bool Intersects(ref Ray globalRay, IntersectionParams parameters, out float value)
         {
             value = float.MaxValue;
@@ -92,6 +113,7 @@ namespace WoWEditor6.Scene.Models.M2
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+            UpdateWorldModelName();
         }
 
         public void UpdateScale(float scale)
@@ -104,6 +126,50 @@ namespace WoWEditor6.Scene.Models.M2
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+            UpdateWorldModelName();
+        }
+
+        public void CreateWorldModelText()
+        {
+            if (mWorldModelName != null)
+                return;
+
+            mWorldModelName = new WorldText
+            {
+                Text = mModel.ModelName,
+                Scaling = 1.0f,
+                DrawMode = WorldText.TextDrawMode.TextDraw3D
+            };
+
+            UpdateWorldModelName();
+            WorldFrame.Instance.WorldTextManager.AddText(mWorldModelName);
+        }
+
+        public void DestroyWorldModelText()
+        {
+            if (mWorldModelName == null)
+                return;
+
+            WorldFrame.Instance.WorldTextManager.RemoveText(mWorldModelName);
+            mWorldModelName.Dispose();
+            mWorldModelName = null;
+        }
+
+        private void UpdateWorldModelName()
+        {
+            if (mWorldModelName == null)
+                return;
+
+            var diff = mBoundingBox.Maximum - mBoundingBox.Minimum;
+            var size = diff.Length();
+            mWorldModelName.Scaling = size / 60.0f;
+
+            if (mWorldModelName.Scaling < 0.3f)
+                mWorldModelName.Scaling = 0.3f;
+
+            var position = mBoundingBox.Minimum + (diff * 0.5f);
+            position.Z = 0.5f + mBoundingBox.Minimum.Z + (size * 1.1f);
+            mWorldModelName.Position = position;
         }
 
         private void UpdateHighlightColor(Color4 highlightColor)

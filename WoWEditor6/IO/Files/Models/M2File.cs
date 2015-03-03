@@ -34,6 +34,8 @@ namespace WoWEditor6.IO.Files.Models
 
         public short[] AnimationLookup { get; protected set; }
 
+        public abstract string ModelName { get; }
+
         protected M2File(string path)
         {
             ModelRoot = Path.GetDirectoryName(path) ?? "";

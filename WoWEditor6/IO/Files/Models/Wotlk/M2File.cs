@@ -27,6 +27,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public uint[] GlobalSequences { get; private set; }
         public AnimationEntry[] Animations { get; private set; }
 
+        public override string ModelName { get { return mModelName; } }
+
         public M2File(string fileName) : base(fileName)
         {
             Bones = new M2AnimationBone[0];

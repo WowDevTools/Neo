@@ -41,6 +41,8 @@ namespace WoWEditor6.Scene
             public Vector4 brushParams;
         }
 
+        private M2RenderInstance mSelectedInstance;
+
         public static WorldFrame Instance { get; private set; }
 
         public MapManager MapManager { get; private set; }
@@ -353,8 +355,21 @@ namespace WoWEditor6.Scene
             MapManager.Intersect(intersection);
             M2Manager.Intersect(intersection);
 
-            if(intersection.M2Hit)
-                Log.Debug(intersection.M2Model.ModelRoot);
+            if (mouseEventArgs.Button == MouseButtons.Left)
+            {
+                M2RenderInstance selected = null;
+                if (intersection.M2Hit)
+                    selected = intersection.M2Instance;
+
+                if (mSelectedInstance != null && selected != mSelectedInstance)
+                    mSelectedInstance.DestroyWorldModelText();
+
+                if (selected != null)
+                {
+                    selected.CreateWorldModelText();
+                    mSelectedInstance = selected;
+                }
+            }
 
             if (OnWorldClicked != null)
                 OnWorldClicked(intersection, mouseEventArgs);
