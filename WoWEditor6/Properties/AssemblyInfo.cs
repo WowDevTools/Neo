@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WoWEditor6")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Neo")]
+[assembly: AssemblyDescription("World of Warcraft Map Editor")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WoWEditor6")]
+[assembly: AssemblyProduct("Neo")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

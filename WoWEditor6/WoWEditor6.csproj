@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WoWEditor6</RootNamespace>
-    <AssemblyName>WoWEditor6</AssemblyName>
+    <AssemblyName>Neo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>cb329697</NuGetPackageImportStamp>
@@ -207,6 +207,7 @@
     <Compile Include="IO\Files\Models\M2File.cs" />
     <Compile Include="IO\Files\Models\M2Instance.cs" />
     <Compile Include="IO\Files\Models\M2RenderPass.cs" />
+    <Compile Include="IO\Files\Models\M2SubMeshInfo.cs" />
     <Compile Include="IO\Files\Models\ModelFactory.cs" />
     <Compile Include="IO\Files\Models\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WmoMaterial.cs" />

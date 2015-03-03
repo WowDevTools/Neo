@@ -61,7 +61,6 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 }
 
                 BoundingBox = new BoundingBox(mHeader.BoundingBoxMin, mHeader.BoundingBoxMax);
-                BoundingSphere = new BoundingSphere(Vector3.Zero, mHeader.BoundingRadius);
                 strm.Position = mHeader.OfsName;
                 if (mHeader.LenName > 0)
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
@@ -83,18 +82,18 @@ namespace WoWEditor6.IO.Files.Models.WoD
                     else
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
 
-                    Graphics.Texture.SamplerFlagType _SamplerFlags;
+                    Graphics.Texture.SamplerFlagType samplerFlags;
 
-                    if (tex.flags == 3) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapBoth;
-                    else if (tex.flags == 2) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapV;
-                    else if (tex.flags == 1) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapU;
-                    else _SamplerFlags = Graphics.Texture.SamplerFlagType.ClampBoth;
+                    if (tex.flags == 3) samplerFlags = Graphics.Texture.SamplerFlagType.WrapBoth;
+                    else if (tex.flags == 2) samplerFlags = Graphics.Texture.SamplerFlagType.WrapV;
+                    else if (tex.flags == 1) samplerFlags = Graphics.Texture.SamplerFlagType.WrapU;
+                    else samplerFlags = Graphics.Texture.SamplerFlagType.ClampBoth;
 
                     TextureInfos[i] = new TextureInfo
                     {
                         Texture = mTextures[i],
                         TextureType = tex.type,
-                        SamplerFlags = _SamplerFlags
+                        SamplerFlags = samplerFlags
                     };
                 }
 
@@ -116,7 +115,6 @@ namespace WoWEditor6.IO.Files.Models.WoD
             var texLookup = ReadArrayOf<ushort>(reader, mHeader.OfsTexLookup, mHeader.NTexLookup);
             var renderFlags = ReadArrayOf<uint>(reader, mHeader.OfsRenderFlags, mHeader.NRenderFlags);
             var uvAnimLookup = ReadArrayOf<short>(reader, mHeader.OfsUvAnimLookup, mHeader.NUvAnimLookup);
-            var transLookup = ReadArrayOf<short>(reader, mHeader.OfsTransLookup, mHeader.NTransLookup);
 
             foreach(var texUnit in mSkin.TexUnits)
             {

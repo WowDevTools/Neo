@@ -20,12 +20,13 @@ namespace WoWEditor6.Scene.Models.M2
         private bool mHighlightFinished;
         private TimeSpan mHighlightStartTime;
 
-        private M2File mModel;
-        private M2Renderer mRenderer;
+        private readonly M2File mModel;
+        private readonly M2Renderer mRenderer;
         private BoundingBox mBoundingBox;
 
         public Vector3 Position { get { return mPosition; } }
         public float Scale { get { return mScale.X; } }
+        public Vector3 Rotation { get { return mRotation; } }
 
         public M2File Model { get { return mModel; } }
 
@@ -66,6 +67,18 @@ namespace WoWEditor6.Scene.Models.M2
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(scale) * Matrix.Translation(position);
             mBoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+        }
+
+        public bool Intersects(ref Ray globalRay, IntersectionParams parameters, out float value)
+        {
+            value = float.MaxValue;
+
+            if (globalRay.Intersects(ref mBoundingBox) == false)
+                return false;
+
+            var instRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
+                ref parameters.InverseProjection, ref mInverseMatrix);
+            return mModel.Intersect(ref instRay, out value);
         }
 
         public void UpdatePosition(Vector3 position)

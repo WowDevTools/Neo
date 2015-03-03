@@ -49,7 +49,7 @@
             this.Controls.Add(this.elementHost1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MainWindow";
-            this.Text = "MainWindow";
+            this.Text = "Neo";
             this.ResumeLayout(false);
 
         }

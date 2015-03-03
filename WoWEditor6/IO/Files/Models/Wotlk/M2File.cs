@@ -63,7 +63,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
 
                 BoundingBox = new BoundingBox(mHeader.BoundingBoxMin, mHeader.BoundingBoxMax);
-                BoundingSphere = new BoundingSphere(Vector3.Zero, mHeader.BoundingRadius);
 
                 GlobalSequences = ReadArrayOf<uint>(reader, mHeader.OfsGlobalSequences, mHeader.NGlobalSequences);
                 Vertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
@@ -90,18 +89,18 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     else
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
 
-                    Graphics.Texture.SamplerFlagType _SamplerFlags;
+                    Graphics.Texture.SamplerFlagType samplerFlags;
 
-                    if (tex.flags == 3) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapBoth;
-                    else if (tex.flags == 2) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapV;
-                    else if (tex.flags == 1) _SamplerFlags = Graphics.Texture.SamplerFlagType.WrapU;
-                    else _SamplerFlags = Graphics.Texture.SamplerFlagType.ClampBoth;
+                    if (tex.flags == 3) samplerFlags = Graphics.Texture.SamplerFlagType.WrapBoth;
+                    else if (tex.flags == 2) samplerFlags = Graphics.Texture.SamplerFlagType.WrapV;
+                    else if (tex.flags == 1) samplerFlags = Graphics.Texture.SamplerFlagType.WrapU;
+                    else samplerFlags = Graphics.Texture.SamplerFlagType.ClampBoth;
 
                     TextureInfos[i] = new TextureInfo
                     {
                         Texture = mTextures[i],
                         TextureType = tex.type,
-                        SamplerFlags = _SamplerFlags
+                        SamplerFlags = samplerFlags
                     };
                 }
 
@@ -123,7 +122,14 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             var texLookup = ReadArrayOf<ushort>(reader, mHeader.OfsTexLookup, mHeader.NTexLookup);
             var renderFlags = ReadArrayOf<uint>(reader, mHeader.OfsRenderFlags, mHeader.NRenderFlags);
             var uvAnimLookup = ReadArrayOf<short>(reader, mHeader.OfsUvAnimLookup, mHeader.NUvAnimLookup);
-            var transLookup = ReadArrayOf<short>(reader, mHeader.OfsTransLookup, mHeader.NTransLookup);
+
+            mSubMeshes = mSkin.SubMeshes.Select(sm => new M2SubMeshInfo
+            {
+                BoundingSphere =
+                    new BoundingSphere(new Vector3(sm.centerBoundingBox.X, -sm.centerBoundingBox.Y, sm.centerBoundingBox.Z), sm.radius),
+                NumIndices = sm.nTriangles,
+                StartIndex = sm.startTriangle + (((sm.unk1 & 1) != 0) ? (ushort.MaxValue + 1) : 0)
+            }).ToArray();
 
             foreach (var texUnit in mSkin.TexUnits)
             {

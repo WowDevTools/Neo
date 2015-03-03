@@ -351,6 +351,10 @@ namespace WoWEditor6.Scene
                 new Vector2(pos.X, pos.Y));
 
             MapManager.Intersect(intersection);
+            M2Manager.Intersect(intersection);
+
+            if(intersection.M2Hit)
+                Log.Debug(intersection.M2Model.ModelRoot);
 
             if (OnWorldClicked != null)
                 OnWorldClicked(intersection, mouseEventArgs);

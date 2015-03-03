@@ -63,6 +63,66 @@ namespace WoWEditor6.Scene.Models
             mUnloadThread.Join();
         }
 
+        public void Intersect(IntersectionParams parameters)
+        {
+            if (mVisibleInstances == null || mNonBatchedInstances == null || mSortedInstances == null)
+                return;
+
+            var globalRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
+                ref parameters.InverseProjection);
+
+            var minDistance = float.MaxValue;
+            M2RenderInstance selectedInstance = null;
+
+            lock (mVisibleInstances)
+            {
+                foreach (var pair in mVisibleInstances)
+                {
+                    float dist;
+                    if (pair.Value.Intersects(ref globalRay, parameters, out dist) && dist < minDistance)
+                    {
+                        minDistance = dist;
+                        selectedInstance = pair.Value;
+                    }
+                }
+            }
+
+            lock (mNonBatchedInstances)
+            {
+                foreach (var pair in mNonBatchedInstances)
+                {
+                    float dist;
+                    if (pair.Value.Intersects(ref globalRay, parameters, out dist) && dist < minDistance)
+                    {
+                        minDistance = dist;
+                        selectedInstance = pair.Value;
+                    }
+                }
+            }
+
+            lock (mSortedInstances)
+            {
+                foreach (var pair in mSortedInstances)
+                {
+                    float dist;
+                    if (pair.Value.Intersects(ref globalRay, parameters, out dist) && dist < minDistance)
+                    {
+                        minDistance = dist;
+                        selectedInstance = pair.Value;
+                    }
+                }
+            }
+
+            if (selectedInstance != null)
+            {
+                parameters.M2Instance = selectedInstance;
+                parameters.M2Model = selectedInstance.Model;
+                parameters.M2Position = globalRay.Position + minDistance * globalRay.Direction;
+            }
+
+            parameters.M2Hit = selectedInstance != null;
+        }
+
         public void OnFrame(Camera camera)
         {
             if (WorldFrame.Instance.HighlightModelsInBrush)
