@@ -78,7 +78,12 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
         public string GetGroupNameByOffset(uint offset)
         {
-            return mGroupNameTable[offset];
+            if (mGroupNameTable.ContainsKey(offset))
+            {
+                return mGroupNameTable[offset];
+            }
+
+            return "";
         }
 
         public override Graphics.Texture GetTexture(int index)

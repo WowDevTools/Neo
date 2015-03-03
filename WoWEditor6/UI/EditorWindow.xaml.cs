@@ -64,6 +64,18 @@ namespace WoWEditor6.UI
             WorldFrame.Instance.WorldTextManager.AddText(worldText);
         }
 
+        private void DatabaseConfiguration_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new Window
+            {
+                Title = "About",
+                Height = 400,
+                Width = 600,
+                Content = new Widgets.DatabaseSettings()
+            };
+            window.ShowDialog();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModelSpawnPane.ToggleAutoHide();

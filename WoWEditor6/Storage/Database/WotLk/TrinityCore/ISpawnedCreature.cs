@@ -17,7 +17,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         Vector3 Position{ get; set; }
         float Orientation { get; set; }
         int SpawnTimeSecs{ get; set; }
-        int SpawnDist{ get; set; }
+        float SpawnDist{ get; set; }
         int CurrentWayPoint{ get; set; }
         int CurrentHealth{ get; set; }
         int CurrentMana{ get; set; }

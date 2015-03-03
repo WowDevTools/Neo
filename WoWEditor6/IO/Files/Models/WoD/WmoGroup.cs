@@ -88,7 +88,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
             {
                 Name = root.GetGroupNameByOffset(mHeader.groupName);
 
-                if (Name == "antiportal")
+                if (Name != null && Name == "antiportal")
                 {
                     DisableRendering = true;
                 }

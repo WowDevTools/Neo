@@ -415,6 +415,9 @@
     <Compile Include="UI\Widgets\CreatureEditorControl.Designer.cs">
       <DependentUpon>CreatureEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Widgets\DatabaseSettings.xaml.cs">
+      <DependentUpon>DatabaseSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Widgets\GameObjectEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -610,6 +613,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Widgets\ColorPickerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Widgets\DatabaseSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
