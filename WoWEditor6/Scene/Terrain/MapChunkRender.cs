@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.DXGI;
 using WoWEditor6.Graphics;
@@ -8,6 +9,15 @@ using WoWEditor6.Scene.Models;
 
 namespace WoWEditor6.Scene.Terrain
 {
+    [StructLayout(LayoutKind.Sequential)]
+    struct TexAnimBuffer
+    {
+        public Matrix Layer0;
+        public Matrix Layer1;
+        public Matrix Layer2;
+        public Matrix Layer3;
+    }
+
     class MapChunkRender : IDisposable
     {
         public static Sampler ColorSampler { get; private set; }
@@ -27,6 +37,11 @@ namespace WoWEditor6.Scene.Terrain
         private BoundingBox mBoundingBox;
         private BoundingBox mModelBox;
 
+        private TexAnimBuffer mTexAnimStore;
+        private readonly Vector2[] mTexAnimDirections = new Vector2[4];
+        private bool mHasTexAnim;
+
+        private ConstantBuffer mTexAnimBuffer;
         private ConstantBuffer mScaleBuffer;
         private Graphics.Texture[] mShaderTextures;
         private M2Instance[] mReferences;
@@ -49,6 +64,7 @@ namespace WoWEditor6.Scene.Terrain
             var alphaTex = mAlphaTexture;
             var holeTex = mHoleTexture;
             var constBuffer = mScaleBuffer;
+            var tanim = mTexAnimBuffer;
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
@@ -58,6 +74,8 @@ namespace WoWEditor6.Scene.Terrain
                     alphaTex.Dispose();
                 if (constBuffer != null)
                     constBuffer.Dispose();
+                if (tanim != null)
+                    tanim.Dispose();
             });
 
             lock (this)
@@ -145,10 +163,13 @@ namespace WoWEditor6.Scene.Terrain
                 mData.TexturesChanged = false;
             }
 
+            UpdateTextureAnimations();
+
             ChunkMesh.StartVertex = mData.StartVertex;
             ChunkMesh.Program.SetPixelTexture(0, mAlphaTexture);
             ChunkMesh.Program.SetPixelTexture(1, mHoleTexture);
             ChunkMesh.Program.SetPixelTextures(2, mShaderTextures);
+            ChunkMesh.Program.SetVertexConstantBuffer(1, mTexAnimBuffer);
 
             ChunkMesh.Program.SetPixelConstantBuffer(2, mScaleBuffer);
 
@@ -164,8 +185,55 @@ namespace WoWEditor6.Scene.Terrain
             for (var i = 0; i < mReferences.Length; ++i)
                 mReferences[i] = parent.AreaFile.DoodadInstances[chunk.DoodadReferences[i]];
 
+            for (var i = 0; i < mData.Layers.Length; ++i)
+            {
+                if ((mData.Layers[i].Flags & 0x40) != 0)
+                {
+                    mHasTexAnim = true;
+
+                    var rotation = 0.0f;
+                    if ((mData.Layers[i].Flags & 1) != 0)
+                        rotation += (float)Math.PI / 4.0f;
+                    if ((mData.Layers[i].Flags & 2) != 0)
+                        rotation += (float)Math.PI / 2.0f;
+                   if((mData.Layers[i].Flags & 4) != 0)
+                        rotation += (float)Math.PI;
+
+                    var matrix = Matrix.RotationZ(rotation);
+                    var dir = Vector2.TransformCoordinate(new Vector2(0, 1), matrix);
+                    mTexAnimDirections[i] = dir;
+
+                    mTexAnimDirections[i].Normalize();
+                    if ((mData.Layers[i].Flags & 8) != 0)
+                        mTexAnimDirections[i] *= 1.2f;
+                    else if ((mData.Layers[i].Flags & 0x10) != 0)
+                        mTexAnimDirections[i] *= 1.44f;
+                    else if ((mData.Layers[i].Flags & 0x20) != 0)
+                        mTexAnimDirections[i] *= 1.728f;
+                }
+            }
+
             mIsAsyncLoaded = true;
             mParent = new WeakReference<MapAreaRender>(parent);
+        }
+
+        private void UpdateTextureAnimations()
+        {
+            if (mHasTexAnim == false)
+                return;
+
+            var curTime = (int)(Utils.TimeManager.Instance.GetTime().TotalMilliseconds / 15.0f);
+
+            mTexAnimStore.Layer0 = Matrix.Translation(mTexAnimDirections[0].X * curTime / 1000.0f,
+                mTexAnimDirections[0].Y * curTime / 1000.0f, 0.0f);
+            mTexAnimStore.Layer1 = Matrix.Translation(mTexAnimDirections[1].X * curTime / 1000.0f,
+                mTexAnimDirections[1].Y * curTime / 1000.0f, 0.0f);
+            mTexAnimStore.Layer2 = Matrix.Translation(mTexAnimDirections[2].X * curTime / 1000.0f,
+                mTexAnimDirections[2].Y * curTime / 1000.0f, 0.0f);
+            mTexAnimStore.Layer3 = Matrix.Translation(mTexAnimDirections[3].X * curTime / 1000.0f,
+                mTexAnimDirections[3].Y * curTime / 1000.0f, 0.0f);
+
+            mTexAnimBuffer.UpdateData(mTexAnimStore);
         }
 
         private bool BeginSyncLoad()
@@ -189,6 +257,9 @@ namespace WoWEditor6.Scene.Terrain
         {
             mSyncLoadToken = null;
 
+            mTexAnimBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
+            mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix.Identity;
+            mTexAnimBuffer.UpdateData(mTexAnimStore);
             mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
             mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
             mHoleTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);

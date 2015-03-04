@@ -37,6 +37,8 @@ namespace WoWEditor6.IO.Files.Terrain
         public bool TexturesChanged { get; set; }
         public bool DoodadsChanged { get; set; }
 
+        public Mcly[] Layers { get { return mLayers; } }
+
         public WeakReference<MapArea> Parent { get; protected set; }
 
         protected MapChunk()

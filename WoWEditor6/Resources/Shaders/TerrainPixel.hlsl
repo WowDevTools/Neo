@@ -26,14 +26,17 @@ cbuffer GlobalParams : register(b0)
 
 struct PixelInput
 {
-    float4 position : SV_Position;
-    float3 normal : NORMAL0;
-    float2 texCoord : TEXCOORD0;
-    float2 texCoordAlpha : TEXCOORD1;
-    float4 color : COLOR0;
-    float4 addColor : COLOR1;
-    float depth : TEXCOORD2;
-    float3 worldPosition : TEXCOORD3;
+	float4 position : SV_Position;
+	float3 normal : NORMAL0;
+	float2 texCoord0 : TEXCOORD0;
+	float2 texCoord1 : TEXCOORD1;
+	float2 texCoord2 : TEXCOORD2;
+	float2 texCoord3 : TEXCOORD3;
+	float2 texCoordAlpha : TEXCOORD4;
+	float4 color : COLOR0;
+	float4 addColor : COLOR1;
+	float depth : TEXCOORD5;
+	float3 worldPosition : TEXCOORD6;
 };
 
 SamplerState alphaSampler : register(s1);
@@ -137,10 +140,10 @@ float4 main(PixelInput input) : SV_Target
     if (holeValue < 0.5)
         discard;
 
-    float4 c0 = texture0.Sample(colorSampler, input.texCoord * texScales.x);
-    float4 c1 = texture1.Sample(colorSampler, input.texCoord * texScales.y);
-    float4 c2 = texture2.Sample(colorSampler, input.texCoord * texScales.z);
-    float4 c3 = texture3.Sample(colorSampler, input.texCoord * texScales.a);
+    float4 c0 = texture0.Sample(colorSampler, input.texCoord0 * texScales.x);
+    float4 c1 = texture1.Sample(colorSampler, input.texCoord1 * texScales.y);
+    float4 c2 = texture2.Sample(colorSampler, input.texCoord2 * texScales.z);
+    float4 c3 = texture3.Sample(colorSampler, input.texCoord3 * texScales.a);
 
     float4 color = c0;
     color = c1 * alpha.g + (1.0 - alpha.g) * color;

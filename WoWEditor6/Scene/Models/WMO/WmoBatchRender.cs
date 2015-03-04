@@ -52,6 +52,9 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public bool RemoveInstance(int uuid)
         {
+            if (mInstances == null)
+                return false;
+
             lock(mInstances)
             {
                 var instance = mInstances.FirstOrDefault(w => w.Uuid == uuid);
