@@ -74,7 +74,7 @@ namespace WoWEditor6.IO.Files.Texture
         {
             var header = new BlpHeader
             {
-                Magic = 0x424C5032,
+                Magic = 0x32504C42,
                 Width = image.Width,
                 Height = image.Height,
                 Compression = 2,

@@ -118,6 +118,7 @@ namespace WoWEditor6.Scene.Models
                 parameters.M2Instance = selectedInstance;
                 parameters.M2Model = selectedInstance.Model;
                 parameters.M2Position = globalRay.Position + minDistance * globalRay.Direction;
+                parameters.M2Distance = minDistance;
             }
 
             parameters.M2Hit = selectedInstance != null;

@@ -226,7 +226,10 @@ namespace WoWEditor6.Scene.Terrain
 
             parameters.TerrainHit = hasHit;
             if (hasHit)
+            {
                 parameters.TerrainPosition = ray.Position + minDist * ray.Direction;
+                parameters.TerrainDistance = minDist;
+            }
             else
                 parameters.TerrainPosition = new Vector3(float.MaxValue);
 

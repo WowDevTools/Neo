@@ -18,6 +18,30 @@ namespace WoWEditor6.Scene.Models.WMO
             mRoot = root;
         }
 
+        public bool Intersect(IntersectionParams parameters, ref Ray globalRay, out float distance, out WmoInstance instance)
+        {
+            distance = float.MaxValue;
+            instance = null;
+
+            if (mInstances == null)
+                return false;
+
+            lock (mInstances)
+            {
+                foreach (var inst in mInstances)
+                {
+                    float dist;
+                    if (inst.Intersects(parameters, ref globalRay, out dist) && dist < distance)
+                    {
+                        distance = dist;
+                        instance = inst;
+                    }
+                }
+            }
+
+            return instance != null;
+        }
+
         ~WmoBatchRender()
         {
             Dispose(false);

@@ -354,6 +354,7 @@ namespace WoWEditor6.Scene
 
             MapManager.Intersect(intersection);
             M2Manager.Intersect(intersection);
+            WmoManager.Intersect(intersection);
 
             if (mouseEventArgs.Button == MouseButtons.Left)
             {

@@ -28,7 +28,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         {
             Batches = new List<WmoBatch>();
             Indices = new List<ushort>();
-            Vertices = new List<WmoVertex>();
+            Vertices = new WmoVertex[0];
 
             DisableRendering = false;
 
@@ -289,7 +289,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             }
 
             BoundingBox = new BoundingBox(minPos, maxPos);
-            Vertices = mVertices.ToList().AsReadOnly();
+            Vertices = mVertices;
 
             return true;
         }
