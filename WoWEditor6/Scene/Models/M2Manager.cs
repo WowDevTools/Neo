@@ -78,6 +78,9 @@ namespace WoWEditor6.Scene.Models
             {
                 foreach (var pair in mVisibleInstances)
                 {
+                    if (pair.Value.Uuid == Editing.ModelSpawnManager.M2InstanceUuid)
+                        continue;
+
                     float dist;
                     if (pair.Value.Intersects(ref globalRay, parameters, out dist) && dist < minDistance)
                     {

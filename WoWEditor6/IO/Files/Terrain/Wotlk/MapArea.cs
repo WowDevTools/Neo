@@ -41,17 +41,54 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public override void AddDoodadInstance(int uuid, string modelName, BoundingBox box, Vector3 position, Vector3 rotation, float scale)
         {
-            var mmidValue = mDoodadNames.Sum(s => s.Length + 1);
-            Array.Resize(ref mDoodadNameIds, mDoodadNameIds.Length + 1);
-            mDoodadNameIds[mDoodadNameIds.Length - 1] = mmidValue;
-            mDoodadNames.Add(modelName);
+            var mmidValue = 0;
+            var nameFound = false;
+            foreach (var s in mDoodadNames)
+            {
+                if (string.Equals(s, modelName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    nameFound = true;
+                    break;
+                }
+
+                mmidValue += s.Length + 1;
+            }
+
+            int mmidIndex;
+            if (nameFound == false)
+            {
+                mmidValue = mDoodadNames.Sum(s => s.Length + 1);
+                mmidIndex = mDoodadNameIds.Length;
+                Array.Resize(ref mDoodadNameIds, mDoodadNameIds.Length + 1);
+                mDoodadNameIds[mDoodadNameIds.Length - 1] = mmidValue;
+                mDoodadNames.Add(modelName);
+            }
+            else
+            {
+                mmidIndex = -1;
+                for (var i = 0; i < mDoodadNameIds.Length; ++i)
+                {
+                    if (mDoodadNameIds[i] == mmidValue)
+                    {
+                        mmidIndex = i;
+                        break;
+                    }
+                }
+
+                if (mmidIndex < 0)
+                {
+                    mmidIndex = mDoodadNameIds.Length;
+                    Array.Resize(ref mDoodadNameIds, mDoodadNameIds.Length + 1);
+                    mDoodadNameIds[mDoodadNameIds.Length - 1] = mmidValue;
+                }
+            }
 
             var mcrfValue = mDoodadDefs.Length;
             Array.Resize(ref mDoodadDefs, mDoodadDefs.Length + 1);
             mDoodadDefs[mDoodadDefs.Length - 1] = new Mddf
             {
                 Position = new Vector3(position.X, position.Z, position.Y),
-                Mmid = mDoodadNameIds.Length - 1,
+                Mmid = mmidIndex,
                 Flags = 0,
                 Scale = (ushort)(scale * 1024),
                 UniqueId = uuid,

@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using SharpDX;
+using WoWEditor6.IO;
 using WoWEditor6.IO.Files.Models;
+using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Models.M2;
 using WoWEditor6.Utils;
@@ -107,18 +111,21 @@ namespace WoWEditor6.Editing
             if (args.Button != MouseButtons.Left)
                 return;
 
+            if (parameters.TerrainHit == false)
+                return;
+
             WorldFrame.Instance.OnWorldClicked -= OnTerrainClicked;
             if (mHoveredInstance == null)
                 return;
 
-            SpawnModel();
+            SpawnModel(parameters.TerrainPosition);
 
             WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
             mHoveredInstance = null;
             mSelectedModel = null;
         }
 
-        private void SpawnModel()
+        private void SpawnModel(Vector3 rootPosition)
         {
             var minPos = mHoveredInstance.BoundingBox.Minimum;
             var maxPos = mHoveredInstance.BoundingBox.Maximum;
@@ -146,8 +153,135 @@ namespace WoWEditor6.Editing
                     Maximum = new Vector3(maxPos.X, maxPos.Y, float.MaxValue)
                 };
 
-                area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, modelBox, mHoveredInstance.Position,
+                area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, modelBox,
+                    mHoveredInstance.Position,
                     new Vector3(0, 0, 0), mHoveredInstance.Scale);
+            }
+            else
+            {
+                AddToGrid(adtMinX, adtMaxX, adtMinY, adtMaxY, (int) (rootPosition.X / Metrics.TileSize),
+                    (int) (rootPosition.Y / Metrics.TileSize));
+            }
+        }
+
+        private void AddToGrid(int adtMinX, int adtMaxX, int adtMinY, int adtMaxY, int clickX, int clickY)
+        {
+            var area = WorldFrame.Instance.MapManager.GetAreaByIndex(clickX, clickY);
+            if (area == null || area.AreaFile == null || area.AreaFile.IsValid == false)
+                return;
+
+            var minPos = mHoveredInstance.BoundingBox.Minimum;
+            var maxPos = mHoveredInstance.BoundingBox.Maximum;
+
+            var modelBox = new BoundingBox
+            {
+                Minimum = new Vector3(minPos.X, minPos.Y, float.MinValue),
+                Maximum = new Vector3(maxPos.X, maxPos.Y, float.MaxValue)
+            };
+
+            var baseUuid = area.AreaFile.GetFreeM2Uuid();
+            if (baseUuid == -1)
+                return;
+
+            for (var x = adtMinX; x <= adtMaxX; ++x)
+            {
+                for (var y = adtMinY; y <= adtMaxY; ++y)
+                {
+                    var testArea = WorldFrame.Instance.MapManager.GetAreaByIndex(x, y);
+                    if (testArea != null && testArea.AreaFile != null)
+                    {
+                        if (testArea.AreaFile.IsValid == false)
+                            continue;
+
+                        while (testArea.AreaFile.IsUuidAvailable(baseUuid) == false)
+                        {
+                            if ((baseUuid & 0xFFFFF) < 0xFFFFF)
+                                ++baseUuid;
+                            else
+                                return;
+                        }
+                    }
+                    else if (CheckUuidForFileArea(x, y, ref baseUuid) == false)
+                        return;
+                }
+            }
+
+            for (var x = adtMinX; x <= adtMaxX; ++x)
+            {
+                for (var y = adtMinY; y <= adtMaxY; ++y)
+                {
+                    var testArea = WorldFrame.Instance.MapManager.GetAreaByIndex(x, y);
+                    if (testArea != null && testArea.AreaFile != null)
+                    {
+                        testArea.AreaFile.AddDoodadInstance(baseUuid, mSelectedModel, modelBox,
+                            mHoveredInstance.Position, mHoveredInstance.Rotation,
+                            mHoveredInstance.Scale);
+                    }
+                    else
+                        AddDoodadToFileArea(x, y, baseUuid, ref modelBox);
+                }
+            }
+        }
+
+        private void AddDoodadToFileArea(int x, int y, int uuid, ref BoundingBox box)
+        {
+            var area = AdtFactory.Instance.CreateArea(WorldFrame.Instance.MapManager.Continent, x, y);
+            try
+            {
+                area.AsyncLoad();
+                area.AddDoodadInstance(uuid, mSelectedModel, box, mHoveredInstance.Position, mHoveredInstance.Rotation, mHoveredInstance.Scale);
+                area.Save();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private static bool CheckUuidForFileArea(int x, int y, ref int uuid)
+        {
+            switch (FileManager.Instance.Version)
+            {
+                case FileDataVersion.Lichking:
+                    return CheckUuidForFileAreaWotlk(x, y, ref uuid);
+
+                default:
+                    return true;
+            }
+        }
+
+        private static bool CheckUuidForFileAreaWotlk(int x, int y, ref int uuid)
+        {
+            var fileName = string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", WorldFrame.Instance.MapManager.Continent, x, y);
+            using (var strm = FileManager.Instance.Provider.OpenFile(fileName))
+            {
+                if (strm == null)
+                    return true;
+
+                var reader = new BinaryReader(strm);
+                while (strm.Position + 8 < strm.Length)
+                {
+                    var signature = reader.ReadUInt32();
+                    var size = reader.ReadInt32();
+                    if (signature == Chunks.Mddf)
+                    {
+                        var doodads = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
+                        var id = uuid;
+                        while (doodads.Any(d => d.UniqueId == id))
+                        {
+                            if ((id & 0xFFFFF) < 0xFFFFF)
+                                ++id;
+                            else
+                                return false;
+                        }
+
+                        uuid = id;
+                        return true;
+                    }
+                    else
+                        strm.Position += size;
+                }
+
+                return true;
             }
         }
     }

@@ -59,6 +59,11 @@ namespace WoWEditor6.IO.Files.Terrain
             return (upper << 20) | lower;
         }
 
+        public bool IsUuidAvailable(int uuid)
+        {
+            return DoodadInstances.All(d => d.Uuid != uuid);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (DoodadInstances != null)
