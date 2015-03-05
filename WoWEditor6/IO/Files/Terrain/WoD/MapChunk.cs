@@ -52,6 +52,23 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
+        public void TryAddDoodad(int mcrfValue, BoundingBox box)
+        {
+            var chunkBox = new BoundingBox(new Vector3(BoundingBox.Minimum.X, BoundingBox.Minimum.Y, float.MinValue),
+                new Vector3(BoundingBox.Maximum.X, BoundingBox.Maximum.Y, float.MaxValue));
+
+            var intersects = chunkBox.Intersects(ref box);
+            if (intersects == false)
+                return;
+
+            var references = DoodadReferences;
+            Array.Resize(ref references, references.Length + 1);
+            references[references.Length - 1] = mcrfValue;
+            DoodadReferences = references;
+
+            DoodadsChanged = true;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (mReader != null)
@@ -148,6 +165,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public void WriteObjChunks(BinaryWriter writer)
         {
+            AddOrUpdateChunk(mOriginalObjChunks, 0x4D435244, DoodadReferences);
+
             var totalSize = mOriginalObjChunks.Sum(pair => pair.Value.Size + 8);
             writer.Write(0x4D434E4B);
             writer.Write(totalSize);

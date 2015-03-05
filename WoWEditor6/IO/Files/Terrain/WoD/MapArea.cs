@@ -44,6 +44,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private bool mWasChanged;
 
         private Mddf[] mDoodadDefs = new Mddf[0];
+        private List<string> mDoodadNames = new List<string>();
+        private int[] mDoodadNameIds = new int[0];
 
         public MapArea(string continent, int ix, int iy)
         {
@@ -370,13 +372,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void InitM2Models()
         {
-            if (SeekChunk(mObjReader, 0x4D4D4458) == false)
+            if (SeekChunk(mObjReader, Chunks.Mmdx) == false)
                 return;
 
             var size = mObjReader.ReadInt32();
             var bytes = mObjReader.ReadBytes(size);
             var fullString = Encoding.ASCII.GetString(bytes);
             var modelNames = fullString.Split('\0');
+            mDoodadNames.AddRange(modelNames.ToList());
             var modelNameLookup = new Dictionary<int, string>();
             var curOffset = 0;
             foreach (var name in modelNames)
@@ -385,13 +388,13 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 curOffset += name.Length + 1;
             }
 
-            if (SeekChunk(mObjReader, 0x4D4D4944) == false)
+            if (SeekChunk(mObjReader, Chunks.Mmid) == false)
                 return;
 
             size = mObjReader.ReadInt32();
-            var modelNameIds = mObjReader.ReadArray<int>(size / 4);
+            mDoodadNameIds = mObjReader.ReadArray<int>(size / 4);
 
-            if (SeekChunk(mObjReader, 0x4D444446) == false)
+            if (SeekChunk(mObjReader, Chunks.Mddf) == false)
                 return;
 
             size = mObjReader.ReadInt32();
@@ -401,10 +404,10 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             foreach (var entry in mDoodadDefs)
             {
                 ++index;
-                if (entry.Mmid >= modelNameIds.Length)
+                if (entry.Mmid >= mDoodadNameIds.Length)
                     continue;
 
-                var nameId = modelNameIds[entry.Mmid];
+                var nameId = mDoodadNameIds[entry.Mmid];
                 string modelName;
                 if (modelNameLookup.TryGetValue(nameId, out modelName) == false)
                     continue;
@@ -431,7 +434,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         // ReSharper disable once UnusedMember.Local
         private void InitWmoModels()
         {
-            if (SeekChunk(mObjReader, 0x4D574D4F) == false)
+            if (SeekChunk(mObjReader, Chunks.Mwmo) == false)
                 return;
 
             var size = mObjReader.ReadInt32();
@@ -454,13 +457,13 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     curBytes.Add(bytes[i]);
             }
 
-            if (SeekChunk(mObjReader, 0x4D574944) == false)
+            if (SeekChunk(mObjReader, Chunks.Mwid) == false)
                 return;
 
             size = mObjReader.ReadInt32();
             var modelNameIds = mObjReader.ReadArray<int>(size / 4);
 
-            if (SeekChunk(mObjReader, 0x4D4F4446) == false)
+            if (SeekChunk(mObjReader, Chunks.Modf) == false)
                 return;
 
             size = mObjReader.ReadInt32();
@@ -487,7 +490,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         private void InitTextureNames()
         {
-            if (SeekChunk(mTexReader, 0x4D544558) == false)
+            if (SeekChunk(mTexReader, Chunks.Mtex) == false)
                 return;
 
             var size = mTexReader.ReadInt32();
@@ -589,7 +592,9 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}_obj0.adt", Continent, IndexX, IndexY)))
             {
                 var writer = new BinaryWriter(strm);
-                CreateOrUpdateObjChunk(0x4D444446, mDoodadDefs);
+                CreateOrUpdateObjChunk(Chunks.Mddf, mDoodadDefs);
+                CreateOrUpdateObjChunk(Chunks.Mmid, mDoodadNameIds);
+                CreateOrUpdateObjChunk(Chunks.Mmdx, mDoodadNames.SelectMany(s => Encoding.ASCII.GetBytes(s).Concat(new byte[] {0})).ToArray());
 
                 foreach (var pair in mObjOrigChunks)
                 {
@@ -611,7 +616,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             {
                 var writer = new BinaryWriter(strm);
                 var texData = TextureNames.SelectMany(t => Encoding.ASCII.GetBytes(t).Concat(new byte[] {0})).ToArray();
-                CreateOrUpdateTexChunk(0x4D544558, texData);
+                CreateOrUpdateTexChunk(Chunks.Mtex, texData);
 
                 foreach (var pair in mTexOrigChunks)
                 {
@@ -690,9 +695,88 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public override void AddDoodadInstance(int uuid, string modelName, BoundingBox box, Vector3 position, Vector3 rotation, float scale)
         {
-            
+            //box.Maximum.Y = 64.0f * Metrics.TileSize - box.Maximum.Y;
+            //box.Minimum.Y = 64.0f * Metrics.TileSize - box.Minimum.Y;
+            //if (box.Maximum.Y < box.Minimum.Y)
+            //{
+            //    var tmp = box.Maximum;
+            //    box.Maximum.Y = box.Minimum.Y;
+            //    box.Minimum.Y = tmp.Y;
+            //}
+
+            var mmidValue = 0;
+            var nameFound = false;
+            foreach (var s in mDoodadNames)
+            {
+                if (string.Equals(s, modelName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    nameFound = true;
+                    break;
+                }
+
+                mmidValue += s.Length + 1;
+            }
+
+            int mmidIndex;
+            if (nameFound == false)
+            {
+                mmidValue = mDoodadNames.Sum(s => s.Length + 1);
+                mmidIndex = mDoodadNameIds.Length;
+                Array.Resize(ref mDoodadNameIds, mDoodadNameIds.Length + 1);
+                mDoodadNameIds[mDoodadNameIds.Length - 1] = mmidValue;
+                mDoodadNames.Add(modelName);
+            }
+            else
+            {
+                mmidIndex = -1;
+                for (var i = 0; i < mDoodadNameIds.Length; ++i)
+                {
+                    if (mDoodadNameIds[i] == mmidValue)
+                    {
+                        mmidIndex = i;
+                        break;
+                    }
+                }
+
+                if (mmidIndex < 0)
+                {
+                    mmidIndex = mDoodadNameIds.Length;
+                    Array.Resize(ref mDoodadNameIds, mDoodadNameIds.Length + 1);
+                    mDoodadNameIds[mDoodadNameIds.Length - 1] = mmidValue;
+                }
+            }
+
+            var mcrfValue = mDoodadDefs.Length;
+            Array.Resize(ref mDoodadDefs, mDoodadDefs.Length + 1);
+            mDoodadDefs[mDoodadDefs.Length - 1] = new Mddf
+            {
+                Position = new Vector3(position.X, position.Z, 64.0f * Metrics.TileSize - position.Y),
+                Mmid = mmidIndex,
+                Flags = 0,
+                Scale = (ushort)(scale * 1024),
+                UniqueId = uuid,
+                Rotation = new Vector3(360 - rotation.X, rotation.Z + 90, 360 - rotation.Y)
+            }; 
+
+            var instance = WorldFrame.Instance.M2Manager.AddInstance(modelName, uuid, position, rotation,
+                new Vector3(scale));
+
+            DoodadInstances.Add(new M2Instance
+            {
+                Hash = modelName.ToUpperInvariant().GetHashCode(),
+                Uuid = uuid,
+                BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
+                RenderInstance = instance,
+                MddfIndex = mDoodadDefs.Length - 1
+            });
+
+            foreach (var chunk in mChunks)
+                chunk.TryAddDoodad(mcrfValue, box);
+
+            mWasChanged = true;
         }
 
+        // ReSharper disable once FunctionComplexityOverflow
         protected override void Dispose(bool disposing)
         {
             if (mMainStream != null)

@@ -51,6 +51,12 @@ namespace WoWEditor6.Editing
             mSelectedModel = model;
             mHoveredInstance = WorldFrame.Instance.M2Manager.AddInstance(model, M2InstanceUuid, position, Vector3.Zero, Vector3.One);
 
+            if (mHoveredInstance == null)
+            {
+                mSelectedModel = null;
+                return;
+            }
+
             mInstanceRef = new[]
             {
                 new M2Instance
@@ -130,6 +136,15 @@ namespace WoWEditor6.Editing
             var minPos = mHoveredInstance.BoundingBox.Minimum;
             var maxPos = mHoveredInstance.BoundingBox.Maximum;
 
+            if (FileManager.Instance.Version == FileDataVersion.Warlords)
+            {
+                minPos.Y -= 64.0f - Metrics.TileSize;
+                maxPos.Y -= 64.0f - Metrics.TileSize;
+                var tmp = maxPos.Y;
+                maxPos.Y = minPos.Y;
+                minPos.Y = tmp;
+            }
+
             var adtMinX = (int)(minPos.X / Metrics.TileSize);
             var adtMinY = (int) (minPos.Y / Metrics.TileSize);
 
@@ -149,8 +164,8 @@ namespace WoWEditor6.Editing
 
                 var modelBox = new BoundingBox
                 {
-                    Minimum = new Vector3(minPos.X, minPos.Y, float.MinValue),
-                    Maximum = new Vector3(maxPos.X, maxPos.Y, float.MaxValue)
+                    Minimum = new Vector3(mHoveredInstance.BoundingBox.Minimum.X, mHoveredInstance.BoundingBox.Minimum.Y, float.MinValue),
+                    Maximum = new Vector3(mHoveredInstance.BoundingBox.Maximum.X, mHoveredInstance.BoundingBox.Maximum.Y, float.MaxValue)
                 };
 
                 area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, modelBox,
