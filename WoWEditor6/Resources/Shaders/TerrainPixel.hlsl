@@ -112,25 +112,22 @@ float4 applyBrush(float4 color, float3 worldPos)
 
 float3 getDiffuseLight(float3 normal, float3 worldPos)
 {
-    float3 lightDir = normalize(-float3(-1, 1, -1));
-    normal = normalize(normal);
-    float light = dot(normal, lightDir);
-    if (light < 0.0)
-        light = 0.0;
-    if (light > 0.5)
-        light = 0.5 + (light - 0.5) * 0.65;
+	float3 lightDir = normalize(-float3(-1, 1, -1));
+		normal = normalize(normal);
+	float light = dot(normal, lightDir);
+	if (light < 0.0)
+		light = 0.0;
+	if (light > 0.5)
+		light = 0.5 + (light - 0.5) * 0.65;
 
-    float3 r = normalize(2 * dot(-lightDir, normal) * normal - lightDir);
-    float3 v = normalize(worldPos - eyePosition.xyz);
+	float3 h = normalize(lightDir + (eyePosition.xyz - worldPos));
+	float3 specular = pow(saturate(dot(normal, h)), 8) * diffuseLight.rgb * 0.5;
 
-    float rdv = dot(r, v);
-    float3 specular = float3(1, 1, 1) * max(pow(rdv, 8), 0) * 0.2;
-
-    float3 diffuse = diffuseLight.rgb * light;
-    diffuse += ambientLight.rgb;
-    diffuse += specular;
-    diffuse = saturate(diffuse);
-    return diffuse;
+	float3 diffuse = diffuseLight.rgb * light;
+	diffuse += ambientLight.rgb;
+	diffuse += specular;
+	diffuse = saturate(diffuse);
+	return diffuse;
 }
 
 float4 main(PixelInput input) : SV_Target

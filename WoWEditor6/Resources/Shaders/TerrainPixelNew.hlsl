@@ -120,11 +120,8 @@ float3 getDiffuseLight(float3 normal, float3 worldPos)
     if (light > 0.5)
         light = 0.5 + (light - 0.5) * 0.65;
 
-    float3 r = normalize(2 * dot(normal, -lightDir) * normal - lightDir);
-    float3 v = normalize(normalize(worldPos - eyePosition.xyz));
-
-    float rdv = dot(r, v);
-    float3 specular = float3(1, 1, 1) * max(pow(rdv, 8), 0) * 0.2;
+	float3 h = normalize(lightDir + (eyePosition.xyz - worldPos));
+	float3 specular = pow(saturate(dot(normal, h)), 8) * diffuseLight.rgb * 0.5;
 
     float3 diffuse = diffuseLight.rgb * light;
     diffuse += ambientLight.rgb;
