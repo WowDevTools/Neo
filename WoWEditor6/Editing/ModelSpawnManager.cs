@@ -8,6 +8,7 @@ using WoWEditor6.IO.Files.Models;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Models.M2;
+using WoWEditor6.UI;
 using WoWEditor6.Utils;
 using Point = System.Drawing.Point;
 
@@ -149,6 +150,14 @@ namespace WoWEditor6.Editing
                 return;
 
             SpawnModel(parameters.TerrainPosition);
+
+            if (EditorWindowController.Instance.SpawnModel.DeselectModelOnClick)
+            {
+                WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
+                mHoveredInstance = null;
+                mSelectedModel = null;
+                WorldFrame.Instance.OnWorldClicked -= OnTerrainClicked;
+            }
         }
 
         private void SpawnModel(Vector3 rootPosition)

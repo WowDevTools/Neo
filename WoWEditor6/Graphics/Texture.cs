@@ -142,6 +142,9 @@ namespace WoWEditor6.Graphics
 
         public void UpdateMemory(int width, int height, Format format, byte[] data, int pitch)
         {
+            if (data == null)
+                return;
+
             using (var stream = new DataStream(data.Length, true, true))
             {
                 stream.WriteRange(data);

@@ -125,9 +125,9 @@ float4 applyBrush(float4 color, float3 worldPos)
 LightConstantData buildConstantLighting(float3 normal, float3 worldPos)
 {
 	LightConstantData ret = (LightConstantData) 0;
-	float3 lightDir = normalize(-float3(-1, 1, -1));
+	float3 lightDir = normalize(float3(1, 1, -1));
 	normal = normalize(normal);
-	float light = dot(normal, lightDir);
+	float light = dot(normal, -lightDir);
 	if (light < 0.0)
 		light = 0.0;
 	if (light > 0.5)
@@ -136,30 +136,11 @@ LightConstantData buildConstantLighting(float3 normal, float3 worldPos)
 	ret.DiffuseLight = diffuseLight.rgb * light;
 	ret.AmbientLight = ambientLight.rgb;
 	
-	float3 h = normalize(lightDir + (eyePosition.xyz - worldPos));
-	ret.SpecularLight = saturate(dot(normal, h) * 0.9);
+	float3 v = normalize(eyePosition.xyz - worldPos);
+	float3 h = normalize(-lightDir + v);
+	ret.SpecularLight = max(0, dot(normal, h));
 
 	return ret;
-}
-
-float3 getDiffuseLight(float3 normal, float3 worldPos)
-{
-	float3 lightDir = normalize(-float3(-1, 1, -1));
-		normal = normalize(normal);
-	float light = dot(normal, lightDir);
-	if (light < 0.0)
-		light = 0.0;
-	if (light > 0.5)
-		light = 0.5 + (light - 0.5) * 0.65;
-
-	float3 h = normalize(lightDir + (eyePosition.xyz - worldPos));
-	float3 specular = pow(saturate(dot(normal, h)), 8) * diffuseLight.rgb;
-
-	float3 diffuse = diffuseLight.rgb * light;
-	diffuse += ambientLight.rgb;
-	diffuse += specular;
-	diffuse = saturate(diffuse);
-	return diffuse;
 }
 
 float4 main(PixelInput input) : SV_Target
@@ -180,15 +161,15 @@ float4 main(PixelInput input) : SV_Target
 	float4 c3_s = texture3_s.Sample(colorSampler, input.texCoord3 * texScales.a);
 
 	LightConstantData lightData = buildConstantLighting(input.normal, input.worldPosition);
-	float3 spc0 = c0_s.rgb * pow(lightData.SpecularLight, 8 + ((1 - c0_s.a) + 0.5) * 8) * specularFactors.x;
-	float3 spc1 = c1_s.rgb * pow(lightData.SpecularLight, 8 + ((1 - c1_s.a) + 0.5) * 8) * specularFactors.y;
-	float3 spc2 = c2_s.rgb * pow(lightData.SpecularLight, 8 + ((1 - c2_s.a) + 0.5) * 8) * specularFactors.z;
-	float3 spc3 = c3_s.rgb * pow(lightData.SpecularLight, 8 + ((1 - c3_s.a) + 0.5) * 8) * specularFactors.a;
+	float3 spc0 = 0.9 * c0_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.x;
+	float3 spc1 = 0.9 * c1_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.y;
+	float3 spc2 = 0.9 * c2_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.z;
+	float3 spc3 = 0.9 * c3_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.w;
 
-	spc0 += (1 - specularFactors.x) * pow(lightData.SpecularLight, 8) * diffuseLight.rgb;
-	spc1 += (1 - specularFactors.y) * pow(lightData.SpecularLight, 8) * diffuseLight.rgb;
-	spc2 += (1 - specularFactors.z) * pow(lightData.SpecularLight, 8) * diffuseLight.rgb;
-	spc3 += (1 - specularFactors.a) * pow(lightData.SpecularLight, 8) * diffuseLight.rgb;
+	spc0 += (1 - specularFactors.x) * pow(lightData.SpecularLight, 8);
+	spc1 += (1 - specularFactors.y) * pow(lightData.SpecularLight, 8);
+	spc2 += (1 - specularFactors.z) * pow(lightData.SpecularLight, 8);
+	spc3 += (1 - specularFactors.w) * pow(lightData.SpecularLight, 8);
 
 	c0.rgb *= lightData.DiffuseLight + lightData.AmbientLight + spc0;
 	c1.rgb *= lightData.DiffuseLight + lightData.AmbientLight + spc1;

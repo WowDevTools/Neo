@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WoWEditor6.UI.Models;
 
 namespace WoWEditor6.UI.Widgets
 {
@@ -9,6 +10,7 @@ namespace WoWEditor6.UI.Widgets
     {
         public ModelSpawnWidget()
         {
+            DataContext = new ObjectSpawnModel();
             InitializeComponent();
         }
 
