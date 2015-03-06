@@ -48,12 +48,24 @@ Texture2D texture0 : register(t2);
 Texture2D texture1 : register(t3);
 Texture2D texture2 : register(t4);
 Texture2D texture3 : register(t5);
+Texture2D texture0_s : register(t6);
+Texture2D texture1_s : register(t7);
+Texture2D texture2_s : register(t8);
+Texture2D texture3_s : register(t9);
 
 float3 sunDirection = float3(1, 1, -1);
+
+struct LightConstantData
+{
+	float3 DiffuseLight;
+	float3 AmbientLight;
+	float SpecularLight;
+};
 
 cbuffer TextureParamsBuffer : register(b2)
 {
     float4 texScales;
+	float4 specularFactors;
 };
 
 float4 sinusInterpolate(float4 src, float4 dst, float pct)
@@ -110,6 +122,26 @@ float4 applyBrush(float4 color, float3 worldPos)
     return sinusInterpolate(color, brushColor, fac);
 }
 
+LightConstantData buildConstantLighting(float3 normal, float3 worldPos)
+{
+	LightConstantData ret = (LightConstantData) 0;
+	float3 lightDir = normalize(-float3(-1, 1, -1));
+	normal = normalize(normal);
+	float light = dot(normal, lightDir);
+	if (light < 0.0)
+		light = 0.0;
+	if (light > 0.5)
+		light = 0.5 + (light - 0.5) * 0.65;
+
+	ret.DiffuseLight = diffuseLight.rgb * light;
+	ret.AmbientLight = ambientLight.rgb;
+	
+	float3 h = normalize(lightDir + (eyePosition.xyz - worldPos));
+	ret.SpecularLight = saturate(dot(normal, h) * 0.9);
+
+	return ret;
+}
+
 float3 getDiffuseLight(float3 normal, float3 worldPos)
 {
 	float3 lightDir = normalize(-float3(-1, 1, -1));
@@ -121,7 +153,7 @@ float3 getDiffuseLight(float3 normal, float3 worldPos)
 		light = 0.5 + (light - 0.5) * 0.65;
 
 	float3 h = normalize(lightDir + (eyePosition.xyz - worldPos));
-	float3 specular = pow(saturate(dot(normal, h)), 8) * diffuseLight.rgb * 0.5;
+	float3 specular = pow(saturate(dot(normal, h)), 8) * diffuseLight.rgb;
 
 	float3 diffuse = diffuseLight.rgb * light;
 	diffuse += ambientLight.rgb;
@@ -137,10 +169,36 @@ float4 main(PixelInput input) : SV_Target
     if (holeValue < 0.5)
         discard;
 
-    float4 c0 = texture0.Sample(colorSampler, input.texCoord0 * texScales.x);
-    float4 c1 = texture1.Sample(colorSampler, input.texCoord1 * texScales.y);
-    float4 c2 = texture2.Sample(colorSampler, input.texCoord2 * texScales.z);
-    float4 c3 = texture3.Sample(colorSampler, input.texCoord3 * texScales.a);
+	float4 c0 = texture0.Sample(colorSampler, input.texCoord0 * texScales.x);
+	float4 c1 = texture1.Sample(colorSampler, input.texCoord1 * texScales.y);
+	float4 c2 = texture2.Sample(colorSampler, input.texCoord2 * texScales.z);
+	float4 c3 = texture3.Sample(colorSampler, input.texCoord3 * texScales.a);
+
+	float4 c0_s = texture0_s.Sample(colorSampler, input.texCoord0 * texScales.x);
+	float4 c1_s = texture1_s.Sample(colorSampler, input.texCoord1 * texScales.y);
+	float4 c2_s = texture2_s.Sample(colorSampler, input.texCoord2 * texScales.z);
+	float4 c3_s = texture3_s.Sample(colorSampler, input.texCoord3 * texScales.a);
+
+	LightConstantData lightData = buildConstantLighting(input.normal, input.worldPosition);
+	float3 spc0 = c0_s.rgb * pow(lightData.SpecularLight, 8 + ((1 - c0_s.a) + 0.5) * 8) * specularFactors.x;
+	float3 spc1 = c1_s.rgb * pow(lightData.SpecularLight, 8 + ((1 - c1_s.a) + 0.5) * 8) * specularFactors.y;
+	float3 spc2 = c2_s.rgb * pow(lightData.SpecularLight, 8 + ((1 - c2_s.a) + 0.5) * 8) * specularFactors.z;
+	float3 spc3 = c3_s.rgb * pow(lightData.SpecularLight, 8 + ((1 - c3_s.a) + 0.5) * 8) * specularFactors.a;
+
+	spc0 += (1 - specularFactors.x) * pow(lightData.SpecularLight, 8) * diffuseLight.rgb;
+	spc1 += (1 - specularFactors.y) * pow(lightData.SpecularLight, 8) * diffuseLight.rgb;
+	spc2 += (1 - specularFactors.z) * pow(lightData.SpecularLight, 8) * diffuseLight.rgb;
+	spc3 += (1 - specularFactors.a) * pow(lightData.SpecularLight, 8) * diffuseLight.rgb;
+
+	c0.rgb *= lightData.DiffuseLight + lightData.AmbientLight + spc0;
+	c1.rgb *= lightData.DiffuseLight + lightData.AmbientLight + spc1;
+	c2.rgb *= lightData.DiffuseLight + lightData.AmbientLight + spc2;
+	c3.rgb *= lightData.DiffuseLight + lightData.AmbientLight + spc3;
+
+	c0.rgb = saturate(c0.rgb);
+	c1.rgb = saturate(c1.rgb);
+	c2.rgb = saturate(c2.rgb);
+	c3.rgb = saturate(c3.rgb);
 
     float4 color = c0;
     color = c1 * alpha.g + (1.0 - alpha.g) * color;
@@ -149,7 +207,7 @@ float4 main(PixelInput input) : SV_Target
 
     float4 textureColor = color;
 
-    color.rgb *= getDiffuseLight(input.normal, input.worldPosition);
+    //color.rgb *= getDiffuseLight(input.normal, input.worldPosition);
     color.rgb *= input.color.bgr * 2;
     color.rgb += input.addColor.bgr * textureColor;
     color.rgb *= alpha.r;

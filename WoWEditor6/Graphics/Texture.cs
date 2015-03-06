@@ -300,6 +300,8 @@ namespace WoWEditor6.Graphics
             };
 
             gDefaultView = new ShaderResourceView(context.Device, gDefaultTexture, srvd);
+
+            DefaultTextures.Initialize(context);
         }
     }
 }

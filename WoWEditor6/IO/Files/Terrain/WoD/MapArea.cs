@@ -514,6 +514,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 else
                     mTextureScales.Add(256.0f / (2 * loadInfo.Width));
             });
+
+            LoadSpecularTextures();
         }
 
         private void InitChunks()

@@ -35,6 +35,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
+            SpecularFactors = new float[4];
             mIsYInverted = true;
             Parent = new WeakReference<Terrain.MapArea>(parent);
             mParent = new WeakReference<MapArea>(parent);
@@ -475,11 +476,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
                 TextureScales = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
                 TextureNames = new string[mLayers.Length];
+                SpecularTextures = new List<Graphics.Texture>();
                 for (var i = 0; i < mLayers.Length && i < 4; ++i)
                 {
                     var texName = parent.GetTextureName(mLayers[i].TextureId);
                     TextureNames[i] = texName;
                     textures.Add(parent.GetTexture(mLayers[i].TextureId));
+                    SpecularTextures.Add(parent.GetSpecularTexture(mLayers[i].TextureId));
+                    SpecularFactors[i] = parent.IsSpecularTextureLoaded(mLayers[i].TextureId) ? 1 : 0;
                     TextureScales[i] = parent.GetTextureScale(mLayers[i].TextureId);
                 }
 

@@ -426,6 +426,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 mTextures.Add(TextureManager.Instance.GetTexture(TextureNames[i]));
                 TextureNames[i] = TextureNames[i].ToLowerInvariant();
             }
+
+            LoadSpecularTextures();
         }
 
         private void InitChunks(BinaryReader reader)

@@ -26,10 +26,12 @@ namespace WoWEditor6.IO.Files.Terrain
         public uint[] AlphaValues { get; private set; }
         public byte[] HoleValues { get; private set; }
         public IList<Graphics.Texture> Textures { get; protected set; }
+        public IList<Graphics.Texture> SpecularTextures { get; protected set; } 
         public IList<string> TextureNames { get; protected set; } 
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
         public float[] TextureScales { get; protected set; }
+        public float[] SpecularFactors { get; protected set; }
 
         public int[] DoodadReferences { get; protected set; }
 

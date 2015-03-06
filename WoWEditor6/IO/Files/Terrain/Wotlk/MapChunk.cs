@@ -24,6 +24,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public MapChunk(int indexX, int indexY, WeakReference<MapArea> parent)
         {
+            SpecularFactors = new float[4];
             MapArea area;
             parent.TryGetTarget(out area);
             Parent = new WeakReference<Terrain.MapArea>(area);
@@ -632,8 +633,19 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 return;
             }
 
-            
             Textures = mLayers.Select(l => parent.GetTexture(l.TextureId)).ToList();
+            SpecularTextures = mLayers.Select(l => parent.GetSpecularTexture(l.TextureId)).ToList();
+            for (var i = 0; i < 4; ++i)
+            {
+                if (i >= mLayers.Length)
+                {
+                    SpecularFactors[i] = 0;
+                    continue;
+                }
+
+                SpecularFactors[i] = parent.IsSpecularTextureLoaded(mLayers[i].TextureId) ? 1.0f : 0.0f;
+            }
+
             TextureNames = mLayers.Select(l => parent.GetTextureName(l.TextureId)).ToArray();
         }
 
