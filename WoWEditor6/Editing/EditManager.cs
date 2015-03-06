@@ -2,7 +2,6 @@
 using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
-using WoWEditor6.UI.Models;
 
 namespace WoWEditor6.Editing
 {

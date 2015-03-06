@@ -369,6 +369,7 @@ namespace WoWEditor6.Scene
                     selected.CreateWorldModelText();
 
                 mSelectedInstance = selected;
+                Editing.ModelSpawnManager.Instance.ClickedInstance = selected;
             }
 
             if (OnWorldClicked != null)

@@ -405,6 +405,7 @@
     <Compile Include="UI\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Models\ObjectSpawnModel.cs" />
     <Compile Include="UI\Widgets\AboutBox.xaml.cs">
       <DependentUpon>AboutBox.xaml</DependentUpon>
     </Compile>

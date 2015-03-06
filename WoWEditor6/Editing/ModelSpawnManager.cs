@@ -24,6 +24,8 @@ namespace WoWEditor6.Editing
         private string mSelectedModel;
         private Point mLastCursorPos;
 
+        public M2RenderInstance ClickedInstance { get; set; }
+
         static ModelSpawnManager()
         {
             Instance = new ModelSpawnManager();
@@ -32,6 +34,14 @@ namespace WoWEditor6.Editing
         private ModelSpawnManager()
         {
             
+        }
+
+        public void CopyClickedModel()
+        {
+            if (ClickedInstance == null)
+                return;
+
+            SelectModel(ClickedInstance.Model.FileName);
         }
 
         public void SelectModel(string model)
