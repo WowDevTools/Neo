@@ -121,6 +121,13 @@ namespace WoWEditor6.IO.Files.Terrain
             }
 
             TextureNames.Add(textureName);
+
+            var specTex = Path.ChangeExtension(textureName, null) + "_s.blp";
+            if (FileManager.Instance.Provider.Exists(specTex) == false)
+                mSpecularTextures.Add(DefaultTextures.Specular);
+            else
+                mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+
             mTextures.Add(TextureManager.Instance.GetTexture(textureName));
             return TextureNames.Count - 1;
         }
@@ -154,11 +161,11 @@ namespace WoWEditor6.IO.Files.Terrain
             mSpecularTextures = new List<Graphics.Texture>();
             foreach (var tex in TextureNames)
             {
-                var spec_tex = Path.ChangeExtension(tex, null) + "_s.blp";
-                if (FileManager.Instance.Provider.Exists(spec_tex) == false)
+                var specTex = Path.ChangeExtension(tex, null) + "_s.blp";
+                if (FileManager.Instance.Provider.Exists(specTex) == false)
                     mSpecularTextures.Add(DefaultTextures.Specular);
                 else
-                    mSpecularTextures.Add(TextureManager.Instance.GetTexture(spec_tex));
+                    mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
             }
         }
 

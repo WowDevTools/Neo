@@ -935,6 +935,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             mLayers[layers.Length] = layer;
 
             Textures.Add(parent.GetTexture(texId));
+            SpecularTextures.Add(parent.GetSpecularTexture(texId));
+            SpecularFactors[SpecularTextures.Count - 1] = parent.IsSpecularTextureLoaded(texId) ? 1 : 0;
             TexturesChanged = true;
             return mLayers.Length - 1;
         }
