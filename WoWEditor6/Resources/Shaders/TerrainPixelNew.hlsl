@@ -161,11 +161,11 @@ float4 main(PixelInput input) : SV_Target
 	float4 c3_s = texture3_s.Sample(colorSampler, input.texCoord3 * texScales.a);
 
 	LightConstantData lightData = buildConstantLighting(input.normal, input.worldPosition);
-	float3 spc0 = 0.9 * c0_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.x;
-	float3 spc1 = 0.9 * c1_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.y;
-	float3 spc2 = 0.9 * c2_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.z;
-	float3 spc3 = 0.9 * c3_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.w;
-
+	float3 spc0 = c0_s.a * c0_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.x;
+	float3 spc1 = c1_s.a * c1_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.y;
+	float3 spc2 = c2_s.a * c2_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.z;
+	float3 spc3 = c3_s.a * c3_s.rgb * pow(lightData.SpecularLight, 8) * specularFactors.w;
+	
 	spc0 += (1 - specularFactors.x) * pow(lightData.SpecularLight, 8);
 	spc1 += (1 - specularFactors.y) * pow(lightData.SpecularLight, 8);
 	spc2 += (1 - specularFactors.z) * pow(lightData.SpecularLight, 8);

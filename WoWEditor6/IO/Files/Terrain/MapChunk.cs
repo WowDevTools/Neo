@@ -34,6 +34,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public float[] SpecularFactors { get; protected set; }
 
         public int[] DoodadReferences { get; protected set; }
+        public int[] GroundEffectLayer { get; protected set; }
 
         public bool IsAlphaChanged { get; set; }
         public bool TexturesChanged { get; set; }
@@ -47,6 +48,8 @@ namespace WoWEditor6.IO.Files.Terrain
         {
             HoleValues = new byte[64];
             for (var i = 0; i < 64; ++i) HoleValues[i] = 0xFF;
+
+            GroundEffectLayer = new int[64];
 
             Vertices = new AdtVertex[145];
             AlphaValues = new uint[4096];

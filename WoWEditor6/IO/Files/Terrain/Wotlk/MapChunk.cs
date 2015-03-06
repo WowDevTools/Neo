@@ -237,6 +237,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
 
             LoadHoles();
+            LoadGroundEffectLayers();
 
             if (hasMccv == false)
             {
@@ -518,6 +519,17 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 return;
 
             mSaveChunks.Add(signature, new DataChunk {Data = data, Signature = signature, Size = size});
+        }
+
+        private void LoadGroundEffectLayers()
+        {
+            for (var i = 0; i < 64; ++i)
+            {
+                var value = (i < 32) ? mHeader.Low1 : mHeader.Low2;
+                var index = (i < 32) ? (i * 2) : ((i - 32) * 2);
+                var layer = (value >> index) & 0x3;
+                GroundEffectLayer[i] = (int)layer;
+            }
         }
 
         private void LoadMcvt(BinaryReader reader)

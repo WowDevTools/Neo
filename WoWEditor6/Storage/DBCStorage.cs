@@ -18,6 +18,8 @@ namespace WoWEditor6.Storage
         public static DbcFile CreatureDisplayInfo { get; private set; }
         public static DbcFile CreatureModelData { get; private set; }
         public static DbcFile FileData { get; private set; }
+        public static DbcFile GroundEffectTexture { get; private set; }
+        public static DbcFile GroundEffectDoodad { get; private set; }
 
         static DbcStorage()
         {
@@ -33,6 +35,8 @@ namespace WoWEditor6.Storage
             CreatureDisplayInfo = new DbcFile();
             CreatureModelData = new DbcFile();
             FileData = new DbcFile();
+            GroundEffectDoodad = new DbcFile();
+            GroundEffectTexture = new DbcFile();
         }
 
         public static void Initialize()
@@ -54,6 +58,9 @@ namespace WoWEditor6.Storage
 
             if(FileManager.Instance.Version <= FileDataVersion.Warlords)
                 FileData.Load(@"DBFilesClient\FileData.dbc");
+
+            GroundEffectDoodad.Load(@"DBFilesClient\GroundEffectDoodad.dbc");
+            GroundEffectTexture.Load(@"DBFilesClient\GroundEffectTexture.dbc");
 
             MapFormatGuess.Initialize();
             SkyManager.Instance.Initialize();

@@ -261,6 +261,7 @@
     <Compile Include="IO\Files\Terrain\CommonMapStructs.cs" />
     <Compile Include="IO\Files\Terrain\IMapAreaQueryImplementation.cs" />
     <Compile Include="IO\Files\Terrain\MapArea.cs" />
+    <Compile Include="IO\Files\Terrain\MapAreaGroundEffects.cs" />
     <Compile Include="IO\Files\Terrain\MapAreaQuery.cs" />
     <Compile Include="IO\Files\Terrain\MapChunk.cs" />
     <Compile Include="IO\Files\Terrain\TerrainQueryManager.cs" />
