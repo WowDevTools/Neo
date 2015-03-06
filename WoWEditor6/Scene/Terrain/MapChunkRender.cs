@@ -126,6 +126,7 @@ namespace WoWEditor6.Scene.Terrain
                 }
 
                 mData.DoodadsChanged = false;
+                mModelBox = mData.ModelBox;
             }
 
             if (mReferences.Length == 0)

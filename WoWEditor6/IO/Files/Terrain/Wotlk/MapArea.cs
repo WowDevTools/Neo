@@ -152,6 +152,24 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             BoundingBox = new BoundingBox(omin, omax);
         }
 
+        public void UpdateModelBox(BoundingBox chunkBox)
+        {
+            var minPos = chunkBox.Minimum;
+            var maxPos = chunkBox.Maximum;
+
+            var omin = ModelBox.Minimum;
+            var omax = ModelBox.Maximum;
+
+            omin.X = Math.Min(omin.X, minPos.X);
+            omin.Y = Math.Min(omin.Y, minPos.Y);
+            omin.Z = Math.Min(omin.Z, minPos.Z);
+            omax.X = Math.Max(omax.X, maxPos.X);
+            omax.Y = Math.Max(omax.Y, maxPos.Y);
+            omax.Z = Math.Max(omax.Z, maxPos.Z);
+
+            ModelBox = new BoundingBox(omin, omax);
+        }
+
         public void UpdateVertices(MapChunk chunk)
         {
             if (chunk == null)

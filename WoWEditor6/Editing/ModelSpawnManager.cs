@@ -82,7 +82,7 @@ namespace WoWEditor6.Editing
             WorldFrame.Instance.OnWorldClicked += OnTerrainClicked;
         }
 
-        public void OnUpdate(TimeSpan diff)
+        public void OnUpdate()
         {
             var cursor = Cursor.Position;
             if (mHoveredInstance == null)
@@ -125,20 +125,30 @@ namespace WoWEditor6.Editing
         private void OnTerrainClicked(IntersectionParams parameters, MouseEventArgs args)
         {
             if (args.Button != MouseButtons.Left)
+            {
+                if (args.Button == MouseButtons.Right)
+                {
+                    var state = new byte[256];
+                    UnsafeNativeMethods.GetKeyboardState(state);
+                    if (KeyHelper.IsKeyDown(state, Keys.ControlKey))
+                    {
+                        WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
+                        mHoveredInstance = null;
+                        mSelectedModel = null;
+                        WorldFrame.Instance.OnWorldClicked -= OnTerrainClicked;
+                    }
+                }
+
                 return;
+            }
 
             if (parameters.TerrainHit == false)
                 return;
 
-            WorldFrame.Instance.OnWorldClicked -= OnTerrainClicked;
             if (mHoveredInstance == null)
                 return;
 
             SpawnModel(parameters.TerrainPosition);
-
-            WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
-            mHoveredInstance = null;
-            mSelectedModel = null;
         }
 
         private void SpawnModel(Vector3 rootPosition)
@@ -172,13 +182,7 @@ namespace WoWEditor6.Editing
                 if (area.AreaFile == null || area.AreaFile.IsValid == false)
                     return;
 
-                var modelBox = new BoundingBox
-                {
-                    Minimum = new Vector3(mHoveredInstance.BoundingBox.Minimum.X, mHoveredInstance.BoundingBox.Minimum.Y, float.MinValue),
-                    Maximum = new Vector3(mHoveredInstance.BoundingBox.Maximum.X, mHoveredInstance.BoundingBox.Maximum.Y, float.MaxValue)
-                };
-
-                area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, modelBox,
+                area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, mHoveredInstance.BoundingBox,
                     mHoveredInstance.Position,
                     new Vector3(0, 0, 0), mHoveredInstance.Scale);
             }
@@ -197,12 +201,6 @@ namespace WoWEditor6.Editing
 
             var minPos = mHoveredInstance.BoundingBox.Minimum;
             var maxPos = mHoveredInstance.BoundingBox.Maximum;
-
-            var modelBox = new BoundingBox
-            {
-                Minimum = new Vector3(minPos.X, minPos.Y, float.MinValue),
-                Maximum = new Vector3(maxPos.X, maxPos.Y, float.MaxValue)
-            };
 
             var baseUuid = area.AreaFile.GetFreeM2Uuid();
             if (baseUuid == -1)
@@ -238,17 +236,17 @@ namespace WoWEditor6.Editing
                     var testArea = WorldFrame.Instance.MapManager.GetAreaByIndex(x, y);
                     if (testArea != null && testArea.AreaFile != null)
                     {
-                        testArea.AreaFile.AddDoodadInstance(baseUuid, mSelectedModel, modelBox,
+                        testArea.AreaFile.AddDoodadInstance(baseUuid, mSelectedModel, mHoveredInstance.BoundingBox,
                             mHoveredInstance.Position, mHoveredInstance.Rotation,
                             mHoveredInstance.Scale);
                     }
                     else
-                        AddDoodadToFileArea(x, y, baseUuid, ref modelBox);
+                        AddDoodadToFileArea(x, y, baseUuid, mHoveredInstance.BoundingBox);
                 }
             }
         }
 
-        private void AddDoodadToFileArea(int x, int y, int uuid, ref BoundingBox box)
+        private void AddDoodadToFileArea(int x, int y, int uuid, BoundingBox box)
         {
             var area = AdtFactory.Instance.CreateArea(WorldFrame.Instance.MapManager.Continent, x, y);
             try

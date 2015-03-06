@@ -66,6 +66,24 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             references[references.Length - 1] = mcrfValue;
             DoodadReferences = references;
 
+            var min = box.Minimum;
+            var max = box.Maximum;
+
+            var cmin = ModelBox.Minimum;
+            var cmax = ModelBox.Maximum;
+
+            if (min.X < cmin.X) cmin.X = min.X;
+            if (min.Y < cmin.Y) cmin.Y = min.Y;
+            if (min.Z < cmin.Z) cmin.Z = min.Z;
+            if (max.X > cmax.X) cmax.X = max.X;
+            if (max.Y > cmax.Y) cmax.Y = max.Y;
+            if (max.Z > cmax.Z) cmax.Z = max.Z;
+
+            ModelBox = new BoundingBox(cmin, cmax);
+            MapArea parent;
+            if (mParent.TryGetTarget(out parent))
+                parent.UpdateModelBox(ModelBox);
+
             DoodadsChanged = true;
         }
 
