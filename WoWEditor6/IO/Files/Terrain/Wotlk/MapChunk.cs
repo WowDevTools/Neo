@@ -24,6 +24,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
 
         public MapChunk(int indexX, int indexY, WeakReference<MapArea> parent)
         {
+            SpecularFactors = new float[4];
             MapArea area;
             parent.TryGetTarget(out area);
             Parent = new WeakReference<Terrain.MapArea>(area);
@@ -64,6 +65,24 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             Array.Resize(ref references, references.Length + 1);
             references[references.Length - 1] = mcrfValue;
             DoodadReferences = references;
+
+            var min = box.Minimum;
+            var max = box.Maximum;
+
+            var cmin = ModelBox.Minimum;
+            var cmax = ModelBox.Maximum;
+
+            if (min.X < cmin.X) cmin.X = min.X;
+            if (min.Y < cmin.Y) cmin.Y = min.Y;
+            if (min.Z < cmin.Z) cmin.Z = min.Z;
+            if (max.X > cmax.X) cmax.X = max.X;
+            if (max.Y > cmax.Y) cmax.Y = max.Y;
+            if (max.Z > cmax.Z) cmax.Z = max.Z;
+
+            ModelBox = new BoundingBox(cmin, cmax);
+            MapArea parent;
+            if (mParent.TryGetTarget(out parent))
+                parent.UpdateModelBox(ModelBox);
 
             DoodadsChanged = true;
         }
@@ -218,6 +237,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             }
 
             LoadHoles();
+            LoadGroundEffectLayers();
 
             if (hasMccv == false)
             {
@@ -501,6 +521,17 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             mSaveChunks.Add(signature, new DataChunk {Data = data, Signature = signature, Size = size});
         }
 
+        private void LoadGroundEffectLayers()
+        {
+            for (var i = 0; i < 64; ++i)
+            {
+                var value = (i < 32) ? mHeader.Low1 : mHeader.Low2;
+                var index = (i < 32) ? (i * 2) : ((i - 32) * 2);
+                var layer = (value >> index) & 0x3;
+                GroundEffectLayer[i] = (int)layer;
+            }
+        }
+
         private void LoadMcvt(BinaryReader reader)
         {
             var heights = reader.ReadArray<float>(145);
@@ -632,8 +663,19 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 return;
             }
 
-            
             Textures = mLayers.Select(l => parent.GetTexture(l.TextureId)).ToList();
+            SpecularTextures = mLayers.Select(l => parent.GetSpecularTexture(l.TextureId)).ToList();
+            for (var i = 0; i < 4; ++i)
+            {
+                if (i >= mLayers.Length)
+                {
+                    SpecularFactors[i] = 0;
+                    continue;
+                }
+
+                SpecularFactors[i] = parent.IsSpecularTextureLoaded(mLayers[i].TextureId) ? 1.0f : 0.0f;
+            }
+
             TextureNames = mLayers.Select(l => parent.GetTextureName(l.TextureId)).ToArray();
         }
 
@@ -923,6 +965,8 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
             mLayers[layers.Length] = layer;
 
             Textures.Add(parent.GetTexture(texId));
+            SpecularTextures.Add(parent.GetSpecularTexture(texId));
+            SpecularFactors[SpecularTextures.Count - 1] = parent.IsSpecularTextureLoaded(texId) ? 1 : 0;
             TexturesChanged = true;
             return mLayers.Length - 1;
         }

@@ -2,7 +2,6 @@
 using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
-using WoWEditor6.UI.Models;
 
 namespace WoWEditor6.Editing
 {
@@ -41,6 +40,8 @@ namespace WoWEditor6.Editing
 
         public void UpdateChanges()
         {
+            ModelSpawnManager.Instance.OnUpdate();
+
             var diff = DateTime.Now - mLastChange;
             if (diff.TotalMilliseconds < (IsTexturing ? 40 : 20))
                 return;
@@ -50,8 +51,6 @@ namespace WoWEditor6.Editing
                 TerrainChangeManager.Instance.OnChange(diff);
             else if ((CurrentMode & EditMode.Texturing) != 0)
                 TextureChangeManager.Instance.OnChange(diff);
-
-            ModelSpawnManager.Instance.OnUpdate(diff);
         }
 
         public void EnableSculpting()

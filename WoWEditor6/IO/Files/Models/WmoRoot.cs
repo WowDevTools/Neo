@@ -6,6 +6,8 @@ namespace WoWEditor6.IO.Files.Models
 {
     abstract class WmoRoot : IDisposable
     {
+        public string FileName { get; protected set; }
+
         public abstract Graphics.Texture GetTexture(int index);
         public abstract WmoMaterial GetMaterial(int index);
         public abstract bool Load(string fileName);

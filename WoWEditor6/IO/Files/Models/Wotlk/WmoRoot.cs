@@ -16,10 +16,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         private List<WmoMaterial> mMaterials = new List<WmoMaterial>();
         private Dictionary<uint, string> mGroupNameTable = new Dictionary<uint, string>();
         private List<Mogi> mGroupInfos = new List<Mogi>();
-        private string mFileName;
         private List<WmoGroup> mGroups = new List<WmoGroup>();
-
-        public virtual string FileName { get { return mFileName; } }
 
         public uint AmbientColor { get { return mHeader.ambientColor; } }
         public bool UseParentAmbient { get { return (mHeader.flags & 2) == 0; } }
@@ -66,8 +63,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 mGroupInfos.Clear();
                 mGroupInfos = null;
             }
-
-            mFileName = null;
         }
 
         public override void Dispose()
@@ -103,7 +98,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         {
             Groups = new List<Models.WmoGroup>();
 
-            mFileName = fileName;
+            FileName = fileName;
 
             using (var file = FileManager.Instance.Provider.OpenFile(fileName))
             {
@@ -177,7 +172,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 return true;
             }
 
-            var rootPath = Path.ChangeExtension(mFileName, null);
+            var rootPath = Path.ChangeExtension(FileName, null);
 
             var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);

@@ -25,6 +25,44 @@ namespace WoWEditor6.Scene.Models
             mUnloadThread.Join();
         }
 
+        public void Intersect(IntersectionParams parameters)
+        {
+            if (mRenderer == null)
+                return;
+
+            var globalRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
+                ref parameters.InverseProjection);
+
+            var minDistance = float.MaxValue;
+            WmoInstance wmoHit = null;
+
+            lock (mRenderer)
+            {
+                foreach (var renderer in mRenderer)
+                {
+                    WmoInstance hit;
+                    float distance;
+                    if (renderer.Value.Intersect(parameters, ref globalRay, out distance, out hit) &&
+                        distance < minDistance)
+                    {
+                        minDistance = distance;
+                        wmoHit = hit;
+                    }
+                }
+            }
+
+            if (wmoHit != null)
+            {
+                parameters.WmoHit = true;
+                parameters.WmoInstance = wmoHit;
+                parameters.WmoModel = wmoHit.ModelRoot;
+                parameters.WmoPosition = globalRay.Position + minDistance * globalRay.Direction;
+                parameters.WmoDistance = minDistance;
+            }
+            else
+                parameters.WmoHit = false;
+        }
+
         private void PreloadModel(string model)
         {
             var hash = model.ToUpperInvariant().GetHashCode();

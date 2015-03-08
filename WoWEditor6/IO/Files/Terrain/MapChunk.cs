@@ -26,12 +26,15 @@ namespace WoWEditor6.IO.Files.Terrain
         public uint[] AlphaValues { get; private set; }
         public byte[] HoleValues { get; private set; }
         public IList<Graphics.Texture> Textures { get; protected set; }
+        public IList<Graphics.Texture> SpecularTextures { get; protected set; } 
         public IList<string> TextureNames { get; protected set; } 
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
         public float[] TextureScales { get; protected set; }
+        public float[] SpecularFactors { get; protected set; }
 
         public int[] DoodadReferences { get; protected set; }
+        public int[] GroundEffectLayer { get; protected set; }
 
         public bool IsAlphaChanged { get; set; }
         public bool TexturesChanged { get; set; }
@@ -45,6 +48,8 @@ namespace WoWEditor6.IO.Files.Terrain
         {
             HoleValues = new byte[64];
             for (var i = 0; i < 64; ++i) HoleValues[i] = 0xFF;
+
+            GroundEffectLayer = new int[64];
 
             Vertices = new AdtVertex[145];
             AlphaValues = new uint[4096];

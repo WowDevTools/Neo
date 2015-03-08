@@ -99,6 +99,63 @@ namespace WoWEditor6.Scene.Models.WMO
             mLoaded = true;
         }
 
+        public bool Intersects(IntersectionParams parameters, ref Ray ray, out float distance)
+        {
+            distance = float.MaxValue;
+            var hasHit = false;
+
+            var orig = ray.Position;
+            var dir = ray.Direction;
+            Vector3 e1, e2, p, T, q;
+
+            foreach (var batch in mBatches)
+            {
+                for (int i = batch.Batch.StartIndex, j = 0; j < batch.Batch.NumIndices; i += 3, j += 3)
+                {
+                    var i0 = Data.Indices[i];
+                    var i1 = Data.Indices[i + 1];
+                    var i2 = Data.Indices[i + 2];
+                    Vector3.Subtract(ref Data.Vertices[i1].Position, ref Data.Vertices[i0].Position, out e1);
+                    Vector3.Subtract(ref Data.Vertices[i2].Position, ref Data.Vertices[i0].Position, out e2);
+
+                    Vector3.Cross(ref dir, ref e2, out p);
+                    float det;
+                    Vector3.Dot(ref e1, ref p, out det);
+
+                    if (Math.Abs(det) < 1e-4)
+                        continue;
+
+                    var invDet = 1.0f / det;
+                    Vector3.Subtract(ref orig, ref Data.Vertices[i0].Position, out T);
+                    float u;
+                    Vector3.Dot(ref T, ref p, out u);
+                    u *= invDet;
+
+                    if (u < 0 || u > 1)
+                        continue;
+
+                    Vector3.Cross(ref T, ref e1, out q);
+                    float v;
+                    Vector3.Dot(ref dir, ref q, out v);
+                    v *= invDet;
+                    if (v < 0 || (u + v) > 1)
+                        continue;
+
+                    float t;
+                    Vector3.Dot(ref e2, ref q, out t);
+                    t *= invDet;
+
+                    if (t < 1e-4) continue;
+
+                    hasHit = true;
+                    if (t < distance)
+                        distance = t;
+                }
+            }
+
+            return hasHit;
+        }
+
         private void SetupBatch(WmoRenderBatch batch)
         {
             var cullingDisabled = (batch.Material.MaterialFlags & 0x04) != 0;

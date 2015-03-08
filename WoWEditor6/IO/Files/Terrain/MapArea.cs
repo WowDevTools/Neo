@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SharpDX;
+using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Texture;
@@ -19,13 +21,14 @@ namespace WoWEditor6.IO.Files.Terrain
 
         public AdtVertex[] FullVertices { get; private set; }
 
-        public List<string> TextureNames { get; private set; } 
+        public List<string> TextureNames { get; private set; }  
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
 
-        protected List<Graphics.Texture> mTextures = new List<Graphics.Texture>(); 
+        protected List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
+        private List<Graphics.Texture> mSpecularTextures = new List<Graphics.Texture>();  
 
         protected MapArea()
         {
@@ -57,6 +60,11 @@ namespace WoWEditor6.IO.Files.Terrain
             }
 
             return (upper << 20) | lower;
+        }
+
+        public bool IsUuidAvailable(int uuid)
+        {
+            return DoodadInstances.All(d => d.Uuid != uuid);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -113,6 +121,13 @@ namespace WoWEditor6.IO.Files.Terrain
             }
 
             TextureNames.Add(textureName);
+
+            var specTex = Path.ChangeExtension(textureName, null) + "_s.blp";
+            if (FileManager.Instance.Provider.Exists(specTex) == false)
+                mSpecularTextures.Add(DefaultTextures.Specular);
+            else
+                mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+
             mTextures.Add(TextureManager.Instance.GetTexture(textureName));
             return TextureNames.Count - 1;
         }
@@ -131,6 +146,33 @@ namespace WoWEditor6.IO.Files.Terrain
                 throw new IndexOutOfRangeException();
 
             return mTextures[index];
+        }
+
+        public Graphics.Texture GetSpecularTexture(int index)
+        {
+            if(index >= mSpecularTextures.Count)
+                    throw new IndexOutOfRangeException();
+
+            return mSpecularTextures[index];
+        }
+
+        protected void LoadSpecularTextures()
+        {
+            mSpecularTextures = new List<Graphics.Texture>();
+            foreach (var tex in TextureNames)
+            {
+                var specTex = Path.ChangeExtension(tex, null) + "_s.blp";
+                if (FileManager.Instance.Provider.Exists(specTex) == false)
+                    mSpecularTextures.Add(DefaultTextures.Specular);
+                else
+                    mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+            }
+        }
+
+        public bool IsSpecularTextureLoaded(int index)
+        {
+            var tex = GetSpecularTexture(index);
+            return tex != DefaultTextures.Specular;
         }
     }
 }

@@ -35,6 +35,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {
+            SpecularFactors = new float[4];
             mIsYInverted = true;
             Parent = new WeakReference<Terrain.MapArea>(parent);
             mParent = new WeakReference<MapArea>(parent);
@@ -50,6 +51,23 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             IndexY = indexY;
 
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
+        }
+
+        public void TryAddDoodad(int mcrfValue, BoundingBox box)
+        {
+            var chunkBox = new BoundingBox(new Vector3(BoundingBox.Minimum.X, BoundingBox.Minimum.Y, float.MinValue),
+                new Vector3(BoundingBox.Maximum.X, BoundingBox.Maximum.Y, float.MaxValue));
+
+            var intersects = chunkBox.Intersects(ref box);
+            if (intersects == false)
+                return;
+
+            var references = DoodadReferences;
+            Array.Resize(ref references, references.Length + 1);
+            references[references.Length - 1] = mcrfValue;
+            DoodadReferences = references;
+
+            DoodadsChanged = true;
         }
 
         protected override void Dispose(bool disposing)
@@ -148,6 +166,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public void WriteObjChunks(BinaryWriter writer)
         {
+            AddOrUpdateChunk(mOriginalObjChunks, 0x4D435244, DoodadReferences);
+
             var totalSize = mOriginalObjChunks.Sum(pair => pair.Value.Size + 8);
             writer.Write(0x4D434E4B);
             writer.Write(totalSize);
@@ -456,11 +476,14 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
                 TextureScales = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
                 TextureNames = new string[mLayers.Length];
+                SpecularTextures = new List<Graphics.Texture>();
                 for (var i = 0; i < mLayers.Length && i < 4; ++i)
                 {
                     var texName = parent.GetTextureName(mLayers[i].TextureId);
                     TextureNames[i] = texName;
                     textures.Add(parent.GetTexture(mLayers[i].TextureId));
+                    SpecularTextures.Add(parent.GetSpecularTexture(mLayers[i].TextureId));
+                    SpecularFactors[i] = parent.IsSpecularTextureLoaded(mLayers[i].TextureId) ? 1 : 0;
                     TextureScales[i] = parent.GetTextureScale(mLayers[i].TextureId);
                 }
 
@@ -833,6 +856,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             mLayers[layers.Length] = layer;
 
             Textures.Add(parent.GetTexture(texId));
+            SpecularTextures.Add(parent.GetSpecularTexture(texId));
+            SpecularFactors[SpecularTextures.Count - 1] = parent.IsSpecularTextureLoaded(texId) ? 1 : 0;
             TexturesChanged = true;
             return mLayers.Length - 1;
         }

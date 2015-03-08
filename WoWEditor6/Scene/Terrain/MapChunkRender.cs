@@ -18,6 +18,13 @@ namespace WoWEditor6.Scene.Terrain
         public Matrix Layer3;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    struct TexParamsBuffer
+    {
+        public Vector4 TextureScales;
+        public Vector4 SpecularFactors;
+    }
+
     class MapChunkRender : IDisposable
     {
         public static Sampler ColorSampler { get; private set; }
@@ -41,9 +48,12 @@ namespace WoWEditor6.Scene.Terrain
         private readonly Vector2[] mTexAnimDirections = new Vector2[4];
         private bool mHasTexAnim;
 
+        private TexParamsBuffer mTexParams;
+
         private ConstantBuffer mTexAnimBuffer;
         private ConstantBuffer mScaleBuffer;
         private Graphics.Texture[] mShaderTextures;
+        private Graphics.Texture[] mShaderSpecularTextures;
         private M2Instance[] mReferences;
         private WeakReference<MapAreaRender> mParent;
 
@@ -116,6 +126,7 @@ namespace WoWEditor6.Scene.Terrain
                 }
 
                 mData.DoodadsChanged = false;
+                mModelBox = mData.ModelBox;
             }
 
             if (mReferences.Length == 0)
@@ -160,6 +171,7 @@ namespace WoWEditor6.Scene.Terrain
             if (mData.TexturesChanged)
             {
                 mShaderTextures = mData.Textures.ToArray();
+                mShaderSpecularTextures = mData.SpecularTextures.ToArray();
                 mData.TexturesChanged = false;
             }
 
@@ -169,6 +181,7 @@ namespace WoWEditor6.Scene.Terrain
             ChunkMesh.Program.SetPixelTexture(0, mAlphaTexture);
             ChunkMesh.Program.SetPixelTexture(1, mHoleTexture);
             ChunkMesh.Program.SetPixelTextures(2, mShaderTextures);
+            ChunkMesh.Program.SetPixelTextures(6, mShaderSpecularTextures);
             ChunkMesh.Program.SetVertexConstantBuffer(1, mTexAnimBuffer);
 
             ChunkMesh.Program.SetPixelConstantBuffer(2, mScaleBuffer);
@@ -257,6 +270,9 @@ namespace WoWEditor6.Scene.Terrain
         {
             mSyncLoadToken = null;
 
+            mTexParams.TextureScales = new Vector4(mData.TextureScales);
+            mTexParams.SpecularFactors = new Vector4(mData.SpecularFactors);
+
             mTexAnimBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
             mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix.Identity;
             mTexAnimBuffer.UpdateData(mTexAnimStore);
@@ -265,8 +281,9 @@ namespace WoWEditor6.Scene.Terrain
             mHoleTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
             mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
             mScaleBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
-            mScaleBuffer.UpdateData(mData.TextureScales);
+            mScaleBuffer.UpdateData(mTexParams);
             mShaderTextures = mData.Textures.ToArray();
+            mShaderSpecularTextures = mData.SpecularTextures.ToArray();
 
             mIsSyncLoaded = true;
         }

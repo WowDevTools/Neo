@@ -27,8 +27,6 @@ namespace WoWEditor6.IO.Files.Models.WoD
         public uint[] GlobalSequences { get; private set; }
         public AnimationEntry[] Animations { get; private set; }
 
-        public string FileName { get { return mFileName; } }
-
         public override string ModelName { get { return mModelName; } }
 
         public M2File(string fileName) : base(fileName)

@@ -29,7 +29,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
         {
             Batches = new List<WmoBatch>();
             Indices = new List<ushort>();
-            Vertices = new List<WmoVertex>();
+            Vertices = new WmoVertex[0];
 
             DisableRendering = false;
 
@@ -284,7 +284,7 @@ namespace WoWEditor6.IO.Files.Models.WoD
             }
 
             BoundingBox = new BoundingBox(minPos, maxPos);
-            Vertices = mVertices.ToList().AsReadOnly();
+            Vertices = mVertices;
 
             return true;
         }
