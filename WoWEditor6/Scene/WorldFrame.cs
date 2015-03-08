@@ -361,13 +361,16 @@ namespace WoWEditor6.Scene
                 if (intersection.M2Hit)
                     selected = intersection.M2Instance;
 
-                if (mSelectedInstance != null && selected != mSelectedInstance)
-                    mSelectedInstance.DestroyWorldModelText();
+                if (selected != mSelectedInstance)
+                {
+                    if (mSelectedInstance != null)
+                        mSelectedInstance.DestroyModelNameplate();
 
-                if (selected != null)
-                    selected.CreateWorldModelText();
+                    if (selected != null)
+                        selected.CreateModelNameplate();
 
-                mSelectedInstance = selected;
+                    mSelectedInstance = selected;
+                }
             }
 
             if (OnWorldClicked != null)
