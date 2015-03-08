@@ -49,16 +49,19 @@ namespace WoWEditor6.Scene.Models.WMO
 
         private void Dispose(bool disposing)
         {
-            if (mInstances != null)
-            {
-                mInstances.Clear();
-                mInstances = null;
-            }
-
             if (mActiveInstances != null)
             {
                 mActiveInstances.Clear();
                 mActiveInstances = null;
+            }
+
+            if (mInstances != null)
+            {
+                foreach (var inst in mInstances)
+                    inst.Dispose();
+
+                mInstances.Clear();
+                mInstances = null;
             }
 
             if (mRoot != null)
@@ -79,7 +82,7 @@ namespace WoWEditor6.Scene.Models.WMO
             if (mInstances == null)
                 return false;
 
-            lock(mInstances)
+            lock (mInstances)
             {
                 var instance = mInstances.FirstOrDefault(w => w.Uuid == uuid);
                 if (instance != null)
@@ -89,6 +92,7 @@ namespace WoWEditor6.Scene.Models.WMO
                         return false;
 
                     mInstances.Remove(instance);
+                    instance.Dispose();
                 }
 
                 return mInstances.Count == 0;
@@ -131,7 +135,7 @@ namespace WoWEditor6.Scene.Models.WMO
         {
             mInstancesChanged = false;
 
-            lock(mInstances)
+            lock (mInstances)
             {
                 if (mInstances.Count == 0)
                     return;

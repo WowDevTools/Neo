@@ -97,7 +97,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         public override bool Load(string fileName)
         {
             Groups = new List<Models.WmoGroup>();
-
             FileName = fileName;
 
             using (var file = FileManager.Instance.Provider.OpenFile(fileName))

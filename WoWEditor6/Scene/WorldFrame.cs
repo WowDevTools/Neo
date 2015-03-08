@@ -41,7 +41,7 @@ namespace WoWEditor6.Scene
             public Vector4 brushParams;
         }
 
-        private M2RenderInstance mSelectedInstance;
+        private IModelInstance mSelectedInstance;
 
         public static WorldFrame Instance { get; private set; }
 
@@ -358,9 +358,11 @@ namespace WoWEditor6.Scene
 
             if (mouseEventArgs.Button == MouseButtons.Left)
             {
-                M2RenderInstance selected = null;
+                IModelInstance selected = null;
                 if (intersection.M2Hit)
                     selected = intersection.M2Instance;
+                else if (intersection.WmoHit)
+                    selected = intersection.WmoInstance;
 
                 if (selected != mSelectedInstance)
                 {
@@ -371,7 +373,7 @@ namespace WoWEditor6.Scene
                         selected.CreateModelNameplate();
 
                     mSelectedInstance = selected;
-                    Editing.ModelSpawnManager.Instance.ClickedInstance = selected;
+                    Editing.ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;
                 }
             }
 

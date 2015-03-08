@@ -5,7 +5,7 @@ using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
 {
-    class M2RenderInstance : IDisposable
+    class M2RenderInstance : IModelInstance
     {
         private Matrix mInstanceMatrix;
         private Matrix mInverseMatrix;
@@ -90,7 +90,7 @@ namespace WoWEditor6.Scene.Models.M2
             GC.SuppressFinalize(this);
         }
 
-        public bool Intersects(ref Ray globalRay, IntersectionParams parameters, out float value)
+        public bool Intersects(IntersectionParams parameters, ref Ray globalRay, out float value)
         {
             value = float.MaxValue;
 

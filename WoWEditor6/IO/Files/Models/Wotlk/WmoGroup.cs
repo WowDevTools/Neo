@@ -87,10 +87,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             {
                 Name = root.GetGroupNameByOffset(mHeader.groupName);
 
-                if (Name != null && Name == "antiportal")
-                {
+                if (Name == "antiportal")
                     DisableRendering = true;
-                }
             }
 
             return true;
@@ -217,9 +215,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             var numVertices = size / SizeCache<Vector3>.Size;
             mPositions = reader.ReadArray<Vector3>(numVertices);
             for(var i = 0; i < mPositions.Length; ++i)
-            {
                 mPositions[i] = new Vector3(mPositions[i].X, -mPositions[i].Y, mPositions[i].Z);
-            }
         }
 
         private bool CombineVertexData()

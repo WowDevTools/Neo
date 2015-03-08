@@ -126,6 +126,8 @@ namespace WoWEditor6.Scene.Models.M2
                     return false;
 
                 mFullInstances.Remove(uuid);
+                inst.Dispose();
+
                 if (mFullInstances.Count == 0)
                     lastInstance = true;
             }
@@ -254,6 +256,9 @@ namespace WoWEditor6.Scene.Models.M2
 
             if (mFullInstances != null)
             {
+                foreach (var inst in mFullInstances.Values)
+                    inst.Dispose();
+
                 mFullInstances.Clear();
                 mFullInstances = null;
             }
