@@ -8,7 +8,7 @@ using SharpDX;
 
 namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
-    class GameObjectManager : IGameObjectManager
+    class GameObjectManager : Singleton<GameObjectManager>, IGameObjectManager
     {
         private readonly List<GameObject> mGameObjects = new List<GameObject>();
         private readonly List<SpawnedGameObject> mSpawnedGameObjects = new List<SpawnedGameObject>();
