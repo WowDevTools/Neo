@@ -1,0 +1,294 @@
+<?xml version="1.0" standalone="yes"?>
+<DbcDefinition>
+        <VersionStart>12340</VersionStart>
+		<VersionStop>12340</VersionStop>
+        <Target>AreaTable.dbc</Target>
+		<NumOfColumns>36</NumOfColumns>
+        <Columns>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Area ID</Name>
+						<Desc>Unique Area Number</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Map ID</Name>
+						<Desc>Map that this Area is located on</Desc>
+						<Flags/>
+						<References Field="0" File="Map.dbc"></References>
+                </Column>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Zone ID</Name>
+						<Desc>Zone Identifier, ID of area this zone belongs to, 0 if a parent zone.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>ExploreFlag</Name>
+						<Desc>Unique ID for each area, Should not be the Area ID.  This is what tracks as you 'discover' a new zone.</Desc>
+						<Flags/>
+						<References Field="2" File="WorldMapOverlay.dbc"></References>
+                </Column>
+				<Column>
+                        <Type>Flags</Type>
+                        <Name>Area Flags</Name>
+						<Desc>Defines the Area Type</Desc>
+                      	<Flags>
+							<Flag Value="0x00000000" Name="None" />
+							<Flag Value="0x00000001" Name="AREA_FLAG_UNK0" />
+							<Flag Value="0x00000002" Name="AREA_FLAG_UNK1" />
+							<Flag Value="0x00000004" Name="AREA_FLAG_UNK2" />
+							<Flag Value="0x00000008" Name="AREA_FLAG_SLAVE_CAPITOL" />
+							<Flag Value="0x00000010" Name="AREA_FLAG_UNK3" />
+							<Flag Value="0x00000020" Name="AREA_FLAG_SLAVE_CAPITOL2" />
+							<Flag Value="0x00000040" Name="AREA_FLAG_ALLOW_DUELS" />
+							<Flag Value="0x00000080" Name="AREA_FLAG_ARENA" />
+							<Flag Value="0x00000100" Name="AREA_FLAG_CAPITOL" />
+							<Flag Value="0x00000200" Name="AREA_FLAG_CITY" />
+							<Flag Value="0x00000400" Name="AREA_FLAG_OUTLAND" />
+							<Flag Value="0x00000800" Name="AREA_FLAG_SANCTUARY" />
+							<Flag Value="0x00001000" Name="AREA_FLAG_NEED_FLY" />
+							<Flag Value="0x00002000" Name="AREA_FLAG_UNUSED1" />
+							<Flag Value="0x00004000" Name="AREA_FLAG_OUTLAND2" />
+							<Flag Value="0x00008000" Name="AREA_FLAG_OUTDOOR_PVP" />
+							<Flag Value="0x00010000" Name="AREA_FLAG_ARENA_INSTANCE" />
+							<Flag Value="0x00020000" Name="AREA_FLAG_UNUSED2" />
+							<Flag Value="0x00040000" Name="AREA_FLAG_CONTESTED_AREA" />
+							<Flag Value="0x00080000" Name="AREA_FLAG_UNK4" />
+							<Flag Value="0x00100000" Name="AREA_FLAG_LOWLEVEL" />
+							<Flag Value="0x00200000" Name="AREA_FLAG_TOWN" />
+							<Flag Value="0x00400000" Name="AREA_FLAG_REST_ZONE_HORDE" />
+							<Flag Value="0x00800000" Name="AREA_FLAG_REST_ZONE_ALLIANCE" />
+							<Flag Value="0x01000000" Name="AREA_FLAG_WINTERGRASP" />
+							<Flag Value="0x02000000" Name="AREA_FLAG_INSIDE" />
+							<Flag Value="0x04000000" Name="AREA_FLAG_OUTSIDE" />
+							<Flag Value="0x08000000" Name="AREA_FLAG_WINTERGRASP2" />
+							<Flag Value="0x10000000" Name="AREA_FLAG_NO_FLY_ZONE" />
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>SoundPreferences</Name>
+						<Desc>Links to Sound Preferences DBC entry</Desc>
+						<Flags/>
+						<References Field="0" File="SoundPreferences.dbc"></References>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>SoundPreferencesUnderwater</Name>
+						<Desc>Links to Sound Preferences Underwater DBC entry</Desc>
+						<Flags/>
+						<References Field="0" File="SoundPreferencesUnderwater.dbc"></References>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>SoundAmbience</Name>
+						<Desc>Links to Sound Ambience DBC entry.</Desc>
+						<Flags/>
+						<References Field="0" File="SoundAmbience.dbc"></References>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>ZoneMusic</Name>
+						<Desc>Links to Zone Music DBC entry.</Desc>
+						<Flags/>
+						<References Field="0" File="ZoneMusic.dbc"></References>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>ZoneIntroMusicTable</Name>
+						<Desc>Links to Zone Intro Music DBC entry.</Desc>
+						<Flags/>
+						<References Field="0" File="ZoneIntroMusicTable.dbc"></References>
+                </Column>
+				<Column>
+                        <Type>int32</Type>
+                        <Name>Area Level</Name>
+						<Desc>Minimum Player Level for Area.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name1</Name>
+						<Desc>Name for Locale 1</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name2</Name>
+						<Desc>Name for Locale 2</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name3</Name>
+						<Desc>Name for Locale 3</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name4</Name>
+						<Desc>Name for Locale 4</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name5</Name>
+						<Desc>Name for Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name6</Name>
+						<Desc>Name for Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name6</Name>
+						<Desc>Name for Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name8</Name>
+						<Desc>Name for Locale 8</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name9</Name>
+						<Desc>Name for Locale 9</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name10</Name>
+						<Desc>Name for Locale 10</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name11</Name>
+						<Desc>Name for Locale 11</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name12</Name>
+						<Desc>Name for Locale 12</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name13</Name>
+						<Desc>Name for Locale 13</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name14</Name>
+						<Desc>Name for Locale 14</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name15</Name>
+						<Desc>Name for Locale 15</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name16</Name>
+						<Desc>Name for Locale 16</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+				        <Type>Flags</Type>
+                        <Name>Name Flags</Name>
+						<Desc>None</Desc>
+						<Flags>
+							<Flag Value="0xFF01FE" Name="Default"/>
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>unit32</Type>
+                        <Name>Team</Name>
+						<Desc>Which Faction is marked as the owner of this area.</Desc>
+                        <References Field="0" File="FactionGroup.dbc"></References>
+						<Flags/>		
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Liquid Type Override 1</Name>
+						<Desc>UNK, not used on normal maps</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Liquid Type Override 2</Name>
+						<Desc>UNK, not used on normal maps</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Liquid Type Override 3</Name>
+						<Desc>UNK, not used on normal maps</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Liquid Type Override 4</Name>
+						<Desc>UNK, not used on normal maps</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Minimum Elevation</Name>
+						<Desc>Floor of map in Z, normally -500</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>float</Type>
+                        <Name>Ambient Light Mulitplier</Name>
+						<Desc>Brightness Multiplier</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>LightID</Name>
+						<Desc>Unsed, All 0 in 335a</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+		</Columns>
+</DbcDefinition>

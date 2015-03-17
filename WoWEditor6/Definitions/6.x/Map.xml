@@ -1,0 +1,171 @@
+<?xml version="1.0" standalone="yes"?>
+<DbcDefinition>
+        <VersionStart>19342</VersionStart>
+		<VersionStop>19342</VersionStop>
+        <Target>Map.dbc</Target>
+		<NumOfColumns>22</NumOfColumns>
+        <Columns>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Map ID</Name>
+						<Desc>Unique Map Id</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Map Directory</Name>
+						<Desc>Map files directory in the CASC files</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Instance Type</Name>
+						<Desc>Type of Map</Desc>
+						<Flags>
+							<Flag Value="0" Name="Normal Map">
+							<Flag Value="1" Name="Instance">
+							<Flag Value="2" Name="Raid">
+							<Flag Value="3" Name="Battleground">
+							<Flag Value="4" Name="Arena">
+							<Flag Value="5" Name="Scenario">
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>flag</Type>
+                        <Name>Map Flags</Name>
+						<Desc>Map Flags</Desc>
+						<Flags>
+							<Flag Value="0x0100" Name="MAP_FLAG_CAN_TOGGLE_DIFFICULTY">
+							<Flag Value="0x8000" Name="MAP_FLAG_FLEX_LOCKING">
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Map Type</Name>
+						<Desc>Unknown function, not used in TC.</Desc>
+						<Flags>
+							<Flag Value="1" Name="Most Maps">
+							<Flag Value="2" Name="Some Instances">
+							<Flag Value="3" Name="Transports">
+							<Flag Value="4" Name="Garrison Maps">
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>UNK5</Name>
+						<Desc>UNKNOWN USE</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Map Name</Name>
+						<Desc>Map Name Displayed in Client</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Map Description Horde</Name>
+						<Desc>Map Description for Horde, PVP related</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Map Description Alliance</Name>
+						<Desc>Map Description for Alliance, PVP related</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Loading Screen ID</Name>
+						<Desc>Which loading screen to use</Desc>
+						<Flags/>
+						<References Field="0" File="LoadingScreen.dbc"></References>
+                </Column>
+				<Column>
+                        <Type>float</Type>
+                        <Name>MiniMap Scale</Name>
+						<Desc>Position scale factor for minimaps</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>int32</Type>
+                        <Name>Corpse Map</Name>
+						<Desc>Which map do you want a player corpse to spawn on if killed in this map. -1 if same map.  Used for Instances.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>float</Type>
+                        <Name>Corpse Map X</Name>
+						<Desc>If Corpse Map is not -1, then Spawn point X of corpse</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>float</Type>
+                        <Name>Corpse Map Y</Name>
+						<Desc>If Corpse Map is not -1, then Spawn point Y of corpse</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Time of Day Override</Name>
+						<Desc>Normally -1, rarely 0 or 720</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Expansion ID</Name>
+						<Desc>Expansion required to access this map</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Raid Offset</Name>
+						<Desc>Unknown, all 0 execpt map 509 AQ</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Max Player Count</Name>
+						<Desc>Max Player count for the map, 0 for no maximum</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>int32</Type>
+                        <Name>ParentMap</Name>
+						<Desc>Related to Phasing. Normally -1, but if the map is a phase of a different map, it points to the main map.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>CosmeticParentMap</Name>
+						<Desc>Related to Phasing. Normally -1, Only used with Garrison Maps.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Time of Day Override</Name>
+						<Desc>Zero on all maps.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+		</Columns>
+</DbcDefinition>

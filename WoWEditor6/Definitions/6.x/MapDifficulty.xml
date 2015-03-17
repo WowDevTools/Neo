@@ -1,0 +1,84 @@
+<?xml version="1.0" standalone="yes"?>
+<DbcDefinition>
+        <Version>19342</Version>
+        <Target>MapDifficulty.dbc</Target>
+		<NumOfColumns>8</NumOfColumns>
+        <Columns>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Difficulty ID</Name>
+						<Desc>Unique Difficulty ID</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Map ID</Name>
+						<Desc>Map that this entry is linked to</Desc>
+						<Flags/>
+						<References Field="0" File="Map.dbc"></References>
+                </Column>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Difficulty Type</Name>
+						<Desc>Difficulty Mode for that map. For Arena Maps: The Arena Slot Number</Desc>
+						<Flags>
+							<Flag Value="0" Name="None" />
+							<Flag Value="1" Name="Normal" />
+							<Flag Value="2" Name="Heroic" />
+							<Flag Value="3" Name="Normal 10 Man Raid" />
+							<Flag Value="4" Name="Normal 25 Man Raid" />
+							<Flag Value="5" Name="Heroic 10 Man Raid" />
+							<Flag Value="6" Name="Heroic 25 Man Raid" />
+							<Flag Value="7" Name="Looking For Raid" />
+							<Flag Value="8" Name="Challenge Map" />
+							<Flag Value="9" Name="Normal 40 Man Raid" />
+							<Flag Value="11" Name="Heroic Scenario" />
+							<Flag Value="12" Name="Normal Scenario" />
+							<Flag Value="14" Name="Normal Raid" />
+							<Flag Value="15" Name="Heroic Raid" />
+							<Flag Value="16" Name="Mythic Raid" />
+							<Flag Value="17" Name="Looking for Raid New" />
+							<Flag Value="18" Name="Event Raid" />
+							<Flag Value="19" Name="Event Dungeon" />
+							<Flag Value="20" Name="Event Scenario" />
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Difficulty Text</Name>
+						<Desc>Text Displayed When Map cannot be entered</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Raid Duration</Name>
+						<Desc>Duration of raid reset timer, in seconds.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Max Players</Name>
+						<Desc>Maximum Number of Players.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Lock ID</Name>
+						<Desc>Which Lock ID is needed to Enter the Map</Desc>
+						<Flags/>
+						<References Field="0" File="Lock.DBC"></References>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Item Bonus Tree Mod Id</Name>
+						<Desc>Maximum Number of Players.</Desc>
+						<Flags/>
+						<References Field="0" File="ItemBonus.db2"></References>
+                </Column>
+		</Columns>
+</DbcDefinition>
