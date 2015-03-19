@@ -15,7 +15,7 @@ namespace WoWEditor6.Utils
             var va = a;
             if(Math.Abs(va.Y - vb.Y) < 1e-5 && Math.Abs(va.Y - vc.Y) < 1e-5)
             {
-                if ((vb.X <= va.X && va.X <= vc.Y) || (vc.X <= va.X && va.X <= vb.X))
+                if ((vb.X <= va.X && va.X <= vc.X) || (vc.X <= va.X && va.X <= vb.X))
                     return 0;
                 return 1;
             }

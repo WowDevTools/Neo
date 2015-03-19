@@ -78,6 +78,18 @@ namespace WoWEditor6.Scene.Terrain
 
             if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
             {
+                if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mBoundingBox) == false)
+                {
+                    // step 1: reject the area if we dont have to update m2 models if its not in the sky sphere
+                    if (!M2Manager.IsViewDirty || WorldFrame.Instance.State != AppState.World)
+                        return;
+
+                    // step 2: if models are supposed to be updated and the model box is not contained in the sky sphere
+                    // it has to be rejected as well as there is no way it could ever contribute
+                    if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mModelBox) == false)
+                        return;
+                }
+
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
                 {
                     if (!M2Manager.IsViewDirty || WorldFrame.Instance.State != AppState.World)

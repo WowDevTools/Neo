@@ -316,6 +316,7 @@
     <Compile Include="Scene\CameraControl.cs" />
     <Compile Include="IO\Files\Models\WoD\M2Structs.cs" />
     <Compile Include="Scene\IntersectionParams.cs" />
+    <Compile Include="Scene\Models\BoundingBoxDrawManager.cs" />
     <Compile Include="Scene\Models\M2Manager.cs" />
     <Compile Include="Scene\Models\M2\M2ShadersClass.cs" />
     <Compile Include="Scene\Models\M2\M2SingleRenderer.cs" />

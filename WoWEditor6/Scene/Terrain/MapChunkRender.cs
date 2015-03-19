@@ -143,6 +143,15 @@ namespace WoWEditor6.Scene.Terrain
 
             if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
             {
+                if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mBoundingBox) == false)
+                {
+                    if (M2Manager.IsViewDirty == false)
+                        return;
+
+                    if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mModelBox) == false)
+                        return;
+                }
+
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
                 {
                     if (M2Manager.IsViewDirty == false)

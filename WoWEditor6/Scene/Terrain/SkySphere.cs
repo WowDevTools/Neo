@@ -19,9 +19,15 @@ namespace WoWEditor6.Scene.Terrain
         private Graphics.Texture mSkyTexture;
         private readonly Sampler mSampler;
         private readonly Mesh mMesh;
+        private BoundingSphere mBoundingSphere;
+        private readonly float mRadius;
+
+        public BoundingSphere BoundingSphere { get { return mBoundingSphere; } }
 
         public SkySphere(float radius, int rings, int sectors, GxContext context)
         {
+            mRadius = radius;
+            mBoundingSphere = new BoundingSphere(Vector3.Zero, radius);
             mSampler = new Sampler(context);
             mMesh = new Mesh(context);
             mMesh.AddElement("POSITION", 0, 3);
@@ -59,6 +65,7 @@ namespace WoWEditor6.Scene.Terrain
 
         public void UpdatePosition(Vector3 position)
         {
+            mBoundingSphere = new BoundingSphere(position, mRadius);
             mMatrixBuffer.UpdateData(new Vector4(position, 1.0f));
         }
 
