@@ -76,7 +76,6 @@ namespace WoWEditor6.Scene.Models
                 if (root.Load(model) == false)
                     Log.Warning("Unable to load WMO '" + model + "'. Further instances wont be loaded again");
 
-
                 var renderer = new WmoRootRender();
                 renderer.OnAsyncLoad(root);
 

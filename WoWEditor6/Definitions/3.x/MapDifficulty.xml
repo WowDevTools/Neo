@@ -1,0 +1,186 @@
+<?xml version="1.0" standalone="yes"?>
+<DbcDefinition>
+        <VersionStart>12340</VersionStart>
+		<VersionStop>12340</VersionStop>
+        <Target>MapDifficulty.dbc</Target>
+		<NumOfColumns>23</NumOfColumns>
+        <Columns>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Difficulty ID</Name>
+						<Desc>Unique Difficulty ID</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Map ID</Name>
+						<Desc>Map that this entry is linked to</Desc>
+						<Flags/>
+						<References Field="0" File="Map.dbc"></References>
+                </Column>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Difficulty</Name>
+						<Desc>Difficulty Mode for that map.</Desc>
+						<Flags>
+							<Flag Value="0" Name="Normal Difficulty / Normal Dungeon / Normal 10 Man Raid" />
+							<Flag Value="1" Name="Herioc Dungeon / Normal 25 Man Raid" />
+							<Flag Value="2" Name="Heroic 10 Man Raid" />
+							<Flag Value="3" Name="Heroic 25 Man Raid" />
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message1</Name>
+						<Desc>Difficulty Message for Locale 1</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message2</Name>
+						<Desc>Difficulty Message for Locale 2</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message3</Name>
+						<Desc>Difficulty Message for Locale 3</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message4</Name>
+						<Desc>Difficulty Message for Locale 4</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message5</Name>
+						<Desc>Difficulty Message for Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message6</Name>
+						<Desc>Difficulty Message for Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message7</Name>
+						<Desc>Difficulty Message for Locale 7</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message8</Name>
+						<Desc>Difficulty Message for Locale 8</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message9</Name>
+						<Desc>Difficulty Message for Locale 9</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message10</Name>
+						<Desc>Difficulty Message for Locale 10</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message11</Name>
+						<Desc>Difficulty Message for Locale 11</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message12</Name>
+						<Desc>Difficulty Message for Locale 12</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message13</Name>
+						<Desc>Difficulty Message for Locale 13</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message14</Name>
+						<Desc>Difficulty Message for Locale 14</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message15</Name>
+						<Desc>Difficulty Message for Locale 15</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message16</Name>
+						<Desc>Difficulty Message for Locale 16</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+				        <Type>Flags</Type>
+                        <Name>Name Flags</Name>
+						<Desc>None</Desc>
+						<Flags>
+							<Flag Value="0xFF01FE" Name="Default"/>
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Raid Duration</Name>
+						<Desc>Duration of raid reset timer, in seconds.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Max Players</Name>
+						<Desc>Maximum Number of Players.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Message String</Name>
+						<Desc>Internal Message String for Trinity Core, Should match the difficulty Entry.</Desc>
+						<Flags>
+							<Flag Value=" " Name="Default"/>
+							<Flag Value="DUNGEON_DIFFICULTY_5PLAYER" Name="5 Man Dungeon"/>
+							<Flag Value="DUNGEON_DIFFICULTY_5PLAYER_HEROIC" Name="5 Man Heroic Dungeon"/>
+							<Flag Value="RAID_DIFFICULTY_10PLAYER" Name="10 Man Raid"/>
+							<Flag Value="RAID_DIFFICULTY_25PLAYER" Name="25 Man Raid"/>
+							<Flag Value="RAID_DIFFICULTY_40PLAYER" Name="40 Man Raid"/>
+							<Flag Value="RAID_DIFFICULTY_10PLAYER_HEROIC" Name="10 Man Heroic Raid"/>
+							<Flag Value="RAID_DIFFICULTY_25PLAYER_HEROIC" Name="25 Man Heroic Raid"/>
+						</Flags>
+						<References/>
+                </Column>
+		</Columns>
+</DbcDefinition>

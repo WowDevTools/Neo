@@ -5,7 +5,7 @@ using WoWEditor6.IO.Files.Models;
 
 namespace WoWEditor6.Scene.Models.M2
 {
-    class M2RenderInstance : IDisposable
+    class M2RenderInstance : IModelInstance
     {
         private Matrix mInstanceMatrix;
         private Matrix mInverseMatrix;
@@ -78,7 +78,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         private void Dispose(bool disposing)
         {
-            DestroyWorldModelText();
+            DestroyModelNameplate();
 
             mModel = null;
             mRenderer = null;
@@ -90,7 +90,7 @@ namespace WoWEditor6.Scene.Models.M2
             GC.SuppressFinalize(this);
         }
 
-        public bool Intersects(ref Ray globalRay, IntersectionParams parameters, out float value)
+        public bool Intersects(IntersectionParams parameters, ref Ray globalRay, out float value)
         {
             value = float.MaxValue;
 
@@ -113,7 +113,7 @@ namespace WoWEditor6.Scene.Models.M2
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
-            UpdateWorldModelName();
+            UpdateModelNameplate();
         }
 
         public void UpdateScale(float scale)
@@ -126,10 +126,10 @@ namespace WoWEditor6.Scene.Models.M2
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
-            UpdateWorldModelName();
+            UpdateModelNameplate();
         }
 
-        public void CreateWorldModelText()
+        public void CreateModelNameplate()
         {
             if (mWorldModelName != null)
                 return;
@@ -141,11 +141,11 @@ namespace WoWEditor6.Scene.Models.M2
                 DrawMode = WorldText.TextDrawMode.TextDraw3D
             };
 
-            UpdateWorldModelName();
+            UpdateModelNameplate();
             WorldFrame.Instance.WorldTextManager.AddText(mWorldModelName);
         }
 
-        public void DestroyWorldModelText()
+        public void DestroyModelNameplate()
         {
             if (mWorldModelName == null)
                 return;
@@ -155,7 +155,7 @@ namespace WoWEditor6.Scene.Models.M2
             mWorldModelName = null;
         }
 
-        private void UpdateWorldModelName()
+        private void UpdateModelNameplate()
         {
             if (mWorldModelName == null)
                 return;
@@ -166,7 +166,7 @@ namespace WoWEditor6.Scene.Models.M2
                 mWorldModelName.Scaling = 0.3f;
 
             var position = mBoundingBox.Minimum + (diff * 0.5f);
-            position.Z = 1.0f + mBoundingBox.Minimum.Z + (diff.Z * 1.1f);
+            position.Z = 1.5f + mBoundingBox.Minimum.Z + (diff.Z * 1.08f);
             mWorldModelName.Position = position;
         }
 

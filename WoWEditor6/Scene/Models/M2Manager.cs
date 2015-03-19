@@ -82,7 +82,7 @@ namespace WoWEditor6.Scene.Models
                         continue;
 
                     float dist;
-                    if (pair.Value.Intersects(ref globalRay, parameters, out dist) && dist < minDistance)
+                    if (pair.Value.Intersects(parameters, ref globalRay, out dist) && dist < minDistance)
                     {
                         minDistance = dist;
                         selectedInstance = pair.Value;
@@ -95,7 +95,7 @@ namespace WoWEditor6.Scene.Models
                 foreach (var pair in mNonBatchedInstances)
                 {
                     float dist;
-                    if (pair.Value.Intersects(ref globalRay, parameters, out dist) && dist < minDistance)
+                    if (pair.Value.Intersects(parameters, ref globalRay, out dist) && dist < minDistance)
                     {
                         minDistance = dist;
                         selectedInstance = pair.Value;
@@ -108,7 +108,7 @@ namespace WoWEditor6.Scene.Models
                 foreach (var pair in mSortedInstances)
                 {
                     float dist;
-                    if (pair.Value.Intersects(ref globalRay, parameters, out dist) && dist < minDistance)
+                    if (pair.Value.Intersects(parameters, ref globalRay, out dist) && dist < minDistance)
                     {
                         minDistance = dist;
                         selectedInstance = pair.Value;

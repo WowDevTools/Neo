@@ -1,0 +1,476 @@
+<?xml version="1.0" standalone="yes"?>
+<DbcDefinition>
+        <VersionStart>12340</VersionStart>
+		<VersionStop>12340</VersionStop>
+        <Target>Map.dbc</Target>
+		<NumOfColumns>66</NumOfColumns>
+        <Columns>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>Map ID</Name>
+						<Desc>Unique Map Number assigned to each map</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+                <Column>
+                        <Type>char</Type>
+                        <Name>Internal Name</Name>
+						<Desc>Path to Map data in MPQ</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Map Type</Name>
+						<Desc>Defines the Map Type</Desc>
+                      	<Flags>
+							<Flag Value="0" Name="Normal Map" />
+							<Flag Value="1" Name="Instance Map" />
+							<Flag Value="2" Name="Raid Map" />
+							<Flag Value="3" Name="Battleground Map" />
+							<Flag Value="4" Name="Arena Map" />
+						</Flags>
+                </Column>
+				<Column>
+				        <Type>Flags</Type>
+                        <Name>Map Flags</Name>
+						<Desc>None</Desc>
+						<Flags>
+							<Flag Value="0x100" Name="Dynamic Difficulty"/>
+						</Flags>
+                </Column>
+				<Column>
+				        <Type>Bool</Type>
+                        <Name>Is BattleGround</Name>
+						<Desc>1 if map is a battleground map, not arena.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name1</Name>
+						<Desc>Name for Locale 1</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name2</Name>
+						<Desc>Name for Locale 2</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name3</Name>
+						<Desc>Name for Locale 3</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name4</Name>
+						<Desc>Name for Locale 4</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name5</Name>
+						<Desc>Name for Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name6</Name>
+						<Desc>Name for Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name7</Name>
+						<Desc>Name for Locale 7</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name8</Name>
+						<Desc>Name for Locale 8</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name9</Name>
+						<Desc>Name for Locale 9</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name10</Name>
+						<Desc>Name for Locale 10</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name11</Name>
+						<Desc>Name for Locale 11</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name12</Name>
+						<Desc>Name for Locale 12</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name13</Name>
+						<Desc>Name for Locale 13</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name14</Name>
+						<Desc>Name for Locale 14</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name15</Name>
+						<Desc>Name for Locale 15</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>Name16</Name>
+						<Desc>Name for Locale 16</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+				        <Type>Flags</Type>
+                        <Name>Name Flags</Name>
+						<Desc>None</Desc>
+						<Flags>
+							<Flag Value="0xFF01FE" Name="Default"/>
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>unit32</Type>
+                        <Name>Linked Zone</Name>
+						<Desc>Points to the Area Table Reference that this map shares with another zone.</Desc>
+                        <References Field="0" File="AreaTable.dbc"></References>
+						<Flags/>		
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo1</Name>
+						<Desc>HordeInfo Locale 1</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo2</Name>
+						<Desc>HordeInfo Locale 2</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo3</Name>
+						<Desc>HordeInfo Locale 3</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo4</Name>
+						<Desc>HordeInfo Locale 4</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo5</Name>
+						<Desc>HordeInfo Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo6</Name>
+						<Desc>HordeInfo Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo6</Name>
+						<Desc>HordeInfo Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo8</Name>
+						<Desc>Name for Locale 8</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo9</Name>
+						<Desc>HordeInfo Locale 9</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo10</Name>
+						<Desc>HordeInfo Locale 10</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo11</Name>
+						<Desc>HordeInfo Locale 11</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo12</Name>
+						<Desc>HordeInfo Locale 12</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo13</Name>
+						<Desc>HordeInfo Locale 13</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo14</Name>
+						<Desc>HordeInfo Locale 14</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo15</Name>
+						<Desc>HordeInfo Locale 15</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>HordeInfo16</Name>
+						<Desc>HordeInfo Locale 16</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+				        <Type>Flags</Type>
+                        <Name>HordeInfo Flags</Name>
+						<Desc>None</Desc>
+						<Flags>
+							<Flag Value="0xFF01FE" Name="Default"/>
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+				        <Type>char</Type>
+                        <Name>AllianceInfo2</Name>
+						<Desc>AllianceInfo Locale 2</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo3</Name>
+						<Desc>AllianceInfo Locale 3</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo4</Name>
+						<Desc>AllianceInfo Locale 4</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo5</Name>
+						<Desc>AllianceInfo Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo6</Name>
+						<Desc>AllianceInfo Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo6</Name>
+						<Desc>AllianceInfo Locale 6</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo8</Name>
+						<Desc>Name for Locale 8</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo9</Name>
+						<Desc>AllianceInfo Locale 9</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo10</Name>
+						<Desc>AllianceInfo Locale 10</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo11</Name>
+						<Desc>AllianceInfo Locale 11</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo12</Name>
+						<Desc>AllianceInfo Locale 12</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo13</Name>
+						<Desc>AllianceInfo Locale 13</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo14</Name>
+						<Desc>AllianceInfo Locale 14</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo15</Name>
+						<Desc>AllianceInfo Locale 15</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>AllianceInfo16</Name>
+						<Desc>AllianceInfo Locale 16</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+				        <Type>Flags</Type>
+                        <Name>AllianceInfo Flags</Name>
+						<Desc>None</Desc>
+						<Flags>
+							<Flag Value="0xFF01FE" Name="Default"/>
+						</Flags>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Loading Screen</Name>
+						<Desc>Selects the Loading Screen for that Map.</Desc>
+						<Flags/>
+						<References Field="0" File="LoadingScreens.dbc"></References>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>MiniMap Scale</Name>
+						<Desc>Selects the MiniMap Scaling.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>int32</Type>
+                        <Name>Corpse Map</Name>
+						<Desc>Which map do you want a player corpse to spawn on if killed in this map. -1 if same map.  Used for Instances.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>float</Type>
+                        <Name>Corpse Map X</Name>
+						<Desc>If Corpse Map is not -1, then Spawn point X of corpse</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>float</Type>
+                        <Name>Corpse Map Y</Name>
+						<Desc>If Corpse Map is not -1, then Spawn point Y of corpse</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Time of Day Override</Name>
+						<Desc>Normally -1, rarely 0 or 720</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Expansion ID</Name>
+						<Desc>Expansion required to access this map</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Unk Time</Name>
+						<Desc>Unknown Time Function, set to 0</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>uint32</Type>
+                        <Name>Max Players</Name>
+						<Desc>Maximum number of players on map, 0=No Maximum</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+        </Columns>
+</DbcDefinition>

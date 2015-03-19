@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="yes"?>
+<DbcDefinition>
+        <VersionStart>19342</VersionStart>
+		<VersionStop>19342</VersionStop>
+        <Target>FileData.dbc</Target>
+		<NumOfColumns>3</NumOfColumns>
+        <Columns>
+                <Column>
+                        <Type>uint32</Type>
+                        <Name>File ID</Name>
+						<Desc>Unique File Id</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+				<Column>
+                        <Type>char</Type>
+                        <Name>File Name</Name>
+						<Desc>File Name</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+                <Column>
+                        <Type>char</Type>
+                        <Name>File Path</Name>
+						<Desc>File Path in CASC with trailing \.</Desc>
+						<Flags/>
+						<References/>
+                </Column>
+		</Columns>
+</DbcDefinition>

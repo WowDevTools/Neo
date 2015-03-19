@@ -30,16 +30,19 @@ namespace WoWEditor6.UI.Widgets
             MySqlConnector.Instance.OpenConnection();
             var dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM creature_template");
             CreatureManager.Instance.LoadCreatures(dt);
+            dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM gameobject_template");
+            GameObjectManager.Instance.LoadGameObjects(dt);
             btnLogin.IsEnabled = false;
             btnLogin.Content = "Succesful!";
 
             /*
-            Example code for loading spawned creatures for single maps
+            Example code for loading spawned creatures and gameobjects for single maps
 
             var mapid = 0;
-            var dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM creature WHERE map = '" + mapid + "'");
+            dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM creature WHERE map = '" + mapid + "'");
             CreatureManager.Instance.LoadSpawnedCreatures(dt, mapid);
-            */
+            dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM gameobject WHERE map = '" + mapid + "'");
+            GameObjectManager.Instance.LoadSpawnedGameObjects(dt, mapid);*/
 
         }
     }
