@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using SharpDX;
+using WoWEditor6.Editing;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene.Models;
 using WoWEditor6.Scene.Models.M2;
@@ -10,7 +11,6 @@ using WoWEditor6.Scene.Terrain;
 using WoWEditor6.Scene.Texture;
 using WoWEditor6.UI;
 using WoWEditor6.Utils;
-using Matrix = SharpDX.Matrix;
 
 namespace WoWEditor6.Scene
 {
@@ -74,7 +74,6 @@ namespace WoWEditor6.Scene
         private bool mGlobalBufferChanged;
 
         public CameraControl CamControl { get; private set; }
-        private IntersectionParams mIntersection;
         private Point mLastCursorPosition;
         private RenderControl mWindow;
 
@@ -82,7 +81,7 @@ namespace WoWEditor6.Scene
         public GxContext GraphicsContext { get; private set; }
         public GraphicsDispatcher Dispatcher { get; private set; }
 
-        public IntersectionParams LastMouseIntersection { get { return mIntersection; } }
+        public IntersectionParams LastMouseIntersection { get; private set; }
 
         public event Action<IntersectionParams, MouseEventArgs> OnWorldClicked;
 
@@ -149,7 +148,7 @@ namespace WoWEditor6.Scene
                 fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f),
                 mousePosition = new Vector4(float.MaxValue),
                 eyePosition = Vector4.Zero,
-                brushParams = new Vector4(45.0f, 55.0f, 0.0f, 0.0f),
+                brushParams = new Vector4(45.0f, 55.0f, 0.0f, 0.0f)
             };
 
             mGlobalBuffer.UpdateData(mGlobalBufferStore);
@@ -217,7 +216,7 @@ namespace WoWEditor6.Scene
 
             CamControl.Update(ActiveCamera, State != AppState.World);
 
-            Editing.EditManager.Instance.UpdateChanges();
+            EditManager.Instance.UpdateChanges();
 
             // do not move before mCamControl.Update to have the latest view/projection
             if (State == AppState.World)
@@ -271,6 +270,12 @@ namespace WoWEditor6.Scene
             }
         }
 
+        public void UpdateSelectedBoundingBox()
+        {
+            if(mSelectedBoundingBox != null && mSelectedInstance != null)
+                mSelectedBoundingBox.UpdateBoundingBox(mSelectedInstance.InstanceCorners);
+        }
+
         private void UpdateBrushTime(TimeSpan frameTime)
         {
             var timeSecs = frameTime.TotalMilliseconds / 1000.0;
@@ -281,20 +286,20 @@ namespace WoWEditor6.Scene
         private void UpdateCursorPosition(bool forced = false)
         {
             var pos = mWindow.PointToClient(Cursor.Position);
-            if (mIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
+            if (LastMouseIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
             {
                 mLastCursorPosition = new Point(pos.X, pos.Y);
-                mIntersection = new IntersectionParams(ActiveCamera.ViewInverse, ActiveCamera.ProjectionInverse,
+                LastMouseIntersection = new IntersectionParams(ActiveCamera.ViewInverse, ActiveCamera.ProjectionInverse,
                     new Vector2(mLastCursorPosition.X, mLastCursorPosition.Y));
 
-                MapManager.Intersect(mIntersection);
+                MapManager.Intersect(LastMouseIntersection);
 
-                Editing.EditManager.Instance.MousePosition = mIntersection.TerrainPosition;
-                mGlobalBufferStore.mousePosition = new Vector4(mIntersection.TerrainPosition, 0.0f);
+                EditManager.Instance.MousePosition = LastMouseIntersection.TerrainPosition;
+                mGlobalBufferStore.mousePosition = new Vector4(LastMouseIntersection.TerrainPosition, 0.0f);
                 mGlobalBufferChanged = true;
 
-                Editing.EditManager.Instance.IsTerrainHovered = mIntersection.TerrainHit;
-                Editing.EditManager.Instance.MousePosition = mIntersection.TerrainPosition;
+                EditManager.Instance.IsTerrainHovered = LastMouseIntersection.TerrainHit;
+                EditManager.Instance.MousePosition = LastMouseIntersection.TerrainPosition;
             }
         }
 
@@ -382,10 +387,15 @@ namespace WoWEditor6.Scene
                     {
                         selected.CreateModelNameplate();
                         mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
+                        ModelEditManager.Instance.SelectedModel = selected;
+                    } 
+                    else if (selected == null)
+                    {
+                        ModelEditManager.Instance.SelectedModel = null;
                     }
 
                     mSelectedInstance = selected;
-                    Editing.ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;
+                    ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;
                 }
             }
 

@@ -110,6 +110,24 @@ namespace WoWEditor6.Scene.Models.M2
             return mModel.Intersect(ref instRay, out value);
         }
 
+        public void Rotate(float x, float y, float z)
+        {
+            mRotation.X += x;
+            mRotation.Y += y;
+            mRotation.Z += z;
+
+            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
+            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
+
+            mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
+            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+            mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+            InstanceCorners = mModel.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            UpdateModelNameplate();
+        }
+
         public void UpdatePosition(Vector3 position)
         {
             mPosition = position;

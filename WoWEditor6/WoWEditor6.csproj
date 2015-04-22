@@ -168,6 +168,7 @@
     </Compile>
     <Compile Include="Editing\EditManager.cs" />
     <Compile Include="Editing\EditMode.cs" />
+    <Compile Include="Editing\ModelEditManager.cs" />
     <Compile Include="Editing\ModelSpawnManager.cs" />
     <Compile Include="Editing\TerrainChangeManager.cs" />
     <Compile Include="Editing\TextureChangeManager.cs" />

@@ -41,6 +41,7 @@ namespace WoWEditor6.Editing
         public void UpdateChanges()
         {
             ModelSpawnManager.Instance.OnUpdate();
+            ModelEditManager.Instance.Update();
 
             var diff = DateTime.Now - mLastChange;
             if (diff.TotalMilliseconds < (IsTexturing ? 40 : 20))

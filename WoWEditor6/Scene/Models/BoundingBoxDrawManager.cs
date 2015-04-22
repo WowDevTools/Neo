@@ -43,6 +43,11 @@ namespace WoWEditor6.Scene.Models
             mesh.Draw();
         }
 
+        public void UpdateBoundingBox(IReadOnlyList<Vector3> positions)
+        {
+            BuildVertices(positions);
+        }
+
         private void BuildVertices()
         {
             var minimum = mBox.Minimum;
@@ -112,7 +117,9 @@ namespace WoWEditor6.Scene.Models
                 new BoundingVertex {position = positions[7], texCoord = new Vector3(0, 1, 1)}
             };
 
-            mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
+            if (mVertexBuffer == null)
+                mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
+
             mVertexBuffer.UpdateData(vertices);
         }
     }

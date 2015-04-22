@@ -119,6 +119,11 @@ namespace WoWEditor6.Scene.Models.WMO
             WorldFrame.Instance.WorldTextManager.AddText(mWorldModelName);
         }
 
+        public void Rotate(float x, float y, float z)
+        {
+            // TODO: Implement
+        }
+
         public void DestroyModelNameplate()
         {
             if (mWorldModelName == null)
