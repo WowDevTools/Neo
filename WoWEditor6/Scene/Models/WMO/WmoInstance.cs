@@ -15,9 +15,14 @@ namespace WoWEditor6.Scene.Models.WMO
 
         private WorldText mWorldModelName;
 
+        public BoundingBox InstanceBoundingBox { get { return BoundingBox; } }
+
         public int Uuid { get; private set; }
         public BoundingBox[] GroupBoxes { get; private set; }
         public Matrix InstanceMatrix { get { return mInstanceMatrix; } }
+        public Vector3[] InstanceCorners { get; private set; }
+
+        public bool IsSpecial { get { return false; } }
 
         public WmoRoot ModelRoot { get; private set; }
 
@@ -32,6 +37,9 @@ namespace WoWEditor6.Scene.Models.WMO
                 MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix.Translation(position);
 
             mRenderer = new WeakReference<WmoRootRender>(model);
+
+            InstanceCorners = model.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
 
             BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
             GroupBoxes = new BoundingBox[model.Groups.Count];

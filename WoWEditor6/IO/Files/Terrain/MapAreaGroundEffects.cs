@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#pragma warning disable 219
+#pragma warning disable 169
+
 namespace WoWEditor6.IO.Files.Terrain
 {
     class MapAreaGroundEffects
@@ -93,3 +96,6 @@ namespace WoWEditor6.IO.Files.Terrain
         }
     }
 }
+
+#pragma warning restore 219
+#pragma warning restore 169

@@ -42,6 +42,7 @@ namespace WoWEditor6.Scene
         }
 
         private IModelInstance mSelectedInstance;
+        private BoundingBoxInstance mSelectedBoundingBox;
 
         public static WorldFrame Instance { get; private set; }
 
@@ -49,6 +50,7 @@ namespace WoWEditor6.Scene
         public WmoManager WmoManager { get; private set; }
         public M2Manager M2Manager { get; private set; }
         public WorldTextManager WorldTextManager { get; private set; }
+        public BoundingBoxDrawManager BoundingBoxDrawManager { get; private set; }
 
         public bool LeftHandedCamera
         {
@@ -97,6 +99,7 @@ namespace WoWEditor6.Scene
             WmoManager = new WmoManager();
             M2Manager = new M2Manager();
             WorldTextManager = new WorldTextManager();
+            BoundingBoxDrawManager = new BoundingBoxDrawManager();
             mState = AppState.Idle;
             
             // set the settings on creation
@@ -130,6 +133,7 @@ namespace WoWEditor6.Scene
 
         public void Initialize(RenderControl window, GxContext context)
         {
+            GraphicsContext = context;
             mWindow = window;
             context.Resize += (w, h) => OnResize((int) w, (int) h);
             mGlobalBuffer = new ConstantBuffer(context);
@@ -159,14 +163,13 @@ namespace WoWEditor6.Scene
             M2SingleRenderer.Initialize(context);
             M2PortraitRenderer.Initialize(context);
             WorldText.Initialize(context);
+            BoundingBoxDrawManager.Initialize();
 
             StaticAnimationThread.Instance.Initialize();
 
             WmoManager.Initialize();
             M2Manager.Initialize();
             WorldTextManager.Initialize();
-
-            GraphicsContext = context;
 
             SetActiveCamera(mMainCamera);
             TextureManager.Instance.Initialize(context);
@@ -231,6 +234,7 @@ namespace WoWEditor6.Scene
             WmoManager.OnFrame(ActiveCamera);
             M2Manager.OnFrame(ActiveCamera);
             WorldTextManager.OnFrame(ActiveCamera);
+            BoundingBoxDrawManager.OnFrame();
         }
 
         public void OnMouseWheel(int delta)
@@ -366,11 +370,19 @@ namespace WoWEditor6.Scene
 
                 if (selected != mSelectedInstance)
                 {
+                    if(mSelectedBoundingBox != null)
+                        BoundingBoxDrawManager.RemoveDrawableBox(mSelectedBoundingBox);
+
+                    mSelectedBoundingBox = null;
+
                     if (mSelectedInstance != null)
                         mSelectedInstance.DestroyModelNameplate();
 
-                    if (selected != null)
+                    if (selected != null && selected.IsSpecial == false)
+                    {
                         selected.CreateModelNameplate();
+                        mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
+                    }
 
                     mSelectedInstance = selected;
                     Editing.ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;

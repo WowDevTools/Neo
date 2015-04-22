@@ -586,4 +586,28 @@
       </ShaderPermutation>
     </Permutations>
   </ShaderDefinition>
+
+  <ShaderDefinition>
+    <SourceName>Resources\Shaders\BoundingBoxVertex.hlsl</SourceName>
+    <Profile>vs_4_0</Profile>
+    <Permutations>
+      <ShaderPermutation>
+        <EntryPoint>main</EntryPoint>
+        <TargetFile>Resources\Shaders\BoundingBoxVertex.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+    </Permutations>
+  </ShaderDefinition>
+    
+  <ShaderDefinition>
+    <SourceName>Resources\Shaders\BoundingBoxPixel.hlsl</SourceName>
+    <Profile>ps_4_0</Profile>
+    <Permutations>
+      <ShaderPermutation>
+        <EntryPoint>main</EntryPoint>
+        <TargetFile>Resources\Shaders\BoundingBoxPixel.dxc</TargetFile>
+        <Definitions/>
+      </ShaderPermutation>
+    </Permutations>
+  </ShaderDefinition>
 </ArrayOfShaderDefinition>

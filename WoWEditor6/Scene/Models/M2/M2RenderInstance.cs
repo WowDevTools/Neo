@@ -35,8 +35,13 @@ namespace WoWEditor6.Scene.Models.M2
         public M2Renderer Renderer { get { return mRenderer; } }
 
         public BoundingBox BoundingBox { get { return mBoundingBox; } }
+        public BoundingBox InstanceBoundingBox { get { return BoundingBox; } }
+
+        public Vector3[] InstanceCorners { get; private set; }
 
         public bool IsUpdated { get; set; }
+
+        public bool IsSpecial { get { return Uuid == Editing.ModelSpawnManager.M2InstanceUuid; } }
 
         public int Uuid { get; private set; }
 
@@ -69,6 +74,9 @@ namespace WoWEditor6.Scene.Models.M2
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(scale) * Matrix.Translation(position);
             mBoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+
+            InstanceCorners = mModel.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
         }
 
         ~M2RenderInstance()

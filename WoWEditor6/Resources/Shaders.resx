@@ -388,4 +388,10 @@
   <data name="M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Shaders\M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="BoundingBoxPixel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\BoundingBoxPixel.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="BoundingBoxVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shaders\BoundingBoxVertex.dxc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
