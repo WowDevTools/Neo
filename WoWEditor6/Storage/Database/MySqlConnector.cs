@@ -19,7 +19,7 @@ namespace WoWEditor6.Storage.Database
 
         public void OpenConnection()
         {
-            if (string.IsNullOrEmpty(MySqlServer) || string.IsNullOrEmpty(MySqlUser) || string.IsNullOrEmpty(MySqlPassword) || string.IsNullOrEmpty(MySqlDatabase))
+            if (string.IsNullOrEmpty(MySqlServer) || string.IsNullOrEmpty(MySqlUser) || string.IsNullOrEmpty(MySqlDatabase))
                 throw new ArgumentException();
 
             if (mMySqlConn.State != ConnectionState.Open)
