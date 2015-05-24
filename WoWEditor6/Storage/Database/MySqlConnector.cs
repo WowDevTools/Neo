@@ -40,7 +40,7 @@ namespace WoWEditor6.Storage.Database
 
         public void Configuration(string pMySqlServer, string pMySqlUser, string pMySqlPassword, string pMySqlDatabase)
         {
-            if (string.IsNullOrEmpty(pMySqlServer) || string.IsNullOrEmpty(pMySqlUser) || string.IsNullOrEmpty(pMySqlPassword) || string.IsNullOrEmpty(pMySqlDatabase))
+            if (string.IsNullOrEmpty(pMySqlServer) || string.IsNullOrEmpty(pMySqlUser) || string.IsNullOrEmpty(pMySqlDatabase))
                 throw new ArgumentException();
 
             MySqlServer = pMySqlServer;
