@@ -76,6 +76,19 @@ namespace WoWEditor6.UI
             window.ShowDialog();
         }
 
+        private void CreatureEditor_Click(object sender, RoutedEventArgs e)
+        {
+            if(Storage.Database.MySqlConnector.Instance.CheckConnection())
+            {
+                var creatureEditor = new UI.Dialogs.CreatureEditor();
+                creatureEditor.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Please connect to the database before you use the creature editor");
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModelSpawnPane.ToggleAutoHide();

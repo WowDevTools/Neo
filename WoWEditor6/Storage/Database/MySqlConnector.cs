@@ -76,5 +76,15 @@ namespace WoWEditor6.Storage.Database
             }
             throw new TimeoutException("Can't connect to the server.");
         }
+
+        public bool Query(string pQuery)
+        {
+            if(mMySqlConn.State == ConnectionState.Open)
+            {
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(pQuery, mMySqlConn);
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -1734,9 +1734,9 @@
             this.label79.AutoSize = true;
             this.label79.Location = new System.Drawing.Point(7, 188);
             this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(140, 13);
+            this.label79.Size = new System.Drawing.Size(146, 13);
             this.label79.TabIndex = 99;
-            this.label79.Text = "Creature regenrates Health?";
+            this.label79.Text = "Creature regenerates Health?";
             // 
             // label80
             // 
@@ -1904,14 +1904,14 @@
             "False"});
             this.RegenHealth.Location = new System.Drawing.Point(153, 185);
             this.RegenHealth.Name = "RegenHealth";
-            this.RegenHealth.Size = new System.Drawing.Size(376, 21);
+            this.RegenHealth.Size = new System.Drawing.Size(160, 21);
             this.RegenHealth.TabIndex = 101;
             // 
             // MechanicImmuneMask
             // 
             this.MechanicImmuneMask.Location = new System.Drawing.Point(153, 212);
             this.MechanicImmuneMask.Name = "MechanicImmuneMask";
-            this.MechanicImmuneMask.Size = new System.Drawing.Size(376, 20);
+            this.MechanicImmuneMask.Size = new System.Drawing.Size(160, 20);
             this.MechanicImmuneMask.TabIndex = 111;
             // 
             // tapPage3

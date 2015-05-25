@@ -33,6 +33,7 @@
                 <MenuItem Header="Add 2D text" Click="Add2DText_Click"/>
                 <MenuItem Header="Add 3D text" Click="Add3DText_Click"/>
                 <MenuItem Header="Open database configuration" Click="DatabaseConfiguration_Click"/>
+                <MenuItem Header="Creature editor" Click="CreatureEditor_Click"/>
             </MenuItem>
         </Menu>
         <avalon:DockingManager Grid.Row="1">

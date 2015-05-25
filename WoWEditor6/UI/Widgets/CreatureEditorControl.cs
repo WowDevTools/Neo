@@ -132,9 +132,10 @@ namespace WoWEditor6.UI.Dialogs
             creature.VehicleId = int.Parse(VehicleId.Text);
             creature.VerifiedBuild = int.Parse(VerifiedBuild.Text);
 
-            // TODO: Insert/Update into CreatureManager and Database
-            // Update when there is an CreatureManager entry with the EntryId of the creature, otherwise it is a new one
-            // (You can use the function GetCreatureByEntry() to do that)
+            if(Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.GetCreatureByEntry(creature.EntryId) == null)
+                Storage.Database.MySqlConnector.Instance.Query(creature.GetInsertSqlQuery());
+            else
+                Storage.Database.MySqlConnector.Instance.Query(creature.GetUpdateSqlQuery());
         }
 
         public void loadCreature(Storage.Database.WotLk.TrinityCore.Creature creature)
@@ -232,7 +233,6 @@ namespace WoWEditor6.UI.Dialogs
             var ctl = (this.Control as CreatureEditorControl).TabControl as TabControl;
             EnableDesignMode(ctl, "TabControl");
             foreach (TabPage page in ctl.TabPages) EnableDesignMode(page, page.Name);
-            
         }
     }
 }
