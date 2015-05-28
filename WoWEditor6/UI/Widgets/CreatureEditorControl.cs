@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
@@ -11,11 +12,15 @@ namespace WoWEditor6.UI.Dialogs
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public TabControl TabControl
         {
-            get { return this.tabControl1;  }
+            get { return this.tbcEditor;  }
         }
+
         public CreatureEditorControl()
         {
             InitializeComponent();
+            tbcEditor.Appearance = TabAppearance.FlatButtons;
+            tbcEditor.ItemSize = new Size(0, 1);
+            tbcEditor.SizeMode = TabSizeMode.Fixed;
         }
 
         private void btnShowModelId1_Click(object sender, EventArgs e)
@@ -42,7 +47,13 @@ namespace WoWEditor6.UI.Dialogs
         {
             if(!string.IsNullOrEmpty(pModelId))
             {
-                modelRenderControl1.SetModel(pModelId);
+                int displayId;
+                if(Int32.TryParse(pModelId, out displayId))
+                {
+                    MessageBox.Show("" + displayId);
+                    modelRenderControl1.SetCreatureDisplayEntry(displayId);  
+                }
+                    
             }
         }
 
@@ -221,6 +232,16 @@ namespace WoWEditor6.UI.Dialogs
             UnitFlags2.Text = creature.UnitFlags2.ToString();
             VehicleId.Text = creature.VehicleId.ToString();
             VerifiedBuild.Text = creature.VerifiedBuild.ToString();
+        }
+
+        private void lbMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbcEditor.SelectedIndex = lbMenu.SelectedIndex;
+        }
+
+        private void btnShowModelId1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 
