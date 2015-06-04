@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
+using SharpDX;
 using WoWEditor6.UI.Components;
 using WoWEditor6.UI.Models;
 
@@ -41,6 +42,16 @@ namespace WoWEditor6.UI
         public void OnEnterWorld()
         {
             mWindow.WelcomeDocument.Close();
+        }
+
+        public void OnUpdatePosition(Vector3 position)
+        {
+            mWindow.OnUpdatePosition(position);
+        }
+
+        public void OnUpdateTileIndex(int x, int y)
+        {
+            mWindow.OnUpdateCurrentAdt(x, y);
         }
     }
 }

@@ -131,11 +131,23 @@
                             </Grid>
                         </avalon:LayoutAnchorable>
                         <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False" x:Name="MapEditorDocument">
-                            <WindowsFormsHost>
-                                <local:RenderControl x:Name="RenderTarget">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <WindowsFormsHost Grid.Row="0">
+                                    <local:RenderControl x:Name="RenderTarget">
 
-                                </local:RenderControl>
-                            </WindowsFormsHost>
+                                    </local:RenderControl>
+                                </WindowsFormsHost>
+                                <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label x:Name="CurrentAdtLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60">ADT: 0/0</Label>
+                                        <Label x:Name="CurrentPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center">Position: 0/0/0</Label>
+                                    </StackPanel>
+                                </StatusBar>
+                            </Grid>
                         </avalon:LayoutDocument>
                         <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800" x:Name="AssetBrowserDocument">
                             <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

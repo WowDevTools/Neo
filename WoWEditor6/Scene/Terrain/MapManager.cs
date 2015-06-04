@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using SharpDX;
+using WoWEditor6.IO;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.UI;
 
@@ -158,6 +159,19 @@ namespace WoWEditor6.Scene.Terrain
                 mAreaLowManager.UpdatePosition(ref pos2D);
                 UpdateVisibility(ref position);
             }
+
+            EditorWindowController.Instance.OnUpdatePosition(position);
+
+            var x = position.X;
+            var y = position.Y;
+
+            if (FileManager.Instance.Version <= FileDataVersion.Warlords)
+                y = 64.0f * Metrics.TileSize - y;
+
+            var tilex = (int)Math.Floor(x / Metrics.TileSize);
+            var tiley = (int)Math.Floor(y / Metrics.TileSize);
+
+            EditorWindowController.Instance.OnUpdateTileIndex(tilex, tiley);
         }
 
         public bool GetLandHeight(float x, float y, out float z)

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Microsoft.Win32;
+using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.Win32;
 using Color = System.Windows.Media.Color;
@@ -101,6 +102,16 @@ namespace WoWEditor6.UI
             };
             EditorWindowController.Instance.TexturingModel.Widget.SelectedTileWrapPanel.HandleCreated += method;
             Log.AddSink(this);
+        }
+
+        public void OnUpdateCurrentAdt(int x, int y)
+        {
+            CurrentAdtLabel.Content = "ADT: " + x + "/" + y;
+        }
+
+        public void OnUpdatePosition(Vector3 position)
+        {
+            CurrentPositionLabel.Content = "Position: " + position;
         }
 
         public void AddMessage(LogLevel logLevel, string title, string message)
