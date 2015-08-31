@@ -1,4 +1,5 @@
-﻿using WoWEditor6.IO;
+﻿using System;
+using WoWEditor6.IO;
 using WoWEditor6.IO.Files;
 using WoWEditor6.IO.Files.Sky;
 
@@ -6,20 +7,20 @@ namespace WoWEditor6.Storage
 {
     static class DbcStorage
     {
-        public static DbcFile Map { get; private set; }
-        public static DbcFile LoadingScreen { get; private set; }
-        public static DbcFile Light { get; private set; }
-        public static DbcFile LightData { get;private set;  }
-        public static DbcFile LightParams { get;private set;  }
-        public static DbcFile ZoneLight { get;private set;  }
-        public static DbcFile ZoneLightPoint { get;private set;  }
-        public static DbcFile LightIntBand { get;private set;  }
-        public static DbcFile LightFloatBand { get;private set;  }
-        public static DbcFile CreatureDisplayInfo { get; private set; }
-        public static DbcFile CreatureModelData { get; private set; }
-        public static DbcFile FileData { get; private set; }
-        public static DbcFile GroundEffectTexture { get; private set; }
-        public static DbcFile GroundEffectDoodad { get; private set; }
+        public static IDataStorageFile Map { get; private set; }
+        public static IDataStorageFile LoadingScreen { get; private set; }
+        public static IDataStorageFile Light { get; private set; }
+        public static IDataStorageFile LightData { get;private set;  }
+        public static IDataStorageFile LightParams { get;private set;  }
+        public static IDataStorageFile ZoneLight { get;private set;  }
+        public static IDataStorageFile ZoneLightPoint { get;private set;  }
+        public static IDataStorageFile LightIntBand { get;private set;  }
+        public static IDataStorageFile LightFloatBand { get;private set;  }
+        public static IDataStorageFile CreatureDisplayInfo { get; private set; }
+        public static IDataStorageFile CreatureModelData { get; private set; }
+        public static IDataStorageFile FileData { get; private set; }
+        public static IDataStorageFile GroundEffectTexture { get; private set; }
+        public static IDataStorageFile GroundEffectDoodad { get; private set; }
 
         static DbcStorage()
         {
@@ -44,7 +45,19 @@ namespace WoWEditor6.Storage
             Map.Load(@"DBFilesClient\Map.dbc");
             LoadingScreen.Load(@"DBFilesClient\LoadingScreens.dbc");
             Light.Load(@"DBFilesClient\Light.dbc");
-            CreatureDisplayInfo.Load(@"DBFilesClient\CreatureDisplayInfo.dbc");
+            try
+            {
+                CreatureDisplayInfo.Load(@"DBFilesClient\CreatureDisplayInfo.dbc");
+            }
+            catch (Exception)
+            {
+                if (FileManager.Instance.Version < FileDataVersion.Warlords)
+                    throw;
+
+                CreatureDisplayInfo = new DB2File();
+                CreatureDisplayInfo.Load(@"DBFilesClient\CreatureDisplayInfo.db2");
+            }
+
             CreatureModelData.Load(@"DBFilesClient\CreatureModelData.dbc");
 
             if (FileManager.Instance.Version <= FileDataVersion.Mists)

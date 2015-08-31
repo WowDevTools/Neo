@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 #pragma warning disable 219
 #pragma warning disable 169
@@ -18,7 +15,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public void ProcessChunk(MapChunk chunk)
         {
             var layerDoodads = new List<string[]>();
-            var groundEffects = new List<DbcRecord>();
+            var groundEffects = new List<IDataStorageRecord>();
             for (var i = 0; i < 4; ++i)
             {
                 if (i >= chunk.Layers.Length || chunk.Layers[i].EffectId < 0)
@@ -58,7 +55,7 @@ namespace WoWEditor6.IO.Files.Terrain
             }
         }
 
-        private string[] GetDoodads(int effect, DbcRecord textureRow)
+        private string[] GetDoodads(int effect, IDataStorageRecord textureRow)
         {
             if (GroundEffectCache.ContainsKey(effect))
                 return GroundEffectCache[effect];

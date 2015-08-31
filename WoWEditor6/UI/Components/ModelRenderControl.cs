@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using WoWEditor6.Annotations;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO;
 using WoWEditor6.IO.Files;
@@ -164,8 +165,9 @@ namespace WoWEditor6.UI.Components
             });
         }
 
-        private string GetSkinName(string root, DbcRecord displayInfo, int index)
+        private string GetSkinName(string root, IDataStorageRecord displayInfo, int index)
         {
+            if (displayInfo == null) throw new ArgumentNullException("displayInfo");
             var skinString = displayInfo.GetString(6 + index);
             return string.IsNullOrEmpty(skinString)
                 ? "default_texture"

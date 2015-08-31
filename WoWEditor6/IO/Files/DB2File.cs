@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WoWEditor6.IO.Files
 {
-    unsafe class DbcRecord : IDataStorageRecord
+    unsafe class DB2Record : IDataStorageRecord
     {
         private readonly int mSize;
         private readonly byte[] mData;
@@ -18,7 +18,7 @@ namespace WoWEditor6.IO.Files
                 throw new IndexOutOfRangeException("Trying to read past the end of a dbc record");
         }
 
-        public DbcRecord(int size, int offset, BinaryReader reader, Dictionary<int, string> stringTable)
+        public DB2Record(int size, int offset, BinaryReader reader, Dictionary<int, string> stringTable)
         {
             mSize = size;
             mData = new byte[size];
@@ -41,15 +41,15 @@ namespace WoWEditor6.IO.Files
         public int GetInt32(int field)
         {
             AssertValid(field * 4, 4);
-            fixed(byte* ptr = mData)
-                return *(int*) (ptr + field * 4);
+            fixed (byte* ptr = mData)
+                return *(int*)(ptr + field * 4);
         }
 
         public uint GetUint32(int field)
         {
             AssertValid(field * 4, 4);
             fixed (byte* ptr = mData)
-                return *(uint*) (ptr + field * 4);
+                return *(uint*)(ptr + field * 4);
         }
 
         public float GetFloat(int field)
@@ -64,28 +64,47 @@ namespace WoWEditor6.IO.Files
             AssertValid(field * 4, 4);
             int offset;
             fixed (byte* ptr = mData)
-                offset = *(int*) (ptr + field * 4);
+                offset = *(int*)(ptr + field * 4);
 
             if (offset == 0)
                 return null;
 
             string str;
             mStringTable.TryGetValue(offset, out str);
-            return str;    
+            return str;
         }
     }
 
-    class DbcFile : IDataStorageFile
+    class DB2File : IDataStorageFile
     {
         private int mRecordSize;
         private int mStringTableSize;
+        private int mTableHash;
+        private int mBuild;
+        private int mLastWritten;
+        private int mMinId;
+        private int mMaxId;
+        private int mLocal;
+        private int mUnk2;
+
         private Stream mStream;
         private BinaryReader mReader;
         private Dictionary<int, string> mStringTable = new Dictionary<int, string>();
         private Dictionary<int, int> mIdLookup = new Dictionary<int, int>();
 
-        public int NumRows { get; private set; }
         public int NumFields { get; private set; }
+        public int NumRows { get; private set; }
+
+        public IDataStorageRecord GetRow(int index)
+        {
+            return new DB2Record(mRecordSize, 48 + index * mRecordSize, mReader, mStringTable);
+        }
+
+        public IDataStorageRecord GetRowById(int id)
+        {
+            int index;
+            return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
+        }
 
         public void Load(string file)
         {
@@ -99,12 +118,19 @@ namespace WoWEditor6.IO.Files
             NumFields = mReader.ReadInt32();
             mRecordSize = mReader.ReadInt32();
             mStringTableSize = mReader.ReadInt32();
+            mTableHash = mReader.ReadInt32();
+            mBuild = mReader.ReadInt32();
+            mLastWritten = mReader.ReadInt32();
+            mMinId = mReader.ReadInt32();
+            mMaxId = mReader.ReadInt32();
+            mLocal = mReader.ReadInt32();
+            mUnk2 = mReader.ReadInt32();
 
             mStream.Position = NumRows * mRecordSize + 20;
             var strBytes = mReader.ReadBytes(mStringTableSize);
             var curOffset = 0;
             var curBytes = new List<byte>();
-            for(var i = 0; i < strBytes.Length; ++i)
+            for (var i = 0; i < strBytes.Length; ++i)
             {
                 if (strBytes[i] != 0)
                 {
@@ -117,22 +143,11 @@ namespace WoWEditor6.IO.Files
                 curOffset = i + 1;
             }
 
-            for(var i = 0; i < NumRows; ++i)
+            for (var i = 0; i < NumRows; ++i)
                 mIdLookup.Add(GetRow(i).GetInt32(0), i);
         }
 
-        public IDataStorageRecord GetRow(int index)
-        {
-            return new DbcRecord(mRecordSize, 20 + index * mRecordSize, mReader, mStringTable);
-        }
-
-        public IDataStorageRecord GetRowById(int id)
-        {
-            int index;
-            return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
-        }
-
-        ~DbcFile()
+        ~DB2File()
         {
             Dispose(false);
         }

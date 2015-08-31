@@ -202,7 +202,9 @@
     <Compile Include="IO\FileDataVersion.cs" />
     <Compile Include="IO\FileManager.cs" />
     <Compile Include="IO\Files\DataChunk.cs" />
+    <Compile Include="IO\Files\DB2File.cs" />
     <Compile Include="IO\Files\DBCFile.cs" />
+    <Compile Include="IO\Files\IDataStorageFile.cs" />
     <Compile Include="IO\Files\Models\CommonWmoStructures.cs" />
     <Compile Include="IO\Files\Models\IM2Animator.cs" />
     <Compile Include="IO\Files\Models\M2AnimationInterpolation.cs" />

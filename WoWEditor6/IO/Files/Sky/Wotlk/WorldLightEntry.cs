@@ -6,7 +6,7 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
 {
     class WorldLightEntry
     {
-        private readonly DbcRecord mLight;
+        private readonly IDataStorageRecord mLight;
         private readonly List<Vector3>[] mColorTables = new List<Vector3>[18];
         private readonly List<uint>[] mTimeTables = new List<uint>[18];
 
@@ -18,7 +18,7 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
         public float OuterRadius { get; private set; }
         public Vector3 Position { get; private set; }
 
-        public WorldLightEntry(DbcRecord lightEntry)
+        public WorldLightEntry(IDataStorageRecord lightEntry)
         {
             mLight = lightEntry;
 
