@@ -72,7 +72,7 @@ namespace WoWEditor6.UI.Models
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
 
-            var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath), selected.View.FileEntry.FullPath);
+            var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath ?? ".\\Export"), selected.View.FileEntry.FullPath);
             MessageBox.Show(String.Format("The selected file has been successfully exported to:\n{0}", exportPath), "Neo - Export File");
         }
 
@@ -97,9 +97,8 @@ namespace WoWEditor6.UI.Models
             mBrowser.ExportOneFileLink.IsEnabled = true;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
-
-            
-            var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath), selected.FullPath);
+                        
+            var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath ?? ".\\Export"), selected.FullPath);
             MessageBox.Show(String.Format("The selected folder has been successfully exported to:\n{0}", exportPath), "Neo - Export Folder");
         }
 

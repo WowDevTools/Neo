@@ -60,7 +60,7 @@ namespace WoWEditor6.IO
         public Stream GetExportStream(string path)
         {
             
-            var fullPath = Path.Combine(Properties.Settings.Default.ExportPath, path);
+            var fullPath = Path.Combine(Properties.Settings.Default.ExportPath ?? ".\\Export", path);
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? ".");
@@ -74,7 +74,7 @@ namespace WoWEditor6.IO
 
         public Stream GetOutputStream(string path)
         {
-            var fullPath = Path.Combine(Properties.Settings.Default.OutputPath, path);
+            var fullPath = Path.Combine(Properties.Settings.Default.OutputPath ?? ".\\Output", path);
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? ".");
