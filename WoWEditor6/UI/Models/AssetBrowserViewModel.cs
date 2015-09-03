@@ -70,6 +70,7 @@ namespace WoWEditor6.UI.Models
             mBrowser.ExportOneFileLink.IsEnabled = true;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
+            MessageBox.Show("The selected file has been successfully exported", "Neo - Export File");
         }
 
         public async void HandleExportSelectedFolder()
@@ -93,6 +94,7 @@ namespace WoWEditor6.UI.Models
             mBrowser.ExportOneFileLink.IsEnabled = true;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
+            MessageBox.Show("The selected folder has been successfully exported", "Neo - Export Folder");
         }
 
         public void Handle_FileClicked(AssetBrowserFilePreviewElement element)
