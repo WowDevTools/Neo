@@ -37,6 +37,7 @@ namespace WoWEditor6.UI.Models
     public class AssetBrowserDirectory
     {
         public string Name { get { return mEntry.Name; } }
+        public string FullPath { get { return mFullPath; } }
         public IEnumerable<AssetBrowserDirectory> Directories { get { return GetDirectories(); } }
         public IEnumerable<AssetBrowserFile> Files { get { return GetFiles(); } }
 
@@ -47,12 +48,20 @@ namespace WoWEditor6.UI.Models
         private IEnumerable<AssetBrowserDirectory> mDirectories;
         private IEnumerable<AssetBrowserFile> mFiles;
         private readonly AssetBrowserDirectory mParent;
+        private readonly string mFullPath;
 
         public AssetBrowserDirectory(AssetBrowserViewModel viewModel, FileSystemEntry entry, AssetBrowserDirectory parent)
         {
             mParent = parent;
             mModel = viewModel;
             mEntry = entry;
+            mFullPath = Name;
+            var cur = parent;
+            while (cur != null && cur.Parent != null)
+            {
+                mFullPath = cur.Name + "\\" + mFullPath;
+                cur = cur.Parent;
+            }
         }
 
         public override string ToString()

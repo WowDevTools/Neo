@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -70,6 +71,9 @@ namespace WoWEditor6.UI.Models
             mBrowser.ExportOneFileLink.IsEnabled = true;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
+
+            var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath ?? ".\\Export"), selected.View.FileEntry.FullPath);
+            MessageBox.Show(String.Format("The selected file has been successfully exported to:\n{0}", exportPath), "Neo - Export File");
         }
 
         public async void HandleExportSelectedFolder()
@@ -77,7 +81,7 @@ namespace WoWEditor6.UI.Models
             var selected = mBrowser.AssetTreeView.SelectedItem as AssetBrowserDirectory;
             if (selected == null)
                 return;
-
+            
             mBrowser.ExportFolderLink.IsEnabled = false;
             mBrowser.ExportOneFileLink.IsEnabled = false;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
@@ -93,6 +97,9 @@ namespace WoWEditor6.UI.Models
             mBrowser.ExportOneFileLink.IsEnabled = true;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
+                        
+            var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath ?? ".\\Export"), selected.FullPath);
+            MessageBox.Show(String.Format("The selected folder has been successfully exported to:\n{0}", exportPath), "Neo - Export Folder");
         }
 
         public void Handle_FileClicked(AssetBrowserFilePreviewElement element)
