@@ -172,6 +172,7 @@
     <Compile Include="Editing\ModelSpawnManager.cs" />
     <Compile Include="Editing\TerrainChangeManager.cs" />
     <Compile Include="Editing\TextureChangeManager.cs" />
+    <Compile Include="Editing\WdlGenerator.cs" />
     <Compile Include="Graphics\BlendState.cs" />
     <Compile Include="Graphics\Buffer.cs" />
     <Compile Include="Graphics\ConstantBuffer.cs" />

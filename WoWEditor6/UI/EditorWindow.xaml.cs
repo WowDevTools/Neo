@@ -7,6 +7,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using Microsoft.Win32;
 using SharpDX;
+using WoWEditor6.Editing;
 using WoWEditor6.Scene;
 using WoWEditor6.Win32;
 using Color = System.Windows.Media.Color;
@@ -420,6 +421,18 @@ namespace WoWEditor6.UI
                 Content = new Dialogs.Settings()
             };
             window.ShowDialog();
-        }   
+        }
+
+        private void GenerateWdlButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var mapManager = WorldFrame.Instance.MapManager;
+            if (mapManager.Continent == null)
+            {
+                MessageBox.Show("You have not entered the world yet. Cannot generate WDL.");
+                return;
+            }
+
+            WdlGenerator.Generate(mapManager.Continent);
+        }
     }
 }
