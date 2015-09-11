@@ -42,6 +42,11 @@ namespace WoWEditor6.Scene
             mWindow = window;
         }
 
+        public void ForceUpdate(Vector3 position)
+        {
+            if (PositionChanged != null) PositionChanged.Invoke(position, true);
+        }
+
         public void Update(Camera cam, bool stateOnly)
         {
             if (mWindow.Focused == false || stateOnly)

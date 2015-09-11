@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using SharpDX;
 using WoWEditor6.IO;
+using WoWEditor6.IO.Files.Sky;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.UI;
 
@@ -92,7 +93,7 @@ namespace WoWEditor6.Scene.Terrain
 
             if (WorldFrame.Instance.State == AppState.World)
             {
-                IO.Files.Sky.SkyManager.Instance.SyncUpdate();
+                SkyManager.Instance.SyncUpdate();
                 SkySphere.Render();
                 mAreaLowManager.OnFrame();
             }
@@ -115,7 +116,7 @@ namespace WoWEditor6.Scene.Terrain
             var continent = row.GetString(Storage.MapFormatGuess.FieldMapName);
 
             MapChunkRender.InitIndices();
-            WorldFrame.Instance.LeftHandedCamera = IO.FileManager.Instance.Version > IO.FileDataVersion.Cataclysm;
+            WorldFrame.Instance.LeftHandedCamera = FileManager.Instance.Version > FileDataVersion.Cataclysm;
 
             mEntryPoint = entryPoint;
             Continent = continent;
@@ -129,7 +130,7 @@ namespace WoWEditor6.Scene.Terrain
 
             IsInitialLoad = true;
 
-            IO.Files.Sky.SkyManager.Instance.OnEnterWorld(mapId);
+            SkyManager.Instance.OnEnterWorld(mapId);
             mAreaLowManager.OnEnterWorld(Continent, ref entryPoint);
             LoadInitial();
         }
@@ -154,7 +155,7 @@ namespace WoWEditor6.Scene.Terrain
 
             if(updateTerrain)
             {
-                IO.Files.Sky.SkyManager.Instance.UpdatePosition(position);
+                SkyManager.Instance.UpdatePosition(position);
                 var pos2D = new Vector2(position.X, position.Y);
                 mAreaLowManager.UpdatePosition(ref pos2D);
                 UpdateVisibility(ref position);
@@ -271,7 +272,7 @@ namespace WoWEditor6.Scene.Terrain
                         if (x < 0 || y < 0 || x > 63 || y > 63)
                             continue;
 
-                        if (IO.FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, x, y)) == false)
+                        if (FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, x, y)) == false)
                             continue;
 
                         var tile = AdtFactory.Instance.CreateArea(Continent, x, y);
@@ -289,16 +290,23 @@ namespace WoWEditor6.Scene.Terrain
             if (GetLandHeight(mEntryPoint.X, 64.0f * Metrics.TileSize - mEntryPoint.Y, out height))
             {
                 height += 50.0f;
-                IO.Files.Sky.SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint, height));
+                SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint, height));
 
                 var entryPoint = new Vector3(mEntryPoint, height);
-                if (IO.FileManager.Instance.Version > IO.FileDataVersion.Mists)
+                if (FileManager.Instance.Version > FileDataVersion.Mists)
                     entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
 
+                SkyManager.Instance.AsyncUpdate();
                 EditorWindowController.Instance.OnEnterWorld();
                 WorldFrame.Instance.OnEnterWorld(entryPoint);
                 WorldFrame.Instance.Dispatcher.BeginInvoke(
-                    () => SkySphere.UpdatePosition(new Vector3(mEntryPoint, height)));
+                    () =>
+                    {
+                        SkySphere.UpdatePosition(new Vector3(mEntryPoint, height));
+                        SkyManager.Instance.SyncUpdate();
+                        WorldFrame.Instance.CamControl.ForceUpdate(WorldFrame.Instance.ActiveCamera.Position);
+                        WorldFrame.Instance.M2Manager.ViewChanged();
+                    });
             }
 
             GC.Collect();
@@ -361,8 +369,8 @@ namespace WoWEditor6.Scene.Terrain
         {
             while(mIsRunning)
             {
-                if (IO.Files.Sky.SkyManager.Instance != null)
-                    IO.Files.Sky.SkyManager.Instance.AsyncUpdate();
+                if (SkyManager.Instance != null)
+                    SkyManager.Instance.AsyncUpdate();
 
                 Thread.Sleep(100);
             }
@@ -372,7 +380,7 @@ namespace WoWEditor6.Scene.Terrain
         {
             var cx = position.X;
             var cy = position.Y;
-            if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
+            if (FileManager.Instance.Version < FileDataVersion.Lichking)
                 cy = 64.0f * Metrics.TileSize - cy;
 
             var ix = (int) Math.Floor(cx / Metrics.TileSize);
