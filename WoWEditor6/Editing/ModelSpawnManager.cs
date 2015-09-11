@@ -194,6 +194,8 @@ namespace WoWEditor6.Editing
                 area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, mHoveredInstance.BoundingBox,
                     mHoveredInstance.Position,
                     new Vector3(0, 0, 0), mHoveredInstance.Scale);
+
+                WorldFrame.Instance.M2Manager.ViewChanged();
             }
             else
             {
@@ -253,6 +255,8 @@ namespace WoWEditor6.Editing
                         AddDoodadToFileArea(x, y, baseUuid, mHoveredInstance.BoundingBox);
                 }
             }
+
+            WorldFrame.Instance.M2Manager.ViewChanged();
         }
 
         private void AddDoodadToFileArea(int x, int y, int uuid, BoundingBox box)

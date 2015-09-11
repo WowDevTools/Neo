@@ -381,6 +381,9 @@
     <Compile Include="UI\Components\AssetBrowserFilePreview.xaml.cs">
       <DependentUpon>AssetBrowserFilePreview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Components\CheckedMessageBox.xaml.cs">
+      <DependentUpon>CheckedMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\EntrySelectControl.xaml.cs">
       <DependentUpon>EntrySelectControl.xaml</DependentUpon>
     </Compile>
@@ -611,6 +614,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Components\AssetBrowserFilePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Components\CheckedMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

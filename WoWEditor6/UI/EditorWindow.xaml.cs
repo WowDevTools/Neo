@@ -8,7 +8,9 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using SharpDX;
 using WoWEditor6.Editing;
+using WoWEditor6.Resources;
 using WoWEditor6.Scene;
+using WoWEditor6.UI.Components;
 using WoWEditor6.Win32;
 using Color = System.Windows.Media.Color;
 
@@ -82,7 +84,7 @@ namespace WoWEditor6.UI
         {
             if(Storage.Database.MySqlConnector.Instance.CheckConnection())
             {
-                var creatureEditor = new UI.Dialogs.CreatureEditor();
+                var creatureEditor = new Dialogs.CreatureEditor();
                 creatureEditor.ShowDialog();
             }
             else
@@ -425,11 +427,18 @@ namespace WoWEditor6.UI
 
         private void GenerateWdlButton_OnClick(object sender, RoutedEventArgs e)
         {
+
             var mapManager = WorldFrame.Instance.MapManager;
             if (mapManager.Continent == null)
             {
                 MessageBox.Show("You have not entered the world yet. Cannot generate WDL.");
                 return;
+            }
+
+            if (CheckedMessageBox.Show("Autosave for WDL", Strings.Message_AutosaveOnWdl,
+                CheckedMessageBox.TagSaveOnWdlGeneration))
+            {
+                WorldFrame.Instance.MapManager.OnSaveAllFiles();
             }
 
             WdlGenerator.Generate(mapManager.Continent);

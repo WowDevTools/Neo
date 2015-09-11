@@ -1,0 +1,29 @@
+﻿<Window x:Class="WoWEditor6.UI.Components.CheckedMessageBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WoWEditor6.UI.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" Title="MessageBoxTitle" d:DesignWidth="300" MaxWidth="600" MinWidth="300" MinHeight="100" WindowStyle="ThreeDBorderWindow" SizeToContent="Height" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="240"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Padding="15" FontSize="16" x:Name="MessageTextBlock">
+
+            </TextBlock>
+        </StackPanel>
+        <CheckBox VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" FontSize="16" Margin="5,0,0,0" x:Name="ToggleBox"><![CDATA[Do Not Show Again]]></CheckBox>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Margin="15,5,5,5" Padding="30,0,30,0" FontSize="16" x:Name="YesButton">Yes</Button>
+            <Button Margin="5" Padding="30,0,30,0" FontSize="16" x:Name="NoButton">No</Button>
+        </StackPanel>
+    </Grid>
+</Window>

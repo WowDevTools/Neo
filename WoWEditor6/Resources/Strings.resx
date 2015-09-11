@@ -130,4 +130,9 @@ Before you can start please make sure you select the path to your world of warcr
 
 Please do not select the data folder or the wow.exe itself, just select the directory your wow is installed in. If you wanna let it be loaded from the registry (this usually means the location of the last instance of WoW you have started) use the button with the according function.</value>
   </data>
+  <data name="Message_AutosaveOnWdl" xml:space="preserve">
+    <value>You are about to generate a WDL for this continent. When generating the WDL file the height data is taken from the data in your archives (CASC or MPQ) and the existing files in the Output folder. This means that changes to your terrain files that were not saved yet will not be considered in the process of creating the WDL file.
+
+Would you like to automatically save all your changes to the terrain files now? If you check the checkbox your choice will be remember and the next time you click the 'Generate WDL' button you wont be prompted again.</value>
+  </data>
 </root>
