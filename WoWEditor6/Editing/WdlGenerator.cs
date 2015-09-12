@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using WoWEditor6.IO;
 
 namespace WoWEditor6.Editing
@@ -14,17 +15,22 @@ namespace WoWEditor6.Editing
             public byte[] MahoData;
         }
 
-        public static void Generate(string continent)
+        public static async void Generate(string continent, Action<string, float> progressCallback, Action completeCallback)
         {
-            var wdlFile = string.Format(@"World\Maps\{0}\{0}.wdl", continent);
-            
-            if(!FileManager.Instance.Provider.Exists(wdlFile))
-                CreateNewWdlFile(continent);
-            else
-                UpdateWdl(continent);
+            await Task.Factory.StartNew(() =>
+            {
+                var wdlFile = string.Format(@"World\Maps\{0}\{0}.wdl", continent);
+
+                if (!FileManager.Instance.Provider.Exists(wdlFile))
+                    CreateNewWdlFile(continent, progressCallback);
+                else
+                    UpdateWdl(continent, progressCallback);
+
+                completeCallback();
+            });
         }
 
-        private static void CreateNewWdlFile(string continent)
+        private static void CreateNewWdlFile(string continent, Action<string, float> progressCallback)
         {
             var maofValues = new int[4096];
             var heightValues = new List<short[]>();
@@ -32,6 +38,7 @@ namespace WoWEditor6.Editing
 
             for (var i = 0; i < 64 * 64; ++i)
             {
+                progressCallback(string.Format("Processing {0}_{1}_{2}.adt...", continent, i % 64, i / 64), i / 4096.0f);
                 var ix = i % 16;
                 var iy = i / 16;
                 var heights = GetMareEntry(continent, ix, iy);
@@ -67,7 +74,7 @@ namespace WoWEditor6.Editing
             }
         }
 
-        private static unsafe void UpdateWdl(string continent)
+        private static unsafe void UpdateWdl(string continent, Action<string, float> progressCallback)
         {
             var preChunks = new Dictionary<int, byte[]>();
             var wdlPath = string.Format(@"World\Maps\{0}\{0}.wdl", continent);
@@ -125,6 +132,7 @@ namespace WoWEditor6.Editing
 
                 for (var i = 0; i < 64 * 64; ++i)
                 {
+                    progressCallback(string.Format("Processing {0}_{1}_{2}.adt...", continent, i % 64, i / 64), i / 4096.0f);
                     var existing = existingTiles[i];
                     var heights = GetMareEntry(continent, i % 64, i / 64);
                     if (heights == null)

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using SharpDX;
 using WoWEditor6.Editing;
@@ -427,7 +428,6 @@ namespace WoWEditor6.UI
 
         private void GenerateWdlButton_OnClick(object sender, RoutedEventArgs e)
         {
-
             var mapManager = WorldFrame.Instance.MapManager;
             if (mapManager.Continent == null)
             {
@@ -441,7 +441,27 @@ namespace WoWEditor6.UI
                 WorldFrame.Instance.MapManager.OnSaveAllFiles();
             }
 
-            WdlGenerator.Generate(mapManager.Continent);
+            GenerateWdlButton.IsEnabled = false;
+            var loadDialog = new WdlLoadingDialog();
+            Action<string, float> progressCallback = (action, progress) =>
+            {
+                loadDialog.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
+                    loadDialog.Progress = Math.Max(Math.Min(progress * 100, 100), 0);
+                    loadDialog.Action = action;
+                }));
+            };
+
+            WdlGenerator.Generate(mapManager.Continent, progressCallback,
+                () => loadDialog.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    GenerateWdlButton.IsEnabled = true;
+                    loadDialog.ShouldClose = true;
+                    loadDialog.Close();
+                })));
+
+            loadDialog.Owner = Window.GetWindow(this);
+            loadDialog.ShowDialog();
         }
     }
 }

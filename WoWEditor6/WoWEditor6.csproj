@@ -168,6 +168,7 @@
     </Compile>
     <Compile Include="Editing\EditManager.cs" />
     <Compile Include="Editing\EditMode.cs" />
+    <Compile Include="Editing\MapCreator.cs" />
     <Compile Include="Editing\ModelEditManager.cs" />
     <Compile Include="Editing\ModelSpawnManager.cs" />
     <Compile Include="Editing\TerrainChangeManager.cs" />
@@ -409,6 +410,9 @@
     <None Include="UI\old\StatusBar.cs" />
     <None Include="UI\old\Toolbar.cs" />
     <None Include="UI\old\WdlControl.cs" />
+    <Compile Include="UI\Components\WdlLoadingDialog.xaml.cs">
+      <DependentUpon>WdlLoadingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -618,6 +622,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Components\CheckedMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Components\WdlLoadingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

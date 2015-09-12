@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace WoWEditor6.IO.Files
@@ -130,6 +131,36 @@ namespace WoWEditor6.IO.Files
         {
             int index;
             return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
+        }
+
+        public int AddString(string value)
+        {
+            var maxIndex = 0;
+            var maxLen = 0;
+
+            foreach (var pair in mStringTable)
+            {
+                if (pair.Value.Equals(value))
+                    return pair.Key;
+
+                if (pair.Key <= maxIndex) continue;
+
+                maxIndex = pair.Key;
+                maxLen = pair.Value.Length;
+            }
+
+            maxIndex += maxLen + 1;
+            mStringTable.Add(maxIndex, value);
+            return maxIndex;
+        }
+
+        public unsafe void AddRowToDbc(byte[] content)
+        {
+            if(content.Length != mRecordSize)
+                throw new ArgumentException("Cannot add row to DBC. Size of row does not match record size");
+
+            fixed (byte* bptr = content)
+                *(int*) bptr = mIdLookup.Keys.Max() + 1;
         }
 
         ~DbcFile()
