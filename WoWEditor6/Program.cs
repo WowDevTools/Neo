@@ -5,6 +5,7 @@ using System.Runtime;
 using WoWEditor6.Graphics;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
+using WoWEditor6.UI.Services;
 
 namespace WoWEditor6
 {
@@ -26,6 +27,7 @@ namespace WoWEditor6
 
             FontCollection.Initialize();
             Settings.KeyBindings.Initialize();
+            XmlService.Initialize();
 
             var window = new EditorWindow();
             var context = new GxContext(window.DrawTarget);

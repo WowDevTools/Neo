@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="WoWEditor6.UI.Widgets.NewConnectionDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             Width="296"
+             Height="119">
+    <!--d:DesignHeight="106" d:DesignWidth="378">-->
+    <Grid>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="30,44,0,0" TextWrapping="Wrap" Text="{Binding SaveAs}" VerticalAlignment="Top" Width="220"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,23,0,0" TextWrapping="Wrap" Text="Save As:" VerticalAlignment="Top"/>
+        <Button Content="OK" HorizontalAlignment="Left" Margin="30,72,0,0" VerticalAlignment="Top" Width="75" Command="{Binding FinishCommand}"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="175,72,0,0" VerticalAlignment="Top" Width="75" Command="{Binding CancelCommand}"/>
+    </Grid>
+</UserControl>

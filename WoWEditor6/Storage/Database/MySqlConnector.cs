@@ -15,6 +15,7 @@ namespace WoWEditor6.Storage.Database
 
         public MySqlConnector()
         {
+
         }
 
         public void OpenConnection()

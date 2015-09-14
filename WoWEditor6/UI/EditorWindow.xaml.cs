@@ -73,9 +73,10 @@ namespace WoWEditor6.UI
         {
             var window = new Window
             {
-                Title = "About",
-                Height = 400,
-                Width = 600,
+                Title = "Database Configuration",
+                Height = 345,
+                Width = 380,
+                ResizeMode = ResizeMode.NoResize,
                 Content = new Widgets.DatabaseSettings()
             };
             window.ShowDialog();

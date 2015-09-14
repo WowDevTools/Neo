@@ -43,5 +43,8 @@
     <Setting Name="OutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">.\Output</Value>
     </Setting>
+    <Setting Name="DefaultConnection" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
