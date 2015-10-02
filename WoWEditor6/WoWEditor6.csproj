@@ -462,9 +462,6 @@
     <Compile Include="UI\Widgets\DatabaseSettings.xaml.cs">
       <DependentUpon>DatabaseSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Widgets\DataSourceWizard.xaml.cs">
-      <DependentUpon>DataSourceWizard.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\Widgets\GameObjectEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -677,10 +674,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Widgets\DatabaseSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Widgets\DataSourceWizard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
