@@ -190,6 +190,7 @@
     <Compile Include="Editing\MapCreator.cs" />
     <Compile Include="Editing\ModelEditManager.cs" />
     <Compile Include="Editing\ModelSpawnManager.cs" />
+    <Compile Include="Editing\TabletManager.cs" />
     <Compile Include="Editing\TerrainChangeManager.cs" />
     <Compile Include="Editing\TextureChangeManager.cs" />
     <Compile Include="Editing\WdlGenerator.cs" />

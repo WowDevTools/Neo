@@ -59,7 +59,8 @@ namespace WoWEditor6.Editing
                 OuterRadius = EditManager.Instance.OuterRadius,
                 Texture = SelectedTexture,
                 //Amount = 4 + Amount,
-                Amount = Amount / 40.0f,
+                // if tablet is connected override the amount set in thee menus
+                Amount = (TabletManager.Instance.IsConnected) ? TabletManager.Instance.TabletPressure : Amount,
                 FalloffMode = FalloffMode,
                 TargetValue = TargetValue
             };

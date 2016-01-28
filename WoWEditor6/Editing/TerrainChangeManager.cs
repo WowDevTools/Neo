@@ -65,9 +65,7 @@ namespace WoWEditor6.Editing
             bool inverted;
             if (CheckRequirements(out inverted) == false)
                 return;
-
-            var parameters = new TerrainChangeParameters()
-            {
+            var parameters = new TerrainChangeParameters() {
                 Algorithm = ChangeAlgorithm,
                 Center = EditManager.Instance.MousePosition,
                 InnerRadius = EditManager.Instance.InnerRadius,
@@ -75,7 +73,8 @@ namespace WoWEditor6.Editing
                 Method = ChangeType,
                 TimeDiff = diff,
                 Shading = ShadingMultiplier,
-                Amount = Amount,
+                // if tablet is connected override the amount set in thee menus
+                Amount = (TabletManager.Instance.IsConnected) ? TabletManager.Instance.TabletPressure : Amount,
                 Inverted = inverted,
                 AlignModels = AlignModelsToGround
             };
