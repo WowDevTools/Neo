@@ -60,7 +60,7 @@ namespace WoWEditor6.Editing
                 Texture = SelectedTexture,
                 //Amount = 4 + Amount,
                 // if tablet is connected override the amount set in thee menus
-                Amount = (TabletManager.Instance.IsConnected) ? TabletManager.Instance.TabletPressure : Amount,
+                Amount = (TabletManager.Instance.IsConnected) ? TabletManager.Instance.TabletPressure / 40 : Amount / 40,
                 FalloffMode = FalloffMode,
                 TargetValue = TargetValue
             };
