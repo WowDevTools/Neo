@@ -9,7 +9,13 @@ namespace WoWEditor6.Editing
 {
     class TabletManager
     {
+        /// <summary>
+        /// A value between 0 and 40 dependent on how hard you are pressing the pen down
+        /// </summary>
         public float TabletPressure { get; private set; }
+        /// <summary>
+        /// returns true if there is a tablet connected
+        /// </summary>
         public bool IsConnected { get; private set; }
 
         private CWintabContext m_logContext = null;
@@ -67,6 +73,7 @@ namespace WoWEditor6.Editing
 
                 // Open the context, which will also tell Wintab to send data packets.
                 status = logContext.Open();
+                // set IsConnected to the status of the tablet true = tablet ready false = tablet not found / tablet not supported
                 IsConnected = status;
             }
             catch (Exception ex)
@@ -98,9 +105,7 @@ namespace WoWEditor6.Editing
         private void HandlePenMessage(Object sender_I, MessageReceivedEventArgs eventArgs_I)
         {
             if (m_wtData == null)
-            {
                 return;
-            }
 
             try
             {
