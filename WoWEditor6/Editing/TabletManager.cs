@@ -23,10 +23,16 @@ namespace WoWEditor6.Editing
 
         public static TabletManager Instance { get; private set; }
 
-        static TabletManager() {
+        static TabletManager()
+        {
             Instance = new TabletManager();
         }
         private TabletManager()
+        {
+            TryConnect();
+        }
+
+        public void TryConnect()
         {
             try
             {
@@ -54,13 +60,11 @@ namespace WoWEditor6.Editing
                 // Default is to receive data events.
                 logContext = CWintabInfo.GetDefaultDigitizingContext(ECTXOptionValues.CXO_MESSAGES);
 
-                // Set system cursor if caller wants it.
+                // Set system cursor
                 logContext.Options |= (uint)ECTXOptionValues.CXO_SYSTEM;
 
                 if (logContext == null)
-                {
                     return null;
-                }
 
                 // Modify the digitizing region.
                 logContext.Name = "WintabDN Event Data Context";
@@ -73,6 +77,7 @@ namespace WoWEditor6.Editing
 
                 // Open the context, which will also tell Wintab to send data packets.
                 status = logContext.Open();
+
                 // set IsConnected to the status of the tablet true = tablet ready false = tablet not found / tablet not supported
                 IsConnected = status;
             }
