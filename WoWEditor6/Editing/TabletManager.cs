@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WintabDN;
 
 namespace WoWEditor6.Editing
@@ -16,7 +12,16 @@ namespace WoWEditor6.Editing
         /// <summary>
         /// returns true if there is a tablet connected
         /// </summary>
-        public bool IsConnected { get; private set; }
+        public bool IsConnected
+        {
+            get
+            {
+                // WintabDN does not support a way to check if the tablet is actually connected anymore
+                // So everytime IsConnected is run it will try to reconnect.
+                // This should not slow down anything as the TryConnect is very fast.
+                return TryConnect();
+            }
+        }
 
         private CWintabContext m_logContext = null;
         private CWintabData m_wtData = null;
@@ -32,26 +37,31 @@ namespace WoWEditor6.Editing
             TryConnect();
         }
 
-        public void TryConnect()
+        public bool TryConnect()
         {
+            bool status = true;
+
             try
             {
                 CloseCurrentContext();
 
-                m_logContext = OpenQueryDigitizerContext();
+                m_logContext = OpenQueryDigitizerContext(out status);
 
                 m_wtData = new CWintabData(m_logContext);
                 m_wtData.SetWTPacketEventHandler(HandlePenMessage);
             }
             catch (Exception ex)
             {
+                status = false;
                 Log.Fatal(ex.ToString());
             }
+
+            return status;
         }
 
-        private CWintabContext OpenQueryDigitizerContext()
+        private CWintabContext OpenQueryDigitizerContext(out bool status)
         {
-            bool status = false;
+            status = false;
             CWintabContext logContext = null;
 
             try
@@ -79,7 +89,6 @@ namespace WoWEditor6.Editing
                 status = logContext.Open();
 
                 // set IsConnected to the status of the tablet true = tablet ready false = tablet not found / tablet not supported
-                IsConnected = status;
             }
             catch (Exception ex)
             {
@@ -116,7 +125,6 @@ namespace WoWEditor6.Editing
             {
                 uint pktID = (uint)eventArgs_I.Message.WParam;
                 WintabPacket pkt = m_wtData.GetDataPacket(pktID);
-
                 if (pkt.pkContext != 0)
                 {
                     // Normalize data between 0 and 40

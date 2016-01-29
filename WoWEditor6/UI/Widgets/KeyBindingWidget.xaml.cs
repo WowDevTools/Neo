@@ -146,12 +146,6 @@ namespace WoWEditor6.UI.Dialogs
                     InputElementWrapper.Children.Add(control);
                 }
             }
-
-            // Check if the tablet is connected
-            if (TabletManager.Instance.IsConnected) {
-                // if the tablet is connected hide reconnect button
-                reconnect.Visibility = Visibility.Hidden;
-            }
         }
 
         private void InvertMouseBox_Clicked(object sender, RoutedEventArgs e)
@@ -197,6 +191,19 @@ namespace WoWEditor6.UI.Dialogs
             {
                 // if the tablet is connected hide reconnect button
                 reconnect.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // Check if the tablet is connected
+            if (TabletManager.Instance.IsConnected)
+            {
+                // if the tablet is connected hide reconnect button
+                reconnect.Visibility = Visibility.Hidden;
+            }
+            else {
+                reconnect.Visibility = Visibility.Visible;
             }
         }
     }
