@@ -88,18 +88,12 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                     DamageModifier = float.Parse(dRow[67].ToString()),
                     ExperienceModifier = float.Parse(dRow[68].ToString()),
                     RacialLeader = int.Parse(dRow[69].ToString()),
-                    QuestItem1 = int.Parse(dRow[70].ToString()),
-                    QuestItem2 = int.Parse(dRow[71].ToString()),
-                    QuestItem3 = int.Parse(dRow[72].ToString()),
-                    QuestItem4 = int.Parse(dRow[73].ToString()),
-                    QuestItem5 = int.Parse(dRow[74].ToString()),
-                    QuestItem6 = int.Parse(dRow[75].ToString()),
-                    MovementId = int.Parse(dRow[76].ToString()),
-                    RegenHealth = int.Parse(dRow[77].ToString()),
-                    MechanicImmuneMask = (MechanicImmuneMask)Enum.Parse(typeof(MechanicImmuneMask), dRow[78].ToString()),
-                    FlagsExtra = (FlagsExtra)Enum.Parse(typeof(FlagsExtra), dRow[79].ToString()),
-                    ScriptName = dRow[80].ToString(),
-                    VerifiedBuild = int.Parse(dRow[81].ToString())
+                    MovementId = int.Parse(dRow[70].ToString()),
+                    RegenHealth = int.Parse(dRow[71].ToString()),
+                    MechanicImmuneMask = (MechanicImmuneMask)Enum.Parse(typeof(MechanicImmuneMask), dRow[72].ToString()),
+                    FlagsExtra = (FlagsExtra)Enum.Parse(typeof(FlagsExtra), dRow[73].ToString()),
+                    ScriptName = dRow[74].ToString(),
+                    VerifiedBuild = int.Parse(dRow[75].ToString())
                 };
                 mCreatures.Add(creature);
             }

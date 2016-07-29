@@ -100,12 +100,6 @@ namespace WoWEditor6.UI.Dialogs
             creature.NpcFlag = (Storage.Database.WotLk.TrinityCore.NpcFlag)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.NpcFlag), NpcFlag.Text);
             creature.PetSpellDataId = int.Parse(PetSpellDataId.Text);
             creature.PickPocketLoot = int.Parse(PickpocketLootId.Text);
-            creature.QuestItem1 = int.Parse(QuestItem1.Text);
-            creature.QuestItem2 = int.Parse(QuestItem2.Text);
-            creature.QuestItem3 = int.Parse(QuestItem3.Text);
-            creature.QuestItem4 = int.Parse(QuestItem4.Text);
-            creature.QuestItem5 = int.Parse(QuestItem5.Text);
-            creature.QuestItem6 = int.Parse(QuestItem6.Text);
             creature.RacialLeader = int.Parse(RacialLeader.Text);
             creature.RangeAttackTime = int.Parse(RangeAtkSpeed.Text);
             creature.RangeVariance = float.Parse(RangeAtkSpeedVariance.Text);
@@ -191,12 +185,6 @@ namespace WoWEditor6.UI.Dialogs
             NpcFlag.Text = creature.NpcFlag.ToString();
             PetSpellDataId.Text = creature.PetSpellDataId.ToString();
             PickpocketLootId.Text = creature.PickPocketLoot.ToString();
-            QuestItem1.Text = creature.QuestItem1.ToString();
-            QuestItem2.Text = creature.QuestItem2.ToString();
-            QuestItem3.Text = creature.QuestItem3.ToString();
-            QuestItem4.Text = creature.QuestItem4.ToString();
-            QuestItem5.Text = creature.QuestItem5.ToString();
-            QuestItem6.Text = creature.QuestItem6.ToString();
             RacialLeader.Text = creature.RacialLeader.ToString();
             RangeAtkSpeed.Text = creature.RangeAttackTime.ToString();
             RangeAtkSpeedVariance.Text = creature.RangeVariance.ToString();

@@ -28,12 +28,14 @@
             <MenuItem Header="?" >
                 <MenuItem Header="About" Click="About_MenuItem_Click" HorizontalAlignment="Left" Width="140"/>
             </MenuItem>
-            <MenuItem Header="_Debug" RenderTransformOrigin="2.52,0.6">
+            <MenuItem Header="Database Editor" RenderTransformOrigin="-0.653,0.55">
+                <MenuItem Header="Open database configuration" Click="DatabaseConfiguration_Click"/>
+                <MenuItem Header="Creature editor" Click="CreatureEditor_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Debug" RenderTransformOrigin="-1.97,0.5">
                 <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"/>
                 <MenuItem Header="Add 2D text" Click="Add2DText_Click"/>
                 <MenuItem Header="Add 3D text" Click="Add3DText_Click"/>
-                <MenuItem Header="Open database configuration" Click="DatabaseConfiguration_Click"/>
-                <MenuItem Header="Creature editor" Click="CreatureEditor_Click"/>
             </MenuItem>
         </Menu>
         <avalon:DockingManager Grid.Row="1" Margin="0">

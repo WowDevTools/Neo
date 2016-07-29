@@ -142,17 +142,11 @@
             this.PickpocketLootId = new System.Windows.Forms.TextBox();
             this.tbQuestInfo = new System.Windows.Forms.TabPage();
             this.label39 = new System.Windows.Forms.Label();
-            this.QuestItem6 = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
             this.KillCredit2 = new System.Windows.Forms.TextBox();
-            this.QuestItem5 = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.QuestItem4 = new System.Windows.Forms.NumericUpDown();
             this.KillCredit1 = new System.Windows.Forms.TextBox();
-            this.QuestItem1 = new System.Windows.Forms.NumericUpDown();
-            this.QuestItem3 = new System.Windows.Forms.NumericUpDown();
-            this.QuestItem2 = new System.Windows.Forms.NumericUpDown();
             this.tbFlags = new System.Windows.Forms.TabPage();
             this.tbOptional = new System.Windows.Forms.TabPage();
             this.TrainerRace = new System.Windows.Forms.TextBox();
@@ -217,12 +211,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Exp)).BeginInit();
             this.tbLoot.SuspendLayout();
             this.tbQuestInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem2)).BeginInit();
             this.tbFlags.SuspendLayout();
             this.tbOptional.SuspendLayout();
             this.tbAI.SuspendLayout();
@@ -1395,17 +1383,11 @@
             // tbQuestInfo
             // 
             this.tbQuestInfo.Controls.Add(this.label39);
-            this.tbQuestInfo.Controls.Add(this.QuestItem6);
             this.tbQuestInfo.Controls.Add(this.label16);
             this.tbQuestInfo.Controls.Add(this.KillCredit2);
-            this.tbQuestInfo.Controls.Add(this.QuestItem5);
             this.tbQuestInfo.Controls.Add(this.label10);
             this.tbQuestInfo.Controls.Add(this.label5);
-            this.tbQuestInfo.Controls.Add(this.QuestItem4);
             this.tbQuestInfo.Controls.Add(this.KillCredit1);
-            this.tbQuestInfo.Controls.Add(this.QuestItem1);
-            this.tbQuestInfo.Controls.Add(this.QuestItem3);
-            this.tbQuestInfo.Controls.Add(this.QuestItem2);
             this.tbQuestInfo.Location = new System.Drawing.Point(4, 22);
             this.tbQuestInfo.Name = "tbQuestInfo";
             this.tbQuestInfo.Size = new System.Drawing.Size(537, 453);
@@ -1420,19 +1402,7 @@
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(280, 13);
             this.label39.TabIndex = 96;
-            this.label39.Text = "* NO LOOT INFORMATION! These are just for the tooltip!";
-            // 
-            // QuestItem6
-            // 
-            this.QuestItem6.Location = new System.Drawing.Point(4, 210);
-            this.QuestItem6.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.QuestItem6.Name = "QuestItem6";
-            this.QuestItem6.Size = new System.Drawing.Size(525, 20);
-            this.QuestItem6.TabIndex = 95;
+            this.label39.Text = "* NO LOOT INFORMATION! These are just for the tooltip!";   
             // 
             // label16
             // 
@@ -1452,18 +1422,6 @@
             this.KillCredit2.TabIndex = 88;
             this.KillCredit2.Text = "0";
             // 
-            // QuestItem5
-            // 
-            this.QuestItem5.Location = new System.Drawing.Point(4, 184);
-            this.QuestItem5.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.QuestItem5.Name = "QuestItem5";
-            this.QuestItem5.Size = new System.Drawing.Size(525, 20);
-            this.QuestItem5.TabIndex = 94;
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -1482,18 +1440,6 @@
             this.label5.TabIndex = 86;
             this.label5.Text = "Kill Credit 2";
             // 
-            // QuestItem4
-            // 
-            this.QuestItem4.Location = new System.Drawing.Point(4, 158);
-            this.QuestItem4.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.QuestItem4.Name = "QuestItem4";
-            this.QuestItem4.Size = new System.Drawing.Size(525, 20);
-            this.QuestItem4.TabIndex = 93;
-            // 
             // KillCredit1
             // 
             this.KillCredit1.BackColor = System.Drawing.SystemColors.Window;
@@ -1502,42 +1448,6 @@
             this.KillCredit1.Size = new System.Drawing.Size(463, 20);
             this.KillCredit1.TabIndex = 87;
             this.KillCredit1.Text = "0";
-            // 
-            // QuestItem1
-            // 
-            this.QuestItem1.Location = new System.Drawing.Point(4, 80);
-            this.QuestItem1.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.QuestItem1.Name = "QuestItem1";
-            this.QuestItem1.Size = new System.Drawing.Size(525, 20);
-            this.QuestItem1.TabIndex = 90;
-            // 
-            // QuestItem3
-            // 
-            this.QuestItem3.Location = new System.Drawing.Point(4, 132);
-            this.QuestItem3.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.QuestItem3.Name = "QuestItem3";
-            this.QuestItem3.Size = new System.Drawing.Size(525, 20);
-            this.QuestItem3.TabIndex = 91;
-            // 
-            // QuestItem2
-            // 
-            this.QuestItem2.Location = new System.Drawing.Point(4, 106);
-            this.QuestItem2.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.QuestItem2.Name = "QuestItem2";
-            this.QuestItem2.Size = new System.Drawing.Size(525, 20);
-            this.QuestItem2.TabIndex = 92;
             // 
             // tbFlags
             // 
@@ -2040,12 +1950,6 @@
             this.tbLoot.PerformLayout();
             this.tbQuestInfo.ResumeLayout(false);
             this.tbQuestInfo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.QuestItem2)).EndInit();
             this.tbFlags.ResumeLayout(false);
             this.tbFlags.PerformLayout();
             this.tbOptional.ResumeLayout(false);
@@ -2170,17 +2074,11 @@
         private System.Windows.Forms.TextBox PickpocketLootId;
         private System.Windows.Forms.TabPage tbQuestInfo;
         private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.NumericUpDown QuestItem6;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox KillCredit2;
-        private System.Windows.Forms.NumericUpDown QuestItem5;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown QuestItem4;
         private System.Windows.Forms.TextBox KillCredit1;
-        private System.Windows.Forms.NumericUpDown QuestItem1;
-        private System.Windows.Forms.NumericUpDown QuestItem3;
-        private System.Windows.Forms.NumericUpDown QuestItem2;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.ComboBox TrainerType;
         private System.Windows.Forms.Label label35;

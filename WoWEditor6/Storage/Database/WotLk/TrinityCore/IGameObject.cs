@@ -18,12 +18,6 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         int Faction { get; set; }
         Flags Flags { get; set; }
         float Size { get; set; }
-        int QuestItem1 { get; set; }
-        int QuestItem2 { get; set; }
-        int QuestItem3 { get; set; }
-        int QuestItem4 { get; set; }
-        int QuestItem5 { get; set; }
-        int QuestItem6 { get; set; }
         int Data0 { get; set; }
         int Data1 { get; set; }
         int Data2 { get; set; }

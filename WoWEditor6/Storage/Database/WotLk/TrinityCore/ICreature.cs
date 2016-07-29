@@ -72,12 +72,6 @@
         float DamageModifier { get; set; }
         float ExperienceModifier { get; set; }
         int RacialLeader{ get; set; }
-        int QuestItem1 { get; set; }
-        int QuestItem2 { get; set; }
-        int QuestItem3 { get; set; }
-        int QuestItem4 { get; set; }
-        int QuestItem5 { get; set; }
-        int QuestItem6 { get; set; }
         int MovementId { get; set; }
         int RegenHealth { get; set; }
         MechanicImmuneMask MechanicImmuneMask { get; set; }
