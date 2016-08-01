@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatureEditorControl));
             this.label1 = new System.Windows.Forms.Label();
             this.Entry = new System.Windows.Forms.TextBox();
             this.DiffEntry3 = new System.Windows.Forms.TextBox();
@@ -36,7 +38,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.IconName = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.WalkSpeed = new System.Windows.Forms.TextBox();
@@ -122,7 +123,6 @@
             this.btnShowModelId1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.ModelId2 = new System.Windows.Forms.TextBox();
-            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             this.tbCombat = new System.Windows.Forms.TabPage();
             this.DamageSchool = new System.Windows.Forms.ComboBox();
             this.DamageSchoolLabel = new System.Windows.Forms.Label();
@@ -149,6 +149,7 @@
             this.KillCredit1 = new System.Windows.Forms.TextBox();
             this.tbFlags = new System.Windows.Forms.TabPage();
             this.tbOptional = new System.Windows.Forms.TabPage();
+            this.IconName = new System.Windows.Forms.ComboBox();
             this.TrainerRace = new System.Windows.Forms.TextBox();
             this.RegenHealth = new System.Windows.Forms.ComboBox();
             this.label37 = new System.Windows.Forms.Label();
@@ -194,6 +195,9 @@
             this.lbMenu = new System.Windows.Forms.ListBox();
             this.LoadEntry = new System.Windows.Forms.TextBox();
             this.LoadButton = new System.Windows.Forms.Button();
+            this.Tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.BaseAtkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAtkSpeed)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -226,6 +230,7 @@
             this.label1.Size = new System.Drawing.Size(31, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Entry";
+            this.Tooltip.SetToolTip(this.label1, "Creature\'s unique id.");
             // 
             // Entry
             // 
@@ -269,6 +274,8 @@
             this.label4.Size = new System.Drawing.Size(83, 13);
             this.label4.TabIndex = 2;
             this.label4.Text = "Difficulty Entry 3";
+            this.Tooltip.SetToolTip(this.label4, "This field connects the stats from another entry to this template when in 25man n" +
+        "ormal, 10man heroic or 25man heroic mode instance. ");
             // 
             // label3
             // 
@@ -278,6 +285,8 @@
             this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 1;
             this.label3.Text = "Difficulty Entry 2";
+            this.Tooltip.SetToolTip(this.label3, "This field connects the stats from another entry to this template when in 25man n" +
+        "ormal, 10man heroic or 25man heroic mode instance. ");
             // 
             // label2
             // 
@@ -287,14 +296,8 @@
             this.label2.Size = new System.Drawing.Size(83, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "Difficulty Entry 1";
-            // 
-            // IconName
-            // 
-            this.IconName.BackColor = System.Drawing.SystemColors.Window;
-            this.IconName.Location = new System.Drawing.Point(96, 394);
-            this.IconName.Name = "IconName";
-            this.IconName.Size = new System.Drawing.Size(433, 20);
-            this.IconName.TabIndex = 12;
+            this.Tooltip.SetToolTip(this.label2, "This field connects the stats from another entry to this template when in 25man n" +
+        "ormal, 10man heroic or 25man heroic mode instance. ");
             // 
             // label14
             // 
@@ -304,6 +307,7 @@
             this.label14.Size = new System.Drawing.Size(59, 13);
             this.label14.TabIndex = 11;
             this.label14.Text = "Icon Name";
+            this.Tooltip.SetToolTip(this.label14, "Used to tell the player what kind of NPC this creature is.");
             // 
             // label20
             // 
@@ -313,6 +317,9 @@
             this.label20.Size = new System.Drawing.Size(49, 13);
             this.label20.TabIndex = 23;
             this.label20.Text = "NPCFlag";
+            this.Tooltip.SetToolTip(this.label20, "A bitmask that represents what NPC flags the creature has. Each bit controls a di" +
+        "fferent flag and to combine flags, you can add each flag that you want, in effec" +
+        "t activating the respective bits.");
             // 
             // WalkSpeed
             // 
@@ -331,6 +338,7 @@
             this.label21.Size = new System.Drawing.Size(66, 13);
             this.label21.TabIndex = 25;
             this.label21.Text = "Walk Speed";
+            this.Tooltip.SetToolTip(this.label21, "Controls how fast the creature can walk. For vehicles: increases fly speed.");
             // 
             // RunSpeed
             // 
@@ -349,6 +357,8 @@
             this.label22.Size = new System.Drawing.Size(61, 13);
             this.label22.TabIndex = 27;
             this.label22.Text = "Run Speed";
+            this.Tooltip.SetToolTip(this.label22, "Controls how fast the creature can run. For vehicles: increases ground movement s" +
+        "peed.");
             // 
             // label25
             // 
@@ -358,6 +368,8 @@
             this.label25.Size = new System.Drawing.Size(112, 13);
             this.label25.TabIndex = 33;
             this.label25.Text = "Base Atkspeed (in ms)";
+            this.Tooltip.SetToolTip(this.label25, "This is the base time that determines how long a creature must wait between melee" +
+        " attacks.");
             // 
             // BaseAtkSpeed
             // 
@@ -411,6 +423,8 @@
             this.label26.Size = new System.Drawing.Size(120, 13);
             this.label26.TabIndex = 35;
             this.label26.Text = "Range Atkspeed (in ms)";
+            this.Tooltip.SetToolTip(this.label26, "This is the base time that determines how long a creature must wait between range" +
+        "d attacks.");
             // 
             // label27
             // 
@@ -456,6 +470,8 @@
             this.label30.Size = new System.Drawing.Size(54, 13);
             this.label30.TabIndex = 43;
             this.label30.Text = "Unit Flags";
+            this.Tooltip.SetToolTip(this.label30, "Allows the manual application of unit flags to creatures. Again this is a bitmask" +
+        " field and to apply more than one flag, just add the different numbers.");
             // 
             // label31
             // 
@@ -465,6 +481,8 @@
             this.label31.Size = new System.Drawing.Size(60, 13);
             this.label31.TabIndex = 45;
             this.label31.Text = "Unit Flags2";
+            this.Tooltip.SetToolTip(this.label31, "Allows additional application of unit flags to creatures. Again, this is a bitmas" +
+        "k field and to apply more than one flag, just add the different numbers.");
             // 
             // label32
             // 
@@ -474,6 +492,7 @@
             this.label32.Size = new System.Drawing.Size(76, 13);
             this.label32.TabIndex = 47;
             this.label32.Text = "Dynamic Flags";
+            this.Tooltip.SetToolTip(this.label32, "Flags that control visual appearance of the creature.");
             // 
             // level300
             // 
@@ -483,6 +502,8 @@
             this.level300.Size = new System.Drawing.Size(59, 13);
             this.level300.TabIndex = 61;
             this.level300.Text = "Type Flags";
+            this.Tooltip.SetToolTip(this.level300, "This field can control whether a mob is minable or herbable or lootable by eninee" +
+        "r. It also controls, whether this mob can be tamed by a hunter.");
             // 
             // groupBox5
             // 
@@ -666,6 +687,7 @@
             this.label64.Size = new System.Drawing.Size(74, 13);
             this.label64.TabIndex = 2;
             this.label64.Text = "Armor Modifier";
+            this.Tooltip.SetToolTip(this.label64, "Used to modify the base Level/Class armor of a creature.");
             // 
             // label65
             // 
@@ -675,6 +697,7 @@
             this.label65.Size = new System.Drawing.Size(74, 13);
             this.label65.TabIndex = 1;
             this.label65.Text = "Mana Modifier";
+            this.Tooltip.SetToolTip(this.label65, "Used to modify the base Level/Class mana of a creature.");
             // 
             // label66
             // 
@@ -684,6 +707,7 @@
             this.label66.Size = new System.Drawing.Size(78, 13);
             this.label66.TabIndex = 0;
             this.label66.Text = "Health Modifier";
+            this.Tooltip.SetToolTip(this.label66, "Used to modify the base Level/Class health of a creature.");
             // 
             // DamageMod
             // 
@@ -702,6 +726,7 @@
             this.label67.Size = new System.Drawing.Size(87, 13);
             this.label67.TabIndex = 6;
             this.label67.Text = "Damage Modifier";
+            this.Tooltip.SetToolTip(this.label67, "Used to modify the base damage of a creature.");
             // 
             // ExperienceMod
             // 
@@ -729,6 +754,8 @@
             this.label80.Size = new System.Drawing.Size(59, 13);
             this.label80.TabIndex = 101;
             this.label80.Text = "Flags Extra";
+            this.Tooltip.SetToolTip(this.label80, "These flags control certain creature specific attributes. Flags can be added toge" +
+        "ther to apply more than one.");
             // 
             // FlagsExtra
             // 
@@ -874,6 +901,7 @@
             this.label11.Size = new System.Drawing.Size(35, 13);
             this.label11.TabIndex = 87;
             this.label11.Text = "Name";
+            this.Tooltip.SetToolTip(this.label11, "Base name of the creature.");
             // 
             // MinLevel
             // 
@@ -905,6 +933,8 @@
             this.label60.Size = new System.Drawing.Size(33, 13);
             this.label60.TabIndex = 103;
             this.label60.Text = "Level";
+            this.Tooltip.SetToolTip(this.label60, "The minimum/maximum level of the creature if the creature has a level range. When" +
+        " added to world, a level in chosen in the specified level range.");
             // 
             // NameCreature
             // 
@@ -922,6 +952,7 @@
             this.label12.Size = new System.Drawing.Size(52, 13);
             this.label12.TabIndex = 89;
             this.label12.Text = "Subname";
+            this.Tooltip.SetToolTip(this.label12, "The subname of the creature that appears in <> below the creature\'s name.");
             // 
             // SubName
             // 
@@ -939,6 +970,7 @@
             this.label38.Size = new System.Drawing.Size(31, 13);
             this.label38.TabIndex = 101;
             this.label38.Text = "Type";
+            this.Tooltip.SetToolTip(this.label38, "The type of the creature.");
             // 
             // label33
             // 
@@ -948,6 +980,7 @@
             this.label33.Size = new System.Drawing.Size(36, 13);
             this.label33.TabIndex = 99;
             this.label33.Text = "Family";
+            this.Tooltip.SetToolTip(this.label33, "The family this creature belongs to.");
             // 
             // Family
             // 
@@ -1032,6 +1065,8 @@
             this.label23.Size = new System.Drawing.Size(34, 13);
             this.label23.TabIndex = 93;
             this.label23.Text = "Scale";
+            this.Tooltip.SetToolTip(this.label23, "If non-zero, this field defines the size of how the model of the creature appears" +
+        " ingame. If zero, it will use default model size taken from the DBC.");
             // 
             // ScaleCreature
             // 
@@ -1050,6 +1085,7 @@
             this.label24.Size = new System.Drawing.Size(33, 13);
             this.label24.TabIndex = 95;
             this.label24.Text = "Rank";
+            this.Tooltip.SetToolTip(this.label24, "The rank of the creature.");
             // 
             // Rank
             // 
@@ -1073,6 +1109,7 @@
             this.label19.Size = new System.Drawing.Size(42, 13);
             this.label19.TabIndex = 91;
             this.label19.Text = "Faction";
+            this.Tooltip.SetToolTip(this.label19, "The faction of the creature.");
             // 
             // Faction
             // 
@@ -1091,6 +1128,7 @@
             this.label29.Size = new System.Drawing.Size(54, 13);
             this.label29.TabIndex = 97;
             this.label29.Text = "Unit Class";
+            this.Tooltip.SetToolTip(this.label29, "This is the creature\'s class, and it dictates levels of health and mana.");
             // 
             // UnitClass
             // 
@@ -1138,6 +1176,7 @@
             this.label50.Size = new System.Drawing.Size(55, 13);
             this.label50.TabIndex = 24;
             this.label50.Text = "Display ID";
+            this.Tooltip.SetToolTip(this.label50, "A random graphical model that the client applies on this creature.");
             // 
             // btnShowModelId4
             // 
@@ -1250,16 +1289,9 @@
             this.ModelId2.TabIndex = 15;
             this.ModelId2.Text = "0";
             // 
-            // modelRenderControl1
-            // 
-            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
-            this.modelRenderControl1.Name = "modelRenderControl1";
-            this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
-            this.modelRenderControl1.TabIndex = 1;
-            // 
             // tbCombat
             // 
+            this.tbCombat.Controls.Add(this.checkedListBox1);
             this.tbCombat.Controls.Add(this.DamageSchool);
             this.tbCombat.Controls.Add(this.DamageSchoolLabel);
             this.tbCombat.Controls.Add(this.DiffEntry3);
@@ -1312,6 +1344,7 @@
             this.DamageSchoolLabel.Size = new System.Drawing.Size(81, 13);
             this.DamageSchoolLabel.TabIndex = 114;
             this.DamageSchoolLabel.Text = "Damage school";
+            this.Tooltip.SetToolTip(this.DamageSchoolLabel, "Creature\'s melee damage school.");
             // 
             // MechanicImmuneMask
             // 
@@ -1328,6 +1361,7 @@
             this.label78.Size = new System.Drawing.Size(123, 13);
             this.label78.TabIndex = 112;
             this.label78.Text = "Mechanic Immune Mask";
+            this.Tooltip.SetToolTip(this.label78, "This makes the creature immune to specific spell natures.");
             // 
             // tbStats
             // 
@@ -1355,6 +1389,8 @@
             this.label18.Size = new System.Drawing.Size(96, 13);
             this.label18.TabIndex = 19;
             this.label18.Text = "Expansion (Health)";
+            this.Tooltip.SetToolTip(this.label18, "The expansion table the creatures health value is taken from. Values are from 0 t" +
+        "o 2.");
             // 
             // Exp
             // 
@@ -1433,6 +1469,7 @@
             this.label58.Size = new System.Drawing.Size(82, 13);
             this.label58.TabIndex = 89;
             this.label58.Text = "Gold (in copper)";
+            this.Tooltip.SetToolTip(this.label58, "Minimum/maximum money that the creature drops when killed.");
             // 
             // SkinningLootId
             // 
@@ -1451,6 +1488,7 @@
             this.label40.Size = new System.Drawing.Size(42, 13);
             this.label40.TabIndex = 83;
             this.label40.Text = "Loot ID";
+            this.Tooltip.SetToolTip(this.label40, "The ID of the loot template ID that this creature should use to generate loots.");
             // 
             // label42
             // 
@@ -1460,6 +1498,8 @@
             this.label42.Size = new System.Drawing.Size(86, 13);
             this.label42.TabIndex = 87;
             this.label42.Text = "Skinning Loot ID";
+            this.Tooltip.SetToolTip(this.label42, "The ID of the skinning loot template that this creature should use to generate sk" +
+        "inning loots.");
             // 
             // label41
             // 
@@ -1469,6 +1509,8 @@
             this.label41.Size = new System.Drawing.Size(99, 13);
             this.label41.TabIndex = 85;
             this.label41.Text = "Pickpocket Loot ID";
+            this.Tooltip.SetToolTip(this.label41, "The ID of the pickpocketing loot template that this creature should use to genera" +
+        "te pickpocketing loots.");
             // 
             // PickpocketLootId
             // 
@@ -1509,6 +1551,7 @@
             this.label10.Size = new System.Drawing.Size(59, 13);
             this.label10.TabIndex = 85;
             this.label10.Text = "Kill Credit 1";
+            this.Tooltip.SetToolTip(this.label10, resources.GetString("label10.ToolTip"));
             // 
             // label5
             // 
@@ -1518,6 +1561,7 @@
             this.label5.Size = new System.Drawing.Size(59, 13);
             this.label5.TabIndex = 86;
             this.label5.Text = "Kill Credit 2";
+            this.Tooltip.SetToolTip(this.label5, resources.GetString("label5.ToolTip"));
             // 
             // KillCredit1
             // 
@@ -1588,6 +1632,30 @@
             this.tbOptional.Text = "Optional";
             this.tbOptional.UseVisualStyleBackColor = true;
             // 
+            // IconName
+            // 
+            this.IconName.FormattingEnabled = true;
+            this.IconName.Items.AddRange(new object[] {
+            "Directions",
+            "Gunner",
+            "vehichleCursor",
+            "Driver",
+            "Attack",
+            "Buy",
+            "Speak",
+            "Pickup",
+            "Interact",
+            "Trainer",
+            "Taxi",
+            "Repair",
+            "LootAll",
+            "Quest",
+            "PVP"});
+            this.IconName.Location = new System.Drawing.Point(96, 397);
+            this.IconName.Name = "IconName";
+            this.IconName.Size = new System.Drawing.Size(433, 21);
+            this.IconName.TabIndex = 129;
+            // 
             // TrainerRace
             // 
             this.TrainerRace.BackColor = System.Drawing.SystemColors.Window;
@@ -1616,6 +1684,8 @@
             this.label37.Size = new System.Drawing.Size(69, 13);
             this.label37.TabIndex = 57;
             this.label37.Text = "Trainer Race";
+            this.Tooltip.SetToolTip(this.label37, "If the NPC is a mount trainer (trainer_type == 1), then the player\'s race must be" +
+        " the same as the value specified here to talk to this trainer.");
             // 
             // TrainerClass
             // 
@@ -1634,6 +1704,7 @@
             this.label36.Size = new System.Drawing.Size(68, 13);
             this.label36.TabIndex = 55;
             this.label36.Text = "Trainer Class";
+            this.Tooltip.SetToolTip(this.label36, resources.GetString("label36.ToolTip"));
             // 
             // label79
             // 
@@ -1643,6 +1714,7 @@
             this.label79.Size = new System.Drawing.Size(61, 13);
             this.label79.TabIndex = 99;
             this.label79.Text = "Health Reg";
+            this.Tooltip.SetToolTip(this.label79, "Boolean 1 or 0 controlling if the creature should regenerate its health or not.");
             // 
             // TrainerSpell
             // 
@@ -1661,6 +1733,9 @@
             this.label35.Size = new System.Drawing.Size(66, 13);
             this.label35.TabIndex = 53;
             this.label35.Text = "Trainer Spell";
+            this.Tooltip.SetToolTip(this.label35, "If the NPC is a trainer that teaches professions (trainer_type == 2), then the pl" +
+        "ayer must already know the spell ID specified here to be able to talk to this NP" +
+        "C.");
             // 
             // TrainerType
             // 
@@ -1684,6 +1759,9 @@
             this.label34.Size = new System.Drawing.Size(67, 13);
             this.label34.TabIndex = 51;
             this.label34.Text = "Trainer Type";
+            this.Tooltip.SetToolTip(this.label34, "If the NPC is a trainer (has the trainer flag), then this field controls what kin" +
+        "d of trainer it is. Both this field and the related field must be filled in for " +
+        "a trainer to work correctly.");
             // 
             // label17
             // 
@@ -1693,6 +1771,7 @@
             this.label17.Size = new System.Drawing.Size(84, 13);
             this.label17.TabIndex = 115;
             this.label17.Text = "Movement Type";
+            this.Tooltip.SetToolTip(this.label17, "The creature\'s default movement type.");
             // 
             // label15
             // 
@@ -1702,6 +1781,8 @@
             this.label15.Size = new System.Drawing.Size(83, 13);
             this.label15.TabIndex = 107;
             this.label15.Text = "Gossip Menu ID";
+            this.Tooltip.SetToolTip(this.label15, "The gossip ID of this creature. This field is obtained from sniff (update fields)" +
+        ". If you can not sniff this value, and need to make one up, it must be > 50000.");
             // 
             // GossipMenuId
             // 
@@ -1729,6 +1810,8 @@
             this.label82.Size = new System.Drawing.Size(68, 13);
             this.label82.TabIndex = 127;
             this.label82.Text = "Verified Build";
+            this.Tooltip.SetToolTip(this.label82, "This field is used by the TrinityDB Team to determine whether a template has been" +
+        " verified from WDB files.");
             // 
             // PetSpellDataId
             // 
@@ -1776,15 +1859,17 @@
             this.label77.Size = new System.Drawing.Size(71, 13);
             this.label77.TabIndex = 123;
             this.label77.Text = "Movement ID";
+            this.Tooltip.SetToolTip(this.label77, "We have no idea what this field does. It is passed directly to the client.");
             // 
             // label62
             // 
             this.label62.AutoSize = true;
             this.label62.Location = new System.Drawing.Point(1, 63);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(66, 13);
+            this.label62.Size = new System.Drawing.Size(139, 13);
             this.label62.TabIndex = 117;
-            this.label62.Text = "Inhabit Type";
+            this.label62.Text = "Inhabit Type //bitmask todo";
+            this.Tooltip.SetToolTip(this.label62, "Controls where the creature can move and attack.");
             // 
             // RacialLeader
             // 
@@ -1802,6 +1887,8 @@
             this.label63.Size = new System.Drawing.Size(70, 13);
             this.label63.TabIndex = 110;
             this.label63.Text = "Hover Height";
+            this.Tooltip.SetToolTip(this.label63, "Distance above the ground that the creature will hover if it has MOVEMENTFLAG_DIS" +
+        "ABLE_GRAVITY enabled.");
             // 
             // InhabitType
             // 
@@ -1832,6 +1919,8 @@
             this.label13.Size = new System.Drawing.Size(89, 13);
             this.label13.TabIndex = 109;
             this.label13.Text = "Pet Spell Data ID";
+            this.Tooltip.SetToolTip(this.label13, "ID, found in CreatureSpellData.dbc, that displays what spells the pet has in the " +
+        "client.");
             // 
             // label57
             // 
@@ -1841,6 +1930,7 @@
             this.label57.Size = new System.Drawing.Size(56, 13);
             this.label57.TabIndex = 113;
             this.label57.Text = "Vehicle ID";
+            this.Tooltip.SetToolTip(this.label57, resources.GetString("label57.ToolTip"));
             // 
             // label70
             // 
@@ -1850,6 +1940,8 @@
             this.label70.Size = new System.Drawing.Size(73, 13);
             this.label70.TabIndex = 121;
             this.label70.Text = "Racial Leader";
+            this.Tooltip.SetToolTip(this.label70, "A flag indicating wheather the creature is a racial leader. Killing racial leader" +
+        "s grants 100 honor.");
             // 
             // tbAI
             // 
@@ -1953,6 +2045,8 @@
             this.label49.Size = new System.Drawing.Size(137, 13);
             this.label49.TabIndex = 131;
             this.label49.Text = "Mind Control/Vehicle Spells";
+            this.Tooltip.SetToolTip(this.label49, "Spell ID that can be used for Mind Control of this creature.  For vehicle creatur" +
+        "es: spell on action bar.");
             // 
             // ScriptName
             // 
@@ -1970,6 +2064,8 @@
             this.label81.Size = new System.Drawing.Size(65, 13);
             this.label81.TabIndex = 129;
             this.label81.Text = "Script Name";
+            this.Tooltip.SetToolTip(this.label81, "The name of the script that this creature uses, if any. This ties a script from a" +
+        " scripting engine to this creature.");
             // 
             // AiName
             // 
@@ -1987,6 +2083,7 @@
             this.label69.Size = new System.Drawing.Size(48, 13);
             this.label69.TabIndex = 127;
             this.label69.Text = "AI Name";
+            this.Tooltip.SetToolTip(this.label69, "This field is overridden by ScriptName field if both are set.");
             // 
             // lbMenu
             // 
@@ -2024,6 +2121,34 @@
             this.LoadButton.Text = "Load";
             this.LoadButton.UseVisualStyleBackColor = false;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
+            // Tooltip
+            // 
+            this.Tooltip.ToolTipTitle = "Information";
+            // 
+            // modelRenderControl1
+            // 
+            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
+            this.modelRenderControl1.Name = "modelRenderControl1";
+            this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
+            this.modelRenderControl1.TabIndex = 1;
+            // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Items.AddRange(new object[] {
+            "Normal",
+            "Holy",
+            "Fire",
+            "Nature",
+            "Frost",
+            "Shadow",
+            "Arcane"});
+            this.checkedListBox1.Location = new System.Drawing.Point(162, 347);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(120, 34);
+            this.checkedListBox1.TabIndex = 116;
             // 
             // CreatureEditorControl
             // 
@@ -2083,7 +2208,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox IconName;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox WalkSpeed;
@@ -2241,5 +2365,8 @@
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.ComboBox DamageSchool;
         private System.Windows.Forms.Label DamageSchoolLabel;
+        private System.Windows.Forms.ToolTip Tooltip;
+        private System.Windows.Forms.ComboBox IconName;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }

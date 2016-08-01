@@ -239,14 +239,11 @@ namespace WoWEditor6.UI.Dialogs
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            int entry;
-
-            if(LoadEntry.Text != "")
+            if (LoadEntry.Text != "")
             {
                 Storage.Database.WotLk.TrinityCore.Creature creature = new Storage.Database.WotLk.TrinityCore.Creature();
-                entry = int.Parse(LoadEntry.Text);
               
-                creature = Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.GetCreatureByEntry(entry);
+                creature = Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.GetCreatureByEntry(int.Parse(LoadEntry.Text));
 
                 if(creature != null)
                 {

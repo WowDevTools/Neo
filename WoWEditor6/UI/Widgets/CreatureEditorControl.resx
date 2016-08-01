@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="Tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="label10.ToolTip" xml:space="preserve">
+    <value>If this is a kill credit template -- one that is a dummy template that is used when more than one creature can count as a kill in a quest, then this is a link the the fist entry of the creature that could be killed to give quest credit.</value>
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value>If this is a kill credit template -- one that is a dummy template that is used when more than one creature can count as a kill in a quest, then this is a link the the second entry of the creature that could be killed to give quest credit. If more than two creatures can be killed and count toward a single objective, an EAI or C++ script will be required.</value>
+  </data>
+  <data name="label36.ToolTip" xml:space="preserve">
+    <value>If the NPC is a class trainer or a pet trainer (trainer_type == 0 or 3), then the player's class must be the same as the value specified here to talk to this trainer. For pet trainers, this value must be 3 (hunter).</value>
+  </data>
+  <data name="label57.ToolTip" xml:space="preserve">
+    <value>Entryid of Vehicle if creature is/has a vehicle entry. This field determines how the player appears on the vehicle, how the vehicle moves, and whether or not the vehicle action bar is shown.  An npc_spellclick_spells entry must be made for this creature entry in order for this to work.</value>
+  </data>
 </root>
