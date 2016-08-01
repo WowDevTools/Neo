@@ -197,7 +197,6 @@
             this.LoadButton = new System.Windows.Forms.Button();
             this.Tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.BaseAtkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAtkSpeed)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -1291,7 +1290,6 @@
             // 
             // tbCombat
             // 
-            this.tbCombat.Controls.Add(this.checkedListBox1);
             this.tbCombat.Controls.Add(this.DamageSchool);
             this.tbCombat.Controls.Add(this.DamageSchoolLabel);
             this.tbCombat.Controls.Add(this.DiffEntry3);
@@ -2134,22 +2132,6 @@
             this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
             this.modelRenderControl1.TabIndex = 1;
             // 
-            // checkedListBox1
-            // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Items.AddRange(new object[] {
-            "Normal",
-            "Holy",
-            "Fire",
-            "Nature",
-            "Frost",
-            "Shadow",
-            "Arcane"});
-            this.checkedListBox1.Location = new System.Drawing.Point(162, 347);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(120, 34);
-            this.checkedListBox1.TabIndex = 116;
-            // 
             // CreatureEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2367,6 +2349,5 @@
         private System.Windows.Forms.Label DamageSchoolLabel;
         private System.Windows.Forms.ToolTip Tooltip;
         private System.Windows.Forms.ComboBox IconName;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }
