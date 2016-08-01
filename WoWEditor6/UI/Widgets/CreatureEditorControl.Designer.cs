@@ -124,6 +124,8 @@
             this.ModelId2 = new System.Windows.Forms.TextBox();
             this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             this.tbCombat = new System.Windows.Forms.TabPage();
+            this.DamageSchool = new System.Windows.Forms.ComboBox();
+            this.DamageSchoolLabel = new System.Windows.Forms.Label();
             this.MechanicImmuneMask = new System.Windows.Forms.TextBox();
             this.label78 = new System.Windows.Forms.Label();
             this.tbStats = new System.Windows.Forms.TabPage();
@@ -141,8 +143,6 @@
             this.label41 = new System.Windows.Forms.Label();
             this.PickpocketLootId = new System.Windows.Forms.TextBox();
             this.tbQuestInfo = new System.Windows.Forms.TabPage();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
             this.KillCredit2 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -192,6 +192,8 @@
             this.AiName = new System.Windows.Forms.TextBox();
             this.label69 = new System.Windows.Forms.Label();
             this.lbMenu = new System.Windows.Forms.ListBox();
+            this.LoadEntry = new System.Windows.Forms.TextBox();
+            this.LoadButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.BaseAtkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAtkSpeed)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -950,6 +952,48 @@
             // Family
             // 
             this.Family.FormattingEnabled = true;
+            this.Family.Items.AddRange(new object[] {
+            "None",
+            "Wolf",
+            "Cat",
+            "Spider",
+            "Bear",
+            "Boar",
+            "Crocolisk",
+            "CarrionBird",
+            "Crab",
+            "Gorrila",
+            "Raptor",
+            "Tallstrider",
+            "Felhunter",
+            "Voidwalker",
+            "Succubus",
+            "Doomguard",
+            "Scorpid",
+            "Turtle",
+            "Imp",
+            "Bat",
+            "Hyena",
+            "Owl",
+            "WindSerpent",
+            "RemoteControl",
+            "Felguard",
+            "Dragonhawk",
+            "Ravager",
+            "WarpStalker",
+            "Sporebat",
+            "NetherRay",
+            "Serpent",
+            "Moth",
+            "Chimaera",
+            "Devilsaur",
+            "Ghoul",
+            "Silithid",
+            "Worm",
+            "Rhino",
+            "Wasp",
+            "CoreHound",
+            "SpiritBeast"});
             this.Family.Location = new System.Drawing.Point(73, 144);
             this.Family.Name = "Family";
             this.Family.Size = new System.Drawing.Size(456, 21);
@@ -959,10 +1003,26 @@
             // 
             this.TypeCreature.BackColor = System.Drawing.SystemColors.Window;
             this.TypeCreature.FormattingEnabled = true;
+            this.TypeCreature.Items.AddRange(new object[] {
+            "None",
+            "Beast",
+            "Dragonkin",
+            "Demon",
+            "Elemental",
+            "Giant",
+            "Undead",
+            "Humanoid",
+            "Critter",
+            "Mechanical",
+            "Notspecified",
+            "Totem",
+            "NonCombatPet",
+            "GasCloud"});
             this.TypeCreature.Location = new System.Drawing.Point(73, 116);
             this.TypeCreature.Name = "TypeCreature";
             this.TypeCreature.Size = new System.Drawing.Size(456, 21);
             this.TypeCreature.TabIndex = 102;
+            this.TypeCreature.SelectedIndexChanged += new System.EventHandler(this.TypeCreature_SelectedIndexChanged);
             // 
             // label23
             // 
@@ -994,6 +1054,12 @@
             // Rank
             // 
             this.Rank.FormattingEnabled = true;
+            this.Rank.Items.AddRange(new object[] {
+            "Normal",
+            "Elite",
+            "RareElite",
+            "Boss",
+            "Rare"});
             this.Rank.Location = new System.Drawing.Point(73, 200);
             this.Rank.Name = "Rank";
             this.Rank.Size = new System.Drawing.Size(456, 21);
@@ -1030,6 +1096,11 @@
             // 
             this.UnitClass.BackColor = System.Drawing.SystemColors.Window;
             this.UnitClass.FormattingEnabled = true;
+            this.UnitClass.Items.AddRange(new object[] {
+            "Warrior",
+            "Paladin",
+            "Rogue",
+            "Mage"});
             this.UnitClass.Location = new System.Drawing.Point(73, 172);
             this.UnitClass.Name = "UnitClass";
             this.UnitClass.Size = new System.Drawing.Size(456, 21);
@@ -1189,6 +1260,8 @@
             // 
             // tbCombat
             // 
+            this.tbCombat.Controls.Add(this.DamageSchool);
+            this.tbCombat.Controls.Add(this.DamageSchoolLabel);
             this.tbCombat.Controls.Add(this.DiffEntry3);
             this.tbCombat.Controls.Add(this.MechanicImmuneMask);
             this.tbCombat.Controls.Add(this.label2);
@@ -1213,6 +1286,32 @@
             this.tbCombat.TabIndex = 2;
             this.tbCombat.Text = "Combat";
             this.tbCombat.UseVisualStyleBackColor = true;
+            // 
+            // DamageSchool
+            // 
+            this.DamageSchool.BackColor = System.Drawing.SystemColors.Window;
+            this.DamageSchool.FormattingEnabled = true;
+            this.DamageSchool.Items.AddRange(new object[] {
+            "Normal",
+            "Holy",
+            "Fire",
+            "Nature",
+            "Frost",
+            "Shadow",
+            "Arcane"});
+            this.DamageSchool.Location = new System.Drawing.Point(127, 259);
+            this.DamageSchool.Name = "DamageSchool";
+            this.DamageSchool.Size = new System.Drawing.Size(402, 21);
+            this.DamageSchool.TabIndex = 115;
+            // 
+            // DamageSchoolLabel
+            // 
+            this.DamageSchoolLabel.AutoSize = true;
+            this.DamageSchoolLabel.Location = new System.Drawing.Point(1, 259);
+            this.DamageSchoolLabel.Name = "DamageSchoolLabel";
+            this.DamageSchoolLabel.Size = new System.Drawing.Size(81, 13);
+            this.DamageSchoolLabel.TabIndex = 114;
+            this.DamageSchoolLabel.Text = "Damage school";
             // 
             // MechanicImmuneMask
             // 
@@ -1382,8 +1481,6 @@
             // 
             // tbQuestInfo
             // 
-            this.tbQuestInfo.Controls.Add(this.label39);
-            this.tbQuestInfo.Controls.Add(this.label16);
             this.tbQuestInfo.Controls.Add(this.KillCredit2);
             this.tbQuestInfo.Controls.Add(this.label10);
             this.tbQuestInfo.Controls.Add(this.label5);
@@ -1394,24 +1491,6 @@
             this.tbQuestInfo.TabIndex = 8;
             this.tbQuestInfo.Text = "Quest Info";
             this.tbQuestInfo.UseVisualStyleBackColor = true;
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(1, 244);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(280, 13);
-            this.label39.TabIndex = 96;
-            this.label39.Text = "* NO LOOT INFORMATION! These are just for the tooltip!";   
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(1, 63);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(67, 13);
-            this.label16.TabIndex = 89;
-            this.label16.Text = "Quest Items*";
             // 
             // KillCredit2
             // 
@@ -1587,6 +1666,11 @@
             // 
             this.TrainerType.BackColor = System.Drawing.SystemColors.Window;
             this.TrainerType.FormattingEnabled = true;
+            this.TrainerType.Items.AddRange(new object[] {
+            "Class",
+            "Mounts",
+            "Tradeskills",
+            "Pets"});
             this.TrainerType.Location = new System.Drawing.Point(96, 256);
             this.TrainerType.Name = "TrainerType";
             this.TrainerType.Size = new System.Drawing.Size(433, 21);
@@ -1675,6 +1759,10 @@
             // MovementType
             // 
             this.MovementType.FormattingEnabled = true;
+            this.MovementType.Items.AddRange(new object[] {
+            "NoMovement",
+            "Random",
+            "Path"});
             this.MovementType.Location = new System.Drawing.Point(96, 4);
             this.MovementType.Name = "MovementType";
             this.MovementType.Size = new System.Drawing.Size(433, 21);
@@ -1718,6 +1806,10 @@
             // InhabitType
             // 
             this.InhabitType.FormattingEnabled = true;
+            this.InhabitType.Items.AddRange(new object[] {
+            "Ground",
+            "Water",
+            "Flying"});
             this.InhabitType.Location = new System.Drawing.Point(96, 60);
             this.InhabitType.Name = "InhabitType";
             this.InhabitType.Size = new System.Drawing.Size(433, 21);
@@ -1915,10 +2007,30 @@
             this.lbMenu.TabIndex = 122;
             this.lbMenu.SelectedIndexChanged += new System.EventHandler(this.lbMenu_SelectedIndexChanged);
             // 
+            // LoadEntry
+            // 
+            this.LoadEntry.Location = new System.Drawing.Point(3, 159);
+            this.LoadEntry.Name = "LoadEntry";
+            this.LoadEntry.Size = new System.Drawing.Size(71, 20);
+            this.LoadEntry.TabIndex = 123;
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.BackColor = System.Drawing.Color.Transparent;
+            this.LoadButton.Location = new System.Drawing.Point(79, 159);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(71, 20);
+            this.LoadButton.TabIndex = 124;
+            this.LoadButton.Text = "Load";
+            this.LoadButton.UseVisualStyleBackColor = false;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
             // CreatureEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LoadButton);
+            this.Controls.Add(this.LoadEntry);
             this.Controls.Add(this.lbMenu);
             this.Controls.Add(this.tbcEditor);
             this.Controls.Add(this.btnSave);
@@ -1957,6 +2069,7 @@
             this.tbAI.ResumeLayout(false);
             this.tbAI.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -2073,8 +2186,6 @@
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.TextBox PickpocketLootId;
         private System.Windows.Forms.TabPage tbQuestInfo;
-        private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox KillCredit2;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label5;
@@ -2126,5 +2237,9 @@
         private System.Windows.Forms.Label label78;
         private System.Windows.Forms.ListBox lbMenu;
         private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.TextBox LoadEntry;
+        private System.Windows.Forms.Button LoadButton;
+        private System.Windows.Forms.ComboBox DamageSchool;
+        private System.Windows.Forms.Label DamageSchoolLabel;
     }
 }

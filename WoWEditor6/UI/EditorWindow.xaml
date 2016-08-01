@@ -30,7 +30,7 @@
             </MenuItem>
             <MenuItem Header="Database Editor" RenderTransformOrigin="-0.653,0.55">
                 <MenuItem Header="Open database configuration" Click="DatabaseConfiguration_Click"/>
-                <MenuItem Header="Creature editor" Click="CreatureEditor_Click"/>
+                <MenuItem Header="Creature Editor" Click="CreatureEditor_Click"/>
             </MenuItem>
             <MenuItem Header="_Debug" RenderTransformOrigin="-1.97,0.5">
                 <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"/>

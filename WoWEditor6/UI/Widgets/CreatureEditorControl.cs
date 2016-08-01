@@ -65,7 +65,7 @@ namespace WoWEditor6.UI.Dialogs
             creature.BaseAttackTime = int.Parse(BaseAtkSpeed.Text);
             creature.BaseVariance = float.Parse(BaseAtkSpeedVariance.Text);
             creature.DamageModifier = float.Parse(DamageMod.Text);
-            // TODO: creature.DamageSchool = 
+            creature.DamageSchool = (Storage.Database.WotLk.TrinityCore.DamageSchool)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.DamageSchool), DamageSchool.Text);
             creature.DifficultyEntry1 = int.Parse(DiffEntry1.Text);
             creature.DifficultyEntry2 = int.Parse(DiffEntry2.Text);
             creature.DifficultyEntry3 = int.Parse(DiffEntry3.Text);
@@ -150,7 +150,7 @@ namespace WoWEditor6.UI.Dialogs
             BaseAtkSpeed.Text = creature.BaseAttackTime.ToString();
             BaseAtkSpeedVariance.Text = creature.BaseVariance.ToString();
             DamageMod.Text = creature.DamageModifier.ToString();
-            // TODO: DamageSchool.Text = creature.DamageSchool.ToString();
+            DamageSchool.Text = creature.DamageSchool.ToString();
             DiffEntry1.Text = creature.DifficultyEntry1.ToString();
             DiffEntry2.Text = creature.DifficultyEntry2.ToString();
             DiffEntry3.Text = creature.DifficultyEntry3.ToString();
@@ -230,6 +230,29 @@ namespace WoWEditor6.UI.Dialogs
         private void btnShowModelId1_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void TypeCreature_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            int entry;
+
+            if(LoadEntry.Text != "")
+            {
+                Storage.Database.WotLk.TrinityCore.Creature creature = new Storage.Database.WotLk.TrinityCore.Creature();
+                entry = int.Parse(LoadEntry.Text);
+              
+                creature = Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.GetCreatureByEntry(entry);
+
+                if(creature != null)
+                {
+                    loadCreature(creature);
+                }
+            }
         }
     }
 
