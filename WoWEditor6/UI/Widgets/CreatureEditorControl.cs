@@ -138,9 +138,16 @@ namespace WoWEditor6.UI.Dialogs
             creature.VerifiedBuild = int.Parse(VerifiedBuild.Text);
 
             if(Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.GetCreatureByEntry(creature.EntryId) == null)
+            {
                 Storage.Database.MySqlConnector.Instance.Query(creature.GetInsertSqlQuery());
+                Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.addCreatedCreature(creature);
+                MessageBox.Show("Inserted");
+            }                
             else
+            {
                 Storage.Database.MySqlConnector.Instance.Query(creature.GetUpdateSqlQuery());
+                MessageBox.Show("Updated");
+            }
         }
 
         public void loadCreature(Storage.Database.WotLk.TrinityCore.Creature creature)

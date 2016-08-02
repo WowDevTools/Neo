@@ -83,7 +83,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 
         public string GetUpdateSqlQuery()
         {
-            //Those line avoid sql error when the computer by-default separator is the comma ( like in belgium )
+            //These line avoid sql error when the computer by-default separator is the comma ( like in belgium )
             System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
             customCulture.NumberFormat.NumberDecimalSeparator = ".";
             System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
@@ -93,7 +93,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 
         public string GetInsertSqlQuery()
         {
-            //Those line avoid sql error when the computer by-default separator is the comma ( like in belgium )
+            //These line avoid sql error when the computer by-default separator is the comma ( like in belgium )
             System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
             customCulture.NumberFormat.NumberDecimalSeparator = ".";
             System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;

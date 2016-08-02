@@ -8,12 +8,17 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
     class CreatureManager : Singleton<CreatureManager>, ICreatureManager
     {
+        //These line avoid sql error when the computer by-default separator is the comma ( like in belgium )
         private readonly List<Creature> mCreatures = new List<Creature>();
         private readonly List<SpawnedCreature> mSpawnedCreatures = new List<SpawnedCreature>();
         private readonly List<int> mLoadedMaps = new List<int>();
 
         public void LoadCreatures(DataTable pDataTable)
         {
+            System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+
             foreach (DataRow dRow in pDataTable.Rows)
             {
                 var creature = new Creature()
@@ -139,6 +144,11 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                 }
                 mLoadedMaps.Add(pMapId);
             }
+        }
+
+        public void addCreatedCreature(Creature creature)
+        {
+            mCreatures.Add(creature);
         }
 
         public Creature GetCreatureByEntry(int pEntryId)
