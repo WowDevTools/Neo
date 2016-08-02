@@ -22,7 +22,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public int MaxLevel { get; set; }
         public int Experience { get; set; }
         public int Faction { get; set; }
-        public NpcFlag NpcFlag { get; set; }
+        public uint NpcFlag { get; set; }
         public float SpeedWalk { get; set; }
         public float SpeedRun { get; set; }
         public float Scale { get; set; }
@@ -33,16 +33,16 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public float BaseVariance { get; set; }
         public float RangeVariance { get; set; }
         public UnitClass UnitClass { get; set; }
-        public UnitFlags UnitFlags { get; set; }
-        public UnitFlags2 UnitFlags2 { get; set; }
-        public DynamicFlags DynamicFlags { get; set; }
+        public uint UnitFlags { get; set; }
+        public uint UnitFlags2 { get; set; }
+        public uint DynamicFlags { get; set; }
         public Family Family { get; set; }
         public TrainerType TrainerType { get; set; }
         public int TrainerSpell { get; set; }
         public int TrainerClass { get; set; }
         public int TrainerRace { get; set; }
         public CreatureType Type { get; set; }
-        public TypeFlags TypeFlags { get; set; }
+        public uint TypeFlags { get; set; }
         public int LootId { get; set; }
         public int PickPocketLoot { get; set; }
         public int SkinLoot { get; set; }
@@ -66,7 +66,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public int MaxGold { get; set; }
         public string AiName { get; set; }
         public MovementType MovementType { get; set; }
-        public InhabitType InhabitType { get; set; }
+        public int InhabitType { get; set; }
         public float HoverHeight { get; set; }
         public float HealthModifier { get; set; }
         public float ManaModifier { get; set; }
@@ -76,8 +76,8 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         public int RacialLeader { get; set; }
         public int MovementId { get; set; }
         public int RegenHealth { get; set; }
-        public MechanicImmuneMask MechanicImmuneMask { get; set; }
-        public FlagsExtra FlagsExtra { get; set; }
+        public uint MechanicImmuneMask { get; set; }
+        public uint FlagsExtra { get; set; }
         public string ScriptName { get; set; }
         public int VerifiedBuild { get; set; }
 

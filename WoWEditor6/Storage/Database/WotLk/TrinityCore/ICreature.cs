@@ -20,7 +20,7 @@
         int MaxLevel { get; set; }
         int Experience { get; set; }
         int Faction{ get; set; }
-        NpcFlag NpcFlag { get; set; }
+        uint NpcFlag { get; set; }
         float SpeedWalk { get; set; }
         float SpeedRun { get; set; }
         float Scale { get; set; }
@@ -31,16 +31,16 @@
         float BaseVariance { get; set; }
         float RangeVariance { get; set; }
         UnitClass UnitClass { get; set; }
-        UnitFlags UnitFlags { get; set; }
-        UnitFlags2 UnitFlags2 { get; set; }
-        DynamicFlags DynamicFlags { get; set; }
+        uint UnitFlags { get; set; }
+        uint UnitFlags2 { get; set; }
+        uint DynamicFlags { get; set; }
         Family Family { get; set; }
         TrainerType TrainerType { get; set; }
         int TrainerSpell { get; set; }
         int TrainerClass { get; set; }
         int TrainerRace { get; set; }
         CreatureType Type { get; set; }
-        TypeFlags TypeFlags { get; set; }
+        uint TypeFlags { get; set; }
         int LootId { get; set; }
         int PickPocketLoot { get; set; }
         int SkinLoot { get; set; }
@@ -64,7 +64,7 @@
         int MaxGold { get; set; }
         string AiName { get; set; }
         MovementType MovementType { get; set; }
-        InhabitType InhabitType { get; set; }
+        int InhabitType { get; set; }
         float HoverHeight { get; set; }
         float HealthModifier { get; set; }
         float ManaModifier { get; set; }
@@ -74,8 +74,8 @@
         int RacialLeader{ get; set; }
         int MovementId { get; set; }
         int RegenHealth { get; set; }
-        MechanicImmuneMask MechanicImmuneMask { get; set; }
-        FlagsExtra FlagsExtra { get; set; }
+        uint MechanicImmuneMask { get; set; }
+        uint FlagsExtra { get; set; }
         string ScriptName{ get; set; }
         int VerifiedBuild { get; set; }
         string GetUpdateSqlQuery();
@@ -135,7 +135,7 @@
         PetInCombat = 0x800,
         PvP = 0x1000,
         Silenced = 0x2000,
-        Unknown14 = 0x4000,
+        CannotSwim = 0x4000,
         Unknown15 = 0x8000,
         Unknown16 = 0x10000,
         Pacified = 0x20000,
@@ -288,28 +288,29 @@
         None = 0x0,
         Tameable = 0x1,
         Ghost = 0x2,
-        Unknown3 = 0x4,
-        Unknown4 = 0x8,
-        Unknown5 = 0x10,
+        Boss = 0x4,
+        DoNotPlayWoundParryAnimation = 0x8,
+        HideFactionTooltip = 0x10,
         Unknown6 = 0x20,
-        Unknown7 = 0x40,
+        SpellAttackable = 0x40,
         DeadInteract = 0x80,
         HerbLoot = 0x100,
         MiningLoot = 0x200,
-        Unknown11 = 0x400,
+        DontLogDeath = 0x400,
         MountedCombat = 0x800,
         AidPlayers = 0x1000,
-        Unknown14 = 0x2000,
-        Unknown15 = 0x4000,
+        IsPetBarUsed = 0x2000,
+        MaskUid = 0x4000,
         EngineerLoot = 0x8000,
         Exotic = 0x10000,
-        Unknown18 = 0x20000,
-        Unknown19 = 0x40000,
-        Unknown20 = 0x80000,
-        Unknown21 = 0x100000,
-        Unknown22 = 0x200000,
-        Unknown23 = 0x400000,
-        Unknown24 = 0x800000,
+        UseDefaultCollisionBox = 0x20000,
+        IsSiegeWeapon = 0x40000,
+        ProjectileCollision = 0x80000,
+        HideNameplate = 0x100000,
+        DoNotPlayMountedAnimation = 0x200000,
+        IsLinkAll = 0x400000,
+        InteractOnlyWithCreator = 0x800000,
+        ForceGossip = 0x8000000
     }
 
     public enum InhabitType
@@ -372,7 +373,10 @@
         NoCrit = 0x20000,
         NoSkillgain = 0x40000,
         TauntDiminish = 0x80000,
-        AllDiminish = 0x100000
-        //DungeonBoss - Will crash the core if set
+        AllDiminish = 0x100000,
+        NoPlayerDamageReq = 0x200000,
+        //DungeonBoss = 0x10000000 - Will crash the core if set
+        IgnorePathFinding = 0x20000000,
+        ImmunityKnockback = 0x40000000
     } 
 }

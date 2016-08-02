@@ -80,12 +80,6 @@
             this.ExperienceMod = new System.Windows.Forms.TextBox();
             this.label68 = new System.Windows.Forms.Label();
             this.label80 = new System.Windows.Forms.Label();
-            this.FlagsExtra = new System.Windows.Forms.TextBox();
-            this.UnitFlags2 = new System.Windows.Forms.TextBox();
-            this.TypeFlags = new System.Windows.Forms.TextBox();
-            this.NpcFlag = new System.Windows.Forms.TextBox();
-            this.DynamicFlags = new System.Windows.Forms.TextBox();
-            this.UnitFlags = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.tbcEditor = new System.Windows.Forms.TabControl();
             this.tbNpcInfo = new System.Windows.Forms.TabPage();
@@ -126,7 +120,6 @@
             this.tbCombat = new System.Windows.Forms.TabPage();
             this.DamageSchool = new System.Windows.Forms.ComboBox();
             this.DamageSchoolLabel = new System.Windows.Forms.Label();
-            this.MechanicImmuneMask = new System.Windows.Forms.TextBox();
             this.label78 = new System.Windows.Forms.Label();
             this.tbStats = new System.Windows.Forms.TabPage();
             this.label18 = new System.Windows.Forms.Label();
@@ -148,7 +141,14 @@
             this.label5 = new System.Windows.Forms.Label();
             this.KillCredit1 = new System.Windows.Forms.TextBox();
             this.tbFlags = new System.Windows.Forms.TabPage();
+            this.FlagsExtra = new System.Windows.Forms.CheckedListBox();
+            this.UnitFlags2 = new System.Windows.Forms.CheckedListBox();
+            this.UnitFlags = new System.Windows.Forms.CheckedListBox();
+            this.DynamicFlags = new System.Windows.Forms.CheckedListBox();
+            this.TypeFlags = new System.Windows.Forms.CheckedListBox();
+            this.NpcFlag = new System.Windows.Forms.CheckedListBox();
             this.tbOptional = new System.Windows.Forms.TabPage();
+            this.InhabitType = new System.Windows.Forms.CheckedListBox();
             this.IconName = new System.Windows.Forms.ComboBox();
             this.TrainerRace = new System.Windows.Forms.TextBox();
             this.RegenHealth = new System.Windows.Forms.ComboBox();
@@ -173,7 +173,6 @@
             this.label62 = new System.Windows.Forms.Label();
             this.RacialLeader = new System.Windows.Forms.TextBox();
             this.label63 = new System.Windows.Forms.Label();
-            this.InhabitType = new System.Windows.Forms.ComboBox();
             this.HoverHeight = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label57 = new System.Windows.Forms.Label();
@@ -196,6 +195,7 @@
             this.LoadEntry = new System.Windows.Forms.TextBox();
             this.LoadButton = new System.Windows.Forms.Button();
             this.Tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.MechanicImmuneMask = new System.Windows.Forms.CheckedListBox();
             this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             ((System.ComponentModel.ISupportInitialize)(this.BaseAtkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAtkSpeed)).BeginInit();
@@ -241,7 +241,7 @@
             // DiffEntry3
             // 
             this.DiffEntry3.BackColor = System.Drawing.SystemColors.Window;
-            this.DiffEntry3.Location = new System.Drawing.Point(127, 228);
+            this.DiffEntry3.Location = new System.Drawing.Point(127, 267);
             this.DiffEntry3.Name = "DiffEntry3";
             this.DiffEntry3.Size = new System.Drawing.Size(402, 20);
             this.DiffEntry3.TabIndex = 5;
@@ -250,7 +250,7 @@
             // DiffEntry2
             // 
             this.DiffEntry2.BackColor = System.Drawing.SystemColors.Window;
-            this.DiffEntry2.Location = new System.Drawing.Point(127, 200);
+            this.DiffEntry2.Location = new System.Drawing.Point(127, 239);
             this.DiffEntry2.Name = "DiffEntry2";
             this.DiffEntry2.Size = new System.Drawing.Size(402, 20);
             this.DiffEntry2.TabIndex = 4;
@@ -259,7 +259,7 @@
             // DiffEntry1
             // 
             this.DiffEntry1.BackColor = System.Drawing.SystemColors.Window;
-            this.DiffEntry1.Location = new System.Drawing.Point(127, 172);
+            this.DiffEntry1.Location = new System.Drawing.Point(127, 211);
             this.DiffEntry1.Name = "DiffEntry1";
             this.DiffEntry1.Size = new System.Drawing.Size(402, 20);
             this.DiffEntry1.TabIndex = 3;
@@ -268,7 +268,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1, 231);
+            this.label4.Location = new System.Drawing.Point(1, 270);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 13);
             this.label4.TabIndex = 2;
@@ -279,7 +279,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1, 203);
+            this.label3.Location = new System.Drawing.Point(1, 242);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 1;
@@ -290,7 +290,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1, 175);
+            this.label2.Location = new System.Drawing.Point(1, 214);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 13);
             this.label2.TabIndex = 0;
@@ -301,7 +301,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(1, 397);
+            this.label14.Location = new System.Drawing.Point(1, 423);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(59, 13);
             this.label14.TabIndex = 11;
@@ -311,7 +311,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(1, 35);
+            this.label20.Location = new System.Drawing.Point(1, 72);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(49, 13);
             this.label20.TabIndex = 23;
@@ -464,7 +464,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(1, 91);
+            this.label30.Location = new System.Drawing.Point(1, 232);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(54, 13);
             this.label30.TabIndex = 43;
@@ -475,7 +475,7 @@
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(1, 119);
+            this.label31.Location = new System.Drawing.Point(1, 312);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(60, 13);
             this.label31.TabIndex = 45;
@@ -486,7 +486,7 @@
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(1, 63);
+            this.label32.Location = new System.Drawing.Point(2, 152);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(76, 13);
             this.label32.TabIndex = 47;
@@ -748,55 +748,13 @@
             // label80
             // 
             this.label80.AutoSize = true;
-            this.label80.Location = new System.Drawing.Point(2, 147);
+            this.label80.Location = new System.Drawing.Point(2, 392);
             this.label80.Name = "label80";
             this.label80.Size = new System.Drawing.Size(59, 13);
             this.label80.TabIndex = 101;
             this.label80.Text = "Flags Extra";
             this.Tooltip.SetToolTip(this.label80, "These flags control certain creature specific attributes. Flags can be added toge" +
         "ther to apply more than one.");
-            // 
-            // FlagsExtra
-            // 
-            this.FlagsExtra.Location = new System.Drawing.Point(83, 144);
-            this.FlagsExtra.Name = "FlagsExtra";
-            this.FlagsExtra.Size = new System.Drawing.Size(446, 20);
-            this.FlagsExtra.TabIndex = 117;
-            // 
-            // UnitFlags2
-            // 
-            this.UnitFlags2.Location = new System.Drawing.Point(83, 116);
-            this.UnitFlags2.Name = "UnitFlags2";
-            this.UnitFlags2.Size = new System.Drawing.Size(446, 20);
-            this.UnitFlags2.TabIndex = 116;
-            // 
-            // TypeFlags
-            // 
-            this.TypeFlags.Location = new System.Drawing.Point(83, 4);
-            this.TypeFlags.Name = "TypeFlags";
-            this.TypeFlags.Size = new System.Drawing.Size(446, 20);
-            this.TypeFlags.TabIndex = 113;
-            // 
-            // NpcFlag
-            // 
-            this.NpcFlag.Location = new System.Drawing.Point(83, 32);
-            this.NpcFlag.Name = "NpcFlag";
-            this.NpcFlag.Size = new System.Drawing.Size(446, 20);
-            this.NpcFlag.TabIndex = 112;
-            // 
-            // DynamicFlags
-            // 
-            this.DynamicFlags.Location = new System.Drawing.Point(83, 63);
-            this.DynamicFlags.Name = "DynamicFlags";
-            this.DynamicFlags.Size = new System.Drawing.Size(446, 20);
-            this.DynamicFlags.TabIndex = 114;
-            // 
-            // UnitFlags
-            // 
-            this.UnitFlags.Location = new System.Drawing.Point(83, 88);
-            this.UnitFlags.Name = "UnitFlags";
-            this.UnitFlags.Size = new System.Drawing.Size(446, 20);
-            this.UnitFlags.TabIndex = 115;
             // 
             // btnSave
             // 
@@ -1054,7 +1012,6 @@
             this.TypeCreature.Name = "TypeCreature";
             this.TypeCreature.Size = new System.Drawing.Size(456, 21);
             this.TypeCreature.TabIndex = 102;
-            this.TypeCreature.SelectedIndexChanged += new System.EventHandler(this.TypeCreature_SelectedIndexChanged);
             // 
             // label23
             // 
@@ -1290,10 +1247,10 @@
             // 
             // tbCombat
             // 
+            this.tbCombat.Controls.Add(this.MechanicImmuneMask);
             this.tbCombat.Controls.Add(this.DamageSchool);
             this.tbCombat.Controls.Add(this.DamageSchoolLabel);
             this.tbCombat.Controls.Add(this.DiffEntry3);
-            this.tbCombat.Controls.Add(this.MechanicImmuneMask);
             this.tbCombat.Controls.Add(this.label2);
             this.tbCombat.Controls.Add(this.label4);
             this.tbCombat.Controls.Add(this.label78);
@@ -1329,7 +1286,7 @@
             "Frost",
             "Shadow",
             "Arcane"});
-            this.DamageSchool.Location = new System.Drawing.Point(127, 259);
+            this.DamageSchool.Location = new System.Drawing.Point(127, 298);
             this.DamageSchool.Name = "DamageSchool";
             this.DamageSchool.Size = new System.Drawing.Size(402, 21);
             this.DamageSchool.TabIndex = 115;
@@ -1337,19 +1294,12 @@
             // DamageSchoolLabel
             // 
             this.DamageSchoolLabel.AutoSize = true;
-            this.DamageSchoolLabel.Location = new System.Drawing.Point(1, 259);
+            this.DamageSchoolLabel.Location = new System.Drawing.Point(1, 298);
             this.DamageSchoolLabel.Name = "DamageSchoolLabel";
             this.DamageSchoolLabel.Size = new System.Drawing.Size(81, 13);
             this.DamageSchoolLabel.TabIndex = 114;
             this.DamageSchoolLabel.Text = "Damage school";
             this.Tooltip.SetToolTip(this.DamageSchoolLabel, "Creature\'s melee damage school.");
-            // 
-            // MechanicImmuneMask
-            // 
-            this.MechanicImmuneMask.Location = new System.Drawing.Point(127, 144);
-            this.MechanicImmuneMask.Name = "MechanicImmuneMask";
-            this.MechanicImmuneMask.Size = new System.Drawing.Size(402, 20);
-            this.MechanicImmuneMask.TabIndex = 113;
             // 
             // label78
             // 
@@ -1573,17 +1523,17 @@
             // tbFlags
             // 
             this.tbFlags.Controls.Add(this.FlagsExtra);
+            this.tbFlags.Controls.Add(this.UnitFlags2);
+            this.tbFlags.Controls.Add(this.UnitFlags);
+            this.tbFlags.Controls.Add(this.DynamicFlags);
+            this.tbFlags.Controls.Add(this.TypeFlags);
+            this.tbFlags.Controls.Add(this.NpcFlag);
             this.tbFlags.Controls.Add(this.level300);
             this.tbFlags.Controls.Add(this.label32);
             this.tbFlags.Controls.Add(this.label31);
-            this.tbFlags.Controls.Add(this.UnitFlags);
             this.tbFlags.Controls.Add(this.label30);
-            this.tbFlags.Controls.Add(this.DynamicFlags);
-            this.tbFlags.Controls.Add(this.UnitFlags2);
-            this.tbFlags.Controls.Add(this.NpcFlag);
             this.tbFlags.Controls.Add(this.label80);
             this.tbFlags.Controls.Add(this.label20);
-            this.tbFlags.Controls.Add(this.TypeFlags);
             this.tbFlags.Location = new System.Drawing.Point(4, 22);
             this.tbFlags.Name = "tbFlags";
             this.tbFlags.Size = new System.Drawing.Size(537, 453);
@@ -1591,8 +1541,187 @@
             this.tbFlags.Text = "Flags";
             this.tbFlags.UseVisualStyleBackColor = true;
             // 
+            // FlagsExtra
+            // 
+            this.FlagsExtra.FormattingEnabled = true;
+            this.FlagsExtra.Items.AddRange(new object[] {
+            "None",
+            "InstanceBind",
+            "Civilian",
+            "NoParry",
+            "NoParryHasten",
+            "NoBlock",
+            "NoCrush",
+            "NoXpAtKill",
+            "Trigger",
+            "NoTaunt",
+            "Worldevent",
+            "Guard",
+            "NoCrit",
+            "NoSkillgain",
+            "TauntDiminish",
+            "AllDiminish",
+            "NoPlayerDamageReq",
+            "IgnorePathFinding",
+            "ImmunityKnockback"});
+            this.FlagsExtra.Location = new System.Drawing.Point(83, 392);
+            this.FlagsExtra.Name = "FlagsExtra";
+            this.FlagsExtra.Size = new System.Drawing.Size(446, 49);
+            this.FlagsExtra.TabIndex = 123;
+            // 
+            // UnitFlags2
+            // 
+            this.UnitFlags2.FormattingEnabled = true;
+            this.UnitFlags2.Items.AddRange(new object[] {
+            "None",
+            "FeignDeath",
+            "Unknown1",
+            "IgnoreReputation",
+            "ComprehendLang",
+            "MirrorImage",
+            "ForceMove",
+            "DisarmOffhand",
+            "DisarmRanged",
+            "RegeneratePower",
+            "AllowEnemyInteract",
+            "AllowCheatSpells"});
+            this.UnitFlags2.Location = new System.Drawing.Point(83, 312);
+            this.UnitFlags2.Name = "UnitFlags2";
+            this.UnitFlags2.Size = new System.Drawing.Size(446, 49);
+            this.UnitFlags2.TabIndex = 122;
+            // 
+            // UnitFlags
+            // 
+            this.UnitFlags.FormattingEnabled = true;
+            this.UnitFlags.Items.AddRange(new object[] {
+            "None",
+            "ServerControlled",
+            "NonAttackable",
+            "DisableMove",
+            "PvPAttackable",
+            "Rename",
+            "Preparation",
+            "Unknown6",
+            "NotAttackable1",
+            "ImmuneToPc",
+            "ImmuneToNpc",
+            "Looting",
+            "PetInCombat",
+            "PvP",
+            "Silenced",
+            "CannotSwim",
+            "Unknown15",
+            "Unknown16",
+            "Pacified",
+            "Stunned",
+            "InCombat",
+            "TaxiFlight",
+            "Disarmed",
+            "Confused",
+            "Fleeing",
+            "PlayerControlled",
+            "NotSelectable",
+            "Skinnable",
+            "Mount",
+            "Unknown28",
+            "Unknown29",
+            "Sheathe",
+            "Unknown31"});
+            this.UnitFlags.Location = new System.Drawing.Point(83, 232);
+            this.UnitFlags.Name = "UnitFlags";
+            this.UnitFlags.Size = new System.Drawing.Size(446, 49);
+            this.UnitFlags.TabIndex = 121;
+            // 
+            // DynamicFlags
+            // 
+            this.DynamicFlags.FormattingEnabled = true;
+            this.DynamicFlags.Items.AddRange(new object[] {
+            "None",
+            "Lootable",
+            "TrackUnit",
+            "Tapped",
+            "TappedByPlayer",
+            "SpecialInfo",
+            "Dead",
+            "ReferAFriend",
+            "TappedByAllThreatList"});
+            this.DynamicFlags.Location = new System.Drawing.Point(83, 152);
+            this.DynamicFlags.Name = "DynamicFlags";
+            this.DynamicFlags.Size = new System.Drawing.Size(446, 49);
+            this.DynamicFlags.TabIndex = 120;
+            // 
+            // TypeFlags
+            // 
+            this.TypeFlags.FormattingEnabled = true;
+            this.TypeFlags.Items.AddRange(new object[] {
+            "None",
+            "Tameable",
+            "Ghost",
+            "Boss",
+            "DoNotPlayWoundParryAnimation",
+            "HideFactionTooltip",
+            "Unknown6",
+            "SpellAttackable",
+            "DeadInteract",
+            "HerbLoot",
+            "MiningLoot",
+            "DontLogDeath",
+            "MountedCombat",
+            "AidPlayers",
+            "IsPetBarUsed",
+            "MaskUid",
+            "EngineerLoot",
+            "Exotic",
+            "UseDefaultCollisionBox",
+            "IsSiegeWeapon",
+            "ProjectileCollision",
+            "HideNameplate",
+            "DoNotPlayMountedAnimation",
+            "IsLinkAll",
+            "InteractOnlyWithCreator",
+            "ForceGossip"});
+            this.TypeFlags.Location = new System.Drawing.Point(83, 7);
+            this.TypeFlags.Name = "TypeFlags";
+            this.TypeFlags.Size = new System.Drawing.Size(446, 49);
+            this.TypeFlags.TabIndex = 119;
+            // 
+            // NpcFlag
+            // 
+            this.NpcFlag.FormattingEnabled = true;
+            this.NpcFlag.Items.AddRange(new object[] {
+            "None",
+            "Gossip",
+            "QuestGiver",
+            "Trainer",
+            "ClassTrainer",
+            "ProfessionTrainer",
+            "Vendor",
+            "VendorAmmo",
+            "VendorFood",
+            "VendorPoison",
+            "VendorReagent",
+            "Repairer",
+            "FlightMaster",
+            "SpiritHealer",
+            "SpiritGuide",
+            "Innkeeper",
+            "Banker",
+            "Petitioner",
+            "TabardDesigner",
+            "Battlemaster",
+            "Auctioneer",
+            "StableMaster",
+            "GuildBanker",
+            "Spellclick",
+            "Mailbox"});
+            this.NpcFlag.Location = new System.Drawing.Point(83, 72);
+            this.NpcFlag.Name = "NpcFlag";
+            this.NpcFlag.Size = new System.Drawing.Size(446, 49);
+            this.NpcFlag.TabIndex = 118;
+            // 
             // tbOptional
             // 
+            this.tbOptional.Controls.Add(this.InhabitType);
             this.tbOptional.Controls.Add(this.IconName);
             this.tbOptional.Controls.Add(this.TrainerRace);
             this.tbOptional.Controls.Add(this.label14);
@@ -1618,7 +1747,6 @@
             this.tbOptional.Controls.Add(this.label62);
             this.tbOptional.Controls.Add(this.RacialLeader);
             this.tbOptional.Controls.Add(this.label63);
-            this.tbOptional.Controls.Add(this.InhabitType);
             this.tbOptional.Controls.Add(this.HoverHeight);
             this.tbOptional.Controls.Add(this.label13);
             this.tbOptional.Controls.Add(this.label57);
@@ -1629,6 +1757,18 @@
             this.tbOptional.TabIndex = 6;
             this.tbOptional.Text = "Optional";
             this.tbOptional.UseVisualStyleBackColor = true;
+            // 
+            // InhabitType
+            // 
+            this.InhabitType.FormattingEnabled = true;
+            this.InhabitType.Items.AddRange(new object[] {
+            "Ground",
+            "Water",
+            "Flying"});
+            this.InhabitType.Location = new System.Drawing.Point(96, 59);
+            this.InhabitType.Name = "InhabitType";
+            this.InhabitType.Size = new System.Drawing.Size(433, 49);
+            this.InhabitType.TabIndex = 130;
             // 
             // IconName
             // 
@@ -1649,7 +1789,7 @@
             "LootAll",
             "Quest",
             "PVP"});
-            this.IconName.Location = new System.Drawing.Point(96, 397);
+            this.IconName.Location = new System.Drawing.Point(96, 423);
             this.IconName.Name = "IconName";
             this.IconName.Size = new System.Drawing.Size(433, 21);
             this.IconName.TabIndex = 129;
@@ -1657,7 +1797,7 @@
             // TrainerRace
             // 
             this.TrainerRace.BackColor = System.Drawing.SystemColors.Window;
-            this.TrainerRace.Location = new System.Drawing.Point(96, 338);
+            this.TrainerRace.Location = new System.Drawing.Point(96, 364);
             this.TrainerRace.Name = "TrainerRace";
             this.TrainerRace.Size = new System.Drawing.Size(433, 20);
             this.TrainerRace.TabIndex = 58;
@@ -1669,7 +1809,7 @@
             this.RegenHealth.Items.AddRange(new object[] {
             "True",
             "False"});
-            this.RegenHealth.Location = new System.Drawing.Point(96, 366);
+            this.RegenHealth.Location = new System.Drawing.Point(96, 392);
             this.RegenHealth.Name = "RegenHealth";
             this.RegenHealth.Size = new System.Drawing.Size(433, 21);
             this.RegenHealth.TabIndex = 101;
@@ -1677,7 +1817,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(1, 341);
+            this.label37.Location = new System.Drawing.Point(1, 367);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(69, 13);
             this.label37.TabIndex = 57;
@@ -1688,7 +1828,7 @@
             // TrainerClass
             // 
             this.TrainerClass.BackColor = System.Drawing.SystemColors.Window;
-            this.TrainerClass.Location = new System.Drawing.Point(96, 312);
+            this.TrainerClass.Location = new System.Drawing.Point(96, 338);
             this.TrainerClass.Name = "TrainerClass";
             this.TrainerClass.Size = new System.Drawing.Size(433, 20);
             this.TrainerClass.TabIndex = 56;
@@ -1697,7 +1837,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(1, 315);
+            this.label36.Location = new System.Drawing.Point(1, 341);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(68, 13);
             this.label36.TabIndex = 55;
@@ -1707,7 +1847,7 @@
             // label79
             // 
             this.label79.AutoSize = true;
-            this.label79.Location = new System.Drawing.Point(1, 369);
+            this.label79.Location = new System.Drawing.Point(1, 395);
             this.label79.Name = "label79";
             this.label79.Size = new System.Drawing.Size(61, 13);
             this.label79.TabIndex = 99;
@@ -1717,7 +1857,7 @@
             // TrainerSpell
             // 
             this.TrainerSpell.BackColor = System.Drawing.SystemColors.Window;
-            this.TrainerSpell.Location = new System.Drawing.Point(96, 284);
+            this.TrainerSpell.Location = new System.Drawing.Point(96, 310);
             this.TrainerSpell.Name = "TrainerSpell";
             this.TrainerSpell.Size = new System.Drawing.Size(433, 20);
             this.TrainerSpell.TabIndex = 54;
@@ -1726,7 +1866,7 @@
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(1, 287);
+            this.label35.Location = new System.Drawing.Point(1, 313);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(66, 13);
             this.label35.TabIndex = 53;
@@ -1744,7 +1884,7 @@
             "Mounts",
             "Tradeskills",
             "Pets"});
-            this.TrainerType.Location = new System.Drawing.Point(96, 256);
+            this.TrainerType.Location = new System.Drawing.Point(96, 282);
             this.TrainerType.Name = "TrainerType";
             this.TrainerType.Size = new System.Drawing.Size(433, 21);
             this.TrainerType.TabIndex = 52;
@@ -1752,7 +1892,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(1, 259);
+            this.label34.Location = new System.Drawing.Point(1, 285);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(67, 13);
             this.label34.TabIndex = 51;
@@ -1774,7 +1914,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(1, 119);
+            this.label15.Location = new System.Drawing.Point(1, 145);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(83, 13);
             this.label15.TabIndex = 107;
@@ -1785,7 +1925,7 @@
             // GossipMenuId
             // 
             this.GossipMenuId.BackColor = System.Drawing.SystemColors.Window;
-            this.GossipMenuId.Location = new System.Drawing.Point(96, 116);
+            this.GossipMenuId.Location = new System.Drawing.Point(96, 142);
             this.GossipMenuId.Name = "GossipMenuId";
             this.GossipMenuId.Size = new System.Drawing.Size(433, 20);
             this.GossipMenuId.TabIndex = 108;
@@ -1794,7 +1934,7 @@
             // VerifiedBuild
             // 
             this.VerifiedBuild.BackColor = System.Drawing.SystemColors.Window;
-            this.VerifiedBuild.Location = new System.Drawing.Point(96, 228);
+            this.VerifiedBuild.Location = new System.Drawing.Point(96, 254);
             this.VerifiedBuild.Name = "VerifiedBuild";
             this.VerifiedBuild.Size = new System.Drawing.Size(433, 20);
             this.VerifiedBuild.TabIndex = 128;
@@ -1803,7 +1943,7 @@
             // label82
             // 
             this.label82.AutoSize = true;
-            this.label82.Location = new System.Drawing.Point(1, 231);
+            this.label82.Location = new System.Drawing.Point(1, 257);
             this.label82.Name = "label82";
             this.label82.Size = new System.Drawing.Size(68, 13);
             this.label82.TabIndex = 127;
@@ -1814,7 +1954,7 @@
             // PetSpellDataId
             // 
             this.PetSpellDataId.BackColor = System.Drawing.SystemColors.Window;
-            this.PetSpellDataId.Location = new System.Drawing.Point(96, 172);
+            this.PetSpellDataId.Location = new System.Drawing.Point(96, 198);
             this.PetSpellDataId.Name = "PetSpellDataId";
             this.PetSpellDataId.Size = new System.Drawing.Size(433, 20);
             this.PetSpellDataId.TabIndex = 112;
@@ -1823,7 +1963,7 @@
             // VehicleId
             // 
             this.VehicleId.BackColor = System.Drawing.SystemColors.Window;
-            this.VehicleId.Location = new System.Drawing.Point(96, 200);
+            this.VehicleId.Location = new System.Drawing.Point(96, 226);
             this.VehicleId.Name = "VehicleId";
             this.VehicleId.Size = new System.Drawing.Size(433, 20);
             this.VehicleId.TabIndex = 114;
@@ -1864,15 +2004,15 @@
             this.label62.AutoSize = true;
             this.label62.Location = new System.Drawing.Point(1, 63);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(139, 13);
+            this.label62.Size = new System.Drawing.Size(66, 13);
             this.label62.TabIndex = 117;
-            this.label62.Text = "Inhabit Type //bitmask todo";
+            this.label62.Text = "Inhabit Type";
             this.Tooltip.SetToolTip(this.label62, "Controls where the creature can move and attack.");
             // 
             // RacialLeader
             // 
             this.RacialLeader.BackColor = System.Drawing.SystemColors.Window;
-            this.RacialLeader.Location = new System.Drawing.Point(96, 144);
+            this.RacialLeader.Location = new System.Drawing.Point(96, 170);
             this.RacialLeader.Name = "RacialLeader";
             this.RacialLeader.Size = new System.Drawing.Size(433, 20);
             this.RacialLeader.TabIndex = 122;
@@ -1880,7 +2020,7 @@
             // label63
             // 
             this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(1, 91);
+            this.label63.Location = new System.Drawing.Point(1, 117);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(70, 13);
             this.label63.TabIndex = 110;
@@ -1888,22 +2028,10 @@
             this.Tooltip.SetToolTip(this.label63, "Distance above the ground that the creature will hover if it has MOVEMENTFLAG_DIS" +
         "ABLE_GRAVITY enabled.");
             // 
-            // InhabitType
-            // 
-            this.InhabitType.FormattingEnabled = true;
-            this.InhabitType.Items.AddRange(new object[] {
-            "Ground",
-            "Water",
-            "Flying"});
-            this.InhabitType.Location = new System.Drawing.Point(96, 60);
-            this.InhabitType.Name = "InhabitType";
-            this.InhabitType.Size = new System.Drawing.Size(433, 21);
-            this.InhabitType.TabIndex = 118;
-            // 
             // HoverHeight
             // 
             this.HoverHeight.BackColor = System.Drawing.SystemColors.Window;
-            this.HoverHeight.Location = new System.Drawing.Point(96, 88);
+            this.HoverHeight.Location = new System.Drawing.Point(96, 114);
             this.HoverHeight.Name = "HoverHeight";
             this.HoverHeight.Size = new System.Drawing.Size(433, 20);
             this.HoverHeight.TabIndex = 111;
@@ -1912,7 +2040,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(1, 175);
+            this.label13.Location = new System.Drawing.Point(1, 201);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(89, 13);
             this.label13.TabIndex = 109;
@@ -1923,7 +2051,7 @@
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(1, 203);
+            this.label57.Location = new System.Drawing.Point(1, 229);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(56, 13);
             this.label57.TabIndex = 113;
@@ -1933,7 +2061,7 @@
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(1, 147);
+            this.label70.Location = new System.Drawing.Point(1, 173);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(73, 13);
             this.label70.TabIndex = 121;
@@ -2124,6 +2252,47 @@
             // 
             this.Tooltip.ToolTipTitle = "Information";
             // 
+            // MechanicImmuneMask
+            // 
+            this.MechanicImmuneMask.FormattingEnabled = true;
+            this.MechanicImmuneMask.Items.AddRange(new object[] {
+            "None",
+            "Charm",
+            "Disoriented",
+            "Disarm",
+            "Distract",
+            "Fear",
+            "Grip",
+            "Root",
+            "Pacify",
+            "Silence",
+            "Sleep",
+            "Snare",
+            "Stun",
+            "Freeze",
+            "Knockout",
+            "Bleed",
+            "Bandage",
+            "Polymorph",
+            "Banish",
+            "Shield",
+            "Shackle",
+            "Mount",
+            "Infected",
+            "Turn",
+            "Horror",
+            "Invulnerability",
+            "Interrupt",
+            "Daze",
+            "Discovery",
+            "ImmuneShield",
+            "Sapped",
+            "Enraged"});
+            this.MechanicImmuneMask.Location = new System.Drawing.Point(127, 147);
+            this.MechanicImmuneMask.Name = "MechanicImmuneMask";
+            this.MechanicImmuneMask.Size = new System.Drawing.Size(402, 49);
+            this.MechanicImmuneMask.TabIndex = 116;
+            // 
             // modelRenderControl1
             // 
             this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -2232,12 +2401,6 @@
         private System.Windows.Forms.Label label65;
         private System.Windows.Forms.Label label66;
         private System.Windows.Forms.Label label80;
-        private System.Windows.Forms.TextBox NpcFlag;
-        private System.Windows.Forms.TextBox TypeFlags;
-        private System.Windows.Forms.TextBox DynamicFlags;
-        private System.Windows.Forms.TextBox UnitFlags;
-        private System.Windows.Forms.TextBox UnitFlags2;
-        private System.Windows.Forms.TextBox FlagsExtra;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.TabControl tbcEditor;
         private System.Windows.Forms.TabPage tbNpcInfo;
@@ -2316,7 +2479,6 @@
         private System.Windows.Forms.Label label62;
         private System.Windows.Forms.TextBox RacialLeader;
         private System.Windows.Forms.Label label63;
-        private System.Windows.Forms.ComboBox InhabitType;
         private System.Windows.Forms.TextBox HoverHeight;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label57;
@@ -2339,7 +2501,6 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.NumericUpDown Exp;
         private System.Windows.Forms.Label label79;
-        private System.Windows.Forms.TextBox MechanicImmuneMask;
         private System.Windows.Forms.Label label78;
         private System.Windows.Forms.ListBox lbMenu;
         private System.Windows.Forms.Label label50;
@@ -2349,5 +2510,13 @@
         private System.Windows.Forms.Label DamageSchoolLabel;
         private System.Windows.Forms.ToolTip Tooltip;
         private System.Windows.Forms.ComboBox IconName;
+        private System.Windows.Forms.CheckedListBox NpcFlag;
+        private System.Windows.Forms.CheckedListBox TypeFlags;
+        private System.Windows.Forms.CheckedListBox DynamicFlags;
+        private System.Windows.Forms.CheckedListBox FlagsExtra;
+        private System.Windows.Forms.CheckedListBox UnitFlags2;
+        private System.Windows.Forms.CheckedListBox UnitFlags;
+        private System.Windows.Forms.CheckedListBox InhabitType;
+        private System.Windows.Forms.CheckedListBox MechanicImmuneMask;
     }
 }

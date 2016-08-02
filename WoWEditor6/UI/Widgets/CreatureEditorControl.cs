@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.Reflection;
 
 namespace WoWEditor6.UI.Dialogs
 {
@@ -69,25 +70,25 @@ namespace WoWEditor6.UI.Dialogs
             creature.DifficultyEntry1 = int.Parse(DiffEntry1.Text);
             creature.DifficultyEntry2 = int.Parse(DiffEntry2.Text);
             creature.DifficultyEntry3 = int.Parse(DiffEntry3.Text);
-            creature.DynamicFlags = (Storage.Database.WotLk.TrinityCore.DynamicFlags)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.DynamicFlags), DynamicFlags.Text);
+            creature.DynamicFlags = makeFlagOrBitmask(DynamicFlags, typeof(Storage.Database.WotLk.TrinityCore.DynamicFlags));
             creature.EntryId = int.Parse(Entry.Text);
             creature.Experience = int.Parse(Exp.Text);
             creature.ExperienceModifier = float.Parse(ExperienceMod.Text);
             creature.Faction = int.Parse(Faction.Text);
             creature.Family = (Storage.Database.WotLk.TrinityCore.Family)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.Family), Family.Text);
-            creature.FlagsExtra = (Storage.Database.WotLk.TrinityCore.FlagsExtra)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.FlagsExtra), FlagsExtra.Text);
+            creature.FlagsExtra = makeFlagOrBitmask(FlagsExtra, typeof(Storage.Database.WotLk.TrinityCore.FlagsExtra));
             creature.GossipMenuId = int.Parse(GossipMenuId.Text);
             creature.HealthModifier = float.Parse(HealthMod.Text);
             creature.HoverHeight = float.Parse(HoverHeight.Text);
             creature.IconName = IconName.Text;
-            creature.InhabitType = (Storage.Database.WotLk.TrinityCore.InhabitType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.InhabitType), InhabitType.Text);
+            creature.InhabitType = (int)makeFlagOrBitmask(InhabitType, typeof(Storage.Database.WotLk.TrinityCore.InhabitType));
             creature.KillCredit1 = int.Parse(KillCredit1.Text);
             creature.KillCredit2 = int.Parse(KillCredit2.Text);
             creature.LootId = int.Parse(LootId.Text);
             creature.ManaModifier = float.Parse(ManaMod.Text);
             creature.MaxGold = int.Parse(MaxGold.Text);
             creature.MaxLevel = int.Parse(MaxLevel.Text);
-            creature.MechanicImmuneMask = (Storage.Database.WotLk.TrinityCore.MechanicImmuneMask)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.MechanicImmuneMask), MechanicImmuneMask.Text);
+            creature.MechanicImmuneMask = makeFlagOrBitmask(MechanicImmuneMask, typeof(Storage.Database.WotLk.TrinityCore.MechanicImmuneMask));
             creature.MinGold = int.Parse(MinGold.Text);
             creature.MinLevel = int.Parse(MinLevel.Text);
             creature.ModelId1 = int.Parse(ModelId1.Text);
@@ -97,7 +98,7 @@ namespace WoWEditor6.UI.Dialogs
             creature.MovementId = int.Parse(MovementId.Text);
             creature.MovementType = (Storage.Database.WotLk.TrinityCore.MovementType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.MovementType), MovementType.Text);
             creature.Name = NameCreature.Text;
-            creature.NpcFlag = (Storage.Database.WotLk.TrinityCore.NpcFlag)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.NpcFlag), NpcFlag.Text);
+            creature.NpcFlag = makeFlagOrBitmask(NpcFlag, typeof(Storage.Database.WotLk.TrinityCore.NpcFlag));
             creature.PetSpellDataId = int.Parse(PetSpellDataId.Text);
             creature.PickPocketLoot = int.Parse(PickpocketLootId.Text);
             creature.RacialLeader = int.Parse(RacialLeader.Text);
@@ -130,10 +131,10 @@ namespace WoWEditor6.UI.Dialogs
             creature.TrainerSpell = int.Parse(TrainerSpell.Text);
             creature.TrainerType = (Storage.Database.WotLk.TrinityCore.TrainerType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.TrainerType), TrainerType.Text);
             creature.Type = (Storage.Database.WotLk.TrinityCore.CreatureType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.CreatureType), TypeCreature.Text);
-            creature.TypeFlags = (Storage.Database.WotLk.TrinityCore.TypeFlags)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.TypeFlags), TypeFlags.Text);
+            creature.TypeFlags = makeFlagOrBitmask(TypeFlags, typeof(Storage.Database.WotLk.TrinityCore.TypeFlags));
             creature.UnitClass = (Storage.Database.WotLk.TrinityCore.UnitClass)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.UnitClass), UnitClass.Text);
-            creature.UnitFlags = (Storage.Database.WotLk.TrinityCore.UnitFlags)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.UnitFlags), UnitFlags.Text);
-            creature.UnitFlags2 = (Storage.Database.WotLk.TrinityCore.UnitFlags2)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.UnitFlags2), UnitFlags2.Text);
+            creature.UnitFlags = makeFlagOrBitmask(UnitFlags, typeof(Storage.Database.WotLk.TrinityCore.UnitFlags));
+            creature.UnitFlags2 = makeFlagOrBitmask(UnitFlags2, typeof(Storage.Database.WotLk.TrinityCore.UnitFlags2));
             creature.VehicleId = int.Parse(VehicleId.Text);
             creature.VerifiedBuild = int.Parse(VerifiedBuild.Text);
 
@@ -154,25 +155,25 @@ namespace WoWEditor6.UI.Dialogs
             DiffEntry1.Text = creature.DifficultyEntry1.ToString();
             DiffEntry2.Text = creature.DifficultyEntry2.ToString();
             DiffEntry3.Text = creature.DifficultyEntry3.ToString();
-            DynamicFlags.Text = creature.DynamicFlags.ToString();
+            checkFlagOrBitmask(DynamicFlags, typeof(Storage.Database.WotLk.TrinityCore.DynamicFlags), creature.DynamicFlags);
             Entry.Text = creature.EntryId.ToString();
             Exp.Text = creature.Experience.ToString();
             ExperienceMod.Text = creature.ExperienceModifier.ToString();
             Faction.Text = creature.Faction.ToString();
             Family.Text = creature.Family.ToString();
-            FlagsExtra.Text = creature.FlagsExtra.ToString();
+            checkFlagOrBitmask(FlagsExtra, typeof(Storage.Database.WotLk.TrinityCore.FlagsExtra), creature.FlagsExtra);
             GossipMenuId.Text = creature.GossipMenuId.ToString();
             HealthMod.Text = creature.HealthModifier.ToString();
             HoverHeight.Text = creature.HoverHeight.ToString();
             IconName.Text = creature.IconName.ToString();
-            InhabitType.Text = creature.InhabitType.ToString();
+            checkFlagOrBitmask(InhabitType, typeof(Storage.Database.WotLk.TrinityCore.InhabitType), (uint)creature.InhabitType);
             KillCredit1.Text = creature.KillCredit1.ToString();
             KillCredit2.Text = creature.KillCredit2.ToString();
             LootId.Text = creature.LootId.ToString();
             ManaMod.Text = creature.ManaModifier.ToString();
             MaxGold.Text = creature.MaxGold.ToString();
             MaxLevel.Text = creature.MaxLevel.ToString();
-            MechanicImmuneMask.Text = creature.MechanicImmuneMask.ToString();
+            checkFlagOrBitmask(MechanicImmuneMask, typeof(Storage.Database.WotLk.TrinityCore.MechanicImmuneMask), creature.MechanicImmuneMask);
             MinGold.Text = creature.MinGold.ToString();
             MinLevel.Text = creature.MinLevel.ToString();
             ModelId1.Text = creature.ModelId1.ToString();
@@ -182,6 +183,7 @@ namespace WoWEditor6.UI.Dialogs
             MovementId.Text = creature.MovementId.ToString();
             MovementType.Text = creature.MovementType.ToString();
             NameCreature.Text = creature.Name.ToString();
+            checkFlagOrBitmask(UnitFlags2, typeof(Storage.Database.WotLk.TrinityCore.UnitFlags2), creature.UnitFlags2);
             NpcFlag.Text = creature.NpcFlag.ToString();
             PetSpellDataId.Text = creature.PetSpellDataId.ToString();
             PickpocketLootId.Text = creature.PickPocketLoot.ToString();
@@ -214,10 +216,10 @@ namespace WoWEditor6.UI.Dialogs
             TrainerSpell.Text = creature.TrainerSpell.ToString();
             TrainerType.Text = creature.TrainerType.ToString();
             TypeCreature.Text = creature.Type.ToString();
-            TypeFlags.Text = creature.TypeFlags.ToString();
+            checkFlagOrBitmask(TypeFlags, typeof(Storage.Database.WotLk.TrinityCore.TypeFlags),creature.TypeFlags);
             UnitClass.Text = creature.UnitClass.ToString();
-            UnitFlags.Text = creature.UnitFlags.ToString();
-            UnitFlags2.Text = creature.UnitFlags2.ToString();
+            checkFlagOrBitmask(UnitFlags, typeof(Storage.Database.WotLk.TrinityCore.UnitFlags), creature.UnitFlags);
+            checkFlagOrBitmask(UnitFlags2, typeof(Storage.Database.WotLk.TrinityCore.UnitFlags2), creature.UnitFlags2);
             VehicleId.Text = creature.VehicleId.ToString();
             VerifiedBuild.Text = creature.VerifiedBuild.ToString();
         }
@@ -227,15 +229,40 @@ namespace WoWEditor6.UI.Dialogs
             tbcEditor.SelectedIndex = lbMenu.SelectedIndex;
         }
 
-        private void btnShowModelId1_Click_1(object sender, EventArgs e)
+        private uint makeFlagOrBitmask(CheckedListBox list, Type e)
         {
+            if (!e.IsEnum)
+                return 0;
 
+            uint myFlags = 0x0;
+
+            foreach (Object item in list.CheckedItems)
+            {
+                myFlags += Convert.ToUInt32(Enum.Parse(e, item.ToString()));
+            }
+
+            return myFlags;
         }
 
-        private void TypeCreature_SelectedIndexChanged(object sender, EventArgs e)
+        private void checkFlagOrBitmask(CheckedListBox list, Type e, uint value)
         {
+            if (!e.IsEnum)
+                return;
 
+            var values = Enum.GetValues(e);
+
+            for(int i = values.Length-1;i>0;i--)
+            {
+                uint val = Convert.ToUInt32(values.GetValue(i));
+                if(val <= value)
+                {
+                    list.SetItemCheckState(i,CheckState.Checked);
+                    value -= val;
+                }
+            }
         }
+
+
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
