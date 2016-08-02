@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
 
 namespace WoWEditor6.UI.Dialogs
 {
@@ -104,7 +103,7 @@ namespace WoWEditor6.UI.Dialogs
             creature.RacialLeader = int.Parse(RacialLeader.Text);
             creature.RangeAttackTime = int.Parse(RangeAtkSpeed.Text);
             creature.RangeVariance = float.Parse(RangeAtkSpeedVariance.Text);
-            creature.Rank = (Storage.Database.WotLk.TrinityCore.Rank)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.Rank), Rank.Text);
+            creature.Rank = (Storage.Database.WotLk.TrinityCore.Rank)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.Rank), Rank.Text);           
             creature.RegenHealth = int.Parse(RegenHealth.Text);
             creature.Resistance1 = int.Parse(ResHoly.Text);
             creature.Resistance2 = int.Parse(ResFire.Text);
@@ -249,6 +248,8 @@ namespace WoWEditor6.UI.Dialogs
             if (!e.IsEnum)
                 return;
 
+            list.ClearSelected();
+
             var values = Enum.GetValues(e);
 
             for(int i = values.Length-1;i>0;i--)
@@ -268,13 +269,18 @@ namespace WoWEditor6.UI.Dialogs
         {
             if (LoadEntry.Text != "")
             {
-                Storage.Database.WotLk.TrinityCore.Creature creature = new Storage.Database.WotLk.TrinityCore.Creature();
-              
-                creature = Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.GetCreatureByEntry(int.Parse(LoadEntry.Text));
-
-                if(creature != null)
+                if (Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.GetCreatureByEntry(Convert.ToInt32(LoadEntry.Text)) == null)
                 {
-                    loadCreature(creature);
+                    MessageBox.Show("There is no creature with this id.");
+                }
+
+                Storage.Database.WotLk.TrinityCore.Creature creatureLoaded = new Storage.Database.WotLk.TrinityCore.Creature();
+
+                creatureLoaded = Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.GetCreatureByEntry(int.Parse(LoadEntry.Text));
+
+                if(creatureLoaded != null)
+                {
+                    loadCreature(creatureLoaded);
                 }
             }
         }

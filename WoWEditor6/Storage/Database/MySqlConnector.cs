@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Windows.Forms;
 
 namespace WoWEditor6.Storage.Database
 {
@@ -83,6 +84,15 @@ namespace WoWEditor6.Storage.Database
             if(mMySqlConn.State == ConnectionState.Open)
             {
                 MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(pQuery, mMySqlConn);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
                 return true;
             }
             return false;
