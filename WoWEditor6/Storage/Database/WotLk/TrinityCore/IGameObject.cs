@@ -16,7 +16,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         string CastBarCaption { get; set; }
         string Unknown1 { get; set; }
         int Faction { get; set; }
-        Flags Flags { get; set; }
+        uint Flags { get; set; }
         float Size { get; set; }
         int Data0 { get; set; }
         int Data1 { get; set; }

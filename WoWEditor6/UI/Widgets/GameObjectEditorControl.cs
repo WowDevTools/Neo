@@ -43,7 +43,67 @@ namespace WoWEditor6.UI.Dialog
 
         public void loadGameObject(Storage.Database.WotLk.TrinityCore.GameObject gameObject)
         {
-           
+            Entry.Text = gameObject.EntryId.ToString();
+            Type.Text = gameObject.Type.ToString();
+            Type_SelectedIndexChanged(this, EventArgs.Empty);
+            ModelId.Text = gameObject.DisplayId.ToString();
+            GameObjectName.Text = gameObject.Name;
+            IconName.Text = gameObject.IconName;
+            CastBarCaption.Text = gameObject.CastBarCaption;
+            Faction.Text = gameObject.Faction.ToString();
+            checkFlagOrBitmask(Flags, typeof(Storage.Database.WotLk.TrinityCore.Flags), gameObject.Flags);
+            GameObjectSize.Text = gameObject.Size.ToString();
+            if(tbData.Controls.ContainsKey("Data0"))
+                tbData.Controls.Find("Data0", false)[0].Text = gameObject.Data0.ToString();
+            if (tbData.Controls.ContainsKey("Data1"))
+                tbData.Controls.Find("Data1", false)[0].Text = gameObject.Data1.ToString();
+            if (tbData.Controls.ContainsKey("Data2"))
+                tbData.Controls.Find("Data2", false)[0].Text = gameObject.Data2.ToString();
+            if (tbData.Controls.ContainsKey("Data3"))
+                tbData.Controls.Find("Data3", false)[0].Text = gameObject.Data3.ToString();
+            if (tbData.Controls.ContainsKey("Data4"))
+                tbData.Controls.Find("Data4", false)[0].Text = gameObject.Data4.ToString();
+            if (tbData.Controls.ContainsKey("Data5"))
+                tbData.Controls.Find("Data5", false)[0].Text = gameObject.Data5.ToString();
+            if (tbData.Controls.ContainsKey("Data6"))
+                tbData.Controls.Find("Data6", false)[0].Text = gameObject.Data6.ToString();
+            if (tbData.Controls.ContainsKey("Data7"))
+                tbData.Controls.Find("Data7", false)[0].Text = gameObject.Data7.ToString();
+            if (tbData.Controls.ContainsKey("Data8"))
+                tbData.Controls.Find("Data8", false)[0].Text = gameObject.Data8.ToString();
+            if (tbData.Controls.ContainsKey("Data9"))
+                tbData.Controls.Find("Data9", false)[0].Text = gameObject.Data9.ToString();
+            if (tbData.Controls.ContainsKey("Data10"))
+                tbData.Controls.Find("Data10", false)[0].Text = gameObject.Data10.ToString();
+            if (tbData.Controls.ContainsKey("Data11"))
+                tbData.Controls.Find("Data11", false)[0].Text = gameObject.Data11.ToString();
+            if (tbData2.Controls.ContainsKey("Data12"))
+                tbData2.Controls.Find("Data12", false)[0].Text = gameObject.Data12.ToString();
+            if (tbData2.Controls.ContainsKey("Data13"))
+                tbData2.Controls.Find("Data13", false)[0].Text = gameObject.Data13.ToString();
+            if (tbData2.Controls.ContainsKey("Data14"))
+                tbData2.Controls.Find("Data14", false)[0].Text = gameObject.Data14.ToString();
+            if (tbData2.Controls.ContainsKey("Data15"))
+                tbData2.Controls.Find("Data15", false)[0].Text = gameObject.Data15.ToString();
+            if (tbData2.Controls.ContainsKey("Data16"))
+                tbData2.Controls.Find("Data16", false)[0].Text = gameObject.Data16.ToString();
+            if (tbData2.Controls.ContainsKey("Data17"))
+                tbData2.Controls.Find("Data17", false)[0].Text = gameObject.Data17.ToString();
+            if (tbData2.Controls.ContainsKey("Data18"))
+                tbData2.Controls.Find("Data18", false)[0].Text = gameObject.Data18.ToString();
+            if (tbData2.Controls.ContainsKey("Data19"))
+                tbData2.Controls.Find("Data19", false)[0].Text = gameObject.Data19.ToString();
+            if (tbData2.Controls.ContainsKey("Data20"))
+                tbData2.Controls.Find("Data20", false)[0].Text = gameObject.Data20.ToString();
+            if (tbData2.Controls.ContainsKey("Data21"))
+                tbData2.Controls.Find("Data21", false)[0].Text = gameObject.Data21.ToString();
+            if (tbData2.Controls.ContainsKey("Data22"))
+                tbData2.Controls.Find("Data22", false)[0].Text = gameObject.Data22.ToString();
+            if (tbData2.Controls.ContainsKey("Data23"))
+                tbData2.Controls.Find("Data23", false)[0].Text = gameObject.Data23.ToString();
+            AiName.Text = gameObject.AiName;
+            ScriptName.Text = gameObject.ScriptName;
+            VerifiedBuild.Text = gameObject.VerifiedBuild.ToString();
         }
 
 
@@ -89,7 +149,55 @@ namespace WoWEditor6.UI.Dialog
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            Storage.Database.WotLk.TrinityCore.GameObject gameObject = new Storage.Database.WotLk.TrinityCore.GameObject();
+            gameObject.EntryId = int.Parse(Entry.Text);
+            gameObject.Type = (Storage.Database.WotLk.TrinityCore.EnumType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.EnumType), Type.Text);
+            gameObject.DisplayId = int.Parse(ModelId.Text);
+            gameObject.Name = GameObjectName.Text;
+            gameObject.IconName = IconName.Text;
+            gameObject.CastBarCaption = CastBarCaption.Text;
+            gameObject.Faction = int.Parse(Faction.Text);
+            gameObject.Flags = makeFlagOrBitmask(Flags, typeof(Storage.Database.WotLk.TrinityCore.Flags));
+            gameObject.Size = float.Parse(GameObjectSize.Text);
+            gameObject.Data0 = tbData.Controls.ContainsKey("Data0") ? int.Parse(tbData.Controls.Find("Data0", false)[0].Text) : 0;
+            gameObject.Data1 = tbData.Controls.ContainsKey("Data1") ? int.Parse(tbData.Controls.Find("Data1", false)[0].Text) : 0;
+            gameObject.Data2 = tbData.Controls.ContainsKey("Data2") ? int.Parse(tbData.Controls.Find("Data2", false)[0].Text) : 0;
+            gameObject.Data3 = tbData.Controls.ContainsKey("Data3") ? int.Parse(tbData.Controls.Find("Data3", false)[0].Text) : 0;
+            gameObject.Data4 = tbData.Controls.ContainsKey("Data4") ? int.Parse(tbData.Controls.Find("Data4", false)[0].Text) : 0;
+            gameObject.Data5 = tbData.Controls.ContainsKey("Data5") ? int.Parse(tbData.Controls.Find("Data5", false)[0].Text) : 0;
+            gameObject.Data6 = tbData.Controls.ContainsKey("Data6") ? int.Parse(tbData.Controls.Find("Data6", false)[0].Text) : 0;
+            gameObject.Data7 = tbData.Controls.ContainsKey("Data7") ? int.Parse(tbData.Controls.Find("Data7", false)[0].Text) : 0;
+            gameObject.Data8 = tbData.Controls.ContainsKey("Data8") ? int.Parse(tbData.Controls.Find("Data8", false)[0].Text) : 0;
+            gameObject.Data9 = tbData.Controls.ContainsKey("Data9") ? int.Parse(tbData.Controls.Find("Data9", false)[0].Text) : 0;
+            gameObject.Data10 = tbData.Controls.ContainsKey("Data10") ? int.Parse(tbData.Controls.Find("Data10", false)[0].Text) : 0;
+            gameObject.Data11 = tbData.Controls.ContainsKey("Data11") ? int.Parse(tbData.Controls.Find("Data11", false)[0].Text) : 0;
+            gameObject.Data12 = tbData.Controls.ContainsKey("Data12") ? int.Parse(tbData.Controls.Find("Data12", false)[0].Text) : 0;
+            gameObject.Data13 = tbData.Controls.ContainsKey("Data13") ? int.Parse(tbData.Controls.Find("Data13", false)[0].Text) : 0;
+            gameObject.Data14 = tbData.Controls.ContainsKey("Data14") ? int.Parse(tbData.Controls.Find("Data14", false)[0].Text) : 0;
+            gameObject.Data15 = tbData.Controls.ContainsKey("Data15") ? int.Parse(tbData.Controls.Find("Data15", false)[0].Text) : 0;
+            gameObject.Data16 = tbData.Controls.ContainsKey("Data16") ? int.Parse(tbData.Controls.Find("Data16", false)[0].Text) : 0;
+            gameObject.Data17 = tbData.Controls.ContainsKey("Data17") ? int.Parse(tbData.Controls.Find("Data17", false)[0].Text) : 0;
+            gameObject.Data18 = tbData.Controls.ContainsKey("Data18") ? int.Parse(tbData.Controls.Find("Data18", false)[0].Text) : 0;
+            gameObject.Data19 = tbData.Controls.ContainsKey("Data19") ? int.Parse(tbData.Controls.Find("Data19", false)[0].Text) : 0;
+            gameObject.Data20 = tbData.Controls.ContainsKey("Data20") ? int.Parse(tbData.Controls.Find("Data20", false)[0].Text) : 0;
+            gameObject.Data21 = tbData.Controls.ContainsKey("Data21") ? int.Parse(tbData.Controls.Find("Data21", false)[0].Text) : 0;
+            gameObject.Data22 = tbData.Controls.ContainsKey("Data22") ? int.Parse(tbData.Controls.Find("Data22", false)[0].Text) : 0;
+            gameObject.Data23 = tbData.Controls.ContainsKey("Data23") ? int.Parse(tbData.Controls.Find("Data23", false)[0].Text) : 0;
+            gameObject.AiName = AiName.Text;
+            gameObject.ScriptName = ScriptName.Text;
+            gameObject.VerifiedBuild = int.Parse(VerifiedBuild.Text);
 
+            if (Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.GetGameObjectByEntry(gameObject.EntryId) == null)
+            {
+                Storage.Database.MySqlConnector.Instance.Query(gameObject.GetInsertSqlQuery());
+                Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.addGameObject(gameObject);
+                MessageBox.Show("Inserted");
+            }
+            else
+            {
+                Storage.Database.MySqlConnector.Instance.Query(gameObject.GetUpdateSqlQuery());
+                MessageBox.Show("Updated");
+            }
         }
 
         private void btnShowModelId1_Click(object sender, EventArgs e)
@@ -179,7 +287,7 @@ namespace WoWEditor6.UI.Dialog
                     list.Add(new data() { type = type.Text, desc = "questList (unknown ID)" });
                     list.Add(new data() { type = type.Text, desc = "pageMaterial (PageTextMaterial.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "gossipID (gossip_menu id)" });
-                    list.Add(new data() { type = type.List, startNbr = 1, endNbr = 4, desc = "customAnim (unknown value from 1 to 4)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 4, desc = "customAnim (unknown value from 1 to 4)" });
                     list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "noDamageImmune (Boolean flag)" });
                     list.Add(new data() { type = type.Text, desc = "openTextID (broadcast_text ID)" });
                     list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "losOK (Boolean flag)" });
@@ -576,6 +684,26 @@ namespace WoWEditor6.UI.Dialog
                     }
 
                     d++;
+                }
+            }
+        }
+
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            if (LoadEntry.Text != "")
+            {
+                if (Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.GetGameObjectByEntry(Convert.ToInt32(LoadEntry.Text)) == null)
+                {
+                    MessageBox.Show("There is no gameObject with this id.");
+                }
+
+                Storage.Database.WotLk.TrinityCore.GameObject gameObjectLoaded = new Storage.Database.WotLk.TrinityCore.GameObject();
+
+                gameObjectLoaded = Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.GetGameObjectByEntry(int.Parse(LoadEntry.Text));
+
+                if (gameObjectLoaded != null)
+                {
+                    loadGameObject(gameObjectLoaded);
                 }
             }
         }

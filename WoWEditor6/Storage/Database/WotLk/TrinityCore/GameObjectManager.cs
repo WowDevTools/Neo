@@ -16,6 +16,11 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 
         public void LoadGameObjects(DataTable pDataTable)
         {
+            //These line avoid sql error when the computer by-default separator is the comma ( like in belgium )
+            System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+
             foreach (DataRow dRow in pDataTable.Rows)
             {
                 var gameobject = new GameObject()
@@ -28,7 +33,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                     CastBarCaption = dRow[5].ToString(),
                     Unknown1 = dRow[6].ToString(),
                     Faction = int.Parse(dRow[7].ToString()),
-                    Flags = (Flags)Enum.Parse(typeof(Flags), dRow[8].ToString()),
+                    Flags = uint.Parse(dRow[8].ToString()),
                     Size = float.Parse(dRow[9].ToString()),
                     Data0 = int.Parse(dRow[10].ToString()),
                     Data1 = int.Parse(dRow[11].ToString()),
@@ -101,7 +106,12 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 
         public GameObject GetGameObjectByEntry(int pEntryId)
         {
-            return mGameObjects.First(gameobject => gameobject.EntryId == pEntryId);
+            return mGameObjects.FirstOrDefault(gameobject => gameobject.EntryId == pEntryId);
+        }
+
+        public void addGameObject(GameObject gameObject)
+        {
+            mGameObjects.Add(gameObject);
         }
 
         private bool MapAlreadyLoaded(int pMapId)

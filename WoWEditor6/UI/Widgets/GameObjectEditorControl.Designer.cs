@@ -82,12 +82,16 @@
             this.ScriptName = new System.Windows.Forms.TextBox();
             this.label32 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
-            this.IconeName = new System.Windows.Forms.ComboBox();
+            this.IconName = new System.Windows.Forms.ComboBox();
             this.CastBarCaption = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.VerifiedBuild = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
             this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
+            this.LoadButton = new System.Windows.Forms.Button();
+            this.LoadEntry = new System.Windows.Forms.TextBox();
             this.tbData.SuspendLayout();
             this.tbModelInfo.SuspendLayout();
             this.tbGameObjectInfo.SuspendLayout();
@@ -363,6 +367,7 @@
             this.Faction.Name = "Faction";
             this.Faction.Size = new System.Drawing.Size(456, 20);
             this.Faction.TabIndex = 105;
+            this.Faction.Text = "0";
             // 
             // label3
             // 
@@ -665,11 +670,13 @@
             // 
             // tbOptional
             // 
+            this.tbOptional.Controls.Add(this.VerifiedBuild);
+            this.tbOptional.Controls.Add(this.label30);
             this.tbOptional.Controls.Add(this.AiName);
             this.tbOptional.Controls.Add(this.ScriptName);
             this.tbOptional.Controls.Add(this.label32);
             this.tbOptional.Controls.Add(this.label33);
-            this.tbOptional.Controls.Add(this.IconeName);
+            this.tbOptional.Controls.Add(this.IconName);
             this.tbOptional.Controls.Add(this.CastBarCaption);
             this.tbOptional.Controls.Add(this.label5);
             this.tbOptional.Controls.Add(this.label4);
@@ -717,18 +724,18 @@
             this.toolTip1.SetToolTip(this.label33, "This field is overridden by ScriptName field if both are set. Only \'SmartGameObje" +
         "ctAI\' can be used.");
             // 
-            // IconeName
+            // IconName
             // 
-            this.IconeName.FormattingEnabled = true;
-            this.IconeName.Items.AddRange(new object[] {
+            this.IconName.FormattingEnabled = true;
+            this.IconName.Items.AddRange(new object[] {
             "Taxi",
             "Talk",
             "Attack",
             "Directions"});
-            this.IconeName.Location = new System.Drawing.Point(87, 7);
-            this.IconeName.Name = "IconeName";
-            this.IconeName.Size = new System.Drawing.Size(444, 21);
-            this.IconeName.TabIndex = 111;
+            this.IconName.Location = new System.Drawing.Point(87, 7);
+            this.IconName.Name = "IconName";
+            this.IconName.Size = new System.Drawing.Size(444, 21);
+            this.IconName.TabIndex = 111;
             // 
             // CastBarCaption
             // 
@@ -752,10 +759,29 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(1, 7);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(62, 13);
+            this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 107;
-            this.label4.Text = "IconeName";
+            this.label4.Text = "IconName";
             this.toolTip1.SetToolTip(this.label4, "Works exactly like creature_template IconName.");
+            // 
+            // VerifiedBuild
+            // 
+            this.VerifiedBuild.Location = new System.Drawing.Point(87, 127);
+            this.VerifiedBuild.Name = "VerifiedBuild";
+            this.VerifiedBuild.Size = new System.Drawing.Size(444, 20);
+            this.VerifiedBuild.TabIndex = 117;
+            this.VerifiedBuild.Text = "12340";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(1, 127);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(65, 13);
+            this.label30.TabIndex = 116;
+            this.label30.Text = "VerifiedBuild";
+            this.toolTip1.SetToolTip(this.label30, "The name of the script that this object uses, if any. This ties a script from a s" +
+        "cripting engine to this object.");
             // 
             // modelRenderControl1
             // 
@@ -765,10 +791,30 @@
             this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
             this.modelRenderControl1.TabIndex = 1;
             // 
+            // LoadButton
+            // 
+            this.LoadButton.BackColor = System.Drawing.Color.Transparent;
+            this.LoadButton.Location = new System.Drawing.Point(79, 159);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(71, 20);
+            this.LoadButton.TabIndex = 127;
+            this.LoadButton.Text = "Load";
+            this.LoadButton.UseVisualStyleBackColor = false;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
+            // LoadEntry
+            // 
+            this.LoadEntry.Location = new System.Drawing.Point(3, 159);
+            this.LoadEntry.Name = "LoadEntry";
+            this.LoadEntry.Size = new System.Drawing.Size(71, 20);
+            this.LoadEntry.TabIndex = 126;
+            // 
             // GameObjectEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LoadButton);
+            this.Controls.Add(this.LoadEntry);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.tbcEditor);
             this.Controls.Add(this.lbMenu);
@@ -786,6 +832,7 @@
             this.tbOptional.ResumeLayout(false);
             this.tbOptional.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -846,9 +893,13 @@
         private System.Windows.Forms.TextBox ScriptName;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.ComboBox IconeName;
+        private System.Windows.Forms.ComboBox IconName;
         private System.Windows.Forms.TextBox AiName;
         private System.Windows.Forms.Label WarningLabel1;
         private System.Windows.Forms.Label WarningLabel2;
+        private System.Windows.Forms.TextBox VerifiedBuild;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Button LoadButton;
+        private System.Windows.Forms.TextBox LoadEntry;
     }
 }
