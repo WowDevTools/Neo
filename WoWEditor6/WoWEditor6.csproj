@@ -468,6 +468,12 @@
     <Compile Include="UI\Widgets\GameObjectEditor.Designer.cs">
       <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Widgets\GameObjectEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Widgets\GameObjectEditorControl.Designer.cs">
+      <DependentUpon>GameObjectEditorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Widgets\ImportFileDialog.xaml.cs">
       <DependentUpon>ImportFileDialog.xaml</DependentUpon>
     </Compile>
@@ -593,6 +599,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\RenderControl.resx">
       <DependentUpon>RenderControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Widgets\GameObjectEditorControl.resx">
+      <DependentUpon>GameObjectEditorControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

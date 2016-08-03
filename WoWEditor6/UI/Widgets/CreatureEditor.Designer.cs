@@ -63,6 +63,7 @@
             this.Text = "Creature Editor";
             this.creatureEditorControl1.TabControl.ResumeLayout(false);
             this.creatureEditorControl1.ResumeLayout(false);
+            this.creatureEditorControl1.PerformLayout();
             this.ResumeLayout(false);
 
         }

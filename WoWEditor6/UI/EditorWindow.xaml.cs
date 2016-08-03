@@ -95,6 +95,19 @@ namespace WoWEditor6.UI
             }
         }
 
+        private void GameObjectEditor_Click(object sender, RoutedEventArgs e)
+        {
+            if (Storage.Database.MySqlConnector.Instance.CheckConnection())
+            {
+                var GameObjectEditor = new Dialogs.GameObjectEditor();
+                GameObjectEditor.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Please connect to the database before you use the game object editor");
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModelSpawnPane.ToggleAutoHide();
