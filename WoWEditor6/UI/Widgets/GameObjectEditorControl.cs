@@ -240,18 +240,50 @@ namespace WoWEditor6.UI.Dialog
 
                 case "Chair":
                     nbData = 2;
+                    list.Add(new data() { type = type.Text, desc = "chairslots (number of players that can sit down on it)" });
+                    list.Add(new data() { type = type.Text, desc = "chairorientation? (number of usable side?)" });
                     break;
 
                 case "SpellFocus":
                     nbData = 7;
+                    list.Add(new data() { type = type.Text, desc = "spellFocusType (from SpellFocusObject.dbc; value also appears as RequiresSpellFocus in Spell.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "diameter (so radius*2)" });
+                    list.Add(new data() { type = type.Text, desc = "linkedTrap (gameobject_template.entry (Spawned GO type 6))" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "serverOnly? (Always 0)" });
+                    list.Add(new data() { type = type.Text, desc = "questID (Required active quest_template.id to work)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "large? (Boolean flag)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "floatingTooltip (Boolean flag)" });
                     break;
 
                 case "Text":
                     nbData = 3;
+                    list.Add(new data() { type = type.Text, desc = "pageID (page_text.entry)" });
+                    list.Add(new data() { type = type.Text, desc = "language (from  Languages.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "pageMaterial (PageTextMaterial.dbc)" });
                     break;
 
                 case "Goober":
                     nbData = 20;
+                    list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "questID (Required active quest_template.id to work)" });
+                    list.Add(new data() { type = type.Text, desc = "eventID (event_script id)" });
+                    list.Add(new data() { type = type.Text, desc = "? (unknown flag)" });
+                    list.Add(new data() { type = type.Text, desc = "customAnim (unknown)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "consumable (Boolean flag controling if gameobject will despawn or not)" });
+                    list.Add(new data() { type = type.Text, desc = "cooldown (time is seconds)" });
+                    list.Add(new data() { type = type.Text, desc = "pageID (page_text.entry)" });
+                    list.Add(new data() { type = type.Text, desc = "language (from Languages.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "pageMaterial (PageTextMaterial.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "spell (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "noDamageImmune (Boolean flag)" });
+                    list.Add(new data() { type = type.Text, desc = "linkedTrap (gameobject_template.entry (Spawned GO type 6))" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "large? (Boolean flag)" });
+                    list.Add(new data() { type = type.Text, desc = "openTextID (Unknown ID)" });
+                    list.Add(new data() { type = type.Text, desc = "closeTextID (Unknown ID)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "losOK (Boolean flag) (somewhat related to battlegrounds)" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Text, desc = "gossipID - casts the spell when used" });
                     break;
 
                 case "Transport":
@@ -264,6 +296,8 @@ namespace WoWEditor6.UI.Dialog
 
                 case "Camera":
                     nbData = 2;
+                    list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "camera (Cinematic entry from CinematicCamera.dbc)" });
                     break;
 
                 case "MapObject":
@@ -272,6 +306,15 @@ namespace WoWEditor6.UI.Dialog
 
                 case "MoTransport":
                     nbData = 9;
+                    list.Add(new data() { type = type.Text, desc = "taxiPathID (Id from TaxiPath.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "moveSpeed" });
+                    list.Add(new data() { type = type.Text, desc = "accelRate" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Text, desc = "?" });
+                    list.Add(new data() { type = type.Text, desc = "?" });
+                    list.Add(new data() { type = type.Text, desc = "?" });
+                    list.Add(new data() { type = type.Text, desc = "?" });
                     break;
 
                 case "DuelArbiter":
@@ -284,6 +327,13 @@ namespace WoWEditor6.UI.Dialog
 
                 case "Ritual":
                     nbData = 7;
+                    list.Add(new data() { type = type.Text, desc = "casters?" });
+                    list.Add(new data() { type = type.Text, desc = "spell (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "animSpell (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "ritualPersistent (Boolean flag)" });
+                    list.Add(new data() { type = type.Text, desc = "casterTargetSpell (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "casterTargetSpellTargets (Boolean flag)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "castersGrouped (Boolean flag)" });
                     break;
 
                 case "MailBox":
@@ -292,30 +342,55 @@ namespace WoWEditor6.UI.Dialog
 
                 case "AuctionHouse":
                     nbData = 1;
+                    list.Add(new data() { type = type.Text, desc = "actionHouseID (From AuctionHouse.dbc ?)" });
                     break;
 
                 case "GuardPost":
                     nbData = 2;
+                    list.Add(new data() { type = type.Text, desc = "CreatureID" });
+                    list.Add(new data() { type = type.Text, desc = "unk" });
                     break;
 
                 case "SpellCaster":
                     nbData = 3;
+                    list.Add(new data() { type = type.Text, desc = "spell (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "charges" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "partyOnly (Boolean flag, need to be in group to use it)" });
                     break;
 
                 case "MeetingStone":
                     nbData = 3;
+                    list.Add(new data() { type = type.Text, desc = "minLevel" });
+                    list.Add(new data() { type = type.Text, desc = "maxLevel" });
+                    list.Add(new data() { type = type.Text, desc = "areaID (From AreaTable.dbc)" });
                     break;
 
                 case "FlagStand":
                     nbData = 8;
+                    list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "pickupSpell (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "radius (distance)" });
+                    list.Add(new data() { type = type.Text, desc = "returnAura (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "returnSpell (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "noDamageImmune (Boolean flag)" });
+                    list.Add(new data() { type = type.Text, desc = "?" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "losOK (Boolean flag)" });
                     break;
 
                 case "FishingPole":
                     nbData = 4;
+                    list.Add(new data() { type = type.Text, desc = "radius (distance)" });
+                    list.Add(new data() { type = type.Text, desc = "chestLoot (gameobject_loot_template.entry)" });
+                    list.Add(new data() { type = type.Text, desc = "minRestock" });
+                    list.Add(new data() { type = type.Text, desc = "maxRestock" });
                     break;
 
                 case "FlagDrop":
                     nbData = 4;
+                    list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "eventID (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "pickupSpell (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "noDamageImmune (Boolean flag)" });
                     break;
 
                 case "MiniGame":
@@ -328,14 +403,39 @@ namespace WoWEditor6.UI.Dialog
 
                 case "CapturePoint":
                     nbData = 19;
+                    list.Add(new data() { type = type.Text, desc = "radius (Distance)" });
+                    list.Add(new data() { type = type.Text, desc = "spell (Unknown ID, not a spell id in dbc file, maybe server only side spell)" });
+                    list.Add(new data() { type = type.Text, desc = "worldState1" });
+                    list.Add(new data() { type = type.Text, desc = "worldState2" });
+                    list.Add(new data() { type = type.Text, desc = "winEventID1 (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "winEventID1 (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "contestedEventID1 (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "contestedEventID2 (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "progressEventID1 (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "progressEventID2 (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "neutralEventID1 (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "neutralEventID2 (Unknown Event ID)" });
+                    list.Add(new data() { type = type.Text, desc = "neutralPercent" });
+                    list.Add(new data() { type = type.Text, desc = "worldState3" });
+                    list.Add(new data() { type = type.Text, desc = "minSuperiority" });
+                    list.Add(new data() { type = type.Text, desc = "maxSuperiority" });
+                    list.Add(new data() { type = type.Text, desc = "minTime (in seconds)" });
+                    list.Add(new data() { type = type.Text, desc = "maxTime (in seconds)" });
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "large? (Boolean flag)" });
                     break;
 
                 case "AuraGenerator":
                     nbData = 4;
+                    list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "startOpen (Boolean flag)" });
+                    list.Add(new data() { type = type.Text, desc = "radius (Distance)" });
+                    list.Add(new data() { type = type.Text, desc = "auraID1 (Spell Id from Spell.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "conditionID1 (Unknown ID)" });
                     break;
 
                 case "DungeonDifficulty":
                     nbData = 2;
+                    list.Add(new data() { type = type.Text, desc = "mapID (From Map.dbc)" });
+                    list.Add(new data() { type = type.Text, desc = "difficulty" });
                     break;
 
                 case "BarberChair":
@@ -344,6 +444,30 @@ namespace WoWEditor6.UI.Dialog
 
                 case "DestructibleBuilding":
                     nbData = 24;
+                    list.Add(new data() { type = type.Text, desc = "intactNumHits" });
+                    list.Add(new data() { type = type.Text, desc = "creditProxyCreature" });
+                    list.Add(new data() { type = type.Text, desc = "state1Name" });
+                    list.Add(new data() { type = type.Text, desc = "intactEvent" });
+                    list.Add(new data() { type = type.Text, desc = "damagedDisplayId" });
+                    list.Add(new data() { type = type.Text, desc = "damagedNumHits" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Text, desc = "damagedEvent" });
+                    list.Add(new data() { type = type.Text, desc = "destroyedDisplayId" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Text, desc = "destroyedEvent" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Text, desc = "debuildingTimeSecs" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Text, desc = "destructibleData" });
+                    list.Add(new data() { type = type.Text, desc = "rebuildingEvent" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
+                    list.Add(new data() { type = type.Text, desc = "damageEvent" });
+                    list.Add(new data() { type = type.Always, startNbr = 0, desc = "unused" });
                     break;
 
                 case "GuildBank":
@@ -352,6 +476,9 @@ namespace WoWEditor6.UI.Dialog
 
                 case "TrapDoor":
                     nbData = 3;
+                    list.Add(new data() { type = type.Text, desc = "whenToPause" });
+                    list.Add(new data() { type = type.Text, desc = "startOpen" });
+                    list.Add(new data() { type = type.Text, desc = "autoClose" });
                     break;
 
             }
@@ -389,10 +516,18 @@ namespace WoWEditor6.UI.Dialog
                             textBox.Name = "Data"+d;
                             textBox.Location = new System.Drawing.Point(73, 17 + d*30);
                             textBox.Size = new System.Drawing.Size(456, 20);
+                            textBox.Text = "0";
+
                             if(d < 12)
+                            {
                                 tbData.Controls.Add(textBox);
+                                textBox.Location = new System.Drawing.Point(73, 17 + d * 30);
+                            }
                             else
+                            {
                                 tbData2.Controls.Add(textBox);
+                                textBox.Location = new System.Drawing.Point(73, 17 + (d-12) * 30);
+                            }
                             break;
 
                         case type.List:
@@ -406,10 +541,18 @@ namespace WoWEditor6.UI.Dialog
                                 comboBox.Items.Add(a);
                             }
 
+                            comboBox.SelectedIndex = 0;
+
                             if (d < 12)
+                            {
                                 tbData.Controls.Add(comboBox);
+                                comboBox.Location = new System.Drawing.Point(73, 17 + d * 30);
+                            }
                             else
+                            {
                                 tbData2.Controls.Add(comboBox);
+                                comboBox.Location = new System.Drawing.Point(73, 17 + (d - 12) * 30);
+                            }
                             break;
 
                         case type.Always:
@@ -420,9 +563,15 @@ namespace WoWEditor6.UI.Dialog
                             alwaysTextBox.Text = Convert.ToString(item.startNbr);
                             alwaysTextBox.Enabled = false;
                             if (d < 12)
+                            {
                                 tbData.Controls.Add(alwaysTextBox);
+                                alwaysTextBox.Location = new System.Drawing.Point(73, 17 + d * 30);
+                            }
                             else
+                            {
                                 tbData2.Controls.Add(alwaysTextBox);
+                                alwaysTextBox.Location = new System.Drawing.Point(73, 17 + (d - 12) * 30);
+                            }
                             break;
                     }
 
