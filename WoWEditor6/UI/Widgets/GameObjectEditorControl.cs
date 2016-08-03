@@ -91,7 +91,7 @@ namespace WoWEditor6.UI.Dialog
 
         private void btnShowModelId1_Click(object sender, EventArgs e)
         {
-            showModelInRenderControl(ModelId1.Text);
+            showModelInRenderControl(ModelId.Text);
         }
     }
 
