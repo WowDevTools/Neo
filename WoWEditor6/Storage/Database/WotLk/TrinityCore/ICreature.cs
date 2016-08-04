@@ -6,8 +6,8 @@
         int DifficultyEntry1 { get; set; }
         int DifficultyEntry2 { get; set; }
         int DifficultyEntry3 { get; set; }
-        int KillCredit1{ get; set; }
-        int KillCredit2{ get; set; }
+        int KillCredit1 { get; set; }
+        int KillCredit2 { get; set; }
         int ModelId1 { get; set; }
         int ModelId2 { get; set; }
         int ModelId3 { get; set; }
@@ -19,13 +19,13 @@
         int MinLevel { get; set; }
         int MaxLevel { get; set; }
         int Experience { get; set; }
-        int Faction{ get; set; }
+        int Faction { get; set; }
         uint NpcFlag { get; set; }
         float SpeedWalk { get; set; }
         float SpeedRun { get; set; }
         float Scale { get; set; }
         Rank Rank { get; set; }
-        DamageSchool DamageSchool{ get; set; }
+        DamageSchool DamageSchool { get; set; }
         int BaseAttackTime { get; set; }
         int RangeAttackTime { get; set; }
         float BaseVariance { get; set; }
@@ -71,12 +71,12 @@
         float ArmorModifier { get; set; }
         float DamageModifier { get; set; }
         float ExperienceModifier { get; set; }
-        int RacialLeader{ get; set; }
+        int RacialLeader { get; set; }
         int MovementId { get; set; }
         int RegenHealth { get; set; }
         uint MechanicImmuneMask { get; set; }
         uint FlagsExtra { get; set; }
-        string ScriptName{ get; set; }
+        string ScriptName { get; set; }
         int VerifiedBuild { get; set; }
         string GetUpdateSqlQuery();
         string GetInsertSqlQuery();
