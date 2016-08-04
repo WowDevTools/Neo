@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
-using System.Windows.Forms;
 
 namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
