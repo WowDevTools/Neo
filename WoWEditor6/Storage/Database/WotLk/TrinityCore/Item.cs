@@ -12,8 +12,8 @@
         public uint ItemFlags { get; set; }
         public uint ItemFlagsExtra { get; set; }
         public int BuyCount { get; set; }
-        public int BuyPrice { get; set; }
-        public int SellPrice { get; set; }
+        public uint BuyPrice { get; set; }
+        public uint SellPrice { get; set; }
         public itemInvenotryType InventoryType { get; set; }
         public int AllowableClass { get; set; }
         public int AllowableRace { get; set; }
@@ -52,11 +52,11 @@
         public int stat_value10 { get; set; }
         public int ScalingStatDistribution { get; set; }
         public int ScalingStatValue { get; set; }
-        public int dmg_min1 { get; set; }
-        public int dmg_max1 { get; set; }
+        public float dmg_min1 { get; set; }
+        public float dmg_max1 { get; set; }
         public itemDmgType dmg_type1 { get; set; }
-        public int dmg_min2 { get; set; }
-        public int dmg_max2 { get; set; }
+        public float dmg_min2 { get; set; }
+        public float dmg_max2 { get; set; }
         public itemDmgType dmg_type2 { get; set; }
         public int armor { get; set; }
         public int holy_res { get; set; }
@@ -67,44 +67,44 @@
         public int arcane_res { get; set; }
         public int delay { get; set; }
         public itemAmmoType ammo_type { get; set; }
-        public int RangedModRange { get; set; }
+        public float RangedModRange { get; set; }
         public int spellid_1 { get; set; }
         public itemSpellTrigger spelltrigger_1 { get; set; }
         public int spellcharges_1 { get; set; }
-        public int spellppmRate_1 { get; set; }
+        public float spellppmRate_1 { get; set; }
         public int spellcooldown_1 { get; set; }
         public int spellcategory_1 { get; set; }
         public int spellcategorycooldown_1 { get; set; }
         public int spellid_2 { get; set; }
         public itemSpellTrigger spelltrigger_2 { get; set; }
         public int spellcharges_2 { get; set; }
-        public int spellppmRate_2 { get; set; }
+        public float spellppmRate_2 { get; set; }
         public int spellcooldown_2 { get; set; }
         public int spellcategory_2 { get; set; }
         public int spellcategorycooldown_2 { get; set; }
         public int spellid_3 { get; set; }
         public itemSpellTrigger spelltrigger_3 { get; set; }
         public int spellcharges_3 { get; set; }
-        public int spellppmRate_3 { get; set; }
+        public float spellppmRate_3 { get; set; }
         public int spellcooldown_3 { get; set; }
         public int spellcategory_3 { get; set; }
         public int spellcategorycooldown_3 { get; set; }
         public int spellid_4 { get; set; }
         public itemSpellTrigger spelltrigger_4 { get; set; }
         public int spellcharges_4 { get; set; }
-        public int spellppmRate_4 { get; set; }
+        public float spellppmRate_4 { get; set; }
         public int spellcooldown_4 { get; set; }
         public int spellcategory_4 { get; set; }
         public int spellcategorycooldown_4 { get; set; }
         public int spellid_5 { get; set; }
         public itemSpellTrigger spelltrigger_5 { get; set; }
         public int spellcharges_5 { get; set; }
-        public int spellppmRate_5 { get; set; }
+        public float spellppmRate_5 { get; set; }
         public int spellcooldown_5 { get; set; }
         public int spellcategory_5 { get; set; }
         public int spellcategorycooldown_5 { get; set; }
         public itemBonding bonding { get; set; }
-        public int description { get; set; }
+        public string description { get; set; }
         public int PageText { get; set; }
         public int LanguageID { get; set; }
         public int PageMaterial { get; set; }
@@ -130,11 +130,11 @@
         public int socketBonus { get; set; }
         public int GemProperties { get; set; }
         public int RequiredDisenchantSkill { get; set; }
-        public int ArmorDamageModifier { get; set; }
+        public float ArmorDamageModifier { get; set; }
         public int duration { get; set; }
         public int ItemLimitCategory { get; set; }
         public int HolidayId { get; set; }
-        public int ScriptName { get; set; }
+        public string ScriptName { get; set; }
         public int DisenchantID { get; set; }
         public itemFoodType FoodType { get; set; }
         public int VerifiedBuild { get; set; }

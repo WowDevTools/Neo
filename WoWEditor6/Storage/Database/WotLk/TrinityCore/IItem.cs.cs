@@ -18,8 +18,8 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         uint ItemFlags { get; set; }
         uint ItemFlagsExtra { get; set; }
         int BuyCount { get; set; }
-        int BuyPrice { get; set; }
-        int SellPrice { get; set; }
+        uint BuyPrice { get; set; }
+        uint SellPrice { get; set; }
         itemInvenotryType InventoryType { get; set; }
         int AllowableClass { get; set; }
         int AllowableRace { get; set; }
@@ -58,11 +58,11 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         int stat_value10 { get; set; }
         int ScalingStatDistribution { get; set; }
         int ScalingStatValue { get; set; }
-        int dmg_min1 { get; set; }
-        int dmg_max1 { get; set; }
+        float dmg_min1 { get; set; }
+        float dmg_max1 { get; set; }
         itemDmgType dmg_type1 { get; set; }
-        int dmg_min2 { get; set; }
-        int dmg_max2 { get; set; }
+        float dmg_min2 { get; set; }
+        float dmg_max2 { get; set; }
         itemDmgType dmg_type2 { get; set; }
         int armor { get; set; }
         int holy_res { get; set; }
@@ -73,44 +73,44 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         int arcane_res { get; set; }
         int delay { get; set; }
         itemAmmoType ammo_type { get; set; }
-        int RangedModRange { get; set; }
+        float RangedModRange { get; set; }
         int spellid_1 { get; set; }
         itemSpellTrigger spelltrigger_1 { get; set; }
         int spellcharges_1 { get; set; }
-        int spellppmRate_1 { get; set; }
+        float spellppmRate_1 { get; set; }
         int spellcooldown_1 { get; set; }
         int spellcategory_1 { get; set; }
         int spellcategorycooldown_1 { get; set; }
         int spellid_2 { get; set; }
         itemSpellTrigger spelltrigger_2 { get; set; }
         int spellcharges_2 { get; set; }
-        int spellppmRate_2 { get; set; }
+        float spellppmRate_2 { get; set; }
         int spellcooldown_2 { get; set; }
         int spellcategory_2 { get; set; }
         int spellcategorycooldown_2 { get; set; }
         int spellid_3 { get; set; }
         itemSpellTrigger spelltrigger_3 { get; set; }
         int spellcharges_3 { get; set; }
-        int spellppmRate_3 { get; set; }
+        float spellppmRate_3 { get; set; }
         int spellcooldown_3 { get; set; }
         int spellcategory_3 { get; set; }
         int spellcategorycooldown_3 { get; set; }
         int spellid_4 { get; set; }
         itemSpellTrigger spelltrigger_4 { get; set; }
         int spellcharges_4 { get; set; }
-        int spellppmRate_4 { get; set; }
+        float spellppmRate_4 { get; set; }
         int spellcooldown_4 { get; set; }
         int spellcategory_4 { get; set; }
         int spellcategorycooldown_4 { get; set; }
         int spellid_5 { get; set; }
         itemSpellTrigger spelltrigger_5 { get; set; }
         int spellcharges_5 { get; set; }
-        int spellppmRate_5 { get; set; }
+        float spellppmRate_5 { get; set; }
         int spellcooldown_5 { get; set; }
         int spellcategory_5 { get; set; }
         int spellcategorycooldown_5 { get; set; }
         itemBonding bonding { get; set; }
-        int description { get; set; }
+        string description { get; set; }
         int PageText { get; set; }
         int LanguageID { get; set; }
         int PageMaterial { get; set; }
@@ -136,11 +136,11 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         int socketBonus { get; set; }
         int GemProperties { get; set; }
         int RequiredDisenchantSkill { get; set; }
-        int ArmorDamageModifier { get; set; }
+        float ArmorDamageModifier { get; set; }
         int duration { get; set; }
         int ItemLimitCategory { get; set; }
         int HolidayId { get; set; }
-        int ScriptName { get; set; }
+        string ScriptName { get; set; }
         int DisenchantID { get; set; }
         itemFoodType FoodType { get; set; }
         int VerifiedBuild { get; set; }
