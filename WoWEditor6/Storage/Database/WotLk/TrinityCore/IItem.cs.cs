@@ -15,8 +15,8 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         string name { get; set; }
         int displayid { get; set; }
         itemQuality Quality { get; set; }
-        uint Flags { get; set; }
-        uint FlagsExtra { get; set; }
+        uint ItemFlags { get; set; }
+        uint ItemFlagsExtra { get; set; }
         int BuyCount { get; set; }
         int BuyPrice { get; set; }
         int SellPrice { get; set; }

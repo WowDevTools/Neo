@@ -9,8 +9,8 @@
         public string name { get; set; }
         public int displayid { get; set; }
         public itemQuality Quality { get; set; }
-        public uint Flags { get; set; }
-        public uint FlagsExtra { get; set; }
+        public uint ItemFlags { get; set; }
+        public uint ItemFlagsExtra { get; set; }
         public int BuyCount { get; set; }
         public int BuyPrice { get; set; }
         public int SellPrice { get; set; }
