@@ -146,7 +146,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
         int VerifiedBuild { get; set; }
         int minMoneyLoot { get; set; }
         int maxMoneyLoot { get; set; }
-        uint flagsCustom { get; set; }
+        int flagsCustom { get; set; }
         string GetUpdateSqlQuery();
         string GetInsertSqlQuery();
     }

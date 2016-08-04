@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
+using System.Windows.Forms;
 
 namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
@@ -158,7 +159,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                     VerifiedBuild = int.Parse(dRow[135].ToString()),
                     minMoneyLoot = int.Parse(dRow[136].ToString()),
                     maxMoneyLoot = int.Parse(dRow[137].ToString()),
-                    flagsCustom = uint.Parse(dRow[138].ToString()),
+                    flagsCustom = int.Parse(dRow[138].ToString()),
                 };
                 mItem.Add(item);
             }

@@ -140,7 +140,7 @@
         public int VerifiedBuild { get; set; }
         public int minMoneyLoot { get; set; }
         public int maxMoneyLoot { get; set; }
-        public uint flagsCustom { get; set; }
+        public int flagsCustom { get; set; }
 
         public string GetUpdateSqlQuery()
         {
