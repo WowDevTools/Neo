@@ -108,6 +108,19 @@ namespace WoWEditor6.UI
             }
         }
 
+        private void ItemEditor_Click(object sender, RoutedEventArgs e)
+        {
+            if (Storage.Database.MySqlConnector.Instance.CheckConnection())
+            {
+                var ItemEditor = new Dialogs.ItemEditor();
+                ItemEditor.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Please connect to the database before you use the item editor");
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModelSpawnPane.ToggleAutoHide();

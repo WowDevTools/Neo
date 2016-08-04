@@ -2,9 +2,9 @@
 
 namespace WoWEditor6.UI.Dialogs
 {
-    public partial class GameObjectEditor : Form
+    public partial class ItemEditor : Form
     {
-        public GameObjectEditor()
+        public ItemEditor()
         {
             InitializeComponent();
         }

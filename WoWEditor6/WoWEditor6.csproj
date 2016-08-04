@@ -481,6 +481,18 @@
     <Compile Include="UI\Widgets\ImportFileDialog.xaml.cs">
       <DependentUpon>ImportFileDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Widgets\ItemEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Widgets\ItemEditor.Designer.cs">
+      <DependentUpon>ItemEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Widgets\ItemEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Widgets\ItemEditorControl.Designer.cs">
+      <DependentUpon>ItemEditorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Widgets\KeyBindingControl.xaml.cs">
       <DependentUpon>KeyBindingControl.xaml</DependentUpon>
     </Compile>
@@ -606,6 +618,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Widgets\GameObjectEditorControl.resx">
       <DependentUpon>GameObjectEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Widgets\ItemEditor.resx">
+      <DependentUpon>ItemEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Widgets\ItemEditorControl.resx">
+      <DependentUpon>ItemEditorControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

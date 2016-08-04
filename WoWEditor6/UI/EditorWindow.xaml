@@ -32,6 +32,7 @@
                 <MenuItem Header="Open database configuration" Click="DatabaseConfiguration_Click"/>
                 <MenuItem Header="Creature Editor" Click="CreatureEditor_Click"/>
                 <MenuItem Header="GameObject Editor" Click="GameObjectEditor_Click"/>
+                <MenuItem Header="Item Editor" Click="ItemEditor_Click"/>
             </MenuItem>
             <MenuItem Header="_Debug" RenderTransformOrigin="-1.97,0.5">
                 <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"/>
