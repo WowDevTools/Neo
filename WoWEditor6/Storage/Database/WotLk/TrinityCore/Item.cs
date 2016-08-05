@@ -1,11 +1,11 @@
 ﻿namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
 {
-    class Item : IItem
+    public class Item : IItem
     {
         public int EntryId { get; set; }
         public itemClass Class { get; set; }
         public int SubClass { get; set; }
-        public int SoundOverrideSubclass { get; set; } //todo
+        public int SoundOverrideSubclass { get; set; }
         public string name { get; set; }
         public int displayid { get; set; }
         public itemQuality Quality { get; set; }
