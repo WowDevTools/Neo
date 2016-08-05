@@ -14,7 +14,7 @@
         int BuyCount { get; set; }
         uint BuyPrice { get; set; }
         uint SellPrice { get; set; }
-        itemInvenotryType InventoryType { get; set; }
+        itemInventoryType InventoryType { get; set; }
         int AllowableClass { get; set; }
         int AllowableRace { get; set; }
         int ItemLevel { get; set; }
@@ -229,7 +229,7 @@
         FollowLootRules = 0x4
     }
 
-    public enum itemInvenotryType
+    public enum itemInventoryType
     {
         NonEquipable = 0,
         Head = 1,
@@ -248,7 +248,7 @@
         Shield = 14,
         Ranged = 15, //Bow
         Back = 16,
-        woHand = 17,
+        TwoHand = 17,
         Bag = 18,
         Tabard = 19,
         Robe = 20,
@@ -365,6 +365,7 @@
 
     public enum itemAmmoType
     {
+        None = 0,
         Arrows = 2,
         Bullets = 3
     }
@@ -405,6 +406,7 @@
 
     public enum itemSheath
     {
+        None = 0,
         TwoHandedWeapon = 1,
         Staff = 2,
         OneHanded = 3,
@@ -435,6 +437,7 @@
 
     public enum itemTotemCategory
     {
+        None = 0,
         //SkinningKnife = 1, OLD
         EarthTotem = 2,
         AirTotem = 3,
@@ -470,6 +473,7 @@
 
     public enum itemSocketColor
     {
+        None = 0,
         Meta = 1,
         Red = 2,
         Yellow = 4,
@@ -478,6 +482,7 @@
 
     public enum itemFoodType
     {
+        None = 0,
         Meat = 1,
         Fish = 2,
         Cheese = 3,

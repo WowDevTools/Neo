@@ -5,7 +5,7 @@
         public int EntryId { get; set; }
         public itemClass Class { get; set; }
         public int SubClass { get; set; }
-        public int SoundOverrideSubclass { get; set; }
+        public int SoundOverrideSubclass { get; set; } //todo
         public string name { get; set; }
         public int displayid { get; set; }
         public itemQuality Quality { get; set; }
@@ -14,7 +14,7 @@
         public int BuyCount { get; set; }
         public uint BuyPrice { get; set; }
         public uint SellPrice { get; set; }
-        public itemInvenotryType InventoryType { get; set; }
+        public itemInventoryType InventoryType { get; set; }
         public int AllowableClass { get; set; }
         public int AllowableRace { get; set; }
         public int ItemLevel { get; set; }
@@ -28,7 +28,7 @@
         public itemReputationRank RequiredReputationRank { get; set; }
         public int maxcount { get; set; }
         public int stackable { get; set; }
-        public int ContainerSlots { get; set; }
+        public int ContainerSlots { get; set; } //only for bag
         public int StatsCount { get; set; }
         public itemStatType stat_type1 { get; set; }
         public int stat_value1 { get; set; }

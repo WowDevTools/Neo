@@ -32,7 +32,7 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                     BuyCount = int.Parse(dRow[9].ToString()),
                     BuyPrice = uint.Parse(dRow[10].ToString()),
                     SellPrice = uint.Parse(dRow[11].ToString()),
-                    InventoryType = (itemInvenotryType)Enum.Parse(typeof(itemInvenotryType), dRow[12].ToString()),
+                    InventoryType = (itemInventoryType)Enum.Parse(typeof(itemInventoryType), dRow[12].ToString()),
                     AllowableClass = int.Parse(dRow[13].ToString()),
                     AllowableRace = int.Parse(dRow[14].ToString()),
                     ItemLevel = int.Parse(dRow[15].ToString()),
