@@ -264,7 +264,7 @@
 
     public enum itemAllowableClass
     {
-        All = -1,
+        All = 0x0,
         Warrior = 0x1,
         Paladin = 0x2,
         Hunter = 0x4,
@@ -279,7 +279,7 @@
 
     public enum itemAllowableRace
     {
-        All = -1,
+        All = 0x0,
         Human = 0x1,
         Orc = 0x2,
         Dwarf = 0x4,

@@ -255,7 +255,10 @@ namespace WoWEditor6.UI.Dialogs
             if (!e.IsEnum)
                 return;
 
-            list.ClearSelected();
+            foreach (int i in list.CheckedIndices)
+            {
+                list.SetItemCheckState(i, CheckState.Unchecked);
+            }
 
             var values = Enum.GetValues(e);
 

@@ -279,22 +279,28 @@ namespace WoWEditor6.UI.Dialog
             if (!e.IsEnum)
                 return;
 
-            list.ClearSelected();
+            foreach (int i in list.CheckedIndices)
+            {
+                list.SetItemCheckState(i, CheckState.Unchecked);
+            }
 
-            if(value == -1)
+            if (value == 0)
             {
                 list.SetItemCheckState(0, CheckState.Checked);
             }
             else
             {
                 var values = Enum.GetValues(e);
-                for (int i = values.Length - 1; i > 0; i--)
+                for (int i = values.Length - 1; i >= 0; i--)
                 {
                     long val = Convert.ToInt64(values.GetValue(i));
                     if (val <= value)
                     {
-                        list.SetItemCheckState(i, CheckState.Checked);
-                        value -= val;
+                        if(val != 0)
+                        {
+                            list.SetItemCheckState(i, CheckState.Checked);
+                            value -= val;
+                        }
                     }
                 }
             }
@@ -315,8 +321,8 @@ namespace WoWEditor6.UI.Dialog
             this.BuyPrice.Text = item.BuyPrice.ToString();
             this.SellPrice.Text = item.SellPrice.ToString();
             this.InventoryType.Text = item.InventoryType.ToString();
-            checkFlagOrBitmask(this.AllowableClass, typeof(Storage.Database.WotLk.TrinityCore.itemAllowableClass), item.AllowableClass);
-            checkFlagOrBitmask(this.AllowableRace, typeof(Storage.Database.WotLk.TrinityCore.itemAllowableRace), item.AllowableRace);
+            checkFlagOrBitmask(this.AllowableClass, typeof(Storage.Database.WotLk.TrinityCore.itemAllowableClass), item.AllowableClass == -1 ? 0: item.AllowableClass);
+            checkFlagOrBitmask(this.AllowableRace, typeof(Storage.Database.WotLk.TrinityCore.itemAllowableRace), item.AllowableRace == -1 ? 0 : item.AllowableRace);
             this.ItemLevel.Text = item.ItemLevel.ToString();
             this.RequiredLevel.Text = item.RequiredLevel.ToString();
             this.RequiredSkill.Text = item.RequiredSkill.ToString();
