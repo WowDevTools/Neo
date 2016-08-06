@@ -601,6 +601,7 @@ namespace WoWEditor6.UI.Dialog
 
             if (Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(item.EntryId) == null)
             {
+                Storage.Database.MySqlConnector.Instance.Query(item.GetInsertSqlQuery());
                 Storage.Database.WotLk.TrinityCore.ItemManager.Instance.addCreatedItem(item);
                 MessageBox.Show("Inserted");
             }
