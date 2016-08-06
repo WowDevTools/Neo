@@ -155,10 +155,10 @@ namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
                     ScriptName = dRow[132].ToString(),
                     DisenchantID = int.Parse(dRow[133].ToString()),
                     FoodType = (itemFoodType)Enum.Parse(typeof(itemFoodType), dRow[134].ToString()),
-                    VerifiedBuild = int.Parse(dRow[135].ToString()),
-                    minMoneyLoot = int.Parse(dRow[136].ToString()),
-                    maxMoneyLoot = int.Parse(dRow[137].ToString()),
-                    flagsCustom = int.Parse(dRow[138].ToString()),
+                    minMoneyLoot = int.Parse(dRow[135].ToString()),
+                    maxMoneyLoot = int.Parse(dRow[136].ToString()),
+                    flagsCustom = int.Parse(dRow[137].ToString()),
+                    VerifiedBuild = int.Parse(dRow[138].ToString())
                 };
                 mItem.Add(item);
             }

@@ -380,7 +380,7 @@
     <Compile Include="Storage\Database\IMySqlConnector.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\IGameObject.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\IGameObjectManager.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\IItem.cs.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\IItem.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\IItemManager.cs" />
     <Compile Include="Storage\Database\WotLk\TrinityCore\ISpawnedCreature.cs" />
     <Compile Include="Storage\Database\MySqlConnector.cs" />

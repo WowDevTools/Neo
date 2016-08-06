@@ -137,10 +137,10 @@
         public string ScriptName { get; set; }
         public int DisenchantID { get; set; }
         public itemFoodType FoodType { get; set; }
-        public int VerifiedBuild { get; set; }
         public int minMoneyLoot { get; set; }
         public int maxMoneyLoot { get; set; }
         public int flagsCustom { get; set; }
+        public int VerifiedBuild { get; set; }
 
         public string GetUpdateSqlQuery()
         {
@@ -158,7 +158,7 @@
             customCulture.NumberFormat.NumberDecimalSeparator = ".";
             System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
 
-            return "";
+            return "INSERT INTO item_template VALUES ";
         }
     }
 }

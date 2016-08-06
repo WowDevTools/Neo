@@ -290,7 +290,7 @@ namespace WoWEditor6.UI.Dialog
                 list.SetItemCheckState(i, CheckState.Unchecked);
             }
 
-            if (value == 0)
+            if (value == 0 && list == this.AllowableClass || list == this.AllowableRace)
             {
                 list.SetItemCheckState(0, CheckState.Checked);
             }

@@ -137,10 +137,10 @@
         string ScriptName { get; set; }
         int DisenchantID { get; set; }
         itemFoodType FoodType { get; set; }
-        int VerifiedBuild { get; set; }
         int minMoneyLoot { get; set; }
         int maxMoneyLoot { get; set; }
         int flagsCustom { get; set; }
+        int VerifiedBuild { get; set; }
         string GetUpdateSqlQuery();
         string GetInsertSqlQuery();
     }
