@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemEditorControl));
             this.LoadButton = new System.Windows.Forms.Button();
             this.LoadEntry = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
@@ -345,6 +347,7 @@
             this.label99 = new System.Windows.Forms.Label();
             this.label98 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tbcEditor.SuspendLayout();
             this.tbItemInfo.SuspendLayout();
             this.tbItemInfo2.SuspendLayout();
@@ -632,6 +635,7 @@
             this.label131.Size = new System.Drawing.Size(73, 13);
             this.label131.TabIndex = 14;
             this.label131.Text = "Disenchant Id";
+            this.toolTip1.SetToolTip(this.label131, "The disenchant loot template ID.");
             // 
             // label127
             // 
@@ -641,6 +645,8 @@
             this.label127.Size = new System.Drawing.Size(129, 13);
             this.label127.TabIndex = 13;
             this.label127.Text = "Required Disenchant Skill";
+            this.toolTip1.SetToolTip(this.label127, "The required proficiency in disenchanting that the player needs to have to be abl" +
+        "e to disenchant this item.");
             // 
             // label96
             // 
@@ -650,6 +656,8 @@
             this.label96.Size = new System.Drawing.Size(60, 13);
             this.label96.TabIndex = 12;
             this.label96.Text = "Description";
+            this.toolTip1.SetToolTip(this.label96, "The description that appears in orange letters at the bottom of the item tooltip." +
+        "");
             // 
             // label95
             // 
@@ -659,6 +667,7 @@
             this.label95.Size = new System.Drawing.Size(46, 13);
             this.label95.TabIndex = 11;
             this.label95.Text = "Bonding";
+            this.toolTip1.SetToolTip(this.label95, "The bonding for the item.");
             // 
             // label24
             // 
@@ -668,6 +677,7 @@
             this.label24.Size = new System.Drawing.Size(55, 13);
             this.label24.TabIndex = 10;
             this.label24.Text = "Stackable";
+            this.toolTip1.SetToolTip(this.label24, "The number of copies of this item that can be stacked in the same slot.");
             // 
             // label23
             // 
@@ -677,6 +687,7 @@
             this.label23.Size = new System.Drawing.Size(58, 13);
             this.label23.TabIndex = 9;
             this.label23.Text = "Max Count";
+            this.toolTip1.SetToolTip(this.label23, "Maximum number of copies of this item a player can have. Use 0 for infinite.");
             // 
             // label22
             // 
@@ -686,6 +697,7 @@
             this.label22.Size = new System.Drawing.Size(56, 13);
             this.label22.TabIndex = 8;
             this.label22.Text = "Item Level";
+            this.toolTip1.SetToolTip(this.label22, "Base item level.");
             // 
             // label10
             // 
@@ -695,6 +707,9 @@
             this.label10.Size = new System.Drawing.Size(51, 13);
             this.label10.TabIndex = 7;
             this.label10.Text = "Sell Price";
+            this.toolTip1.SetToolTip(this.label10, "The price that the vendor will pay you for the item when you sell it and if it is" +
+        " possible to be sold, in copper. Put in 0 if the item cannot be sold to a vendor" +
+        ".");
             // 
             // label9
             // 
@@ -704,6 +719,7 @@
             this.label9.Size = new System.Drawing.Size(52, 13);
             this.label9.TabIndex = 6;
             this.label9.Text = "Buy Price";
+            this.toolTip1.SetToolTip(this.label9, "The price required to pay to buy this item from a vendor, in copper.");
             // 
             // label8
             // 
@@ -713,6 +729,7 @@
             this.label8.Size = new System.Drawing.Size(56, 13);
             this.label8.TabIndex = 5;
             this.label8.Text = "Buy Count";
+            this.toolTip1.SetToolTip(this.label8, "The size of the item stack when sold by vendors.");
             // 
             // label5
             // 
@@ -722,6 +739,7 @@
             this.label5.Size = new System.Drawing.Size(39, 13);
             this.label5.TabIndex = 4;
             this.label5.Text = "Quality";
+            this.toolTip1.SetToolTip(this.label5, "The quality of the item.");
             // 
             // label4
             // 
@@ -731,6 +749,7 @@
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 3;
             this.label4.Text = "Name";
+            this.toolTip1.SetToolTip(this.label4, "The name of the item.");
             // 
             // label1
             // 
@@ -740,6 +759,7 @@
             this.label1.Size = new System.Drawing.Size(31, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Entry";
+            this.toolTip1.SetToolTip(this.label1, "The unique ID of the item.");
             // 
             // tbItemInfo2
             // 
@@ -780,7 +800,6 @@
             this.ScriptName.Name = "ScriptName";
             this.ScriptName.Size = new System.Drawing.Size(393, 20);
             this.ScriptName.TabIndex = 26;
-            this.ScriptName.Text = "0";
             // 
             // MaxMoneyLoot
             // 
@@ -973,6 +992,8 @@
             this.label135.Size = new System.Drawing.Size(86, 13);
             this.label135.TabIndex = 14;
             this.label135.Text = "Max Money Loot";
+            this.toolTip1.SetToolTip(this.label135, "If the item is a container that can contain money, then this field defines the ma" +
+        "ximum coinage held in this container, in copper.");
             // 
             // label134
             // 
@@ -982,6 +1003,8 @@
             this.label134.Size = new System.Drawing.Size(83, 13);
             this.label134.TabIndex = 13;
             this.label134.Text = "Min Money Loot";
+            this.toolTip1.SetToolTip(this.label134, "If the item is a container that can contain money, then this field defines the mi" +
+        "nimum coinage held in this container, in copper.");
             // 
             // label132
             // 
@@ -991,6 +1014,7 @@
             this.label132.Size = new System.Drawing.Size(62, 13);
             this.label132.TabIndex = 12;
             this.label132.Text = "Scipt Name";
+            this.toolTip1.SetToolTip(this.label132, "The name of the script that the item should use.");
             // 
             // label117
             // 
@@ -1000,6 +1024,8 @@
             this.label117.Size = new System.Drawing.Size(58, 13);
             this.label117.TabIndex = 11;
             this.label117.Text = "Bag Family";
+            this.toolTip1.SetToolTip(this.label117, "If the item is a bag, this field is a bitmask controlling what types of items can" +
+        " be put in this bag.");
             // 
             // label110
             // 
@@ -1009,6 +1035,7 @@
             this.label110.Size = new System.Drawing.Size(41, 13);
             this.label110.TabIndex = 10;
             this.label110.Text = "Sheath";
+            this.toolTip1.SetToolTip(this.label110, "Controls how the item is put away on the character.");
             // 
             // label109
             // 
@@ -1018,6 +1045,8 @@
             this.label109.Size = new System.Drawing.Size(44, 13);
             this.label109.TabIndex = 9;
             this.label109.Text = "Material";
+            this.toolTip1.SetToolTip(this.label109, "The material that the item is made of. The value here affects the sound that the " +
+        "item makes when moved.");
             // 
             // label66
             // 
@@ -1027,6 +1056,7 @@
             this.label66.Size = new System.Drawing.Size(73, 13);
             this.label66.TabIndex = 8;
             this.label66.Text = "Max Durability";
+            this.toolTip1.SetToolTip(this.label66, "The maximum durability of this item.");
             // 
             // label65
             // 
@@ -1036,6 +1066,7 @@
             this.label65.Size = new System.Drawing.Size(63, 13);
             this.label65.TabIndex = 7;
             this.label65.Text = "Ammo Type";
+            this.toolTip1.SetToolTip(this.label65, "The type of ammunition the item uses.");
             // 
             // label25
             // 
@@ -1045,6 +1076,7 @@
             this.label25.Size = new System.Drawing.Size(78, 13);
             this.label25.TabIndex = 6;
             this.label25.Text = "Container Slots";
+            this.toolTip1.SetToolTip(this.label25, "If the item is a bag, this field controls the number of slots the bag has.");
             // 
             // label11
             // 
@@ -1054,6 +1086,7 @@
             this.label11.Size = new System.Drawing.Size(78, 13);
             this.label11.TabIndex = 5;
             this.label11.Text = "Inventory Type";
+            this.toolTip1.SetToolTip(this.label11, "In what slot the item can be equipped.");
             // 
             // label3
             // 
@@ -1063,6 +1096,7 @@
             this.label3.Size = new System.Drawing.Size(51, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "SubClass";
+            this.toolTip1.SetToolTip(this.label3, "The Subclass of the item.");
             // 
             // label2
             // 
@@ -1072,6 +1106,7 @@
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Class";
+            this.toolTip1.SetToolTip(this.label2, "The Class of the item.");
             // 
             // tbModelInfo
             // 
@@ -1095,6 +1130,8 @@
             this.label50.Size = new System.Drawing.Size(55, 13);
             this.label50.TabIndex = 28;
             this.label50.Text = "Display ID";
+            this.toolTip1.SetToolTip(this.label50, "The model ID of the item. Each model has its own icon assigned so this field cont" +
+        "rols both the model appearance and the icon.");
             // 
             // ModelId
             // 
@@ -1158,6 +1195,7 @@
             this.label124.Size = new System.Drawing.Size(34, 13);
             this.label124.TabIndex = 87;
             this.label124.Text = "Armor";
+            this.toolTip1.SetToolTip(this.label124, "The armor value of the item.");
             // 
             // ArmorDmgMod
             // 
@@ -1314,6 +1352,7 @@
             this.label58.Size = new System.Drawing.Size(74, 13);
             this.label58.TabIndex = 78;
             this.label58.Text = "Damage Type";
+            this.toolTip1.SetToolTip(this.label58, "The damage type that the item uses.");
             // 
             // label57
             // 
@@ -1323,6 +1362,7 @@
             this.label57.Size = new System.Drawing.Size(70, 13);
             this.label57.TabIndex = 77;
             this.label57.Text = "Damage Max";
+            this.toolTip1.SetToolTip(this.label57, "The maximum damage of the item.");
             // 
             // label56
             // 
@@ -1332,6 +1372,7 @@
             this.label56.Size = new System.Drawing.Size(67, 13);
             this.label56.TabIndex = 76;
             this.label56.Text = "Damage Min";
+            this.toolTip1.SetToolTip(this.label56, "The minimum damage of the item.");
             // 
             // label64
             // 
@@ -1350,6 +1391,7 @@
             this.label62.Size = new System.Drawing.Size(34, 13);
             this.label62.TabIndex = 79;
             this.label62.Text = "Delay";
+            this.toolTip1.SetToolTip(this.label62, "The time in milliseconds between successive hits.");
             // 
             // label63
             // 
@@ -1359,6 +1401,7 @@
             this.label63.Size = new System.Drawing.Size(34, 13);
             this.label63.TabIndex = 78;
             this.label63.Text = "Block";
+            this.toolTip1.SetToolTip(this.label63, "If the item is a shield, the block chance of the shield.");
             // 
             // groupBox5
             // 
@@ -1401,6 +1444,7 @@
             this.label49.Size = new System.Drawing.Size(41, 13);
             this.label49.TabIndex = 77;
             this.label49.Text = "Arcane";
+            this.toolTip1.SetToolTip(this.label49, "Arcane resistance.");
             // 
             // ResShadow
             // 
@@ -1422,6 +1466,7 @@
             this.label51.Size = new System.Drawing.Size(46, 13);
             this.label51.TabIndex = 75;
             this.label51.Text = "Shadow";
+            this.toolTip1.SetToolTip(this.label51, "Shadow resistance.");
             // 
             // ResFrost
             // 
@@ -1443,6 +1488,7 @@
             this.label52.Size = new System.Drawing.Size(30, 13);
             this.label52.TabIndex = 73;
             this.label52.Text = "Frost";
+            this.toolTip1.SetToolTip(this.label52, "Frost resistance.");
             // 
             // ResNature
             // 
@@ -1476,6 +1522,7 @@
             this.label53.Size = new System.Drawing.Size(39, 13);
             this.label53.TabIndex = 71;
             this.label53.Text = "Nature";
+            this.toolTip1.SetToolTip(this.label53, "Nature resistance.");
             // 
             // ResHoly
             // 
@@ -1497,6 +1544,7 @@
             this.label54.Size = new System.Drawing.Size(24, 13);
             this.label54.TabIndex = 71;
             this.label54.Text = "Fire";
+            this.toolTip1.SetToolTip(this.label54, "Fire resistance.");
             // 
             // label55
             // 
@@ -1506,6 +1554,7 @@
             this.label55.Size = new System.Drawing.Size(28, 13);
             this.label55.TabIndex = 71;
             this.label55.Text = "Holy";
+            this.toolTip1.SetToolTip(this.label55, "Holy resistance.");
             // 
             // tbStat
             // 
@@ -1536,7 +1585,7 @@
             this.groupBox17.Controls.Add(this.ScalingStatDistribution);
             this.groupBox17.Controls.Add(this.label47);
             this.groupBox17.Controls.Add(this.label48);
-            this.groupBox17.Location = new System.Drawing.Point(6, 1849);
+            this.groupBox17.Location = new System.Drawing.Point(3, 1101);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(497, 100);
             this.groupBox17.TabIndex = 54;
@@ -1567,6 +1616,8 @@
             this.label47.Size = new System.Drawing.Size(119, 13);
             this.label47.TabIndex = 45;
             this.label47.Text = "Scaling Stat Distribution";
+            this.toolTip1.SetToolTip(this.label47, "Similar to Static Stats these are the Stats that grow along with the users level " +
+        "(mainly heirloom leveling gear)\r\n");
             // 
             // label48
             // 
@@ -1576,6 +1627,7 @@
             this.label48.Size = new System.Drawing.Size(94, 13);
             this.label48.TabIndex = 46;
             this.label48.Text = "Scaling Stat Value";
+            this.toolTip1.SetToolTip(this.label48, "Final (level 80) value of the scaling-stat");
             // 
             // groupBox16
             // 
@@ -1583,7 +1635,7 @@
             this.groupBox16.Controls.Add(this.StatValue10);
             this.groupBox16.Controls.Add(this.label45);
             this.groupBox16.Controls.Add(this.label46);
-            this.groupBox16.Location = new System.Drawing.Point(6, 1743);
+            this.groupBox16.Location = new System.Drawing.Point(3, 995);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(497, 100);
             this.groupBox16.TabIndex = 53;
@@ -1676,7 +1728,7 @@
             this.groupBox15.Controls.Add(this.StatValue9);
             this.groupBox15.Controls.Add(this.label43);
             this.groupBox15.Controls.Add(this.label44);
-            this.groupBox15.Location = new System.Drawing.Point(6, 1637);
+            this.groupBox15.Location = new System.Drawing.Point(3, 889);
             this.groupBox15.Name = "groupBox15";
             this.groupBox15.Size = new System.Drawing.Size(497, 100);
             this.groupBox15.TabIndex = 52;
@@ -1769,7 +1821,7 @@
             this.groupBox14.Controls.Add(this.StatValue8);
             this.groupBox14.Controls.Add(this.label41);
             this.groupBox14.Controls.Add(this.label42);
-            this.groupBox14.Location = new System.Drawing.Point(6, 1531);
+            this.groupBox14.Location = new System.Drawing.Point(3, 783);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Size = new System.Drawing.Size(497, 100);
             this.groupBox14.TabIndex = 48;
@@ -2497,6 +2549,7 @@
             this.label28.Size = new System.Drawing.Size(56, 13);
             this.label28.TabIndex = 5;
             this.label28.Text = "Stat Value";
+            this.toolTip1.SetToolTip(this.label28, "The value to change the stat type to.");
             // 
             // label27
             // 
@@ -2506,6 +2559,7 @@
             this.label27.Size = new System.Drawing.Size(53, 13);
             this.label27.TabIndex = 4;
             this.label27.Text = "Stat Type";
+            this.toolTip1.SetToolTip(this.label27, "The type of stat to modify.");
             // 
             // StatsCount
             // 
@@ -2523,6 +2577,7 @@
             this.label26.Size = new System.Drawing.Size(62, 13);
             this.label26.TabIndex = 0;
             this.label26.Text = "Stats Count";
+            this.toolTip1.SetToolTip(this.label26, "The number of stats the item is using.");
             // 
             // tbRequirement
             // 
@@ -2677,6 +2732,8 @@
             this.label20.Size = new System.Drawing.Size(143, 13);
             this.label20.TabIndex = 9;
             this.label20.Text = "Required Reputation Faction";
+            this.toolTip1.SetToolTip(this.label20, "The faction template ID  of the faction that the player has to have a certain ran" +
+        "king with. If this value is 0, the faction of the seller of the item is used.");
             // 
             // label21
             // 
@@ -2686,6 +2743,7 @@
             this.label21.Size = new System.Drawing.Size(134, 13);
             this.label21.TabIndex = 8;
             this.label21.Text = "Required Reputation Rank";
+            this.toolTip1.SetToolTip(this.label21, "The rank the player has to have with the faction.");
             // 
             // label18
             // 
@@ -2695,6 +2753,7 @@
             this.label18.Size = new System.Drawing.Size(111, 13);
             this.label18.TabIndex = 7;
             this.label18.Text = "Required Honor Rank";
+            this.toolTip1.SetToolTip(this.label18, "The honor rank the player needs to have to use this item.");
             // 
             // label19
             // 
@@ -2713,6 +2772,7 @@
             this.label16.Size = new System.Drawing.Size(101, 13);
             this.label16.TabIndex = 5;
             this.label16.Text = "Required Skill Rank";
+            this.toolTip1.SetToolTip(this.label16, "The required skill rank the player needs to have to use this item.");
             // 
             // label17
             // 
@@ -2722,6 +2782,7 @@
             this.label17.Size = new System.Drawing.Size(76, 13);
             this.label17.TabIndex = 4;
             this.label17.Text = "Required Spell";
+            this.toolTip1.SetToolTip(this.label17, "The required spell that the player needs to have to use this item.");
             // 
             // label14
             // 
@@ -2731,6 +2792,7 @@
             this.label14.Size = new System.Drawing.Size(79, 13);
             this.label14.TabIndex = 3;
             this.label14.Text = "Required Level";
+            this.toolTip1.SetToolTip(this.label14, "The level that a player must be to equip the item.");
             // 
             // label15
             // 
@@ -2740,6 +2802,7 @@
             this.label15.Size = new System.Drawing.Size(72, 13);
             this.label15.TabIndex = 2;
             this.label15.Text = "Required Skill";
+            this.toolTip1.SetToolTip(this.label15, "The skill required to use this item.");
             // 
             // label13
             // 
@@ -2749,6 +2812,7 @@
             this.label13.Size = new System.Drawing.Size(81, 13);
             this.label13.TabIndex = 1;
             this.label13.Text = "Allowable Race";
+            this.toolTip1.SetToolTip(this.label13, "Bitmask controlling which races can use this item.");
             // 
             // label12
             // 
@@ -2758,6 +2822,7 @@
             this.label12.Size = new System.Drawing.Size(80, 13);
             this.label12.TabIndex = 0;
             this.label12.Text = "Allowable Class";
+            this.toolTip1.SetToolTip(this.label12, "Bitmask controlling which classes can use this item.");
             // 
             // tbSpells
             // 
@@ -2790,7 +2855,7 @@
             this.groupBox6.Controls.Add(this.label104);
             this.groupBox6.Controls.Add(this.label105);
             this.groupBox6.Controls.Add(this.label106);
-            this.groupBox6.Location = new System.Drawing.Point(3, 1715);
+            this.groupBox6.Location = new System.Drawing.Point(3, 963);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(497, 234);
             this.groupBox6.TabIndex = 27;
@@ -3469,6 +3534,9 @@
             this.label73.Size = new System.Drawing.Size(125, 13);
             this.label73.TabIndex = 18;
             this.label73.Text = "Spell Category Cooldown";
+            this.toolTip1.SetToolTip(this.label73, "The cooldown time in milliseconds that is applied to all other spells in the cate" +
+        "gory that the triggered spell is also in. Use -1 to use the default spell cooldo" +
+        "wn.");
             // 
             // label71
             // 
@@ -3478,6 +3546,8 @@
             this.label71.Size = new System.Drawing.Size(80, 13);
             this.label71.TabIndex = 17;
             this.label71.Text = "Spell Cooldown";
+            this.toolTip1.SetToolTip(this.label71, "The cooldown in milliseconds for the specific spell controlling how often the spe" +
+        "ll can be used. Use -1 to use the default spell cooldown.");
             // 
             // label72
             // 
@@ -3487,6 +3557,7 @@
             this.label72.Size = new System.Drawing.Size(75, 13);
             this.label72.TabIndex = 16;
             this.label72.Text = "Spell Category";
+            this.toolTip1.SetToolTip(this.label72, "The category that the spell is in.");
             // 
             // label69
             // 
@@ -3496,6 +3567,7 @@
             this.label69.Size = new System.Drawing.Size(72, 13);
             this.label69.TabIndex = 15;
             this.label69.Text = "Spell Charges";
+            this.toolTip1.SetToolTip(this.label69, resources.GetString("label69.ToolTip"));
             // 
             // label70
             // 
@@ -3505,6 +3577,8 @@
             this.label70.Size = new System.Drawing.Size(80, 13);
             this.label70.TabIndex = 14;
             this.label70.Text = "Spell Ppm Rate";
+            this.toolTip1.SetToolTip(this.label70, "The proc per minute rate controlling how often the spell is triggered (if #spellt" +
+        "rigger == 2).");
             // 
             // label68
             // 
@@ -3514,6 +3588,7 @@
             this.label68.Size = new System.Drawing.Size(66, 13);
             this.label68.TabIndex = 13;
             this.label68.Text = "Spell Trigger";
+            this.toolTip1.SetToolTip(this.label68, "The type of trigger for the spell.");
             // 
             // label67
             // 
@@ -3523,6 +3598,7 @@
             this.label67.Size = new System.Drawing.Size(42, 13);
             this.label67.TabIndex = 12;
             this.label67.Text = "Spell Id";
+            this.toolTip1.SetToolTip(this.label67, "The spell ID of the spell that the item can cast or trigger.");
             // 
             // tbFlagsAndSockets
             // 
@@ -3710,6 +3786,7 @@
             this.label136.Size = new System.Drawing.Size(81, 13);
             this.label136.TabIndex = 5;
             this.label136.Text = "Socket Content";
+            this.toolTip1.SetToolTip(this.label136, "Amount of Gems of SocketColor.");
             // 
             // label137
             // 
@@ -3719,6 +3796,7 @@
             this.label137.Size = new System.Drawing.Size(68, 13);
             this.label137.TabIndex = 4;
             this.label137.Text = "Socket Color";
+            this.toolTip1.SetToolTip(this.label137, "The color of the socket that can be placed in this item.");
             // 
             // groupBox18
             // 
@@ -3742,9 +3820,9 @@
             "DurationRealTime",
             "IgnoreQuestStatus",
             "FollowLootRules"});
-            this.FlagsCustom.Location = new System.Drawing.Point(76, 134);
+            this.FlagsCustom.Location = new System.Drawing.Point(82, 134);
             this.FlagsCustom.Name = "FlagsCustom";
-            this.FlagsCustom.Size = new System.Drawing.Size(415, 49);
+            this.FlagsCustom.Size = new System.Drawing.Size(409, 49);
             this.FlagsCustom.TabIndex = 5;
             // 
             // label138
@@ -3764,9 +3842,9 @@
             "AllianceOnly",
             "ExtendedCostPlusGold",
             "NeedRollDisabled"});
-            this.FlagsExtra.Location = new System.Drawing.Point(76, 79);
+            this.FlagsExtra.Location = new System.Drawing.Point(82, 79);
             this.FlagsExtra.Name = "FlagsExtra";
-            this.FlagsExtra.Size = new System.Drawing.Size(415, 49);
+            this.FlagsExtra.Size = new System.Drawing.Size(409, 49);
             this.FlagsExtra.TabIndex = 3;
             // 
             // Flags
@@ -3805,9 +3883,9 @@
             "Millable",
             "UNK11",
             "BindOnPickupTradeable"});
-            this.Flags.Location = new System.Drawing.Point(76, 19);
+            this.Flags.Location = new System.Drawing.Point(82, 19);
             this.Flags.Name = "Flags";
-            this.Flags.Size = new System.Drawing.Size(415, 49);
+            this.Flags.Size = new System.Drawing.Size(409, 49);
             this.Flags.TabIndex = 2;
             // 
             // label6
@@ -3818,6 +3896,7 @@
             this.label6.Size = new System.Drawing.Size(32, 13);
             this.label6.TabIndex = 0;
             this.label6.Text = "Flags";
+            this.toolTip1.SetToolTip(this.label6, "Bitmask field that contains flags that the item has on it.");
             // 
             // label7
             // 
@@ -3827,6 +3906,7 @@
             this.label7.Size = new System.Drawing.Size(59, 13);
             this.label7.TabIndex = 1;
             this.label7.Text = "Flags Extra";
+            this.toolTip1.SetToolTip(this.label7, "Bitmask field that contains extra flags that the item has on it.");
             // 
             // label125
             // 
@@ -3845,6 +3925,7 @@
             this.label126.Size = new System.Drawing.Size(74, 13);
             this.label126.TabIndex = 8;
             this.label126.Text = "Socket Bonus";
+            this.toolTip1.SetToolTip(this.label126, "The bonus applied when all slot are filled.");
             // 
             // tbOptional
             // 
@@ -3892,7 +3973,7 @@
             // 
             // SoundOverrideSubclass
             // 
-            this.SoundOverrideSubclass.Location = new System.Drawing.Point(133, 512);
+            this.SoundOverrideSubclass.Location = new System.Drawing.Point(133, 484);
             this.SoundOverrideSubclass.Name = "SoundOverrideSubclass";
             this.SoundOverrideSubclass.Size = new System.Drawing.Size(365, 20);
             this.SoundOverrideSubclass.TabIndex = 37;
@@ -3901,11 +3982,13 @@
             // SoundOverrideSubcl
             // 
             this.SoundOverrideSubcl.AutoSize = true;
-            this.SoundOverrideSubcl.Location = new System.Drawing.Point(3, 512);
+            this.SoundOverrideSubcl.Location = new System.Drawing.Point(3, 484);
             this.SoundOverrideSubcl.Name = "SoundOverrideSubcl";
             this.SoundOverrideSubcl.Size = new System.Drawing.Size(127, 13);
             this.SoundOverrideSubcl.TabIndex = 36;
             this.SoundOverrideSubcl.Text = "Sound Override Sublcass";
+            this.toolTip1.SetToolTip(this.SoundOverrideSubcl, "Weapons have special sounds on impact. This column is used to override these soun" +
+        "ds by specifying another subclass.");
             // 
             // FoodType
             // 
@@ -3920,7 +4003,7 @@
             "Fruit",
             "RawMeat",
             "RawFish"});
-            this.FoodType.Location = new System.Drawing.Point(114, 482);
+            this.FoodType.Location = new System.Drawing.Point(114, 454);
             this.FoodType.Name = "FoodType";
             this.FoodType.Size = new System.Drawing.Size(384, 21);
             this.FoodType.TabIndex = 35;
@@ -3959,7 +4042,7 @@
             "FlintAndTinder",
             "RunedCobaltRod",
             "RunedTitaniumRod"});
-            this.TotemCategory.Location = new System.Drawing.Point(114, 362);
+            this.TotemCategory.Location = new System.Drawing.Point(114, 334);
             this.TotemCategory.Name = "TotemCategory";
             this.TotemCategory.Size = new System.Drawing.Size(384, 21);
             this.TotemCategory.TabIndex = 34;
@@ -3967,7 +4050,7 @@
             // 
             // HolidayId
             // 
-            this.HolidayId.Location = new System.Drawing.Point(114, 452);
+            this.HolidayId.Location = new System.Drawing.Point(114, 424);
             this.HolidayId.Name = "HolidayId";
             this.HolidayId.Size = new System.Drawing.Size(384, 20);
             this.HolidayId.TabIndex = 33;
@@ -3975,7 +4058,7 @@
             // 
             // ItemLimitCategory
             // 
-            this.ItemLimitCategory.Location = new System.Drawing.Point(114, 422);
+            this.ItemLimitCategory.Location = new System.Drawing.Point(114, 394);
             this.ItemLimitCategory.Name = "ItemLimitCategory";
             this.ItemLimitCategory.Size = new System.Drawing.Size(384, 20);
             this.ItemLimitCategory.TabIndex = 32;
@@ -3983,7 +4066,7 @@
             // 
             // Duration
             // 
-            this.Duration.Location = new System.Drawing.Point(114, 392);
+            this.Duration.Location = new System.Drawing.Point(114, 364);
             this.Duration.Name = "Duration";
             this.Duration.Size = new System.Drawing.Size(384, 20);
             this.Duration.TabIndex = 31;
@@ -3991,7 +4074,7 @@
             // 
             // Map
             // 
-            this.Map.Location = new System.Drawing.Point(114, 332);
+            this.Map.Location = new System.Drawing.Point(114, 304);
             this.Map.Name = "Map";
             this.Map.Size = new System.Drawing.Size(384, 20);
             this.Map.TabIndex = 30;
@@ -3999,7 +4082,7 @@
             // 
             // Area
             // 
-            this.Area.Location = new System.Drawing.Point(114, 302);
+            this.Area.Location = new System.Drawing.Point(114, 274);
             this.Area.Name = "Area";
             this.Area.Size = new System.Drawing.Size(384, 20);
             this.Area.TabIndex = 29;
@@ -4007,7 +4090,7 @@
             // 
             // ItemSet
             // 
-            this.ItemSet.Location = new System.Drawing.Point(114, 272);
+            this.ItemSet.Location = new System.Drawing.Point(114, 244);
             this.ItemSet.Name = "ItemSet";
             this.ItemSet.Size = new System.Drawing.Size(384, 20);
             this.ItemSet.TabIndex = 28;
@@ -4015,7 +4098,7 @@
             // 
             // RandomSuffix
             // 
-            this.RandomSuffix.Location = new System.Drawing.Point(114, 242);
+            this.RandomSuffix.Location = new System.Drawing.Point(114, 214);
             this.RandomSuffix.Name = "RandomSuffix";
             this.RandomSuffix.Size = new System.Drawing.Size(384, 20);
             this.RandomSuffix.TabIndex = 27;
@@ -4023,7 +4106,7 @@
             // 
             // RandomProperty
             // 
-            this.RandomProperty.Location = new System.Drawing.Point(114, 212);
+            this.RandomProperty.Location = new System.Drawing.Point(114, 184);
             this.RandomProperty.Name = "RandomProperty";
             this.RandomProperty.Size = new System.Drawing.Size(384, 20);
             this.RandomProperty.TabIndex = 26;
@@ -4031,7 +4114,7 @@
             // 
             // PageText
             // 
-            this.PageText.Location = new System.Drawing.Point(114, 32);
+            this.PageText.Location = new System.Drawing.Point(114, 4);
             this.PageText.Name = "PageText";
             this.PageText.Size = new System.Drawing.Size(384, 20);
             this.PageText.TabIndex = 25;
@@ -4039,7 +4122,7 @@
             // 
             // LanguageId
             // 
-            this.LanguageId.Location = new System.Drawing.Point(114, 62);
+            this.LanguageId.Location = new System.Drawing.Point(114, 34);
             this.LanguageId.Name = "LanguageId";
             this.LanguageId.Size = new System.Drawing.Size(384, 20);
             this.LanguageId.TabIndex = 24;
@@ -4047,7 +4130,7 @@
             // 
             // PageMaterial
             // 
-            this.PageMaterial.Location = new System.Drawing.Point(114, 92);
+            this.PageMaterial.Location = new System.Drawing.Point(114, 64);
             this.PageMaterial.Name = "PageMaterial";
             this.PageMaterial.Size = new System.Drawing.Size(384, 20);
             this.PageMaterial.TabIndex = 23;
@@ -4055,7 +4138,7 @@
             // 
             // StartQuest
             // 
-            this.StartQuest.Location = new System.Drawing.Point(114, 122);
+            this.StartQuest.Location = new System.Drawing.Point(114, 94);
             this.StartQuest.Name = "StartQuest";
             this.StartQuest.Size = new System.Drawing.Size(384, 20);
             this.StartQuest.TabIndex = 22;
@@ -4063,7 +4146,7 @@
             // 
             // LockId
             // 
-            this.LockId.Location = new System.Drawing.Point(114, 152);
+            this.LockId.Location = new System.Drawing.Point(114, 124);
             this.LockId.Name = "LockId";
             this.LockId.Size = new System.Drawing.Size(384, 20);
             this.LockId.TabIndex = 21;
@@ -4071,7 +4154,7 @@
             // 
             // RangedModRange
             // 
-            this.RangedModRange.Location = new System.Drawing.Point(114, 182);
+            this.RangedModRange.Location = new System.Drawing.Point(114, 154);
             this.RangedModRange.Name = "RangedModRange";
             this.RangedModRange.Size = new System.Drawing.Size(384, 20);
             this.RangedModRange.TabIndex = 20;
@@ -4080,16 +4163,19 @@
             // label123
             // 
             this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(3, 482);
+            this.label123.Location = new System.Drawing.Point(3, 454);
             this.label123.Name = "label123";
             this.label123.Size = new System.Drawing.Size(58, 13);
             this.label123.TabIndex = 19;
             this.label123.Text = "Food Type";
+            this.toolTip1.SetToolTip(this.label123, "If this item is a food type item, this field defines what type of food it is for " +
+        "hunters who want to feed their pets. It controls in what diet this food item fal" +
+        "ls in.");
             // 
             // label130
             // 
             this.label130.AutoSize = true;
-            this.label130.Location = new System.Drawing.Point(3, 452);
+            this.label130.Location = new System.Drawing.Point(3, 424);
             this.label130.Name = "label130";
             this.label130.Size = new System.Drawing.Size(54, 13);
             this.label130.TabIndex = 18;
@@ -4098,7 +4184,7 @@
             // label129
             // 
             this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(3, 422);
+            this.label129.Location = new System.Drawing.Point(3, 394);
             this.label129.Name = "label129";
             this.label129.Size = new System.Drawing.Size(96, 13);
             this.label129.TabIndex = 17;
@@ -4107,16 +4193,17 @@
             // label128
             // 
             this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(3, 392);
+            this.label128.Location = new System.Drawing.Point(3, 364);
             this.label128.Name = "label128";
             this.label128.Size = new System.Drawing.Size(47, 13);
             this.label128.TabIndex = 16;
             this.label128.Text = "Duration";
+            this.toolTip1.SetToolTip(this.label128, "The duration of the item in seconds ingame time.");
             // 
             // label118
             // 
             this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(3, 362);
+            this.label118.Location = new System.Drawing.Point(3, 334);
             this.label118.Name = "label118";
             this.label118.Size = new System.Drawing.Size(82, 13);
             this.label118.TabIndex = 15;
@@ -4125,101 +4212,115 @@
             // label116
             // 
             this.label116.AutoSize = true;
-            this.label116.Location = new System.Drawing.Point(3, 332);
+            this.label116.Location = new System.Drawing.Point(3, 304);
             this.label116.Name = "label116";
             this.label116.Size = new System.Drawing.Size(28, 13);
             this.label116.TabIndex = 14;
             this.label116.Text = "Map";
+            this.toolTip1.SetToolTip(this.label116, "The ID of the map in which this item can be used.");
             // 
             // label115
             // 
             this.label115.AutoSize = true;
-            this.label115.Location = new System.Drawing.Point(3, 302);
+            this.label115.Location = new System.Drawing.Point(3, 274);
             this.label115.Name = "label115";
             this.label115.Size = new System.Drawing.Size(29, 13);
             this.label115.TabIndex = 13;
             this.label115.Text = "Area";
+            this.toolTip1.SetToolTip(this.label115, "The ID of the zone in which this item can be used.");
             // 
             // label114
             // 
             this.label114.AutoSize = true;
-            this.label114.Location = new System.Drawing.Point(3, 272);
+            this.label114.Location = new System.Drawing.Point(3, 244);
             this.label114.Name = "label114";
             this.label114.Size = new System.Drawing.Size(46, 13);
             this.label114.TabIndex = 12;
             this.label114.Text = "Item Set";
+            this.toolTip1.SetToolTip(this.label114, "The ID of the item set that this item belongs to.");
             // 
             // label113
             // 
             this.label113.AutoSize = true;
-            this.label113.Location = new System.Drawing.Point(3, 242);
+            this.label113.Location = new System.Drawing.Point(3, 214);
             this.label113.Name = "label113";
             this.label113.Size = new System.Drawing.Size(76, 13);
             this.label113.TabIndex = 11;
             this.label113.Text = "Random Suffix";
+            this.toolTip1.SetToolTip(this.label113, resources.GetString("label113.ToolTip"));
             // 
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(3, 212);
+            this.label112.Location = new System.Drawing.Point(3, 184);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(89, 13);
             this.label112.TabIndex = 10;
             this.label112.Text = "Random Property";
+            this.toolTip1.SetToolTip(this.label112, resources.GetString("label112.ToolTip"));
             // 
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(3, 182);
+            this.label111.Location = new System.Drawing.Point(3, 154);
             this.label111.Name = "label111";
             this.label111.Size = new System.Drawing.Size(104, 13);
             this.label111.TabIndex = 9;
             this.label111.Text = "Ranged Mod Range";
+            this.toolTip1.SetToolTip(this.label111, "Range Modifier for bows/guns/crossbows.");
             // 
             // label108
             // 
             this.label108.AutoSize = true;
-            this.label108.Location = new System.Drawing.Point(3, 152);
+            this.label108.Location = new System.Drawing.Point(3, 124);
             this.label108.Name = "label108";
             this.label108.Size = new System.Drawing.Size(43, 13);
             this.label108.TabIndex = 4;
             this.label108.Text = "Lock Id";
+            this.toolTip1.SetToolTip(this.label108, "The lock entry ID that this item (which serves as a key) is tied to. This field i" +
+        "s used in key-door mechanics.");
             // 
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(3, 122);
+            this.label107.Location = new System.Drawing.Point(3, 94);
             this.label107.Name = "label107";
             this.label107.Size = new System.Drawing.Size(60, 13);
             this.label107.TabIndex = 3;
             this.label107.Text = "Start Quest";
+            this.toolTip1.SetToolTip(this.label107, "The ID of the quest that this item will start if right-clicked.");
             // 
             // label99
             // 
             this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(3, 92);
+            this.label99.Location = new System.Drawing.Point(3, 64);
             this.label99.Name = "label99";
             this.label99.Size = new System.Drawing.Size(72, 13);
             this.label99.TabIndex = 2;
             this.label99.Text = "Page Material";
+            this.toolTip1.SetToolTip(this.label99, "The background texture that appears in the page text window.");
             // 
             // label98
             // 
             this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(3, 62);
+            this.label98.Location = new System.Drawing.Point(3, 34);
             this.label98.Name = "label98";
             this.label98.Size = new System.Drawing.Size(67, 13);
             this.label98.TabIndex = 1;
             this.label98.Text = "Language Id";
+            this.toolTip1.SetToolTip(this.label98, "The language that the item text is written in.");
             // 
             // label97
             // 
             this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(3, 32);
+            this.label97.Location = new System.Drawing.Point(3, 4);
             this.label97.Name = "label97";
             this.label97.Size = new System.Drawing.Size(56, 13);
             this.label97.TabIndex = 0;
             this.label97.Text = "Page Text";
+            this.toolTip1.SetToolTip(this.label97, "The ID referring to the text that the item will show (if it is a book or a letter" +
+        ", etc). The item will have a magnifying glass cursor in the game and will show t" +
+        "he text when right-clicked.");
             // 
             // ItemEditorControl
             // 
@@ -4626,5 +4727,6 @@
         private System.Windows.Forms.Label label124;
         private System.Windows.Forms.CheckedListBox FlagsCustom;
         private System.Windows.Forms.Label label138;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
