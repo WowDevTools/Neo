@@ -79,8 +79,9 @@ namespace WoWEditor6.UI.Dialog
         private void ItemClass_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.SubClass.Items.Clear();
-
-            switch(this.ItemClass.SelectedIndex)
+            this.SoundOverrideSubclass.Items.Clear();
+            this.SoundOverrideSubclass.Items.Add("None");
+            switch (this.ItemClass.SelectedIndex)
             {
                 case 0:
                     this.SubClass.Items.Add("Consumable");
@@ -92,6 +93,15 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Item Enhancement");
                     this.SubClass.Items.Add("Bandage");
                     this.SubClass.Items.Add("Other");
+                    this.SoundOverrideSubclass.Items.Add("Consumable");
+                    this.SoundOverrideSubclass.Items.Add("Potion");
+                    this.SoundOverrideSubclass.Items.Add("Elixir");
+                    this.SoundOverrideSubclass.Items.Add("Flask");
+                    this.SoundOverrideSubclass.Items.Add("Scroll");
+                    this.SoundOverrideSubclass.Items.Add("Food & Drink");
+                    this.SoundOverrideSubclass.Items.Add("Item Enhancement");
+                    this.SoundOverrideSubclass.Items.Add("Bandage");
+                    this.SoundOverrideSubclass.Items.Add("Other");
                     break;
 
                 case 1:
@@ -104,6 +114,15 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Mining Bag");
                     this.SubClass.Items.Add("Leatherworking Bag");
                     this.SubClass.Items.Add("Inscription Bag");
+                    this.SoundOverrideSubclass.Items.Add("Bag");
+                    this.SoundOverrideSubclass.Items.Add("Soul Bag");
+                    this.SoundOverrideSubclass.Items.Add("Herb Bag");
+                    this.SoundOverrideSubclass.Items.Add("Enchanting Bag");
+                    this.SoundOverrideSubclass.Items.Add("Engineering Bag");
+                    this.SoundOverrideSubclass.Items.Add("Gem Bag");
+                    this.SoundOverrideSubclass.Items.Add("Mining Bag");
+                    this.SoundOverrideSubclass.Items.Add("Leatherworking Bag");
+                    this.SoundOverrideSubclass.Items.Add("Inscription Bag");
                     break;
 
                 case 2:
@@ -128,6 +147,27 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Crossbow");
                     this.SubClass.Items.Add("Wand");
                     this.SubClass.Items.Add("Fishing Pole");
+                    this.SoundOverrideSubclass.Items.Add("One handed axe");
+                    this.SoundOverrideSubclass.Items.Add("Tne handed axe");
+                    this.SoundOverrideSubclass.Items.Add("Bow");
+                    this.SoundOverrideSubclass.Items.Add("Gun");
+                    this.SoundOverrideSubclass.Items.Add("One handed mace");
+                    this.SoundOverrideSubclass.Items.Add("Two handed mace");
+                    this.SoundOverrideSubclass.Items.Add("Polearm");
+                    this.SoundOverrideSubclass.Items.Add("One handed sword");
+                    this.SoundOverrideSubclass.Items.Add("Two handed sword");
+                    this.SoundOverrideSubclass.Items.Add("Obsolete");
+                    this.SoundOverrideSubclass.Items.Add("Staff");
+                    this.SoundOverrideSubclass.Items.Add("Exotic");
+                    this.SoundOverrideSubclass.Items.Add("Exotic");
+                    this.SoundOverrideSubclass.Items.Add("Fist Weapon");
+                    this.SoundOverrideSubclass.Items.Add("Miscellaneous");
+                    this.SoundOverrideSubclass.Items.Add("Dagger");
+                    this.SoundOverrideSubclass.Items.Add("Thrown");
+                    this.SoundOverrideSubclass.Items.Add("Spear");
+                    this.SoundOverrideSubclass.Items.Add("Crossbow");
+                    this.SoundOverrideSubclass.Items.Add("Wand");
+                    this.SoundOverrideSubclass.Items.Add("Fishing Pole");
                     break;
 
                 case 3:
@@ -140,6 +180,15 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Meta");
                     this.SubClass.Items.Add("Simple");
                     this.SubClass.Items.Add("Prismatic");
+                    this.SoundOverrideSubclass.Items.Add("Red");
+                    this.SoundOverrideSubclass.Items.Add("Blue");
+                    this.SoundOverrideSubclass.Items.Add("Yellow");
+                    this.SoundOverrideSubclass.Items.Add("Purple");
+                    this.SoundOverrideSubclass.Items.Add("Green");
+                    this.SoundOverrideSubclass.Items.Add("Orange");
+                    this.SoundOverrideSubclass.Items.Add("Meta");
+                    this.SoundOverrideSubclass.Items.Add("Simple");
+                    this.SoundOverrideSubclass.Items.Add("Prismatic");
                     break;
 
                 case 4:
@@ -154,10 +203,22 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Idol");
                     this.SubClass.Items.Add("Totem");
                     this.SubClass.Items.Add("Sigil");
+                    this.SoundOverrideSubclass.Items.Add("Miscellaneous");
+                    this.SoundOverrideSubclass.Items.Add("Cloth");
+                    this.SoundOverrideSubclass.Items.Add("Leather");
+                    this.SoundOverrideSubclass.Items.Add("Mail");
+                    this.SoundOverrideSubclass.Items.Add("Plate");
+                    this.SoundOverrideSubclass.Items.Add("Buckler(OBSOLETE)");
+                    this.SoundOverrideSubclass.Items.Add("Shield");
+                    this.SoundOverrideSubclass.Items.Add("Libram");
+                    this.SoundOverrideSubclass.Items.Add("Idol");
+                    this.SoundOverrideSubclass.Items.Add("Totem");
+                    this.SoundOverrideSubclass.Items.Add("Sigil");
                     break;
 
                 case 5:
                     this.SubClass.Items.Add("Reagent");
+                    this.SoundOverrideSubclass.Items.Add("Reagent");
                     break;
 
                 case 6:
@@ -166,6 +227,11 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Arrow");
                     this.SubClass.Items.Add("Bullet");
                     this.SubClass.Items.Add("Thrown(OBSOLETE)");
+                    this.SoundOverrideSubclass.Items.Add("Wand(OBSOLETE)");
+                    this.SoundOverrideSubclass.Items.Add("Bolt(OBSOLETE)");
+                    this.SoundOverrideSubclass.Items.Add("Arrow");
+                    this.SoundOverrideSubclass.Items.Add("Bullet");
+                    this.SoundOverrideSubclass.Items.Add("Thrown(OBSOLETE)");
                     break;
 
                 case 7:
@@ -185,10 +251,27 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Materials");
                     this.SubClass.Items.Add("Armor Enchantment");
                     this.SubClass.Items.Add("Weapon Enchantment");
+                    this.SoundOverrideSubclass.Items.Add("Trade Goods");
+                    this.SoundOverrideSubclass.Items.Add("Parts");
+                    this.SoundOverrideSubclass.Items.Add("Explosives");
+                    this.SoundOverrideSubclass.Items.Add("Devices");
+                    this.SoundOverrideSubclass.Items.Add("Jewelcrafting");
+                    this.SoundOverrideSubclass.Items.Add("Cloth");
+                    this.SoundOverrideSubclass.Items.Add("Leather");
+                    this.SoundOverrideSubclass.Items.Add("Metal & Stone");
+                    this.SoundOverrideSubclass.Items.Add("Meat");
+                    this.SoundOverrideSubclass.Items.Add("Herb");
+                    this.SoundOverrideSubclass.Items.Add("Elemental");
+                    this.SoundOverrideSubclass.Items.Add("Other");
+                    this.SoundOverrideSubclass.Items.Add("Enchanting");
+                    this.SoundOverrideSubclass.Items.Add("Materials");
+                    this.SoundOverrideSubclass.Items.Add("Armor Enchantment");
+                    this.SoundOverrideSubclass.Items.Add("Weapon Enchantment");
                     break;
 
                 case 8:
                     this.SubClass.Items.Add("Generic(OBSOLETE)");
+                    this.SoundOverrideSubclass.Items.Add("Generic(OBSOLETE)");
                     break;
 
                 case 9:
@@ -203,10 +286,22 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Enchanting");
                     this.SubClass.Items.Add("Fishing");
                     this.SubClass.Items.Add("Jewelcrafting");
+                    this.SoundOverrideSubclass.Items.Add("Book");
+                    this.SoundOverrideSubclass.Items.Add("Leatherworking");
+                    this.SoundOverrideSubclass.Items.Add("Tailoring");
+                    this.SoundOverrideSubclass.Items.Add("Engineering");
+                    this.SoundOverrideSubclass.Items.Add("Blacksmithing");
+                    this.SoundOverrideSubclass.Items.Add("Cooking");
+                    this.SoundOverrideSubclass.Items.Add("Alchemy");
+                    this.SoundOverrideSubclass.Items.Add("First Aid");
+                    this.SoundOverrideSubclass.Items.Add("Enchanting");
+                    this.SoundOverrideSubclass.Items.Add("Fishing");
+                    this.SoundOverrideSubclass.Items.Add("Jewelcrafting");
                     break;
 
                 case 10:
                     this.SubClass.Items.Add("Money(OBSOLETE)");
+                    this.SoundOverrideSubclass.Items.Add("Money(OBSOLETE)");
                     break;
 
                 case 11:
@@ -214,19 +309,27 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Quiver(OBSOLETE)");
                     this.SubClass.Items.Add("Quiver");
                     this.SubClass.Items.Add("Ammo Pouch");
+                    this.SoundOverrideSubclass.Items.Add("Quiver(OBSOLETE)");
+                    this.SoundOverrideSubclass.Items.Add("Quiver(OBSOLETE)");
+                    this.SoundOverrideSubclass.Items.Add("Quiver");
+                    this.SoundOverrideSubclass.Items.Add("Ammo Pouch");
                     break;
 
                 case 12:
                     this.SubClass.Items.Add("Quest");
+                    this.SoundOverrideSubclass.Items.Add("Quest");
                     break;
 
                 case 13:
                     this.SubClass.Items.Add("Key");
                     this.SubClass.Items.Add("Lockpick");
+                    this.SoundOverrideSubclass.Items.Add("Key");
+                    this.SoundOverrideSubclass.Items.Add("Lockpick");
                     break;
 
                 case 14:
                     this.SubClass.Items.Add("Permanent");
+                    this.SoundOverrideSubclass.Items.Add("Permanent");
                     break;
 
                 case 15:
@@ -236,6 +339,12 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Holiday");
                     this.SubClass.Items.Add("Other");
                     this.SubClass.Items.Add("Mount");
+                    this.SoundOverrideSubclass.Items.Add("Junk");
+                    this.SoundOverrideSubclass.Items.Add("Reagent");
+                    this.SoundOverrideSubclass.Items.Add("Pet");
+                    this.SoundOverrideSubclass.Items.Add("Holiday");
+                    this.SoundOverrideSubclass.Items.Add("Other");
+                    this.SoundOverrideSubclass.Items.Add("Mount");
                     break;
 
                     //Had to place none items since i'll use index as value
@@ -252,6 +361,17 @@ namespace WoWEditor6.UI.Dialog
                     this.SubClass.Items.Add("Warlock");
                     this.SubClass.Items.Add("None");
                     this.SubClass.Items.Add("Druid");
+                    this.SoundOverrideSubclass.Items.Add("Warrior");
+                    this.SoundOverrideSubclass.Items.Add("Paladin");
+                    this.SoundOverrideSubclass.Items.Add("Hunter");
+                    this.SoundOverrideSubclass.Items.Add("Rogue");
+                    this.SoundOverrideSubclass.Items.Add("Priest");
+                    this.SoundOverrideSubclass.Items.Add("Death Knight");
+                    this.SoundOverrideSubclass.Items.Add("Shaman");
+                    this.SoundOverrideSubclass.Items.Add("Mage");
+                    this.SoundOverrideSubclass.Items.Add("Warlock");
+                    this.SoundOverrideSubclass.Items.Add("None");
+                    this.SoundOverrideSubclass.Items.Add("Druid");
                     break;
             }
 
@@ -317,7 +437,7 @@ namespace WoWEditor6.UI.Dialog
             this.Entry.Text = item.EntryId.ToString();
             this.ItemClass.Text = item.Class.ToString();
             this.SubClass.Text = item.SubClass.ToString();
-            this.SoundOverrideSubclass.Text = item.SoundOverrideSubclass.ToString();
+            this.SoundOverrideSubclass.SelectedIndex = (item.SoundOverrideSubclass == -1 ? 0 : item.SoundOverrideSubclass);
             this.ItemName.Text = item.name;
             this.ModelId.Text = item.displayid.ToString();
             this.Quality.Text = item.Quality.ToString();
@@ -462,7 +582,7 @@ namespace WoWEditor6.UI.Dialog
             item.EntryId = int.Parse(this.Entry.Text);
             item.Class = (Storage.Database.WotLk.TrinityCore.itemClass)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemClass), this.ItemClass.Text);
             item.SubClass = int.Parse(this.SubClass.Text);
-            item.SoundOverrideSubclass = int.Parse(this.SoundOverrideSubclass.Text);
+            item.SoundOverrideSubclass = this.SoundOverrideSubclass.SelectedIndex == 0 ? -1 : this.SoundOverrideSubclass.SelectedIndex;
             item.name = this.ItemName.Text;
             item.displayid = int.Parse(this.ModelId.Text);
             item.Quality = (Storage.Database.WotLk.TrinityCore.itemQuality)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemQuality), this.Quality.Text);

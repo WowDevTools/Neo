@@ -93,7 +93,6 @@
             this.label50 = new System.Windows.Forms.Label();
             this.ModelId = new System.Windows.Forms.TextBox();
             this.btnShowModelId1 = new System.Windows.Forms.Button();
-            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             this.tbCombat = new System.Windows.Forms.TabPage();
             this.Armor = new System.Windows.Forms.TextBox();
             this.label124 = new System.Windows.Forms.Label();
@@ -313,7 +312,6 @@
             this.label125 = new System.Windows.Forms.Label();
             this.label126 = new System.Windows.Forms.Label();
             this.tbOptional = new System.Windows.Forms.TabPage();
-            this.SoundOverrideSubclass = new System.Windows.Forms.TextBox();
             this.SoundOverrideSubcl = new System.Windows.Forms.Label();
             this.FoodType = new System.Windows.Forms.ComboBox();
             this.TotemCategory = new System.Windows.Forms.ComboBox();
@@ -348,6 +346,8 @@
             this.label98 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.SoundOverrideSubclass = new System.Windows.Forms.ComboBox();
+            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             this.tbcEditor.SuspendLayout();
             this.tbItemInfo.SuspendLayout();
             this.tbItemInfo2.SuspendLayout();
@@ -1149,14 +1149,6 @@
             this.btnShowModelId1.TabIndex = 27;
             this.btnShowModelId1.Text = "Show";
             this.btnShowModelId1.UseVisualStyleBackColor = true;
-            // 
-            // modelRenderControl1
-            // 
-            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
-            this.modelRenderControl1.Name = "modelRenderControl1";
-            this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
-            this.modelRenderControl1.TabIndex = 25;
             // 
             // tbCombat
             // 
@@ -3911,7 +3903,7 @@
             // label125
             // 
             this.label125.AutoSize = true;
-            this.label125.Location = new System.Drawing.Point(3, 563);
+            this.label125.Location = new System.Drawing.Point(0, 563);
             this.label125.Name = "label125";
             this.label125.Size = new System.Drawing.Size(79, 13);
             this.label125.TabIndex = 9;
@@ -3920,7 +3912,7 @@
             // label126
             // 
             this.label126.AutoSize = true;
-            this.label126.Location = new System.Drawing.Point(3, 533);
+            this.label126.Location = new System.Drawing.Point(0, 533);
             this.label126.Name = "label126";
             this.label126.Size = new System.Drawing.Size(74, 13);
             this.label126.TabIndex = 8;
@@ -3971,18 +3963,10 @@
             this.tbOptional.Text = "Optional";
             this.tbOptional.UseVisualStyleBackColor = true;
             // 
-            // SoundOverrideSubclass
-            // 
-            this.SoundOverrideSubclass.Location = new System.Drawing.Point(133, 484);
-            this.SoundOverrideSubclass.Name = "SoundOverrideSubclass";
-            this.SoundOverrideSubclass.Size = new System.Drawing.Size(365, 20);
-            this.SoundOverrideSubclass.TabIndex = 37;
-            this.SoundOverrideSubclass.Text = "-1";
-            // 
             // SoundOverrideSubcl
             // 
             this.SoundOverrideSubcl.AutoSize = true;
-            this.SoundOverrideSubcl.Location = new System.Drawing.Point(3, 484);
+            this.SoundOverrideSubcl.Location = new System.Drawing.Point(3, 487);
             this.SoundOverrideSubcl.Name = "SoundOverrideSubcl";
             this.SoundOverrideSubcl.Size = new System.Drawing.Size(127, 13);
             this.SoundOverrideSubcl.TabIndex = 36;
@@ -4003,7 +3987,7 @@
             "Fruit",
             "RawMeat",
             "RawFish"});
-            this.FoodType.Location = new System.Drawing.Point(114, 454);
+            this.FoodType.Location = new System.Drawing.Point(114, 457);
             this.FoodType.Name = "FoodType";
             this.FoodType.Size = new System.Drawing.Size(384, 21);
             this.FoodType.TabIndex = 35;
@@ -4042,7 +4026,7 @@
             "FlintAndTinder",
             "RunedCobaltRod",
             "RunedTitaniumRod"});
-            this.TotemCategory.Location = new System.Drawing.Point(114, 334);
+            this.TotemCategory.Location = new System.Drawing.Point(114, 337);
             this.TotemCategory.Name = "TotemCategory";
             this.TotemCategory.Size = new System.Drawing.Size(384, 21);
             this.TotemCategory.TabIndex = 34;
@@ -4050,7 +4034,7 @@
             // 
             // HolidayId
             // 
-            this.HolidayId.Location = new System.Drawing.Point(114, 424);
+            this.HolidayId.Location = new System.Drawing.Point(114, 427);
             this.HolidayId.Name = "HolidayId";
             this.HolidayId.Size = new System.Drawing.Size(384, 20);
             this.HolidayId.TabIndex = 33;
@@ -4058,7 +4042,7 @@
             // 
             // ItemLimitCategory
             // 
-            this.ItemLimitCategory.Location = new System.Drawing.Point(114, 394);
+            this.ItemLimitCategory.Location = new System.Drawing.Point(114, 397);
             this.ItemLimitCategory.Name = "ItemLimitCategory";
             this.ItemLimitCategory.Size = new System.Drawing.Size(384, 20);
             this.ItemLimitCategory.TabIndex = 32;
@@ -4066,7 +4050,7 @@
             // 
             // Duration
             // 
-            this.Duration.Location = new System.Drawing.Point(114, 364);
+            this.Duration.Location = new System.Drawing.Point(114, 367);
             this.Duration.Name = "Duration";
             this.Duration.Size = new System.Drawing.Size(384, 20);
             this.Duration.TabIndex = 31;
@@ -4074,7 +4058,7 @@
             // 
             // Map
             // 
-            this.Map.Location = new System.Drawing.Point(114, 304);
+            this.Map.Location = new System.Drawing.Point(114, 307);
             this.Map.Name = "Map";
             this.Map.Size = new System.Drawing.Size(384, 20);
             this.Map.TabIndex = 30;
@@ -4082,7 +4066,7 @@
             // 
             // Area
             // 
-            this.Area.Location = new System.Drawing.Point(114, 274);
+            this.Area.Location = new System.Drawing.Point(114, 277);
             this.Area.Name = "Area";
             this.Area.Size = new System.Drawing.Size(384, 20);
             this.Area.TabIndex = 29;
@@ -4090,7 +4074,7 @@
             // 
             // ItemSet
             // 
-            this.ItemSet.Location = new System.Drawing.Point(114, 244);
+            this.ItemSet.Location = new System.Drawing.Point(114, 247);
             this.ItemSet.Name = "ItemSet";
             this.ItemSet.Size = new System.Drawing.Size(384, 20);
             this.ItemSet.TabIndex = 28;
@@ -4098,7 +4082,7 @@
             // 
             // RandomSuffix
             // 
-            this.RandomSuffix.Location = new System.Drawing.Point(114, 214);
+            this.RandomSuffix.Location = new System.Drawing.Point(114, 217);
             this.RandomSuffix.Name = "RandomSuffix";
             this.RandomSuffix.Size = new System.Drawing.Size(384, 20);
             this.RandomSuffix.TabIndex = 27;
@@ -4106,7 +4090,7 @@
             // 
             // RandomProperty
             // 
-            this.RandomProperty.Location = new System.Drawing.Point(114, 184);
+            this.RandomProperty.Location = new System.Drawing.Point(114, 187);
             this.RandomProperty.Name = "RandomProperty";
             this.RandomProperty.Size = new System.Drawing.Size(384, 20);
             this.RandomProperty.TabIndex = 26;
@@ -4114,7 +4098,7 @@
             // 
             // PageText
             // 
-            this.PageText.Location = new System.Drawing.Point(114, 4);
+            this.PageText.Location = new System.Drawing.Point(114, 7);
             this.PageText.Name = "PageText";
             this.PageText.Size = new System.Drawing.Size(384, 20);
             this.PageText.TabIndex = 25;
@@ -4122,7 +4106,7 @@
             // 
             // LanguageId
             // 
-            this.LanguageId.Location = new System.Drawing.Point(114, 34);
+            this.LanguageId.Location = new System.Drawing.Point(114, 37);
             this.LanguageId.Name = "LanguageId";
             this.LanguageId.Size = new System.Drawing.Size(384, 20);
             this.LanguageId.TabIndex = 24;
@@ -4130,7 +4114,7 @@
             // 
             // PageMaterial
             // 
-            this.PageMaterial.Location = new System.Drawing.Point(114, 64);
+            this.PageMaterial.Location = new System.Drawing.Point(114, 67);
             this.PageMaterial.Name = "PageMaterial";
             this.PageMaterial.Size = new System.Drawing.Size(384, 20);
             this.PageMaterial.TabIndex = 23;
@@ -4138,7 +4122,7 @@
             // 
             // StartQuest
             // 
-            this.StartQuest.Location = new System.Drawing.Point(114, 94);
+            this.StartQuest.Location = new System.Drawing.Point(114, 97);
             this.StartQuest.Name = "StartQuest";
             this.StartQuest.Size = new System.Drawing.Size(384, 20);
             this.StartQuest.TabIndex = 22;
@@ -4146,7 +4130,7 @@
             // 
             // LockId
             // 
-            this.LockId.Location = new System.Drawing.Point(114, 124);
+            this.LockId.Location = new System.Drawing.Point(114, 127);
             this.LockId.Name = "LockId";
             this.LockId.Size = new System.Drawing.Size(384, 20);
             this.LockId.TabIndex = 21;
@@ -4154,7 +4138,7 @@
             // 
             // RangedModRange
             // 
-            this.RangedModRange.Location = new System.Drawing.Point(114, 154);
+            this.RangedModRange.Location = new System.Drawing.Point(114, 157);
             this.RangedModRange.Name = "RangedModRange";
             this.RangedModRange.Size = new System.Drawing.Size(384, 20);
             this.RangedModRange.TabIndex = 20;
@@ -4163,7 +4147,7 @@
             // label123
             // 
             this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(3, 454);
+            this.label123.Location = new System.Drawing.Point(3, 457);
             this.label123.Name = "label123";
             this.label123.Size = new System.Drawing.Size(58, 13);
             this.label123.TabIndex = 19;
@@ -4175,7 +4159,7 @@
             // label130
             // 
             this.label130.AutoSize = true;
-            this.label130.Location = new System.Drawing.Point(3, 424);
+            this.label130.Location = new System.Drawing.Point(3, 427);
             this.label130.Name = "label130";
             this.label130.Size = new System.Drawing.Size(54, 13);
             this.label130.TabIndex = 18;
@@ -4184,7 +4168,7 @@
             // label129
             // 
             this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(3, 394);
+            this.label129.Location = new System.Drawing.Point(3, 397);
             this.label129.Name = "label129";
             this.label129.Size = new System.Drawing.Size(96, 13);
             this.label129.TabIndex = 17;
@@ -4193,7 +4177,7 @@
             // label128
             // 
             this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(3, 364);
+            this.label128.Location = new System.Drawing.Point(3, 367);
             this.label128.Name = "label128";
             this.label128.Size = new System.Drawing.Size(47, 13);
             this.label128.TabIndex = 16;
@@ -4203,7 +4187,7 @@
             // label118
             // 
             this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(3, 334);
+            this.label118.Location = new System.Drawing.Point(3, 337);
             this.label118.Name = "label118";
             this.label118.Size = new System.Drawing.Size(82, 13);
             this.label118.TabIndex = 15;
@@ -4212,7 +4196,7 @@
             // label116
             // 
             this.label116.AutoSize = true;
-            this.label116.Location = new System.Drawing.Point(3, 304);
+            this.label116.Location = new System.Drawing.Point(3, 307);
             this.label116.Name = "label116";
             this.label116.Size = new System.Drawing.Size(28, 13);
             this.label116.TabIndex = 14;
@@ -4222,7 +4206,7 @@
             // label115
             // 
             this.label115.AutoSize = true;
-            this.label115.Location = new System.Drawing.Point(3, 274);
+            this.label115.Location = new System.Drawing.Point(3, 277);
             this.label115.Name = "label115";
             this.label115.Size = new System.Drawing.Size(29, 13);
             this.label115.TabIndex = 13;
@@ -4232,7 +4216,7 @@
             // label114
             // 
             this.label114.AutoSize = true;
-            this.label114.Location = new System.Drawing.Point(3, 244);
+            this.label114.Location = new System.Drawing.Point(3, 247);
             this.label114.Name = "label114";
             this.label114.Size = new System.Drawing.Size(46, 13);
             this.label114.TabIndex = 12;
@@ -4242,7 +4226,7 @@
             // label113
             // 
             this.label113.AutoSize = true;
-            this.label113.Location = new System.Drawing.Point(3, 214);
+            this.label113.Location = new System.Drawing.Point(3, 217);
             this.label113.Name = "label113";
             this.label113.Size = new System.Drawing.Size(76, 13);
             this.label113.TabIndex = 11;
@@ -4252,7 +4236,7 @@
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(3, 184);
+            this.label112.Location = new System.Drawing.Point(3, 187);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(89, 13);
             this.label112.TabIndex = 10;
@@ -4262,7 +4246,7 @@
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(3, 154);
+            this.label111.Location = new System.Drawing.Point(3, 157);
             this.label111.Name = "label111";
             this.label111.Size = new System.Drawing.Size(104, 13);
             this.label111.TabIndex = 9;
@@ -4272,7 +4256,7 @@
             // label108
             // 
             this.label108.AutoSize = true;
-            this.label108.Location = new System.Drawing.Point(3, 124);
+            this.label108.Location = new System.Drawing.Point(3, 127);
             this.label108.Name = "label108";
             this.label108.Size = new System.Drawing.Size(43, 13);
             this.label108.TabIndex = 4;
@@ -4283,7 +4267,7 @@
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(3, 94);
+            this.label107.Location = new System.Drawing.Point(3, 97);
             this.label107.Name = "label107";
             this.label107.Size = new System.Drawing.Size(60, 13);
             this.label107.TabIndex = 3;
@@ -4293,7 +4277,7 @@
             // label99
             // 
             this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(3, 64);
+            this.label99.Location = new System.Drawing.Point(3, 67);
             this.label99.Name = "label99";
             this.label99.Size = new System.Drawing.Size(72, 13);
             this.label99.TabIndex = 2;
@@ -4303,7 +4287,7 @@
             // label98
             // 
             this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(3, 34);
+            this.label98.Location = new System.Drawing.Point(3, 37);
             this.label98.Name = "label98";
             this.label98.Size = new System.Drawing.Size(67, 13);
             this.label98.TabIndex = 1;
@@ -4313,7 +4297,7 @@
             // label97
             // 
             this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(3, 4);
+            this.label97.Location = new System.Drawing.Point(3, 7);
             this.label97.Name = "label97";
             this.label97.Size = new System.Drawing.Size(56, 13);
             this.label97.TabIndex = 0;
@@ -4321,6 +4305,22 @@
             this.toolTip1.SetToolTip(this.label97, "The ID referring to the text that the item will show (if it is a book or a letter" +
         ", etc). The item will have a magnifying glass cursor in the game and will show t" +
         "he text when right-clicked.");
+            // 
+            // SoundOverrideSubclass
+            // 
+            this.SoundOverrideSubclass.FormattingEnabled = true;
+            this.SoundOverrideSubclass.Location = new System.Drawing.Point(137, 487);
+            this.SoundOverrideSubclass.Name = "SoundOverrideSubclass";
+            this.SoundOverrideSubclass.Size = new System.Drawing.Size(361, 21);
+            this.SoundOverrideSubclass.TabIndex = 37;
+            // 
+            // modelRenderControl1
+            // 
+            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
+            this.modelRenderControl1.Name = "modelRenderControl1";
+            this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
+            this.modelRenderControl1.TabIndex = 25;
             // 
             // ItemEditorControl
             // 
@@ -4722,11 +4722,11 @@
         private System.Windows.Forms.TextBox DisenchantId;
         private System.Windows.Forms.TextBox ReqDisenchantSkill;
         private System.Windows.Forms.Label SoundOverrideSubcl;
-        private System.Windows.Forms.TextBox SoundOverrideSubclass;
         private System.Windows.Forms.TextBox Armor;
         private System.Windows.Forms.Label label124;
         private System.Windows.Forms.CheckedListBox FlagsCustom;
         private System.Windows.Forms.Label label138;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ComboBox SoundOverrideSubclass;
     }
 }
