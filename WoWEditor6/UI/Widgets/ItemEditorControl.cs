@@ -271,6 +271,12 @@ namespace WoWEditor6.UI.Dialog
                 myFlags += Convert.ToInt64(Enum.Parse(e, item.ToString()));
             }
 
+            if(list == this.AllowableClass || list == this.AllowableRace)
+            {
+                if (myFlags == 0)
+                    myFlags = -1;
+            }
+
             return myFlags;
         }
 
@@ -334,7 +340,7 @@ namespace WoWEditor6.UI.Dialog
             this.RequiredReputationRank.Text = item.RequiredReputationRank.ToString();
             this.MaxCount.Text = item.maxcount.ToString();
             this.Stackable.Text = item.stackable.ToString();
-            this.ContainerSlot.Text = item.ContainerSlots.ToString();
+            this.ContainerSlots.Text = item.ContainerSlots.ToString();
             this.StatsCount.Text = item.StatsCount.ToString();
             this.StatType1.Text = item.stat_type1.ToString();
             this.StatValue1.Text = item.stat_value1.ToString();
@@ -451,7 +457,158 @@ namespace WoWEditor6.UI.Dialog
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            Storage.Database.WotLk.TrinityCore.Item item = new Storage.Database.WotLk.TrinityCore.Item();
 
+            item.EntryId = int.Parse(this.Entry.Text);
+            item.Class = (Storage.Database.WotLk.TrinityCore.itemClass)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemClass), this.ItemClass.Text);
+            item.SubClass = int.Parse(this.SubClass.Text);
+            item.SoundOverrideSubclass = int.Parse(this.SoundOverrideSubclass.Text);
+            item.name = this.ItemName.Text;
+            item.displayid = int.Parse(this.ModelId.Text);
+            item.Quality = (Storage.Database.WotLk.TrinityCore.itemQuality)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemQuality), this.Quality.Text);
+            item.ItemFlags = (uint)makeFlagOrBitmask(this.Flags, typeof(Storage.Database.WotLk.TrinityCore.itemFlags));
+            item.ItemFlagsExtra = (uint)makeFlagOrBitmask(this.FlagsExtra, typeof(Storage.Database.WotLk.TrinityCore.itemFlagsExtra));
+            item.BuyCount = int.Parse(this.BuyCount.Text);
+            item.BuyPrice = uint.Parse(this.BuyPrice.Text);
+            item.SellPrice = uint.Parse(this.SellPrice.Text);
+            item.InventoryType = (Storage.Database.WotLk.TrinityCore.itemInventoryType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemInventoryType), this.InventoryType.Text);
+            item.AllowableClass = (int)makeFlagOrBitmask(this.AllowableClass, typeof(Storage.Database.WotLk.TrinityCore.itemAllowableClass));
+            item.AllowableRace = (int)makeFlagOrBitmask(this.AllowableRace, typeof(Storage.Database.WotLk.TrinityCore.itemAllowableRace));
+            item.ItemLevel = int.Parse(this.ItemLevel.Text);
+            item.RequiredLevel = int.Parse(this.RequiredLevel.Text);
+            item.RequiredSkill = int.Parse(this.RequiredSkill.Text);
+            item.RequiredSkillRank = int.Parse(this.RequiredSkillRank.Text);
+            item.requiredspell = int.Parse(this.RequiredSpell.Text);
+            item.requiredhonorrank = int.Parse(this.RequiredHonorRank.Text);
+            item.RequiredCityRank = int.Parse(this.RequiredCityRank.Text);
+            item.RequiredReputationFaction = int.Parse(this.RequiredReputationFaction.Text);
+            item.RequiredReputationRank = (Storage.Database.WotLk.TrinityCore.itemReputationRank)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemReputationRank), this.RequiredReputationRank.Text);
+            item.maxcount = int.Parse(this.MaxCount.Text);
+            item.stackable = int.Parse(this.Stackable.Text);
+            item.ContainerSlots = int.Parse(this.ContainerSlots.Text);
+            item.StatsCount = int.Parse(this.StatsCount.Text);
+            item.stat_type1 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType1.Text);
+            item.stat_value1 = int.Parse(this.StatValue1.Text);
+            item.stat_type2 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType2.Text);
+            item.stat_value2 = int.Parse(this.StatValue2.Text);
+            item.stat_type3 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType3.Text);
+            item.stat_value3 = int.Parse(this.StatValue3.Text);
+            item.stat_type4 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType4.Text);
+            item.stat_value4 = int.Parse(this.StatValue4.Text);
+            item.stat_type5 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType5.Text);
+            item.stat_value5 = int.Parse(this.StatValue5.Text);
+            item.stat_type6 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType6.Text);
+            item.stat_value6 = int.Parse(this.StatValue6.Text);
+            item.stat_type7 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType7.Text);
+            item.stat_value7 = int.Parse(this.StatValue7.Text);
+            item.stat_type8 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType8.Text);
+            item.stat_value8 = int.Parse(this.StatValue8.Text);
+            item.stat_type9 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType9.Text);
+            item.stat_value9 = int.Parse(this.StatValue9.Text);
+            item.stat_type10 = (Storage.Database.WotLk.TrinityCore.itemStatType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemStatType), this.StatType10.Text);
+            item.stat_value10 = int.Parse(this.StatValue10.Text);
+            item.ScalingStatDistribution = int.Parse(this.ScalingStatDistribution.Text);
+            item.ScalingStatValue = int.Parse(this.ScalingStatValue.Text);
+            item. dmg_min1 = float.Parse(this.DmgMin1.Text);
+            item. dmg_max1 = float.Parse(this.DmgMax1.Text);
+            item.dmg_type1 = (Storage.Database.WotLk.TrinityCore.itemDmgType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemDmgType), this.dmgType1.Text);
+            item. dmg_min2 = float.Parse(this.DmgMin2.Text);
+            item. dmg_max2 = float.Parse(this.DmgMax2.Text);
+            item.dmg_type2 = (Storage.Database.WotLk.TrinityCore.itemDmgType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemDmgType), this.dmgType2.Text);
+            item.armor = int.Parse(this.Armor.Text);
+            item.holy_res = int.Parse(this.ResHoly.Text);
+            item.fire_res = int.Parse(this.ResFire.Text);
+            item.nature_res = int.Parse(this.ResNature.Text);
+            item.frost_res = int.Parse(this.ResFrost.Text);
+            item.shadow_res = int.Parse(this.ResShadow.Text);
+            item.arcane_res = int.Parse(this.ResArcane.Text);
+            item.delay = int.Parse(this.Delay.Text);
+            item.ammo_type = (Storage.Database.WotLk.TrinityCore.itemAmmoType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemAmmoType), this.AmmoType.Text);
+            item.RangedModRange = float.Parse(this.RangedModRange.Text);
+            item.spellid_1 = int.Parse(this.SpellID1.Text);
+            item.spelltrigger_1 = (Storage.Database.WotLk.TrinityCore.itemSpellTrigger)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSpellTrigger), this.SpellTrigger1.Text);
+            item.spellcharges_1 = int.Parse(this.SpellCharges1.Text);
+            item. spellppmRate_1 = int.Parse(this.SpellPpmRate1.Text);
+            item.spellcooldown_1 = int.Parse(this.SpellCooldown1.Text);
+            item.spellcategory_1 = int.Parse(this.SpellCategory1.Text);
+            item.spellcategorycooldown_1 = int.Parse(this.SpellCategoryCooldown1.Text);
+            item.spellid_2 = int.Parse(this.SpellID2.Text);
+            item.spelltrigger_2 = (Storage.Database.WotLk.TrinityCore.itemSpellTrigger)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSpellTrigger), this.SpellTrigger2.Text);
+            item.spellcharges_2 = int.Parse(this.SpellCharges2.Text);
+            item.spellppmRate_2 = int.Parse(this.SpellPpmRate2.Text);
+            item.spellcooldown_2 = int.Parse(this.SpellCooldown2.Text);
+            item.spellcategory_2 = int.Parse(this.SpellCategory2.Text);
+            item.spellcategorycooldown_2 = int.Parse(this.SpellCategoryCooldown2.Text);
+            item.spellid_3 = int.Parse(this.SpellID3.Text);
+            item.spelltrigger_3 = (Storage.Database.WotLk.TrinityCore.itemSpellTrigger)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSpellTrigger), this.SpellTrigger3.Text);
+            item.spellcharges_3 = int.Parse(this.SpellCharges3.Text);
+            item.spellppmRate_3 = int.Parse(this.SpellPpmRate3.Text);
+            item.spellcooldown_3 = int.Parse(this.SpellCooldown3.Text);
+            item.spellcategory_3 = int.Parse(this.SpellCategory3.Text);
+            item.spellcategorycooldown_3 = int.Parse(this.SpellCategoryCooldown3.Text);
+            item.spellid_4 = int.Parse(this.SpellID4.Text);
+            item.spelltrigger_4 = (Storage.Database.WotLk.TrinityCore.itemSpellTrigger)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSpellTrigger), this.SpellTrigger4.Text);
+            item.spellcharges_4 = int.Parse(this.SpellCharges4.Text);
+            item.spellppmRate_4 = int.Parse(this.SpellPpmRate4.Text);
+            item.spellcooldown_4 = int.Parse(this.SpellCooldown4.Text);
+            item.spellcategory_4 = int.Parse(this.SpellCategory4.Text);
+            item.spellcategorycooldown_4 = int.Parse(this.SpellCategoryCooldown4.Text);
+            item.spellid_5 = int.Parse(this.SpellID5.Text);
+            item.spelltrigger_5 = (Storage.Database.WotLk.TrinityCore.itemSpellTrigger)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSpellTrigger), this.SpellTrigger5.Text);
+            item.spellcharges_5 = int.Parse(this.SpellCharges5.Text);
+            item.spellppmRate_5 = int.Parse(this.SpellPpmRate5.Text);
+            item.spellcooldown_5 = int.Parse(this.SpellCooldown5.Text);
+            item.spellcategory_5 = int.Parse(this.SpellCategory5.Text);
+            item.spellcategorycooldown_5 = int.Parse(this.SpellCategoryCooldown5.Text);
+            item.bonding = (Storage.Database.WotLk.TrinityCore.itemBonding)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemBonding), this.Bonding.Text);
+            item.description = this.Description.Text;
+            item.PageText = int.Parse(this.PageText.Text);
+            item.LanguageID = int.Parse(this.LanguageId.Text);
+            item.PageMaterial = int.Parse(this.PageMaterial.Text);
+            item.startquest = int.Parse(this.StartQuest.Text);
+            item.lockid = int.Parse(this.LockId.Text);
+            item.Material = (Storage.Database.WotLk.TrinityCore.itemMaterial)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemMaterial), this.Material.Text);
+            item.sheath = (Storage.Database.WotLk.TrinityCore.itemSheath)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSheath), this.Sheath.Text);
+            item.RandomProperty = int.Parse(this.RandomProperty.Text);
+            item.RandomSuffix = int.Parse(this.RandomSuffix.Text);
+            item.block = int.Parse(this.Block.Text);
+            item.itemset = int.Parse(this.ItemSet.Text);
+            item.MaxDurability = int.Parse(this.MaxDurability.Text);
+            item.area = int.Parse(this.Area.Text);
+            item.Map = int.Parse(this.Map.Text);
+            item.BagFamily = (int)makeFlagOrBitmask(this.BagFamily, typeof(Storage.Database.WotLk.TrinityCore.itemBagFamily));
+            item.TotemCategory = (Storage.Database.WotLk.TrinityCore.itemTotemCategory)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemTotemCategory), this.TotemCategory.Text);
+            item.socketColor_1 = (Storage.Database.WotLk.TrinityCore.itemSocketColor)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSocketColor), this.SocketColor1.Text);
+            item.socketContent_1 = int.Parse(this.SocketContent1.Text);
+            item.socketColor_2 = (Storage.Database.WotLk.TrinityCore.itemSocketColor)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSocketColor), this.SocketColor2.Text);
+            item.socketContent_2 = int.Parse(this.SocketContent2.Text);
+            item.socketColor_3 = (Storage.Database.WotLk.TrinityCore.itemSocketColor)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemSocketColor), this.SocketColor3.Text);
+            item.socketContent_3 = int.Parse(this.SocketContent3.Text);
+            item.socketBonus = int.Parse(this.SocketBonus.Text);
+            item.GemProperties = int.Parse(this.GemProperties.Text);
+            item.RequiredDisenchantSkill = int.Parse(this.ReqDisenchantSkill.Text);
+            item.ArmorDamageModifier = float.Parse(this.ArmorDmgMod.Text);
+            item.duration = int.Parse(this.Duration.Text);
+            item.ItemLimitCategory = int.Parse(this.ItemLimitCategory.Text);
+            item.HolidayId = int.Parse(this.HolidayId.Text);
+            item.ScriptName = this.ScriptName.Text;
+            item.DisenchantID = int.Parse(this.DisenchantId.Text);
+            item.FoodType = (Storage.Database.WotLk.TrinityCore.itemFoodType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.itemFoodType), this.FoodType.Text);
+            item.VerifiedBuild = int.Parse(this.VerifiedBuild.Text);
+            item.minMoneyLoot = int.Parse(this.MinMoneyLoot.Text);
+            item.maxMoneyLoot = int.Parse(this.MaxMoneyLoot.Text);
+            item.flagsCustom = (int)makeFlagOrBitmask(this.FlagsCustom, typeof(Storage.Database.WotLk.TrinityCore.itemFlagsCustom));
+
+            if (Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(item.EntryId) == null)
+            {
+                Storage.Database.WotLk.TrinityCore.ItemManager.Instance.addCreatedItem(item);
+                MessageBox.Show("Inserted");
+            }
+            else
+            {
+                Storage.Database.MySqlConnector.Instance.Query(item.GetUpdateSqlQuery());
+                MessageBox.Show("Updated");
+            }
         }
 
         private void LoadButton_Click(object sender, EventArgs e)

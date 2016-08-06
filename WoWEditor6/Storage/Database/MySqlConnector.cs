@@ -25,15 +25,21 @@ namespace WoWEditor6.Storage.Database
                 throw new ArgumentException();
 
             if (mMySqlConn.State != ConnectionState.Open)
+            {
                 mMySqlConn.ConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", MySqlServer, MySqlUser, MySqlPassword, MySqlDatabase);
 
-            try
-            {
-                mMySqlConn.Open();
+                try
+                {
+                    mMySqlConn.Open();
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    System.Windows.MessageBox.Show(ex.ToString());
+                }
             }
-            catch(MySql.Data.MySqlClient.MySqlException ex)
+            else
             {
-                System.Windows.MessageBox.Show(ex.ToString());
+                MessageBox.Show("The connection is already open");
             }
             
             if (mMySqlConn.State != ConnectionState.Open)

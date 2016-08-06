@@ -67,7 +67,7 @@
             this.MaxMoneyLoot = new System.Windows.Forms.TextBox();
             this.MinMoneyLoot = new System.Windows.Forms.TextBox();
             this.MaxDurability = new System.Windows.Forms.TextBox();
-            this.ContainerSlot = new System.Windows.Forms.TextBox();
+            this.ContainerSlots = new System.Windows.Forms.TextBox();
             this.BagFamily = new System.Windows.Forms.CheckedListBox();
             this.Sheath = new System.Windows.Forms.ComboBox();
             this.Material = new System.Windows.Forms.ComboBox();
@@ -91,6 +91,7 @@
             this.label50 = new System.Windows.Forms.Label();
             this.ModelId = new System.Windows.Forms.TextBox();
             this.btnShowModelId1 = new System.Windows.Forms.Button();
+            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             this.tbCombat = new System.Windows.Forms.TabPage();
             this.Armor = new System.Windows.Forms.TextBox();
             this.label124 = new System.Windows.Forms.Label();
@@ -301,6 +302,8 @@
             this.label136 = new System.Windows.Forms.Label();
             this.label137 = new System.Windows.Forms.Label();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.FlagsCustom = new System.Windows.Forms.CheckedListBox();
+            this.label138 = new System.Windows.Forms.Label();
             this.FlagsExtra = new System.Windows.Forms.CheckedListBox();
             this.Flags = new System.Windows.Forms.CheckedListBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -342,9 +345,6 @@
             this.label99 = new System.Windows.Forms.Label();
             this.label98 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
-            this.FlagsCustom = new System.Windows.Forms.CheckedListBox();
-            this.label138 = new System.Windows.Forms.Label();
-            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             this.tbcEditor.SuspendLayout();
             this.tbItemInfo.SuspendLayout();
             this.tbItemInfo2.SuspendLayout();
@@ -747,7 +747,7 @@
             this.tbItemInfo2.Controls.Add(this.MaxMoneyLoot);
             this.tbItemInfo2.Controls.Add(this.MinMoneyLoot);
             this.tbItemInfo2.Controls.Add(this.MaxDurability);
-            this.tbItemInfo2.Controls.Add(this.ContainerSlot);
+            this.tbItemInfo2.Controls.Add(this.ContainerSlots);
             this.tbItemInfo2.Controls.Add(this.BagFamily);
             this.tbItemInfo2.Controls.Add(this.Sheath);
             this.tbItemInfo2.Controls.Add(this.Material);
@@ -806,13 +806,13 @@
             this.MaxDurability.TabIndex = 23;
             this.MaxDurability.Text = "0";
             // 
-            // ContainerSlot
+            // ContainerSlots
             // 
-            this.ContainerSlot.Location = new System.Drawing.Point(103, 97);
-            this.ContainerSlot.Name = "ContainerSlot";
-            this.ContainerSlot.Size = new System.Drawing.Size(393, 20);
-            this.ContainerSlot.TabIndex = 22;
-            this.ContainerSlot.Text = "0";
+            this.ContainerSlots.Location = new System.Drawing.Point(103, 97);
+            this.ContainerSlots.Name = "ContainerSlots";
+            this.ContainerSlots.Size = new System.Drawing.Size(393, 20);
+            this.ContainerSlots.TabIndex = 22;
+            this.ContainerSlots.Text = "0";
             // 
             // BagFamily
             // 
@@ -1112,6 +1112,14 @@
             this.btnShowModelId1.TabIndex = 27;
             this.btnShowModelId1.Text = "Show";
             this.btnShowModelId1.UseVisualStyleBackColor = true;
+            // 
+            // modelRenderControl1
+            // 
+            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
+            this.modelRenderControl1.Name = "modelRenderControl1";
+            this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
+            this.modelRenderControl1.TabIndex = 25;
             // 
             // tbCombat
             // 
@@ -3727,6 +3735,27 @@
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "Flags";
             // 
+            // FlagsCustom
+            // 
+            this.FlagsCustom.FormattingEnabled = true;
+            this.FlagsCustom.Items.AddRange(new object[] {
+            "DurationRealTime",
+            "IgnoreQuestStatus",
+            "FollowLootRules"});
+            this.FlagsCustom.Location = new System.Drawing.Point(76, 134);
+            this.FlagsCustom.Name = "FlagsCustom";
+            this.FlagsCustom.Size = new System.Drawing.Size(415, 49);
+            this.FlagsCustom.TabIndex = 5;
+            // 
+            // label138
+            // 
+            this.label138.AutoSize = true;
+            this.label138.Location = new System.Drawing.Point(6, 134);
+            this.label138.Name = "label138";
+            this.label138.Size = new System.Drawing.Size(70, 13);
+            this.label138.TabIndex = 4;
+            this.label138.Text = "Flags Custom";
+            // 
             // FlagsExtra
             // 
             this.FlagsExtra.FormattingEnabled = true;
@@ -4192,35 +4221,6 @@
             this.label97.TabIndex = 0;
             this.label97.Text = "Page Text";
             // 
-            // FlagsCustom
-            // 
-            this.FlagsCustom.FormattingEnabled = true;
-            this.FlagsCustom.Items.AddRange(new object[] {
-            "DurationRealTime",
-            "IgnoreQuestStatus",
-            "FollowLootRules"});
-            this.FlagsCustom.Location = new System.Drawing.Point(76, 134);
-            this.FlagsCustom.Name = "FlagsCustom";
-            this.FlagsCustom.Size = new System.Drawing.Size(415, 49);
-            this.FlagsCustom.TabIndex = 5;
-            // 
-            // label138
-            // 
-            this.label138.AutoSize = true;
-            this.label138.Location = new System.Drawing.Point(6, 134);
-            this.label138.Name = "label138";
-            this.label138.Size = new System.Drawing.Size(70, 13);
-            this.label138.TabIndex = 4;
-            this.label138.Text = "Flags Custom";
-            // 
-            // modelRenderControl1
-            // 
-            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
-            this.modelRenderControl1.Name = "modelRenderControl1";
-            this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
-            this.modelRenderControl1.TabIndex = 25;
-            // 
             // ItemEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4603,7 +4603,7 @@
         private System.Windows.Forms.TextBox MaxMoneyLoot;
         private System.Windows.Forms.TextBox MinMoneyLoot;
         private System.Windows.Forms.TextBox MaxDurability;
-        private System.Windows.Forms.TextBox ContainerSlot;
+        private System.Windows.Forms.TextBox ContainerSlots;
         private System.Windows.Forms.CheckedListBox BagFamily;
         private System.Windows.Forms.ComboBox Sheath;
         private System.Windows.Forms.ComboBox Bonding;
