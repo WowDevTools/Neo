@@ -434,6 +434,18 @@
     <Compile Include="UI\Components\WdlLoadingDialog.xaml.cs">
       <DependentUpon>WdlLoadingDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\DbcEditors\Exemple\ExempleEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DbcEditors\Exemple\ExempleEditor.Designer.cs">
+      <DependentUpon>ExempleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DbcEditors\Exemple\ExempleEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\DbcEditors\Exemple\ExempleEditorControl.Designer.cs">
+      <DependentUpon>ExempleEditorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -600,6 +612,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Components\ModelRenderControl.resx">
       <DependentUpon>ModelRenderControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DbcEditors\Exemple\ExempleEditor.resx">
+      <DependentUpon>ExempleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DbcEditors\Exemple\ExempleEditorControl.resx">
+      <DependentUpon>ExempleEditorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

@@ -120,6 +120,12 @@ namespace WoWEditor6.UI
                 MessageBox.Show("Please connect to the database before you use the item editor");
             }
         }
+      
+        private void ExempleEditor_Click(object sender, RoutedEventArgs e)
+        {
+            var ExempleEditor = new DbcEditors.Exemple.ExempleEditor();
+            ExempleEditor.ShowDialog();
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

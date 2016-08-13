@@ -117,7 +117,9 @@
             this.btnShowModelId1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.ModelId2 = new System.Windows.Forms.TextBox();
+            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             this.tbCombat = new System.Windows.Forms.TabPage();
+            this.MechanicImmuneMask = new System.Windows.Forms.CheckedListBox();
             this.DamageSchool = new System.Windows.Forms.ComboBox();
             this.DamageSchoolLabel = new System.Windows.Forms.Label();
             this.label78 = new System.Windows.Forms.Label();
@@ -195,8 +197,6 @@
             this.LoadEntry = new System.Windows.Forms.TextBox();
             this.LoadButton = new System.Windows.Forms.Button();
             this.Tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.MechanicImmuneMask = new System.Windows.Forms.CheckedListBox();
-            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
             ((System.ComponentModel.ISupportInitialize)(this.BaseAtkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RangeAtkSpeed)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -1245,6 +1245,14 @@
             this.ModelId2.TabIndex = 15;
             this.ModelId2.Text = "0";
             // 
+            // modelRenderControl1
+            // 
+            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
+            this.modelRenderControl1.Name = "modelRenderControl1";
+            this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
+            this.modelRenderControl1.TabIndex = 1;
+            // 
             // tbCombat
             // 
             this.tbCombat.Controls.Add(this.MechanicImmuneMask);
@@ -1273,6 +1281,47 @@
             this.tbCombat.TabIndex = 2;
             this.tbCombat.Text = "Combat";
             this.tbCombat.UseVisualStyleBackColor = true;
+            // 
+            // MechanicImmuneMask
+            // 
+            this.MechanicImmuneMask.FormattingEnabled = true;
+            this.MechanicImmuneMask.Items.AddRange(new object[] {
+            "None",
+            "Charm",
+            "Disoriented",
+            "Disarm",
+            "Distract",
+            "Fear",
+            "Grip",
+            "Root",
+            "Pacify",
+            "Silence",
+            "Sleep",
+            "Snare",
+            "Stun",
+            "Freeze",
+            "Knockout",
+            "Bleed",
+            "Bandage",
+            "Polymorph",
+            "Banish",
+            "Shield",
+            "Shackle",
+            "Mount",
+            "Infected",
+            "Turn",
+            "Horror",
+            "Invulnerability",
+            "Interrupt",
+            "Daze",
+            "Discovery",
+            "ImmuneShield",
+            "Sapped",
+            "Enraged"});
+            this.MechanicImmuneMask.Location = new System.Drawing.Point(127, 147);
+            this.MechanicImmuneMask.Name = "MechanicImmuneMask";
+            this.MechanicImmuneMask.Size = new System.Drawing.Size(402, 49);
+            this.MechanicImmuneMask.TabIndex = 116;
             // 
             // DamageSchool
             // 
@@ -2251,55 +2300,6 @@
             // Tooltip
             // 
             this.Tooltip.ToolTipTitle = "Information";
-            // 
-            // MechanicImmuneMask
-            // 
-            this.MechanicImmuneMask.FormattingEnabled = true;
-            this.MechanicImmuneMask.Items.AddRange(new object[] {
-            "None",
-            "Charm",
-            "Disoriented",
-            "Disarm",
-            "Distract",
-            "Fear",
-            "Grip",
-            "Root",
-            "Pacify",
-            "Silence",
-            "Sleep",
-            "Snare",
-            "Stun",
-            "Freeze",
-            "Knockout",
-            "Bleed",
-            "Bandage",
-            "Polymorph",
-            "Banish",
-            "Shield",
-            "Shackle",
-            "Mount",
-            "Infected",
-            "Turn",
-            "Horror",
-            "Invulnerability",
-            "Interrupt",
-            "Daze",
-            "Discovery",
-            "ImmuneShield",
-            "Sapped",
-            "Enraged"});
-            this.MechanicImmuneMask.Location = new System.Drawing.Point(127, 147);
-            this.MechanicImmuneMask.Name = "MechanicImmuneMask";
-            this.MechanicImmuneMask.Size = new System.Drawing.Size(402, 49);
-            this.MechanicImmuneMask.TabIndex = 116;
-            // 
-            // modelRenderControl1
-            // 
-            this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
-            this.modelRenderControl1.Name = "modelRenderControl1";
-            this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
-            this.modelRenderControl1.TabIndex = 1;
             // 
             // CreatureEditorControl
             // 

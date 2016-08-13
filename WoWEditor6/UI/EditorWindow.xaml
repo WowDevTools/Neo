@@ -11,11 +11,15 @@
              xmlns:widgets="clr-namespace:WoWEditor6.UI.Widgets"
              mc:Ignorable="d" Width="1600" Height="900" Loaded="Window_Loaded">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="27*"/>
+            <ColumnDefinition Width="1573*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Menu IsMainMenu="True">
+        <Menu IsMainMenu="True" Grid.ColumnSpan="2">
             <MenuItem Header="_File">
                 <MenuItem Header="Save" Click="MenuSaveItem_Click"></MenuItem>
                 <TextBlock TextWrapping="Wrap" Text="TextBlock"/>
@@ -34,13 +38,16 @@
                 <MenuItem Header="GameObject Editor" Click="GameObjectEditor_Click"/>
                 <MenuItem Header="Item Editor" Click="ItemEditor_Click"/>
             </MenuItem>
+            <MenuItem Header="Dbc Editor" RenderTransformOrigin="-1.172,0.5">
+                <MenuItem Header="Exemple editor" Click="ExempleEditor_Click"/>
+            </MenuItem>
             <MenuItem Header="_Debug" RenderTransformOrigin="-1.97,0.5">
                 <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"/>
                 <MenuItem Header="Add 2D text" Click="Add2DText_Click"/>
                 <MenuItem Header="Add 3D text" Click="Add3DText_Click"/>
             </MenuItem>
         </Menu>
-        <avalon:DockingManager Grid.Row="1" Margin="0">
+        <avalon:DockingManager Grid.Row="1" Margin="0" Grid.ColumnSpan="2">
             <avalon:DockingManager.Theme>
                 <themes:DarkTheme/>
             </avalon:DockingManager.Theme>
@@ -56,14 +63,14 @@
                     <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="Texturing" CanClose="False" AutoHideWidth="340" x:Name="TexturingPane">
                             <widgets:TexturingWidget>
-                                
+
                             </widgets:TexturingWidget>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="Models" CanClose="False" AutoHideWidth="340" x:Name="ModelSpawnPane">
                             <widgets:ModelSpawnWidget>
-                                
+
                             </widgets:ModelSpawnWidget>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
@@ -71,10 +78,10 @@
                         <avalon:LayoutAnchorable Title="Welcome" CanClose="False" CanFloat="False" CanAutoHide="False" x:Name="WelcomeDocument">
                             <Grid SizeChanged="WelcomePanel_Resize">
                                 <controls:LoadingScreenControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="LoadingScreenView">
-                                    
+
                                 </controls:LoadingScreenControl>
                                 <controls:EntrySelectControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="EntrySelectView" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditorWindow}}}">
-                                    
+
                                 </controls:EntrySelectControl>
                                 <Grid x:Name="MapOverviewGrid" Visibility="Collapsed" Loaded="MapTileGrid_Loaded">
                                     <Grid.RowDefinitions>
@@ -92,7 +99,7 @@
                                     </StackPanel>
                                     <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                                         <WrapPanel x:Name="MapTileGrid">
-                                    
+
                                         </WrapPanel>
                                     </ScrollViewer>
                                 </Grid>
