@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace DBCLib
 {
@@ -25,8 +26,20 @@ namespace DBCLib
                 var fields = type.GetFields();
                 int fieldCount = DBCHelper.FieldCount(fields, type);
 
+                var classAttribs = typeof(T).GetCustomAttributes(typeof(NoPrimaryAttribute), false);
+
                 bw.Write(fieldCount);
-                bw.Write(fieldCount * 4);
+
+                //The charBaseInfo.dbc is weird, and don't have *4.
+                string charBaseInfoPath = System.Environment.CurrentDirectory + "\\DBC\\CharBaseInfo.dbc";
+
+                if (path == charBaseInfoPath)
+                    bw.Write(fieldCount);
+                else
+                {
+                    bw.Write(fieldCount * 4);
+                }
+
                 bw.Write(0);
 
                 // Ajout d'une string vide afin d'obtenir un format blizzlike
@@ -72,6 +85,12 @@ namespace DBCLib
                                     bw.Write(fvalue);
                                     break;
                                 }
+
+                            //Added typecode byte for the charbaseinfo, don't work properly
+                            case TypeCode.Byte:
+                                byte bvalue = (byte)field.GetValue(rec);
+                                bw.Write(bvalue);
+                                break;
 
                             case TypeCode.Object:
                                 {
@@ -138,9 +157,9 @@ namespace DBCLib
 
                 strm.Close();
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
         }
 

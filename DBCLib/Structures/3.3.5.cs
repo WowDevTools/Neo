@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace DBCLib.Structures335
+namespace DBCLib.Structures
 {
     public class AchievementEntry
     {
@@ -300,7 +297,14 @@ namespace DBCLib.Structures335
 
     public class CharacterFacialHairStylesEntry
     {
-
+        public uint Race;
+        public uint Gender; // 0 = Male, 1 = Female
+        public uint SpecificID; //This ID is unique per gender, per race .
+        public uint GeosetId_1; //	group 1 -- This is the small part of Geoset identificator. Determines mixing of different facial elements, on Night Elves this is chin hair.
+        public uint GeosetId_2; //	group 3 -- ... on Night Elves, this contols eyebrows
+        public uint GeosetId_3; //	group 2 -- ... on Night Elves, this controls mustache
+        public float GeosetId_4;
+        public uint GeosetId_5; // group 17 -- small\big ears for BloodElves( geo 701,702).
     }
 
     [NoPrimary]
@@ -325,16 +329,17 @@ namespace DBCLib.Structures335
 
     }
 
+    [NoPrimary]
     public class CharStartOutfitEntry
     {
-        public uint Id;                             // 0
-        public uint RaceClassGender;                // 1
-        public int[] ItemId = new int[24];          // 2-25
-        public int[] ItemDisplayId = new int[24];   // 26-49
-        public int[] ItemInventtorySlot = new int[24];// 50-73
-        public uint Unk1;                           // 74 (index-like with gaps ordered in other way as ids)
-        public uint Unk2;                           // 75
-        public uint Unk3;                           // 76
+        public uint Id;                                 // 0
+        public byte Race;                               // 1
+        public byte Class;                              // 2
+        public byte Gender;                             // 3
+        public byte OutfitId;                           // 4            
+        public int[] ItemId = new int[24];              // 5-29
+        public int[] ItemDisplayId = new int[24];       // 29-53
+        public int[] ItemInventtorySlot = new int[24];  // 53-77
     }
 
     public class CharTitlesEntry
@@ -439,7 +444,21 @@ namespace DBCLib.Structures335
 
     public class CreatureDisplayInfoEntry
     {
-
+        public uint Id;
+        public uint ModelId;
+        public uint SoundId;                              // if not found, resolve via CreatureModelDataRec::m_soundID
+        public uint ExtendedDisplayInfoId;
+        public float CreatureModelScale;
+        public uint CreatureModelAlpha;
+        public uint[] TextureVariation = new uint[3];
+        public string PortraitTextureName;
+        public uint SizeClass;
+        public uint BloodLevel;
+        public uint BloodId;
+        public uint NpcSoundId;
+        public uint ParticleColorId;
+        public uint CreatureGeosetData;
+        public uint ObjectEffectPackageId;
     }
 
     public class CreatureDisplayInfoExtraEntry
@@ -977,7 +996,7 @@ namespace DBCLib.Structures335
         public override string ToString()
         {
             return sRefName;
-        } 
+        }
 
     }
 
@@ -1709,7 +1728,7 @@ namespace DBCLib.Structures335
         public uint ObjectId3;              // if type3 == 5, then Stat Types, else Spell.dbc 
         public LocalizedString SRefName;    // 15-31 The name of the enchantment
         public uint ItemVisuals;            // The glow to add to the items that has this enchant
-        public uint Flags;                  
+        public uint Flags;
         public uint ItemCache;              // Reference to the Gem that has this ability (Added in 2.0.0.5610) 
         public uint SpellItemEnchantmentCondition; // Conditions for the effect to take place (Added in 2.0.0.5610)
         public uint SkillLine;              // A required profession.

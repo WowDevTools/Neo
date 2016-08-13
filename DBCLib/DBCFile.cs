@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace DBCLib
 {
@@ -49,6 +50,7 @@ namespace DBCLib
                 stringTable.Add(curPos, strEnt);
                 curPos += Encoding.UTF8.GetByteCount(strEnt) + 1;
             }
+
             mReader.BaseStream.Position = 20;
 
             if (numFields != fieldCount)
@@ -93,60 +95,67 @@ namespace DBCLib
                                 field.SetValue(t, bvalue);
                                 break;
                             }
-
                         case TypeCode.Object:
                             {
-                                if (field.FieldType == typeof(LocalizedString))
+                                try
                                 {
-                                    string strValue = "";
-                                    for (uint j = 0; j < 16; ++j)
+                                    if (field.FieldType == typeof(LocalizedString))
                                     {
-                                        int offset = mReader.ReadInt32();
-                                        string strFromTable;
-                                        if (strValue == "" && offset != 0 && stringTable.TryGetValue(offset, out strFromTable))
+                                        string strValue = "";
+                                        for (uint j = 0; j < 16; ++j)
                                         {
-                                            strValue = strFromTable;
-                                            LocalePosition = j;
+                                            int offset = mReader.ReadInt32();
+                                            string strFromTable;
+                                            if (strValue == "" && offset != 0 && stringTable.TryGetValue(offset, out strFromTable))
+                                            {
+                                                strValue = strFromTable;
+                                                LocalePosition = j;
+                                            }
+                                        }
+
+                                        // Flag de localisation, utile du côté client ?
+                                        LocaleFlag = mReader.ReadUInt32();
+
+                                        field.SetValue(t, (LocalizedString)strValue);
+                                    }
+                                    else if (field.FieldType.IsArray)
+                                    {
+                                        int len;
+                                        Array array;
+
+                                        switch (Type.GetTypeCode(field.FieldType.GetElementType()))
+                                        {
+                                            case TypeCode.Int32:
+                                                len = ((int[])field.GetValue(t)).Length;
+                                                array = new int[len];
+                                                for (var q = 0; q < len; ++q)
+                                                    array.SetValue(mReader.ReadInt32(), q);
+                                                field.SetValue(t, array);
+                                                break;
+                                            case TypeCode.UInt32:
+                                                len = ((uint[])field.GetValue(t)).Length;
+                                                array = new uint[len];
+                                                for (var q = 0; q < len; ++q)
+                                                    array.SetValue(mReader.ReadUInt32(), q);
+                                                field.SetValue(t, array);
+                                                break;
+                                            case TypeCode.Single:
+                                                len = ((float[])field.GetValue(t)).Length;
+                                                array = new float[len];
+                                                for (var q = 0; q < len; ++q)
+                                                    array.SetValue(mReader.ReadSingle(), q);
+                                                field.SetValue(t, array);
+                                                break;
+                                            default:
+                                                throw new NotImplementedException();
                                         }
                                     }
-
-                                    // Flag de localisation, utile du côté client ?
-                                    LocaleFlag = mReader.ReadUInt32();
-
-                                    field.SetValue(t, (LocalizedString)strValue);
                                 }
-                                else if (field.FieldType.IsArray)
+                                catch (System.Exception ex)
                                 {
-                                    int len;
-                                    Array array;
-
-                                    switch (Type.GetTypeCode(field.FieldType.GetElementType()))
-                                    {
-                                        case TypeCode.Int32:
-                                            len = ((int[])field.GetValue(t)).Length;
-                                            array = new int[len];
-                                            for (var q = 0; q < len; ++q)
-                                                array.SetValue(mReader.ReadInt32(), q);
-                                            field.SetValue(t, array);
-                                            break;
-                                        case TypeCode.UInt32:
-                                            len = ((uint[])field.GetValue(t)).Length;
-                                            array = new uint[len];
-                                            for (var q = 0; q < len; ++q)
-                                                array.SetValue(mReader.ReadUInt32(), q);
-                                            field.SetValue(t, array);
-                                            break;
-                                        case TypeCode.Single:
-                                            len = ((float[])field.GetValue(t)).Length;
-                                            array = new float[len];
-                                            for (var q = 0; q < len; ++q)
-                                                array.SetValue(mReader.ReadSingle(), q);
-                                            field.SetValue(t, array);
-                                            break;
-                                        default:
-                                            throw new NotImplementedException();
-                                    }
+                                    MessageBox.Show(ex.ToString());
                                 }
+
                                 break;
                             }
                         case TypeCode.Single:
@@ -175,10 +184,9 @@ namespace DBCLib
                     mRecords.Add(id, mConverter.Convert(t));
             }
 
+            IsLoaded = true;
 
             mReader.Close(); // On peut sauvegarder par dessus notre mReader :D !
-
-            IsLoaded = true;
 
             return true;
         }
@@ -219,6 +227,12 @@ namespace DBCLib
 
             IsEdited = true;
             mRecords.Remove(id);
+        }
+
+        public uint GetKeyFromValue(T value)
+        {
+
+            return mRecords.FirstOrDefault(x => x.Value.Equals(value)).Key;
         }
 
         public bool TryRemoveEntry(uint id)
