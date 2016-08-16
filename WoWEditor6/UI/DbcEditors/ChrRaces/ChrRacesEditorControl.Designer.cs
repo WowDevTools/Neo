@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lbMenu = new System.Windows.Forms.ListBox();
             this.tbcEditor = new System.Windows.Forms.TabControl();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // lbMenu
@@ -37,8 +39,9 @@
             this.lbMenu.FormattingEnabled = true;
             this.lbMenu.Location = new System.Drawing.Point(3, 3);
             this.lbMenu.Name = "lbMenu";
-            this.lbMenu.Size = new System.Drawing.Size(150, 121);
+            this.lbMenu.Size = new System.Drawing.Size(150, 472);
             this.lbMenu.TabIndex = 123;
+            this.lbMenu.SelectedIndexChanged += new System.EventHandler(this.lbMenu_SelectedIndexChanged_1);
             // 
             // tbcEditor
             // 
@@ -65,5 +68,6 @@
 
         private System.Windows.Forms.ListBox lbMenu;
         private System.Windows.Forms.TabControl tbcEditor;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
