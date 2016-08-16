@@ -438,6 +438,18 @@
     <Compile Include="UI\Components\WdlLoadingDialog.xaml.cs">
       <DependentUpon>WdlLoadingDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\DbcEditors\ChrRaces\ChrRacesEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\DbcEditors\ChrRaces\ChrRacesEditorControl.Designer.cs">
+      <DependentUpon>ChrRacesEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DbcEditors\ChrRaces\ChrRacesEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DbcEditors\ChrRaces\ChrRacesEditor.Designer.cs">
+      <DependentUpon>ChrRacesEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DbcEditors\Exemple\ExempleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -616,6 +628,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Components\ModelRenderControl.resx">
       <DependentUpon>ModelRenderControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DbcEditors\ChrRaces\ChrRacesEditor.resx">
+      <DependentUpon>ChrRacesEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DbcEditors\ChrRaces\ChrRacesEditorControl.resx">
+      <DependentUpon>ChrRacesEditorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DbcEditors\Exemple\ExempleEditor.resx">
       <DependentUpon>ExempleEditor.cs</DependentUpon>

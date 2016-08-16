@@ -40,6 +40,7 @@
             </MenuItem>
             <MenuItem Header="Dbc Editor" RenderTransformOrigin="-1.172,0.5">
                 <MenuItem Header="Exemple editor" Click="ExempleEditor_Click"/>
+                <MenuItem Header="ChrRaces editor" Click="ChrRacesEditor_Click"/>
             </MenuItem>
             <MenuItem Header="_Debug" RenderTransformOrigin="-1.97,0.5">
                 <MenuItem Header="Open Model Render Test" Click="ModelRenderTest_Click"/>

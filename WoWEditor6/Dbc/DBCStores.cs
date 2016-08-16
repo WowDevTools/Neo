@@ -1,7 +1,7 @@
 ﻿using DBCLib;
 using DBCLib.Structures;
 
-namespace WowEditor6.Dbc
+namespace WoWEditor6.Dbc
 {
     public static partial class DbcStores
     {

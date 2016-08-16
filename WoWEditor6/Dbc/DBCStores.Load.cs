@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using DBCLib.Structures;
+﻿using System.Windows.Forms;
 
 namespace WoWEditor6.Dbc
 {
@@ -13,7 +8,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.CharTitles.LoadData();
+                DbcStores.CharTitles.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -25,8 +20,8 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.NamesProfanity.LoadData();
-                WowEditor6.Dbc.DbcStores.NamesReserved.LoadData();
+                DbcStores.NamesProfanity.LoadData();
+                DbcStores.NamesReserved.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -38,13 +33,13 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Spell.LoadData();
-                WowEditor6.Dbc.DbcStores.SkillLine.LoadData();
-                WowEditor6.Dbc.DbcStores.SkillLineAbility.LoadData();
-                WowEditor6.Dbc.DbcStores.SkillRaceClassInfo.LoadData();
-                WowEditor6.Dbc.DbcStores.SpellFocusObject.LoadData();
-                WowEditor6.Dbc.DbcStores.ChrRaces.LoadData();
-                WowEditor6.Dbc.DbcStores.ChrClasses.LoadData();
+                DbcStores.Spell.LoadData();
+                DbcStores.SkillLine.LoadData();
+                DbcStores.SkillLineAbility.LoadData();
+                DbcStores.SkillRaceClassInfo.LoadData();
+                DbcStores.SpellFocusObject.LoadData();
+                DbcStores.ChrRaces.LoadData();
+                DbcStores.ChrClasses.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -56,11 +51,11 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ChrClasses.LoadData();
-                WowEditor6.Dbc.DbcStores.ChrRaces.LoadData();
-                WowEditor6.Dbc.DbcStores.Faction.LoadData();
-                WowEditor6.Dbc.DbcStores.FactionGroup.LoadData();
-                WowEditor6.Dbc.DbcStores.FactionTemplate.LoadData();
+                DbcStores.ChrClasses.LoadData();
+                DbcStores.ChrRaces.LoadData();
+                DbcStores.Faction.LoadData();
+                DbcStores.FactionGroup.LoadData();
+                DbcStores.FactionTemplate.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -72,12 +67,12 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ChrClasses.LoadData();
-                WowEditor6.Dbc.DbcStores.ChrRaces.LoadData();
-                WowEditor6.Dbc.DbcStores.Spell.LoadData();
-                WowEditor6.Dbc.DbcStores.SpellIcon.LoadData();
-                WowEditor6.Dbc.DbcStores.Talent.LoadData();
-                WowEditor6.Dbc.DbcStores.TalentTab.LoadData();
+                DbcStores.ChrClasses.LoadData();
+                DbcStores.ChrRaces.LoadData();
+                DbcStores.Spell.LoadData();
+                DbcStores.SpellIcon.LoadData();
+                DbcStores.Talent.LoadData();
+                DbcStores.TalentTab.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -89,11 +84,11 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Achievement.LoadData();
-                WowEditor6.Dbc.DbcStores.AchievementCategory.LoadData();
-                WowEditor6.Dbc.DbcStores.AchievementCriteria.LoadData();
-                WowEditor6.Dbc.DbcStores.Map.LoadData();
-                WowEditor6.Dbc.DbcStores.SpellIcon.LoadData();
+                DbcStores.Achievement.LoadData();
+                DbcStores.AchievementCategory.LoadData();
+                DbcStores.AchievementCriteria.LoadData();
+                DbcStores.Map.LoadData();
+                DbcStores.SpellIcon.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -105,7 +100,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ChrRaces.LoadData();
+                DbcStores.ChrRaces.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -117,7 +112,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ChrClasses.LoadData();
+                DbcStores.ChrClasses.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -129,12 +124,12 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.AreaPoi.LoadData();
-                WowEditor6.Dbc.DbcStores.AreaTable.LoadData();
-                WowEditor6.Dbc.DbcStores.DungeonMap.LoadData();
-                WowEditor6.Dbc.DbcStores.Map.LoadData();
-                WowEditor6.Dbc.DbcStores.WorldMapArea.LoadData();
-                WowEditor6.Dbc.DbcStores.WorldMapOverlay.LoadData();
+                DbcStores.AreaPoi.LoadData();
+                DbcStores.AreaTable.LoadData();
+                DbcStores.DungeonMap.LoadData();
+                DbcStores.Map.LoadData();
+                DbcStores.WorldMapArea.LoadData();
+                DbcStores.WorldMapOverlay.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -146,8 +141,8 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.WorldMapArea.LoadData();
-                WowEditor6.Dbc.DbcStores.WorldMapOverlay.LoadData();
+                DbcStores.WorldMapArea.LoadData();
+                DbcStores.WorldMapOverlay.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -159,7 +154,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Item.LoadData();
+                DbcStores.Item.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -171,7 +166,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.GameTips.LoadData();
+                DbcStores.GameTips.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -183,9 +178,9 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Item.LoadData();
-                WowEditor6.Dbc.DbcStores.GemProperties.LoadData();
-                WowEditor6.Dbc.DbcStores.SpellItemEnchantment.LoadData();
+                DbcStores.Item.LoadData();
+                DbcStores.GemProperties.LoadData();
+                DbcStores.SpellItemEnchantment.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -197,9 +192,9 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.CharBaseInfo.LoadData();
-                WowEditor6.Dbc.DbcStores.ChrClasses.LoadData();
-                WowEditor6.Dbc.DbcStores.ChrRaces.LoadData();
+                DbcStores.CharBaseInfo.LoadData();
+                DbcStores.ChrClasses.LoadData();
+                DbcStores.ChrRaces.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -211,7 +206,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ItemSet.LoadData();
+                DbcStores.ItemSet.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -223,9 +218,9 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.CharStartOutfit.LoadData();
-                WowEditor6.Dbc.DbcStores.ChrRaces.LoadData();
-                WowEditor6.Dbc.DbcStores.ChrClasses.LoadData();
+                DbcStores.CharStartOutfit.LoadData();
+                DbcStores.ChrRaces.LoadData();
+                DbcStores.ChrClasses.LoadData();
             }
             catch (System.Exception ex)
             {

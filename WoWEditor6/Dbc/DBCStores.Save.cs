@@ -10,7 +10,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.CharTitles.SaveDBC();
+                DbcStores.CharTitles.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -22,9 +22,9 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Faction.SaveDBC();
-                WowEditor6.Dbc.DbcStores.FactionGroup.SaveDBC();
-                WowEditor6.Dbc.DbcStores.FactionTemplate.SaveDBC();
+                DbcStores.Faction.SaveDBC();
+                DbcStores.FactionGroup.SaveDBC();
+                DbcStores.FactionTemplate.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -36,11 +36,11 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Spell.SaveDBC();
-                WowEditor6.Dbc.DbcStores.SkillLine.SaveDBC();
-                WowEditor6.Dbc.DbcStores.SkillLineAbility.SaveDBC();
-                WowEditor6.Dbc.DbcStores.SkillRaceClassInfo.SaveDBC();
-                WowEditor6.Dbc.DbcStores.SpellFocusObject.SaveDBC();
+                DbcStores.Spell.SaveDBC();
+                DbcStores.SkillLine.SaveDBC();
+                DbcStores.SkillLineAbility.SaveDBC();
+                DbcStores.SkillRaceClassInfo.SaveDBC();
+                DbcStores.SpellFocusObject.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -52,8 +52,8 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Talent.SaveDBC(comparator);
-                WowEditor6.Dbc.DbcStores.TalentTab.SaveDBC();
+                DbcStores.Talent.SaveDBC(comparator);
+                DbcStores.TalentTab.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -65,9 +65,9 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Achievement.SaveDBC();
-                WowEditor6.Dbc.DbcStores.AchievementCategory.SaveDBC();
-                WowEditor6.Dbc.DbcStores.AchievementCriteria.SaveDBC();
+                DbcStores.Achievement.SaveDBC();
+                DbcStores.AchievementCategory.SaveDBC();
+                DbcStores.AchievementCriteria.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -79,7 +79,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ChrRaces.SaveDBC();
+                DbcStores.ChrRaces.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -91,7 +91,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.AreaPoi.SaveDBC();
+                DbcStores.AreaPoi.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -103,7 +103,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ChrClasses.SaveDBC();
+                DbcStores.ChrClasses.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -115,8 +115,8 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.WorldMapArea.SaveDBC();
-                WowEditor6.Dbc.DbcStores.WorldMapOverlay.SaveDBC();
+                DbcStores.WorldMapArea.SaveDBC();
+                DbcStores.WorldMapOverlay.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -128,7 +128,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Item.SaveDBC();
+                DbcStores.Item.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -140,7 +140,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.GameTips.SaveDBC();
+                DbcStores.GameTips.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -152,8 +152,8 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.NamesReserved.SaveDBC();
-                WowEditor6.Dbc.DbcStores.NamesProfanity.SaveDBC();
+                DbcStores.NamesReserved.SaveDBC();
+                DbcStores.NamesProfanity.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -165,9 +165,9 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.Item.SaveDBC();
-                WowEditor6.Dbc.DbcStores.GemProperties.SaveDBC();
-                WowEditor6.Dbc.DbcStores.SpellItemEnchantment.SaveDBC();
+                DbcStores.Item.SaveDBC();
+                DbcStores.GemProperties.SaveDBC();
+                DbcStores.SpellItemEnchantment.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -179,9 +179,9 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ChrClasses.SaveDBC();
-                WowEditor6.Dbc.DbcStores.ChrRaces.SaveDBC();
-                WowEditor6.Dbc.DbcStores.CharBaseInfo.SaveDBC();
+                DbcStores.ChrClasses.SaveDBC();
+                DbcStores.ChrRaces.SaveDBC();
+                DbcStores.CharBaseInfo.SaveDBC();
             }
             catch (System.Exception ex)
             {
@@ -193,7 +193,7 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                WowEditor6.Dbc.DbcStores.ItemSet.SaveDBC();
+                DbcStores.ItemSet.SaveDBC();
             }
             catch (System.Exception ex)
             {

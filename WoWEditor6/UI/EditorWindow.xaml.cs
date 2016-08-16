@@ -13,6 +13,7 @@ using WoWEditor6.Resources;
 using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
 using WoWEditor6.Win32;
+using WoWEditor6.Dbc;
 using Color = System.Windows.Media.Color;
 
 namespace WoWEditor6.UI
@@ -26,6 +27,7 @@ namespace WoWEditor6.UI
         {
             DataContext = new EditorWindowController(this);
             InitializeComponent();
+            DbcStores.InitFiles();
         }
 
         public RenderControl DrawTarget { get { return RenderTarget; } }
@@ -125,6 +127,12 @@ namespace WoWEditor6.UI
         {
             var ExempleEditor = new DbcEditors.Exemple.ExempleEditor();
             ExempleEditor.ShowDialog();
+        }
+
+        private void ChrRacesEditor_Click(object sender, RoutedEventArgs e)
+        {
+            var ChrRacesEditor = new DbcEditors.ChrRaces.ChrRacesEditor();
+            ChrRacesEditor.ShowDialog();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
