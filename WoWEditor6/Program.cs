@@ -22,6 +22,10 @@ namespace WoWEditor6
             if (!Directory.Exists(profilesDir))
                 Directory.CreateDirectory(profilesDir);
 
+            var dbcdir = Path.Combine(baseDir, "DBC");
+            if (!Directory.Exists(dbcdir))
+                Directory.CreateDirectory(dbcdir);
+
             ProfileOptimization.SetProfileRoot(profilesDir);
             ProfileOptimization.StartProfile("JitProfile.jpf");
 
