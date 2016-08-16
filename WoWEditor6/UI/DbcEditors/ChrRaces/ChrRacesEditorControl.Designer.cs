@@ -34,6 +34,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.AddButton = new System.Windows.Forms.Button();
             this.RemoveButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbMenu
@@ -41,7 +42,7 @@
             this.lbMenu.FormattingEnabled = true;
             this.lbMenu.Location = new System.Drawing.Point(3, 3);
             this.lbMenu.Name = "lbMenu";
-            this.lbMenu.Size = new System.Drawing.Size(150, 446);
+            this.lbMenu.Size = new System.Drawing.Size(150, 368);
             this.lbMenu.TabIndex = 123;
             this.lbMenu.SelectedIndexChanged += new System.EventHandler(this.lbMenu_SelectedIndexChanged);
             // 
@@ -55,7 +56,7 @@
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(3, 450);
+            this.AddButton.Location = new System.Drawing.Point(3, 377);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(56, 23);
             this.AddButton.TabIndex = 125;
@@ -65,7 +66,7 @@
             // 
             // RemoveButton
             // 
-            this.RemoveButton.Location = new System.Drawing.Point(94, 450);
+            this.RemoveButton.Location = new System.Drawing.Point(97, 377);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(56, 23);
             this.RemoveButton.TabIndex = 126;
@@ -73,10 +74,21 @@
             this.RemoveButton.UseVisualStyleBackColor = true;
             this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(3, 406);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(150, 59);
+            this.button1.TabIndex = 127;
+            this.button1.Text = "Save";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ChrRacesEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.AddButton);
             this.Controls.Add(this.tbcEditor);
@@ -95,5 +107,6 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.Button RemoveButton;
+        private System.Windows.Forms.Button button1;
     }
 }
