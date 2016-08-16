@@ -13,7 +13,7 @@ namespace WoWEditor6.UI.DbcEditors
     struct labelStruct : IEnumerable
     {
         public string Text;
-        public string Tooltip;
+        //public string Tooltip;
         public int x;
         public int y;
 
@@ -27,7 +27,7 @@ namespace WoWEditor6.UI.DbcEditors
     public partial class ChrRacesEditorControl : UserControl
     {
         int raceNbr = 0;
-        labelStruct[] labelArray = { new labelStruct() { Text = "Actiaved (12 or 15 are Activated)", x = 7, y = 7 },
+        labelStruct[] labelArray = { new labelStruct() { Text = "Activated (12 or 15 are Activated)", x = 7, y = 7 },
                                      new labelStruct() { Text = "Faction", x = 7, y = 51 },
                                      new labelStruct() { Text = "Exploration", x = 7, y = 95 },
                                      new labelStruct() { Text = "Male Model", x = 7, y = 139 },
@@ -71,7 +71,7 @@ namespace WoWEditor6.UI.DbcEditors
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.ToString());
             }
             //We're creating every tab => one races
             foreach (var entry in DbcStores.ChrRaces.Records)

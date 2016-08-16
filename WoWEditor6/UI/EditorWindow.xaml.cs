@@ -27,7 +27,6 @@ namespace WoWEditor6.UI
         {
             DataContext = new EditorWindowController(this);
             InitializeComponent();
-            DbcStores.InitFiles();
         }
 
         public RenderControl DrawTarget { get { return RenderTarget; } }

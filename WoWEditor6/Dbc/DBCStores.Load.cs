@@ -8,7 +8,8 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.CharTitles.LoadData();
+                DbcStores.InitFiles();
+                CharTitles.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -20,12 +21,13 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.NamesProfanity.LoadData();
-                DbcStores.NamesReserved.LoadData();
+                DbcStores.InitFiles();
+                NamesProfanity.LoadData();
+                NamesReserved.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -33,17 +35,18 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.Spell.LoadData();
-                DbcStores.SkillLine.LoadData();
-                DbcStores.SkillLineAbility.LoadData();
-                DbcStores.SkillRaceClassInfo.LoadData();
-                DbcStores.SpellFocusObject.LoadData();
-                DbcStores.ChrRaces.LoadData();
-                DbcStores.ChrClasses.LoadData();
+                DbcStores.InitFiles();
+                Spell.LoadData();
+                SkillLine.LoadData();
+                SkillLineAbility.LoadData();
+                SkillRaceClassInfo.LoadData();
+                SpellFocusObject.LoadData();
+                ChrRaces.LoadData();
+                ChrClasses.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -51,15 +54,16 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.ChrClasses.LoadData();
-                DbcStores.ChrRaces.LoadData();
-                DbcStores.Faction.LoadData();
-                DbcStores.FactionGroup.LoadData();
-                DbcStores.FactionTemplate.LoadData();
+                DbcStores.InitFiles();
+                ChrClasses.LoadData();
+                ChrRaces.LoadData();
+                Faction.LoadData();
+                FactionGroup.LoadData();
+                FactionTemplate.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -67,16 +71,17 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.ChrClasses.LoadData();
-                DbcStores.ChrRaces.LoadData();
-                DbcStores.Spell.LoadData();
-                DbcStores.SpellIcon.LoadData();
-                DbcStores.Talent.LoadData();
-                DbcStores.TalentTab.LoadData();
+                DbcStores.InitFiles();
+                ChrClasses.LoadData();
+                ChrRaces.LoadData();
+                Spell.LoadData();
+                SpellIcon.LoadData();
+                Talent.LoadData();
+                TalentTab.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -84,15 +89,16 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.Achievement.LoadData();
-                DbcStores.AchievementCategory.LoadData();
-                DbcStores.AchievementCriteria.LoadData();
-                DbcStores.Map.LoadData();
-                DbcStores.SpellIcon.LoadData();
+                DbcStores.InitFiles();
+                Achievement.LoadData();
+                AchievementCategory.LoadData();
+                AchievementCriteria.LoadData();
+                Map.LoadData();
+                SpellIcon.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -100,7 +106,8 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.ChrRaces.LoadData();
+                DbcStores.InitFiles();
+                ChrRaces.LoadData();
             }
             catch (System.Exception ex)
             {
@@ -112,11 +119,12 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.ChrClasses.LoadData();
+                DbcStores.InitFiles();
+                ChrClasses.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -124,16 +132,17 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.AreaPoi.LoadData();
-                DbcStores.AreaTable.LoadData();
-                DbcStores.DungeonMap.LoadData();
-                DbcStores.Map.LoadData();
-                DbcStores.WorldMapArea.LoadData();
-                DbcStores.WorldMapOverlay.LoadData();
+                DbcStores.InitFiles();
+                AreaPoi.LoadData();
+                AreaTable.LoadData();
+                DungeonMap.LoadData();
+                Map.LoadData();
+                WorldMapArea.LoadData();
+                WorldMapOverlay.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -141,12 +150,13 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.WorldMapArea.LoadData();
-                DbcStores.WorldMapOverlay.LoadData();
+                DbcStores.InitFiles();
+                WorldMapArea.LoadData();
+                WorldMapOverlay.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -154,11 +164,12 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.Item.LoadData();
+                DbcStores.InitFiles();
+                Item.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -166,11 +177,12 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.GameTips.LoadData();
+                DbcStores.InitFiles();
+                GameTips.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -178,13 +190,14 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.Item.LoadData();
-                DbcStores.GemProperties.LoadData();
-                DbcStores.SpellItemEnchantment.LoadData();
+                DbcStores.InitFiles();
+                Item.LoadData();
+                GemProperties.LoadData();
+                SpellItemEnchantment.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -192,13 +205,14 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.CharBaseInfo.LoadData();
-                DbcStores.ChrClasses.LoadData();
-                DbcStores.ChrRaces.LoadData();
+                DbcStores.InitFiles();
+                CharBaseInfo.LoadData();
+                ChrClasses.LoadData();
+                ChrRaces.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -206,11 +220,12 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.ItemSet.LoadData();
+                DbcStores.InitFiles();
+                ItemSet.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -218,13 +233,14 @@ namespace WoWEditor6.Dbc
         {
             try
             {
-                DbcStores.CharStartOutfit.LoadData();
-                DbcStores.ChrRaces.LoadData();
-                DbcStores.ChrClasses.LoadData();
+                DbcStores.InitFiles();
+                CharStartOutfit.LoadData();
+                ChrRaces.LoadData();
+                ChrClasses.LoadData();
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
         }
     }
