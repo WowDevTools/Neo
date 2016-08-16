@@ -26,7 +26,7 @@ namespace WoWEditor6.UI.DbcEditors
     [Designer(typeof(ChrRacesEditorControlDesigner))]
     public partial class ChrRacesEditorControl : UserControl
     {
-
+        int raceNbr = 0;
         labelStruct[] labelArray = { new labelStruct() { Text = "Actiaved (12 or 15 are Activated)", x = 7, y = 7 },
                                      new labelStruct() { Text = "Faction", x = 7, y = 51 },
                                      new labelStruct() { Text = "Exploration", x = 7, y = 95 },
@@ -73,8 +73,6 @@ namespace WoWEditor6.UI.DbcEditors
             {
                 MessageBox.Show(ex.Message);
             }
-
-            int raceNbr = 0;
             //We're creating every tab => one races
             foreach (var entry in DbcStores.ChrRaces.Records)
             {
@@ -83,38 +81,53 @@ namespace WoWEditor6.UI.DbcEditors
                 TabPage page = new TabPage();
                 page.Name = entry.RaceNameNeutral.String;
                 tbcEditor.TabPages.Add(page);
-                FillTab(page,entry.RaceId);
+                FillTab(page,(int)entry.RaceId);
             }
 
-            lbMenu.Size = new Size(150, (raceNbr*14 > 472) ? 472 : raceNbr * 14);
+            lbMenu.Size = new Size(150, (raceNbr*14 > 446) ? 446 : raceNbr * 14);
             lbMenu.SelectedIndex = 0;
 
         }
 
-        private void FillTab(TabPage page, uint raceId)
+        private void tb_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                TextBox textBox = sender as TextBox;
+                if (textBox != null)
+                {
+                    lbMenu.Items[lbMenu.SelectedIndex] = textBox.Text;
+                }
+            }
+        }
+
+        private void FillTab(TabPage page, int raceId)
         {
             List<string> raceInformation = new List<string>();
-            var c = DbcStores.ChrRaces[raceId];
-            raceInformation.Add(c.Flags.ToString());
-            raceInformation.Add(c.FactionId.ToString());
-            raceInformation.Add(c.ExplorationSoundId.ToString());
-            raceInformation.Add(c.ModelM.ToString());
-            raceInformation.Add(c.ModelF.ToString());
-            raceInformation.Add(c.ClientPrefix.ToString());
-            raceInformation.Add(c.RequiredExpansion.ToString());
-            raceInformation.Add(c.HairCustomization.ToString());
-            raceInformation.Add(c.FacialHairCustomization.ToString());
-            raceInformation.Add(c.FacialHairCustomization2.ToString());
-            raceInformation.Add(c.BaseLanguage.ToString());
-            raceInformation.Add(c.ClientFileString.ToString());
-            raceInformation.Add(c.CinematicSequenceId.ToString());
-            raceInformation.Add(c.RaceNameNeutral.String);
-            raceInformation.Add(c.RaceNameFemale.String);
-            raceInformation.Add(c.RaceNameMale.String);
-            raceInformation.Add(c.Alliance.ToString());
-            raceInformation.Add(c.ResSicknessSpellId.ToString());
-            raceInformation.Add(c.CreatureType.ToString());
-            raceInformation.Add(c.SplashSoundId.ToString());
+            if(raceId > 0)
+            {
+                var c = DbcStores.ChrRaces[(uint)raceId];
+                raceInformation.Add(c.Flags.ToString());
+                raceInformation.Add(c.FactionId.ToString());
+                raceInformation.Add(c.ExplorationSoundId.ToString());
+                raceInformation.Add(c.ModelM.ToString());
+                raceInformation.Add(c.ModelF.ToString());
+                raceInformation.Add(c.ClientPrefix.ToString());
+                raceInformation.Add(c.RequiredExpansion.ToString());
+                raceInformation.Add(c.HairCustomization.ToString());
+                raceInformation.Add(c.FacialHairCustomization.ToString());
+                raceInformation.Add(c.FacialHairCustomization2.ToString());
+                raceInformation.Add(c.BaseLanguage.ToString());
+                raceInformation.Add(c.ClientFileString.ToString());
+                raceInformation.Add(c.CinematicSequenceId.ToString());
+                raceInformation.Add(c.RaceNameNeutral.String);
+                raceInformation.Add(c.RaceNameFemale.String);
+                raceInformation.Add(c.RaceNameMale.String);
+                raceInformation.Add(c.Alliance.ToString());
+                raceInformation.Add(c.ResSicknessSpellId.ToString());
+                raceInformation.Add(c.CreatureType.ToString());
+                raceInformation.Add(c.SplashSoundId.ToString());
+            }
 
             //Create and place every label
             foreach (labelStruct item in labelArray)
@@ -132,7 +145,8 @@ namespace WoWEditor6.UI.DbcEditors
                 if(i==0)
                 {
                     ComboBox box = new ComboBox();
-                    box.Text = raceInformation[i];
+                    if (raceId > 0)
+                        box.Text = raceInformation[i];
                     box.Size = new Size(121,21);
                     box.Location = new Point(7, 23);
                     page.Controls.Add(box);
@@ -142,7 +156,8 @@ namespace WoWEditor6.UI.DbcEditors
                     if(i<10)
                     {
                         TextBox box = new TextBox();
-                        box.Text = raceInformation[i];
+                        if (raceId > 0)
+                            box.Text = raceInformation[i];
                         box.Size = new Size(121, 21);
                         box.Location = new Point(7, 23+(i*44));
                         page.Controls.Add(box);
@@ -150,7 +165,10 @@ namespace WoWEditor6.UI.DbcEditors
                     else
                     {
                         TextBox box = new TextBox();
-                        box.Text = raceInformation[i];
+                        if (raceId > 0)
+                            box.Text = raceInformation[i];
+                        if(i == 13)
+                            box.KeyDown += new KeyEventHandler(tb_KeyDown);
                         box.Size = new Size(121, 21);
                         box.Location = new Point(270, 23 + ((i-10) * 44));
                         page.Controls.Add(box);
@@ -160,9 +178,30 @@ namespace WoWEditor6.UI.DbcEditors
 
         }
 
-        private void lbMenu_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void lbMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             tbcEditor.SelectedIndex = lbMenu.SelectedIndex;
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            ++raceNbr;
+            lbMenu.Items.Add("New race");
+            TabPage page = new TabPage();
+            page.Name = "NewRace";
+            tbcEditor.TabPages.Add(page);
+            FillTab(page, -1);
+
+            lbMenu.Size = new Size(150, (raceNbr*14 > 446) ? 446 : raceNbr* 14);
+        }
+
+        private void RemoveButton_Click(object sender, EventArgs e)
+        {
+            --raceNbr;
+            tbcEditor.TabPages.RemoveByKey(lbMenu.SelectedItem.ToString());
+            lbMenu.Items.Remove(lbMenu.SelectedItem);
+
+            lbMenu.Size = new Size(150, (raceNbr * 14 > 446) ? 446 : raceNbr * 14);
         }
     }
 
