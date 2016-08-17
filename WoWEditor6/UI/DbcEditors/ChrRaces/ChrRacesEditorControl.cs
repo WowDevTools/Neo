@@ -77,7 +77,6 @@ namespace WoWEditor6.UI.DbcEditors
             //We're creating every tab => one races
             foreach (var entry in DbcStores.ChrRaces.Records)
             {
-                ++startRaceNbr;
                 ++raceNbr;
                 if (entry.RaceNameNeutral.String != "0")
                     lbMenu.Items.Add(entry.RaceNameNeutral.String);
@@ -88,12 +87,15 @@ namespace WoWEditor6.UI.DbcEditors
                 if (entry.RaceNameNeutral.String != "0")
                     page.Name = "" + entry.RaceId;
                 else
-                    lbMenu.Items.Add("" + raceNbr);
+                    page.Name = "" + raceNbr;
                 tbcEditor.TabPages.Add(page);
                 FillTab(page,(int)entry.RaceId);
+
+                if (entry.RaceId > startRaceNbr)
+                    startRaceNbr = (int)entry.RaceId;
             }
 
-            lbMenu.Size = new Size(150, (raceNbr*14 > 368) ? 368 : raceNbr * 14);
+            lbMenu.Size = new Size(150, (raceNbr*14 > 342) ? 342 : raceNbr * 14);
             lbMenu.SelectedIndex = 0;
 
         }
@@ -136,20 +138,6 @@ namespace WoWEditor6.UI.DbcEditors
                 raceInformation.Add(c.ResSicknessSpellId.ToString());
                 raceInformation.Add(c.CreatureType.ToString());
                 raceInformation.Add(c.SplashSoundId.ToString());
-
-                Label label = new Label();
-                label.Text = "Id : "+c.RaceId;
-                label.Location = new Point(150, 205);
-                label.Size = new Size(50, 13);
-                page.Controls.Add(label);
-            }
-            else
-            {
-                Label label = new Label();
-                label.Text = "Id : " + raceNbr;
-                label.Location = new Point(150, 205);
-                label.Size = new Size(50, 13);
-                page.Controls.Add(label);
             }
 
             //Create and place every label
@@ -220,25 +208,33 @@ namespace WoWEditor6.UI.DbcEditors
             page.Name = "" + raceNbr;
             tbcEditor.TabPages.Add(page);
             FillTab(page, -1);
-
-            lbMenu.Size = new Size(150, (raceNbr*14 > 368) ? 368 : raceNbr* 14);
+            ChrRacesEntry race = new ChrRacesEntry();
+            race.RaceId = (uint)raceNbr;
+            race.RaceNameNeutral = "New race " + raceNbr;
+            //Add an empty race for the up/down button
+            DbcStores.ChrRaces.AddEntry((uint)raceNbr, race);
+            lbMenu.Size = new Size(150, (raceNbr*14 > 342) ? 342 : raceNbr* 14);
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
         {
+            if (lbMenu.SelectedIndex < 21)
+            {
+                MessageBox.Show("Please do not remove blizzard races to avoid problems");
+                return;
+            }
             --raceNbr;
-            if(DbcStores.ChrRaces.ContainsKey(uint.Parse(tbcEditor.TabPages[lbMenu.SelectedIndex].Name.ToString())))
-                DbcStores.ChrRaces.RemoveEntry(uint.Parse(tbcEditor.TabPages[lbMenu.SelectedIndex].Name.ToString()));
             tbcEditor.TabPages.RemoveAt(lbMenu.SelectedIndex);
             lbMenu.Items.Remove(lbMenu.SelectedItem);
 
-            lbMenu.Size = new Size(150, (raceNbr * 14 > 368) ? 368 : raceNbr * 14);
+            lbMenu.Size = new Size(150, (raceNbr * 14 > 342) ? 342 : raceNbr * 14);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            DbcStores.ChrRaces.ClearDbc();
             //Loop trough each tabs
-            foreach(TabPage tab in tbcEditor.TabPages)
+            foreach (TabPage tab in tbcEditor.TabPages)
             {
                 var race = new ChrRacesEntry();
                 int inputFieldscount = 0;
@@ -251,139 +247,151 @@ namespace WoWEditor6.UI.DbcEditors
                         switch(inputFieldscount)
                         {
                             case 0:
-                                if(uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.Flags = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].Flags = uint.Parse(control.Text);
                                 break;
                             case 1:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.FactionId = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].FactionId = uint.Parse(control.Text);
                                 break;
                             case 2:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.ExplorationSoundId = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].ExplorationSoundId = uint.Parse(control.Text);
                                 break;
                             case 3:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.ModelM = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].ModelM = uint.Parse(control.Text);
                                 break;
                             case 4:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.ModelF = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].ModelF = uint.Parse(control.Text);
                                 break;
                             case 5:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.ClientPrefix = control.Text;
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].ClientPrefix = control.Text;
                                 break;
                             case 6:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.RequiredExpansion = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].RequiredExpansion = uint.Parse(control.Text);
                                 break;
                             case 7:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.HairCustomization = control.Text;
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].HairCustomization = control.Text;
                                 break;
                             case 8:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.FacialHairCustomization = control.Text;
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].FacialHairCustomization = control.Text;
                                 break;
                             case 9:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.FacialHairCustomization2 = control.Text;
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].FacialHairCustomization2 = control.Text;
                                 break;
                             case 10:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.BaseLanguage = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].BaseLanguage = uint.Parse(control.Text);
                                 break;
                             case 11:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.ClientFileString = control.Text;
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].ClientFileString = control.Text;
                                 break;
                             case 12:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.CinematicSequenceId = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].CinematicSequenceId = uint.Parse(control.Text);
                                 break;
                             case 13:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.RaceNameNeutral = control.Text;
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].RaceNameNeutral = control.Text;
                                 break;
                             case 14:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.RaceNameFemale = control.Text;
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].RaceNameFemale = control.Text;
                                 break;
                             case 15:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.RaceNameMale = control.Text;
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].RaceNameMale = control.Text;
                                 break;
                             case 16:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.Alliance = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].Alliance = uint.Parse(control.Text);
                                 break;
                             case 17:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.ResSicknessSpellId = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].ResSicknessSpellId = uint.Parse(control.Text);
                                 break;
                             case 18:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.CreatureType = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].CreatureType = uint.Parse(control.Text);
                                 break;
                             case 19:
-                                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
                                     race.SplashSoundId = uint.Parse(control.Text);
-                                else
-                                    DbcStores.ChrRaces[uint.Parse(tab.Name.ToString())].SplashSoundId = uint.Parse(control.Text);
                                 break;
                         }
 
                         ++inputFieldscount;
                     }
                 }
-                
-                if (uint.Parse(tab.Name.ToString())> (startRaceNbr))
-                {
-                    race.RaceId = uint.Parse(tab.Name.ToString());
-                    DbcStores.ChrRaces.AddEntry(race.RaceId, race);
-                }
+
+                race.RaceId = (uint)tbcEditor.TabPages.IndexOf(tab)+1;
+                DbcStores.ChrRaces.AddEntry(race.RaceId, race);
             }
             //Everything is ok, save
             DbcStores.ChrRaces.SaveDBC();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(lbMenu.SelectedIndex <= 21)
+            {
+                MessageBox.Show("Please do not move blizzard races to avoid problems");
+                return;
+            }
+            int count = 0;
+            int index = tbcEditor.SelectedIndex;
+            TabPage[] pages = new TabPage[tbcEditor.TabPages.Count];
+            foreach(TabPage page in tbcEditor.TabPages)
+            {
+                pages[count] = page;
+                ++count;
+            }
+
+            TabPage temp = pages[index];
+            pages[index] = pages[index - 1];
+            pages[index - 1] = temp;
+
+            tbcEditor.TabPages.Clear();
+            lbMenu.Items.Clear();
+
+            foreach (TabPage page in pages)
+            {
+                tbcEditor.TabPages.Add(page);
+
+                foreach (var entry in DbcStores.ChrRaces.Records)
+                {
+                    if (entry.RaceId == uint.Parse(page.Name.ToString()))
+                        lbMenu.Items.Add("" + entry.RaceNameNeutral);
+                }
+            }
+        }
+
+        private void DownButton_Click(object sender, EventArgs e)
+        {
+            if (lbMenu.SelectedIndex < 21)
+            {
+                MessageBox.Show("Please do not move blizzard races to avoid problems");
+                return;
+            }
+            int count = 0;
+            int index = tbcEditor.SelectedIndex;
+            TabPage[] pages = new TabPage[tbcEditor.TabPages.Count];
+            foreach (TabPage page in tbcEditor.TabPages)
+            {
+                pages[count] = page;
+                ++count;
+            }
+
+            if(index+1 >= pages.Length)
+            {
+                MessageBox.Show("This race is already at the bottom");
+                return;
+            }
+            TabPage temp = pages[index];
+            pages[index] = pages[index + 1];
+            pages[index + 1] = temp;
+
+            tbcEditor.TabPages.Clear();
+            lbMenu.Items.Clear();
+
+            foreach (TabPage page in pages)
+            {
+                tbcEditor.TabPages.Add(page);
+
+                foreach (var entry in DbcStores.ChrRaces.Records)
+                {
+                    if (entry.RaceId == uint.Parse(page.Name.ToString()))
+                        lbMenu.Items.Add("" + entry.RaceNameNeutral);
+                }
+            }
         }
     }
 

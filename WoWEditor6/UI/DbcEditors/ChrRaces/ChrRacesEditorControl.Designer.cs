@@ -35,6 +35,8 @@
             this.AddButton = new System.Windows.Forms.Button();
             this.RemoveButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.UpButton = new System.Windows.Forms.Button();
+            this.DownButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbMenu
@@ -42,7 +44,7 @@
             this.lbMenu.FormattingEnabled = true;
             this.lbMenu.Location = new System.Drawing.Point(3, 3);
             this.lbMenu.Name = "lbMenu";
-            this.lbMenu.Size = new System.Drawing.Size(150, 368);
+            this.lbMenu.Size = new System.Drawing.Size(150, 342);
             this.lbMenu.TabIndex = 123;
             this.lbMenu.SelectedIndexChanged += new System.EventHandler(this.lbMenu_SelectedIndexChanged);
             // 
@@ -84,10 +86,32 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // UpButton
+            // 
+            this.UpButton.Location = new System.Drawing.Point(3, 351);
+            this.UpButton.Name = "UpButton";
+            this.UpButton.Size = new System.Drawing.Size(56, 23);
+            this.UpButton.TabIndex = 128;
+            this.UpButton.Text = "↑";
+            this.UpButton.UseVisualStyleBackColor = true;
+            this.UpButton.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // DownButton
+            // 
+            this.DownButton.Location = new System.Drawing.Point(97, 351);
+            this.DownButton.Name = "DownButton";
+            this.DownButton.Size = new System.Drawing.Size(56, 23);
+            this.DownButton.TabIndex = 129;
+            this.DownButton.Text = "↓";
+            this.DownButton.UseVisualStyleBackColor = true;
+            this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
+            // 
             // ChrRacesEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.DownButton);
+            this.Controls.Add(this.UpButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.AddButton);
@@ -108,5 +132,7 @@
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.Button RemoveButton;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button UpButton;
+        private System.Windows.Forms.Button DownButton;
     }
 }

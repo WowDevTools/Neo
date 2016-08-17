@@ -260,6 +260,11 @@ namespace DBCLib
             SaveDBC(null);
         }
 
+        public void ClearDbc()
+        {
+            mRecords.Clear();
+        }
+
         public T this[uint id]
         {
             get { return mRecords[id]; }
