@@ -41,7 +41,8 @@ namespace WoWEditor6.Editing
             var altDown = KeyHelper.IsKeyDown(keyState, Keys.Menu);
             var ctrlDown = KeyHelper.IsKeyDown(keyState, Keys.ControlKey);
             var shiftDown = KeyHelper.IsKeyDown(keyState, Keys.ShiftKey);
-            if (altDown || ctrlDown || shiftDown)
+            var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
+            if ((altDown || ctrlDown || shiftDown) & RMBDown)
             {
                 var angle = MathUtil.DegreesToRadians(dpos.X * 6);
                 SelectedModel.Rotate(altDown ? angle : 0, ctrlDown ? angle : 0, shiftDown ? angle : 0);
