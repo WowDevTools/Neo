@@ -19,6 +19,7 @@ namespace WoWEditor6.Editing
         public IModelInstance SelectedModel { get; set; }
 
         private Point mLastCursorPosition = Cursor.Position;
+        private Vector3 mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
 
         static ModelEditManager()
         {
@@ -30,6 +31,7 @@ namespace WoWEditor6.Editing
             if (SelectedModel == null)
             {
                 mLastCursorPosition = Cursor.Position;
+                mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
                 return;
             }
 
@@ -61,8 +63,8 @@ namespace WoWEditor6.Editing
                 Vector2 delta;
                 Vector3 position;
 
-                delta.X = (mLastCursorPosition.X - curPos.X);
-                delta.Y = (mLastCursorPosition.Y - curPos.Y);
+                delta.X = (mLastBrushPosition.X - Editing.EditManager.Instance.MousePosition.X);
+                delta.Y = (mLastBrushPosition.Z - Editing.EditManager.Instance.MousePosition.Z);
 
                 SelectedModel.UpdatePosition(position = new Vector3( MMBDown && !shiftDown ? delta.X / 64.0f : 0, MMBDown && !shiftDown ? delta.Y / 64.0f : 0, MMBDown && shiftDown ? delta.Y / 64.0f : 0) );
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
