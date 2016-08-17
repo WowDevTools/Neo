@@ -136,7 +136,7 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public Vector3 GetPosition()
         {
-            return 0;
+            return new Vector3(0, 0, 0);
             // TODO: Implement
         }
 
