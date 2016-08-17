@@ -134,6 +134,12 @@ namespace WoWEditor6.Scene.Models.WMO
             // TODO: Implement
         }
 
+        public Vector3 GetPosition()
+        {
+            return 0;
+            // TODO: Implement
+        }
+
         public void DestroyModelNameplate()
         {
             if (mWorldModelName == null)

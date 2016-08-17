@@ -63,10 +63,15 @@ namespace WoWEditor6.Editing
                 Vector2 delta;
                 Vector3 position;
 
-                delta.X = (mLastBrushPosition.X - Editing.EditManager.Instance.MousePosition.X);
-                delta.Y = (mLastBrushPosition.Z - Editing.EditManager.Instance.MousePosition.Z);
+                delta.X = -(mLastBrushPosition.X - Editing.EditManager.Instance.MousePosition.X);
+                delta.Y = -(mLastBrushPosition.Y - Editing.EditManager.Instance.MousePosition.Y);
 
-                SelectedModel.UpdatePosition(position = new Vector3( MMBDown && !shiftDown ? delta.X / 64.0f : 0, MMBDown && !shiftDown ? delta.Y / 64.0f : 0, MMBDown && shiftDown ? delta.Y / 64.0f : 0) );
+                position = new Vector3(MMBDown && !shiftDown ? delta.X / 64.0f : 0, MMBDown && !shiftDown ? delta.Y / 64.0f : 0, MMBDown && shiftDown ? delta.Y / 64.0f : 0);
+
+                SelectedModel.UpdatePosition(position);
+
+                mLastBrushPosition = SelectedModel.GetPosition();
+
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
 

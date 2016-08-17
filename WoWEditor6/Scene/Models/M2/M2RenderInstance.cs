@@ -146,6 +146,11 @@ namespace WoWEditor6.Scene.Models.M2
             UpdateModelNameplate();
         }
 
+        public Vector3 GetPosition()
+        {
+            return mPosition;
+        }
+
         public void UpdateScale(float scale)
         {
             mScale.X += scale;
