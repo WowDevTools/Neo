@@ -99,5 +99,10 @@ namespace WoWEditor6.UI.Dialogs
 
             Properties.Settings.Default.Save();
         }
+
+        private void KeyBindingWidget_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

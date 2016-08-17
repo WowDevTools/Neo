@@ -20,7 +20,7 @@
                 </TabItem>
                 <TabItem Header="Pathes"/>
                 <TabItem Header="Keybindings">
-                    <local:KeyBindingWidget Margin="10,10,10,10 " />
+                    <local:KeyBindingWidget Margin="10,10,10,10 " Loaded="KeyBindingWidget_Loaded" />
                 </TabItem>
                 <TabItem Header="Render options" Margin="-2,0" >
                     <Grid>

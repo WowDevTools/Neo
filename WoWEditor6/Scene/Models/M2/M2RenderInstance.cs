@@ -128,9 +128,11 @@ namespace WoWEditor6.Scene.Models.M2
             UpdateModelNameplate();
         }
 
-        public void UpdatePosition(Vector3 position)
+        public void UpdatePosition(Vector3 position) // todo This needs to rely on view-based coordinate system
         {
-            mPosition = position;
+            mPosition.X += position.X;
+            mPosition.Y += position.Y;
+            mPosition.Z += position.Z;
 
             var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
                 MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
@@ -139,12 +141,31 @@ namespace WoWEditor6.Scene.Models.M2
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+            InstanceCorners = mModel.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             UpdateModelNameplate();
         }
 
         public void UpdateScale(float scale)
         {
-            mScale = new Vector3(scale, scale, scale);
+            mScale.X += scale;
+            mScale.Y += scale;
+            mScale.Z += scale;
+
+            if (mScale.X < 0.0f)
+            {
+                mScale.X = 0.0f;
+                mScale.Y = 0.0f;
+                mScale.Z = 0.0f;
+            }
+
+            if (mScale.X > 63.9f)
+            {
+                mScale.X = 63.9f;
+                mScale.Y = 63.9f;
+                mScale.Z = 63.9f;
+            }
+
             var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
                 MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
             Matrix.Invert(ref rotationMatrix, out mInverseRotation);
@@ -152,6 +173,8 @@ namespace WoWEditor6.Scene.Models.M2
             mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
             Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+            InstanceCorners = mModel.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             UpdateModelNameplate();
         }
 

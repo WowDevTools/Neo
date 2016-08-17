@@ -42,10 +42,29 @@ namespace WoWEditor6.Editing
             var ctrlDown = KeyHelper.IsKeyDown(keyState, Keys.ControlKey);
             var shiftDown = KeyHelper.IsKeyDown(keyState, Keys.ShiftKey);
             var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
-            if ((altDown || ctrlDown || shiftDown) & RMBDown)
+            var MMBDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
+
+            if ((altDown || ctrlDown || shiftDown) & RMBDown) // Rotating
             {
                 var angle = MathUtil.DegreesToRadians(dpos.X * 6);
                 SelectedModel.Rotate(altDown ? angle : 0, ctrlDown ? angle : 0, shiftDown ? angle : 0);
+                WorldFrame.Instance.UpdateSelectedBoundingBox();
+            }
+            if (altDown & MMBDown & !shiftDown) // Scaling
+            {
+                var amount = (mLastCursorPosition.Y - curPos.Y) / 512.0f;
+                SelectedModel.UpdateScale(altDown ? amount : 0);
+                WorldFrame.Instance.UpdateSelectedBoundingBox();
+            }
+            if (MMBDown && !altDown) // Moving 
+            {
+                Vector2 delta;
+                Vector3 position;
+
+                delta.X = (mLastCursorPosition.X - curPos.X);
+                delta.Y = (mLastCursorPosition.Y - curPos.Y);
+
+                SelectedModel.UpdatePosition(position = new Vector3( MMBDown && !shiftDown ? delta.X / 64.0f : 0, MMBDown && !shiftDown ? delta.Y / 64.0f : 0, MMBDown && shiftDown ? delta.Y / 64.0f : 0) );
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
 

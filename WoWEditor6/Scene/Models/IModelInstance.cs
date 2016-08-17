@@ -12,6 +12,10 @@ namespace WoWEditor6.Scene.Models
 
         void Rotate(float x, float y, float z);
 
+        void UpdateScale(float s);
+
+        void UpdatePosition(Vector3 position);
+
         bool Intersects(IntersectionParams parameters, ref Ray globalRay, out float value);
 
         void CreateModelNameplate();

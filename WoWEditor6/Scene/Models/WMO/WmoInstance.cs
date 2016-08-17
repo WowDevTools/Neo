@@ -124,6 +124,16 @@ namespace WoWEditor6.Scene.Models.WMO
             // TODO: Implement
         }
 
+        public void UpdateScale(float s)
+        {
+            // TODO: Implement
+        }
+
+        public void UpdatePosition(Vector3 position)
+        {
+            // TODO: Implement
+        }
+
         public void DestroyModelNameplate()
         {
             if (mWorldModelName == null)

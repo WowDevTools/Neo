@@ -13,7 +13,7 @@
         <Grid Grid.Row="0">
             <Border Padding="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <CheckBox IsChecked="True" Click="InvertMouseBox_Clicked">Invert Mouse Y-Axis</CheckBox>
+                    <CheckBox Click="InvertMouseBox_Clicked">Invert Mouse Y-Axis</CheckBox>
                     <CheckBox IsChecked="False" Click="InvertMouseBoxX_Clicked" Margin="0,5,0,0">Invert Mouse X-Axis</CheckBox>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <Label Margin="0,0,5,0">Mouse sensitivity</Label>

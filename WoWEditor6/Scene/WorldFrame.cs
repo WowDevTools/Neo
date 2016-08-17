@@ -187,7 +187,7 @@ namespace WoWEditor6.Scene
             CamControl.PositionChanged += MapManager.UpdatePosition;
 
             if (!LeftHandedCamera)
-                CamControl.InvertY = true;
+                CamControl.InvertY = false;
 
             window.MouseDown += OnRenderWindowMouseDown;
         }
