@@ -73,6 +73,7 @@ namespace WoWEditor6.Editing
 
                 float x = delta.X;
                 float y = delta.Y;
+
                 int xSign = 1;
                 int ySign = 1;
 
@@ -93,8 +94,6 @@ namespace WoWEditor6.Editing
 
                 float gcd = GCD(xInteger, yInteger); //GCD Between x/y
 
-                gcd /= 1000000;
-
                 x = (float)(xInteger / gcd) / 1000000; //Then we re-go in float
                 y = (float)(yInteger / gcd) / 1000000; //Then we re-go in float
 
@@ -113,7 +112,7 @@ namespace WoWEditor6.Editing
             mLastCursorPosition = curPos;
         }
 
-        long GCD(long a, long b)
+        public long GCD(long a, long b)
         {
             long Remainder;
 
