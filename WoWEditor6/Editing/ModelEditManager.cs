@@ -63,7 +63,7 @@ namespace WoWEditor6.Editing
                 SelectedModel.UpdateScale(altDown ? amount : 0);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
-            if (MMBDown && !altDown) // Moving 
+            if (MMBDown && !altDown && Cursor.Position != mLastCursorPosition) // Moving 
             {
                 Vector2 delta;
                 Vector3 position;
