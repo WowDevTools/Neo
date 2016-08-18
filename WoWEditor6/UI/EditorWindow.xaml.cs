@@ -13,8 +13,8 @@ using WoWEditor6.Resources;
 using WoWEditor6.Scene;
 using WoWEditor6.UI.Components;
 using WoWEditor6.Win32;
-using WoWEditor6.Dbc;
 using Color = System.Windows.Media.Color;
+using System.Windows.Input;
 
 namespace WoWEditor6.UI
 {
@@ -156,6 +156,11 @@ namespace WoWEditor6.UI
         public void OnUpdatePosition(Vector3 position)
         {
             CurrentPositionLabel.Content = "Position: " + position;
+        }
+
+        public void OnMouseMove(Vector3 position)
+        {
+            CurrentModelPositionLabel.Content = "Model Position: " + position;
         }
 
         public void AddMessage(LogLevel logLevel, string title, string message)

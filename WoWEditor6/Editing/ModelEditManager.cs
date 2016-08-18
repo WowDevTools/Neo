@@ -8,6 +8,7 @@ using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Models;
 using WoWEditor6.Utils;
+using WoWEditor6.UI;
 using Point = System.Drawing.Point;
 
 namespace WoWEditor6.Editing
@@ -32,11 +33,15 @@ namespace WoWEditor6.Editing
             {
                 mLastCursorPosition = Cursor.Position;
                 mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
+
+                EditorWindowController.Instance.OnMouseMove(new Vector3(0.0f,0.0f,0.0f));
                 return;
             }
 
             var curPos = Cursor.Position;
             var dpos = new Point(curPos.X - mLastCursorPosition.X, curPos.Y - mLastCursorPosition.Y);
+
+            EditorWindowController.Instance.OnMouseMove(SelectedModel.GetPosition());
 
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);
@@ -63,8 +68,8 @@ namespace WoWEditor6.Editing
                 Vector2 delta;
                 Vector3 position;
 
-                delta.X = -(mLastBrushPosition.X - Editing.EditManager.Instance.MousePosition.X);
-                delta.Y = -(mLastBrushPosition.Y - Editing.EditManager.Instance.MousePosition.Y);
+                delta.X = -mLastBrushPosition.X + Editing.EditManager.Instance.MousePosition.X;
+                delta.Y = -mLastBrushPosition.Y + Editing.EditManager.Instance.MousePosition.Y;
 
                 float x = delta.X;
                 float y = delta.Y;
