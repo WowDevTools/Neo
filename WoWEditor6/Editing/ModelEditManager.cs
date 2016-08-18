@@ -22,6 +22,8 @@ namespace WoWEditor6.Editing
         private Point mLastCursorPosition = Cursor.Position;
         private Vector3 mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
         private Vector3 mLastPos = Editing.EditManager.Instance.MousePosition;
+        int slowness = 1;
+
         static ModelEditManager()
         {
             Instance = new ModelEditManager();
@@ -66,13 +68,14 @@ namespace WoWEditor6.Editing
             }
             if (MMBDown && !altDown && Cursor.Position != mLastCursorPosition) // Moving 
             {
-                Vector2 delta;
+                Vector3 delta;
                 Vector3 position;
 
                 delta.X = Editing.EditManager.Instance.MousePosition.X - mLastPos.X;
                 delta.Y = Editing.EditManager.Instance.MousePosition.Y - mLastPos.Y;
+                delta.Z = -(Cursor.Position.Y - mLastCursorPosition.Y); //Better to use the 2d screen pos of the mouse.
 
-                position = new Vector3(MMBDown && !shiftDown ? delta.X / 32.0f : 0, MMBDown && !shiftDown ? delta.Y / 32.0f : 0, MMBDown && shiftDown ? delta.Y / 32.0f : 0);
+                position = new Vector3(MMBDown && !shiftDown ? delta.X/ slowness : 0, MMBDown && !shiftDown ? delta.Y/ slowness : 0, MMBDown && shiftDown ? delta.Z/ slowness : 0);
 
                 SelectedModel.UpdatePosition(position);
 
