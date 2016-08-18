@@ -191,7 +191,7 @@ namespace WoWEditor6.Scene.Models
                 IndexBuffer = gIndexBuffer,
                 IndexCount = 36,
                 Stride = 24,
-                BlendState = {BlendEnabled = false},
+                BlendState = {BlendEnabled = true},
                 DepthState = {DepthEnabled = true}
             };
 

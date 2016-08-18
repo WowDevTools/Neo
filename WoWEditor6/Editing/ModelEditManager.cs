@@ -66,7 +66,37 @@ namespace WoWEditor6.Editing
                 delta.X = -(mLastBrushPosition.X - Editing.EditManager.Instance.MousePosition.X);
                 delta.Y = -(mLastBrushPosition.Y - Editing.EditManager.Instance.MousePosition.Y);
 
-                position = new Vector3(MMBDown && !shiftDown ? delta.X / 64.0f : 0, MMBDown && !shiftDown ? delta.Y / 64.0f : 0, MMBDown && shiftDown ? delta.Y / 64.0f : 0);
+                float x = delta.X;
+                float y = delta.Y;
+                int xSign = 1;
+                int ySign = 1;
+
+                if (x < 0)
+                {
+                    xSign = -1; //We save the fact that x was <0
+                    x *= -1; // We transform x in pos value
+                }
+
+                if (y < 0)
+                {
+                    ySign = -1; //We save the fact that y was <0
+                    y *= -1; // We transform y in pos value
+                }
+
+                int xInteger = (int)(x * 1000000); //We transform x in an integer ( 7decimal prec)
+                int yInteger = (int)(y * 1000000); //We transform y in an integer ( 7decimal prec)
+
+                float gcd = GCD(xInteger, yInteger); //GCD Between x/y
+
+                gcd /= 1000000;
+
+                x = (float)(xInteger / gcd) / 1000000; //Then we re-go in float
+                y = (float)(yInteger / gcd) / 1000000; //Then we re-go in float
+
+                x *= xSign; //Finally, re-put the sign
+                y *= ySign; //Finally, re-put the sign
+
+                position = new Vector3(MMBDown && !shiftDown ? x / 64.0f : 0, MMBDown && !shiftDown ? y / 64.0f : 0, MMBDown && shiftDown ? y / 64.0f : 0);
 
                 SelectedModel.UpdatePosition(position);
 
@@ -78,5 +108,21 @@ namespace WoWEditor6.Editing
             mLastCursorPosition = curPos;
         }
 
+        long GCD(long a, long b)
+        {
+            long Remainder;
+
+            while (b != 0)
+            {
+                Remainder = a % b;
+                a = b;
+                b = Remainder;
+            }
+
+            return a;
+        }
+
     }
 }
+
+
