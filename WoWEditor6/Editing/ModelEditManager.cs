@@ -21,7 +21,7 @@ namespace WoWEditor6.Editing
 
         private Point mLastCursorPosition = Cursor.Position;
         private Vector3 mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
-
+        private Vector3 mLastPos = Editing.EditManager.Instance.MousePosition;
         static ModelEditManager()
         {
             Instance = new ModelEditManager();
@@ -33,6 +33,7 @@ namespace WoWEditor6.Editing
             {
                 mLastCursorPosition = Cursor.Position;
                 mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
+                mLastPos = Editing.EditManager.Instance.MousePosition;
 
                 EditorWindowController.Instance.OnMouseMove(new Vector3(0.0f,0.0f,0.0f));
                 return;
@@ -68,39 +69,10 @@ namespace WoWEditor6.Editing
                 Vector2 delta;
                 Vector3 position;
 
-                delta.X = -mLastBrushPosition.X + Editing.EditManager.Instance.MousePosition.X;
-                delta.Y = -mLastBrushPosition.Y + Editing.EditManager.Instance.MousePosition.Y;
+                delta.X = Editing.EditManager.Instance.MousePosition.X - mLastPos.X;
+                delta.Y = Editing.EditManager.Instance.MousePosition.Y - mLastPos.Y;
 
-                float x = delta.X;
-                float y = delta.Y;
-
-                int xSign = 1;
-                int ySign = 1;
-
-                if (x < 0)
-                {
-                    xSign = -1; //We save the fact that x was <0
-                    x *= -1; // We transform x in pos value
-                }
-
-                if (y < 0)
-                {
-                    ySign = -1; //We save the fact that y was <0
-                    y *= -1; // We transform y in pos value
-                }
-
-                int xInteger = (int)(x * 1000000); //We transform x in an integer ( 7decimal prec)
-                int yInteger = (int)(y * 1000000); //We transform y in an integer ( 7decimal prec)
-
-                float gcd = GCD(xInteger, yInteger); //GCD Between x/y
-
-                x = (float)(xInteger / gcd) / 1000000; //Then we re-go in float
-                y = (float)(yInteger / gcd) / 1000000; //Then we re-go in float
-
-                x *= xSign; //Finally, re-put the sign
-                y *= ySign; //Finally, re-put the sign
-
-                position = new Vector3(MMBDown && !shiftDown ? x / 64.0f : 0, MMBDown && !shiftDown ? y / 64.0f : 0, MMBDown && shiftDown ? y / 64.0f : 0);
+                position = new Vector3(MMBDown && !shiftDown ? delta.X / 32.0f : 0, MMBDown && !shiftDown ? delta.Y / 32.0f : 0, MMBDown && shiftDown ? delta.Y / 32.0f : 0);
 
                 SelectedModel.UpdatePosition(position);
 
@@ -108,8 +80,8 @@ namespace WoWEditor6.Editing
 
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
-
             mLastCursorPosition = curPos;
+            mLastPos = Editing.EditManager.Instance.MousePosition;
         }
 
         public long GCD(long a, long b)
