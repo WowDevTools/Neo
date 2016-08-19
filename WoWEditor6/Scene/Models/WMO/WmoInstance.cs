@@ -7,8 +7,10 @@ namespace WoWEditor6.Scene.Models.WMO
 {
     class WmoInstance : IModelInstance
     {
-        private readonly Matrix mInstanceMatrix;
+        private Matrix mInstanceMatrix;
         private Matrix mInverseInstanceMatrix;
+        private Matrix mInverseRotation;
+
         private WeakReference<WmoRootRender> mRenderer; 
 
         public BoundingBox BoundingBox;
@@ -28,11 +30,22 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public int ReferenceCount;
 
+        private Vector3 mPosition;
+        private Vector3 mRotation;
+
+        private WmoRootRender mModel;
+
+
         public WmoInstance(int uuid, Vector3 position, Vector3 rotation, WmoRootRender model)
         {
             ReferenceCount = 1;
             Uuid = uuid;
             BoundingBox = model.BoundingBox;
+
+            mPosition = position;
+            mRotation = rotation;
+            mModel = model;
+
             mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
                 MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix.Translation(position);
 
@@ -121,22 +134,72 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public void Rotate(float x, float y, float z)
         {
-            // TODO: Implement
+            mRotation.X += x;
+            mRotation.Y += y;
+            mRotation.Z += z;
+
+            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z)) * Matrix.Translation(mPosition);
+
+            //mRenderer = new WeakReference<WmoRootRender>(mModel);
+
+
+            Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+
+            BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
+            GroupBoxes = new BoundingBox[mModel.Groups.Count];
+            for (var i = 0; i < GroupBoxes.Length; ++i)
+            {
+                var group = mModel.Groups[i];
+                GroupBoxes[i] = group.BoundingBox.Transform(ref mInstanceMatrix);
+            }
+
+            InstanceCorners = mModel.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            mInstanceMatrix = Matrix.Transpose(mInstanceMatrix);
+            ModelRoot = mModel.Data;
+            UpdateModelNameplate();
+            
+
         }
 
         public void UpdateScale(float s)
         {
-            // TODO: Implement
+            // Unsupported by WMO.
         }
 
         public void UpdatePosition(Vector3 position)
         {
-            // TODO: Implement
+            mPosition.X += position.X;
+            mPosition.Y += position.Y;
+            mPosition.Z += position.Z;
+
+            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+             MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z)) * Matrix.Translation(mPosition);
+
+            //mRenderer = new WeakReference<WmoRootRender>(mModel);
+
+
+            Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+
+            BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
+            GroupBoxes = new BoundingBox[mModel.Groups.Count];
+            for (var i = 0; i < GroupBoxes.Length; ++i)
+            {
+                var group = mModel.Groups[i];
+                GroupBoxes[i] = group.BoundingBox.Transform(ref mInstanceMatrix);
+            }
+
+            InstanceCorners = mModel.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            mInstanceMatrix = Matrix.Transpose(mInstanceMatrix);
+            ModelRoot = mModel.Data;
+            UpdateModelNameplate();
         }
 
         public Vector3 GetPosition()
         {
-            return new Vector3(0, 0, 0);
+            return mPosition;
             // TODO: Implement
         }
 
