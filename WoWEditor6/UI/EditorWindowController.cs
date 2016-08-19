@@ -49,9 +49,9 @@ namespace WoWEditor6.UI
             mWindow.OnUpdatePosition(position);
         }
 
-        public void OnMouseMove(Vector3 position)
+        public void OnUpdate(Vector3 modelPosition, Vector3 namePlatePosition)
         {
-            mWindow.OnMouseMove(position);
+            mWindow.OnUpdate(modelPosition, namePlatePosition);
         }
 
         public void OnUpdateTileIndex(int x, int y)

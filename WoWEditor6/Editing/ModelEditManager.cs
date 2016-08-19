@@ -37,14 +37,14 @@ namespace WoWEditor6.Editing
                 mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
                 mLastPos = Editing.EditManager.Instance.MousePosition;
 
-                EditorWindowController.Instance.OnMouseMove(new Vector3(0.0f,0.0f,0.0f));
+                EditorWindowController.Instance.OnUpdate(new Vector3(0.0f,0.0f,0.0f), new Vector3(0.0f, 0.0f, 0.0f));
                 return;
             }
 
             var curPos = Cursor.Position;
             var dpos = new Point(curPos.X - mLastCursorPosition.X, curPos.Y - mLastCursorPosition.Y);
 
-            EditorWindowController.Instance.OnMouseMove(SelectedModel.GetPosition());
+            EditorWindowController.Instance.OnUpdate(SelectedModel.GetPosition(),SelectedModel.GetNamePlatePosition());
 
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);
@@ -80,7 +80,6 @@ namespace WoWEditor6.Editing
                 SelectedModel.UpdatePosition(position);
 
                 mLastBrushPosition = SelectedModel.GetPosition();
-
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
             mLastCursorPosition = curPos;

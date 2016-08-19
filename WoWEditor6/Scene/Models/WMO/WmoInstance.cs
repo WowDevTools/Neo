@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Utils;
@@ -9,7 +10,6 @@ namespace WoWEditor6.Scene.Models.WMO
     {
         private Matrix mInstanceMatrix;
         private Matrix mInverseInstanceMatrix;
-        private Matrix mInverseRotation;
 
         private WeakReference<WmoRootRender> mRenderer; 
 
@@ -159,8 +159,6 @@ namespace WoWEditor6.Scene.Models.WMO
             mInstanceMatrix = Matrix.Transpose(mInstanceMatrix);
             ModelRoot = mModel.Data;
             UpdateModelNameplate();
-            
-
         }
 
         public void UpdateScale(float s)
@@ -200,7 +198,6 @@ namespace WoWEditor6.Scene.Models.WMO
         public Vector3 GetPosition()
         {
             return mPosition;
-            // TODO: Implement
         }
 
         public void DestroyModelNameplate()
@@ -226,6 +223,11 @@ namespace WoWEditor6.Scene.Models.WMO
             var position = BoundingBox.Minimum + (diff * 0.5f);
             position.Z = 1.5f + BoundingBox.Minimum.Z + (diff.Z * 1.08f);
             mWorldModelName.Position = position;
+        }
+
+        public Vector3 GetNamePlatePosition()
+        {
+            return mWorldModelName.Position;
         }
     }
 }

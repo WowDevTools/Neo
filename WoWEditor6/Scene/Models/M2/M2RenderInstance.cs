@@ -285,5 +285,10 @@ namespace WoWEditor6.Scene.Models.M2
             var camera = WorldFrame.Instance.ActiveCamera;
             Depth = (camera.Position - mPosition).LengthSquared();
         }
+
+        public Vector3 GetNamePlatePosition()
+        {
+            return mWorldModelName.Position;
+        }
     }
 }

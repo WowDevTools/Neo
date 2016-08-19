@@ -158,9 +158,10 @@ namespace WoWEditor6.UI
             CurrentPositionLabel.Content = "Position: " + position;
         }
 
-        public void OnMouseMove(Vector3 position)
+        public void OnUpdate(Vector3 modelPosition,Vector3 namePlatePosition)
         {
-            CurrentModelPositionLabel.Content = "Model Position: " + position;
+            CurrentModelPositionLabel.Content = "Model Position: " + modelPosition;
+            CurrentNamePlatePositionLabel.Content = "NamePlate Position: " + namePlatePosition;
         }
 
         public void AddMessage(LogLevel logLevel, string title, string message)

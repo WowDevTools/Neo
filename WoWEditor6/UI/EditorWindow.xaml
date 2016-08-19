@@ -157,7 +157,8 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Label x:Name="CurrentAdtLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60">ADT: 0/0</Label>
                                         <Label x:Name="CurrentPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="200">Position: 0/0/0</Label>
-                                        <Label x:Name="CurrentModelPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center">Model Position: 0/0/0</Label>
+                                        <Label x:Name="CurrentModelPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="210">Model Position: 0/0/0</Label>
+                                        <Label x:Name="CurrentNamePlatePositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center">NamePlate Position: 0/0/0</Label>
                                         <Button x:Name="GenerateWdlButton" FontSize="12" VerticalAlignment="Center" Margin="15,0,0,0" Padding="10,0,10,0" Click="GenerateWdlButton_OnClick">Generate WDL</Button>
                                     </StackPanel>
                                 </StatusBar>
