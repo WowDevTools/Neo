@@ -2,6 +2,9 @@
 using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
+using WoWEditor6.Utils;
+using System.Windows.Forms;
+using Point = System.Drawing.Point;
 
 namespace WoWEditor6.Editing
 {
@@ -10,6 +13,8 @@ namespace WoWEditor6.Editing
         public static EditManager Instance { get; private set; }
 
         private DateTime mLastChange = DateTime.Now;
+
+        private Point mLastCursorPosition = Cursor.Position;
 
         private float mInnerRadius = 45.0f;
         private float mOuterRadius = 55.0f;
@@ -52,6 +57,75 @@ namespace WoWEditor6.Editing
                 TerrainChangeManager.Instance.OnChange(diff);
             else if ((CurrentMode & EditMode.Texturing) != 0)
                 TextureChangeManager.Instance.OnChange(diff);
+
+            var keyState = new byte[256];
+            UnsafeNativeMethods.GetKeyboardState(keyState);
+            var altDown = KeyHelper.IsKeyDown(keyState, Keys.Menu);
+            var LMBDown = KeyHelper.IsKeyDown(keyState, Keys.LButton);
+            var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
+
+            if(altDown && RMBDown && Cursor.Position != mLastCursorPosition)
+            {
+                var curPos = Cursor.Position;
+                var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
+
+                mInnerRadius += amount;
+
+
+                if (mInnerRadius < 0)
+                {
+                    mInnerRadius = 0.0f;
+                }
+
+                if (mInnerRadius > 1000)
+                {
+                    mInnerRadius = 1000.0f;
+                }
+
+                if (mInnerRadius > mOuterRadius)
+                {
+                    mInnerRadius = mOuterRadius;
+                }
+
+                HandleInnerRadiusChanged(mInnerRadius);
+            }
+
+            if (altDown && LMBDown && Cursor.Position != mLastCursorPosition)
+            {
+                var curPos = Cursor.Position;
+                var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
+
+                mInnerRadius += amount;
+                mOuterRadius += amount;
+
+                if(mInnerRadius < 0)
+                {
+                    mInnerRadius = 0.0f;
+                }
+
+                if(mInnerRadius > 1000)
+                {
+                    mInnerRadius = 1000.0f;
+                }
+
+                if (mOuterRadius < 0)
+                {
+                    mInnerRadius = 0.0f;
+                }
+
+                if (mOuterRadius > 1000)
+                {
+                    mInnerRadius = 1000.0f;
+                }
+
+                if(mInnerRadius > mOuterRadius)
+                {
+                    mInnerRadius = mOuterRadius;
+                }
+                
+                HandleInnerRadiusChanged(mInnerRadius);
+                HandleOuterRadiusChanged(mOuterRadius);
+            }
         }
 
         public void EnableSculpting()
