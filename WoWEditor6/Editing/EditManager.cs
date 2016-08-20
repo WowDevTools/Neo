@@ -64,68 +64,80 @@ namespace WoWEditor6.Editing
             var LMBDown = KeyHelper.IsKeyDown(keyState, Keys.LButton);
             var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
 
-            if(altDown && RMBDown && Cursor.Position != mLastCursorPosition)
-            {
-                var curPos = Cursor.Position;
-                var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
+            var curPos = Cursor.Position;
 
-                mInnerRadius += amount;
-
-
-                if (mInnerRadius < 0)
+            if (curPos != mLastCursorPosition)
+            { 
+                if (altDown && RMBDown)
                 {
-                    mInnerRadius = 0.0f;
-                }
+                    var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
 
-                if (mInnerRadius > 1000)
-                {
-                    mInnerRadius = 1000.0f;
-                }
+                    mInnerRadius += amount;
 
-                if (mInnerRadius > mOuterRadius)
-                {
-                    mInnerRadius = mOuterRadius;
-                }
 
-                HandleInnerRadiusChanged(mInnerRadius);
-            }
+                    if (mInnerRadius < 0)
+                    {
+                        mInnerRadius = 0.0f;
+                    }
 
-            if (altDown && LMBDown && Cursor.Position != mLastCursorPosition)
-            {
-                var curPos = Cursor.Position;
-                var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
+                    if (mInnerRadius > 1000)
+                    {
+                        mInnerRadius = 1000.0f;
+                    }
 
-                mInnerRadius += amount;
-                mOuterRadius += amount;
+                    if (mInnerRadius > mOuterRadius)
+                    {
+                        mInnerRadius = mOuterRadius;
+                    }
 
-                if(mInnerRadius < 0)
-                {
-                    mInnerRadius = 0.0f;
-                }
+                    HandleInnerRadiusChanged(mInnerRadius);
 
-                if(mInnerRadius > 1000)
-                {
-                    mInnerRadius = 1000.0f;
-                }
-
-                if (mOuterRadius < 0)
-                {
-                    mInnerRadius = 0.0f;
-                }
-
-                if (mOuterRadius > 1000)
-                {
-                    mInnerRadius = 1000.0f;
-                }
-
-                if(mInnerRadius > mOuterRadius)
-                {
-                    mInnerRadius = mOuterRadius;
                 }
                 
-                HandleInnerRadiusChanged(mInnerRadius);
-                HandleOuterRadiusChanged(mOuterRadius);
+
+                if (altDown && LMBDown)
+                {
+                    var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
+
+                    mInnerRadius += amount;
+                    mOuterRadius += amount;
+
+                    if (mInnerRadius < 0)
+                    {
+                        mInnerRadius = 0.0f;
+                    }
+
+                    if (mInnerRadius > 1000)
+                    {
+                        mInnerRadius = 1000.0f;
+                    }
+
+                    if (mOuterRadius < 0)
+                    {
+                        mInnerRadius = 0.0f;
+                    }
+
+                    if (mOuterRadius > 1000)
+                    {
+                        mInnerRadius = 1000.0f;
+                    }
+
+                    if (mInnerRadius > mOuterRadius)
+                    {
+                        mInnerRadius = mOuterRadius;
+                    }
+
+                    HandleInnerRadiusChanged(mInnerRadius);
+                    HandleOuterRadiusChanged(mOuterRadius);
+                    
+
+                }
+
+                mLastCursorPosition = Cursor.Position;
+
             }
+
+
         }
 
         public void EnableSculpting()
