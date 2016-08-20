@@ -17,8 +17,8 @@ namespace WoWEditor6.Settings
 
     public class Interaction
     {
-        public Keys[] Edit = {Keys.ControlKey};
-        public Keys[] EditInverse = {Keys.ShiftKey};
+        public Keys[] Edit = {Keys.ShiftKey};
+        public Keys[] EditInverse = {Keys.ControlKey};
     }
 
     public class KeyBindings

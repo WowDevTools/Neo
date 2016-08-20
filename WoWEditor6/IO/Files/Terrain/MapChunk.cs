@@ -503,6 +503,7 @@ namespace WoWEditor6.IO.Files.Terrain
             var minPos = BoundingBox.Minimum;
             var maxPos = BoundingBox.Maximum;
             var changed = false;
+            var inverted = parameters.IsInverted;
 
             for (var i = 0; i < 64; ++i)
             {
@@ -549,38 +550,45 @@ namespace WoWEditor6.IO.Files.Terrain
                         pressure *= parameters.Amount;
                     }
 
-                    if (layer > 0)
+                    if (!inverted)
                     {
-                        float cur = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
-                        var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * parameters.TargetValue, 0), 255);
-                        AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
-                        AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
-                    }
-
-                    var nLayers = mLayers.Length - 2; // baseLayer and current layer
-                    if (nLayers > 0)
-                    {
-                        /*for (var k = layer + 1; k < mLayers.Length; ++k)
+                        if (layer > 0)
                         {
-                            float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
-                            var newVal =
-                                Math.Min(Math.Max((1 - pressure) * cur + pressure * (1 - parameters.TargetValue), 0),
-                                    255);
-                            AlphaValues[i * 64 + j] &= ~(uint) (0xFF << (8 * k));
-                            AlphaValues[i * 64 + j] |= (((uint) newVal) << (8 * k));
-                        }*/
-
-                        var tarInverse = (1 - parameters.TargetValue) / nLayers;
-                        for (var k = 1; k < mLayers.Length; ++k)
-                        {
-                            if (k == layer)
-                                continue;
-
-                            float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
-                            var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * tarInverse, 0), 255);
-                            AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * k));
-                            AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * k));
+                            float cur = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
+                            var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * parameters.TargetValue, 0), 255);
+                            AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
+                            AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
                         }
+
+                        var nLayers = mLayers.Length - 2; // baseLayer and current layer
+                        if (nLayers > 0)
+                        {
+                            /*for (var k = layer + 1; k < mLayers.Length; ++k)
+                            {
+                                float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
+                                var newVal =
+                                    Math.Min(Math.Max((1 - pressure) * cur + pressure * (1 - parameters.TargetValue), 0),
+                                        255);
+                                AlphaValues[i * 64 + j] &= ~(uint) (0xFF << (8 * k));
+                                AlphaValues[i * 64 + j] |= (((uint) newVal) << (8 * k));
+                            }*/
+
+                            var tarInverse = (1 - parameters.TargetValue) / nLayers;
+                            for (var k = 1; k < mLayers.Length; ++k)
+                            {
+                                if (k == layer)
+                                    continue;
+
+                                float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
+                                var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * tarInverse, 0), 255);
+                                AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * k));
+                                AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * k));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //TODO: Implement texture substraction.
                     }
                 }
             }

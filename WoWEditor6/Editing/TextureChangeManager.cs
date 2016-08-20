@@ -21,6 +21,7 @@ namespace WoWEditor6.Editing
         public float Amount;
         public float TargetValue;
         public TextureFalloffMode FalloffMode;
+        public bool IsInverted;
     }
 
     class TextureChangeManager
@@ -61,7 +62,8 @@ namespace WoWEditor6.Editing
                 //Amount = 4 + Amount,
                 Amount = Amount / 40.0f,
                 FalloffMode = FalloffMode,
-                TargetValue = TargetValue
+                TargetValue = TargetValue,
+                IsInverted = inverted
             };
 
             WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
@@ -77,6 +79,11 @@ namespace WoWEditor6.Editing
             var bindings = Settings.KeyBindings.Instance;
             var state = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(state);
+
+            if (!KeyHelper.IsKeyDown(state, System.Windows.Forms.Keys.LButton))
+            {
+                return false;
+            }
 
             if (KeyHelper.AreKeysDown(state, bindings.Interaction.Edit) == false &&
                 KeyHelper.AreKeysDown(state, bindings.Interaction.EditInverse) == false)

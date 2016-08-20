@@ -168,6 +168,9 @@ namespace WoWEditor6.Editing
             WorldFrame.Instance.UpdateBrush(mInnerRadius, mOuterRadius);
             if (EditorWindowController.Instance.TexturingModel != null)
                 EditorWindowController.Instance.TexturingModel.HandleInnerRadiusChanged(value);
+
+
+            
         }
 
         private void HandleOuterRadiusChanged(float value)
@@ -176,6 +179,7 @@ namespace WoWEditor6.Editing
             WorldFrame.Instance.UpdateBrush(mInnerRadius, mOuterRadius);
             if (EditorWindowController.Instance.TexturingModel != null)
                 EditorWindowController.Instance.TexturingModel.HandleOuterRadiusChanged(value);
+            
         }
     }
 }
