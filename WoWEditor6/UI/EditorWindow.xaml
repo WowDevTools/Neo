@@ -163,10 +163,8 @@
 
                             </dialogs:AssetBrowser>
                         </avalon:LayoutAnchorable>
-                        <avalon:LayoutAnchorable Title="DBC Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DBCStores">
-                            <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <avalon:LayoutAnchorable Title="DBC Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DB">
 
-                            </dialogs:AssetBrowser>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutDocumentPane>
                 </avalon:LayoutPanel>
