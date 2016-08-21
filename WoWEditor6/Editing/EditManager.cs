@@ -70,7 +70,7 @@ namespace WoWEditor6.Editing
             { 
                 if (altDown && RMBDown)
                 {
-                    var amount = -(mLastCursorPosition.Y - curPos.Y) / 32.0f;
+                    var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
 
                     mInnerRadius += amount;
 
@@ -97,7 +97,7 @@ namespace WoWEditor6.Editing
 
                 if (altDown && LMBDown)
                 {
-                    var amount = -(mLastCursorPosition.Y - curPos.Y) / 32.0f;
+                    var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
 
                     mInnerRadius += amount;
                     mOuterRadius += amount;
