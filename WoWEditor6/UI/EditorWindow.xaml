@@ -39,7 +39,7 @@
                 <MenuItem Header="Item Editor" Click="ItemEditor_Click"/>
             </MenuItem>
             <MenuItem Header="Dbc Editor" RenderTransformOrigin="-1.172,0.5">
-                <MenuItem Header="Exemple editor" Click="ExempleEditor_Click"/>
+                <!--<MenuItem Header="Exemple editor" Click="ExempleEditor_Click"/>-->
                 <MenuItem Header="ChrRaces editor" Click="ChrRacesEditor_Click"/>
             </MenuItem>
             <MenuItem Header="_Debug" RenderTransformOrigin="-1.97,0.5">
@@ -48,7 +48,7 @@
                 <MenuItem Header="Add 3D text" Click="Add3DText_Click"/>
             </MenuItem>
         </Menu>
-        <avalon:DockingManager Grid.Row="1" Margin="0" Grid.ColumnSpan="2">
+        <avalon:DockingManager Grid.Row="1" Margin="0" Grid.ColumnSpan="2" IsManipulationEnabled="False">
             <avalon:DockingManager.Theme>
                 <themes:DarkTheme/>
             </avalon:DockingManager.Theme>
@@ -56,23 +56,17 @@
                 <avalon:LayoutPanel Orientation="Horizontal">
                     <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="Sculpting" CanClose="False" AutoHideWidth="340" x:Name="SculptingPane">
-                            <dialogs:TerrainSettingsWidget VerticalAlignment="Top">
-
-                            </dialogs:TerrainSettingsWidget>
+                            <dialogs:TerrainSettingsWidget VerticalAlignment="Top"/>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="Texturing" CanClose="False" AutoHideWidth="340" x:Name="TexturingPane">
-                            <widgets:TexturingWidget>
-
-                            </widgets:TexturingWidget>
+                            <widgets:TexturingWidget/>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="Models" CanClose="False" AutoHideWidth="340" x:Name="ModelSpawnPane">
-                            <widgets:ModelSpawnWidget>
-
-                            </widgets:ModelSpawnWidget>
+                            <widgets:ModelSpawnWidget/>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">
@@ -169,8 +163,14 @@
 
                             </dialogs:AssetBrowser>
                         </avalon:LayoutAnchorable>
+                        <avalon:LayoutAnchorable Title="DBC Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DBCStores">
+                            <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                            </dialogs:AssetBrowser>
+                        </avalon:LayoutAnchorable>
                     </avalon:LayoutDocumentPane>
                 </avalon:LayoutPanel>
+                
                 <avalon:LayoutRoot.BottomSide>
                     <avalon:LayoutAnchorSide>
                         <avalon:LayoutAnchorGroup>
