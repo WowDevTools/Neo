@@ -470,6 +470,7 @@
     </Compile>
     <Compile Include="UI\Models\MySqlConnectionsModel.cs" />
     <Compile Include="UI\Models\ObjectSpawnModel.cs" />
+    <Compile Include="UI\Models\SculptingViewModel.cs" />
     <Compile Include="UI\Services\XmlService.cs" />
     <Compile Include="UI\ViewModels\MySqlConnectionsViewModel.cs" />
     <Compile Include="UI\ViewModels\NewConnectionViewModel.cs" />

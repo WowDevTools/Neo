@@ -3,6 +3,7 @@ using System.Windows.Threading;
 using SharpDX;
 using WoWEditor6.UI.Components;
 using WoWEditor6.UI.Models;
+using WoWEditor6.Editing;
 
 namespace WoWEditor6.UI
 {
@@ -14,6 +15,7 @@ namespace WoWEditor6.UI
 
         public LoadingScreenControl LoadingScreen { get { return mWindow.LoadingScreenView; } }
         public TexturingViewModel TexturingModel { get; set; }
+        public SculptingViewModel TerrainManager { get; set; }
         public AssetBrowserViewModel AssetBrowserModel { get; set; }
         public ObjectSpawnModel SpawnModel { get; set; }
 
