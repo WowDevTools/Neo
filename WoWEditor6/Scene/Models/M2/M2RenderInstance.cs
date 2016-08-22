@@ -299,7 +299,7 @@ namespace WoWEditor6.Scene.Models.M2
 
         public void Remove()
         {
-            WorldFrame.Instance.M2Manager.RemoveInstance(mModel.ModelName, Uuid);
+            WorldFrame.Instance.M2Manager.RemoveInstance(mModel.FileName, Uuid);
 
         }
     }
