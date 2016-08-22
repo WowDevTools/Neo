@@ -53,6 +53,7 @@ namespace WoWEditor6.Editing
             var shiftDown = KeyHelper.IsKeyDown(keyState, Keys.ShiftKey);
             var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
             var MMBDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
+            var DelDown = KeyHelper.IsKeyDown(keyState, Keys.Delete);
 
             if ((altDown || ctrlDown || shiftDown) & RMBDown) // Rotating
             {
@@ -84,6 +85,11 @@ namespace WoWEditor6.Editing
             }
             mLastCursorPosition = curPos;
             mLastPos = Editing.EditManager.Instance.MousePosition;
+
+            if(DelDown)
+            {
+                WorldFrame.Instance.M2Manager.RemoveInstance(SelectedModel.GetName(), SelectedModel.GetUUID());
+            }
         }
 
         public long GCD(long a, long b)

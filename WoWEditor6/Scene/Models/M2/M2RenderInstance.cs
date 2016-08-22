@@ -151,6 +151,16 @@ namespace WoWEditor6.Scene.Models.M2
             return mPosition;
         }
 
+        public int GetUUID()
+        {
+            return Uuid;
+        }
+
+        public string GetName()
+        {
+            return mModel.ModelName;
+        }
+
         public void UpdateScale(float scale)
         {
             mScale.X += scale;

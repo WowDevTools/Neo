@@ -18,6 +18,10 @@ namespace WoWEditor6.Scene.Models
 
         Vector3 GetPosition();
 
+        int GetUUID();
+
+        string GetName();
+
         Vector3 GetNamePlatePosition();
 
         bool Intersects(IntersectionParams parameters, ref Ray globalRay, out float value);

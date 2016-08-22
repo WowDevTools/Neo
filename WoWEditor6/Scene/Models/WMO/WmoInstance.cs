@@ -200,6 +200,16 @@ namespace WoWEditor6.Scene.Models.WMO
             return mPosition;
         }
 
+        public int GetUUID()
+        {
+            return Uuid;
+        }
+
+        public string GetName()
+        {
+            return ModelRoot.FileName;
+        }
+
         public void DestroyModelNameplate()
         {
             if (mWorldModelName == null)
