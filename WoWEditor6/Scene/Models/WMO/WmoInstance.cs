@@ -197,17 +197,10 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public Vector3 GetPosition()
         {
+            if (mPosition == null)
+                return new Vector3(0.0f, 0.0f, 0.0f);
+
             return mPosition;
-        }
-
-        public int GetUUID()
-        {
-            return Uuid;
-        }
-
-        public string GetName()
-        {
-            return ModelRoot.FileName;
         }
 
         public void DestroyModelNameplate()
@@ -237,7 +230,15 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public Vector3 GetNamePlatePosition()
         {
+            if (mWorldModelName == null)
+                return new Vector3(0.0f,0.0f,0.0f);
+
             return mWorldModelName.Position;
+        }
+
+        public void Remove()
+        {
+            WorldFrame.Instance.WmoManager.RemoveInstance(ModelRoot.FileName, Uuid);
         }
     }
 }

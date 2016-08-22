@@ -18,9 +18,7 @@ namespace WoWEditor6.Scene.Models
 
         Vector3 GetPosition();
 
-        int GetUUID();
-
-        string GetName();
+        void Remove();
 
         Vector3 GetNamePlatePosition();
 

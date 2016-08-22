@@ -148,17 +148,10 @@ namespace WoWEditor6.Scene.Models.M2
 
         public Vector3 GetPosition()
         {
+            if (mPosition == null)
+                return new Vector3(0.0f, 0.0f, 0.0f);
+
             return mPosition;
-        }
-
-        public int GetUUID()
-        {
-            return Uuid;
-        }
-
-        public string GetName()
-        {
-            return mModel.ModelName;
         }
 
         public void UpdateScale(float scale)
@@ -298,7 +291,16 @@ namespace WoWEditor6.Scene.Models.M2
 
         public Vector3 GetNamePlatePosition()
         {
+            if (mWorldModelName == null)
+                return new Vector3(0.0f, 0.0f, 0.0f);
+
             return mWorldModelName.Position;
+        }
+
+        public void Remove()
+        {
+            WorldFrame.Instance.M2Manager.RemoveInstance(mModel.ModelName, Uuid);
+
         }
     }
 }

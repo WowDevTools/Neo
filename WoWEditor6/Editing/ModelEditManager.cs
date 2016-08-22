@@ -20,8 +20,8 @@ namespace WoWEditor6.Editing
         public IModelInstance SelectedModel { get; set; }
 
         private Point mLastCursorPosition = Cursor.Position;
-        private Vector3 mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
-        private Vector3 mLastPos = Editing.EditManager.Instance.MousePosition;
+        private Vector3 mLastBrushPosition = EditManager.Instance.MousePosition;
+        private Vector3 mLastPos = EditManager.Instance.MousePosition;
         int slowness = 1;
 
         static ModelEditManager()
@@ -34,8 +34,8 @@ namespace WoWEditor6.Editing
             if (SelectedModel == null)
             {
                 mLastCursorPosition = Cursor.Position;
-                mLastBrushPosition = Editing.EditManager.Instance.MousePosition;
-                mLastPos = Editing.EditManager.Instance.MousePosition;
+                mLastBrushPosition = EditManager.Instance.MousePosition;
+                mLastPos = EditManager.Instance.MousePosition;
 
                 EditorWindowController.Instance.OnUpdate(new Vector3(0.0f,0.0f,0.0f), new Vector3(0.0f, 0.0f, 0.0f));
                 return;
@@ -72,8 +72,8 @@ namespace WoWEditor6.Editing
                 Vector3 delta;
                 Vector3 position;
 
-                delta.X = Editing.EditManager.Instance.MousePosition.X - mLastPos.X;
-                delta.Y = Editing.EditManager.Instance.MousePosition.Y - mLastPos.Y;
+                delta.X = EditManager.Instance.MousePosition.X - mLastPos.X;
+                delta.Y = EditManager.Instance.MousePosition.Y - mLastPos.Y;
                 delta.Z = -(Cursor.Position.Y - mLastCursorPosition.Y); //Better to use the 2d screen pos of the mouse.
 
                 position = new Vector3(MMBDown && !shiftDown ? delta.X/ slowness : 0, MMBDown && !shiftDown ? delta.Y/ slowness : 0, MMBDown && shiftDown ? delta.Z/ slowness : 0);
@@ -84,11 +84,11 @@ namespace WoWEditor6.Editing
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
             mLastCursorPosition = curPos;
-            mLastPos = Editing.EditManager.Instance.MousePosition;
+            mLastPos = EditManager.Instance.MousePosition;
 
             if(DelDown)
             {
-                WorldFrame.Instance.M2Manager.RemoveInstance(SelectedModel.GetName(), SelectedModel.GetUUID());
+                SelectedModel.Remove();
             }
         }
 
