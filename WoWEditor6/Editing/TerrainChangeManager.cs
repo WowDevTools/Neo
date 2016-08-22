@@ -38,8 +38,6 @@ namespace WoWEditor6.Editing
 
     class TerrainChangeManager
     {
-
-        private readonly TerrainSettingsWidget mWidget;
         public static TerrainChangeManager Instance { get; private set; }
 
         public TerrainChangeType ChangeType { get; set; }
@@ -48,14 +46,18 @@ namespace WoWEditor6.Editing
         public float Amount { get; set; }
         public bool AlignModelsToGround { get; set; }
 
-        public TerrainChangeManager(TerrainSettingsWidget Widget)
+        static TerrainChangeManager()
+        {
+            Instance = new TerrainChangeManager();
+        }
+
+        public TerrainChangeManager()
         {
             ChangeType = TerrainChangeType.Elevate;
             ChangeAlgorithm = TerrainAlgorithm.Linear;
             ShadingMultiplier = Vector3.One;
             Amount = 15.0f;
             AlignModelsToGround = false;
-            mWidget = Widget;
         }
 
         public void OnChange(TimeSpan diff)

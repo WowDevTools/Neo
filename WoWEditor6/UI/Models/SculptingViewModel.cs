@@ -1,8 +1,5 @@
-﻿using System;
-using WoWEditor6.IO;
-using WoWEditor6.IO.Files.Terrain;
-using WoWEditor6.UI.Dialogs;
-using WoWEditor6.Scene;
+﻿using WoWEditor6.UI.Dialogs;
+using System.Windows.Forms;
 using SharpDX;
 
 namespace WoWEditor6.UI.Models
@@ -61,7 +58,6 @@ namespace WoWEditor6.UI.Models
         public void HandleAlgorithm(Editing.TerrainAlgorithm value)
         {
             mIsValueChangedSurpressed = true;
-            //Cause an exception for some reason
             Editing.TerrainChangeManager.Instance.ChangeAlgorithm = value;
             mIsValueChangedSurpressed = false;
         }
