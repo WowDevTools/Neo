@@ -2,6 +2,7 @@
 using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.Utils;
+using WoWEditor6.UI.Dialogs;
 
 namespace WoWEditor6.Editing
 {
@@ -45,7 +46,6 @@ namespace WoWEditor6.Editing
         public float Amount { get; set; }
         public bool AlignModelsToGround { get; set; }
 
-
         static TerrainChangeManager()
         {
             Instance = new TerrainChangeManager();
@@ -65,7 +65,6 @@ namespace WoWEditor6.Editing
             bool inverted;
             if (CheckRequirements(out inverted) == false)
                 return;
-
             var parameters = new TerrainChangeParameters()
             {
                 Algorithm = ChangeAlgorithm,
