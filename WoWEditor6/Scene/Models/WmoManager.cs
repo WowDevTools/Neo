@@ -109,7 +109,7 @@ namespace WoWEditor6.Scene.Models
             lock (mUnloadItems)
                 mUnloadItems.Add(batch);
         }
-
+        
         public void AddInstance(string model, int uuid, Vector3 position, Vector3 rotation)
         {
             var hash = model.ToUpperInvariant().GetHashCode();
