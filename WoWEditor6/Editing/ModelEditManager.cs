@@ -91,21 +91,6 @@ namespace WoWEditor6.Editing
                 SelectedModel.Remove();
             }
         }
-
-        public long GCD(long a, long b)
-        {
-            long Remainder;
-
-            while (b != 0)
-            {
-                Remainder = a % b;
-                a = b;
-                b = Remainder;
-            }
-
-            return a;
-        }
-
     }
 }
 

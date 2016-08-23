@@ -4,6 +4,7 @@ using System.Threading;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene.Models.M2;
+using System.Windows.Forms;
 
 namespace WoWEditor6.Scene.Models
 {
@@ -212,8 +213,15 @@ namespace WoWEditor6.Scene.Models
 
         public void RemoveInstance(string model, int uuid)
         {
-            var hash = model.ToUpperInvariant().GetHashCode();
-            RemoveInstance(hash, uuid);
+            try
+            {
+                var hash = model.ToUpperInvariant().GetHashCode();
+                RemoveInstance(hash, uuid);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void RemoveInstance(int hash, int uuid)

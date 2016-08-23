@@ -106,6 +106,14 @@ namespace WoWEditor6.Scene
             //this.UpdateDrawBrushOnModels = Properties.Settings.Default.UpdateDrawBrushOnModels; // todo: notimplemented!
         }
 
+        public void ClearSelection()
+        {
+            if (mSelectedBoundingBox != null)
+                BoundingBoxDrawManager.RemoveDrawableBox(mSelectedBoundingBox);
+
+            ModelEditManager.Instance.SelectedModel = null;
+        }
+
         public void UpdateBrush(float innerRadius, float outerRadius)
         {
             mGlobalBufferStore.brushParams.X = innerRadius;
