@@ -181,7 +181,7 @@ namespace WoWEditor6.Editing
             var adtMaxY = (int) (maxPos.Y / Metrics.TileSize);
 
             // if the model is only on one adt dont bother checking
-            // all adts for the UUID.
+            // all adts for the UUID - THIS IS WRONG. THEY MUST ALWAYS BE UNIQUE.
             if (adtMinX == adtMaxX && adtMinY == adtMaxY)
             {
                 var area = WorldFrame.Instance.MapManager.GetAreaByIndex(adtMinX, adtMinY);

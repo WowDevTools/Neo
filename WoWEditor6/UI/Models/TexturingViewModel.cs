@@ -143,6 +143,14 @@ namespace WoWEditor6.UI.Models
             mWidget.AmountSlider.Value = newAmount;
         }
 
+        public void HandleOpacityChanged(float newOpacity)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.GradientSlider.Value = newOpacity;
+        }
+
         public void SwitchToTexturing()
         {
             Editing.EditManager.Instance.EnableTexturing();
