@@ -128,7 +128,7 @@ namespace WoWEditor6.Scene.Models.M2
             UpdateModelNameplate();
         }
 
-        public void UpdatePosition(Vector3 position) // todo This needs to rely on view-based coordinate system
+        public void UpdatePosition(Vector3 position) 
         {
             mPosition.X += position.X;
             mPosition.Y += position.Y;

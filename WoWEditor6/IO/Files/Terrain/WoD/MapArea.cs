@@ -84,6 +84,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                     continue;
 
                 var pos = mDoodadDefs[inst.MddfIndex].Position;
+                var old_pos = pos;
                 var invZ = 64.0f * Metrics.TileSize - pos.Z;
                 var dist = (new Vector2(pos.X, invZ) - center).Length();
                 if (dist > parameters.OuterRadius)
@@ -92,7 +93,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
                 if (WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
                 {
                     mDoodadDefs[inst.MddfIndex].Position = pos;
-                    inst.RenderInstance.UpdatePosition(new Vector3(pos.X, invZ, pos.Y));
+                    inst.RenderInstance.UpdatePosition(new Vector3(0, 0, pos.Y - old_pos.Y));
                 }
             }
         }

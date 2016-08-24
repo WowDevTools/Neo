@@ -420,7 +420,7 @@ namespace WoWEditor6.UI
             element.Height = parent.ActualHeight;
         }
 
-        private void WelcomePanel_Resize(object sender, SizeChangedEventArgs e)
+        private void WelcomePanel_Resize(object sender, SizeChangedEventArgs e) // Causes a crash on idling on 1920x1080 and (?) some other screen resoulutions. Some element resizes to negative value.
         {
             var element = sender as Grid;
             if (element == null)

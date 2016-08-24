@@ -122,6 +122,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     continue;
 
                 var pos = mDoodadDefs[inst.MddfIndex].Position;
+                var old_pos = pos;
                 var dist = (new Vector2(pos.X, pos.Z) - center).Length();
                 if (dist > parameters.OuterRadius)
                     continue;
@@ -129,7 +130,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 if(WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
                 {
                     mDoodadDefs[inst.MddfIndex].Position = pos;
-                    inst.RenderInstance.UpdatePosition(new Vector3(pos.X, pos.Z, pos.Y));
+                    inst.RenderInstance.UpdatePosition(new Vector3(0, 0, pos.Y - old_pos.Y));
                 }
             }
         }
