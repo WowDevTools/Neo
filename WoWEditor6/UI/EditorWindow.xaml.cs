@@ -435,7 +435,7 @@ namespace WoWEditor6.UI
                 return;
 
             grid.Height = element.ActualHeight;
-            grid.RowDefinitions[1].Height = new GridLength(element.ActualHeight - grid.RowDefinitions[0].Height.Value);
+            grid.RowDefinitions[1].Height = new GridLength(Math.Max(0, element.ActualHeight - grid.RowDefinitions[0].Height.Value));
         }
 
         private void FilterText_Changed(object sender, TextChangedEventArgs e)
