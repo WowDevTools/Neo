@@ -135,12 +135,12 @@ namespace WoWEditor6.Editing
 
                     if (mOuterRadius < 0)
                     {
-                        mInnerRadius = 0.0f;
+                        mOuterRadius = 0.0f;
                     }
 
                     if (mOuterRadius > 200)
                     {
-                        mInnerRadius = 200.0f;
+                        mOuterRadius = 200.0f;
                     }
 
                     if (mInnerRadius > mOuterRadius)
@@ -163,12 +163,12 @@ namespace WoWEditor6.Editing
                     {
                         if (mIntensity < 1)
                         {
-                            mInnerRadius = 1.0f;
+                            mIntensity = 1.0f;
                         }
 
                         if (mIntensity > 40)
                         {
-                            mInnerRadius = 40.0f;
+                            mIntensity = 40.0f;
                         }
 
                         HandleIntensityChanged(mIntensity);
@@ -178,12 +178,12 @@ namespace WoWEditor6.Editing
                     {
                         if(mAmount < 1)
                         {
-                            mInnerRadius = 1.0f;
+                            mAmount = 1.0f;
                         }
 
                         if (mAmount > 40)
                         {
-                            mInnerRadius = 40.0f;
+                            mAmount = 40.0f;
                         }
 
                         HandleAmountChanged(mAmount);
@@ -199,12 +199,12 @@ namespace WoWEditor6.Editing
                     {
                         if (mOpacity < 0)
                         {
-                            mInnerRadius = 0.0f;
+                            mOpacity = 0.0f;
                         }
 
                         if (mOpacity > 255)
                         {
-                            mInnerRadius = 255.0f;
+                            mOpacity = 255.0f;
                         }
 
                         HandleOpacityChanged(mOpacity);
