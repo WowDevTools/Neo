@@ -54,6 +54,7 @@ namespace WoWEditor6.Editing
             var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
             var MMBDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
             var DelDown = KeyHelper.IsKeyDown(keyState, Keys.Delete);
+            var rDown = KeyHelper.IsKeyDown(keyState, Keys.R);
 
             if ((altDown || ctrlDown || shiftDown) & RMBDown) // Rotating
             {
@@ -86,9 +87,17 @@ namespace WoWEditor6.Editing
             mLastCursorPosition = curPos;
             mLastPos = EditManager.Instance.MousePosition;
 
-            if(DelDown)
+            if(DelDown) // Delete model
             {
                 SelectedModel.Remove();
+            }
+
+           if(ctrlDown && rDown) // Reset rotation
+            {
+                var newRotation = SelectedModel.GetRotation() * (-1);
+                SelectedModel.Rotate(newRotation.X, newRotation.Y, newRotation.Z);
+                WorldFrame.Instance.UpdateSelectedBoundingBox();
+
             }
         }
     }

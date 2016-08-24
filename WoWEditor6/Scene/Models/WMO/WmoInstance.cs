@@ -203,6 +203,16 @@ namespace WoWEditor6.Scene.Models.WMO
             return mPosition;
         }
 
+        public Vector3 GetRotation()
+        {
+            if (mRotation == null)
+            {
+                return new Vector3(0.0f, 0.0f, 0.0f);
+            }
+
+            return mRotation;
+        }
+
         public void DestroyModelNameplate()
         {
             if (mWorldModelName == null)

@@ -12,6 +12,8 @@ namespace WoWEditor6.Scene.Models
 
         void Rotate(float x, float y, float z);
 
+        Vector3 GetRotation();
+
         void UpdateScale(float s);
 
         void UpdatePosition(Vector3 position);

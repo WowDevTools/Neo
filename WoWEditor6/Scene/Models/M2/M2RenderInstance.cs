@@ -146,6 +146,16 @@ namespace WoWEditor6.Scene.Models.M2
             UpdateModelNameplate();
         }
 
+        public Vector3 GetRotation()
+        {
+            if(mRotation == null)
+            {
+                return new Vector3(0.0f, 0.0f, 0.0f);
+            }
+
+            return mRotation;
+        }
+
         public Vector3 GetPosition()
         {
             if (mPosition == null)
