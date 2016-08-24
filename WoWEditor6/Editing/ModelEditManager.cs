@@ -55,6 +55,9 @@ namespace WoWEditor6.Editing
             var MMBDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
             var DelDown = KeyHelper.IsKeyDown(keyState, Keys.Delete);
             var rDown = KeyHelper.IsKeyDown(keyState, Keys.R);
+            var mDown = KeyHelper.IsKeyDown(keyState, Keys.M);
+            var pagedownDown = KeyHelper.IsKeyDown(keyState, Keys.PageDown);
+
 
             if ((altDown || ctrlDown || shiftDown) & RMBDown) // Rotating
             {
@@ -98,6 +101,25 @@ namespace WoWEditor6.Editing
                 SelectedModel.Rotate(newRotation.X, newRotation.Y, newRotation.Z);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
 
+            }
+
+            if (ctrlDown && mDown) // Move to cursor pos.
+            {
+                Vector3 brushPos = EditManager.Instance.MousePosition;
+
+                var delta = brushPos - SelectedModel.GetPosition();
+                SelectedModel.UpdatePosition(delta);
+                WorldFrame.Instance.UpdateSelectedBoundingBox();
+
+            }
+
+            if(pagedownDown) // Snap model to ground.
+            {
+                var curPosition = SelectedModel.GetPosition();
+                WorldFrame.Instance.MapManager.GetLandHeight(curPosition.X, curPosition.Y, out curPosition.Z);
+                var delta = curPosition - SelectedModel.GetPosition();
+                SelectedModel.UpdatePosition(delta);
+                WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
         }
     }
