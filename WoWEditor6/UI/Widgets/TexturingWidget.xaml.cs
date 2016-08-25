@@ -66,6 +66,16 @@ namespace WoWEditor6.UI.Widgets
             model.HandleOuterRadiusSlider((float)newValue);
         }
 
+        private void Handle_PenSensivityChanged(object sender, RoutedPropertyChangedEventArgs<double> e )
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandlePenSensivity((float)newValue);
+        }
+
         private void EnableTexturing_Click(object sender, RoutedEventArgs e)
         {
             var model = DataContext as TexturingViewModel;
@@ -96,6 +106,15 @@ namespace WoWEditor6.UI.Widgets
                 return;
 
             model.SearchForTexture(((TextBox) e.Source).Text);
+        }
+
+        private void TabletControl_Changed(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleTabletControl(TabletControlBox.IsChecked ?? false);
         }
     }
 }

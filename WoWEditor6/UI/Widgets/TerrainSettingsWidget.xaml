@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:WoWEditor6.UI.Dialogs"
              mc:Ignorable="d" Height="587" Width="342">
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-        <Border Padding="10">
-            <Grid>
+        <Border Padding="10" Height="114">
+            <Grid Margin="0,-10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150" />
                     <ColumnDefinition Width="*"/>
@@ -25,14 +25,14 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <Border Padding="10">
-            <StackPanel Orientation="Vertical">
-                <Label FontWeight="Bold">Algorithm</Label>
-                <RadioButton x:Name="FlatRadio" Content="Flat" Tag="Flat" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"></RadioButton>
-                <RadioButton x:Name="LinearRadio" Content="Linear" Tag="Linear" IsChecked="True" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"></RadioButton>
-                <RadioButton x:Name="QuadraticRadio" Content="Quadratic" Tag="Quadratic" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"></RadioButton>
-                <RadioButton x:Name="TrigonometricRadio" Content="Trigonometric" Tag="Trigonometric" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"></RadioButton>
-                <CheckBox Name="AlignModelsBox" Checked="AlignModels_Changed" Content="Align Models To Ground" Margin="0,20,0,0"></CheckBox>
+        <Border Padding="10" Height="134">
+            <StackPanel Orientation="Vertical" Margin="0,-8,0,0">
+                <Label FontWeight="Bold" Content="Algorithm" Height="27"/>
+                <RadioButton x:Name="FlatRadio" Content="Flat" Tag="Flat" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"/>
+                <RadioButton x:Name="LinearRadio" Content="Linear" Tag="Linear" IsChecked="True" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"/>
+                <RadioButton x:Name="QuadraticRadio" Content="Quadratic" Tag="Quadratic" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"/>
+                <RadioButton x:Name="TrigonometricRadio" Content="Trigonometric" Tag="Trigonometric" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"/>
+                <CheckBox x:Name="AlignModelsBox" Checked="AlignModels_Changed" Content="Align Models To Ground" Margin="0,20,0,0"/>
             </StackPanel>
         </Border>
         <Border Padding="10">
@@ -51,6 +51,12 @@
                     <Label Width="80">Outer Radius</Label>
                     <Slider Name="OuterRadiusSlider" ValueChanged="OuterRadiusSlider_ValueChanged" Width="200" Margin="5,0,0,0" Minimum="0.2" Maximum="200" Value="55"></Slider>
                     <TextBlock Margin="5,0,0,0" Text="{Binding ElementName=OuterRadiusSlider, Path=Value, StringFormat={}{0:F0}}"></TextBlock>
+                </StackPanel>
+                <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control On/Off" Margin="5,5,5,0"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Pen Sensivity</Label>
+                    <Slider x:Name="Tablet_SensivitySlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="1" Value="1" ValueChanged="Handle_PenSensivityChanged"></Slider>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=Tablet_SensivitySlider, Path=Value, StringFormat={}{0:F2}}" Width="29"></TextBlock>
                 </StackPanel>
             </StackPanel>
         </Border>

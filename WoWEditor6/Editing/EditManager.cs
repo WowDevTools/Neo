@@ -23,7 +23,8 @@ namespace WoWEditor6.Editing
         private float mIntensity = 32.0f;
         private float mAmount = 32.0f;
         private float mOpacity = 255.0f;
-
+        private float mPenSensivity;
+        private bool mIsTabletOn = false;
 
 
         public float InnerRadius
@@ -57,6 +58,18 @@ namespace WoWEditor6.Editing
 
         }
 
+        public float PenSensivity
+        {
+            get { return mPenSensivity; }
+            set { HandlePenSensivityChanged(value);  }
+        }
+
+        public bool IsTabletOn
+        {
+            get { return mIsTabletOn; }
+            set { HandleTabletControlChanged(value);  }
+        }
+
         public bool IsTexturing { get { return (CurrentMode & EditMode.Texturing) != 0; } }
 
         public Vector3 MousePosition { get; set; }
@@ -68,6 +81,7 @@ namespace WoWEditor6.Editing
         {
             Instance = new EditManager();
         }
+
 
         public void UpdateChanges()
         {
@@ -91,25 +105,31 @@ namespace WoWEditor6.Editing
             var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
             var spaceDown = KeyHelper.IsKeyDown(keyState, Keys.Space);
             var MMBDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
+            var tDown = KeyHelper.IsKeyDown(keyState, Keys.T);
 
             var curPos = Cursor.Position;
             var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
 
-            if (LMBDown && TabletManager.Instance.TabletPressure != 0) // Needs to be reworked. We need to check if tablet mode is on. There is no checkbox for it atm.
+            if (LMBDown && mIsTabletOn) 
             {
                 if (EditorWindowController.Instance.TexturingModel != null)
                 {
-                    mAmount = TabletManager.Instance.TabletPressure;
+                    mAmount = TabletManager.Instance.TabletPressure * mPenSensivity;
                     HandleAmountChanged(mAmount);
                 }
 
                 if (EditorWindowController.Instance.TerrainManager != null)
                 {
-                    mIntensity = TabletManager.Instance.TabletPressure;
+                    mIntensity = TabletManager.Instance.TabletPressure * mPenSensivity;
                     HandleIntensityChanged(mIntensity);
                 }
             }
             
+            if (!LMBDown && IsTabletOn) // When tablet mode is on we always set those to minimal value (NEEDS TO BE MOVED OUT OF HERE).
+            {
+                mAmount = 1.0f;
+                mIntensity = 1.0f;
+            }
                  
 
             if (curPos != mLastCursorPosition)
@@ -232,6 +252,39 @@ namespace WoWEditor6.Editing
                     }
                 }
 
+                if(spaceDown && MMBDown)
+                {
+                    mPenSensivity += amount / 32.0f;
+
+                    if(EditorWindowController.Instance.TexturingModel != null)
+                    {
+                        if (mPenSensivity < 0.1f)
+                        {
+                            mPenSensivity = 0.1f;
+                        }
+
+                        if (mPenSensivity > 1.0f)
+                        {
+                            mPenSensivity = 1.0f;
+                        }
+
+                        HandlePenSensivityChanged(mPenSensivity);
+                    }
+                }
+
+                if (spaceDown && tDown) // DOES NOT WORK PROPERLY. NEEDS TO BE MOVED OUT OF THIS METHOD.
+                {
+                    if (mIsTabletOn)
+                    {
+                        mIsTabletOn = false;
+                    }
+                    else
+                    {
+                        mIsTabletOn = true;
+                    }
+                    HandleTabletControlChanged(mIsTabletOn);
+                }
+
                 mLastCursorPosition = Cursor.Position;
 
             }
@@ -304,6 +357,24 @@ namespace WoWEditor6.Editing
             mOpacity = value;
             if (EditorWindowController.Instance.TexturingModel != null)
                 EditorWindowController.Instance.TexturingModel.HandleOpacityChanged(value);
+        }
+
+        private void HandlePenSensivityChanged(float value)
+        {
+            mPenSensivity = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandlePenSensivityChanged(value);
+            if (EditorWindowController.Instance.TerrainManager != null)
+                EditorWindowController.Instance.TerrainManager.HandlePenSensivityChanged(value);
+        }
+
+        private void HandleTabletControlChanged(bool value)
+        {
+            mIsTabletOn = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleTabletControlChanged(value);
+            if (EditorWindowController.Instance.TerrainManager != null)
+                EditorWindowController.Instance.TerrainManager.HandleTabletControlChanged(value);
         }
     }
 }

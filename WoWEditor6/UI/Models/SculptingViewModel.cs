@@ -68,6 +68,20 @@ namespace WoWEditor6.UI.Models
             Editing.TerrainChangeManager.Instance.AlignModelsToGround = value;
             mIsValueChangedSurpressed = false;
         }
+
+        public void HandlePenSensivity(float value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.PenSensivity = value;
+            mIsValueChangedSurpressed = false;
+        }
+
+        public void HandleTabletControl(bool value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.IsTabletOn = value;
+            mIsValueChangedSurpressed = false;
+        }
         #endregion
 
         #region HandleChange
@@ -94,7 +108,23 @@ namespace WoWEditor6.UI.Models
 
             mWidget.IntensitySlider.Value = newAmount;
         }
-        
+
+        public void HandlePenSensivityChanged(float newSensivity)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.Tablet_SensivitySlider.Value = newSensivity;
+        }
+
+        public void HandleTabletControlChanged(bool newIsTabletOn)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.TabletControlBox.IsChecked = newIsTabletOn;
+        }
+
         public void HandleShadingMultiplierChanged(Vector3 value)
         {
             if (mIsValueChangedSurpressed)

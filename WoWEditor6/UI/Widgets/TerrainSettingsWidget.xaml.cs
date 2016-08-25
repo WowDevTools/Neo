@@ -149,5 +149,24 @@ namespace WoWEditor6.UI.Dialogs
 
             model.HandleAlignToGround(AlignModelsBox.IsChecked ?? false);
         }
+
+        private void TabletControl_Changed(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as SculptingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleTabletControl(TabletControlBox.IsChecked ?? false);
+        }
+
+        private void Handle_PenSensivityChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as SculptingViewModel;
+            if (model == null)
+                return;
+
+            model.HandlePenSensivity((float)newValue);
+        }
     }
 }

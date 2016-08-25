@@ -119,6 +119,20 @@ namespace WoWEditor6.UI.Models
             mIsValueChangedSurpressed = false;
         }
 
+        public void HandlePenSensivity(float value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.PenSensivity = value;
+            mIsValueChangedSurpressed = false;
+        }
+
+        public void HandleTabletControl(bool value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.IsTabletOn = value;
+            mIsValueChangedSurpressed = false;
+        }
+
         public void HandleInnerRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
@@ -149,6 +163,21 @@ namespace WoWEditor6.UI.Models
                 return;
 
             mWidget.GradientSlider.Value = newOpacity;
+        }
+
+        public void HandlePenSensivityChanged(float newSensivity)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.Tablet_SensivitySlider.Value = newSensivity;
+        }
+
+        public void HandleTabletControlChanged(bool newIsTabletChanged)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+            mWidget.TabletControlBox.IsChecked = newIsTabletChanged;
         }
 
         public void SwitchToTexturing()
