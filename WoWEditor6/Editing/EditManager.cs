@@ -2,14 +2,11 @@
 using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
-<<<<<<< HEAD
 using WoWEditor6.Utils;
 using System.Windows.Forms;
 using Point = System.Drawing.Point;
-=======
 using WintabDN;
 using System.Windows;
->>>>>>> origin/feature/tablet-drawing
 
 namespace WoWEditor6.Editing
 {
@@ -97,6 +94,23 @@ namespace WoWEditor6.Editing
 
             var curPos = Cursor.Position;
             var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
+
+            if (LMBDown && TabletManager.Instance.TabletPressure != 0) // Needs to be reworked. We need to check if tablet mode is on. There is no checkbox for it atm.
+            {
+                if (EditorWindowController.Instance.TexturingModel != null)
+                {
+                    mAmount = TabletManager.Instance.TabletPressure;
+                    HandleAmountChanged(mAmount);
+                }
+
+                if (EditorWindowController.Instance.TerrainManager != null)
+                {
+                    mIntensity = TabletManager.Instance.TabletPressure;
+                    HandleIntensityChanged(mIntensity);
+                }
+            }
+            
+                 
 
             if (curPos != mLastCursorPosition)
             { 

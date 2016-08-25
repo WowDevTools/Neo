@@ -65,12 +65,8 @@ namespace WoWEditor6.Editing
             bool inverted;
             if (CheckRequirements(out inverted) == false)
                 return;
-<<<<<<< HEAD
-            var parameters = new TerrainChangeParameters()
-            {
-=======
+
             var parameters = new TerrainChangeParameters() {
->>>>>>> origin/feature/tablet-drawing
                 Algorithm = ChangeAlgorithm,
                 Center = EditManager.Instance.MousePosition,
                 InnerRadius = EditManager.Instance.InnerRadius,
