@@ -75,7 +75,7 @@ namespace WoWEditor6.Editing
                 TimeDiff = diff,
                 Shading = ShadingMultiplier,
                 // if tablet is connected override the amount set in thee menus
-                Amount = (TabletManager.Instance.IsConnected) ? TabletManager.Instance.TabletPressure : Amount,
+                Amount = Amount,
                 Inverted = inverted,
                 AlignModels = AlignModelsToGround
             };
