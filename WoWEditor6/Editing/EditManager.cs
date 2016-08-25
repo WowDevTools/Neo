@@ -2,9 +2,14 @@
 using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.UI;
+<<<<<<< HEAD
 using WoWEditor6.Utils;
 using System.Windows.Forms;
 using Point = System.Drawing.Point;
+=======
+using WintabDN;
+using System.Windows;
+>>>>>>> origin/feature/tablet-drawing
 
 namespace WoWEditor6.Editing
 {
@@ -21,6 +26,8 @@ namespace WoWEditor6.Editing
         private float mIntensity = 32.0f;
         private float mAmount = 32.0f;
         private float mOpacity = 255.0f;
+
+
 
         public float InnerRadius
         {

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded" GotFocus="UserControl_GotFocus">
     <Grid Margin="0,0,32,-194" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="125" />
@@ -13,13 +13,28 @@
         <Grid Grid.Row="0">
             <Border Padding="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+<<<<<<< HEAD
                     <CheckBox Click="InvertMouseBox_Clicked">Invert Mouse Y-Axis</CheckBox>
                     <CheckBox IsChecked="False" Click="InvertMouseBoxX_Clicked" Margin="0,5,0,0">Invert Mouse X-Axis</CheckBox>
+=======
+                    <CheckBox IsChecked="True" Click="InvertMouseBox_Clicked">Invert Mouse Y-Axis</CheckBox>
+                    <CheckBox IsChecked="False" Click="InvertMouseBoxX_Clicked" Margin="0,5,0,0" Content="Invert Mouse X-Axis"/>
+>>>>>>> origin/feature/tablet-drawing
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <Label Margin="0,0,5,0">Mouse sensitivity</Label>
                         <Slider Width="100" VerticalAlignment="Center" Value="5" Minimum="1" Maximum="10" x:Name="SensitivitySlider" ValueChanged="SensitivitySlider_ValueChanged"></Slider>
                         <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" x:Name="SensitivitySliderIndicator"></TextBlock>
                     </StackPanel>
+                    <Button x:Name="reconnect" Content="Try to reconnect tablet" Width="186" RenderTransformOrigin="0,0.5" Click="reconnect_Click">
+                        <Button.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform Y="10"/>
+                            </TransformGroup>
+                        </Button.RenderTransform>
+                    </Button>
                 </StackPanel>
             </Border>
         </Grid>

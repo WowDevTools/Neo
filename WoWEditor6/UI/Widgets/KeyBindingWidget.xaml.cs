@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using WoWEditor6.Editing;
 using WoWEditor6.Scene;
 using WoWEditor6.Settings;
 
@@ -180,6 +181,30 @@ namespace WoWEditor6.UI.Dialogs
                 return;
 
             WorldFrame.Instance.CamControl.TurnFactor = (float)newValue * 0.2f;
+        }
+
+        private void reconnect_Click(object sender, RoutedEventArgs e)
+        {
+            TabletManager.Instance.TryConnect();
+            // Check if the tablet is connected
+            if (TabletManager.Instance.IsConnected)
+            {
+                // if the tablet is connected hide reconnect button
+                reconnect.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // Check if the tablet is connected
+            if (TabletManager.Instance.IsConnected)
+            {
+                // if the tablet is connected hide reconnect button
+                reconnect.Visibility = Visibility.Hidden;
+            }
+            else {
+                reconnect.Visibility = Visibility.Visible;
+            }
         }
     }
 }
