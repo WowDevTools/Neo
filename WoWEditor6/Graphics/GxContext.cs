@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -191,8 +192,8 @@ namespace WoWEditor6.Graphics
                 BindFlags = BindFlags.DepthStencil,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = Format.D24_UNorm_S8_UInt,
-                Height = mWindow.ClientSize.Height,
-                Width = mWindow.ClientSize.Width,
+                Height = mWindow.ClientSize.Height > 0 ? mWindow.ClientSize.Height : 1, //Forcing a resolution of at least 1/1 should avoid the crash
+                Width = mWindow.ClientSize.Width > 0 ? mWindow.ClientSize.Width : 1,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = mSwapChainDesc.SampleDescription,
