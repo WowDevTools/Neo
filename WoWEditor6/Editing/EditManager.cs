@@ -24,8 +24,9 @@ namespace WoWEditor6.Editing
         private float mAmount = 32.0f;
         private float mOpacity = 255.0f;
         private float mPenSensivity;
+        private float mAmplitude;
         private bool mIsTabletOn = false;
-
+        private bool mIsTablet_RChange = false;
 
         public float InnerRadius
         {
@@ -69,6 +70,18 @@ namespace WoWEditor6.Editing
             get { return mIsTabletOn; }
             set { HandleTabletControlChanged(value);  }
         }
+        
+        public bool IsTablet_RChange
+        {
+            get { return mIsTablet_RChange; }
+            set { HandleTabletRadiusChanged(value); }
+        }
+
+        public float Amplitude
+        {
+            get { return mAmplitude;  }
+            set { HandleAllowedAmplitudeChanged(value); }
+        }
 
         public bool IsTexturing { get { return (CurrentMode & EditMode.Texturing) != 0; } }
 
@@ -110,7 +123,7 @@ namespace WoWEditor6.Editing
             var curPos = Cursor.Position;
             var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
 
-            if (LMBDown && mIsTabletOn) 
+            if (mIsTabletOn) 
             {
                 if (EditorWindowController.Instance.TexturingModel != null)
                 {
@@ -123,13 +136,34 @@ namespace WoWEditor6.Editing
                     mIntensity = TabletManager.Instance.TabletPressure * mPenSensivity;
                     HandleIntensityChanged(mIntensity);
                 }
+
+                if (mIsTablet_RChange)
+                {
+                    if (EditorWindowController.Instance.TexturingModel != null)
+                    {
+                        mOuterRadius = TabletManager.Instance.TabletPressure * mPenSensivity;
+
+                        if(mOuterRadius < 0)
+                        {
+                            mInnerRadius = 0.0f;
+                        }
+
+                        if(mOuterRadius > mAmplitude)
+                        {
+                            mInnerRadius = mAmplitude;
+                        }
+
+                        HandleInnerRadiusChanged(mInnerRadius);
+                    }
+                }
             }
+
             
-            if (!LMBDown && IsTabletOn) // When tablet mode is on we always set those to minimal value (NEEDS TO BE MOVED OUT OF HERE).
+            /*if (!LMBDown && IsTabletOn) // When tablet mode is on we always set those to minimal value (NEEDS TO BE MOVED OUT OF HERE).
             {
                 mAmount = 1.0f;
                 mIntensity = 1.0f;
-            }
+            }*/
                  
 
             if (curPos != mLastCursorPosition)
@@ -375,6 +409,20 @@ namespace WoWEditor6.Editing
                 EditorWindowController.Instance.TexturingModel.HandleTabletControlChanged(value);
             if (EditorWindowController.Instance.TerrainManager != null)
                 EditorWindowController.Instance.TerrainManager.HandleTabletControlChanged(value);
+        }
+
+        private void HandleTabletRadiusChanged(bool value)
+        {
+            mIsTablet_RChange = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleTabletChangeRadiusChanged(value);
+        }
+        
+        private void HandleAllowedAmplitudeChanged(float value)
+        {
+            mAmplitude = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleAllowedAmplitudeChanged(value);
         }
     }
 }

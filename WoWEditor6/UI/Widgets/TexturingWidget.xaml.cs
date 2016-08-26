@@ -116,5 +116,24 @@ namespace WoWEditor6.UI.Widgets
 
             model.HandleTabletControl(TabletControlBox.IsChecked ?? false);
         }
+
+        private void TabletChangeRadius_Changed(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleTabletChangeRadius(TabletControlBox_Radius.IsChecked ?? false);
+        }
+
+        private void Handle_AllowedAmplitudeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleAllowedAmplitude((float)newValue);
+        }
     }
 }

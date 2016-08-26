@@ -133,6 +133,20 @@ namespace WoWEditor6.UI.Models
             mIsValueChangedSurpressed = false;
         }
 
+        public void HandleTabletChangeRadius(bool value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.IsTablet_RChange = value;
+            mIsValueChangedSurpressed = false;
+        }
+
+        public void HandleAllowedAmplitude(float value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.Amplitude = value;
+            mIsValueChangedSurpressed = false;
+        }
+
         public void HandleInnerRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
@@ -177,7 +191,23 @@ namespace WoWEditor6.UI.Models
         {
             if (mIsValueChangedSurpressed)
                 return;
+
             mWidget.TabletControlBox.IsChecked = newIsTabletChanged;
+        }
+
+        public void HandleTabletChangeRadiusChanged(bool newIsTablet_RChange)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.TabletControlBox_Radius.IsChecked = newIsTablet_RChange;
+        }
+
+        public void HandleAllowedAmplitudeChanged(float newAmplitude )
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+            mWidget.Tablet_RadiusSlider.Value = newAmplitude;
         }
 
         public void SwitchToTexturing()

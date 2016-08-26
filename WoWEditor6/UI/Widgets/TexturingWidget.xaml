@@ -7,59 +7,9 @@
              mc:Ignorable="d" d:DesignWidth="340" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="259"></RowDefinition>
+            <RowDefinition Height="256"></RowDefinition>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <Label>Amount</Label>
-                <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="40" Value="20" ValueChanged="Handle_AmountSliderChanged"></Slider>
-                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=AmountSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label>Opacity</Label>
-                <Slider x:Name="GradientSlider" VerticalAlignment="Center" Width="180" Margin="28,0,0,0" Minimum="0" Maximum="255" Value="255" ValueChanged="Handle_GradientSliderChanged"></Slider>
-                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=GradientSlider, Path=Value, StringFormat={}{0:F0}}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label>Inner Radius</Label>
-                <Slider x:Name="InnerRadiusSlider" VerticalAlignment="Center" Width="180" Margin="3,0,0,0" Minimum="0.1" Maximum="{Binding ElementName=OuterRadiusSlider, Path=Value}" Value="45" ValueChanged="Handle_InnerRadiusSliderChanged"></Slider>
-                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=InnerRadiusSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label>Outer Radius</Label>
-                <Slider x:Name="OuterRadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="200" Value="55" ValueChanged="Handle_OuterRadiusSliderChanged"></Slider>
-                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=OuterRadiusSlider, Path=Value, StringFormat={}{0:F2}}"></TextBlock>
-            </StackPanel>
-            <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control On/Off" Margin="5,5,5,0"/>
-            <StackPanel Orientation="Horizontal">
-                <Label>Pen Sensivity</Label>
-                <Slider x:Name="Tablet_SensivitySlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="1" Value="1" ValueChanged="Handle_PenSensivityChanged"></Slider>
-                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=Tablet_SensivitySlider, Path=Value, StringFormat={}{0:F2}}" Width="29"></TextBlock>
-            </StackPanel>
-            <Grid Margin="0,10,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Border Width="96" Height="96" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.RowSpan="4">
-                    <WindowsFormsHost>
-                        <forms:PictureBox x:Name="TexturePreviewImage" Dock="Fill" SizeMode="StretchImage"/>
-                    </WindowsFormsHost>
-                </Border>
-                <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick" Content="Select From Assets"/>
-                <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="1" Click="EnableTexturing_Click" Content="Enable Texturing"/>
-                <!-- <CheckBox Grid.Column="1" Grid.Row="2" Margin="5,0,0,0" VerticalAlignment="Center" IsChecked="True" Visibility="Hidden">Preview Gradient</CheckBox> -->
-                <Button Grid.Row="2" Grid.Column="1" IsEnabled="False" HorizontalAlignment="Left" Width="130" Height="25" Margin="5,0,0,0" x:Name="FavoriteButton" Click="FavoriteButton_OnClick" Content="Add Favorite"/>
-            </Grid>
-
-        </StackPanel>
         <TabControl Grid.Row="1">
             <TabItem Header="Selected Tile">
                 <Grid>
@@ -128,5 +78,78 @@
                 </DockPanel>
             </TabItem>
         </TabControl>
+        <TabControl x:Name="tabControl" Height="134" VerticalAlignment="Top">
+            <TabItem Header="Brush Settings" Margin="-2,-2,-18,0">
+                <StackPanel Orientation="Vertical" Margin="0,0,-6,-134">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Amount"/>
+                        <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="40" Value="20" ValueChanged="Handle_AmountSliderChanged"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=AmountSlider, StringFormat=\{0:F2\}}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Opacity"/>
+                        <Slider x:Name="GradientSlider" VerticalAlignment="Center" Width="180" Margin="28,0,0,0" Minimum="0" Maximum="255" Value="255" ValueChanged="Handle_GradientSliderChanged"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=GradientSlider, StringFormat=\{0:F0\}}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Inner Radius"/>
+                        <Slider x:Name="InnerRadiusSlider" VerticalAlignment="Center" Width="180" Margin="3,0,0,0" Minimum="0.1" Maximum="{Binding Value, ElementName=OuterRadiusSlider}" Value="45" ValueChanged="Handle_InnerRadiusSliderChanged"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=InnerRadiusSlider, StringFormat=\{0:F2\}}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Outer Radius"/>
+                        <Slider x:Name="OuterRadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="200" Value="55" ValueChanged="Handle_OuterRadiusSliderChanged"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=OuterRadiusSlider, StringFormat=\{0:F2\}}"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Tablet Control" Margin="19,-2,-39,0">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control On/Off" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Pen Sensivity"/>
+                        <Slider x:Name="Tablet_SensivitySlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="1" Value="1" ValueChanged="Handle_PenSensivityChanged"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Tablet_SensivitySlider, StringFormat=\{0:F2\}}" Width="29"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="TabletControlBox_Radius" Checked="TabletChangeRadius_Changed" Content="Change brush radius" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Amplitude    "/>
+                        <Slider x:Name="Tablet_RadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="10" Value="1" ValueChanged="Handle_AllowedAmplitudeChanged"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Tablet_RadiusSlider, StringFormat=\{0:F2\}}" Width="29"/>
+                    </StackPanel>
+                    
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Spray Mode" Margin="40,-2,-44,0" >
+                <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Coming soon" VerticalAlignment="Top" Height="74" Width="280" Margin="34,12,0,0"/>
+
+            </TabItem>
+        </TabControl>
+        <Grid Margin="0,146,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Width="96" Height="96" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.RowSpan="4">
+                <WindowsFormsHost Height="94" VerticalAlignment="Top">
+                    <forms:PictureBox x:Name="TexturePreviewImage" Dock="Fill" SizeMode="StretchImage"/>
+                </WindowsFormsHost>
+            </Border>
+            <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick" Content="Select From Assets"/>
+            <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="1" Click="EnableTexturing_Click" Content="Enable Texturing"/>
+            <!-- <CheckBox Grid.Column="1" Grid.Row="2" Margin="5,0,0,0" VerticalAlignment="Center" IsChecked="True" Visibility="Hidden">Preview Gradient</CheckBox> -->
+            <Button Grid.Row="2" Grid.Column="1" IsEnabled="False" HorizontalAlignment="Left" Width="130" Height="25" Margin="5,0,0,0" x:Name="FavoriteButton" Click="FavoriteButton_OnClick" Content="Add Favorite"/>
+        </Grid>
     </Grid>
 </UserControl>
