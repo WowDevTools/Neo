@@ -174,13 +174,12 @@ namespace WoWEditor6.Scene.Models.WMO
 
             mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
              MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z)) * Matrix.Translation(mPosition);
-
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
-
 
             Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
-            BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
+            BoundingBox = BoundingBox.Transform(ref mInstanceMatrix); //here is the problem, after this line the bBox is fucked up
+
             GroupBoxes = new BoundingBox[mModel.Groups.Count];
             for (var i = 0; i < GroupBoxes.Length; ++i)
             {

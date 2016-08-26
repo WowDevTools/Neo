@@ -107,7 +107,7 @@
             <TabItem Header="Tablet Control" Margin="19,-2,-39,0">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control On/Off" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17"/>
+                        <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control On/Off" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletControl_Changed"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Pen Sensivity"/>
@@ -115,7 +115,7 @@
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Tablet_SensivitySlider, StringFormat=\{0:F2\}}" Width="29"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="TabletControlBox_Radius" Checked="TabletChangeRadius_Changed" Content="Change brush radius" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17"/>
+                        <CheckBox x:Name="TabletControlBox_Radius" Checked="TabletChangeRadius_Changed" Content="Change brush radius" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletControl_Changed"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Amplitude    "/>
