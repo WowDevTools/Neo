@@ -88,14 +88,12 @@ namespace WoWEditor6.Scene.Models.WMO
                 if (instance != null)
                 {
                     --instance.ReferenceCount;
-                    if (instance.ReferenceCount > 0)
-                        return false;
 
                     mInstances.Remove(instance);
                     instance.Dispose();
                 }
 
-                return mInstances.Count == 0;
+                return true; //There could have more than one of a wmo, and we should be able to delete only one of them if we want
             }
         }
 
