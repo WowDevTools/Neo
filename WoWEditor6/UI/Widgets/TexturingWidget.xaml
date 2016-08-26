@@ -115,11 +115,11 @@
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Tablet_SensivitySlider, StringFormat=\{0:F2\}}" Width="29"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="TabletControlBox_Radius" Checked="TabletChangeRadius_Changed" Content="Change brush radius" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletControl_Changed"/>
+                        <CheckBox x:Name="TabletControlBox_Radius" Checked="TabletChangeRadius_Changed" Content="Change brush radius" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletChangeRadius_Changed"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Amplitude    "/>
-                        <Slider x:Name="Tablet_RadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="10" Value="1" ValueChanged="Handle_AllowedAmplitudeChanged"/>
+                        <Slider x:Name="Tablet_RadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="200" Value="200" ValueChanged="Handle_AllowedAmplitudeChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Tablet_RadiusSlider, StringFormat=\{0:F2\}}" Width="29"/>
                     </StackPanel>
                     

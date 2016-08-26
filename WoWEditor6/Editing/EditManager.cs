@@ -18,8 +18,8 @@ namespace WoWEditor6.Editing
 
         private Point mLastCursorPosition = Cursor.Position;
 
-        private float mInnerRadius = 45.0f;
-        private float mOuterRadius = 55.0f;
+        private float mInnerRadius = 18.0f;
+        private float mOuterRadius = 20.0f;
         private float mIntensity = 32.0f;
         private float mAmount = 32.0f;
         private float mOpacity = 255.0f;
@@ -123,7 +123,7 @@ namespace WoWEditor6.Editing
             var curPos = Cursor.Position;
             var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
 
-            if (mIsTabletOn) 
+            if (mIsTabletOn) // All tablet control editing is here.
             {
                 if (EditorWindowController.Instance.TexturingModel != null)
                 {
@@ -137,22 +137,36 @@ namespace WoWEditor6.Editing
                     HandleIntensityChanged(mIntensity);
                 }
 
-                if (mIsTablet_RChange)
+                if (mIsTablet_RChange) // If outer radius change is enabled.
                 {
                     if (EditorWindowController.Instance.TexturingModel != null)
                     {
-                        mOuterRadius = TabletManager.Instance.TabletPressure * mPenSensivity;
+                        //float proportion = mInnerRadius / mOuterRadius; 
 
-                        if(mOuterRadius < 0)
+                        mOuterRadius = TabletManager.Instance.TabletPressure * mPenSensivity;
+                        mInnerRadius = mOuterRadius * 0.5f; // Ugly way of doing that. If someone has an idea how to handle it properly, please implement.
+
+                        if(mOuterRadius < 0.1f)
                         {
-                            mInnerRadius = 0.0f;
+                            mOuterRadius = 0.1f;
                         }
 
                         if(mOuterRadius > mAmplitude)
                         {
-                            mInnerRadius = mAmplitude;
+                            mOuterRadius = mAmplitude;
                         }
 
+                        if(mInnerRadius > mAmplitude)   
+                        {
+                            mInnerRadius = mAmplitude;
+                        }
+                        
+                        if(mInnerRadius > mOuterRadius)
+                        {
+                            mInnerRadius = mOuterRadius;
+                        }
+
+                        HandleOuterRadiusChanged(mOuterRadius);
                         HandleInnerRadiusChanged(mInnerRadius);
                     }
                 }
