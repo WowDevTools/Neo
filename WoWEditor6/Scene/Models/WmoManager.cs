@@ -99,7 +99,7 @@ namespace WoWEditor6.Scene.Models
                 if (mRenderer.TryGetValue(hash, out batch) == false)
                     return;
 
-                if (batch.RemoveInstance(uuid) == false) //Sometime return false, for a reason
+                if (batch.RemoveInstance(uuid) == false)
                     return;
 
                 lock (mAddLock)
