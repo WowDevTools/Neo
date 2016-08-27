@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SharpDX;
 
 namespace WoWEditor6.Scene.Models.WMO
@@ -8,7 +7,7 @@ namespace WoWEditor6.Scene.Models.WMO
     class WmoBatchRender : IDisposable
     {
         private WmoRootRender mRoot;
-        private List<WmoInstance> mInstances = new List<WmoInstance>();
+        private Dictionary<int, WmoInstance> mInstances = new Dictionary<int, WmoInstance>();
         private List<WmoInstance> mActiveInstances = new List<WmoInstance>();
 
         private bool mInstancesChanged;
@@ -28,7 +27,7 @@ namespace WoWEditor6.Scene.Models.WMO
 
             lock (mInstances)
             {
-                foreach (var inst in mInstances)
+                foreach (var inst in mInstances.Values)
                 {
                     float dist;
                     if (inst.Intersects(parameters, ref globalRay, out dist) && dist < distance)
@@ -57,7 +56,7 @@ namespace WoWEditor6.Scene.Models.WMO
 
             if (mInstances != null)
             {
-                foreach (var inst in mInstances)
+                foreach (var inst in mInstances.Values)
                     inst.Dispose();
 
                 mInstances.Clear();
@@ -84,16 +83,24 @@ namespace WoWEditor6.Scene.Models.WMO
 
             lock (mInstances)
             {
-                var instance = mInstances.FirstOrDefault(w => w.Uuid == uuid);
+                WmoInstance instance;
+                if (mInstances.TryGetValue(uuid, out instance) == false)
+                    return false;
+
                 if (instance != null)
                 {
                     --instance.ReferenceCount;
+                    if (instance.ReferenceCount > 0)
+                    {
+                        ++instance.ReferenceCount;
+                        return false;
+                    }
 
-                    mInstances.Remove(instance);
+                    mInstances.Remove(uuid);
                     instance.Dispose();
                 }
 
-                return true; //There could have more than one of a wmo, and we should be able to delete only one of them if we want
+                return instance.ReferenceCount == 0;
             }
         }
 
@@ -112,8 +119,8 @@ namespace WoWEditor6.Scene.Models.WMO
         {
             lock (mInstances)
             {
-                var instance = mInstances.FirstOrDefault(w => w.Uuid == uuid);
-                if (instance != null)
+                WmoInstance instance;
+                if (mInstances.TryGetValue(uuid, out instance))
                 {
                     ++instance.ReferenceCount;
                     return;
@@ -124,7 +131,7 @@ namespace WoWEditor6.Scene.Models.WMO
 
             lock (mInstances)
             {
-                mInstances.Add(inst);
+                mInstances.Add(uuid,inst);
                 mInstancesChanged = true;
             }
         }
@@ -139,7 +146,7 @@ namespace WoWEditor6.Scene.Models.WMO
                     return;
 
                 mActiveInstances.Clear();
-                mActiveInstances.AddRange(mInstances);
+                mActiveInstances.AddRange(mInstances.Values);
             }
         }
     }

@@ -114,7 +114,6 @@ namespace WoWEditor6.Scene.Models.M2
             if (mFullInstances == null || VisibleInstances == null)
                 return false;
 
-            var lastInstance = false;
             lock (mFullInstances)
             {
                 M2RenderInstance inst;
@@ -123,19 +122,19 @@ namespace WoWEditor6.Scene.Models.M2
 
                 --inst.NumReferences;
                 if (inst.NumReferences > 0)
+                {
+                    ++inst.NumReferences;
                     return false;
+                }
 
                 mFullInstances.Remove(uuid);
                 inst.Dispose();
-
-                if (mFullInstances.Count == 0)
-                    lastInstance = true;
             }
 
             lock (VisibleInstances)
                 VisibleInstances.RemoveAll(inst => inst.Uuid == uuid);
 
-            return lastInstance;
+            return mFullInstances.Count == 0;
         }
 
         public M2RenderInstance AddInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)

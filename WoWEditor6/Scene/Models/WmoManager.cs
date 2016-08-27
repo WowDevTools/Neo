@@ -2,6 +2,8 @@
 using System.Threading;
 using SharpDX;
 using WoWEditor6.Scene.Models.WMO;
+using System;
+using System.Windows.Forms;
 
 namespace WoWEditor6.Scene.Models
 {
@@ -88,26 +90,37 @@ namespace WoWEditor6.Scene.Models
 
         public void RemoveInstance(string model, int uuid)
         {
+            try
+            {
+                var hash = model.ToUpperInvariant().GetHashCode();
+                RemoveInstance(hash, uuid);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void RemoveInstance(int hash, int uuid)
+        {
             if (mRenderer == null)
                 return;
 
-            var hash = model.ToUpperInvariant().GetHashCode();
-
-            WmoBatchRender batch;
             lock (mRenderer)
             {
-                if (mRenderer.TryGetValue(hash, out batch) == false)
+                WmoBatchRender batch;
+                if (!mRenderer.TryGetValue(hash, out batch))
                     return;
 
-                if (batch.RemoveInstance(uuid) == false)
-                    return;
+                if(batch.RemoveInstance(uuid))
+                {
+                    lock (mAddLock)
+                        mRenderer.Remove(hash);
 
-                lock (mAddLock)
-                    mRenderer.Remove(hash);
+                    lock (mUnloadItems)
+                        mUnloadItems.Add(batch);
+                }
             }
-
-            lock (mUnloadItems)
-                mUnloadItems.Add(batch);
         }
         
         public void AddInstance(string model, int uuid, Vector3 position, Vector3 rotation)
