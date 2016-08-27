@@ -169,7 +169,7 @@
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutDocumentPane>
                 </avalon:LayoutPanel>
-                
+
                 <avalon:LayoutRoot.BottomSide>
                     <avalon:LayoutAnchorSide>
                         <avalon:LayoutAnchorGroup>
