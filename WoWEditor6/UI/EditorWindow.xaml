@@ -138,16 +138,22 @@
                         </avalon:LayoutAnchorable>
                         <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False" x:Name="MapEditorDocument">
                             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                <Grid.RowDefinitions>
+                                <Grid.RowDefinitions> <!-- Define the row here -->
+                                    <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                     <RowDefinition Height="30"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <WindowsFormsHost Grid.Row="0">
+                                <StatusBar Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"> <!-- use grid.row to tell wich row use -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label x:Name="test" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60">test</Label>
+                                    </StackPanel>
+                                </StatusBar>
+                                <WindowsFormsHost Grid.Row="1">
                                     <local:RenderControl x:Name="RenderTarget">
 
                                     </local:RenderControl>
                                 </WindowsFormsHost>
-                                <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <StackPanel Orientation="Horizontal">
                                         <Label x:Name="CurrentAdtLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60">ADT: 0/0</Label>
                                         <Label x:Name="CurrentPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="200">Position: 0/0/0</Label>
