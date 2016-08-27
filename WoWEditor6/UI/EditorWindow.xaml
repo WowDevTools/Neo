@@ -110,7 +110,7 @@
                                 <FlowDocumentScrollViewer VerticalScrollBarVisibility="Auto" x:Name="SplashDocument">
                                     <FlowDocument FontFamily="Segoe UI" FontSize="20">
                                         <Paragraph>
-                                            <Run FontSize="29" FontWeight="Bold">World of Warcraft Editor</Run>
+                                            <Run FontSize="29" FontWeight="Bold">Neo - A World of Warcraft Editor</Run>
                                         </Paragraph>
                                         <Paragraph>
                                             <Run>Welcome to the newest version of the World of Warcraft map editor.</Run>
