@@ -7,10 +7,10 @@
              mc:Ignorable="d" d:DesignWidth="340" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="256"></RowDefinition>
+            <RowDefinition Height="264"></RowDefinition>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="1">
+        <TabControl Grid.Row="1" Margin="0,9,0,-9">
             <TabItem Header="Selected Tile">
                 <Grid>
                     <WindowsFormsHost>
@@ -78,7 +78,7 @@
                 </DockPanel>
             </TabItem>
         </TabControl>
-        <TabControl x:Name="tabControl" Height="134" VerticalAlignment="Top">
+        <TabControl x:Name="tabControl" Height="162" VerticalAlignment="Top">
             <TabItem Header="Brush Settings" Margin="-2,-2,-18,0">
                 <StackPanel Orientation="Vertical" Margin="0,0,-6,-134">
                     <StackPanel Orientation="Horizontal">
@@ -101,28 +101,40 @@
                         <Slider x:Name="OuterRadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="200" Value="55" ValueChanged="Handle_OuterRadiusSliderChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=OuterRadiusSlider, StringFormat=\{0:F2\}}"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletControl_Changed"/>
+                        <CheckBox x:Name="SprayModeBox" Checked="SprayMode_Changed" Content="Spray Mode" VerticalAlignment="Center"  Margin="106,3,0,0" Height="17" Unchecked="SprayMode_Changed"/>
+                    </StackPanel>
 
                 </StackPanel>
             </TabItem>
             <TabItem Header="Tablet Control" Margin="19,-2,-39,0">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control On/Off" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletControl_Changed"/>
+                        <CheckBox x:Name="PressureControlBox" Checked="TabletControlPressure_Changed" Content="Change pressure" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletControlPressure_Changed"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Pen Sensivity"/>
-                        <Slider x:Name="Tablet_SensivitySlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="1" Value="1" ValueChanged="Handle_PenSensivityChanged"/>
+                        <Label Content="Pressure Sensivity "/>
+                        <Slider x:Name="Tablet_SensivitySlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="10" Value="10" ValueChanged="Handle_PenSensivityChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Tablet_SensivitySlider, StringFormat=\{0:F2\}}" Width="29"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox x:Name="TabletControlBox_Radius" Checked="TabletChangeRadius_Changed" Content="Change brush radius" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletChangeRadius_Changed"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Amplitude    "/>
-                        <Slider x:Name="Tablet_RadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="200" Value="200" ValueChanged="Handle_AllowedAmplitudeChanged"/>
+                        <Label Content="Radius Sensivity    "/>
+                        <Slider x:Name="Tablet_RadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="10" Value="10" ValueChanged="Handle_AllowedAmplitudeChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Tablet_RadiusSlider, StringFormat=\{0:F2\}}" Width="29"/>
                     </StackPanel>
-                    
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="TabletControlBox_InnerRadius" Checked="TabletChangeInnerRadius_Changed" Content="Change hardness (inner radius)" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletChangeInnerRadius_Changed"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Hardness Sensivity"/>
+                        <Slider x:Name="Tablet_InnerRadiusSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="10" Value="10" ValueChanged="Handle_AllowedInnerAmplitudeChanged"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Tablet_InnerRadiusSlider, StringFormat=\{0:F2\}}" Width="29"/>
+                    </StackPanel>
+
                 </StackPanel>
             </TabItem>
             <TabItem Header="Spray Mode" Margin="40,-2,-44,0" >
@@ -130,7 +142,7 @@
 
             </TabItem>
         </TabControl>
-        <Grid Margin="0,146,0,12">
+        <Grid Margin="0,165,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>

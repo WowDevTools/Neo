@@ -135,5 +135,38 @@ namespace WoWEditor6.UI.Widgets
 
             model.HandleAllowedAmplitude((float)newValue);
         }
+
+        private void TabletControlPressure_Changed(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleTabletControlPressure(PressureControlBox.IsChecked ?? false);
+        }
+
+        private void TabletChangeInnerRadius_Changed(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleTabletChangeInnerRadius(TabletControlBox_InnerRadius.IsChecked ?? false);
+        }
+
+        private void Handle_AllowedInnerAmplitudeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleAllowedInnerAmplitude((float)newValue);
+        }
+
+        private void SprayMode_Changed(object sender, RoutedEventArgs e)
+        {
+            //TODO implement spray first.
+        }
     }
 }

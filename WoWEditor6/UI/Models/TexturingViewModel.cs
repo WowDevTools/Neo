@@ -140,10 +140,31 @@ namespace WoWEditor6.UI.Models
             mIsValueChangedSurpressed = false;
         }
 
+        public void HandleTabletChangeInnerRadius(bool value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.IsTablet_IRChange = value;
+            mIsValueChangedSurpressed = false;
+        }
+
+        public void HandleTabletControlPressure(bool value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.IsTablet_PChange = value;
+            mIsValueChangedSurpressed = false;
+        }
+
         public void HandleAllowedAmplitude(float value)
         {
             mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.Amplitude = value;
+            mIsValueChangedSurpressed = false;
+        }
+
+        public void HandleAllowedInnerAmplitude(float value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.InnerAmplitude = value;
             mIsValueChangedSurpressed = false;
         }
 
@@ -195,12 +216,27 @@ namespace WoWEditor6.UI.Models
             mWidget.TabletControlBox.IsChecked = newIsTabletChanged;
         }
 
-        public void HandleTabletChangeRadiusChanged(bool newIsTablet_RChange)
+        public void HandleTabletChangeRadiusChanged(bool newIsTablet_RChanged)
         {
             if (mIsValueChangedSurpressed)
                 return;
 
-            mWidget.TabletControlBox_Radius.IsChecked = newIsTablet_RChange;
+            mWidget.TabletControlBox_Radius.IsChecked = newIsTablet_RChanged;
+        }
+
+        public void HandleTabletChangeInnerRadiusChanged(bool newIsTablet_IRChanged)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.TabletControlBox_InnerRadius.IsChecked = newIsTablet_IRChanged;
+        }
+
+        public void HandleTabletControlPressureChanged(bool newIsTablet_PChanged)
+        {
+            if(mIsValueChangedSurpressed)
+                return;
+            mWidget.PressureControlBox.IsChecked = newIsTablet_PChanged;
         }
 
         public void HandleAllowedAmplitudeChanged(float newAmplitude )
@@ -208,6 +244,13 @@ namespace WoWEditor6.UI.Models
             if (mIsValueChangedSurpressed)
                 return;
             mWidget.Tablet_RadiusSlider.Value = newAmplitude;
+        }
+
+        public void HandleAllowedInnerAmplitudeChanged(float newInnerAmplitude)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+            mWidget.Tablet_InnerRadiusSlider.Value = newInnerAmplitude;
         }
 
         public void SwitchToTexturing()
