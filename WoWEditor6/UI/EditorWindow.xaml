@@ -165,6 +165,7 @@
                         </avalon:LayoutAnchorable>
                         <avalon:LayoutAnchorable Title="DBC Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DbcEditorDocument">
                            <!-- Things todo here -->
+                            <widgets:DBCEditor/>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutDocumentPane>
                 </avalon:LayoutPanel>
