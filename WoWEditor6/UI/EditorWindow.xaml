@@ -48,7 +48,7 @@
                 <MenuItem Header="Add 3D text" Click="Add3DText_Click"/>
             </MenuItem>
         </Menu>
-        <avalon:DockingManager Grid.Row="1" Margin="0" Grid.ColumnSpan="2" IsManipulationEnabled="False">
+        <avalon:DockingManager Grid.Row="1" Margin="0" Grid.ColumnSpan="2" Grid.Column="0" IsManipulationEnabled="False">
             <avalon:DockingManager.Theme>
                 <themes:DarkTheme/>
             </avalon:DockingManager.Theme>
@@ -160,11 +160,11 @@
                         </avalon:LayoutDocument>
                         <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800" x:Name="AssetBrowserDocument">
                             <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-
+                                <!-- Things todo here -->
                             </dialogs:AssetBrowser>
                         </avalon:LayoutAnchorable>
-                        <avalon:LayoutAnchorable Title="DBC Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DBCEditorDocument">
-                            
+                        <avalon:LayoutAnchorable Title="DBC Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DbcEditorDocument">
+                           <!-- Things todo here -->
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutDocumentPane>
                 </avalon:LayoutPanel>
