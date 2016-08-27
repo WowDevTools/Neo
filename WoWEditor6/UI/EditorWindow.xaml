@@ -70,7 +70,7 @@
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">
-                        <avalon:LayoutAnchorable Title="Welcome" CanClose="False" CanFloat="False" CanAutoHide="False" x:Name="WelcomeDocument">
+                        <avalon:LayoutAnchorable Title="First Time Wizard" CanClose="False" CanFloat="False" CanAutoHide="False" x:Name="WelcomeDocument">
                             <Grid SizeChanged="WelcomePanel_Resize">
                                 <controls:LoadingScreenControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="LoadingScreenView">
 
@@ -126,15 +126,29 @@
                                         description.</Run>
                                         </Paragraph>
                                         <Paragraph>
-                                            <TextBox Width="400" FontSize="16" x:Name="PathTextBox"></TextBox>
-                                            <Button Margin="5,0,0,0" Height="23" Width="40" FontSize="14" Click="BrowseFolderButton_Click">...</Button>
-                                            <Button Margin="5,0,0,0" Height="23" Width="130" FontSize="14" Click="RegistryButton_Click">From Registry</Button>
+                                            <InlineUIContainer>
+                                                <TextBox Width="400" FontSize="16" x:Name="PathTextBox"/>
+                                            </InlineUIContainer>
+                                            <Run Text=" "/>
+                                            <InlineUIContainer>
+                                                <Button Margin="5,0,0,0" Height="23" Width="40" FontSize="14" Click="BrowseFolderButton_Click" Content="..."/>
+                                            </InlineUIContainer>
+                                            <Run Text=" "/>
+                                            <InlineUIContainer>
+                                                <Button Margin="5,0,0,0" Height="23" Width="130" FontSize="14" Click="RegistryButton_Click" Content="From Registry"/>
+                                            </InlineUIContainer>
                                             <LineBreak/>
-                                            <Button FontSize="14" Height="23" Width="55" Margin="0,5,0,0" Click="LoadButton_Click">Load</Button>
+                                            <InlineUIContainer>
+                                                <Button FontSize="14" Height="23" Width="55" Margin="0,5,0,0" Click="LoadButton_Click" Content="Load"/>
+                                            </InlineUIContainer>
                                         </Paragraph>
                                     </FlowDocument>
                                 </FlowDocumentScrollViewer>
                             </Grid>
+                        </avalon:LayoutAnchorable>
+                        <!-- Select Map here -->
+                        <avalon:LayoutAnchorable Title="Map selection" AutoHideWidth="800" FloatingHeight="800" x:Name="MapSelectionDocument">
+                            <!-- Things todo here -->
                         </avalon:LayoutAnchorable>
                         <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False" x:Name="MapEditorDocument">
                             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
