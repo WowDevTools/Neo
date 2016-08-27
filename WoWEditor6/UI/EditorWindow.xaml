@@ -143,23 +143,19 @@
                                     <RowDefinition Height="*"></RowDefinition>
                                     <RowDefinition Height="30"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <StatusBar Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"> <!-- use grid.row to tell wich row use -->
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label x:Name="test" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60">test</Label>
-                                    </StackPanel>
-                                </StatusBar>
+                                <ToolBar x:Name="toolBar" HorizontalAlignment="Stretch"  Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold">
+                                    <Button x:Name="button1" Content="" Height="30" Width="75"/>
+                                </ToolBar>
                                 <WindowsFormsHost Grid.Row="1">
-                                    <local:RenderControl x:Name="RenderTarget">
-
-                                    </local:RenderControl>
+                                    <local:RenderControl x:Name="RenderTarget"/>
                                 </WindowsFormsHost>
                                 <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <StackPanel Orientation="Horizontal">
-                                        <Label x:Name="CurrentAdtLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60">ADT: 0/0</Label>
-                                        <Label x:Name="CurrentPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="200">Position: 0/0/0</Label>
-                                        <Label x:Name="CurrentModelPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="210">Model Position: 0/0/0</Label>
-                                        <Label x:Name="CurrentNamePlatePositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center">NamePlate Position: 0/0/0</Label>
-                                        <Button x:Name="GenerateWdlButton" FontSize="12" VerticalAlignment="Center" Margin="15,0,0,0" Padding="10,0,10,0" Click="GenerateWdlButton_OnClick">Generate WDL</Button>
+                                        <Label x:Name="CurrentAdtLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60" Content="ADT: 0/0"/>
+                                        <Label x:Name="CurrentPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="200" Content="Position: 0/0/0"/>
+                                        <Label x:Name="CurrentModelPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="210" Content="Model Position: 0/0/0"/>
+                                        <Label x:Name="CurrentNamePlatePositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Content="NamePlate Position: 0/0/0"/>
+                                        <Button x:Name="GenerateWdlButton" FontSize="12" VerticalAlignment="Center" Margin="15,0,0,0" Padding="10,0,10,0" Click="GenerateWdlButton_OnClick" Content="Generate WDL"/>
                                     </StackPanel>
                                 </StatusBar>
                             </Grid>
