@@ -163,6 +163,11 @@
                                 <!-- Things todo here -->
                             </dialogs:AssetBrowser>
                         </avalon:LayoutAnchorable>
+                        <avalon:LayoutAnchorable Title="Database Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DBEditorDocument">
+                            <!-- Things todo here -->
+                            <!-- To use a widget for the tab use this: <widgets:DBCEditor/> -->
+                            <!-- ToDo Do a main frame for DB Editor -->
+                        </avalon:LayoutAnchorable>
                         <avalon:LayoutAnchorable Title="DBC Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DbcEditorDocument">
                            <!-- Things todo here -->
                             <widgets:DBCEditor/>
