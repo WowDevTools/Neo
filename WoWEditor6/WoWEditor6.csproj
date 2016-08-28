@@ -460,7 +460,7 @@
       <DependentUpon>ModelRenderControl.cs</DependentUpon>
     </Compile>
     <None Include="UI\old\MouseMessage.cs" />
-    <Compile Include="UI\old\PerformanceControl.cs" />
+    <None Include="UI\old\PerformanceControl.cs" />
     <None Include="UI\old\Scrollbar.cs" />
     <None Include="UI\old\Slider.cs" />
     <None Include="UI\old\StatusBar.cs" />
