@@ -161,13 +161,21 @@ namespace WoWEditor6.Scene.Models
         {
             while(mIsRunning)
             {
-                lock(mUnloadItems)
+                WmoBatchRender element = null;
+                lock (mUnloadItems)
                 {
-                    mUnloadItems.ForEach(w => w.Dispose());
-                    mUnloadItems.Clear();
+                    if (mUnloadItems.Count > 0)
+                    {
+                        element = mUnloadItems[0];
+                        mUnloadItems.RemoveAt(0);
+                    }
                 }
 
-                Thread.Sleep(500);
+                if (element != null)
+                    element.Dispose();
+
+                if (element == null)
+                    Thread.Sleep(200);
             }
         }
     }
