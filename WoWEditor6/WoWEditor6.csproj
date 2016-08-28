@@ -460,7 +460,7 @@
       <DependentUpon>ModelRenderControl.cs</DependentUpon>
     </Compile>
     <None Include="UI\old\MouseMessage.cs" />
-    <None Include="UI\old\PerformanceControl.cs" />
+    <Compile Include="UI\old\PerformanceControl.cs" />
     <None Include="UI\old\Scrollbar.cs" />
     <None Include="UI\old\Slider.cs" />
     <None Include="UI\old\StatusBar.cs" />
@@ -708,20 +708,93 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\raise_lower.png" />
-    <None Include="Resources\Images\up-and-down-arrows.png" />
+    <Resource Include="Resources\Images\up-and-down-arrows.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\3d-creative-process.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\airbrush.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\book-with-a-pencil-sign.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\brush.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\codepen-draw-logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\graphic-designer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\graphic-tablet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\horizontal-resize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\intersection.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\layers.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\levels.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\magic-wand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\menu-curve-lines-variant-hand-drawn-outlines.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\mesh.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\music-edition.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\paint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\paintbrush-design-tool-interface-symbol.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\red-eye.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\resize-length.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\stamp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\sun.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\terrain.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\Shaders\BoundingBoxPixel.hlsl" />
     <Content Include="Resources\Shaders\BoundingBoxVertex.hlsl" />
     <Content Include="Resources\Shaders\M2PixelOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexInstancedOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexSingleOld.hlsl" />
+    <None Include="Resources\up_and_down_arrows.png" />
     <Content Include="Tools\ShaderCompiler.exe" />
     <Content Include="Tools\ShaderProcessor.pdb" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\Images\about.jpg" />
-    <None Include="Resources\Images\Page.png" />
+    <Resource Include="Resources\Images\about.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Page.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\Shaders\M2PixelPortrait.hlsl" />
     <Content Include="Resources\Shaders\M2VertexSingle.hlsl" />
     <Content Include="Resources\Shaders\M2VertexPortrait.hlsl" />
@@ -732,10 +805,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\d3dcompiler_43.dll" />
-    <None Include="Resources\Images\joystick-48.png" />
-    <None Include="Resources\Images\wheelbarrow-48.png" />
+    <Resource Include="Resources\Images\joystick-48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\wheelbarrow-48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\Images\License.txt" />
-    <None Include="Resources\Images\save-48.bmp" />
+    <Resource Include="Resources\Images\save-48.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\Shaders\M2Pixel.hlsl" />
     <Content Include="Resources\Shaders\M2VertexInstanced.hlsl" />
     <Content Include="Resources\Shaders\MapLowPixel.hlsl" />

@@ -159,7 +159,16 @@
                                 </Grid.RowDefinitions>
                                 <ToolBar x:Name="toolBar" HorizontalAlignment="Stretch"  Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold">
                                     <Button x:Name="button1" Height="30" Width="30" ToolTip="Raise / Lower">
-                                        <Image Source="pack://siteoforigin:,,,/Resources/Images/up-and-down-arrows.png" ToolTip="" />
+                                        <Image Source="/Neo;component/Resources/Images/up-and-down-arrows.png" ToolTip="Raise / Lower" />
+                                    </Button>
+                                    <Button x:Name="button2" Height="30" Width="30" ToolTip="Flatten / Blur">
+                                        <Image Source="/Neo;component/Resources/Images/resize-length.png" ToolTip="Flatten / Blur" />
+                                    </Button>
+                                    <Button x:Name="button3" Height="30" Width="30" ToolTip="3D Texturing">
+                                        <Image Source="/Neo;component/Resources/Images/paintbrush-design-tool-interface-symbol.png" ToolTip="3D Texturing" />
+                                    </Button>
+                                    <Button x:Name="button4" Height="30" Width="30" ToolTip="Shading">
+                                        <Image Source="/Neo;component/Resources/Images/levels.png" ToolTip="Shading" />
                                     </Button>
                                 </ToolBar>
                                 <WindowsFormsHost Grid.Row="1">
