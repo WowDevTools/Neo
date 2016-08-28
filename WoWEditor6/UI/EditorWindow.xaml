@@ -158,7 +158,9 @@
                                     <RowDefinition Height="30"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <ToolBar x:Name="toolBar" HorizontalAlignment="Stretch"  Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold">
-                                    <Button x:Name="button1" Content="" Height="30" Width="75"/>
+                                    <Button x:Name="button1" Height="30" Width="30" ToolTip="Raise / Lower">
+                                        <Image Source="pack://siteoforigin:,,,/Resources/Images/up-and-down-arrows.png" ToolTip="" />
+                                    </Button>
                                 </ToolBar>
                                 <WindowsFormsHost Grid.Row="1">
                                     <local:RenderControl x:Name="RenderTarget"/>
