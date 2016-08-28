@@ -1,5 +1,4 @@
 using System;
-using System.Windows.Forms;
 using SharpDX;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Utils;
@@ -200,19 +199,11 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public Vector3 GetPosition()
         {
-            if (mPosition == null)
-                return new Vector3(0.0f, 0.0f, 0.0f);
-
             return mPosition;
         }
 
         public Vector3 GetRotation()
         {
-            if (mRotation == null)
-            {
-                return new Vector3(0.0f, 0.0f, 0.0f);
-            }
-
             return mRotation;
         }
 
@@ -251,7 +242,7 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public void Remove()
         {
-            WorldFrame.Instance.WmoManager.RemoveInstance(ModelRoot.FileName, Uuid);
+            WorldFrame.Instance.WmoManager.RemoveInstance(ModelRoot.FileName, Uuid,true);
             WorldFrame.Instance.ClearSelection();
         }
     }

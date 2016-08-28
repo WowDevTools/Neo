@@ -2,7 +2,6 @@
 using System.Linq;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using SharpDX.D3DCompiler;
 
 namespace WoWEditor6.Graphics
 {

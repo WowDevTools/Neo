@@ -84,23 +84,39 @@ namespace WoWEditor6.Scene.Models.WMO
             lock (mInstances)
             {
                 WmoInstance instance;
-                if (mInstances.TryGetValue(uuid, out instance) == false)
+                if (mInstances.TryGetValue(uuid, out instance) == false || instance == null)
                     return false;
 
-                if (instance != null)
+                --instance.ReferenceCount;
+                if (instance.ReferenceCount > 0)
                 {
-                    --instance.ReferenceCount;
-                    if (instance.ReferenceCount > 0)
-                    {
-                        ++instance.ReferenceCount;
-                        return false;
-                    }
-
-                    mInstances.Remove(uuid);
-                    instance.Dispose();
+                    ++instance.ReferenceCount;
+                    return false;
                 }
 
+                mInstances.Remove(uuid);
+                instance.Dispose();
+                mInstancesChanged = true;
                 return instance.ReferenceCount == 0;
+            }
+        }
+
+        public bool DeleteInstance(int uuid)
+        {
+            if (mInstances == null)
+                return false;
+
+            lock (mInstances)
+            {
+                WmoInstance instance;
+                if (mInstances.TryGetValue(uuid, out instance) == false || mInstances == null)
+                    return false;
+
+                mInstances.Remove(uuid);
+                instance.Dispose();
+                mInstancesChanged = true;
+
+                return mInstances.Count == 0;
             }
         }
 

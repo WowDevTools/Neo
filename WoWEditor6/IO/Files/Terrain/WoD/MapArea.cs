@@ -812,7 +812,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             if (mWmoInstances != null)
             {
                 foreach (var instance in mWmoInstances)
-                    WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid);
+                    WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid,false);
 
                 mWmoInstances.Clear();
                 mWmoInstances = null;

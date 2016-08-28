@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Models;
@@ -20,9 +15,8 @@ namespace WoWEditor6.Editing
         public IModelInstance SelectedModel { get; set; }
 
         private Point mLastCursorPosition = Cursor.Position;
-        private Vector3 mLastBrushPosition = EditManager.Instance.MousePosition;
         private Vector3 mLastPos = EditManager.Instance.MousePosition;
-        int slowness = 1;
+        private const int Slowness = 1;
 
         static ModelEditManager()
         {
@@ -34,7 +28,6 @@ namespace WoWEditor6.Editing
             if (SelectedModel == null)
             {
                 mLastCursorPosition = Cursor.Position;
-                mLastBrushPosition = EditManager.Instance.MousePosition;
                 mLastPos = EditManager.Instance.MousePosition;
 
                 EditorWindowController.Instance.OnUpdate(new Vector3(0.0f,0.0f,0.0f), new Vector3(0.0f, 0.0f, 0.0f));
@@ -51,46 +44,43 @@ namespace WoWEditor6.Editing
             var altDown = KeyHelper.IsKeyDown(keyState, Keys.Menu);
             var ctrlDown = KeyHelper.IsKeyDown(keyState, Keys.ControlKey);
             var shiftDown = KeyHelper.IsKeyDown(keyState, Keys.ShiftKey);
-            var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
-            var MMBDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
-            var DelDown = KeyHelper.IsKeyDown(keyState, Keys.Delete);
+            var rmbDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
+            var mmbDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
+            var delDown = KeyHelper.IsKeyDown(keyState, Keys.Delete);
             var rDown = KeyHelper.IsKeyDown(keyState, Keys.R);
             var mDown = KeyHelper.IsKeyDown(keyState, Keys.M);
             var pagedownDown = KeyHelper.IsKeyDown(keyState, Keys.PageDown);
 
 
-            if ((altDown || ctrlDown || shiftDown) & RMBDown) // Rotating
+            if ((altDown || ctrlDown || shiftDown) & rmbDown) // Rotating
             {
                 var angle = MathUtil.DegreesToRadians(dpos.X * 6);
                 SelectedModel.Rotate(altDown ? angle : 0, ctrlDown ? angle : 0, shiftDown ? angle : 0);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
-            if (altDown & MMBDown & !shiftDown) // Scaling
+            if (altDown & mmbDown & !shiftDown) // Scaling
             {
                 var amount = (mLastCursorPosition.Y - curPos.Y) / 512.0f;
-                SelectedModel.UpdateScale(altDown ? amount : 0);
+                SelectedModel.UpdateScale(amount);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
-            if (MMBDown && !altDown && Cursor.Position != mLastCursorPosition) // Moving 
+            if (mmbDown && !altDown && Cursor.Position != mLastCursorPosition) // Moving 
             {
                 Vector3 delta;
-                Vector3 position;
 
                 delta.X = EditManager.Instance.MousePosition.X - mLastPos.X;
                 delta.Y = EditManager.Instance.MousePosition.Y - mLastPos.Y;
                 delta.Z = -(Cursor.Position.Y - mLastCursorPosition.Y); //Better to use the 2d screen pos of the mouse.
 
-                position = new Vector3(MMBDown && !shiftDown ? delta.X/ slowness : 0, MMBDown && !shiftDown ? delta.Y/ slowness : 0, MMBDown && shiftDown ? delta.Z/ slowness : 0);
+                var position = new Vector3(!shiftDown ? delta.X/ Slowness : 0, !shiftDown ? delta.Y/ Slowness : 0, shiftDown ? delta.Z/ Slowness : 0);
 
                 SelectedModel.UpdatePosition(position);
-
-                mLastBrushPosition = SelectedModel.GetPosition();
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
             mLastCursorPosition = curPos;
             mLastPos = EditManager.Instance.MousePosition;
 
-            if(DelDown) // Delete model
+            if(delDown) // Delete model
             {
                 SelectedModel.Remove();
             }

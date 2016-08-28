@@ -255,11 +255,14 @@ namespace WoWEditor6.Scene.Models.M2
 
             if (mFullInstances != null)
             {
-                foreach (var inst in mFullInstances.Values)
-                    inst.Dispose();
+                lock (mFullInstances)
+                {
+                    foreach (var inst in mFullInstances.Values)
+                        inst.Dispose();
 
-                mFullInstances.Clear();
-                mFullInstances = null;
+                    mFullInstances.Clear();
+                    mFullInstances = null;
+                }
             }
 
             var vb = VertexBuffer;

@@ -88,12 +88,12 @@ namespace WoWEditor6.Scene.Models
             }
         }
 
-        public void RemoveInstance(string model, int uuid)
+        public void RemoveInstance(string model, int uuid, bool delete)
         {
             try
             {
                 var hash = model.ToUpperInvariant().GetHashCode();
-                RemoveInstance(hash, uuid);
+                RemoveInstance(hash, uuid, delete);
             }
             catch (Exception ex)
             {
@@ -101,7 +101,7 @@ namespace WoWEditor6.Scene.Models
             }
         }
 
-        public void RemoveInstance(int hash, int uuid)
+        public void RemoveInstance(int hash, int uuid,bool delete)
         {
             if (mRenderer == null)
                 return;
@@ -111,8 +111,15 @@ namespace WoWEditor6.Scene.Models
                 WmoBatchRender batch;
                 if (!mRenderer.TryGetValue(hash, out batch))
                     return;
+                if (delete && batch.DeleteInstance(uuid))
+                {
+                    lock (mAddLock)
+                        mRenderer.Remove(hash);
 
-                if(batch.RemoveInstance(uuid))
+                    lock (mUnloadItems)
+                        mUnloadItems.Add(batch);
+                }
+                else if (batch.RemoveInstance(uuid))
                 {
                     lock (mAddLock)
                         mRenderer.Remove(hash);

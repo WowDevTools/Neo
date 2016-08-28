@@ -210,9 +210,6 @@ namespace WoWEditor6.Editing
             if (area == null || area.AreaFile == null || area.AreaFile.IsValid == false)
                 return;
 
-            var minPos = mHoveredInstance.BoundingBox.Minimum;
-            var maxPos = mHoveredInstance.BoundingBox.Maximum;
-
             var baseUuid = area.AreaFile.GetFreeM2Uuid();
             if (baseUuid == -1)
                 return;
@@ -268,8 +265,9 @@ namespace WoWEditor6.Editing
                 area.AddDoodadInstance(uuid, mSelectedModel, box, mHoveredInstance.Position, mHoveredInstance.Rotation, mHoveredInstance.Scale);
                 area.Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(ex.Message);
             }
         }
 
