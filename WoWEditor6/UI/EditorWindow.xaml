@@ -71,7 +71,7 @@
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Sculpting" CanClose="False" AutoHideWidth="340" x:Name="IEditingPane">
+                        <avalon:LayoutAnchorable Title="World Editing" CanClose="False" AutoHideWidth="340" x:Name="IEditingPane">
                             <widget:IEditingWidget/>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>

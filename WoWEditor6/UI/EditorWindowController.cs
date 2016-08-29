@@ -16,6 +16,7 @@ namespace WoWEditor6.UI
         public LoadingScreenControl LoadingScreen { get { return mWindow.LoadingScreenView; } }
         public TexturingViewModel TexturingModel { get; set; }
         public SculptingViewModel TerrainManager { get; set; }
+        public IEditingViewModel IEditingModel { get; set; }
         public AssetBrowserViewModel AssetBrowserModel { get; set; }
         public ObjectSpawnModel SpawnModel { get; set; }
 

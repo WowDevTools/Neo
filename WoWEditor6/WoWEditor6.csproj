@@ -501,6 +501,7 @@
     </Compile>
     <Compile Include="UI\Models\MySqlConnectionsModel.cs" />
     <Compile Include="UI\Models\ObjectSpawnModel.cs" />
+    <Compile Include="UI\Models\IEditingViewModel.cs" />
     <Compile Include="UI\Models\SculptingViewModel.cs" />
     <Compile Include="UI\Services\XmlService.cs" />
     <Compile Include="UI\ViewModels\MySqlConnectionsViewModel.cs" />
@@ -578,6 +579,9 @@
       <DependentUpon>TerrainSettingsWidget.xaml</DependentUpon>
     </Compile>
     <None Include="UI\old\DrawSurface.cs" />
+    <Compile Include="UI\Widgets\IEditingWidget.xaml.cs">
+      <DependentUpon>IEditingWidget.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Widgets\TexturingWidget.xaml.cs">
       <DependentUpon>TexturingWidget.xaml</DependentUpon>
     </Compile>
@@ -900,6 +904,10 @@
     <Page Include="UI\Widgets\TerrainSettingsWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Widgets\IEditingWidget.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Widgets\TexturingWidget.xaml">
       <SubType>Designer</SubType>

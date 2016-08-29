@@ -149,6 +149,7 @@ namespace WoWEditor6.UI
                 Dispatcher.BeginInvoke(new Action(() => TexturingPane.ToggleAutoHide()));
             };
             EditorWindowController.Instance.TexturingModel.Widget.SelectedTileWrapPanel.HandleCreated += method;
+            //EditorWindowController.Instance.IEditingModel.SwitchWidgets(0);
             Log.AddSink(this);
         }
 
@@ -523,6 +524,8 @@ namespace WoWEditor6.UI
             }
 
             EditManager.Instance.EnableSculpting();
+            EditorWindowController.Instance.IEditingModel.SwitchWidgets(1);
+
 
         }
     }
