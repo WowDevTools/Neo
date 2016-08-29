@@ -15,6 +15,9 @@ using WoWEditor6.UI.Components;
 using WoWEditor6.Win32;
 using Color = System.Windows.Media.Color;
 using System.Windows.Input;
+using WoWEditor6.UI.Dialogs;
+using WoWEditor6.UI.Widgets;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace WoWEditor6.UI
 {
@@ -508,6 +511,13 @@ namespace WoWEditor6.UI
 
             loadDialog.Owner = Window.GetWindow(this);
             loadDialog.ShowDialog();
+        }
+
+        private void RaiseLowerClick(object sender, RoutedEventArgs e)
+        {
+            SculptingPane.IsActive = true;
+            // We need to pin it here.
+
         }
     }
 }

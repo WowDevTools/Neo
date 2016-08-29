@@ -158,7 +158,7 @@
                                     <RowDefinition Height="30"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <ToolBar x:Name="toolBar" HorizontalAlignment="Stretch"  Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold">
-                                    <Button x:Name="button1" Height="30" Width="30" ToolTip="Raise / Lower">
+                                    <Button x:Name="RaiseLower" Height="30" Width="30" ToolTip="Raise / Lower" Click="RaiseLowerClick" >
                                         <Image Source="/Neo;component/Resources/Images/up-and-down-arrows.png" ToolTip="Raise / Lower" />
                                     </Button>
                                     <Button x:Name="button2" Height="30" Width="30" ToolTip="Flatten / Blur">
