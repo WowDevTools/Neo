@@ -56,21 +56,6 @@
             <avalon:LayoutRoot>
                 <avalon:LayoutPanel Orientation="Horizontal">
                     <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Sculpting" CanClose="False" AutoHideWidth="340" x:Name="SculptingPane">
-                            <dialogs:TerrainSettingsWidget VerticalAlignment="Top"/>
-                        </avalon:LayoutAnchorable>
-                    </avalon:LayoutAnchorablePane>
-                    <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Texturing" CanClose="False" AutoHideWidth="340" x:Name="TexturingPane">
-                            <widgets:TexturingWidget/>
-                        </avalon:LayoutAnchorable>
-                    </avalon:LayoutAnchorablePane>
-                    <avalon:LayoutAnchorablePane DockWidth="340">
-                        <avalon:LayoutAnchorable Title="Models" CanClose="False" AutoHideWidth="340" x:Name="ModelSpawnPane">
-                            <widgets:ModelSpawnWidget/>
-                        </avalon:LayoutAnchorable>
-                    </avalon:LayoutAnchorablePane>
-                    <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="World Editing" CanClose="False" AutoHideWidth="340" x:Name="IEditingPane">
                             <widget:IEditingWidget/>
                         </avalon:LayoutAnchorable>
@@ -168,10 +153,10 @@
                                     <Button x:Name="RaiseLower" Height="30" Width="30" ToolTip="Raise / Lower" Click="RaiseLowerClick" >
                                         <Image Source="/Neo;component/Resources/Images/up-and-down-arrows.png" ToolTip="Raise / Lower" />
                                     </Button>
-                                    <Button x:Name="button2" Height="30" Width="30" ToolTip="Flatten / Blur">
+                                    <Button x:Name="FlattenBlur" Height="30" Width="30" ToolTip="Flatten / Blur">
                                         <Image Source="/Neo;component/Resources/Images/resize-length.png" ToolTip="Flatten / Blur" />
                                     </Button>
-                                    <Button x:Name="button3" Height="30" Width="30" ToolTip="3D Texturing">
+                                    <Button x:Name="Texturing" Height="30" Width="30" ToolTip="3D Texturing" Click="TexturingClick">
                                         <Image Source="/Neo;component/Resources/Images/paintbrush-design-tool-interface-symbol.png" ToolTip="3D Texturing" />
                                     </Button>
                                     <Button x:Name="button4" Height="30" Width="30" ToolTip="Shading">

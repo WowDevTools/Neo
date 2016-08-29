@@ -7,89 +7,88 @@
              mc:Ignorable="d" d:DesignWidth="340" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="264"></RowDefinition>
-            <RowDefinition/>
+            <RowDefinition Height="27"/>
+            <RowDefinition Height="142"/>
+            <RowDefinition Height="96"/>
+            <RowDefinition Height="160*"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="1" Margin="0,9,0,-9">
+        <Label x:Name="EditingMode" Content="Editing mode: 3D Texturing" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Height="26" FontSize="14" FontWeight="Bold" Width="191"/>
+        <TabControl Grid.Row="3" Margin="0,9,0,1">
             <TabItem Header="Selected Tile">
                 <Grid>
                     <WindowsFormsHost>
-                        <forms:FlowLayoutPanel x:Name="SelectedTileWrapPanel">
-
-                        </forms:FlowLayoutPanel>
+                        <forms:FlowLayoutPanel x:Name="SelectedTileWrapPanel"/>
                     </WindowsFormsHost>
                 </Grid>
             </TabItem>
             <TabItem Header="Selected Chunk">
                 <WindowsFormsHost>
-                    <forms:FlowLayoutPanel x:Name="SelectedChunkWrapPanel">
-
-                    </forms:FlowLayoutPanel>
+                    <forms:FlowLayoutPanel x:Name="SelectedChunkWrapPanel"/>
                 </WindowsFormsHost>
             </TabItem>
             <TabItem Header="Recent">
                 <WindowsFormsHost>
-                    <forms:FlowLayoutPanel x:Name="RecentWrapPanel">
-
-                    </forms:FlowLayoutPanel>
+                    <forms:FlowLayoutPanel x:Name="RecentWrapPanel"/>
                 </WindowsFormsHost>
             </TabItem>
             <TabItem Header="Favorites">
                 <WindowsFormsHost>
-                    <forms:FlowLayoutPanel x:Name="FavoriteWrapPanel">
-
-                    </forms:FlowLayoutPanel>
+                    <forms:FlowLayoutPanel x:Name="FavoriteWrapPanel"/>
                 </WindowsFormsHost>
             </TabItem>
             <TabItem Header="Search">
                 <DockPanel Margin="10,10,10,10">
-                    <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Query String</Label>
-                    <TextBox DockPanel.Dock="Top"  Margin="0,5" FontSize="14" x:Name="TextureQueryBox" TextChanged="TextureQueryText_Changed"></TextBox>
-                    <Label DockPanel.Dock="Top"  Margin="0,10,0,0" FontSize="16" FontWeight="Bold">Filter</Label>
+                    <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold" Content="Query String"/>
+                    <TextBox DockPanel.Dock="Top"  Margin="0,5" FontSize="14" x:Name="TextureQueryBox" TextChanged="TextureQueryText_Changed"/>
+                    <Label DockPanel.Dock="Top"  Margin="0,10,0,0" FontSize="16" FontWeight="Bold" Content="Filter"/>
                     <WrapPanel DockPanel.Dock="Top"  Orientation="Horizontal" x:Name="FilterWrapPanel">
-                        <CheckBox Margin="0,3,5,0">Brick</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Cobblestone</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Cracked</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Creep</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Crop</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Dirt</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Fern</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Flower</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Grass</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Ice</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Lava</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Leaf</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Mud</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Moss</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Road</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Rock</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Root</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Rubble</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Sand</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Shore</CheckBox>
-                        <CheckBox Margin="0,3,5,0">Weed</CheckBox>
+                        <CheckBox Margin="0,3,5,0" Content="Brick"/>
+                        <CheckBox Margin="0,3,5,0" Content="Cobblestone"/>
+                        <CheckBox Margin="0,3,5,0" Content="Cracked"/>
+                        <CheckBox Margin="0,3,5,0" Content="Creep"/>
+                        <CheckBox Margin="0,3,5,0" Content="Crop"/>
+                        <CheckBox Margin="0,3,5,0" Content="Dirt"/>
+                        <CheckBox Margin="0,3,5,0" Content="Fern"/>
+                        <CheckBox Margin="0,3,5,0" Content="Flower"/>
+                        <CheckBox Margin="0,3,5,0" Content="Grass"/>
+                        <CheckBox Margin="0,3,5,0" Content="Ice"/>
+                        <CheckBox Margin="0,3,5,0" Content="Lava"/>
+                        <CheckBox Margin="0,3,5,0" Content="Leaf"/>
+                        <CheckBox Margin="0,3,5,0" Content="Mud"/>
+                        <CheckBox Margin="0,3,5,0" Content="Moss"/>
+                        <CheckBox Margin="0,3,5,0" Content="Road"/>
+                        <CheckBox Margin="0,3,5,0" Content="Rock"/>
+                        <CheckBox Margin="0,3,5,0" Content="Root"/>
+                        <CheckBox Margin="0,3,5,0" Content="Rubble"/>
+                        <CheckBox Margin="0,3,5,0" Content="Sand"/>
+                        <CheckBox Margin="0,3,5,0" Content="Shore"/>
+                        <CheckBox Margin="0,3,5,0" Content="Weed"/>
                     </WrapPanel>
-                    <Label DockPanel.Dock="Top"  Margin="0,10" FontSize="16" FontWeight="Bold">Result</Label>
+                    <Label DockPanel.Dock="Top"  Margin="0,10" FontSize="16" FontWeight="Bold" Content="Result"/>
                     <WindowsFormsHost DockPanel.Dock="Top">
-                        <forms:FlowLayoutPanel x:Name="SearchResultLayout" AutoScroll="True">
-
-                        </forms:FlowLayoutPanel>
+                        <forms:FlowLayoutPanel x:Name="SearchResultLayout" AutoScroll="True"/>
                     </WindowsFormsHost>
                 </DockPanel>
             </TabItem>
         </TabControl>
-        <TabControl x:Name="tabControl" Height="162" VerticalAlignment="Top">
+        <TabControl x:Name="tabControl" Grid.Row="1" Height="140" VerticalAlignment="Top">
             <TabItem Header="Brush Settings" Margin="-2,-2,-18,0">
-                <StackPanel Orientation="Vertical" Margin="0,0,-6,-134">
+                <StackPanel Orientation="Vertical" Margin="0,0,-6,-1" Height="113" VerticalAlignment="Top" HorizontalAlignment="Left" Width="340">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Amount"/>
                         <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="40" Value="20" ValueChanged="Handle_AmountSliderChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=AmountSlider, StringFormat=\{0:F2\}}"/>
+                        <ToggleButton x:Name ="TabletControlBox" Checked="TabletControl_Changed" Unchecked="TabletControl_Changed" Margin="12,3,0,0" VerticalAlignment="Center" Height="28" Width="28" RenderTransformOrigin="2.6,1.059">
+                            <Image Source="/Neo;component/Resources/Images/graphic-tablet.png" RenderTransformOrigin="13.478,-4"/>
+                        </ToggleButton>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Opacity"/>
                         <Slider x:Name="GradientSlider" VerticalAlignment="Center" Width="180" Margin="28,0,0,0" Minimum="0" Maximum="255" Value="255" ValueChanged="Handle_GradientSliderChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=GradientSlider, StringFormat=\{0:F0\}}"/>
+                        <ToggleButton x:Name ="SprayModeBox" Checked="SprayMode_Changed" Unchecked="SprayMode_Changed" Margin="21,3,0,0" VerticalAlignment="Center" Height="28" Width="28" RenderTransformOrigin="2.6,1.059">
+                            <Image Source="/Neo;component/Resources/Images/airbrush.png" RenderTransformOrigin="13.478,-4"/>
+                        </ToggleButton>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Inner Radius"/>
@@ -102,9 +101,11 @@
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=OuterRadiusSlider, StringFormat=\{0:F2\}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletControl_Changed"/>
-                        <CheckBox x:Name="SprayModeBox" Checked="SprayMode_Changed" Content="Spray Mode" VerticalAlignment="Center"  Margin="106,3,0,0" Height="17" Unchecked="SprayMode_Changed"/>
+                        <!-- <CheckBox x:Name="TabletControlBox" Checked="TabletControl_Changed" Content="Tablet Control" VerticalAlignment="Center"  Margin="4,3,0,0" Height="17" Unchecked="TabletControl_Changed">
+                        </CheckBox> !-->
+                        <!-- <CheckBox x:Name="SprayModeBox" Checked="SprayMode_Changed" Content="Spray Mode" VerticalAlignment="Center"  Margin="106,3,0,0" Height="17" Unchecked="SprayMode_Changed"/> !-->
                     </StackPanel>
+
 
                 </StackPanel>
             </TabItem>
@@ -142,10 +143,11 @@
 
             </TabItem>
         </TabControl>
-        <Grid Margin="0,165,0,0">
+        <Grid Margin="0,1,0,0" Grid.Row="2" Height="137" VerticalAlignment="Top" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="199*"/>
+                <ColumnDefinition Width="21*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -153,15 +155,15 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Width="96" Height="96" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.RowSpan="4">
+            <Border Width="96" Height="96" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.RowSpan="4" Margin="12,3,12,38">
                 <WindowsFormsHost Height="94" VerticalAlignment="Top">
                     <forms:PictureBox x:Name="TexturePreviewImage" Dock="Fill" SizeMode="StretchImage"/>
                 </WindowsFormsHost>
             </Border>
-            <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick" Content="Select From Assets"/>
-            <Button HorizontalAlignment="Left" Height="25" Margin="5,0,0,0" Width="130" Grid.Column="1" Grid.Row="1" Click="EnableTexturing_Click" Content="Enable Texturing"/>
+            <Button HorizontalAlignment="Left" Height="25" Margin="5,2,0,2" Width="130" Grid.Column="1" Grid.Row="0" Click="Handle_AssetBrowserClick" Content="Select From Assets"/>
+            <Button HorizontalAlignment="Left" Height="25" Margin="5,2,0,2" Width="130" Grid.Column="1" Grid.Row="1" Click="EnableTexturing_Click" Content="Enable Texturing"/>
             <!-- <CheckBox Grid.Column="1" Grid.Row="2" Margin="5,0,0,0" VerticalAlignment="Center" IsChecked="True" Visibility="Hidden">Preview Gradient</CheckBox> -->
-            <Button Grid.Row="2" Grid.Column="1" IsEnabled="False" HorizontalAlignment="Left" Width="130" Height="25" Margin="5,0,0,0" x:Name="FavoriteButton" Click="FavoriteButton_OnClick" Content="Add Favorite"/>
+            <Button Grid.Row="2" Grid.Column="1" IsEnabled="False" HorizontalAlignment="Left" Width="130" Height="25" Margin="5,2,0,2" x:Name="FavoriteButton" Click="FavoriteButton_OnClick" Content="Add Favorite"/>
         </Grid>
     </Grid>
 </UserControl>

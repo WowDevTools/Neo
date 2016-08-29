@@ -17,6 +17,7 @@ using Color = System.Windows.Media.Color;
 using System.Windows.Input;
 using WoWEditor6.UI.Dialogs;
 using WoWEditor6.UI.Models;
+using WoWEditor6.UI.Widget;
 using WoWEditor6.UI.Widgets;
 using Xceed.Wpf.AvalonDock.Layout;
 
@@ -140,16 +141,20 @@ namespace WoWEditor6.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ModelSpawnPane.ToggleAutoHide();
-            SculptingPane.ToggleAutoHide();
             EventHandler method = null;
             method = (s, args) =>
             {
                 EditorWindowController.Instance.TexturingModel.Widget.SelectedTileWrapPanel.HandleCreated -= method;
-                Dispatcher.BeginInvoke(new Action(() => TexturingPane.ToggleAutoHide()));
+                //Dispatcher.BeginInvoke(new Action(() => TexturingPane.ToggleAutoHide()));
             };
             EditorWindowController.Instance.TexturingModel.Widget.SelectedTileWrapPanel.HandleCreated += method;
-            //EditorWindowController.Instance.IEditingModel.SwitchWidgets(0);
+
+            if (EditorWindowController.Instance.IEditingModel != null)
+            {
+                EditorWindowController.Instance.IEditingModel.SwitchWidgets(0);
+                IEditingPane.ToggleAutoHide();
+            }
+
             Log.AddSink(this);
         }
 
@@ -518,14 +523,25 @@ namespace WoWEditor6.UI
         private void RaiseLowerClick(object sender, RoutedEventArgs e)
         {
 
-            if ((SculptingPane.IsHidden || SculptingPane.IsAutoHidden) && !SculptingPane.IsFloating)
+            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
             {
-                SculptingPane.Dock();
+                IEditingPane.Dock();
             }
 
-            EditManager.Instance.EnableSculpting();
-            EditorWindowController.Instance.IEditingModel.SwitchWidgets(1);
+            if (EditorWindowController.Instance.IEditingModel != null)
+                EditorWindowController.Instance.IEditingModel.SwitchWidgets(1);
 
+        }
+
+        private void TexturingClick(object sender, RoutedEventArgs e)
+        {
+            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            {
+                IEditingPane.Dock();
+            }
+
+            if (EditorWindowController.Instance.IEditingModel != null)
+                EditorWindowController.Instance.IEditingModel.SwitchWidgets(3);
 
         }
     }

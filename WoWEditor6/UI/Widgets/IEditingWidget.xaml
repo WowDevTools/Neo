@@ -10,10 +10,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
+        <Dialogs:TerrainSettingsWidget x:Name="TerrainSettingsWidget" VerticalAlignment="Top"/>
+        <Widgets:TexturingWidget  x:Name="TexturingWidget"/>
 
-        <Widgets:TexturingWidget x:Name="TexturingWidget"/>
-
-        <Dialogs:TerrainSettingsWidget x:Name="TerrainSettingsWidget"/>
 
     </Grid>
 </UserControl>
