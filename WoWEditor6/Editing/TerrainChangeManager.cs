@@ -71,7 +71,7 @@ namespace WoWEditor6.Editing
                 Center = EditManager.Instance.MousePosition,
                 InnerRadius = EditManager.Instance.InnerRadius,
                 OuterRadius = EditManager.Instance.OuterRadius,
-                Method = ChangeType,
+                Method = EditManager.Instance.ChangeType,
                 TimeDiff = diff,
                 Shading = ShadingMultiplier,
                 // if tablet is connected override the amount set in thee menus

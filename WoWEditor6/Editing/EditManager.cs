@@ -30,6 +30,12 @@ namespace WoWEditor6.Editing
         private bool mIsTablet_RChange = false;
         private bool mIsTablet_IRChange = false;
         private bool mIsTablet_PChange = false;
+        private TerrainChangeType mChangeType;
+
+        public TerrainChangeType ChangeType
+        {
+            get { return mChangeType; }
+        }
 
         public float InnerRadius
         {
@@ -379,10 +385,19 @@ namespace WoWEditor6.Editing
 
         }
 
+        public void EnableShading()
+        {
+            CurrentMode |= EditMode.Sculpting;
+            CurrentMode &= ~EditMode.Texturing;
+            mChangeType = TerrainChangeType.Shading;
+
+        }
+
         public void EnableSculpting()
         {
             CurrentMode |= EditMode.Sculpting;
             CurrentMode &= ~EditMode.Texturing;
+            mChangeType = TerrainChangeType.Elevate;
         }
 
         public void DisableSculpting()
@@ -411,6 +426,10 @@ namespace WoWEditor6.Editing
             if (EditorWindowController.Instance.TerrainManager != null)
                 EditorWindowController.Instance.TerrainManager.HandleInnerRadiusChanged(value);
 
+            if (EditorWindowController.Instance.ShadingModel != null)
+                EditorWindowController.Instance.ShadingModel.HandleInnerRadiusChanged(value);
+
+
         }
 
         private void HandleOuterRadiusChanged(float value)
@@ -422,6 +441,9 @@ namespace WoWEditor6.Editing
 
             if (EditorWindowController.Instance.TerrainManager != null)
                 EditorWindowController.Instance.TerrainManager.HandleOuterRadiusChanged(value);
+
+            if (EditorWindowController.Instance.ShadingModel != null)
+                EditorWindowController.Instance.ShadingModel.HandleOuterRadiusChanged(value);
         }
 
         private void HandleIntensityChanged(float value)
@@ -429,6 +451,9 @@ namespace WoWEditor6.Editing
             mIntensity = value;
             if (EditorWindowController.Instance.TerrainManager != null)
                 EditorWindowController.Instance.TerrainManager.HandleIntensityChanged(value);
+
+            if (EditorWindowController.Instance.ShadingModel != null)
+                EditorWindowController.Instance.ShadingModel.HandleIntensityChanged(value);
 
         }
 
@@ -462,6 +487,8 @@ namespace WoWEditor6.Editing
                 EditorWindowController.Instance.TexturingModel.HandleTabletControlChanged(value);
             if (EditorWindowController.Instance.TerrainManager != null)
                 EditorWindowController.Instance.TerrainManager.HandleTabletControlChanged(value);
+            if (EditorWindowController.Instance.ShadingModel != null)
+                EditorWindowController.Instance.ShadingModel.HandleTabletControlChanged(value);
         }
 
         private void HandleTabletRadiusChanged(bool value)

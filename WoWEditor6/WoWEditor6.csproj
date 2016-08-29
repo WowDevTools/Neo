@@ -499,6 +499,7 @@
     <Compile Include="UI\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Models\ShadingViewModel.cs" />
     <Compile Include="UI\Models\MySqlConnectionsModel.cs" />
     <Compile Include="UI\Models\ObjectSpawnModel.cs" />
     <Compile Include="UI\Models\IEditingViewModel.cs" />
@@ -619,6 +620,9 @@
     <None Include="UI\old\SplashView.cs" />
     <None Include="UI\old\WorldView.cs" />
     <Compile Include="UI\Themes\DarkTheme.cs" />
+    <Compile Include="UI\Widgets\ShadingWidget.xaml.cs">
+      <DependentUpon>ShadingWidget.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\WpfImageSource.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Utils\ColorUtils.cs" />
@@ -922,6 +926,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Themes\DarkTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Widgets\ShadingWidget.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

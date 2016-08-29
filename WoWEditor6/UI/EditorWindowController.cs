@@ -17,6 +17,7 @@ namespace WoWEditor6.UI
         public TexturingViewModel TexturingModel { get; set; }
         public SculptingViewModel TerrainManager { get; set; }
         public IEditingViewModel IEditingModel { get; set; }
+        public ShadingViewModel ShadingModel { get; set; }
         public AssetBrowserViewModel AssetBrowserModel { get; set; }
         public ObjectSpawnModel SpawnModel { get; set; }
 

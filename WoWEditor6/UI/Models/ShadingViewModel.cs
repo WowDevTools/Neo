@@ -1,20 +1,23 @@
-﻿using WoWEditor6.UI.Dialogs;
+﻿using System.Collections;
+using System.Windows;
+using WoWEditor6.UI.Dialogs;
 using System.Windows.Forms;
 using SharpDX;
+using WoWEditor6.UI.Widgets;
 
 namespace WoWEditor6.UI.Models
 {
-    class SculptingViewModel
+    class ShadingViewModel
     {
-        private readonly TerrainSettingsWidget mWidget;
+        private readonly ShadingWidget mWidget;
         private bool mIsValueChangedSurpressed;
 
-        public TerrainSettingsWidget Widget { get { return mWidget; } }
+        public ShadingWidget Widget { get { return mWidget; } }
 
-        public SculptingViewModel(TerrainSettingsWidget widget)
+        public ShadingViewModel(ShadingWidget widget)
         {
             if (EditorWindowController.Instance != null)
-                EditorWindowController.Instance.TerrainManager = this;
+                EditorWindowController.Instance.ShadingModel = this;
 
             mWidget = widget;
         }
@@ -125,62 +128,16 @@ namespace WoWEditor6.UI.Models
             mWidget.TabletControlBox.IsChecked = newIsTabletOn;
         }
 
-        public void HandleTypeChanged(Editing.TerrainChangeType value)
+        public void HandleShadingMultiplierChanged(Vector3 value)
         {
             if (mIsValueChangedSurpressed)
                 return;
 
-            switch(value)
-            {
-                case Editing.TerrainChangeType.Blur:
-                    mWidget.BlurRadio.IsChecked = true;
-                    break;
-                case Editing.TerrainChangeType.Elevate:
-                    mWidget.RaiseRadio.IsChecked = true;
-                    break;
-                case Editing.TerrainChangeType.Flatten:
-                    mWidget.FlattenRadio.IsChecked = true;
-                    break;
-                case Editing.TerrainChangeType.Shading:
-                    mWidget.ShadingRadio.IsChecked = true;
-                    break;
-            }
-        }
-
-        public void HandleAlgorithmChanged(Editing.TerrainAlgorithm value)
-        {
-            if (mIsValueChangedSurpressed)
-                return;
-
-            switch (value)
-            {
-                case Editing.TerrainAlgorithm.Flat:
-                    mWidget.FlatRadio.IsChecked = true;
-                    break;
-                case Editing.TerrainAlgorithm.Linear:
-                    mWidget.LinearRadio.IsChecked = true;
-                    break;
-                case Editing.TerrainAlgorithm.Quadratic:
-                    mWidget.QuadraticRadio.IsChecked = true;
-                    break;
-                case Editing.TerrainAlgorithm.Trigonometric:
-                    mWidget.TrigonometricRadio.IsChecked = true;
-                    break;
-            }
-        }
-
-        public void HandleAlignToGroundChanged(bool value)
-        {
-            if (mIsValueChangedSurpressed)
-                return;
-
-            mWidget.AlignModelsBox.IsChecked = value;
+            mWidget.RedBox.Text = value.X.ToString();
+            mWidget.GreenBox.Text = value.Y.ToString();
+            mWidget.BlueBox.Text = value.Z.ToString();
         }
         #endregion
 
-        public void SwitchToSculpting()
-        {
-            Editing.EditManager.Instance.EnableSculpting();
-        }
     }
 }

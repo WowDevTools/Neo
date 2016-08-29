@@ -79,7 +79,7 @@
                         <Slider x:Name="AmountSlider"  VerticalAlignment="Center" Width="180" Margin="26,0,0,0" Minimum="1" Maximum="40" Value="20" ValueChanged="Handle_AmountSliderChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=AmountSlider, StringFormat=\{0:F2\}}"/>
                         <ToggleButton x:Name ="TabletControlBox" Checked="TabletControl_Changed" Unchecked="TabletControl_Changed" Margin="12,3,0,0" VerticalAlignment="Center" Height="28" Width="28" RenderTransformOrigin="2.6,1.059">
-                            <Image Source="/Neo;component/Resources/Images/graphic-tablet.png" RenderTransformOrigin="13.478,-4"/>
+                            <Image Source="/Neo;component/Resources/Images/graphic-tablet.png" RenderTransformOrigin="13.478,-4" ToolTip="Tablet Control On / Off"/>
                         </ToggleButton>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -87,7 +87,7 @@
                         <Slider x:Name="GradientSlider" VerticalAlignment="Center" Width="180" Margin="28,0,0,0" Minimum="0" Maximum="255" Value="255" ValueChanged="Handle_GradientSliderChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=GradientSlider, StringFormat=\{0:F0\}}"/>
                         <ToggleButton x:Name ="SprayModeBox" Checked="SprayMode_Changed" Unchecked="SprayMode_Changed" Margin="21,3,0,0" VerticalAlignment="Center" Height="28" Width="28" RenderTransformOrigin="2.6,1.059">
-                            <Image Source="/Neo;component/Resources/Images/airbrush.png" RenderTransformOrigin="13.478,-4"/>
+                            <Image Source="/Neo;component/Resources/Images/airbrush.png" RenderTransformOrigin="13.478,-4" ToolTip="Spray Mode On / Off"/>
                         </ToggleButton>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">

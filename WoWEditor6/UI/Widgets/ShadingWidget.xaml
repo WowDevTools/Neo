@@ -1,40 +1,13 @@
-﻿<UserControl x:Class="WoWEditor6.UI.Dialogs.TerrainSettingsWidget"
+﻿<UserControl x:Class="WoWEditor6.UI.Widgets.ShadingWidget"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WoWEditor6.UI.Dialogs"
-             mc:Ignorable="d" Height="587" Width="342">
+             xmlns:Widgets="clr-namespace:WoWEditor6.UI.Widgets" 
+             xmlns:Dialogs="clr-namespace:WoWEditor6.UI.Dialogs"
+             mc:Ignorable="d" d:DesignWidth="300" Height="594.907">
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-        <Label x:Name="EditMode" Content="Editing mode: Sculpting" FontSize="14" FontWeight="Bold"/>
-        <Border Padding="10" Height="114">
-            <Grid Margin="0,-10,0,-22">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="0,-3,0,3">
-                    <Label FontWeight="Bold">
-                        <Label x:Name="label" Content="Mode"/>
-                    </Label>
-                    <RadioButton x:Name="RaiseRadio" Content="Raise/lower" IsChecked="True" Tag="Elevate" Checked="ChangeMode_Checked" HorizontalAlignment="Left"/>
-                    <RadioButton x:Name="FlattenRadio" Content="Flatten" Tag="Flatten" Checked="ChangeMode_Checked" HorizontalAlignment="Left"/>
-                    <RadioButton x:Name="BlurRadio" Content="Blur" Tag="Blur" Checked="ChangeMode_Checked" HorizontalAlignment="Left"/>
-                    <RadioButton x:Name="ShadingRadio" Content="Shading" Tag="Shading" Checked="ChangeMode_Checked" HorizontalAlignment="Left"/>
-                    <TextBlock Margin="0,10,0,0" HorizontalAlignment="Left"><Hyperlink Click="Hyperlink_Click"><Run Text="Assign keyboard shortcuts"/></Hyperlink></TextBlock>
-                </StackPanel>
-            </Grid>
-        </Border>
-        <Border Padding="10" Height="134">
-            <StackPanel Orientation="Vertical" Margin="0,-2,0,-6">
-                <Label FontWeight="Bold" Content="Algorithm" Height="27"/>
-                <RadioButton x:Name="FlatRadio" Content="Flat" Tag="Flat" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"/>
-                <RadioButton x:Name="LinearRadio" Content="Linear" Tag="Linear" IsChecked="True" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"/>
-                <RadioButton x:Name="QuadraticRadio" Content="Quadratic" Tag="Quadratic" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"/>
-                <RadioButton x:Name="TrigonometricRadio" Content="Trigonometric" Tag="Trigonometric" HorizontalAlignment="Left" Checked="ChangeAlgo_Checked"/>
-                <CheckBox x:Name="AlignModelsBox" Checked="AlignModels_Changed" Content="Align Models To Ground" Margin="0,20,0,0"/>
-            </StackPanel>
-        </Border>
+        <Label x:Name="label1" Content="Editing mode: Vertex shading" FontSize="14" FontWeight="Bold"/>
         <Border Padding="10">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
@@ -65,6 +38,25 @@
                 <ColumnDefinition Width="215"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <Dialogs:ColorPickerControl Margin="5,0,0,5" HorizontalAlignment="Left" Height="200" Width="200" Grid.Row="0" Grid.Column="0" ColorChanged="ColorPickerControl_ColorChanged"/>
+            <StackPanel Orientation="Vertical" Grid.Column="1">
+                <Rectangle x:Name="ColorPreviewRect" Margin="30,5,0,0" Width="50" Height="50" HorizontalAlignment="Left"/>
+                <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Width="30" Content="R:"/>
+                        <TextBox Width="50" x:Name="RedBox" TextChanged="RedBox_TextChanged"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <Label Width="30" Content="G:"/>
+                        <TextBox Width="50" x:Name="GreenBox" TextChanged="RedBox_TextChanged"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <Label Width="30" Content="B:"/>
+                        <TextBox Width="50" x:Name="BlueBox" TextChanged="RedBox_TextChanged"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
         </Grid>
     </StackPanel>
 </UserControl>
+

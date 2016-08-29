@@ -13,6 +13,7 @@
         
         <Dialogs:TerrainSettingsWidget x:Name="TerrainSettingsWidget" VerticalAlignment="Top"/>
         <Widgets:TexturingWidget  x:Name="TexturingWidget"/>
+        <Widgets:ShadingWidget  x:Name="ShadingWidget" VerticalAlignment="Top"/>
 
 
     </Grid>

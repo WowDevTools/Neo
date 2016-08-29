@@ -19,54 +19,6 @@ namespace WoWEditor6.UI.Dialogs
             InitializeComponent();
         }
 
-        private void ColorPickerControl_ColorChanged(Color obj)
-        {
-            var model = DataContext as SculptingViewModel;
-            if (model == null)
-                return;
-
-            ColorPreviewRect.Fill = new SolidColorBrush(obj);
-            mPreventUpdate = true;
-            RedBox.Text = obj.R.ToString();
-            BlueBox.Text = obj.B.ToString();
-            GreenBox.Text = obj.G.ToString();
-            mPreventUpdate = false;
-
-            model.HandleShadingMultiplier(new SharpDX.Vector3((obj.R / 255.0f) * 2.0f,
-                (obj.G / 255.0f) * 2.0f, (obj.B / 255.0f) * 2.0f));
-        }
-
-        private void SculptingEnableButton_Clicked(object sender, RoutedEventArgs args)
-        {
-            var model = DataContext as SculptingViewModel;
-            if (model == null)
-                return;
-
-            model.SwitchToSculpting();
-        }
-
-        private void RedBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (mPreventUpdate)
-                return;
-
-            var model = DataContext as SculptingViewModel;
-            if (model == null)
-                return;
-
-            int r, g, b;
-            if (!int.TryParse(RedBox.Text, out r) || !int.TryParse(GreenBox.Text, out g) ||
-                !int.TryParse(BlueBox.Text, out b))
-                return;
-
-            if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0)
-                return;
-
-            ColorPreviewRect.Fill = new SolidColorBrush(Color.FromRgb((byte) r, (byte) g, (byte) b));
-            model.HandleShadingMultiplier(new SharpDX.Vector3((r / 255.0f) * 2.0f,
-                (g / 255.0f) * 2.0f, (b / 255.0f) * 2.0f));
-        }
-
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             

@@ -152,7 +152,7 @@ namespace WoWEditor6.UI
             if (EditorWindowController.Instance.IEditingModel != null)
             {
                 EditorWindowController.Instance.IEditingModel.SwitchWidgets(0);
-                IEditingPane.ToggleAutoHide();
+                IEditingPane.Hide();
             }
 
             Log.AddSink(this);
@@ -543,6 +543,17 @@ namespace WoWEditor6.UI
             if (EditorWindowController.Instance.IEditingModel != null)
                 EditorWindowController.Instance.IEditingModel.SwitchWidgets(3);
 
+        }
+
+        private void ShadingClick(object sender, RoutedEventArgs e)
+        {
+            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            {
+                IEditingPane.Dock();
+            }
+
+            if (EditorWindowController.Instance.IEditingModel != null)
+                EditorWindowController.Instance.IEditingModel.SwitchWidgets(4);
         }
     }
 }
