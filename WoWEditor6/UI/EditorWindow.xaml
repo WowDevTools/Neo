@@ -9,11 +9,12 @@
              xmlns:controls="clr-namespace:WoWEditor6.UI.Components"
              xmlns:themes="clr-namespace:WoWEditor6.UI.Themes"
              xmlns:widgets="clr-namespace:WoWEditor6.UI.Widgets"
+             xmlns:widget="clr-namespace:WoWEditor6.UI.Widget"
              mc:Ignorable="d" Width="1600" Height="900" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="27*"/>
-            <ColumnDefinition Width="1573*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -48,7 +49,7 @@
                 <MenuItem Header="Add 3D text" Click="Add3DText_Click"/>
             </MenuItem>
         </Menu>
-        <avalon:DockingManager Grid.Row="1" Margin="0" Grid.ColumnSpan="2" Grid.Column="0" IsManipulationEnabled="False">
+        <avalon:DockingManager Grid.Row="1" Margin="0" Grid.ColumnSpan="2" Grid.Column="0" IsManipulationEnabled="False" Height="Auto" VerticalAlignment="Stretch" Grid.RowSpan="1">
             <avalon:DockingManager.Theme>
                 <themes:DarkTheme/>
             </avalon:DockingManager.Theme>
@@ -67,6 +68,11 @@
                     <avalon:LayoutAnchorablePane DockWidth="340">
                         <avalon:LayoutAnchorable Title="Models" CanClose="False" AutoHideWidth="340" x:Name="ModelSpawnPane">
                             <widgets:ModelSpawnWidget/>
+                        </avalon:LayoutAnchorable>
+                    </avalon:LayoutAnchorablePane>
+                    <avalon:LayoutAnchorablePane DockWidth="340">
+                        <avalon:LayoutAnchorable Title="Sculpting" CanClose="False" AutoHideWidth="340" x:Name="IEditingPane">
+                            <widget:IEditingWidget/>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutAnchorablePane>
                     <avalon:LayoutDocumentPane DockWidth="*">
@@ -152,7 +158,8 @@
                         </avalon:LayoutAnchorable>
                         <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False" x:Name="MapEditorDocument">
                             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                <Grid.RowDefinitions> <!-- Define the row here -->
+                                <Grid.RowDefinitions>
+                                    <!-- Define the row here -->
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                     <RowDefinition Height="30"></RowDefinition>
@@ -196,7 +203,7 @@
                             <!-- ToDo Do a main frame for DB Editor -->
                         </avalon:LayoutAnchorable>
                         <avalon:LayoutAnchorable Title="DBC Editor" AutoHideWidth="800" FloatingHeight="800" x:Name="DbcEditorDocument">
-                           <!-- Things todo here -->
+                            <!-- Things todo here -->
                             <widgets:DBCEditor/>
                         </avalon:LayoutAnchorable>
                     </avalon:LayoutDocumentPane>
