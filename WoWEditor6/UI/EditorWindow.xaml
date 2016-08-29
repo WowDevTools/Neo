@@ -138,7 +138,7 @@
                             </Grid>
                         </avalon:LayoutAnchorable>
                         <!-- Select Map here -->
-                        <avalon:LayoutAnchorable Title="Map Selection" AutoHideWidth="800" FloatingHeight="800" x:Name="MapSelectionDocuemtn">
+                        <avalon:LayoutAnchorable Title="Map selection" AutoHideWidth="800" FloatingHeight="800" x:Name="MapSelectionDocument">
                             <!-- Things todo here -->
                         </avalon:LayoutAnchorable>
                         <avalon:LayoutDocument Title="Map Editor" CanClose="False" CanFloat="False" x:Name="MapEditorDocument">
