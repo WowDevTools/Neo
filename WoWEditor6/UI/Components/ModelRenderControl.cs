@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using WoWEditor6.Annotations;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO;
 using WoWEditor6.IO.Files;
@@ -141,24 +140,26 @@ namespace WoWEditor6.UI.Components
                     new Vector3(0, 0, bboxMin + (bboxMax - bboxMin) / 2), Vector3.UnitZ, Vector3.UnitY);
 
                 comboBox1.Items.Clear();
-                var values = Enum.GetValues(typeof(AnimationType));
-                foreach (int anim in values)
+
+                if (file.AnimationLookup.Length > 0)
                 {
-                    if (anim >= file.AnimationLookup.Length)
-                        continue;
+                    var values = Enum.GetValues(typeof(AnimationType));
 
-                    if (file.AnimationLookup[anim] < 0)
-                        continue;
-
-                    comboBox1.Items.Add(new AnimationIndexEntry
+                    foreach (int anim in values)
                     {
-                        AnimationIndex = anim,
-                        Name = Enum.GetName(typeof(AnimationType), anim)
-                    });
-                }
+                        if (anim >= file.AnimationLookup.Length)
+                            continue;
 
-                if (comboBox1.Items.Count > 0)
-                {
+                        if (file.AnimationLookup[anim] < 0)
+                            continue;
+
+                        comboBox1.Items.Add(new AnimationIndexEntry
+                        {
+                            AnimationIndex = anim,
+                            Name = Enum.GetName(typeof(AnimationType), anim)
+                        });
+                    }
+
                     comboBox1.SelectedIndex = 0;
                     mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)((AnimationIndexEntry)comboBox1.Items[0]).AnimationIndex);
                 }
