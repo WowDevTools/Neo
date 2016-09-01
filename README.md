@@ -1,6 +1,6 @@
 # Neo
 
-[![Issue Stats](http://www.issuestats.com/github/majorcyto/Noggit3/badge/issue)](http://www.issuestats.com/github/majorcyto/Noggit3) [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=1310)](https://www.bountysource.com/trackers/1310-trinity-core?utm_source=1310&utm_medium=shield&utm_campaign=TRACKER_BADGE)
+[![Issue Stats](http://www.issuestats.com/github/majorcyto/neo/badge/issue)](http://www.issuestats.com/github/majorcyto/neo) [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=44433103)](https://www.bountysource.com/trackers/44433103-majorcyto-neo?utm_source=44433103&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
 ## Build Status
 
