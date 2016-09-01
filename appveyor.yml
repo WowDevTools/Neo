@@ -1,0 +1,14 @@
+version: 1.0.{build}
+configuration:
+  - Release
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+build:
+  parallel: true
+  project: WoWEditor6.sln
+  verbosity: quiet
+after_build:
+  - 7z a Neo.zip %APPVEYOR_BUILD_FOLDER%\WoWEditor6\bin\Release
+artifacts:
+  - path: Neo.zip
+    name: Neo
