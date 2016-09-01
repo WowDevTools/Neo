@@ -1,6 +1,6 @@
 # Neo
 
-[![Latest Download](https://img.shields.io/badge/Latest-Download-blue.svg)](https://ci.appveyor.com/api/projects/majorcyto/neo/artifacts/Neo.zip)[![Issue Stats](http://www.issuestats.com/github/majorcyto/neo/badge/issue)](http://www.issuestats.com/github/majorcyto/neo) [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=44433103)](https://www.bountysource.com/trackers/44433103-majorcyto-neo?utm_source=44433103&utm_medium=shield&utm_campaign=TRACKER_BADGE)
+[![Latest Download](https://img.shields.io/badge/Latest-Download-blue.svg)](https://ci.appveyor.com/api/projects/majorcyto/neo/artifacts/Neo.zip) [![Issue Stats](http://www.issuestats.com/github/majorcyto/neo/badge/issue)](http://www.issuestats.com/github/majorcyto/neo) [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=44433103)](https://www.bountysource.com/trackers/44433103-majorcyto-neo?utm_source=44433103&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
 ## Build Status
 
