@@ -14,8 +14,8 @@ This software is open source software licensed under GPL3, as found in
 the COPYING file.
 
 # CONTRIBUTORS #
-A  list  of  known  contributors  can be  found  in  the  CONTRIBUTORS
-file.  New maintainers  should  list  themselves there  as  it is  not
+A list of known contributors can be found in the THANKS
+file. New maintainers should list themselves there as it is not
 automatically updated.
 
 # BUILDING #
