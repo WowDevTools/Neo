@@ -3,6 +3,8 @@ configuration:
   - Release
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  before_build:
+  - nuget restore
 build:
   parallel: true
   project: WoWEditor6.sln
