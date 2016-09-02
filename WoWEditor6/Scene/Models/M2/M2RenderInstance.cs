@@ -312,5 +312,10 @@ namespace WoWEditor6.Scene.Models.M2
             WorldFrame.Instance.M2Manager.RemoveInstance(mModel.FileName, Uuid);
             WorldFrame.Instance.ClearSelection();
         }
+
+        public string GetModelName()
+        {
+            return mModel.FileName;
+        }
     }
 }

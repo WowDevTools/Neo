@@ -245,5 +245,10 @@ namespace WoWEditor6.Scene.Models.WMO
             WorldFrame.Instance.WmoManager.RemoveInstance(ModelRoot.FileName, Uuid,true);
             WorldFrame.Instance.ClearSelection();
         }
+
+        public string GetModelName()
+        {
+            return ModelRoot.FileName;
+        }
     }
 }

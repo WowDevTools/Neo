@@ -2,6 +2,7 @@
 using SharpDX;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Models;
+using WoWEditor6.Scene.Models.M2;
 using WoWEditor6.Utils;
 using WoWEditor6.UI;
 using Point = System.Drawing.Point;
@@ -30,7 +31,7 @@ namespace WoWEditor6.Editing
                 mLastCursorPosition = Cursor.Position;
                 mLastPos = EditManager.Instance.MousePosition;
 
-                EditorWindowController.Instance.OnUpdate(new Vector3(0.0f,0.0f,0.0f), new Vector3(0.0f, 0.0f, 0.0f));
+                EditorWindowController.Instance.OnUpdate(Vector3.Zero, Vector3.Zero);
                 return;
             }
 
@@ -49,8 +50,13 @@ namespace WoWEditor6.Editing
             var delDown = KeyHelper.IsKeyDown(keyState, Keys.Delete);
             var rDown = KeyHelper.IsKeyDown(keyState, Keys.R);
             var mDown = KeyHelper.IsKeyDown(keyState, Keys.M);
+            var vDown = KeyHelper.IsKeyDown(keyState, Keys.V);
             var pagedownDown = KeyHelper.IsKeyDown(keyState, Keys.PageDown);
 
+            if (ctrlDown && vDown) // Pasting
+            {
+                Editing.ModelSpawnManager.Instance.CopyClickedModel();
+            }
 
             if ((altDown || ctrlDown || shiftDown) & rmbDown) // Rotating
             {
