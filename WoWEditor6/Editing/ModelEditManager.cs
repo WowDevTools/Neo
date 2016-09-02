@@ -18,6 +18,7 @@ namespace WoWEditor6.Editing
         private Point mLastCursorPosition = Cursor.Position;
         private Vector3 mLastPos = EditManager.Instance.MousePosition;
         private const int Slowness = 1;
+        public bool IsCopying { get; set; }
 
         static ModelEditManager()
         {
@@ -28,6 +29,7 @@ namespace WoWEditor6.Editing
         {
             if (SelectedModel == null)
             {
+                IsCopying = false;
                 mLastCursorPosition = Cursor.Position;
                 mLastPos = EditManager.Instance.MousePosition;
 
@@ -55,7 +57,11 @@ namespace WoWEditor6.Editing
 
             if (ctrlDown && vDown) // Pasting
             {
-                Editing.ModelSpawnManager.Instance.CopyClickedModel();
+                if (IsCopying == false)
+                {
+                    IsCopying = true;
+                    Editing.ModelSpawnManager.Instance.CopyClickedModel();
+                }
             }
 
             if ((altDown || ctrlDown || shiftDown) & rmbDown) // Rotating

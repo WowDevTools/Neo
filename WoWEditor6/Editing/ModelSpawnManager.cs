@@ -151,6 +151,8 @@ namespace WoWEditor6.Editing
 
             SpawnModel(parameters.TerrainPosition);
 
+            ModelEditManager.Instance.IsCopying = false;
+
             if (EditorWindowController.Instance.SpawnModel.DeselectModelOnClick)
             {
                 WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
