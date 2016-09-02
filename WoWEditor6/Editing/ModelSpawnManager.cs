@@ -140,6 +140,7 @@ namespace WoWEditor6.Editing
                     }
                 }
 
+                ModelEditManager.Instance.IsCopying = false;
                 return;
             }
 
