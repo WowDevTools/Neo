@@ -162,6 +162,9 @@
                                     <Button x:Name="Shading" Height="30" Width="30" ToolTip="Shading" Click="ShadingClick">
                                         <Image Source="/Neo;component/Resources/Images/levels.png" ToolTip="Shading" />
                                     </Button>
+                                    <Button x:Name="Models" Height="30" Width="30" ToolTip="Model Spawning" Click="ModelSpawningClick">
+                                        <Image Source="/Neo;component/Resources/Images/codepen-draw-logo.png" ToolTip="Model Spawning" />
+                                    </Button>
                                 </ToolBar>
                                 <WindowsFormsHost Grid.Row="1">
                                     <local:RenderControl x:Name="RenderTarget"/>

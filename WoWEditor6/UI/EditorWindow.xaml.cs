@@ -555,5 +555,16 @@ namespace WoWEditor6.UI
             if (EditorWindowController.Instance.IEditingModel != null)
                 EditorWindowController.Instance.IEditingModel.SwitchWidgets(4);
         }
+
+        private void ModelSpawningClick(object sender, RoutedEventArgs e)
+        {
+            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            {
+                IEditingPane.Dock();
+            }
+
+            if (EditorWindowController.Instance.IEditingModel != null)
+                EditorWindowController.Instance.IEditingModel.SwitchWidgets(5);
+        }
     }
 }

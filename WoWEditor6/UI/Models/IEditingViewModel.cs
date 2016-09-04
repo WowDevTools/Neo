@@ -31,6 +31,7 @@ namespace WoWEditor6.UI.Models
                     mWidget.TexturingWidget.Visibility = Visibility.Hidden;
                     mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
                     mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
                     break;
                 }
 
@@ -39,6 +40,7 @@ namespace WoWEditor6.UI.Models
                     mWidget.TexturingWidget.Visibility = Visibility.Hidden;
                     mWidget.TerrainSettingsWidget.Visibility = Visibility.Visible;
                     mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
                     EditManager.Instance.EnableSculpting();
                     break;
                 }
@@ -48,6 +50,7 @@ namespace WoWEditor6.UI.Models
                     mWidget.TexturingWidget.Visibility = Visibility.Visible;
                     mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
                     mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
                     EditManager.Instance.EnableTexturing();
                     break;
                 }
@@ -56,9 +59,19 @@ namespace WoWEditor6.UI.Models
                 {
                     mWidget.TexturingWidget.Visibility = Visibility.Hidden;
                     mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
+                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
                     mWidget.ShadingWidget.Visibility = Visibility.Visible;
                     EditManager.Instance.EnableSculpting();
                     EditManager.Instance.EnableShading();
+                    break;
+                }
+
+                case 5:
+                {
+                    mWidget.TexturingWidget.Visibility = Visibility.Hidden;
+                    mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
+                    mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+                    mWidget.ModelSpawnWidget.Visibility = Visibility.Visible;
                     break;
                 }
             }
