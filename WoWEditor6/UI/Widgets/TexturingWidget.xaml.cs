@@ -166,7 +166,11 @@ namespace WoWEditor6.UI.Widgets
 
         private void SprayMode_Changed(object sender, RoutedEventArgs e)
         {
-            //TODO implement spray first.
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleSprayMode(SprayModeBox.IsChecked ?? false);
         }
     }
 }

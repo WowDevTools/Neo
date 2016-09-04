@@ -133,6 +133,13 @@ namespace WoWEditor6.UI.Models
             mIsValueChangedSurpressed = false;
         }
 
+        public void HandleSprayMode(bool value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.IsSprayOn = value;
+            mIsValueChangedSurpressed = false;
+        }
+
         public void HandleTabletChangeRadius(bool value)
         {
             mIsValueChangedSurpressed = true;
@@ -214,6 +221,14 @@ namespace WoWEditor6.UI.Models
                 return;
 
             mWidget.TabletControlBox.IsChecked = newIsTabletChanged;
+        }
+
+        public void HandleSprayModeChanged(bool newIsSprayOn)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.SprayModeBox.IsChecked = newIsSprayOn;
         }
 
         public void HandleTabletChangeRadiusChanged(bool newIsTablet_RChanged)

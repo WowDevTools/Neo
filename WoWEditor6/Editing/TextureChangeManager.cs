@@ -53,21 +53,55 @@ namespace WoWEditor6.Editing
             if (CheckRequirements(out inverted) == false)
                 return;
 
-            var parameters = new TextureChangeParameters
+            if (EditManager.Instance.IsSprayOn) // Spray Texturing.
             {
-                Center = EditManager.Instance.MousePosition,
-                InnerRadius = EditManager.Instance.InnerRadius,
-                OuterRadius = EditManager.Instance.OuterRadius,
-                Texture = SelectedTexture,
-                //Amount = 4 + Amount,
-                // if tablet is connected override the amount set in thee menus
-                Amount = Amount / 40,
-                FalloffMode = FalloffMode,
-                TargetValue = TargetValue,
-                IsInverted = inverted
-            };
+                for (var i = 0; i < 50; ++i)
+                {
+                    var r = new Random();
+                    Vector3 rCenter;
+                    rCenter.X = (float)r.NextDouble(EditManager.Instance.MousePosition.X - EditManager.Instance.OuterRadius, EditManager.Instance.OuterRadius + EditManager.Instance.MousePosition.X);
+                    rCenter.Y = (float)r.NextDouble(EditManager.Instance.MousePosition.Y - EditManager.Instance.OuterRadius, EditManager.Instance.OuterRadius + EditManager.Instance.MousePosition.Y);
+                    rCenter.Z = EditManager.Instance.MousePosition.Z;
 
-            WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
+                    var parameters = new TextureChangeParameters
+                    {
+                        Center = rCenter,
+                        InnerRadius = 0.34f,
+                        OuterRadius = 0.34f,
+                        Texture = SelectedTexture,
+                        //Amount = 4 + Amount,
+                        // if tablet is connected override the amount set in thee menus
+                        Amount = Amount / 40,
+                        FalloffMode = FalloffMode,
+                        TargetValue = TargetValue,
+                        IsInverted = inverted
+                    };
+
+                    WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
+                }
+            }
+
+            else // Normal texturing.
+            {
+                var parameters = new TextureChangeParameters
+                {
+                    Center = EditManager.Instance.MousePosition,
+                    InnerRadius = EditManager.Instance.InnerRadius,
+                    OuterRadius = EditManager.Instance.OuterRadius,
+                    Texture = SelectedTexture,
+                    //Amount = 4 + Amount,
+                    // if tablet is connected override the amount set in thee menus
+                    Amount = Amount / 40,
+                    FalloffMode = FalloffMode,
+                    TargetValue = TargetValue,
+                    IsInverted = inverted
+                };
+
+                WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
+
+            }
+
+
         }
 
         private bool CheckRequirements(out bool isInverted)

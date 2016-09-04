@@ -30,6 +30,8 @@ namespace WoWEditor6.Editing
         private bool mIsTablet_RChange = false;
         private bool mIsTablet_IRChange = false;
         private bool mIsTablet_PChange = false;
+        private bool mIsSprayOn = false;
+
         private TerrainChangeType mChangeType;
 
         public TerrainChangeType ChangeType
@@ -78,6 +80,12 @@ namespace WoWEditor6.Editing
         {
             get { return mIsTabletOn; }
             set { HandleTabletControlChanged(value);  }
+        }
+
+        public bool IsSprayOn
+        {
+            get { return mIsSprayOn;  }
+            set { HandleSprayModeChanged(value);  }
         }
         
         public bool IsTablet_RChange
@@ -524,6 +532,13 @@ namespace WoWEditor6.Editing
             mIsTablet_PChange = value;
             if (EditorWindowController.Instance.TexturingModel != null)
                 EditorWindowController.Instance.TexturingModel.HandleTabletControlPressureChanged(value);
-        }   
+        }
+
+        private void HandleSprayModeChanged(bool value)
+        {
+            mIsSprayOn = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleSprayModeChanged(value);
+        }
     }
 }
