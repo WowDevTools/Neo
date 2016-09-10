@@ -256,7 +256,7 @@ namespace WoWEditor6.Dbc
 
         public static void InitFiles()
         {
-            string path = System.Environment.CurrentDirectory;
+            string path = System.AppDomain.CurrentDomain.BaseDirectory;
             string dbcFolder = path + "\\DBC\\";
 
             #region Initialisation des DBCs

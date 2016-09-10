@@ -31,7 +31,7 @@ namespace DBCLib
                 bw.Write(fieldCount);
 
                 //The charBaseInfo.dbc is weird, and don't have *4.
-                string charBaseInfoPath = System.Environment.CurrentDirectory + "\\DBC\\CharBaseInfo.dbc";
+                string charBaseInfoPath = Application.ExecutablePath + "\\DBC\\CharBaseInfo.dbc";
 
                 if (path == charBaseInfoPath)
                     bw.Write(fieldCount);
