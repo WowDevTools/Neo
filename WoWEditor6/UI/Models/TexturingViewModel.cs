@@ -175,6 +175,34 @@ namespace WoWEditor6.UI.Models
             mIsValueChangedSurpressed = false;
         }
 
+        public void HandleParticleSize(float value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.SprayParticleSize = value;
+            mIsValueChangedSurpressed = false;
+        }
+
+        public void HandleParticleAmount(float value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.SprayParticleAmount = value;
+            mIsValueChangedSurpressed = false;
+        }
+
+        public void HandleParticleHardness(float value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.SprayParticleHarndess = value;
+            mIsValueChangedSurpressed = false;
+        }
+
+        public void HandleSpraySolidInnerRadius(bool value)
+        {
+            mIsValueChangedSurpressed = true;
+            Editing.EditManager.Instance.IsSpraySolidInnerRadius = value;
+            mIsValueChangedSurpressed = false;
+        }
+
         public void HandleInnerRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
@@ -266,6 +294,36 @@ namespace WoWEditor6.UI.Models
             if (mIsValueChangedSurpressed)
                 return;
             mWidget.Tablet_InnerRadiusSlider.Value = newInnerAmplitude;
+        }
+
+        public void HandleParticleSizeChanged(float newSprayParticleSize)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+            mWidget.Spray_ParticleSizeSlider.Value = newSprayParticleSize;
+        }
+
+        public void HandleParticleAmountChanged(float newSprayParticleAmount)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.Spray_ParticleAmountSlider.Value = newSprayParticleAmount;
+        }
+
+        public void HandleParticleHardnessChanged(float newSprayParticleHardness)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+
+            mWidget.Spray_ParticleHardnessSlider.Value = newSprayParticleHardness;
+        }
+
+        public void HandleSpraySolidInnerRadiusChanged(bool newIsSpraySolidInnerRadius)
+        {
+            if (mIsValueChangedSurpressed)
+                return;
+            mWidget.SpraySolidInnerRadiusBox.IsChecked = newIsSpraySolidInnerRadius;
         }
 
         public void SwitchToTexturing()

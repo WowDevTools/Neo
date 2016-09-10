@@ -172,5 +172,44 @@ namespace WoWEditor6.UI.Widgets
 
             model.HandleSprayMode(SprayModeBox.IsChecked ?? false);
         }
+
+        private void Handle_ParticleSizeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleParticleSize((float)newValue);
+        }
+
+        private void Handle_ParticleAmountChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleParticleAmount((float)newValue);
+        }
+
+        private void Handle_ParticleHardnessChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newValue = e.NewValue;
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleParticleHardness((float)newValue);
+        }
+
+        private void SpraySolidInnerRadius_Changed(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as TexturingViewModel;
+            if (model == null)
+                return;
+
+            model.HandleSpraySolidInnerRadius(SpraySolidInnerRadiusBox.IsChecked ?? false);
+        }
     }
 }

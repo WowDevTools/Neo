@@ -44,7 +44,7 @@ namespace WoWEditor6.Editing
             FalloffMode = TextureFalloffMode.Linear;
             Amount = 0.0f;
             TargetValue = 255.0f;
-            SelectedTexture = string.Empty;
+            SelectedTexture = "TILESET\\GENERIC\\black.blp";
         }
 
         public void OnChange(TimeSpan diff)
@@ -55,23 +55,44 @@ namespace WoWEditor6.Editing
 
             if (EditManager.Instance.IsSprayOn) // Spray Texturing.
             {
-                for (var i = 0; i < 50; ++i)
+                if (EditManager.Instance.IsSpraySolidInnerRadius)
+                {
+                    var parameters = new TextureChangeParameters
+                    {
+                        Center = EditManager.Instance.MousePosition,
+                        InnerRadius = EditManager.Instance.InnerRadius * (EditManager.Instance.InnerRadius / EditManager.Instance.OuterRadius),
+                        OuterRadius = EditManager.Instance.InnerRadius,
+                        Texture = SelectedTexture,
+                        Amount = Amount / 40,
+                        FalloffMode = FalloffMode,
+                        TargetValue = TargetValue,
+                        IsInverted = inverted
+                    };
+
+                    WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
+                }
+
+                for (var i = 0; i < EditManager.Instance.SprayParticleAmount; ++i)
                 {
                     var r = new Random();
                     Vector3 rCenter;
-                    rCenter.X = (float)r.NextDouble(EditManager.Instance.MousePosition.X - EditManager.Instance.OuterRadius, EditManager.Instance.OuterRadius + EditManager.Instance.MousePosition.X);
-                    rCenter.Y = (float)r.NextDouble(EditManager.Instance.MousePosition.Y - EditManager.Instance.OuterRadius, EditManager.Instance.OuterRadius + EditManager.Instance.MousePosition.Y);
-                    rCenter.Z = EditManager.Instance.MousePosition.Z;
+
+                        rCenter.X =(float)r.NextDouble(EditManager.Instance.MousePosition.X - EditManager.Instance.OuterRadius,
+                                EditManager.Instance.OuterRadius + EditManager.Instance.MousePosition.X);
+
+                        rCenter.Y =(float)r.NextDouble(EditManager.Instance.MousePosition.Y - EditManager.Instance.OuterRadius,
+                                EditManager.Instance.OuterRadius + EditManager.Instance.MousePosition.Y);
+
+                        rCenter.Z = EditManager.Instance.MousePosition.Z;
+
 
                     var parameters = new TextureChangeParameters
                     {
                         Center = rCenter,
-                        InnerRadius = 0.34f,
-                        OuterRadius = 0.34f,
+                        InnerRadius = EditManager.Instance.SprayParticleSize,
+                        OuterRadius = EditManager.Instance.SprayParticleSize,
                         Texture = SelectedTexture,
-                        //Amount = 4 + Amount,
-                        // if tablet is connected override the amount set in thee menus
-                        Amount = Amount / 40,
+                        Amount = Amount / 20,
                         FalloffMode = FalloffMode,
                         TargetValue = TargetValue,
                         IsInverted = inverted

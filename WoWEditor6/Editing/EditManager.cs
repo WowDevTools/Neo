@@ -26,11 +26,16 @@ namespace WoWEditor6.Editing
         private float mPenSensivity;
         private float mAmplitude;
         private float mInnerAmplitude;
+        private float mSprayParticleSize;
+        private float mSprayParticleAmount;
+        private float mSprayParticleHardness;
+
         private bool mIsTabletOn = false;
         private bool mIsTablet_RChange = false;
         private bool mIsTablet_IRChange = false;
         private bool mIsTablet_PChange = false;
         private bool mIsSprayOn = false;
+        private bool mIsSpraySolidInnerRadius = false;
 
         private TerrainChangeType mChangeType;
 
@@ -116,6 +121,30 @@ namespace WoWEditor6.Editing
         {
             get { return mInnerAmplitude; }
             set { HandleAllowedInnerAmplitudeChanged(value); }
+        }
+
+        public float SprayParticleSize
+        {
+            get { return mSprayParticleSize;  }
+            set { HandleParticleSizeChanged(value);  }
+        }
+
+        public float SprayParticleAmount
+        {
+            get { return mSprayParticleAmount; }
+            set { HandleParticleAmountChanged(value); }
+        }
+
+        public float SprayParticleHarndess
+        {
+            get { return mSprayParticleHardness;  }
+            set { HandleParticleHardnessChanged(value);  }
+        }
+
+        public bool IsSpraySolidInnerRadius
+        {
+            get { return mIsSpraySolidInnerRadius; }
+            set { HandleSpraySolidInnerRadiusChanged(value);  }
         }
 
         public bool IsTexturing { get { return (CurrentMode & EditMode.Texturing) != 0; } }
@@ -539,6 +568,34 @@ namespace WoWEditor6.Editing
             mIsSprayOn = value;
             if (EditorWindowController.Instance.TexturingModel != null)
                 EditorWindowController.Instance.TexturingModel.HandleSprayModeChanged(value);
+        }
+
+        private void HandleParticleSizeChanged(float value)
+        {
+            mSprayParticleSize = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleParticleSizeChanged(value);
+        }
+
+        private void HandleParticleAmountChanged(float value)
+        {
+            mSprayParticleAmount = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleParticleAmountChanged(value);
+        }
+
+        private void HandleParticleHardnessChanged(float value)
+        {
+            mSprayParticleHardness = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleParticleHardnessChanged(value);
+        }
+
+        private void HandleSpraySolidInnerRadiusChanged(bool value)
+        {
+            mIsSpraySolidInnerRadius = value;
+            if (EditorWindowController.Instance.TexturingModel != null)
+                EditorWindowController.Instance.TexturingModel.HandleSpraySolidInnerRadiusChanged(value);
         }
     }
 }
