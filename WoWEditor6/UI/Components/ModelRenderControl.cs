@@ -141,10 +141,10 @@ namespace WoWEditor6.UI.Components
 
                 comboBox1.Items.Clear();
 
-                if (file.AnimationLookup.Length > 0)
-                {
-                    var values = Enum.GetValues(typeof(AnimationType));
+                var values = Enum.GetValues(typeof(AnimationType));
 
+                if (file.AnimationLookup.Length > 0) //Animation Lookup
+                {
                     foreach (int anim in values)
                     {
                         if (anim >= file.AnimationLookup.Length)
@@ -159,7 +159,24 @@ namespace WoWEditor6.UI.Components
                             Name = Enum.GetName(typeof(AnimationType), anim)
                         });
                     }
+                }
+                else if (file.AnimationIds.Length > 0) //Raw Animation Check
+                {
+                    foreach (int anim in values)
+                    {
+                        if (Array.IndexOf(file.AnimationIds, (ushort)anim) == -1)
+                            continue;
 
+                        comboBox1.Items.Add(new AnimationIndexEntry
+                        {
+                            AnimationIndex = anim,
+                            Name = Enum.GetName(typeof(AnimationType), anim)
+                        });
+                    }
+                }
+
+                if (comboBox1.Items.Count > 0) //Preset combobox and animator state
+                {
                     comboBox1.SelectedIndex = 0;
                     mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)((AnimationIndexEntry)comboBox1.Items[0]).AnimationIndex);
                 }
@@ -201,7 +218,7 @@ namespace WoWEditor6.UI.Components
             mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
             mCamControl = new CameraControl(this)
             {
-                TurnFactor = 0.1f, 
+                TurnFactor = 0.1f,
                 SpeedFactor = 20.0f
             };
 
@@ -218,7 +235,8 @@ namespace WoWEditor6.UI.Components
         {
             var texDesc = new Texture2DDescription
             {
-                ArraySize = 1, BindFlags = BindFlags.None,
+                ArraySize = 1,
+                BindFlags = BindFlags.None,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = Format.B8G8R8A8_UNorm,
                 Height = ClientSize.Height,
@@ -241,7 +259,7 @@ namespace WoWEditor6.UI.Components
             mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
             mTarget.Resize(ClientSize.Width, ClientSize.Height, true);
-            mCamera.SetAspect((float) ClientSize.Width / ClientSize.Height);
+            mCamera.SetAspect((float)ClientSize.Width / ClientSize.Height);
         }
 
         void OnClick(object sender, MouseEventArgs args)
@@ -293,10 +311,10 @@ namespace WoWEditor6.UI.Components
             var bmp = new Bitmap(ClientSize.Width, ClientSize.Height, PixelFormat.Format32bppArgb);
             var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly,
                 PixelFormat.Format32bppArgb);
-            byte* ptrDst = (byte*) bmpd.Scan0.ToPointer();
-            byte* ptrSrc = (byte*) box.DataPointer.ToPointer();
+            byte* ptrDst = (byte*)bmpd.Scan0.ToPointer();
+            byte* ptrSrc = (byte*)box.DataPointer.ToPointer();
 
-            for(var i = 0; i < bmp.Height; ++i)
+            for (var i = 0; i < bmp.Height; ++i)
             {
                 UnsafeNativeMethods.CopyMemory(ptrDst + i * bmp.Width * 4, ptrSrc + i * box.RowPitch, bmp.Width * 4);
             }
@@ -334,7 +352,7 @@ namespace WoWEditor6.UI.Components
             if (item == null)
                 return;
 
-            mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType) item.AnimationIndex);
+            mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)item.AnimationIndex);
         }
 
         private void comboBox1_KeyDown(object sender, KeyEventArgs e)

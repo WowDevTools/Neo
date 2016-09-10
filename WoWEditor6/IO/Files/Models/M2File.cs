@@ -10,7 +10,7 @@ namespace WoWEditor6.IO.Files.Models
         public int TextureType { get; set; }
         public Graphics.Texture.SamplerFlagType SamplerFlags { get; set; }
         public Graphics.Texture Texture { get; set; }
-    }
+    } 
 
     abstract class M2File
     {
@@ -33,6 +33,8 @@ namespace WoWEditor6.IO.Files.Models
         public float BoundingRadius { get; protected set; }
 
         public short[] AnimationLookup { get; protected set; }
+
+        public ushort[] AnimationIds { get; protected set; }
 
         public abstract string ModelName { get; }
         public string FileName { get; protected set; }
