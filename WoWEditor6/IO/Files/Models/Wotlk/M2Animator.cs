@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SharpDX;
 
 namespace WoWEditor6.IO.Files.Models.Wotlk
@@ -27,6 +28,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         private bool mIsFinished;
         private int mAnimationId;
         private readonly AnimationEntry[] mAnimations;
+        private readonly ushort[] mAnimationIds;
         private readonly short[] mAnimationLookup;
         private bool mIsDirty;
 
@@ -37,6 +39,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             mHasAnimation = false;
             mAnimations = file.Animations;
             mAnimationLookup = file.AnimationLookup;
+            mAnimationIds = file.AnimationIds;
 
             SetBoneData(file.Bones);
             SetUvData(file.UvAnimations);
@@ -46,20 +49,31 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
         public bool SetAnimation(uint animation)
         {
-            if (animation >= mAnimationLookup.Length)
+            if (mAnimations.Length == 0 && mAnimationLookup.Length == 0)
                 return false;
-
-            if (mAnimationLookup[animation] < 0)
+            
+            if (Array.IndexOf(mAnimationLookup, (short)animation) >= 0)
+            {
+                mAnimationId = mAnimationLookup[animation];
+                mAnimation = mAnimations[mAnimationId];
+                mHasAnimation = true;
+                ResetAnimationTimes();
+                return true;
+            }
+            else if (Array.IndexOf(mAnimationIds, (ushort)animation) >= 0)
+            {
+                var anim = mAnimations.First(x => x.animationID == animation);
+                mAnimationId = anim.animationID;
+                mAnimation = anim;
+                mHasAnimation = true;
+                ResetAnimationTimes();
+                return true;
+            }
+            else
             {
                 Log.Warning("Animation not found in model. Skipping");
                 return false;
             }
-
-            mAnimationId = mAnimationLookup[animation];
-            mAnimation = mAnimations[mAnimationId];
-            mHasAnimation = true;
-            ResetAnimationTimes();
-            return true;
         }
 
         public void SetAnimationByIndex(uint index)

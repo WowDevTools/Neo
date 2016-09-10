@@ -208,6 +208,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
             AnimationLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
             Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
 
+            AnimationIds = Animations.Select(x => x.animationID).ToArray();
+
             var uvAnims = ReadArrayOf<M2TexAnim>(reader, mHeader.OfsUvAnimation, mHeader.NUvAnimation);
             UvAnimations = uvAnims.Select(uv => new M2UVAnimation(this, ref uv, reader)).ToArray();
 
