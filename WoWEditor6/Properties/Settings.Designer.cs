@@ -204,5 +204,17 @@ namespace WoWEditor6.Properties {
                 this["DataPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("71, 95, 121")]
+        public global::System.Drawing.Color AssetRenderBackgroundColor {
+            get {
+                return ((global::System.Drawing.Color)(this["AssetRenderBackgroundColor"]));
+            }
+            set {
+                this["AssetRenderBackgroundColor"] = value;
+            }
+        }
     }
 }

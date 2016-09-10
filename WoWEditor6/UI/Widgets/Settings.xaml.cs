@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using WoWEditor6.Scene;
@@ -19,6 +20,8 @@ namespace WoWEditor6.UI.Dialogs
             UseDayNightCycle.IsChecked = Properties.Settings.Default.UseDayNightCycle;
             ChangeUseDayNight_Click(UseDayNightCycle, new RoutedEventArgs());
             DefaultDayTimeTextBox.Text = Properties.Settings.Default.DefaultDayTime.ToString();
+            
+            SetAssetRenderColorBox();
         }
 
         /// <summary>
@@ -103,6 +106,49 @@ namespace WoWEditor6.UI.Dialogs
         private void KeyBindingWidget_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void AssetRenderColorCombo_Loaded(object sender, RoutedEventArgs e)
+        {
+            AssetRenderColorCombo.Items.Clear();
+            AssetRenderColorCombo.Items.Add("(Default)");           
+
+            foreach (PropertyInfo property in typeof(System.Drawing.Color).GetProperties(BindingFlags.Static | BindingFlags.Public))
+                if (property.PropertyType == typeof(System.Drawing.Color))
+                    AssetRenderColorCombo.Items.Add(property.Name);
+
+            string selected = "(Default)";
+            foreach (System.Drawing.KnownColor kc in Enum.GetValues(typeof(System.Drawing.KnownColor)))
+            {
+                System.Drawing.Color known = System.Drawing.Color.FromKnownColor(kc);
+                if (Properties.Settings.Default.AssetRenderBackgroundColor.ToArgb() == known.ToArgb())
+                {
+                    selected = known.Name;
+                    break;
+                }
+            }
+
+            AssetRenderColorCombo.SelectedItem = selected;
+        }
+
+        private void AssetRenderColorCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (AssetRenderColorCombo.SelectedItem == null)
+                return;
+
+            if(AssetRenderColorCombo.SelectedItem.ToString() == "(Default)")
+                Properties.Settings.Default.AssetRenderBackgroundColor = System.Drawing.Color.FromArgb(1, 71, 95, 121);
+            else
+                Properties.Settings.Default.AssetRenderBackgroundColor = System.Drawing.Color.FromName(AssetRenderColorCombo.SelectedItem.ToString());
+
+            Properties.Settings.Default.Save();
+            SetAssetRenderColorBox();
+        }
+
+        private void SetAssetRenderColorBox()
+        {
+            var c = Properties.Settings.Default.AssetRenderBackgroundColor;
+            AssetRenderColorShow.Color = System.Windows.Media.Color.FromRgb(c.R, c.G, c.B);
         }
     }
 }

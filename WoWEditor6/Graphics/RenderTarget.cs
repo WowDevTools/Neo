@@ -16,14 +16,26 @@ namespace WoWEditor6.Graphics
         public RenderTargetView Native { get; private set; }
         public Texture2D Texture { get; private set; }
 
+        private Color4 backgroundcolor = Color4.Black;
+        private Func<System.Drawing.Color, Color4> ConvertColor = c => new Color4(c.R / 255f, c.G / 255f, c.B / 255f, 1);
+
         public RenderTarget(GxContext context)
         {
             mContext = context;
+            backgroundcolor = ConvertColor(Properties.Settings.Default.AssetRenderBackgroundColor);
+
+            Properties.Settings.Default.SettingChanging += SettingsChanging;
         }
 
         ~RenderTarget()
         {
             Dispose(false);
+        }
+
+        private void SettingsChanging(object sender, System.Configuration.SettingChangingEventArgs e)
+        {
+            if (e.SettingName == "AssetRenderBackgroundColor")            
+                backgroundcolor = ConvertColor((System.Drawing.Color)e.NewValue);
         }
 
         private void Dispose(bool disposing)
@@ -77,10 +89,9 @@ namespace WoWEditor6.Graphics
         {
             if (Native == null)
                 return;
-
-            mContext.Context.ClearRenderTargetView(Native, Color4.Black);
-            mContext.Context.ClearDepthStencilView(mDepthView,
-                DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+                        
+            mContext.Context.ClearRenderTargetView(Native, backgroundcolor);
+            mContext.Context.ClearDepthStencilView(mDepthView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
         }
 
         public void Apply()

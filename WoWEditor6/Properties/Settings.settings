@@ -49,5 +49,8 @@
     <Setting Name="DataPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="AssetRenderBackgroundColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">71, 95, 121</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

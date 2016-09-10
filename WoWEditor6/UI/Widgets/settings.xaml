@@ -40,6 +40,17 @@
                                         <Slider Margin="5,0,0,0" x:Name="DayNightScalingSlider" Width="100" Minimum="1" Maximum="20" Value="10" VerticalAlignment="Center" ValueChanged="DayNightScaling_Changed"></Slider>
                                     </StackPanel>
                                 </StackPanel>
+                                <StackPanel Margin="0,3,0,0">
+                                    <StackPanel Orientation="Horizontal" x:Name="DefaultTimePanel2" Visibility="Visible">
+                                        <TextBlock>Asset Background Colour</TextBlock>
+                                        <ComboBox VerticalAlignment="Center" Margin="10,0,0,0" x:Name="AssetRenderColorCombo" Width="120" Loaded="AssetRenderColorCombo_Loaded" SelectionChanged="AssetRenderColorCombo_SelectionChanged"></ComboBox>
+                                        <Rectangle Width="20" Height="20" Margin="5,0,0,0" Stroke="Black">
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush x:Name="AssetRenderColorShow" Color="White" />
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </Grid>
