@@ -32,6 +32,8 @@ namespace WoWEditor6.UI
         {
             DataContext = new EditorWindowController(this);
             InitializeComponent();
+
+            PathTextBox.Text = Properties.Settings.Default.DataPath;
         }
 
         public RenderControl DrawTarget { get { return RenderTarget; } }
@@ -270,6 +272,9 @@ namespace WoWEditor6.UI
         {
             if (string.IsNullOrEmpty(PathTextBox.Text))
                 return;
+
+            Properties.Settings.Default.DataPath = PathTextBox.Text;
+            Properties.Settings.Default.Save();
 
             SplashDocument.Visibility = Visibility.Collapsed;
             LoadingDocument.Visibility = Visibility.Visible;
