@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using WoWEditor6.Scene;
+using System.Drawing;
 
 namespace WoWEditor6.UI.Dialogs
 {
@@ -11,6 +12,8 @@ namespace WoWEditor6.UI.Dialogs
     /// </summary>
     public partial class Settings
     {
+        private readonly Color defaultColour = Color.FromArgb(1, 71, 95, 121);
+
         public Settings()
         {
             InitializeComponent();
@@ -113,14 +116,11 @@ namespace WoWEditor6.UI.Dialogs
             AssetRenderColorCombo.Items.Clear();
             AssetRenderColorCombo.Items.Add("(Default)");           
 
-            foreach (PropertyInfo property in typeof(System.Drawing.Color).GetProperties(BindingFlags.Static | BindingFlags.Public))
-                if (property.PropertyType == typeof(System.Drawing.Color))
-                    AssetRenderColorCombo.Items.Add(property.Name);
-
             string selected = "(Default)";
-            foreach (System.Drawing.KnownColor kc in Enum.GetValues(typeof(System.Drawing.KnownColor)))
+            foreach (KnownColor kc in Enum.GetValues(typeof(KnownColor))) //Use system colours
             {
-                System.Drawing.Color known = System.Drawing.Color.FromKnownColor(kc);
+                Color known = Color.FromKnownColor(kc);
+                AssetRenderColorCombo.Items.Add(known.Name);
                 if (Properties.Settings.Default.AssetRenderBackgroundColor.ToArgb() == known.ToArgb())
                 {
                     selected = known.Name;
@@ -137,7 +137,7 @@ namespace WoWEditor6.UI.Dialogs
                 return;
 
             if(AssetRenderColorCombo.SelectedItem.ToString() == "(Default)")
-                Properties.Settings.Default.AssetRenderBackgroundColor = System.Drawing.Color.FromArgb(1, 71, 95, 121);
+                Properties.Settings.Default.AssetRenderBackgroundColor = defaultColour;
             else
                 Properties.Settings.Default.AssetRenderBackgroundColor = System.Drawing.Color.FromName(AssetRenderColorCombo.SelectedItem.ToString());
 
