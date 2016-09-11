@@ -7,8 +7,8 @@
              xmlns:Dialogs="clr-namespace:WoWEditor6.UI.Dialogs" x:Class="WoWEditor6.UI.Widgets.DBCEditor"
              mc:Ignorable="d" 
              d:DesignHeight="556" d:DesignWidth="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid x:Name="DbcEditorDocument" HorizontalAlignment="Left" Width="790" Margin="0,10,0,494">
-        <Menu x:Name="menu" HorizontalAlignment="Left" Margin="10,10,0,10" Width="770" RenderTransformOrigin="0.494,1.089">
+    <Grid x:Name="DbcEditorDocument" HorizontalAlignment="Left" Width="800" Margin="0,10,0,494">
+        <Menu x:Name="menu" HorizontalAlignment="Left" Margin="10,10,0,10" Width="780" RenderTransformOrigin="0.494,1.089">
             <MenuItem Header="Achievements"/>
             <MenuItem Header="Animations"/>
             <MenuItem Header="Cameras"/>
