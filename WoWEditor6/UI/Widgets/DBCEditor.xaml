@@ -6,6 +6,11 @@
              xmlns:local="clr-namespace:WoWEditor6.UI.Widgets"
              xmlns:Dialogs="clr-namespace:WoWEditor6.UI.Dialogs" x:Class="WoWEditor6.UI.Widgets.DBCEditor"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="DbcEditorDocument" HorizontalAlignment="Left" Width="300"/>
+             d:DesignHeight="556" d:DesignWidth="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid x:Name="DbcEditorDocument" HorizontalAlignment="Left" Width="790" Margin="0,10,0,501">
+        <Menu x:Name="menu" HorizontalAlignment="Left" Height="22" Margin="10,10,0,0" VerticalAlignment="Top" Width="770">
+            <MenuItem Header="MenuItem"/>
+            <MenuItem Header="MenuItem"/>
+        </Menu>
+    </Grid>
 </UserControl>
