@@ -1,6 +1,8 @@
-# Neo 
+# Neo
 
-[![Latest Download](https://img.shields.io/badge/Latest-Download-blue.svg)](https://ci.appveyor.com/api/projects/majorcyto/neo-xc5d9/artifacts/Neo.zip) [![DoxygenDoc](https://img.shields.io/badge/Docs-Doxygen-red.svg)](http://neodocs.wowdev.info/)
+[![Latest Download](https://img.shields.io/badge/Latest-Download-blue.svg)](https://ci.appveyor.com/api/projects/majorcyto/neo-xc5d9/artifacts/Neo.zip) [![Milestone](https://img.shields.io/badge/Latest%20Tasks-Milestone%200.5-F25CBE.svg)](https://github.com/WowDevTools/Neo/milestone/1)
+
+[![DoxygenDoc](https://img.shields.io/badge/Docs-Doxygen-red.svg)](http://neodocs.wowdev.info/) 
 [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=44433103)](https://www.bountysource.com/trackers/44433103-wowdevtools-neo?utm_source=44433103&utm_medium=shield&utm_campaign=TRACKER_BADGE) [![WoWDev Tools on discord](https://img.shields.io/badge/Discord-WoWDev Tools-738bd7.svg)](https://discord.gg/9aVwPpb)
 
 
