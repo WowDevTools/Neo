@@ -142,6 +142,8 @@ namespace WoWEditor6.IO.Files
         private int mLocal;
         private int mCopyTableSize;
 
+        private const int HEADER = 48;
+
         private Stream mStream;
         private BinaryReader mReader;
         private Dictionary<int, string> mStringTable = new Dictionary<int, string>();
@@ -221,7 +223,7 @@ namespace WoWEditor6.IO.Files
 
         public IDataStorageRecord GetRow(int index)
         {
-            return new DB2Record(mRecordSize, 48 + index * mRecordSize, mReader, mStringTable);
+            return new DB2Record(mRecordSize, HEADER + index * mRecordSize, mReader, mStringTable);
         }
 
         public IDataStorageRecord GetRowById(int id)
@@ -256,7 +258,7 @@ namespace WoWEditor6.IO.Files
             byte[] data = mReader.ReadBytes((int)mStream.Length);
 
             var ms = new MemoryStream();
-            int start = 48 + index * mRecordSize;
+            int start = HEADER + index * mRecordSize;
             int end = data.Length - start - mRecordSize;
             ms.Write(data, 0, start); //Header + rows before data
             ms.Write(data, start + mRecordSize, end); //Skip row being removed's bytes
@@ -305,6 +307,27 @@ namespace WoWEditor6.IO.Files
 
         public void AddRow<T>(T entry)
         {
+            var newRecord = ParseRecord(entry);
+            NumRows += 1;
+            Update(newRecord.Item1, newRecord.Item2);
+        }
+
+
+        public void UpdateRow<T>(T entry)
+        {
+            var newRecord = ParseRecord(entry, true);
+            var id = BitConverter.ToInt32(newRecord.Item1.Take(4).ToArray(), 0);
+            var index = mIdLookup[id];
+
+            mStream.Position = HEADER + index * mRecordSize;
+            mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length);
+
+            Update(new byte[0], newRecord.Item2);
+        }
+
+        #region Helpers
+        private Tuple<byte[], IEnumerable<string>> ParseRecord<T>(T entry, bool update = false)
+        {
             Type type = entry.GetType();
 
             byte[] newRecord = new byte[mRecordSize];
@@ -316,7 +339,7 @@ namespace WoWEditor6.IO.Files
             {
                 foreach (var field in type.GetFields())
                 {
-                    if (first) //Autoincrement Id
+                    if (first && !update) //Autoincrement Id only if adding a new record
                     {
                         bw.Write(mIdLookup.Keys.Max() + 1);
                         first = false;
@@ -327,7 +350,8 @@ namespace WoWEditor6.IO.Files
                     {
                         int stSize = mStringTable.Count;
                         string strVal = Convert.ToString(field.GetValue(entry));
-                        bw.Write(AddString(strVal));
+                        int strID = AddString(strVal);
+                        bw.Write(strID);
 
                         if (mStringTable.Count > stSize) //Append to our list of new strings
                             newStrings.Add(strVal);
@@ -344,27 +368,29 @@ namespace WoWEditor6.IO.Files
                     }
                 }
             }
-            
-            Update(newRecord, newStrings);
+
+            return new Tuple<byte[], IEnumerable<string>>(newRecord, newStrings);
         }
 
-        private void Update(byte[] newRecord, List<string> newStrings)
+        private void Update(byte[] newRecord, IEnumerable<string> newStrings)
         {
             mReader.BaseStream.Position = 0;
             byte[] curdata = mReader.ReadBytes((int)mStream.Length - mStringTableSize);
             byte[] stringtable = mReader.ReadBytes(mStringTableSize);
 
             var ms = new MemoryStream();
-            var bw = new BinaryWriter(ms);
+            var bw = new BinaryWriter(ms, Encoding.UTF8);
 
             bw.Write(curdata); //Write header and record data
             bw.Write(newRecord); //Write new record
+
             bw.Write(stringtable); //Write existing string table
             foreach (var s in newStrings) //Write new strings if any
             {
-                long pos = bw.BaseStream.Position;
-                bw.Write(s);
+                byte[] sd = Encoding.UTF8.GetBytes(s);
+                bw.Write(sd);
                 bw.Write((byte)0);
+                mStringTableSize += (sd.Length + 1);
             }
 
             bw.BaseStream.Position = 4;
@@ -378,7 +404,7 @@ namespace WoWEditor6.IO.Files
 
             ReLoad(ms);
         }
-
+        #endregion
 
         ~DB2File()
         {

@@ -138,6 +138,8 @@ namespace WoWEditor6.IO.Files
         private Dictionary<int, string> mStringTable = new Dictionary<int, string>();
         private Dictionary<int, int> mIdLookup = new Dictionary<int, int>();
 
+        private const int HEADER = 20;
+
         public int NumRows { get; private set; }
         public int NumFields { get; private set; }
 
@@ -161,7 +163,7 @@ namespace WoWEditor6.IO.Files
             mRecordSize = mReader.ReadInt32();
             mStringTableSize = mReader.ReadInt32();
 
-            mStream.Position = NumRows * mRecordSize + 20;
+            mStream.Position = NumRows * mRecordSize + HEADER;
             var strBytes = mReader.ReadBytes(mStringTableSize);
             var curOffset = 0;
             var curBytes = new List<byte>();
@@ -189,7 +191,7 @@ namespace WoWEditor6.IO.Files
                 mReader.BaseStream.Position = 0;
                 byte[] data = mReader.ReadBytes((int)mStream.Length);
                 fs.Write(data, 0, data.Length);
-            }                
+            }
         }
 
         public void ReLoad(Stream stream)
@@ -205,7 +207,7 @@ namespace WoWEditor6.IO.Files
 
         public IDataStorageRecord GetRow(int index)
         {
-            return new DbcRecord(mRecordSize, 20 + index * mRecordSize, mReader, mStringTable);
+            return new DbcRecord(mRecordSize, HEADER + index * mRecordSize, mReader, mStringTable);
         }
 
         public IDataStorageRecord GetRowById(int id)
@@ -237,14 +239,14 @@ namespace WoWEditor6.IO.Files
             byte[] data = mReader.ReadBytes((int)mStream.Length);
 
             var ms = new MemoryStream();
-            int start = 20 + index * mRecordSize;
+            int start = HEADER + index * mRecordSize;
             int end = data.Length - start - mRecordSize;
             ms.Write(data, 0, start); //Header + rows before data
             ms.Write(data, start + mRecordSize, end); //Skip row being removed's bytes
 
             ms.Position = 4;
             ms.Write(BitConverter.GetBytes(NumRows - 1), 0, 4); //Update the record count
-            
+
             ReLoad(ms);
             return true;
         }
@@ -279,6 +281,27 @@ namespace WoWEditor6.IO.Files
 
         public void AddRow<T>(T entry)
         {
+            var newRecord = ParseRecord(entry);
+            NumRows += 1;
+            Update(newRecord.Item1, newRecord.Item2);
+        }
+
+
+        public void UpdateRow<T>(T entry)
+        {
+            var newRecord = ParseRecord(entry, true);
+            var id = BitConverter.ToInt32(newRecord.Item1.Take(4).ToArray(), 0);
+            var index = mIdLookup[id];
+
+            mStream.Position = HEADER + index * mRecordSize;
+            mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length);
+
+            Update(new byte[0], newRecord.Item2);
+        }
+
+        #region Helpers
+        private Tuple<byte[], IEnumerable<string>> ParseRecord<T>(T entry, bool update = false)
+        {
             Type type = entry.GetType();
 
             byte[] newRecord = new byte[mRecordSize];
@@ -290,7 +313,7 @@ namespace WoWEditor6.IO.Files
             {
                 foreach (var field in type.GetFields())
                 {
-                    if (first) //Autoincrement Id
+                    if (first && !update) //Autoincrement Id only if adding a new record
                     {
                         bw.Write(mIdLookup.Keys.Max() + 1);
                         first = false;
@@ -301,7 +324,8 @@ namespace WoWEditor6.IO.Files
                     {
                         int stSize = mStringTable.Count;
                         string strVal = Convert.ToString(field.GetValue(entry));
-                        bw.Write(AddString(strVal));
+                        int strID = AddString(strVal);
+                        bw.Write(strID);
 
                         if (mStringTable.Count > stSize) //Append to our list of new strings
                             newStrings.Add(strVal);
@@ -319,37 +343,39 @@ namespace WoWEditor6.IO.Files
                 }
             }
 
-            Update(newRecord, newStrings); //Update and reload the stream
+            return new Tuple<byte[], IEnumerable<string>>(newRecord, newStrings);
         }
 
-        private void Update(byte[] newRecord, List<string> newStrings)
+        private void Update(byte[] newRecord, IEnumerable<string> newStrings)
         {
             mReader.BaseStream.Position = 0;
             byte[] curdata = mReader.ReadBytes((int)mStream.Length - mStringTableSize);
             byte[] stringtable = mReader.ReadBytes(mStringTableSize);
 
             var ms = new MemoryStream();
-            var bw = new BinaryWriter(ms);
+            var bw = new BinaryWriter(ms, Encoding.UTF8);
 
             bw.Write(curdata); //Write header and record data
             bw.Write(newRecord); //Write new record
+            
             bw.Write(stringtable); //Write existing string table
-            foreach(var s in newStrings) //Write new strings if any
+            foreach (var s in newStrings) //Write new strings if any
             {
-                long pos = bw.BaseStream.Position;
-                bw.Write(s);
+                byte[] sd = Encoding.UTF8.GetBytes(s);
+                bw.Write(sd);
                 bw.Write((byte)0);
-            }            
+                mStringTableSize += (sd.Length + 1);
+            }
 
             bw.BaseStream.Position = 4;
-            bw.Write(NumRows + 1); //Number of rows
+            bw.Write(NumRows); //Number of rows
             bw.BaseStream.Position = 0x10;
-            bw.Write(mStringTable.Count); //StringTable size
+            bw.Write(mStringTableSize); //StringTable size
             bw.Flush();
-            
+
             ReLoad(ms);
         }
-
+        #endregion
 
         ~DbcFile()
         {

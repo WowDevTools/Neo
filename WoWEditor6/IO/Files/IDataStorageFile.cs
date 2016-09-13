@@ -35,6 +35,8 @@ namespace WoWEditor6.IO.Files
         int AddString(string value);
         void AddRow<T>(T entry);
 
+        void UpdateRow<T>(T entry);
+
         bool DeleteRow(int index);
         bool DeleteRowById(int id);
     }
