@@ -294,7 +294,7 @@ namespace WoWEditor6.IO.Files
             var index = mIdLookup[id];
 
             mStream.Position = HEADER + index * mRecordSize;
-            mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length);
+            mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length); //Overwrite existing data
 
             Update(new byte[0], newRecord.Item2);
         }
@@ -356,7 +356,7 @@ namespace WoWEditor6.IO.Files
             var bw = new BinaryWriter(ms, Encoding.UTF8);
 
             bw.Write(curdata); //Write header and record data
-            bw.Write(newRecord); //Write new record
+            bw.Write(newRecord); //Write new record if any
             
             bw.Write(stringtable); //Write existing string table
             foreach (var s in newStrings) //Write new strings if any
