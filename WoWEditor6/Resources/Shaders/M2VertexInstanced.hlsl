@@ -106,15 +106,12 @@ VertexOutput fillCommonOutput(VertexInput input)
 
 float2 getEnv(VertexInput input)
 {
-    float3 u = normalize(mul(input.position, worldViewMat));
-    float3 n = normalize(mul(input.normal, worldViewMat));
-    float3 r = reflect(u, n);
-    float m = 2.0 * sqrt(r.x*r.x + r.y*r.y + (r.z+1.0)*(r.z+1.0));
-
-    float2 env;
-    env.x = r.x / m + 0.5f;
-    env.y = r.y / m + 0.5f;
-
+	float3 v = mul( input.position.xyz, worldViewMat );
+	float3 n = mul( input.normal.xyz, worldViewMat );
+	float3 normPos = -normalize( v );
+	float3 temp = ( normPos - ( n * ( 2.0 * dot( normPos, n ) ) ) );
+	temp = float3( temp.x, temp.y, temp.z + 1.0 );
+	float2 env = ( ( normalize( temp ).xy * 0.5 ) + float2( 0.5, 0.5 ) );
     return env;
 }
 
