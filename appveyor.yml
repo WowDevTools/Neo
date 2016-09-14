@@ -7,12 +7,5 @@ before_build:
   - nuget restore
 build:
   parallel: true
-  project: WoWEditor6.sln
+  project: Neo.sln
   verbosity: quiet
-after_build:
-  - 7z a Neo.zip %APPVEYOR_BUILD_FOLDER%\WoWEditor6\bin\Release
-after_test:
-  - bash <(curl -s https://codecov.io/bash)
-artifacts:
-  - path: Neo.zip
-    name: Neo
