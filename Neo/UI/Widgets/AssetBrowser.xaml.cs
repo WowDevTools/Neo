@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using WoWEditor6.IO;
-using WoWEditor6.UI.Models;
+using Neo.IO;
+using Neo.UI.Models;
 
-namespace WoWEditor6.UI.Dialogs
+namespace Neo.UI.Dialogs
 {
     /// <summary>
     /// Interaction logic for AssetBrowser.xaml

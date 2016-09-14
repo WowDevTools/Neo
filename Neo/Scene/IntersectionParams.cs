@@ -1,11 +1,11 @@
 ﻿using System.Security.RightsManagement;
 using SharpDX;
-using WoWEditor6.IO.Files.Models;
-using WoWEditor6.IO.Files.Terrain;
-using WoWEditor6.Scene.Models.M2;
-using WoWEditor6.Scene.Models.WMO;
+using Neo.IO.Files.Models;
+using Neo.IO.Files.Terrain;
+using Neo.Scene.Models.M2;
+using Neo.Scene.Models.WMO;
 
-namespace WoWEditor6.Scene
+namespace Neo.Scene
 {
     class IntersectionParams
     {

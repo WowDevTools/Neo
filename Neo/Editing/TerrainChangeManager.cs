@@ -1,10 +1,10 @@
 ﻿using System;
 using SharpDX;
-using WoWEditor6.Scene;
-using WoWEditor6.Utils;
-using WoWEditor6.UI.Dialogs;
+using Neo.Scene;
+using Neo.Utils;
+using Neo.UI.Dialogs;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     enum TerrainChangeType
     {

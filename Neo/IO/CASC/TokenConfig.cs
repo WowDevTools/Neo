@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace WoWEditor6.IO.CASC
+namespace Neo.IO.CASC
 {
     class TokenConfig
     {

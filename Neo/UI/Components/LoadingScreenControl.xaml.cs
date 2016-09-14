@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Media;
 using SharpDX;
-using WoWEditor6.Scene;
+using Neo.Scene;
 using Point = System.Windows.Point;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     /// <summary>
     /// Interaction logic for LoadingScreenControl.xaml

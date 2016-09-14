@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Prism.Mvvm;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     public class MySqlConnectionsModel : BindableBase
     {

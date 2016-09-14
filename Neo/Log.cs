@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace WoWEditor6
+namespace Neo
 {
     public enum LogLevel
     {
@@ -76,7 +76,7 @@ namespace WoWEditor6
     static class Log
     {
         private static readonly List<ILogSink> Sinks = new List<ILogSink>();
-        private const LogLevel LogLevel = WoWEditor6.LogLevel.Debug;
+        private const LogLevel LogLevel = Neo.LogLevel.Debug;
 
         static Log()
         {

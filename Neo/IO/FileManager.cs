@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using WoWEditor6.IO.CASC;
+using Neo.IO.CASC;
 
-namespace WoWEditor6.IO
+namespace Neo.IO
 {
     class FileManager
     {

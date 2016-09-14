@@ -36,7 +36,7 @@ using GLboolean = System.Byte;
 using GLubyte = System.Byte;
 using GLchan = System.Byte;
 
-namespace WoWEditor6.Utils
+namespace Neo.Utils
 {
     unsafe static class LibTxc
     {

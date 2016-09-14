@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
 using SharpDX;
-using WoWEditor6.Settings;
-using WoWEditor6.Utils;
+using Neo.Settings;
+using Neo.Utils;
 using Point = System.Drawing.Point;
 
-namespace WoWEditor6.Scene
+namespace Neo.Scene
 {
     class CameraControl
     {

@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace WoWEditor6.UI.Dialog
+namespace Neo.UI.Dialog
 {
     [Designer(typeof(ItemEditorControlDesigner))]
     public partial class ItemEditorControl : UserControl

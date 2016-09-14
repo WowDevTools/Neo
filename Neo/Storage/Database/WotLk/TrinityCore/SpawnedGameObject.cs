@@ -3,7 +3,7 @@ using System.Data;
 using System.Collections.Generic;
 using SharpDX;
 
-namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
+namespace Neo.Storage.Database.WotLk.TrinityCore
 {
     public class SpawnedGameObject : ISpawnedGameObject
     {

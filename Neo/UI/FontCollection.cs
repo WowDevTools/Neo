@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     public static class FontCollection
     {

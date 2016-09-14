@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Terrain
+namespace Neo.IO.Files.Terrain
 {
     [StructLayout(LayoutKind.Sequential)]
     struct AdtVertex

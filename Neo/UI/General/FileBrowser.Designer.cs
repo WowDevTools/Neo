@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.UI.General
+﻿namespace Neo.UI.General
 {
     partial class FileBrowser
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
+namespace Neo.Storage.Database.WotLk.TrinityCore
 {
     public class Creature : ICreature
     {

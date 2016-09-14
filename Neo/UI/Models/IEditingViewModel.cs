@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Windows;
-using WoWEditor6.UI.Dialogs;
+using Neo.UI.Dialogs;
 using System.Windows.Forms;
 using SharpDX;
-using WoWEditor6.Editing;
-using WoWEditor6.UI.Widget;
+using Neo.Editing;
+using Neo.UI.Widget;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     class IEditingViewModel
     {

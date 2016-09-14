@@ -4,12 +4,12 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
-using WoWEditor6.Storage.Database;
-using WoWEditor6.Storage.Database.WotLk.TrinityCore;
-using WoWEditor6.UI.Models;
-using WoWEditor6.UI.Services;
+using Neo.Storage.Database;
+using Neo.Storage.Database.WotLk.TrinityCore;
+using Neo.UI.Models;
+using Neo.UI.Services;
 
-namespace WoWEditor6.UI.ViewModels
+namespace Neo.UI.ViewModels
 {
     class MySqlConnectionsViewModel : BindableBase
     {

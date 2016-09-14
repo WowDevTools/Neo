@@ -1,13 +1,13 @@
 ﻿using System.Windows.Forms;
 using SharpDX;
-using WoWEditor6.Scene;
-using WoWEditor6.Scene.Models;
-using WoWEditor6.Scene.Models.M2;
-using WoWEditor6.Utils;
-using WoWEditor6.UI;
+using Neo.Scene;
+using Neo.Scene.Models;
+using Neo.Scene.Models.M2;
+using Neo.Utils;
+using Neo.UI;
 using Point = System.Drawing.Point;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     class ModelEditManager
     {

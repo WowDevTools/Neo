@@ -5,7 +5,7 @@ using SharpDX;
 using SharpDX.Direct2D1;
 using Bitmap = SharpDX.Direct2D1.Bitmap;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class BitmapImage : IDisposable
     {

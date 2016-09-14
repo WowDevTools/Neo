@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WoWEditor6.IO.Files.Sky.WoD
+namespace Neo.IO.Files.Sky.WoD
 {
     class MapLightCollection
     {

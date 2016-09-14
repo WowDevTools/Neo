@@ -1,9 +1,9 @@
 ﻿using System;
-using WoWEditor6.IO;
-using WoWEditor6.IO.Files;
-using WoWEditor6.IO.Files.Sky;
+using Neo.IO;
+using Neo.IO.Files;
+using Neo.IO.Files.Sky;
 
-namespace WoWEditor6.Storage
+namespace Neo.Storage
 {
     static class DbcStorage
     {

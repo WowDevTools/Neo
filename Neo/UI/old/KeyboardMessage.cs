@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Windows.Forms;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     class KeyboardMessage : Message
     {

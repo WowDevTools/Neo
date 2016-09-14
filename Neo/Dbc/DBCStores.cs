@@ -1,7 +1,7 @@
 ﻿using DBCLib;
 using DBCLib.Structures;
 
-namespace WoWEditor6.Dbc
+namespace Neo.Dbc
 {
     public static partial class DbcStores
     {

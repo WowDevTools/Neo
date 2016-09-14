@@ -3,13 +3,13 @@ using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
-using WoWEditor6.Graphics;
-using WoWEditor6.UI.Components;
+using Neo.Graphics;
+using Neo.UI.Components;
 using Device1 = SharpDX.Direct3D10.Device1;
 using Factory = SharpDX.Direct2D1.Factory;
 using RenderTarget = SharpDX.Direct2D1.RenderTarget;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class DrawSurface
     {

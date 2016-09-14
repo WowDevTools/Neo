@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using WoWEditor6.UI.Models;
+using Neo.UI.Models;
 
-namespace WoWEditor6.UI.Widgets
+namespace Neo.UI.Widgets
 {
     /// <summary>
     /// Interaction logic for TexturingWidget.xaml

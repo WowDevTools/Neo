@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
-using WoWEditor6.Editing;
-using WoWEditor6.Scene;
+using Neo.Editing;
+using Neo.Scene;
 
-namespace WoWEditor6.IO.Files.Terrain.WoD
+namespace Neo.IO.Files.Terrain.WoD
 {
     sealed class MapChunk : Terrain.MapChunk
     {

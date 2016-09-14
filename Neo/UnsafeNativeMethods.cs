@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
-namespace WoWEditor6
+namespace Neo
 {
     internal static unsafe class UnsafeNativeMethods
     {

@@ -2,17 +2,17 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using SharpDX;
-using WoWEditor6.Editing;
-using WoWEditor6.Graphics;
-using WoWEditor6.Scene.Models;
-using WoWEditor6.Scene.Models.M2;
-using WoWEditor6.Scene.Models.WMO;
-using WoWEditor6.Scene.Terrain;
-using WoWEditor6.Scene.Texture;
-using WoWEditor6.UI;
-using WoWEditor6.Utils;
+using Neo.Editing;
+using Neo.Graphics;
+using Neo.Scene.Models;
+using Neo.Scene.Models.M2;
+using Neo.Scene.Models.WMO;
+using Neo.Scene.Terrain;
+using Neo.Scene.Texture;
+using Neo.UI;
+using Neo.Utils;
 
-namespace WoWEditor6.Scene
+namespace Neo.Scene
 {
     class WorldFrame
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct2D1;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     class Frame : IComponent
     {

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WoWEditor6.UI.Components.AssetBrowserFilePreview"
+﻿<UserControl x:Class="Neo.UI.Components.AssetBrowserFilePreview"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

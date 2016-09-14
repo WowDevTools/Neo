@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using WoWEditor6.Graphics;
-using WoWEditor6.IO.Files.Texture;
+using Neo.Graphics;
+using Neo.IO.Files.Texture;
 
-namespace WoWEditor6.Scene.Texture
+namespace Neo.Scene.Texture
 {
     class TextureWorkItem
     {

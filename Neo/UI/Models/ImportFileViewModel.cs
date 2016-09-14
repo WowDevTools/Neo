@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using SharpDX.DXGI;
-using WoWEditor6.IO;
-using WoWEditor6.UI.Dialogs;
-using WoWEditor6.Win32;
+using Neo.IO;
+using Neo.UI.Dialogs;
+using Neo.Win32;
 using Brushes = System.Windows.Media.Brushes;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     enum ImportType
     {

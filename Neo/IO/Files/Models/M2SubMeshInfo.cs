@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models
+namespace Neo.IO.Files.Models
 {
     internal class M2SubMeshInfo
     {

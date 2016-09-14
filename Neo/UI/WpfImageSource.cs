@@ -3,10 +3,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using WoWEditor6.IO.Files.Texture;
+using Neo.IO.Files.Texture;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     static class WpfImageSource
     {

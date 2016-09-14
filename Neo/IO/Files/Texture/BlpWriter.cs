@@ -6,11 +6,11 @@ using System.Threading;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using WoWEditor6.Scene;
+using Neo.Scene;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
 
-namespace WoWEditor6.IO.Files.Texture
+namespace Neo.IO.Files.Texture
 {
     static class BlpWriter
     {

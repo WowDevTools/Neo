@@ -3,11 +3,11 @@ using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using WoWEditor6.Scene.Models.M2;
-using WoWEditor6.UI;
+using Neo.Scene.Models.M2;
+using Neo.UI;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     class GxContext : IDisposable
     {

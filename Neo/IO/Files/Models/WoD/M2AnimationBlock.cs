@@ -3,7 +3,7 @@ using System.IO;
 using SharpDX;
 using Xceed.Wpf.AvalonDock.Layout;
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     class M2AnimationBlock<TSource, TDest, TInterpolator> where TInterpolator : IInterpolator<TSource, TDest>, new() where TSource : struct
     {

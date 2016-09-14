@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using SharpDX;
 using SharpDX.Direct2D1;
-using WoWEditor6.Resources;
-using WoWEditor6.Scene;
-using WoWEditor6.Settings;
-using WoWEditor6.UI.Components;
+using Neo.Resources;
+using Neo.Scene;
+using Neo.Settings;
+using Neo.UI.Components;
 
-namespace WoWEditor6.UI.Views
+namespace Neo.UI.Views
 {
     class WorldView : IView
     {

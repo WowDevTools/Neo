@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 // ReSharper disable InconsistentlySynchronizedField
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     class M2Animator : IM2Animator
     {

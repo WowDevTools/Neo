@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Sky.WoD
+namespace Neo.IO.Files.Sky.WoD
 {
     class MapLight
     {

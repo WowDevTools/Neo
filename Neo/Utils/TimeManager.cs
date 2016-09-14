@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace WoWEditor6.Utils
+namespace Neo.Utils
 {
     class TimeManager
     {

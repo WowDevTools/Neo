@@ -1,6 +1,6 @@
 ﻿using SharpDX.Direct2D1;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class SolidBrush
     {

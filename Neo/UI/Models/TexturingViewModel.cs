@@ -8,16 +8,16 @@ using System.Drawing.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WoWEditor6.IO;
-using WoWEditor6.IO.Files.Terrain;
-using WoWEditor6.IO.Files.Texture;
-using WoWEditor6.Scene;
-using WoWEditor6.UI.Widgets;
-using WoWEditor6.Utils;
+using Neo.IO;
+using Neo.IO.Files.Terrain;
+using Neo.IO.Files.Texture;
+using Neo.Scene;
+using Neo.UI.Widgets;
+using Neo.Utils;
 using CheckBox = System.Windows.Controls.CheckBox;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     class TexturingViewModel
     {

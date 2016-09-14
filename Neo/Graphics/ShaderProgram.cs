@@ -6,7 +6,7 @@ using System.Text;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D11;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     class ShaderProgram : IDisposable
     {

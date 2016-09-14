@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WoWEditor6.IO
+namespace Neo.IO
 {
     class DefaultFileListing : IFileListing
     {

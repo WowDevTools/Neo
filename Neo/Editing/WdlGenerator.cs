@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using WoWEditor6.IO;
+using Neo.IO;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     class WdlGenerator
     {

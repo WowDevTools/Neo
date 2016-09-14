@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SharpDX.DirectWrite;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class Font
     {

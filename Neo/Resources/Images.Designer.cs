@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WoWEditor6.Resources {
+namespace Neo.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace WoWEditor6.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WoWEditor6.Resources.Images", typeof(Images).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Neo.Resources.Images", typeof(Images).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

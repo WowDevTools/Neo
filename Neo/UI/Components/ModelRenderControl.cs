@@ -7,19 +7,19 @@ using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using WoWEditor6.Graphics;
-using WoWEditor6.IO;
-using WoWEditor6.IO.Files;
-using WoWEditor6.IO.Files.Models;
-using WoWEditor6.Scene;
-using WoWEditor6.Scene.Models.M2;
-using WoWEditor6.Scene.Texture;
-using WoWEditor6.Storage;
+using Neo.Graphics;
+using Neo.IO;
+using Neo.IO.Files;
+using Neo.IO.Files.Models;
+using Neo.Scene;
+using Neo.Scene.Models.M2;
+using Neo.Scene.Texture;
+using Neo.Storage;
 using Color = System.Drawing.Color;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     public partial class ModelRenderControl : UserControl
     {

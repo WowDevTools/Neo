@@ -1,5 +1,5 @@
 ﻿
-namespace WoWEditor6.IO
+namespace Neo.IO
 {
     enum FileDataVersion
     {

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     [StructLayout(LayoutKind.Sequential)]
     struct Mohd

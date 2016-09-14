@@ -2,7 +2,7 @@
 using System.IO;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models.Wotlk
+namespace Neo.IO.Files.Models.Wotlk
 {
     class M2AnimationBlock<TSource, TDest, TInterpolator> where TInterpolator : IInterpolator<TSource, TDest>, new() where TSource : struct
     {

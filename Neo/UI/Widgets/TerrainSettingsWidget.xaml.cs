@@ -1,10 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using WoWEditor6.UI.Models;
-using WoWEditor6.Editing;
+using Neo.UI.Models;
+using Neo.Editing;
 
-namespace WoWEditor6.UI.Dialogs
+namespace Neo.UI.Dialogs
 {
     /// <summary>
     /// Interaction logic for TerrainSettingsImpl.xaml
@@ -21,7 +21,7 @@ namespace WoWEditor6.UI.Dialogs
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void IntensitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -89,7 +89,7 @@ namespace WoWEditor6.UI.Dialogs
                 if (model == null)
                     return;
 
-                model.HandleAlgorithm(algo); 
+                model.HandleAlgorithm(algo);
             }
         }
 

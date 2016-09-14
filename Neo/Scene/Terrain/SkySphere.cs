@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using SharpDX;
-using WoWEditor6.Graphics;
+using Neo.Graphics;
 
-namespace WoWEditor6.Scene.Terrain
+namespace Neo.Scene.Terrain
 {
     class SkySphere
     {

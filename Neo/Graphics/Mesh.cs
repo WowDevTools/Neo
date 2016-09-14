@@ -3,7 +3,7 @@ using System.Linq;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     class Mesh
     {

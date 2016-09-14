@@ -3,7 +3,7 @@ using SharpDX.Direct2D1;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class BrushCollection
     {

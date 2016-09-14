@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Windows;
-using WoWEditor6.UI.Dialogs;
+using Neo.UI.Dialogs;
 using System.Windows.Forms;
 using SharpDX;
-using WoWEditor6.UI.Widgets;
+using Neo.UI.Widgets;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     class ShadingViewModel
     {

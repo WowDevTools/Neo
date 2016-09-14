@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpDX;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     class ViewFrustum
     {

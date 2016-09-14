@@ -1,9 +1,9 @@
 ﻿using System;
 using SharpDX;
-using WoWEditor6.Scene;
-using WoWEditor6.Utils;
+using Neo.Scene;
+using Neo.Utils;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     enum TextureFalloffMode
     {

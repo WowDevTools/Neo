@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace WoWEditor6.IO.MPQ
+namespace Neo.IO.MPQ
 {
     class Archive
     {

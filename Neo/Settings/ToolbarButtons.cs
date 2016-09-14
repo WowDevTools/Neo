@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WoWEditor6.Settings
+namespace Neo.Settings
 {
     public enum ToolbarFunction
     {

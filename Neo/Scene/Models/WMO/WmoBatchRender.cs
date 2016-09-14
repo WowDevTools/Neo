@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SharpDX;
 
-namespace WoWEditor6.Scene.Models.WMO
+namespace Neo.Scene.Models.WMO
 {
     class WmoBatchRender : IDisposable
     {

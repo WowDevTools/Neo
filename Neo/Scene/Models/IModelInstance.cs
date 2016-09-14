@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpDX;
 
-namespace WoWEditor6.Scene.Models
+namespace Neo.Scene.Models
 {
     interface IModelInstance : IDisposable
     {

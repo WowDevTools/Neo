@@ -2,7 +2,7 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace WoWEditor6.Crypto
+namespace Neo.Crypto
 {
     internal class DataProtection
     {

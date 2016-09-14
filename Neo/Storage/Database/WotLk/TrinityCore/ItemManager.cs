@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 
-namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
+namespace Neo.Storage.Database.WotLk.TrinityCore
 {
     class ItemManager : Singleton<ItemManager>, IItemManager
     {

@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace WoWEditor6.Win32
+namespace Neo.Win32
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4)]
     public struct COMDLG_FILTERSPEC

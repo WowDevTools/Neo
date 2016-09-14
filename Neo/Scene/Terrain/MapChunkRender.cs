@@ -3,11 +3,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.DXGI;
-using WoWEditor6.Graphics;
-using WoWEditor6.IO.Files.Models;
-using WoWEditor6.Scene.Models;
+using Neo.Graphics;
+using Neo.IO.Files.Models;
+using Neo.Scene.Models;
 
-namespace WoWEditor6.Scene.Terrain
+namespace Neo.Scene.Terrain
 {
     [StructLayout(LayoutKind.Sequential)]
     struct TexAnimBuffer

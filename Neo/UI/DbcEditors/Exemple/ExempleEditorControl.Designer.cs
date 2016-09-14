@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.UI.DbcEditors.Exemple
+﻿namespace Neo.UI.DbcEditors.Exemple
 {
     partial class ExempleEditorControl
     {

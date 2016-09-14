@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace WoWEditor6.Settings
+namespace Neo.Settings
 {
     public class Camera
     {

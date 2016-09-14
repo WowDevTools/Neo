@@ -1,9 +1,9 @@
 using System;
 using SharpDX;
-using WoWEditor6.IO.Files.Models;
-using WoWEditor6.Utils;
+using Neo.IO.Files.Models;
+using Neo.Utils;
 
-namespace WoWEditor6.Scene.Models.WMO
+namespace Neo.Scene.Models.WMO
 {
     class WmoInstance : IModelInstance
     {

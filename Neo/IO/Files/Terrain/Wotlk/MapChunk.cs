@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpDX;
-using WoWEditor6.Editing;
-using WoWEditor6.Scene;
+using Neo.Editing;
+using Neo.Scene;
 
-namespace WoWEditor6.IO.Files.Terrain.Wotlk
+namespace Neo.IO.Files.Terrain.Wotlk
 {
     class MapChunk : Terrain.MapChunk
     {

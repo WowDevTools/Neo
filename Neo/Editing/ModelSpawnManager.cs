@@ -3,16 +3,16 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using SharpDX;
-using WoWEditor6.IO;
-using WoWEditor6.IO.Files.Models;
-using WoWEditor6.IO.Files.Terrain;
-using WoWEditor6.Scene;
-using WoWEditor6.Scene.Models.M2;
-using WoWEditor6.UI;
-using WoWEditor6.Utils;
+using Neo.IO;
+using Neo.IO.Files.Models;
+using Neo.IO.Files.Terrain;
+using Neo.Scene;
+using Neo.Scene.Models.M2;
+using Neo.UI;
+using Neo.Utils;
 using Point = System.Drawing.Point;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     class ModelSpawnManager
     {

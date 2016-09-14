@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using WoWEditor6.Crypto;
+using Neo.Crypto;
 // ReSharper disable PossibleNullReferenceException
 // TODO: Use null propagation with C# 6.0.
 
-namespace WoWEditor6.UI.Services
+namespace Neo.UI.Services
 {
     class XmlService
     {

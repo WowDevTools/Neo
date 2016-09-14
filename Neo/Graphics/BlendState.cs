@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpDX.Direct3D11;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 { 
     class BlendState : IDisposable
     {

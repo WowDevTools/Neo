@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpDX;
-using WoWEditor6.Editing;
-using WoWEditor6.Scene;
+using Neo.Editing;
+using Neo.Scene;
 
-namespace WoWEditor6.IO.Files.Terrain
+namespace Neo.IO.Files.Terrain
 {
     abstract class MapChunk : IDisposable
     {

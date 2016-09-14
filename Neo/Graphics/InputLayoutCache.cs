@@ -2,7 +2,7 @@
 using SharpDX.Direct3D11;
 using SharpDX.D3DCompiler;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     static class InputLayoutCache
     {

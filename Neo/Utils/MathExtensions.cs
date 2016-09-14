@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace WoWEditor6.Utils
+namespace Neo.Utils
 {
     static class MathExtensions
     {

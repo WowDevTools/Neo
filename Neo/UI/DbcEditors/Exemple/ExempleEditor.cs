@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WoWEditor6.UI.DbcEditors.Exemple
+namespace Neo.UI.DbcEditors.Exemple
 {
     public partial class ExempleEditor : Form
     {

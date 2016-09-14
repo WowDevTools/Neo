@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using WoWEditor6.Resources;
-using WoWEditor6.UI.Models;
+using Neo.Resources;
+using Neo.UI.Models;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     /// <summary>
     /// Interaction logic for AssetBrowserFilePreview.xaml

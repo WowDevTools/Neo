@@ -1,7 +1,7 @@
 ﻿using System;
 // ReSharper disable All
 
-namespace WoWEditor6.Utils
+namespace Neo.Utils
 {
     static class ColorUtils
     {

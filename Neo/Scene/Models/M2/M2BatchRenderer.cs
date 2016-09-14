@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
-using WoWEditor6.Graphics;
-using WoWEditor6.IO.Files.Models;
+using Neo.Graphics;
+using Neo.IO.Files.Models;
 
-namespace WoWEditor6.Scene.Models.M2
+namespace Neo.Scene.Models.M2
 {
     class M2BatchRenderer : IDisposable
     {

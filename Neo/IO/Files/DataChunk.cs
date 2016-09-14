@@ -1,5 +1,5 @@
 ﻿
-namespace WoWEditor6.IO.Files
+namespace Neo.IO.Files
 {
     struct DataChunk
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WoWEditor6.IO.Files.Terrain
+namespace Neo.IO.Files.Terrain
 {
     interface IMapAreaQueryImplementation
     {

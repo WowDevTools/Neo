@@ -5,7 +5,7 @@ using System.Linq;
 #pragma warning disable 219
 #pragma warning disable 169
 
-namespace WoWEditor6.IO.Files.Terrain
+namespace Neo.IO.Files.Terrain
 {
     class MapAreaGroundEffects
     {

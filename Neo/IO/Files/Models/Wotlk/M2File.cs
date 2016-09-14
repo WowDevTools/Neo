@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SharpDX;
-using WoWEditor6.Scene.Models.M2;
+using Neo.Scene.Models.M2;
 
-namespace WoWEditor6.IO.Files.Models.Wotlk
+namespace Neo.IO.Files.Models.Wotlk
 {
     class M2File : Models.M2File
     {

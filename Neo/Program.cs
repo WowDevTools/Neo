@@ -2,12 +2,12 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime;
-using WoWEditor6.Graphics;
-using WoWEditor6.Scene;
-using WoWEditor6.UI;
-using WoWEditor6.UI.Services;
+using Neo.Graphics;
+using Neo.Scene;
+using Neo.UI;
+using Neo.UI.Services;
 
-namespace WoWEditor6
+namespace Neo
 {
     class Program
     {
@@ -39,7 +39,7 @@ namespace WoWEditor6
 
             // TODO: move all shader initializations somehwere?
             context.InitShaders();
-    
+
             WorldFrame.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace WoWEditor6.IO.Files.Terrain
+namespace Neo.IO.Files.Terrain
 {
     [StructLayout(LayoutKind.Sequential)]
     struct MareEntry

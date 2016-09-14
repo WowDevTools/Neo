@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace WoWEditor6.Dbc
+namespace Neo.Dbc
 {
     public static partial class DbcStores
     {

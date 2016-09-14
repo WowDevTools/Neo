@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using SharpDX;
-using WoWEditor6.Scene;
+using Neo.Scene;
 
-namespace WoWEditor6.IO.Files.Sky.Wotlk
+namespace Neo.IO.Files.Sky.Wotlk
 {
     class LightManager : SkyManager
     {

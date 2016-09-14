@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace WoWEditor6.IO.CASC
+namespace Neo.IO.CASC
 {
     class JenkinsHash
     {

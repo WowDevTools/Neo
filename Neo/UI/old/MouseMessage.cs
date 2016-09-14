@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpDX;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     [Flags]
     enum MouseButton

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.DXGI;
-using WoWEditor6.Graphics;
+using Neo.Graphics;
 
-namespace WoWEditor6.Scene.Models
+namespace Neo.Scene.Models
 {
     class BoundingBoxInstance : IDisposable
     {

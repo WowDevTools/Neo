@@ -4,11 +4,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using DBCLib.Structures;
-using WoWEditor6.Dbc;
+using Neo.Dbc;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace WoWEditor6.UI.DbcEditors
+namespace Neo.UI.DbcEditors
 {   
     struct labelStruct : IEnumerable
     {

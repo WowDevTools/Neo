@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace WoWEditor6.IO.Files
+namespace Neo.IO.Files
 {
     unsafe class DB2Record : IDataStorageRecord
     {

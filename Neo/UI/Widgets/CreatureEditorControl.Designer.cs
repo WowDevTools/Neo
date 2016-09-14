@@ -1,13 +1,13 @@
-﻿namespace WoWEditor6.UI.Dialogs
+﻿namespace Neo.UI.Dialogs
 {
     partial class CreatureEditorControl
     {
-        /// <summary> 
+        /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -22,8 +22,8 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -117,7 +117,7 @@
             this.btnShowModelId1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.ModelId2 = new System.Windows.Forms.TextBox();
-            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
+            this.modelRenderControl1 = new Neo.UI.Components.ModelRenderControl();
             this.tbCombat = new System.Windows.Forms.TabPage();
             this.MechanicImmuneMask = new System.Windows.Forms.CheckedListBox();
             this.DamageSchool = new System.Windows.Forms.ComboBox();
@@ -220,9 +220,9 @@
             this.tbOptional.SuspendLayout();
             this.tbAI.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(1, 7);
             this.label1.Name = "label1";
@@ -230,43 +230,43 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Entry";
             this.Tooltip.SetToolTip(this.label1, "Creature\'s unique id.");
-            // 
+            //
             // Entry
-            // 
+            //
             this.Entry.Location = new System.Drawing.Point(73, 4);
             this.Entry.Name = "Entry";
             this.Entry.Size = new System.Drawing.Size(456, 20);
             this.Entry.TabIndex = 1;
-            // 
+            //
             // DiffEntry3
-            // 
+            //
             this.DiffEntry3.BackColor = System.Drawing.SystemColors.Window;
             this.DiffEntry3.Location = new System.Drawing.Point(127, 267);
             this.DiffEntry3.Name = "DiffEntry3";
             this.DiffEntry3.Size = new System.Drawing.Size(402, 20);
             this.DiffEntry3.TabIndex = 5;
             this.DiffEntry3.Text = "0";
-            // 
+            //
             // DiffEntry2
-            // 
+            //
             this.DiffEntry2.BackColor = System.Drawing.SystemColors.Window;
             this.DiffEntry2.Location = new System.Drawing.Point(127, 239);
             this.DiffEntry2.Name = "DiffEntry2";
             this.DiffEntry2.Size = new System.Drawing.Size(402, 20);
             this.DiffEntry2.TabIndex = 4;
             this.DiffEntry2.Text = "0";
-            // 
+            //
             // DiffEntry1
-            // 
+            //
             this.DiffEntry1.BackColor = System.Drawing.SystemColors.Window;
             this.DiffEntry1.Location = new System.Drawing.Point(127, 211);
             this.DiffEntry1.Name = "DiffEntry1";
             this.DiffEntry1.Size = new System.Drawing.Size(402, 20);
             this.DiffEntry1.TabIndex = 3;
             this.DiffEntry1.Text = "0";
-            // 
+            //
             // label4
-            // 
+            //
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(1, 270);
             this.label4.Name = "label4";
@@ -275,9 +275,9 @@
             this.label4.Text = "Difficulty Entry 3";
             this.Tooltip.SetToolTip(this.label4, "This field connects the stats from another entry to this template when in 25man n" +
         "ormal, 10man heroic or 25man heroic mode instance. ");
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(1, 242);
             this.label3.Name = "label3";
@@ -286,9 +286,9 @@
             this.label3.Text = "Difficulty Entry 2";
             this.Tooltip.SetToolTip(this.label3, "This field connects the stats from another entry to this template when in 25man n" +
         "ormal, 10man heroic or 25man heroic mode instance. ");
-            // 
+            //
             // label2
-            // 
+            //
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(1, 214);
             this.label2.Name = "label2";
@@ -297,9 +297,9 @@
             this.label2.Text = "Difficulty Entry 1";
             this.Tooltip.SetToolTip(this.label2, "This field connects the stats from another entry to this template when in 25man n" +
         "ormal, 10man heroic or 25man heroic mode instance. ");
-            // 
+            //
             // label14
-            // 
+            //
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(1, 423);
             this.label14.Name = "label14";
@@ -307,9 +307,9 @@
             this.label14.TabIndex = 11;
             this.label14.Text = "Icon Name";
             this.Tooltip.SetToolTip(this.label14, "Used to tell the player what kind of NPC this creature is.");
-            // 
+            //
             // label20
-            // 
+            //
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(1, 72);
             this.label20.Name = "label20";
@@ -319,18 +319,18 @@
             this.Tooltip.SetToolTip(this.label20, "A bitmask that represents what NPC flags the creature has. Each bit controls a di" +
         "fferent flag and to combine flags, you can add each flag that you want, in effec" +
         "t activating the respective bits.");
-            // 
+            //
             // WalkSpeed
-            // 
+            //
             this.WalkSpeed.BackColor = System.Drawing.SystemColors.Window;
             this.WalkSpeed.Location = new System.Drawing.Point(73, 284);
             this.WalkSpeed.Name = "WalkSpeed";
             this.WalkSpeed.Size = new System.Drawing.Size(456, 20);
             this.WalkSpeed.TabIndex = 26;
             this.WalkSpeed.Text = "1";
-            // 
+            //
             // label21
-            // 
+            //
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(1, 287);
             this.label21.Name = "label21";
@@ -338,18 +338,18 @@
             this.label21.TabIndex = 25;
             this.label21.Text = "Walk Speed";
             this.Tooltip.SetToolTip(this.label21, "Controls how fast the creature can walk. For vehicles: increases fly speed.");
-            // 
+            //
             // RunSpeed
-            // 
+            //
             this.RunSpeed.BackColor = System.Drawing.SystemColors.Window;
             this.RunSpeed.Location = new System.Drawing.Point(73, 312);
             this.RunSpeed.Name = "RunSpeed";
             this.RunSpeed.Size = new System.Drawing.Size(456, 20);
             this.RunSpeed.TabIndex = 28;
             this.RunSpeed.Text = "1";
-            // 
+            //
             // label22
-            // 
+            //
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(1, 315);
             this.label22.Name = "label22";
@@ -358,9 +358,9 @@
             this.label22.Text = "Run Speed";
             this.Tooltip.SetToolTip(this.label22, "Controls how fast the creature can run. For vehicles: increases ground movement s" +
         "peed.");
-            // 
+            //
             // label25
-            // 
+            //
             this.label25.AutoSize = true;
             this.label25.Location = new System.Drawing.Point(1, 35);
             this.label25.Name = "label25";
@@ -369,9 +369,9 @@
             this.label25.Text = "Base Atkspeed (in ms)";
             this.Tooltip.SetToolTip(this.label25, "This is the base time that determines how long a creature must wait between melee" +
         " attacks.");
-            // 
+            //
             // BaseAtkSpeed
-            // 
+            //
             this.BaseAtkSpeed.Location = new System.Drawing.Point(127, 33);
             this.BaseAtkSpeed.Maximum = new decimal(new int[] {
             99999,
@@ -391,9 +391,9 @@
             0,
             0,
             0});
-            // 
+            //
             // RangeAtkSpeed
-            // 
+            //
             this.RangeAtkSpeed.Location = new System.Drawing.Point(127, 61);
             this.RangeAtkSpeed.Maximum = new decimal(new int[] {
             99999,
@@ -413,9 +413,9 @@
             0,
             0,
             0});
-            // 
+            //
             // label26
-            // 
+            //
             this.label26.AutoSize = true;
             this.label26.Location = new System.Drawing.Point(1, 63);
             this.label26.Name = "label26";
@@ -424,45 +424,45 @@
             this.label26.Text = "Range Atkspeed (in ms)";
             this.Tooltip.SetToolTip(this.label26, "This is the base time that determines how long a creature must wait between range" +
         "d attacks.");
-            // 
+            //
             // label27
-            // 
+            //
             this.label27.AutoSize = true;
             this.label27.Location = new System.Drawing.Point(1, 91);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(76, 13);
             this.label27.TabIndex = 37;
             this.label27.Text = "Base Variance";
-            // 
+            //
             // BaseAtkSpeedVariance
-            // 
+            //
             this.BaseAtkSpeedVariance.BackColor = System.Drawing.SystemColors.Window;
             this.BaseAtkSpeedVariance.Location = new System.Drawing.Point(127, 88);
             this.BaseAtkSpeedVariance.Name = "BaseAtkSpeedVariance";
             this.BaseAtkSpeedVariance.Size = new System.Drawing.Size(402, 20);
             this.BaseAtkSpeedVariance.TabIndex = 38;
             this.BaseAtkSpeedVariance.Text = "1";
-            // 
+            //
             // label28
-            // 
+            //
             this.label28.AutoSize = true;
             this.label28.Location = new System.Drawing.Point(1, 119);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(84, 13);
             this.label28.TabIndex = 39;
             this.label28.Text = "Range Variance";
-            // 
+            //
             // RangeAtkSpeedVariance
-            // 
+            //
             this.RangeAtkSpeedVariance.BackColor = System.Drawing.SystemColors.Window;
             this.RangeAtkSpeedVariance.Location = new System.Drawing.Point(127, 116);
             this.RangeAtkSpeedVariance.Name = "RangeAtkSpeedVariance";
             this.RangeAtkSpeedVariance.Size = new System.Drawing.Size(402, 20);
             this.RangeAtkSpeedVariance.TabIndex = 40;
             this.RangeAtkSpeedVariance.Text = "1";
-            // 
+            //
             // label30
-            // 
+            //
             this.label30.AutoSize = true;
             this.label30.Location = new System.Drawing.Point(1, 232);
             this.label30.Name = "label30";
@@ -471,9 +471,9 @@
             this.label30.Text = "Unit Flags";
             this.Tooltip.SetToolTip(this.label30, "Allows the manual application of unit flags to creatures. Again this is a bitmask" +
         " field and to apply more than one flag, just add the different numbers.");
-            // 
+            //
             // label31
-            // 
+            //
             this.label31.AutoSize = true;
             this.label31.Location = new System.Drawing.Point(1, 312);
             this.label31.Name = "label31";
@@ -482,9 +482,9 @@
             this.label31.Text = "Unit Flags2";
             this.Tooltip.SetToolTip(this.label31, "Allows additional application of unit flags to creatures. Again, this is a bitmas" +
         "k field and to apply more than one flag, just add the different numbers.");
-            // 
+            //
             // label32
-            // 
+            //
             this.label32.AutoSize = true;
             this.label32.Location = new System.Drawing.Point(2, 152);
             this.label32.Name = "label32";
@@ -492,9 +492,9 @@
             this.label32.TabIndex = 47;
             this.label32.Text = "Dynamic Flags";
             this.Tooltip.SetToolTip(this.label32, "Flags that control visual appearance of the creature.");
-            // 
+            //
             // level300
-            // 
+            //
             this.level300.AutoSize = true;
             this.level300.Location = new System.Drawing.Point(1, 7);
             this.level300.Name = "level300";
@@ -503,9 +503,9 @@
             this.level300.Text = "Type Flags";
             this.Tooltip.SetToolTip(this.level300, "This field can control whether a mob is minable or herbable or lootable by eninee" +
         "r. It also controls, whether this mob can be tamed by a hunter.");
-            // 
+            //
             // groupBox5
-            // 
+            //
             this.groupBox5.Controls.Add(this.ResArcane);
             this.groupBox5.Controls.Add(this.label48);
             this.groupBox5.Controls.Add(this.ResShadow);
@@ -524,9 +524,9 @@
             this.groupBox5.TabIndex = 70;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Resistances";
-            // 
+            //
             // ResArcane
-            // 
+            //
             this.ResArcane.Location = new System.Drawing.Point(6, 227);
             this.ResArcane.Maximum = new decimal(new int[] {
             9999,
@@ -536,18 +536,18 @@
             this.ResArcane.Name = "ResArcane";
             this.ResArcane.Size = new System.Drawing.Size(513, 20);
             this.ResArcane.TabIndex = 78;
-            // 
+            //
             // label48
-            // 
+            //
             this.label48.AutoSize = true;
             this.label48.Location = new System.Drawing.Point(6, 211);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(41, 13);
             this.label48.TabIndex = 77;
             this.label48.Text = "Arcane";
-            // 
+            //
             // ResShadow
-            // 
+            //
             this.ResShadow.Location = new System.Drawing.Point(6, 188);
             this.ResShadow.Maximum = new decimal(new int[] {
             9999,
@@ -557,18 +557,18 @@
             this.ResShadow.Name = "ResShadow";
             this.ResShadow.Size = new System.Drawing.Size(513, 20);
             this.ResShadow.TabIndex = 76;
-            // 
+            //
             // label47
-            // 
+            //
             this.label47.AutoSize = true;
             this.label47.Location = new System.Drawing.Point(6, 172);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(46, 13);
             this.label47.TabIndex = 75;
             this.label47.Text = "Shadow";
-            // 
+            //
             // ResFrost
-            // 
+            //
             this.ResFrost.Location = new System.Drawing.Point(6, 149);
             this.ResFrost.Maximum = new decimal(new int[] {
             9999,
@@ -578,18 +578,18 @@
             this.ResFrost.Name = "ResFrost";
             this.ResFrost.Size = new System.Drawing.Size(513, 20);
             this.ResFrost.TabIndex = 74;
-            // 
+            //
             // label46
-            // 
+            //
             this.label46.AutoSize = true;
             this.label46.Location = new System.Drawing.Point(6, 133);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(30, 13);
             this.label46.TabIndex = 73;
             this.label46.Text = "Frost";
-            // 
+            //
             // ResNature
-            // 
+            //
             this.ResNature.Location = new System.Drawing.Point(6, 110);
             this.ResNature.Maximum = new decimal(new int[] {
             9999,
@@ -599,9 +599,9 @@
             this.ResNature.Name = "ResNature";
             this.ResNature.Size = new System.Drawing.Size(513, 20);
             this.ResNature.TabIndex = 72;
-            // 
+            //
             // ResFire
-            // 
+            //
             this.ResFire.Location = new System.Drawing.Point(6, 71);
             this.ResFire.Maximum = new decimal(new int[] {
             9999,
@@ -611,18 +611,18 @@
             this.ResFire.Name = "ResFire";
             this.ResFire.Size = new System.Drawing.Size(513, 20);
             this.ResFire.TabIndex = 72;
-            // 
+            //
             // label45
-            // 
+            //
             this.label45.AutoSize = true;
             this.label45.Location = new System.Drawing.Point(6, 94);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(39, 13);
             this.label45.TabIndex = 71;
             this.label45.Text = "Nature";
-            // 
+            //
             // ResHoly
-            // 
+            //
             this.ResHoly.Location = new System.Drawing.Point(6, 32);
             this.ResHoly.Maximum = new decimal(new int[] {
             9999,
@@ -632,54 +632,54 @@
             this.ResHoly.Name = "ResHoly";
             this.ResHoly.Size = new System.Drawing.Size(513, 20);
             this.ResHoly.TabIndex = 72;
-            // 
+            //
             // label44
-            // 
+            //
             this.label44.AutoSize = true;
             this.label44.Location = new System.Drawing.Point(6, 55);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(24, 13);
             this.label44.TabIndex = 71;
             this.label44.Text = "Fire";
-            // 
+            //
             // label43
-            // 
+            //
             this.label43.AutoSize = true;
             this.label43.Location = new System.Drawing.Point(6, 16);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(28, 13);
             this.label43.TabIndex = 71;
             this.label43.Text = "Holy";
-            // 
+            //
             // ArmorMod
-            // 
+            //
             this.ArmorMod.BackColor = System.Drawing.SystemColors.Window;
             this.ArmorMod.Location = new System.Drawing.Point(103, 60);
             this.ArmorMod.Name = "ArmorMod";
             this.ArmorMod.Size = new System.Drawing.Size(426, 20);
             this.ArmorMod.TabIndex = 5;
             this.ArmorMod.Text = "1";
-            // 
+            //
             // ManaMod
-            // 
+            //
             this.ManaMod.BackColor = System.Drawing.SystemColors.Window;
             this.ManaMod.Location = new System.Drawing.Point(103, 33);
             this.ManaMod.Name = "ManaMod";
             this.ManaMod.Size = new System.Drawing.Size(426, 20);
             this.ManaMod.TabIndex = 4;
             this.ManaMod.Text = "1";
-            // 
+            //
             // HealthMod
-            // 
+            //
             this.HealthMod.BackColor = System.Drawing.SystemColors.Window;
             this.HealthMod.Location = new System.Drawing.Point(103, 4);
             this.HealthMod.Name = "HealthMod";
             this.HealthMod.Size = new System.Drawing.Size(426, 20);
             this.HealthMod.TabIndex = 3;
             this.HealthMod.Text = "1";
-            // 
+            //
             // label64
-            // 
+            //
             this.label64.AutoSize = true;
             this.label64.Location = new System.Drawing.Point(1, 63);
             this.label64.Name = "label64";
@@ -687,9 +687,9 @@
             this.label64.TabIndex = 2;
             this.label64.Text = "Armor Modifier";
             this.Tooltip.SetToolTip(this.label64, "Used to modify the base Level/Class armor of a creature.");
-            // 
+            //
             // label65
-            // 
+            //
             this.label65.AutoSize = true;
             this.label65.Location = new System.Drawing.Point(1, 35);
             this.label65.Name = "label65";
@@ -697,9 +697,9 @@
             this.label65.TabIndex = 1;
             this.label65.Text = "Mana Modifier";
             this.Tooltip.SetToolTip(this.label65, "Used to modify the base Level/Class mana of a creature.");
-            // 
+            //
             // label66
-            // 
+            //
             this.label66.AutoSize = true;
             this.label66.Location = new System.Drawing.Point(1, 7);
             this.label66.Name = "label66";
@@ -707,18 +707,18 @@
             this.label66.TabIndex = 0;
             this.label66.Text = "Health Modifier";
             this.Tooltip.SetToolTip(this.label66, "Used to modify the base Level/Class health of a creature.");
-            // 
+            //
             // DamageMod
-            // 
+            //
             this.DamageMod.BackColor = System.Drawing.SystemColors.Window;
             this.DamageMod.Location = new System.Drawing.Point(127, 4);
             this.DamageMod.Name = "DamageMod";
             this.DamageMod.Size = new System.Drawing.Size(402, 20);
             this.DamageMod.TabIndex = 7;
             this.DamageMod.Text = "0";
-            // 
+            //
             // label67
-            // 
+            //
             this.label67.AutoSize = true;
             this.label67.Location = new System.Drawing.Point(1, 7);
             this.label67.Name = "label67";
@@ -726,27 +726,27 @@
             this.label67.TabIndex = 6;
             this.label67.Text = "Damage Modifier";
             this.Tooltip.SetToolTip(this.label67, "Used to modify the base damage of a creature.");
-            // 
+            //
             // ExperienceMod
-            // 
+            //
             this.ExperienceMod.BackColor = System.Drawing.SystemColors.Window;
             this.ExperienceMod.Location = new System.Drawing.Point(106, 116);
             this.ExperienceMod.Name = "ExperienceMod";
             this.ExperienceMod.Size = new System.Drawing.Size(423, 20);
             this.ExperienceMod.TabIndex = 9;
             this.ExperienceMod.Text = "0";
-            // 
+            //
             // label68
-            // 
+            //
             this.label68.AutoSize = true;
             this.label68.Location = new System.Drawing.Point(1, 119);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(100, 13);
             this.label68.TabIndex = 8;
             this.label68.Text = "Experience Modifier";
-            // 
+            //
             // label80
-            // 
+            //
             this.label80.AutoSize = true;
             this.label80.Location = new System.Drawing.Point(2, 392);
             this.label80.Name = "label80";
@@ -755,9 +755,9 @@
             this.label80.Text = "Flags Extra";
             this.Tooltip.SetToolTip(this.label80, "These flags control certain creature specific attributes. Flags can be added toge" +
         "ther to apply more than one.");
-            // 
+            //
             // btnSave
-            // 
+            //
             this.btnSave.Location = new System.Drawing.Point(3, 130);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(150, 23);
@@ -765,9 +765,9 @@
             this.btnSave.Text = "Save and execute to DB";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
+            //
             // tbcEditor
-            // 
+            //
             this.tbcEditor.Controls.Add(this.tbNpcInfo);
             this.tbcEditor.Controls.Add(this.tbModelInfo);
             this.tbcEditor.Controls.Add(this.tbCombat);
@@ -782,9 +782,9 @@
             this.tbcEditor.SelectedIndex = 0;
             this.tbcEditor.Size = new System.Drawing.Size(545, 479);
             this.tbcEditor.TabIndex = 112;
-            // 
+            //
             // tbNpcInfo
-            // 
+            //
             this.tbNpcInfo.Controls.Add(this.label61);
             this.tbNpcInfo.Controls.Add(this.MaxLevel);
             this.tbNpcInfo.Controls.Add(this.label21);
@@ -818,18 +818,18 @@
             this.tbNpcInfo.TabIndex = 0;
             this.tbNpcInfo.Text = "NPC Info";
             this.tbNpcInfo.UseVisualStyleBackColor = true;
-            // 
+            //
             // label61
-            // 
+            //
             this.label61.AutoSize = true;
             this.label61.Location = new System.Drawing.Point(296, 91);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(10, 13);
             this.label61.TabIndex = 104;
             this.label61.Text = "-";
-            // 
+            //
             // MaxLevel
-            // 
+            //
             this.MaxLevel.Location = new System.Drawing.Point(323, 89);
             this.MaxLevel.Maximum = new decimal(new int[] {
             255,
@@ -849,9 +849,9 @@
             0,
             0,
             0});
-            // 
+            //
             // label11
-            // 
+            //
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(1, 35);
             this.label11.Name = "label11";
@@ -859,9 +859,9 @@
             this.label11.TabIndex = 87;
             this.label11.Text = "Name";
             this.Tooltip.SetToolTip(this.label11, "Base name of the creature.");
-            // 
+            //
             // MinLevel
-            // 
+            //
             this.MinLevel.Location = new System.Drawing.Point(73, 89);
             this.MinLevel.Maximum = new decimal(new int[] {
             255,
@@ -881,9 +881,9 @@
             0,
             0,
             0});
-            // 
+            //
             // label60
-            // 
+            //
             this.label60.AutoSize = true;
             this.label60.Location = new System.Drawing.Point(1, 91);
             this.label60.Name = "label60";
@@ -892,17 +892,17 @@
             this.label60.Text = "Level";
             this.Tooltip.SetToolTip(this.label60, "The minimum/maximum level of the creature if the creature has a level range. When" +
         " added to world, a level in chosen in the specified level range.");
-            // 
+            //
             // NameCreature
-            // 
+            //
             this.NameCreature.BackColor = System.Drawing.SystemColors.Window;
             this.NameCreature.Location = new System.Drawing.Point(73, 32);
             this.NameCreature.Name = "NameCreature";
             this.NameCreature.Size = new System.Drawing.Size(456, 20);
             this.NameCreature.TabIndex = 88;
-            // 
+            //
             // label12
-            // 
+            //
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(1, 63);
             this.label12.Name = "label12";
@@ -910,17 +910,17 @@
             this.label12.TabIndex = 89;
             this.label12.Text = "Subname";
             this.Tooltip.SetToolTip(this.label12, "The subname of the creature that appears in <> below the creature\'s name.");
-            // 
+            //
             // SubName
-            // 
+            //
             this.SubName.BackColor = System.Drawing.SystemColors.Window;
             this.SubName.Location = new System.Drawing.Point(73, 60);
             this.SubName.Name = "SubName";
             this.SubName.Size = new System.Drawing.Size(456, 20);
             this.SubName.TabIndex = 90;
-            // 
+            //
             // label38
-            // 
+            //
             this.label38.AutoSize = true;
             this.label38.Location = new System.Drawing.Point(1, 119);
             this.label38.Name = "label38";
@@ -928,9 +928,9 @@
             this.label38.TabIndex = 101;
             this.label38.Text = "Type";
             this.Tooltip.SetToolTip(this.label38, "The type of the creature.");
-            // 
+            //
             // label33
-            // 
+            //
             this.label33.AutoSize = true;
             this.label33.Location = new System.Drawing.Point(1, 147);
             this.label33.Name = "label33";
@@ -938,9 +938,9 @@
             this.label33.TabIndex = 99;
             this.label33.Text = "Family";
             this.Tooltip.SetToolTip(this.label33, "The family this creature belongs to.");
-            // 
+            //
             // Family
-            // 
+            //
             this.Family.FormattingEnabled = true;
             this.Family.Items.AddRange(new object[] {
             "None",
@@ -988,9 +988,9 @@
             this.Family.Name = "Family";
             this.Family.Size = new System.Drawing.Size(456, 21);
             this.Family.TabIndex = 100;
-            // 
+            //
             // TypeCreature
-            // 
+            //
             this.TypeCreature.BackColor = System.Drawing.SystemColors.Window;
             this.TypeCreature.FormattingEnabled = true;
             this.TypeCreature.Items.AddRange(new object[] {
@@ -1012,9 +1012,9 @@
             this.TypeCreature.Name = "TypeCreature";
             this.TypeCreature.Size = new System.Drawing.Size(456, 21);
             this.TypeCreature.TabIndex = 102;
-            // 
+            //
             // label23
-            // 
+            //
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(1, 231);
             this.label23.Name = "label23";
@@ -1023,18 +1023,18 @@
             this.label23.Text = "Scale";
             this.Tooltip.SetToolTip(this.label23, "If non-zero, this field defines the size of how the model of the creature appears" +
         " ingame. If zero, it will use default model size taken from the DBC.");
-            // 
+            //
             // ScaleCreature
-            // 
+            //
             this.ScaleCreature.BackColor = System.Drawing.SystemColors.Window;
             this.ScaleCreature.Location = new System.Drawing.Point(73, 228);
             this.ScaleCreature.Name = "ScaleCreature";
             this.ScaleCreature.Size = new System.Drawing.Size(456, 20);
             this.ScaleCreature.TabIndex = 94;
             this.ScaleCreature.Text = "1";
-            // 
+            //
             // label24
-            // 
+            //
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(1, 203);
             this.label24.Name = "label24";
@@ -1042,9 +1042,9 @@
             this.label24.TabIndex = 95;
             this.label24.Text = "Rank";
             this.Tooltip.SetToolTip(this.label24, "The rank of the creature.");
-            // 
+            //
             // Rank
-            // 
+            //
             this.Rank.FormattingEnabled = true;
             this.Rank.Items.AddRange(new object[] {
             "Normal",
@@ -1056,9 +1056,9 @@
             this.Rank.Name = "Rank";
             this.Rank.Size = new System.Drawing.Size(456, 21);
             this.Rank.TabIndex = 96;
-            // 
+            //
             // label19
-            // 
+            //
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(1, 259);
             this.label19.Name = "label19";
@@ -1066,18 +1066,18 @@
             this.label19.TabIndex = 91;
             this.label19.Text = "Faction";
             this.Tooltip.SetToolTip(this.label19, "The faction of the creature.");
-            // 
+            //
             // Faction
-            // 
+            //
             this.Faction.BackColor = System.Drawing.SystemColors.Window;
             this.Faction.Location = new System.Drawing.Point(73, 256);
             this.Faction.Name = "Faction";
             this.Faction.Size = new System.Drawing.Size(456, 20);
             this.Faction.TabIndex = 92;
             this.Faction.Text = "35";
-            // 
+            //
             // label29
-            // 
+            //
             this.label29.AutoSize = true;
             this.label29.Location = new System.Drawing.Point(1, 175);
             this.label29.Name = "label29";
@@ -1085,9 +1085,9 @@
             this.label29.TabIndex = 97;
             this.label29.Text = "Unit Class";
             this.Tooltip.SetToolTip(this.label29, "This is the creature\'s class, and it dictates levels of health and mana.");
-            // 
+            //
             // UnitClass
-            // 
+            //
             this.UnitClass.BackColor = System.Drawing.SystemColors.Window;
             this.UnitClass.FormattingEnabled = true;
             this.UnitClass.Items.AddRange(new object[] {
@@ -1099,9 +1099,9 @@
             this.UnitClass.Name = "UnitClass";
             this.UnitClass.Size = new System.Drawing.Size(456, 21);
             this.UnitClass.TabIndex = 98;
-            // 
+            //
             // tbModelInfo
-            // 
+            //
             this.tbModelInfo.Controls.Add(this.label50);
             this.tbModelInfo.Controls.Add(this.btnShowModelId4);
             this.tbModelInfo.Controls.Add(this.ModelId4);
@@ -1123,9 +1123,9 @@
             this.tbModelInfo.TabIndex = 1;
             this.tbModelInfo.Text = "Model Info";
             this.tbModelInfo.UseVisualStyleBackColor = true;
-            // 
+            //
             // label50
-            // 
+            //
             this.label50.AutoSize = true;
             this.label50.Location = new System.Drawing.Point(3, 393);
             this.label50.Name = "label50";
@@ -1133,9 +1133,9 @@
             this.label50.TabIndex = 24;
             this.label50.Text = "Display ID";
             this.Tooltip.SetToolTip(this.label50, "A random graphical model that the client applies on this creature.");
-            // 
+            //
             // btnShowModelId4
-            // 
+            //
             this.btnShowModelId4.Location = new System.Drawing.Point(426, 427);
             this.btnShowModelId4.Name = "btnShowModelId4";
             this.btnShowModelId4.Size = new System.Drawing.Size(54, 20);
@@ -1143,27 +1143,27 @@
             this.btnShowModelId4.Text = "Show";
             this.btnShowModelId4.UseVisualStyleBackColor = true;
             this.btnShowModelId4.Click += new System.EventHandler(this.btnShowModelId4_Click);
-            // 
+            //
             // ModelId4
-            // 
+            //
             this.ModelId4.BackColor = System.Drawing.SystemColors.Window;
             this.ModelId4.Location = new System.Drawing.Point(366, 427);
             this.ModelId4.Name = "ModelId4";
             this.ModelId4.Size = new System.Drawing.Size(54, 20);
             this.ModelId4.TabIndex = 19;
             this.ModelId4.Text = "0";
-            // 
+            //
             // label9
-            // 
+            //
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(366, 408);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(13, 13);
             this.label9.TabIndex = 18;
             this.label9.Text = "4";
-            // 
+            //
             // btnShowModelId3
-            // 
+            //
             this.btnShowModelId3.Location = new System.Drawing.Point(306, 427);
             this.btnShowModelId3.Name = "btnShowModelId3";
             this.btnShowModelId3.Size = new System.Drawing.Size(54, 20);
@@ -1171,18 +1171,18 @@
             this.btnShowModelId3.Text = "Show";
             this.btnShowModelId3.UseVisualStyleBackColor = true;
             this.btnShowModelId3.Click += new System.EventHandler(this.btnShowModelId3_Click);
-            // 
+            //
             // label6
-            // 
+            //
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 408);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(13, 13);
             this.label6.TabIndex = 12;
             this.label6.Text = "1";
-            // 
+            //
             // btnShowModelId2
-            // 
+            //
             this.btnShowModelId2.Location = new System.Drawing.Point(186, 427);
             this.btnShowModelId2.Name = "btnShowModelId2";
             this.btnShowModelId2.Size = new System.Drawing.Size(54, 20);
@@ -1190,35 +1190,35 @@
             this.btnShowModelId2.Text = "Show";
             this.btnShowModelId2.UseVisualStyleBackColor = true;
             this.btnShowModelId2.Click += new System.EventHandler(this.btnShowModelId2_Click);
-            // 
+            //
             // ModelId1
-            // 
+            //
             this.ModelId1.Location = new System.Drawing.Point(6, 427);
             this.ModelId1.Name = "ModelId1";
             this.ModelId1.Size = new System.Drawing.Size(54, 20);
             this.ModelId1.TabIndex = 13;
             this.ModelId1.Text = "0";
-            // 
+            //
             // ModelId3
-            // 
+            //
             this.ModelId3.BackColor = System.Drawing.SystemColors.Window;
             this.ModelId3.Location = new System.Drawing.Point(246, 427);
             this.ModelId3.Name = "ModelId3";
             this.ModelId3.Size = new System.Drawing.Size(54, 20);
             this.ModelId3.TabIndex = 17;
             this.ModelId3.Text = "0";
-            // 
+            //
             // label8
-            // 
+            //
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(246, 408);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(13, 13);
             this.label8.TabIndex = 16;
             this.label8.Text = "3";
-            // 
+            //
             // btnShowModelId1
-            // 
+            //
             this.btnShowModelId1.Location = new System.Drawing.Point(66, 427);
             this.btnShowModelId1.Name = "btnShowModelId1";
             this.btnShowModelId1.Size = new System.Drawing.Size(54, 20);
@@ -1226,35 +1226,35 @@
             this.btnShowModelId1.Text = "Show";
             this.btnShowModelId1.UseVisualStyleBackColor = true;
             this.btnShowModelId1.Click += new System.EventHandler(this.btnShowModelId1_Click);
-            // 
+            //
             // label7
-            // 
+            //
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(126, 408);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(13, 13);
             this.label7.TabIndex = 14;
             this.label7.Text = "2";
-            // 
+            //
             // ModelId2
-            // 
+            //
             this.ModelId2.BackColor = System.Drawing.SystemColors.Window;
             this.ModelId2.Location = new System.Drawing.Point(126, 427);
             this.ModelId2.Name = "ModelId2";
             this.ModelId2.Size = new System.Drawing.Size(54, 20);
             this.ModelId2.TabIndex = 15;
             this.ModelId2.Text = "0";
-            // 
+            //
             // modelRenderControl1
-            // 
+            //
             this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
             this.modelRenderControl1.Name = "modelRenderControl1";
             this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
             this.modelRenderControl1.TabIndex = 1;
-            // 
+            //
             // tbCombat
-            // 
+            //
             this.tbCombat.Controls.Add(this.MechanicImmuneMask);
             this.tbCombat.Controls.Add(this.DamageSchool);
             this.tbCombat.Controls.Add(this.DamageSchoolLabel);
@@ -1281,9 +1281,9 @@
             this.tbCombat.TabIndex = 2;
             this.tbCombat.Text = "Combat";
             this.tbCombat.UseVisualStyleBackColor = true;
-            // 
+            //
             // MechanicImmuneMask
-            // 
+            //
             this.MechanicImmuneMask.FormattingEnabled = true;
             this.MechanicImmuneMask.Items.AddRange(new object[] {
             "None",
@@ -1322,9 +1322,9 @@
             this.MechanicImmuneMask.Name = "MechanicImmuneMask";
             this.MechanicImmuneMask.Size = new System.Drawing.Size(402, 49);
             this.MechanicImmuneMask.TabIndex = 116;
-            // 
+            //
             // DamageSchool
-            // 
+            //
             this.DamageSchool.BackColor = System.Drawing.SystemColors.Window;
             this.DamageSchool.FormattingEnabled = true;
             this.DamageSchool.Items.AddRange(new object[] {
@@ -1339,9 +1339,9 @@
             this.DamageSchool.Name = "DamageSchool";
             this.DamageSchool.Size = new System.Drawing.Size(402, 21);
             this.DamageSchool.TabIndex = 115;
-            // 
+            //
             // DamageSchoolLabel
-            // 
+            //
             this.DamageSchoolLabel.AutoSize = true;
             this.DamageSchoolLabel.Location = new System.Drawing.Point(1, 298);
             this.DamageSchoolLabel.Name = "DamageSchoolLabel";
@@ -1349,9 +1349,9 @@
             this.DamageSchoolLabel.TabIndex = 114;
             this.DamageSchoolLabel.Text = "Damage school";
             this.Tooltip.SetToolTip(this.DamageSchoolLabel, "Creature\'s melee damage school.");
-            // 
+            //
             // label78
-            // 
+            //
             this.label78.AutoSize = true;
             this.label78.Location = new System.Drawing.Point(1, 147);
             this.label78.Name = "label78";
@@ -1359,9 +1359,9 @@
             this.label78.TabIndex = 112;
             this.label78.Text = "Mechanic Immune Mask";
             this.Tooltip.SetToolTip(this.label78, "This makes the creature immune to specific spell natures.");
-            // 
+            //
             // tbStats
-            // 
+            //
             this.tbStats.Controls.Add(this.label66);
             this.tbStats.Controls.Add(this.label18);
             this.tbStats.Controls.Add(this.Exp);
@@ -1377,9 +1377,9 @@
             this.tbStats.TabIndex = 3;
             this.tbStats.Text = "Stats";
             this.tbStats.UseVisualStyleBackColor = true;
-            // 
+            //
             // label18
-            // 
+            //
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(1, 91);
             this.label18.Name = "label18";
@@ -1388,9 +1388,9 @@
             this.label18.Text = "Expansion (Health)";
             this.Tooltip.SetToolTip(this.label18, "The expansion table the creatures health value is taken from. Values are from 0 t" +
         "o 2.");
-            // 
+            //
             // Exp
-            // 
+            //
             this.Exp.Location = new System.Drawing.Point(103, 89);
             this.Exp.Maximum = new decimal(new int[] {
             2,
@@ -1400,9 +1400,9 @@
             this.Exp.Name = "Exp";
             this.Exp.Size = new System.Drawing.Size(426, 20);
             this.Exp.TabIndex = 20;
-            // 
+            //
             // tbLoot
-            // 
+            //
             this.tbLoot.Controls.Add(this.label59);
             this.tbLoot.Controls.Add(this.MaxGold);
             this.tbLoot.Controls.Add(this.MinGold);
@@ -1421,45 +1421,45 @@
             this.tbLoot.TabIndex = 4;
             this.tbLoot.Text = "Loot";
             this.tbLoot.UseVisualStyleBackColor = true;
-            // 
+            //
             // label59
-            // 
+            //
             this.label59.AutoSize = true;
             this.label59.Location = new System.Drawing.Point(313, 91);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(10, 13);
             this.label59.TabIndex = 91;
             this.label59.Text = "-";
-            // 
+            //
             // MaxGold
-            // 
+            //
             this.MaxGold.BackColor = System.Drawing.SystemColors.Window;
             this.MaxGold.Location = new System.Drawing.Point(323, 88);
             this.MaxGold.Name = "MaxGold";
             this.MaxGold.Size = new System.Drawing.Size(206, 20);
             this.MaxGold.TabIndex = 92;
             this.MaxGold.Text = "0";
-            // 
+            //
             // MinGold
-            // 
+            //
             this.MinGold.BackColor = System.Drawing.SystemColors.Window;
             this.MinGold.Location = new System.Drawing.Point(106, 88);
             this.MinGold.Name = "MinGold";
             this.MinGold.Size = new System.Drawing.Size(206, 20);
             this.MinGold.TabIndex = 90;
             this.MinGold.Text = "0";
-            // 
+            //
             // LootId
-            // 
+            //
             this.LootId.BackColor = System.Drawing.SystemColors.Window;
             this.LootId.Location = new System.Drawing.Point(106, 4);
             this.LootId.Name = "LootId";
             this.LootId.Size = new System.Drawing.Size(423, 20);
             this.LootId.TabIndex = 84;
             this.LootId.Text = "0";
-            // 
+            //
             // label58
-            // 
+            //
             this.label58.AutoSize = true;
             this.label58.Location = new System.Drawing.Point(1, 91);
             this.label58.Name = "label58";
@@ -1467,18 +1467,18 @@
             this.label58.TabIndex = 89;
             this.label58.Text = "Gold (in copper)";
             this.Tooltip.SetToolTip(this.label58, "Minimum/maximum money that the creature drops when killed.");
-            // 
+            //
             // SkinningLootId
-            // 
+            //
             this.SkinningLootId.BackColor = System.Drawing.SystemColors.Window;
             this.SkinningLootId.Location = new System.Drawing.Point(106, 60);
             this.SkinningLootId.Name = "SkinningLootId";
             this.SkinningLootId.Size = new System.Drawing.Size(423, 20);
             this.SkinningLootId.TabIndex = 88;
             this.SkinningLootId.Text = "0";
-            // 
+            //
             // label40
-            // 
+            //
             this.label40.AutoSize = true;
             this.label40.Location = new System.Drawing.Point(1, 7);
             this.label40.Name = "label40";
@@ -1486,9 +1486,9 @@
             this.label40.TabIndex = 83;
             this.label40.Text = "Loot ID";
             this.Tooltip.SetToolTip(this.label40, "The ID of the loot template ID that this creature should use to generate loots.");
-            // 
+            //
             // label42
-            // 
+            //
             this.label42.AutoSize = true;
             this.label42.Location = new System.Drawing.Point(1, 63);
             this.label42.Name = "label42";
@@ -1497,9 +1497,9 @@
             this.label42.Text = "Skinning Loot ID";
             this.Tooltip.SetToolTip(this.label42, "The ID of the skinning loot template that this creature should use to generate sk" +
         "inning loots.");
-            // 
+            //
             // label41
-            // 
+            //
             this.label41.AutoSize = true;
             this.label41.Location = new System.Drawing.Point(1, 35);
             this.label41.Name = "label41";
@@ -1508,18 +1508,18 @@
             this.label41.Text = "Pickpocket Loot ID";
             this.Tooltip.SetToolTip(this.label41, "The ID of the pickpocketing loot template that this creature should use to genera" +
         "te pickpocketing loots.");
-            // 
+            //
             // PickpocketLootId
-            // 
+            //
             this.PickpocketLootId.BackColor = System.Drawing.SystemColors.Window;
             this.PickpocketLootId.Location = new System.Drawing.Point(106, 32);
             this.PickpocketLootId.Name = "PickpocketLootId";
             this.PickpocketLootId.Size = new System.Drawing.Size(423, 20);
             this.PickpocketLootId.TabIndex = 86;
             this.PickpocketLootId.Text = "0";
-            // 
+            //
             // tbQuestInfo
-            // 
+            //
             this.tbQuestInfo.Controls.Add(this.KillCredit2);
             this.tbQuestInfo.Controls.Add(this.label10);
             this.tbQuestInfo.Controls.Add(this.label5);
@@ -1530,18 +1530,18 @@
             this.tbQuestInfo.TabIndex = 8;
             this.tbQuestInfo.Text = "Quest Info";
             this.tbQuestInfo.UseVisualStyleBackColor = true;
-            // 
+            //
             // KillCredit2
-            // 
+            //
             this.KillCredit2.BackColor = System.Drawing.SystemColors.Window;
             this.KillCredit2.Location = new System.Drawing.Point(66, 32);
             this.KillCredit2.Name = "KillCredit2";
             this.KillCredit2.Size = new System.Drawing.Size(463, 20);
             this.KillCredit2.TabIndex = 88;
             this.KillCredit2.Text = "0";
-            // 
+            //
             // label10
-            // 
+            //
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(1, 7);
             this.label10.Name = "label10";
@@ -1549,9 +1549,9 @@
             this.label10.TabIndex = 85;
             this.label10.Text = "Kill Credit 1";
             this.Tooltip.SetToolTip(this.label10, resources.GetString("label10.ToolTip"));
-            // 
+            //
             // label5
-            // 
+            //
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(1, 35);
             this.label5.Name = "label5";
@@ -1559,18 +1559,18 @@
             this.label5.TabIndex = 86;
             this.label5.Text = "Kill Credit 2";
             this.Tooltip.SetToolTip(this.label5, resources.GetString("label5.ToolTip"));
-            // 
+            //
             // KillCredit1
-            // 
+            //
             this.KillCredit1.BackColor = System.Drawing.SystemColors.Window;
             this.KillCredit1.Location = new System.Drawing.Point(66, 4);
             this.KillCredit1.Name = "KillCredit1";
             this.KillCredit1.Size = new System.Drawing.Size(463, 20);
             this.KillCredit1.TabIndex = 87;
             this.KillCredit1.Text = "0";
-            // 
+            //
             // tbFlags
-            // 
+            //
             this.tbFlags.Controls.Add(this.FlagsExtra);
             this.tbFlags.Controls.Add(this.UnitFlags2);
             this.tbFlags.Controls.Add(this.UnitFlags);
@@ -1589,9 +1589,9 @@
             this.tbFlags.TabIndex = 5;
             this.tbFlags.Text = "Flags";
             this.tbFlags.UseVisualStyleBackColor = true;
-            // 
+            //
             // FlagsExtra
-            // 
+            //
             this.FlagsExtra.FormattingEnabled = true;
             this.FlagsExtra.Items.AddRange(new object[] {
             "None",
@@ -1617,9 +1617,9 @@
             this.FlagsExtra.Name = "FlagsExtra";
             this.FlagsExtra.Size = new System.Drawing.Size(446, 49);
             this.FlagsExtra.TabIndex = 123;
-            // 
+            //
             // UnitFlags2
-            // 
+            //
             this.UnitFlags2.FormattingEnabled = true;
             this.UnitFlags2.Items.AddRange(new object[] {
             "None",
@@ -1638,9 +1638,9 @@
             this.UnitFlags2.Name = "UnitFlags2";
             this.UnitFlags2.Size = new System.Drawing.Size(446, 49);
             this.UnitFlags2.TabIndex = 122;
-            // 
+            //
             // UnitFlags
-            // 
+            //
             this.UnitFlags.FormattingEnabled = true;
             this.UnitFlags.Items.AddRange(new object[] {
             "None",
@@ -1680,9 +1680,9 @@
             this.UnitFlags.Name = "UnitFlags";
             this.UnitFlags.Size = new System.Drawing.Size(446, 49);
             this.UnitFlags.TabIndex = 121;
-            // 
+            //
             // DynamicFlags
-            // 
+            //
             this.DynamicFlags.FormattingEnabled = true;
             this.DynamicFlags.Items.AddRange(new object[] {
             "None",
@@ -1698,9 +1698,9 @@
             this.DynamicFlags.Name = "DynamicFlags";
             this.DynamicFlags.Size = new System.Drawing.Size(446, 49);
             this.DynamicFlags.TabIndex = 120;
-            // 
+            //
             // TypeFlags
-            // 
+            //
             this.TypeFlags.FormattingEnabled = true;
             this.TypeFlags.Items.AddRange(new object[] {
             "None",
@@ -1733,9 +1733,9 @@
             this.TypeFlags.Name = "TypeFlags";
             this.TypeFlags.Size = new System.Drawing.Size(446, 49);
             this.TypeFlags.TabIndex = 119;
-            // 
+            //
             // NpcFlag
-            // 
+            //
             this.NpcFlag.FormattingEnabled = true;
             this.NpcFlag.Items.AddRange(new object[] {
             "None",
@@ -1767,9 +1767,9 @@
             this.NpcFlag.Name = "NpcFlag";
             this.NpcFlag.Size = new System.Drawing.Size(446, 49);
             this.NpcFlag.TabIndex = 118;
-            // 
+            //
             // tbOptional
-            // 
+            //
             this.tbOptional.Controls.Add(this.InhabitType);
             this.tbOptional.Controls.Add(this.IconName);
             this.tbOptional.Controls.Add(this.TrainerRace);
@@ -1806,9 +1806,9 @@
             this.tbOptional.TabIndex = 6;
             this.tbOptional.Text = "Optional";
             this.tbOptional.UseVisualStyleBackColor = true;
-            // 
+            //
             // InhabitType
-            // 
+            //
             this.InhabitType.FormattingEnabled = true;
             this.InhabitType.Items.AddRange(new object[] {
             "Ground",
@@ -1818,9 +1818,9 @@
             this.InhabitType.Name = "InhabitType";
             this.InhabitType.Size = new System.Drawing.Size(433, 49);
             this.InhabitType.TabIndex = 130;
-            // 
+            //
             // IconName
-            // 
+            //
             this.IconName.FormattingEnabled = true;
             this.IconName.Items.AddRange(new object[] {
             "Directions",
@@ -1842,18 +1842,18 @@
             this.IconName.Name = "IconName";
             this.IconName.Size = new System.Drawing.Size(433, 21);
             this.IconName.TabIndex = 129;
-            // 
+            //
             // TrainerRace
-            // 
+            //
             this.TrainerRace.BackColor = System.Drawing.SystemColors.Window;
             this.TrainerRace.Location = new System.Drawing.Point(96, 364);
             this.TrainerRace.Name = "TrainerRace";
             this.TrainerRace.Size = new System.Drawing.Size(433, 20);
             this.TrainerRace.TabIndex = 58;
             this.TrainerRace.Text = "0";
-            // 
+            //
             // RegenHealth
-            // 
+            //
             this.RegenHealth.FormattingEnabled = true;
             this.RegenHealth.Items.AddRange(new object[] {
             "True",
@@ -1862,9 +1862,9 @@
             this.RegenHealth.Name = "RegenHealth";
             this.RegenHealth.Size = new System.Drawing.Size(433, 21);
             this.RegenHealth.TabIndex = 101;
-            // 
+            //
             // label37
-            // 
+            //
             this.label37.AutoSize = true;
             this.label37.Location = new System.Drawing.Point(1, 367);
             this.label37.Name = "label37";
@@ -1873,18 +1873,18 @@
             this.label37.Text = "Trainer Race";
             this.Tooltip.SetToolTip(this.label37, "If the NPC is a mount trainer (trainer_type == 1), then the player\'s race must be" +
         " the same as the value specified here to talk to this trainer.");
-            // 
+            //
             // TrainerClass
-            // 
+            //
             this.TrainerClass.BackColor = System.Drawing.SystemColors.Window;
             this.TrainerClass.Location = new System.Drawing.Point(96, 338);
             this.TrainerClass.Name = "TrainerClass";
             this.TrainerClass.Size = new System.Drawing.Size(433, 20);
             this.TrainerClass.TabIndex = 56;
             this.TrainerClass.Text = "0";
-            // 
+            //
             // label36
-            // 
+            //
             this.label36.AutoSize = true;
             this.label36.Location = new System.Drawing.Point(1, 341);
             this.label36.Name = "label36";
@@ -1892,9 +1892,9 @@
             this.label36.TabIndex = 55;
             this.label36.Text = "Trainer Class";
             this.Tooltip.SetToolTip(this.label36, resources.GetString("label36.ToolTip"));
-            // 
+            //
             // label79
-            // 
+            //
             this.label79.AutoSize = true;
             this.label79.Location = new System.Drawing.Point(1, 395);
             this.label79.Name = "label79";
@@ -1902,18 +1902,18 @@
             this.label79.TabIndex = 99;
             this.label79.Text = "Health Reg";
             this.Tooltip.SetToolTip(this.label79, "Boolean 1 or 0 controlling if the creature should regenerate its health or not.");
-            // 
+            //
             // TrainerSpell
-            // 
+            //
             this.TrainerSpell.BackColor = System.Drawing.SystemColors.Window;
             this.TrainerSpell.Location = new System.Drawing.Point(96, 310);
             this.TrainerSpell.Name = "TrainerSpell";
             this.TrainerSpell.Size = new System.Drawing.Size(433, 20);
             this.TrainerSpell.TabIndex = 54;
             this.TrainerSpell.Text = "0";
-            // 
+            //
             // label35
-            // 
+            //
             this.label35.AutoSize = true;
             this.label35.Location = new System.Drawing.Point(1, 313);
             this.label35.Name = "label35";
@@ -1923,9 +1923,9 @@
             this.Tooltip.SetToolTip(this.label35, "If the NPC is a trainer that teaches professions (trainer_type == 2), then the pl" +
         "ayer must already know the spell ID specified here to be able to talk to this NP" +
         "C.");
-            // 
+            //
             // TrainerType
-            // 
+            //
             this.TrainerType.BackColor = System.Drawing.SystemColors.Window;
             this.TrainerType.FormattingEnabled = true;
             this.TrainerType.Items.AddRange(new object[] {
@@ -1937,9 +1937,9 @@
             this.TrainerType.Name = "TrainerType";
             this.TrainerType.Size = new System.Drawing.Size(433, 21);
             this.TrainerType.TabIndex = 52;
-            // 
+            //
             // label34
-            // 
+            //
             this.label34.AutoSize = true;
             this.label34.Location = new System.Drawing.Point(1, 285);
             this.label34.Name = "label34";
@@ -1949,9 +1949,9 @@
             this.Tooltip.SetToolTip(this.label34, "If the NPC is a trainer (has the trainer flag), then this field controls what kin" +
         "d of trainer it is. Both this field and the related field must be filled in for " +
         "a trainer to work correctly.");
-            // 
+            //
             // label17
-            // 
+            //
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(1, 7);
             this.label17.Name = "label17";
@@ -1959,9 +1959,9 @@
             this.label17.TabIndex = 115;
             this.label17.Text = "Movement Type";
             this.Tooltip.SetToolTip(this.label17, "The creature\'s default movement type.");
-            // 
+            //
             // label15
-            // 
+            //
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(1, 145);
             this.label15.Name = "label15";
@@ -1970,27 +1970,27 @@
             this.label15.Text = "Gossip Menu ID";
             this.Tooltip.SetToolTip(this.label15, "The gossip ID of this creature. This field is obtained from sniff (update fields)" +
         ". If you can not sniff this value, and need to make one up, it must be > 50000.");
-            // 
+            //
             // GossipMenuId
-            // 
+            //
             this.GossipMenuId.BackColor = System.Drawing.SystemColors.Window;
             this.GossipMenuId.Location = new System.Drawing.Point(96, 142);
             this.GossipMenuId.Name = "GossipMenuId";
             this.GossipMenuId.Size = new System.Drawing.Size(433, 20);
             this.GossipMenuId.TabIndex = 108;
             this.GossipMenuId.Text = "0";
-            // 
+            //
             // VerifiedBuild
-            // 
+            //
             this.VerifiedBuild.BackColor = System.Drawing.SystemColors.Window;
             this.VerifiedBuild.Location = new System.Drawing.Point(96, 254);
             this.VerifiedBuild.Name = "VerifiedBuild";
             this.VerifiedBuild.Size = new System.Drawing.Size(433, 20);
             this.VerifiedBuild.TabIndex = 128;
             this.VerifiedBuild.Text = "12340";
-            // 
+            //
             // label82
-            // 
+            //
             this.label82.AutoSize = true;
             this.label82.Location = new System.Drawing.Point(1, 257);
             this.label82.Name = "label82";
@@ -1999,35 +1999,35 @@
             this.label82.Text = "Verified Build";
             this.Tooltip.SetToolTip(this.label82, "This field is used by the TrinityDB Team to determine whether a template has been" +
         " verified from WDB files.");
-            // 
+            //
             // PetSpellDataId
-            // 
+            //
             this.PetSpellDataId.BackColor = System.Drawing.SystemColors.Window;
             this.PetSpellDataId.Location = new System.Drawing.Point(96, 198);
             this.PetSpellDataId.Name = "PetSpellDataId";
             this.PetSpellDataId.Size = new System.Drawing.Size(433, 20);
             this.PetSpellDataId.TabIndex = 112;
             this.PetSpellDataId.Text = "0";
-            // 
+            //
             // VehicleId
-            // 
+            //
             this.VehicleId.BackColor = System.Drawing.SystemColors.Window;
             this.VehicleId.Location = new System.Drawing.Point(96, 226);
             this.VehicleId.Name = "VehicleId";
             this.VehicleId.Size = new System.Drawing.Size(433, 20);
             this.VehicleId.TabIndex = 114;
             this.VehicleId.Text = "0";
-            // 
+            //
             // MovementId
-            // 
+            //
             this.MovementId.BackColor = System.Drawing.SystemColors.Window;
             this.MovementId.Location = new System.Drawing.Point(96, 32);
             this.MovementId.Name = "MovementId";
             this.MovementId.Size = new System.Drawing.Size(433, 20);
             this.MovementId.TabIndex = 124;
-            // 
+            //
             // MovementType
-            // 
+            //
             this.MovementType.FormattingEnabled = true;
             this.MovementType.Items.AddRange(new object[] {
             "NoMovement",
@@ -2037,9 +2037,9 @@
             this.MovementType.Name = "MovementType";
             this.MovementType.Size = new System.Drawing.Size(433, 21);
             this.MovementType.TabIndex = 116;
-            // 
+            //
             // label77
-            // 
+            //
             this.label77.AutoSize = true;
             this.label77.Location = new System.Drawing.Point(1, 35);
             this.label77.Name = "label77";
@@ -2047,9 +2047,9 @@
             this.label77.TabIndex = 123;
             this.label77.Text = "Movement ID";
             this.Tooltip.SetToolTip(this.label77, "We have no idea what this field does. It is passed directly to the client.");
-            // 
+            //
             // label62
-            // 
+            //
             this.label62.AutoSize = true;
             this.label62.Location = new System.Drawing.Point(1, 63);
             this.label62.Name = "label62";
@@ -2057,17 +2057,17 @@
             this.label62.TabIndex = 117;
             this.label62.Text = "Inhabit Type";
             this.Tooltip.SetToolTip(this.label62, "Controls where the creature can move and attack.");
-            // 
+            //
             // RacialLeader
-            // 
+            //
             this.RacialLeader.BackColor = System.Drawing.SystemColors.Window;
             this.RacialLeader.Location = new System.Drawing.Point(96, 170);
             this.RacialLeader.Name = "RacialLeader";
             this.RacialLeader.Size = new System.Drawing.Size(433, 20);
             this.RacialLeader.TabIndex = 122;
-            // 
+            //
             // label63
-            // 
+            //
             this.label63.AutoSize = true;
             this.label63.Location = new System.Drawing.Point(1, 117);
             this.label63.Name = "label63";
@@ -2076,18 +2076,18 @@
             this.label63.Text = "Hover Height";
             this.Tooltip.SetToolTip(this.label63, "Distance above the ground that the creature will hover if it has MOVEMENTFLAG_DIS" +
         "ABLE_GRAVITY enabled.");
-            // 
+            //
             // HoverHeight
-            // 
+            //
             this.HoverHeight.BackColor = System.Drawing.SystemColors.Window;
             this.HoverHeight.Location = new System.Drawing.Point(96, 114);
             this.HoverHeight.Name = "HoverHeight";
             this.HoverHeight.Size = new System.Drawing.Size(433, 20);
             this.HoverHeight.TabIndex = 111;
             this.HoverHeight.Text = "0";
-            // 
+            //
             // label13
-            // 
+            //
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(1, 201);
             this.label13.Name = "label13";
@@ -2096,9 +2096,9 @@
             this.label13.Text = "Pet Spell Data ID";
             this.Tooltip.SetToolTip(this.label13, "ID, found in CreatureSpellData.dbc, that displays what spells the pet has in the " +
         "client.");
-            // 
+            //
             // label57
-            // 
+            //
             this.label57.AutoSize = true;
             this.label57.Location = new System.Drawing.Point(1, 229);
             this.label57.Name = "label57";
@@ -2106,9 +2106,9 @@
             this.label57.TabIndex = 113;
             this.label57.Text = "Vehicle ID";
             this.Tooltip.SetToolTip(this.label57, resources.GetString("label57.ToolTip"));
-            // 
+            //
             // label70
-            // 
+            //
             this.label70.AutoSize = true;
             this.label70.Location = new System.Drawing.Point(1, 173);
             this.label70.Name = "label70";
@@ -2117,9 +2117,9 @@
             this.label70.Text = "Racial Leader";
             this.Tooltip.SetToolTip(this.label70, "A flag indicating wheather the creature is a racial leader. Killing racial leader" +
         "s grants 100 honor.");
-            // 
+            //
             // tbAI
-            // 
+            //
             this.tbAI.Controls.Add(this.McSpellId8);
             this.tbAI.Controls.Add(this.McSpellId7);
             this.tbAI.Controls.Add(this.McSpellId5);
@@ -2139,81 +2139,81 @@
             this.tbAI.TabIndex = 7;
             this.tbAI.Text = "AI";
             this.tbAI.UseVisualStyleBackColor = true;
-            // 
+            //
             // McSpellId8
-            // 
+            //
             this.McSpellId8.BackColor = System.Drawing.SystemColors.Window;
             this.McSpellId8.Location = new System.Drawing.Point(4, 261);
             this.McSpellId8.Name = "McSpellId8";
             this.McSpellId8.Size = new System.Drawing.Size(524, 20);
             this.McSpellId8.TabIndex = 146;
             this.McSpellId8.Text = "0";
-            // 
+            //
             // McSpellId7
-            // 
+            //
             this.McSpellId7.BackColor = System.Drawing.SystemColors.Window;
             this.McSpellId7.Location = new System.Drawing.Point(4, 235);
             this.McSpellId7.Name = "McSpellId7";
             this.McSpellId7.Size = new System.Drawing.Size(524, 20);
             this.McSpellId7.TabIndex = 144;
             this.McSpellId7.Text = "0";
-            // 
+            //
             // McSpellId5
-            // 
+            //
             this.McSpellId5.BackColor = System.Drawing.SystemColors.Window;
             this.McSpellId5.Location = new System.Drawing.Point(4, 183);
             this.McSpellId5.Name = "McSpellId5";
             this.McSpellId5.Size = new System.Drawing.Size(524, 20);
             this.McSpellId5.TabIndex = 140;
             this.McSpellId5.Text = "0";
-            // 
+            //
             // McSpellId6
-            // 
+            //
             this.McSpellId6.BackColor = System.Drawing.SystemColors.Window;
             this.McSpellId6.Location = new System.Drawing.Point(4, 209);
             this.McSpellId6.Name = "McSpellId6";
             this.McSpellId6.Size = new System.Drawing.Size(524, 20);
             this.McSpellId6.TabIndex = 142;
             this.McSpellId6.Text = "0";
-            // 
+            //
             // McSpellId4
-            // 
+            //
             this.McSpellId4.BackColor = System.Drawing.SystemColors.Window;
             this.McSpellId4.Location = new System.Drawing.Point(4, 157);
             this.McSpellId4.Name = "McSpellId4";
             this.McSpellId4.Size = new System.Drawing.Size(524, 20);
             this.McSpellId4.TabIndex = 138;
             this.McSpellId4.Text = "0";
-            // 
+            //
             // McSpellId3
-            // 
+            //
             this.McSpellId3.BackColor = System.Drawing.SystemColors.Window;
             this.McSpellId3.Location = new System.Drawing.Point(4, 131);
             this.McSpellId3.Name = "McSpellId3";
             this.McSpellId3.Size = new System.Drawing.Size(524, 20);
             this.McSpellId3.TabIndex = 136;
             this.McSpellId3.Text = "0";
-            // 
+            //
             // McSpellId1
-            // 
+            //
             this.McSpellId1.BackColor = System.Drawing.SystemColors.Window;
             this.McSpellId1.Location = new System.Drawing.Point(4, 79);
             this.McSpellId1.Name = "McSpellId1";
             this.McSpellId1.Size = new System.Drawing.Size(524, 20);
             this.McSpellId1.TabIndex = 132;
             this.McSpellId1.Text = "0";
-            // 
+            //
             // McSpellId2
-            // 
+            //
             this.McSpellId2.BackColor = System.Drawing.SystemColors.Window;
             this.McSpellId2.Location = new System.Drawing.Point(4, 105);
             this.McSpellId2.Name = "McSpellId2";
             this.McSpellId2.Size = new System.Drawing.Size(524, 20);
             this.McSpellId2.TabIndex = 134;
             this.McSpellId2.Text = "0";
-            // 
+            //
             // label49
-            // 
+            //
             this.label49.AutoSize = true;
             this.label49.Location = new System.Drawing.Point(1, 63);
             this.label49.Name = "label49";
@@ -2222,17 +2222,17 @@
             this.label49.Text = "Mind Control/Vehicle Spells";
             this.Tooltip.SetToolTip(this.label49, "Spell ID that can be used for Mind Control of this creature.  For vehicle creatur" +
         "es: spell on action bar.");
-            // 
+            //
             // ScriptName
-            // 
+            //
             this.ScriptName.BackColor = System.Drawing.SystemColors.Window;
             this.ScriptName.Location = new System.Drawing.Point(96, 32);
             this.ScriptName.Name = "ScriptName";
             this.ScriptName.Size = new System.Drawing.Size(433, 20);
             this.ScriptName.TabIndex = 130;
-            // 
+            //
             // label81
-            // 
+            //
             this.label81.AutoSize = true;
             this.label81.Location = new System.Drawing.Point(1, 35);
             this.label81.Name = "label81";
@@ -2241,17 +2241,17 @@
             this.label81.Text = "Script Name";
             this.Tooltip.SetToolTip(this.label81, "The name of the script that this creature uses, if any. This ties a script from a" +
         " scripting engine to this creature.");
-            // 
+            //
             // AiName
-            // 
+            //
             this.AiName.BackColor = System.Drawing.SystemColors.Window;
             this.AiName.Location = new System.Drawing.Point(96, 4);
             this.AiName.Name = "AiName";
             this.AiName.Size = new System.Drawing.Size(433, 20);
             this.AiName.TabIndex = 128;
-            // 
+            //
             // label69
-            // 
+            //
             this.label69.AutoSize = true;
             this.label69.Location = new System.Drawing.Point(1, 7);
             this.label69.Name = "label69";
@@ -2259,9 +2259,9 @@
             this.label69.TabIndex = 127;
             this.label69.Text = "AI Name";
             this.Tooltip.SetToolTip(this.label69, "This field is overridden by ScriptName field if both are set.");
-            // 
+            //
             // lbMenu
-            // 
+            //
             this.lbMenu.FormattingEnabled = true;
             this.lbMenu.Items.AddRange(new object[] {
             "NPC Info",
@@ -2278,16 +2278,16 @@
             this.lbMenu.Size = new System.Drawing.Size(150, 121);
             this.lbMenu.TabIndex = 122;
             this.lbMenu.SelectedIndexChanged += new System.EventHandler(this.lbMenu_SelectedIndexChanged);
-            // 
+            //
             // LoadEntry
-            // 
+            //
             this.LoadEntry.Location = new System.Drawing.Point(3, 159);
             this.LoadEntry.Name = "LoadEntry";
             this.LoadEntry.Size = new System.Drawing.Size(71, 20);
             this.LoadEntry.TabIndex = 123;
-            // 
+            //
             // LoadButton
-            // 
+            //
             this.LoadButton.BackColor = System.Drawing.Color.Transparent;
             this.LoadButton.Location = new System.Drawing.Point(79, 159);
             this.LoadButton.Name = "LoadButton";
@@ -2296,13 +2296,13 @@
             this.LoadButton.Text = "Load";
             this.LoadButton.UseVisualStyleBackColor = false;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
-            // 
+            //
             // Tooltip
-            // 
+            //
             this.Tooltip.ToolTipTitle = "Information";
-            // 
+            //
             // CreatureEditorControl
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.LoadButton);

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using SharpDX.Direct3D11;
-using WoWEditor6.Utils;
+using Neo.Utils;
 
-namespace WoWEditor6.IO.Files.Texture
+namespace Neo.IO.Files.Texture
 {
     class TextureLoadInfo
     {

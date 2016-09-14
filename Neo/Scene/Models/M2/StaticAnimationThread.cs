@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using SharpDX;
-using WoWEditor6.IO.Files.Models;
+using Neo.IO.Files.Models;
 
-namespace WoWEditor6.Scene.Models.M2
+namespace Neo.Scene.Models.M2
 {
     class StaticAnimationThread
     {

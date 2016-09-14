@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace WoWEditor6.UI.DbcEditors.ChrRaces
+namespace Neo.UI.DbcEditors.ChrRaces
 {
     public partial class ChrRacesEditor : Form
     {

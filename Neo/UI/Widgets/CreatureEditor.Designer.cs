@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.UI.Dialogs
+﻿namespace Neo.UI.Dialogs
 {
     partial class CreatureEditor
     {
@@ -28,20 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.creatureEditorControl1 = new WoWEditor6.UI.Dialogs.CreatureEditorControl();
+            this.creatureEditorControl1 = new Neo.UI.Dialogs.CreatureEditorControl();
             this.creatureEditorControl1.TabControl.SuspendLayout();
             this.creatureEditorControl1.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // creatureEditorControl1
-            // 
+            //
             this.creatureEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.creatureEditorControl1.Location = new System.Drawing.Point(0, 0);
             this.creatureEditorControl1.Name = "creatureEditorControl1";
             this.creatureEditorControl1.Size = new System.Drawing.Size(695, 475);
-            // 
+            //
             // creatureEditorControl1.TabControl
-            // 
+            //
             this.creatureEditorControl1.TabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.creatureEditorControl1.TabControl.ItemSize = new System.Drawing.Size(0, 1);
             this.creatureEditorControl1.TabControl.Location = new System.Drawing.Point(154, 0);
@@ -51,9 +51,9 @@
             this.creatureEditorControl1.TabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.creatureEditorControl1.TabControl.TabIndex = 112;
             this.creatureEditorControl1.TabIndex = 0;
-            // 
+            //
             // CreatureEditor
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(695, 475);

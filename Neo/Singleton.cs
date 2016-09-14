@@ -1,5 +1,5 @@
 ﻿
-namespace WoWEditor6
+namespace Neo
 {
     public class Singleton<T> where T : new()
     {

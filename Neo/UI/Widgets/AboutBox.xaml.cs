@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WoWEditor6.UI.Dialogs
+namespace Neo.UI.Dialogs
 {
     /// <summary>
     /// Interaction logic for AboutBox.xaml

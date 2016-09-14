@@ -7,11 +7,11 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using WoWEditor6.Editing;
-using WoWEditor6.Scene;
-using WoWEditor6.Settings;
+using Neo.Editing;
+using Neo.Scene;
+using Neo.Settings;
 
-namespace WoWEditor6.UI.Dialogs
+namespace Neo.UI.Dialogs
 {
     /// <summary>
     /// Interaction logic for KeyBindingWidget.xaml

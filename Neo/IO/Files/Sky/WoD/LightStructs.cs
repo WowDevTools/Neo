@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Sky.WoD
+namespace Neo.IO.Files.Sky.WoD
 {
     class LightEntryData
     {

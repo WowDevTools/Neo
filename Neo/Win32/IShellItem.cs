@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace WoWEditor6.Win32
+namespace Neo.Win32
 {
     public enum Sigdn : uint
     {

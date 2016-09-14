@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using SharpDX;
 
-namespace WoWEditor6.Scene
+namespace Neo.Scene
 {
     class WorldTextManager
     {

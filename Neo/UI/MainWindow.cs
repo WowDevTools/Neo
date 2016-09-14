@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     public partial class MainWindow : Form
     {

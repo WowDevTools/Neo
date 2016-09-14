@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Collections.Generic;
 
-namespace WoWEditor6.UI.Dialog
+namespace Neo.UI.Dialog
 {
     [Designer(typeof(GameObjectEditorControlDesigner))]
     public partial class GameObjectEditorControl : UserControl
@@ -213,7 +213,7 @@ namespace WoWEditor6.UI.Dialog
         *  That's really tricky, but couldn't find another way to don't have a thousand of lines or ugly code, let me know if you have another one.
         */
 
-        /* 
+        /*
         *  Type :
         *  Text = textBox
         *  List = comboBox with data.startnbr to data.endnbr
@@ -609,7 +609,7 @@ namespace WoWEditor6.UI.Dialog
                 WarningLabel2.Show();
             }
             else
-            {             
+            {
                 for (int i = 0; i < nbData; i++)
                 {
                     dataArray[i].Show();

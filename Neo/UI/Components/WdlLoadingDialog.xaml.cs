@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     /// <summary>
     /// Interaction logic for WdlLoadingDialog.xaml

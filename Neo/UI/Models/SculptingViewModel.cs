@@ -1,8 +1,8 @@
-﻿using WoWEditor6.UI.Dialogs;
+﻿using Neo.UI.Dialogs;
 using System.Windows.Forms;
 using SharpDX;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     class SculptingViewModel
     {

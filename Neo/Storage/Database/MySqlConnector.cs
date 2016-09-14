@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows.Forms;
 
-namespace WoWEditor6.Storage.Database
+namespace Neo.Storage.Database
 {
     class MySqlConnector : Singleton<MySqlConnector>, IMySqlConnector
     {

@@ -1,14 +1,14 @@
 ﻿using System;
 using SharpDX;
-using WoWEditor6.Scene;
-using WoWEditor6.UI;
-using WoWEditor6.Utils;
+using Neo.Scene;
+using Neo.UI;
+using Neo.Utils;
 using System.Windows.Forms;
 using Point = System.Drawing.Point;
 using WintabDN;
 using System.Windows;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     class EditManager
     {

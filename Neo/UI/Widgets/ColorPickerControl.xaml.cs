@@ -4,9 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using WoWEditor6.Utils;
+using Neo.Utils;
 
-namespace WoWEditor6.UI.Dialogs
+namespace Neo.UI.Dialogs
 {
     /// <summary>
     /// Interaction logic for TerrainSettingsImpl.xaml

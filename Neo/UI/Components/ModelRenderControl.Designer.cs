@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     partial class ModelRenderControl
     {

@@ -3,7 +3,7 @@ using SharpDX;
 using SharpDX.DirectWrite;
 using Factory = SharpDX.DirectWrite.Factory;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class StaticText : IDisposable
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
-using WoWEditor6.Scene;
-using WoWEditor6.UI.Components;
+using Neo.Scene;
+using Neo.UI.Components;
 
-namespace WoWEditor6.UI.Views
+namespace Neo.UI.Views
 {
     class MapSelectView : IView
     {

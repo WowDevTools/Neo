@@ -1,6 +1,6 @@
-﻿using WoWEditor6.UI.ViewModels;
+﻿using Neo.UI.ViewModels;
 
-namespace WoWEditor6.UI.Widgets
+namespace Neo.UI.Widgets
 {
     public partial class NewConnectionDialog
     {

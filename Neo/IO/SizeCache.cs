@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 // ReSharper disable StaticMemberInGenericType
 
-namespace WoWEditor6.IO
+namespace Neo.IO
 {
     /// <summary>
     /// Provided by Apoc, see:

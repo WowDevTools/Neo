@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using SharpDX.Direct2D1;
-using WoWEditor6.UI.Components;
+using Neo.UI.Components;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class ComponentRoot : IComponent
     {

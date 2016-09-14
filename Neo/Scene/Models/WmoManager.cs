@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using SharpDX;
-using WoWEditor6.Scene.Models.WMO;
+using Neo.Scene.Models.WMO;
 using System;
 using System.Windows.Forms;
 
-namespace WoWEditor6.Scene.Models
+namespace Neo.Scene.Models
 {
     class WmoManager
     {

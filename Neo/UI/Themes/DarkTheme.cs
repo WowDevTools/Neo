@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WoWEditor6.UI.Themes
+namespace Neo.UI.Themes
 {
     class DarkTheme : Xceed.Wpf.AvalonDock.Themes.Theme
     {

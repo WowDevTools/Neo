@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     class ObjectSpawnModel
     {

@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.Scene
+﻿namespace Neo.Scene
 {
     class OrthoCamera
     {

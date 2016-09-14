@@ -4,7 +4,7 @@ using Prism.Commands;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
 
-namespace WoWEditor6.UI.ViewModels
+namespace Neo.UI.ViewModels
 {
     class NewConnectionViewModel : BindableBase, IInteractionRequestAware
     {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     class WmoGroup : Models.WmoGroup
     {

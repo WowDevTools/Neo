@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WoWEditor6.IO.CASC
+namespace Neo.IO.CASC
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct FileKey

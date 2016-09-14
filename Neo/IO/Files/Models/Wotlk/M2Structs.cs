@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models.Wotlk
+namespace Neo.IO.Files.Models.Wotlk
 {
     [StructLayout(LayoutKind.Sequential)]
     struct M2Header

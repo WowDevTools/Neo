@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using WoWEditor6.Graphics;
-using WoWEditor6.Resources;
-using WoWEditor6.Scene;
-using WoWEditor6.UI.Components;
-using WoWEditor6.UI.Views;
+using Neo.Graphics;
+using Neo.Resources;
+using Neo.Scene;
+using Neo.UI.Components;
+using Neo.UI.Views;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class InterfaceManager
     {
@@ -19,7 +19,7 @@ namespace WoWEditor6.UI
         private Sampler mQuadSampler;
         private IView mActiveView;
 
-        private readonly Dictionary<AppState, IView> mViews = new Dictionary<AppState, IView>(); 
+        private readonly Dictionary<AppState, IView> mViews = new Dictionary<AppState, IView>();
 
         public ComponentRoot Root { get; private set; }
         public DrawSurface Surface { get; private set; }

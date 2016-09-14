@@ -3,11 +3,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using SharpDX;
-using WoWEditor6.IO;
-using WoWEditor6.IO.Files.Terrain;
-using WoWEditor6.Storage;
+using Neo.IO;
+using Neo.IO.Files.Terrain;
+using Neo.Storage;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     /// <summary>
     /// Interaction logic for EntrySelectControl.xaml

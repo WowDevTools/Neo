@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace WoWEditor6.Utils
+namespace Neo.Utils
 {
     static class KeyHelper
     {

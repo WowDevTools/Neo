@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace WoWEditor6.UI.DbcEditors.Exemple
+namespace Neo.UI.DbcEditors.Exemple
 {
     [Designer(typeof(ExempleEditorControlDesigner))]
     public partial class ExempleEditorControl : UserControl

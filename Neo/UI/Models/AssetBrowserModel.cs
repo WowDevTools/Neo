@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WoWEditor6.IO;
+using Neo.IO;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     public class AssetBrowserFile
     {

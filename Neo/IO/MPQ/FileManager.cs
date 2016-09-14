@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WoWEditor6.IO.MPQ
+namespace Neo.IO.MPQ
 {
     enum Locale
     {

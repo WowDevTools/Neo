@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     class M2AnimationBone
     {

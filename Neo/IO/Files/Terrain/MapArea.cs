@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpDX;
-using WoWEditor6.Graphics;
-using WoWEditor6.IO.Files.Models;
-using WoWEditor6.Scene;
-using WoWEditor6.Scene.Texture;
+using Neo.Graphics;
+using Neo.IO.Files.Models;
+using Neo.Scene;
+using Neo.Scene.Texture;
 
-namespace WoWEditor6.IO.Files.Terrain
+namespace Neo.IO.Files.Terrain
 {
     abstract class MapArea : IDisposable
     {

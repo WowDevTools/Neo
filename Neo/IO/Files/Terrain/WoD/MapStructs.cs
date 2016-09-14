@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Terrain.WoD
+namespace Neo.IO.Files.Terrain.WoD
 {
     [StructLayout(LayoutKind.Sequential)]
     struct Mcnk

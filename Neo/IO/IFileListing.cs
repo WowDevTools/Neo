@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace WoWEditor6.IO
+namespace Neo.IO
 {
     public class FileSystemEntry
     {

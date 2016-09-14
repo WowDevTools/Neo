@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="WoWEditor6.UI.Dialogs.TerrainSettingsWidget"
+﻿<UserControl x:Class="Neo.UI.Dialogs.TerrainSettingsWidget"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WoWEditor6.UI.Dialogs"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Neo.UI.Dialogs"
              mc:Ignorable="d" Height="587" Width="342">
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
         <Label x:Name="EditMode" Content="Editing mode: Sculpting" FontSize="14" FontWeight="Bold"/>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     class GraphicsDispatcher
     {

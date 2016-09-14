@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using SharpDX;
-using WoWEditor6.IO.Files.Models;
-using WoWEditor6.Scene.Models.M2;
+using Neo.IO.Files.Models;
+using Neo.Scene.Models.M2;
 using System.Windows.Forms;
 
-namespace WoWEditor6.Scene.Models
+namespace Neo.Scene.Models
 {
     class M2Manager
     {

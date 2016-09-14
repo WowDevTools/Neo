@@ -1,10 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using WoWEditor6.UI.Models;
-using WoWEditor6.Editing;
+using Neo.UI.Models;
+using Neo.Editing;
 
-namespace WoWEditor6.UI.Widgets
+namespace Neo.UI.Widgets
 {
     public partial class ShadingWidget
     {

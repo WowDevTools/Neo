@@ -1,7 +1,7 @@
 ﻿using System;
 using WintabDN;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     class TabletManager
     {

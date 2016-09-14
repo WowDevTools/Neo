@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WoWEditor6.IO;
+using Neo.IO;
 
-namespace WoWEditor6.Storage
+namespace Neo.Storage
 {
     static class MapFormatGuess
     {  

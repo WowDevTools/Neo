@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     [Flags]
     enum EditMode

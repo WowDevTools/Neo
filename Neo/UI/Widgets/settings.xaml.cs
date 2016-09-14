@@ -2,9 +2,9 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using WoWEditor6.Scene;
+using Neo.Scene;
 
-namespace WoWEditor6.UI.Dialogs
+namespace Neo.UI.Dialogs
 {
     /// <summary>
     /// Interaction logic for Settings.xaml
@@ -20,7 +20,7 @@ namespace WoWEditor6.UI.Dialogs
             UseDayNightCycle.IsChecked = Properties.Settings.Default.UseDayNightCycle;
             ChangeUseDayNight_Click(UseDayNightCycle, new RoutedEventArgs());
             DefaultDayTimeTextBox.Text = Properties.Settings.Default.DefaultDayTime.ToString();
-            
+
             SetAssetRenderColorBox();
         }
 
@@ -111,7 +111,7 @@ namespace WoWEditor6.UI.Dialogs
         private void AssetRenderColorCombo_Loaded(object sender, RoutedEventArgs e)
         {
             AssetRenderColorCombo.Items.Clear();
-            AssetRenderColorCombo.Items.Add("(Default)");           
+            AssetRenderColorCombo.Items.Add("(Default)");
 
             foreach (PropertyInfo property in typeof(System.Drawing.Color).GetProperties(BindingFlags.Static | BindingFlags.Public))
                 if (property.PropertyType == typeof(System.Drawing.Color))

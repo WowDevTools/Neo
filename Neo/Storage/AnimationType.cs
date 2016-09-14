@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.Storage
+﻿namespace Neo.Storage
 {
     enum AnimationType
     {

@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.UI.DbcEditors
+﻿namespace Neo.UI.DbcEditors
 {
     partial class ChrRacesEditorControl
     {

@@ -1,6 +1,6 @@
 ﻿using SharpDX.DXGI;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     static class DefaultTextures
     {

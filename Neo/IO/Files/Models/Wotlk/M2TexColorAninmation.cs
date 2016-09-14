@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models.Wotlk
+namespace Neo.IO.Files.Models.Wotlk
 {
     class M2TexColorAnimation
     {

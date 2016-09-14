@@ -1,11 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using SharpDX;
-using WoWEditor6.UI.Components;
-using WoWEditor6.UI.Models;
-using WoWEditor6.Editing;
+using Neo.UI.Components;
+using Neo.UI.Models;
+using Neo.Editing;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class EditorWindowController
     {

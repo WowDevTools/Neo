@@ -1,6 +1,6 @@
-﻿using WoWEditor6.Storage;
+﻿using Neo.Storage;
 
-namespace WoWEditor6.Editing
+namespace Neo.Editing
 {
     class MapCreator
     {

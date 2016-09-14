@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace WoWEditor6.IO
+namespace Neo.IO
 {
     internal static unsafe class Extensions
     {

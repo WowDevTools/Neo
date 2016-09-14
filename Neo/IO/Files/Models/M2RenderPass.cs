@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using WoWEditor6.Scene.Models.M2;
+using Neo.Scene.Models.M2;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace WoWEditor6.IO.Files.Models
+namespace Neo.IO.Files.Models
 {
     class M2RenderPass
     {

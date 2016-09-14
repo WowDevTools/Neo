@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using SharpDX;
-using WoWEditor6.IO;
-using WoWEditor6.IO.Files.Sky;
-using WoWEditor6.IO.Files.Terrain;
-using WoWEditor6.UI;
+using Neo.IO;
+using Neo.IO.Files.Sky;
+using Neo.IO.Files.Terrain;
+using Neo.UI;
 
-namespace WoWEditor6.Scene.Terrain
+namespace Neo.Scene.Terrain
 {
     class MapManager
     {

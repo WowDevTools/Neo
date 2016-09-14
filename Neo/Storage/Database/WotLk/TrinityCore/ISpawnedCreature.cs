@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
+namespace Neo.Storage.Database.WotLk.TrinityCore
 {
     interface ISpawnedCreature
     {

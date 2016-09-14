@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Security.Policy;
 using SharpDX;
-using WoWEditor6.Graphics;
+using Neo.Graphics;
 
-namespace WoWEditor6.Scene.Models.WMO
+namespace Neo.Scene.Models.WMO
 {
     class WmoGroupRender : IDisposable
     {

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace WoWEditor6.IO
+namespace Neo.IO
 {
     interface IFileProvider
     {

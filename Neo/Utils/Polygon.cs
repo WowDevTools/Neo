@@ -2,7 +2,7 @@
 using System.Linq;
 using SharpDX;
 
-namespace WoWEditor6.Utils
+namespace Neo.Utils
 {
     class Polygon
     {

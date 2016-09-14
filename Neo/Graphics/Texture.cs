@@ -4,7 +4,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     class Texture : IDisposable
     {

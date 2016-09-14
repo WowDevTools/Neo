@@ -3,7 +3,7 @@ using SharpDX.Direct3D11;
 
 // ReSharper disable InconsistentNaming
 
-namespace WoWEditor6.Scene.Models.M2
+namespace Neo.Scene.Models.M2
 {
     public enum M2HullShaderType
     {

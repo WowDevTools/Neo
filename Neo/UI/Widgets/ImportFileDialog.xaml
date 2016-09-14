@@ -1,9 +1,9 @@
-﻿<Window x:Class="WoWEditor6.UI.Dialogs.ImportFileDialog"
+﻿<Window x:Class="Neo.UI.Dialogs.ImportFileDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
              Width="500" Height="150" Title="Import file" ResizeMode="NoResize">
     <Grid Margin="10,10,10,10">
             <StackPanel Orientation="Vertical">

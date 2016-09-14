@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     class M2SkinFile
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace WoWEditor6.Settings
+namespace Neo.Settings
 {
     [Serializable]
     public class ToolbarSettings

@@ -2,7 +2,7 @@
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     class Label : IComponent
     {

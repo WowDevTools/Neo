@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using SharpDX.DXGI;
 
-namespace WoWEditor6.Utils
+namespace Neo.Utils
 {
     static class DxtHelper
     {

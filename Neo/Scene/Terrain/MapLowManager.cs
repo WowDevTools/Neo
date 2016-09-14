@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using SharpDX;
 
-namespace WoWEditor6.Scene.Terrain
+namespace Neo.Scene.Terrain
 {
     class MapLowManager
     {

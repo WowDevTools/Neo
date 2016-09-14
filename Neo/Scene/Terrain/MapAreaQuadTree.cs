@@ -1,5 +1,5 @@
 ﻿
-namespace WoWEditor6.Scene.Terrain
+namespace Neo.Scene.Terrain
 {
     class MapAreaQuadTree
     {

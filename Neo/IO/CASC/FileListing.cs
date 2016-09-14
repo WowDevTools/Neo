@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 
-namespace WoWEditor6.IO.CASC
+namespace Neo.IO.CASC
 {
     class FileListing : IFileListing
     {

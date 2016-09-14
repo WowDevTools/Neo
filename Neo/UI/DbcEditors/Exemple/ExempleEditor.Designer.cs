@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.UI.DbcEditors.Exemple
+﻿namespace Neo.UI.DbcEditors.Exemple
 {
     partial class ExempleEditor
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.exempleEditorControl1 = new WoWEditor6.UI.DbcEditors.Exemple.ExempleEditorControl();
+            this.exempleEditorControl1 = new Neo.UI.DbcEditors.Exemple.ExempleEditorControl();
             this.exempleEditorControl1.TabControl.SuspendLayout();
             this.exempleEditorControl1.SuspendLayout();
             this.SuspendLayout();

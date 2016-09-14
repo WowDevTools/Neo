@@ -1,5 +1,5 @@
 ﻿
-namespace WoWEditor6.Graphics
+namespace Neo.Graphics
 {
     class VertexBuffer : Buffer
     {

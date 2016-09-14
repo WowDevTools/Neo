@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WoWEditor6.IO.Files.Terrain
+namespace Neo.IO.Files.Terrain
 {
     class AdtFactory
     {

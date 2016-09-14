@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     class WmoRoot : Models.WmoRoot
     {

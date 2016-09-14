@@ -2,7 +2,7 @@
 using System.Linq;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Sky.Wotlk
+namespace Neo.IO.Files.Sky.Wotlk
 {
     class MapSky
     {

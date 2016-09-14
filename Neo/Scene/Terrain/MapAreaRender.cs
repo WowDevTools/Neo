@@ -1,9 +1,9 @@
 ﻿using System;
 using SharpDX;
-using WoWEditor6.Graphics;
-using WoWEditor6.Scene.Models;
+using Neo.Graphics;
+using Neo.Scene.Models;
 
-namespace WoWEditor6.Scene.Terrain
+namespace Neo.Scene.Terrain
 {
     class MapAreaRender : IDisposable
     {

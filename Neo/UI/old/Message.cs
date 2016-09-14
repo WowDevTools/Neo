@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     enum MessageType
     {

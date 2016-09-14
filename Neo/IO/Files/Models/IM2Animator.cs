@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models
+namespace Neo.IO.Files.Models
 {
     class BillboardParameters
     {

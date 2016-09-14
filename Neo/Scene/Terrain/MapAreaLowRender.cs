@@ -1,8 +1,8 @@
 ﻿using System;
 using SharpDX;
-using WoWEditor6.Graphics;
+using Neo.Graphics;
 
-namespace WoWEditor6.Scene.Terrain
+namespace Neo.Scene.Terrain
 {
     class MapAreaLowRender : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models
+namespace Neo.IO.Files.Models
 {
     [StructLayout(LayoutKind.Sequential)]
     unsafe struct M2Vertex

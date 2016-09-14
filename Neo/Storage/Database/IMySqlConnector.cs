@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace WoWEditor6.Storage.Database
+namespace Neo.Storage.Database
 {
     interface IMySqlConnector
     {

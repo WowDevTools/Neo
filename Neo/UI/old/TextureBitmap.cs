@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.DXGI;
-using WoWEditor6.IO.Files.Texture;
-using WoWEditor6.Utils;
+using Neo.IO.Files.Texture;
+using Neo.Utils;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class TextureBitmap : IDisposable
     {

@@ -9,10 +9,10 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using WoWEditor6.Storage.Database;
-using WoWEditor6.UI.ViewModels;
+using Neo.Storage.Database;
+using Neo.UI.ViewModels;
 
-namespace WoWEditor6.UI.Widgets
+namespace Neo.UI.Widgets
 {
     public partial class DatabaseSettings
     {

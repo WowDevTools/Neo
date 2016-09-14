@@ -8,20 +8,20 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using SharpDX;
-using WoWEditor6.Editing;
-using WoWEditor6.Resources;
-using WoWEditor6.Scene;
-using WoWEditor6.UI.Components;
-using WoWEditor6.Win32;
+using Neo.Editing;
+using Neo.Resources;
+using Neo.Scene;
+using Neo.UI.Components;
+using Neo.Win32;
 using Color = System.Windows.Media.Color;
 using System.Windows.Input;
-using WoWEditor6.UI.Dialogs;
-using WoWEditor6.UI.Models;
-using WoWEditor6.UI.Widget;
-using WoWEditor6.UI.Widgets;
+using Neo.UI.Dialogs;
+using Neo.UI.Models;
+using Neo.UI.Widget;
+using Neo.UI.Widgets;
 using Xceed.Wpf.AvalonDock.Layout;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     /// <summary>
     /// Interaction logic for EditorWindow.xaml

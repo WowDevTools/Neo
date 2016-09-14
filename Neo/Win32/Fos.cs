@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WoWEditor6.Win32
+namespace Neo.Win32
 {
     [Flags]
     enum Fos : uint

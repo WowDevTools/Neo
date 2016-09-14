@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using WoWEditor6.Graphics;
-using WoWEditor6.IO.Files.Texture;
+using Neo.Graphics;
+using Neo.IO.Files.Texture;
 
-namespace WoWEditor6.Scene
+namespace Neo.Scene
 {
     class WorldText : IDisposable
     {

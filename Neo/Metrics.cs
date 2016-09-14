@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6
+﻿namespace Neo
 {
     static class Metrics
     {

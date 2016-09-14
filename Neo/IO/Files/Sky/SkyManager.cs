@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Sky
+namespace Neo.IO.Files.Sky
 {
     enum LightColor
     {

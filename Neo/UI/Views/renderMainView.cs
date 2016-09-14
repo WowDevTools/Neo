@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WoWEditor6.UI.Views
+namespace Neo.UI.Views
 {
     public partial class renderMainView : UserControl
     {

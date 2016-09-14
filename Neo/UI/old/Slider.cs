@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpDX.Direct2D1;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     class Slider : IComponent
     {

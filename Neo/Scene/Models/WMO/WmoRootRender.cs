@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using SharpDX;
-using WoWEditor6.Graphics;
-using WoWEditor6.IO.Files.Models;
+using Neo.Graphics;
+using Neo.IO.Files.Models;
 
-namespace WoWEditor6.Scene.Models.WMO
+namespace Neo.Scene.Models.WMO
 {
     class WmoRootRender : IDisposable
     {

@@ -7,11 +7,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using WoWEditor6.Annotations;
-using WoWEditor6.IO;
-using WoWEditor6.UI.Components;
+using Neo.Annotations;
+using Neo.IO;
+using Neo.UI.Components;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     public class AssetBrowserFilePreviewElement
     {

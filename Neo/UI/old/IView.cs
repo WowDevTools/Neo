@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace WoWEditor6.UI.Views
+namespace Neo.UI.Views
 {
     interface IView : IComponent
     {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections;
 
 
-namespace WoWEditor6.Dbc
+namespace Neo.Dbc
 {
     public class IniParser
     {

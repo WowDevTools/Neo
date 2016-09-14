@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using SharpDX;
 using SharpDX.Direct2D1;
-using WoWEditor6.Resources;
-using WoWEditor6.Scene;
-using WoWEditor6.UI.Components;
-using WoWEditor6.Win32;
+using Neo.Resources;
+using Neo.Scene;
+using Neo.UI.Components;
+using Neo.Win32;
 
-namespace WoWEditor6.UI.Views
+namespace Neo.UI.Views
 {
     class SplashView : IView
     {
@@ -113,7 +113,7 @@ namespace WoWEditor6.UI.Views
             fd.GetOptions(out options);
             options |= Fos.FosPickfolders;
             fd.SetOptions(options);
-           
+
 
             var wnd = InterfaceManager.Instance.RenderWindow;
             var result = 0;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace WoWEditor6.IO.MPQ
+namespace Neo.IO.MPQ
 {
     static class Imports
     {

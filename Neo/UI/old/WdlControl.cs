@@ -2,9 +2,9 @@
 using System.IO;
 using SharpDX;
 using SharpDX.Direct2D1;
-using WoWEditor6.IO;
+using Neo.IO;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     class WdlControl : IComponent
     {

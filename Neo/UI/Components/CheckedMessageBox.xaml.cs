@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     /// <summary>
     /// Interaction logic for CheckedMessageBox.xaml

@@ -1,7 +1,7 @@
 ﻿using SharpDX;
 // ReSharper disable FunctionComplexityOverflow
 
-namespace WoWEditor6.Scene
+namespace Neo.Scene
 {
     static class Picking
     {

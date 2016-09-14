@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WoWEditor6.UI.General
+namespace Neo.UI.General
 {
     public partial class FileBrowser : UserControl
     {

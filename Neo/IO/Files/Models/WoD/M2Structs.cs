@@ -3,7 +3,7 @@ using SharpDX;
 
 #pragma warning disable 649
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     [StructLayout(LayoutKind.Sequential)]
     struct M2Header

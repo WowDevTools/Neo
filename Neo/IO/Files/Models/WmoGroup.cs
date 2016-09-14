@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SharpDX;
 
-namespace WoWEditor6.IO.Files.Models
+namespace Neo.IO.Files.Models
 {
     abstract class WmoGroup
     {

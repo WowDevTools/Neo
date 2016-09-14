@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WoWEditor6
+namespace Neo
 {
     /// <summary>
     /// Interaction logic for Application.xaml

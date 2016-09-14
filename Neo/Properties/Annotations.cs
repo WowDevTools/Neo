@@ -9,7 +9,7 @@ using System.Diagnostics;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace WoWEditor6.Annotations
+namespace Neo.Annotations
 {
   /// <summary>
   /// Indicates that the value of the marked element could be <c>null</c> sometimes,

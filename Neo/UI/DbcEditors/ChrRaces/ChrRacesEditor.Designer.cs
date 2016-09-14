@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.UI.DbcEditors.ChrRaces
+﻿namespace Neo.UI.DbcEditors.ChrRaces
 {
     partial class ChrRacesEditor
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.chrRacesEditorControl1 = new WoWEditor6.UI.DbcEditors.ChrRacesEditorControl();
+            this.chrRacesEditorControl1 = new Neo.UI.DbcEditors.ChrRacesEditorControl();
             this.SuspendLayout();
             // 
             // chrRacesEditorControl1

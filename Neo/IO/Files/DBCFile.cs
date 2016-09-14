@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace WoWEditor6.IO.Files
+namespace Neo.IO.Files
 {
     unsafe class DbcRecord : IDataStorageRecord
     {
