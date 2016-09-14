@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Neo.IO
 {
@@ -22,10 +21,10 @@ namespace Neo.IO
 
     public class FileEntry : FileSystemEntry
     {
-        
+
     }
 
-    interface IFileListing
+    public interface IFileListing
     {
         DirectoryEntry RootEntry { get; }
     }

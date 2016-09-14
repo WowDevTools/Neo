@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Neo.IO.Files
 {
-    unsafe class DbcRecord : IDataStorageRecord
+	public unsafe class DbcRecord : IDataStorageRecord
     {
         private readonly int mSize;
         private readonly byte[] mData;
@@ -129,7 +129,7 @@ namespace Neo.IO.Files
         }
     }
 
-    class DbcFile : IDataStorageFile
+	public class DbcFile : IDataStorageFile
     {
         private int mRecordSize;
         private int mStringTableSize;

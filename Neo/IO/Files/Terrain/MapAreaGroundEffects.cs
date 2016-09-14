@@ -7,10 +7,10 @@ using System.Linq;
 
 namespace Neo.IO.Files.Terrain
 {
-    class MapAreaGroundEffects
+	public class MapAreaGroundEffects
     {
         private int mIndexX, mIndexY;
-        private static readonly Dictionary<int, string[]> GroundEffectCache = new Dictionary<int, string[]>(); 
+        private static readonly Dictionary<int, string[]> GroundEffectCache = new Dictionary<int, string[]>();
 
         public void ProcessChunk(MapChunk chunk)
         {

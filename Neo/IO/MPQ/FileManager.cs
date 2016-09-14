@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Neo.IO.MPQ
 {
-    enum Locale
+	public enum Locale
     {
         frFR,
         deDE,
@@ -22,7 +22,7 @@ namespace Neo.IO.MPQ
         ptBR
     }
 
-    class FileManager : IFileProvider
+	public class FileManager : IFileProvider
     {
         public event Action LoadComplete;
 

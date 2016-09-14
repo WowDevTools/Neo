@@ -1,7 +1,6 @@
-﻿
-namespace Neo.IO
+﻿namespace Neo.IO
 {
-    enum FileDataVersion
+    public enum FileDataVersion
     {
         Warlords,
         Mists,

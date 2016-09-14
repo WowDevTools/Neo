@@ -7,7 +7,7 @@ using Neo.Utils;
 
 namespace Neo.IO.Files.Texture
 {
-    class TextureLoadInfo
+	public class TextureLoadInfo
     {
         public SharpDX.DXGI.Format Format;
         public ResourceUsage Usage = ResourceUsage.Default;
@@ -20,7 +20,7 @@ namespace Neo.IO.Files.Texture
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    unsafe struct BlpHeader
+    public unsafe struct BlpHeader
     {
         public int Magic;
         public int Version;
@@ -34,7 +34,7 @@ namespace Neo.IO.Files.Texture
         public fixed int Sizes [16];
     }
 
-    static class TextureLoader
+	public static class TextureLoader
     {
         private static readonly byte[] AlphaLookup1 = {0x00, 0xFF};
 

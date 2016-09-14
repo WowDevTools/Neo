@@ -1,10 +1,10 @@
-﻿using System.Runtime.InteropServices;
-using SharpDX;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace Neo.IO.Files.Terrain
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct AdtVertex
+    public struct AdtVertex
     {
         public Vector3 Position;
         public Vector3 Normal;
@@ -15,7 +15,7 @@ namespace Neo.IO.Files.Terrain
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Modf
+    public struct Modf
     {
         public readonly int Mwid;
         public readonly int UniqueId;
@@ -30,7 +30,7 @@ namespace Neo.IO.Files.Terrain
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Mddf
+    public struct Mddf
     {
         public int Mmid;
         public int UniqueId;
@@ -41,7 +41,7 @@ namespace Neo.IO.Files.Terrain
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Mcly
+    public struct Mcly
     {
         public int TextureId;
         public uint Flags;
@@ -50,7 +50,7 @@ namespace Neo.IO.Files.Terrain
         public short Padding;
     }
 
-    struct LoadedModel
+	public struct LoadedModel
     {
         public readonly string FileName;
         public readonly int Uuid;

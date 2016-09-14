@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SharpDX;
+using System.Numerics;
 
 namespace Neo.IO.Files.Sky.Wotlk
 {

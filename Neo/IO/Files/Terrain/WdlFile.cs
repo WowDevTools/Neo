@@ -6,13 +6,13 @@ using System.Runtime.InteropServices;
 namespace Neo.IO.Files.Terrain
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct MareEntry
+    public struct MareEntry
     {
         public unsafe fixed short outer [17 * 17];
         public unsafe fixed short inner [16 * 16];
     }
 
-    class WdlFile
+	public class WdlFile
     {
         private readonly Dictionary<int, MareEntry> mEntries = new Dictionary<int, MareEntry>();
 

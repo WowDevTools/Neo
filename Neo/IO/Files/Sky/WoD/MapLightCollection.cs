@@ -2,7 +2,7 @@
 
 namespace Neo.IO.Files.Sky.WoD
 {
-    class MapLightCollection
+    public class MapLightCollection
     {
         private readonly Dictionary<int, List<MapLight>> mLights = new Dictionary<int, List<MapLight>>();
         private readonly Dictionary<int, List<ZoneLight>> mZoneLights = new Dictionary<int, List<ZoneLight>>();

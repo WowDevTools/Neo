@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using System;
+using System.Collections.Generic;
 using DBCLib.Structures;
 
 namespace Neo.Dbc
@@ -14,7 +14,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -28,7 +28,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -71,7 +71,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -107,7 +107,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -132,7 +132,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -157,7 +157,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -171,7 +171,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -185,7 +185,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -197,7 +197,7 @@ namespace Neo.Dbc
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
     }

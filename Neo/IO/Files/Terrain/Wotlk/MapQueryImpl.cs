@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace Neo.IO.Files.Terrain.Wotlk
 {
-    class MapQueryImpl : IMapAreaQueryImplementation
+	public class MapQueryImpl : IMapAreaQueryImplementation
     {
         public void Execute(MapAreaQuery query)
         {

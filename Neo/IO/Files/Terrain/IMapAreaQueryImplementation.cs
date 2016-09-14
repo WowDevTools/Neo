@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Neo.IO.Files.Terrain
 {
-    interface IMapAreaQueryImplementation
+	public interface IMapAreaQueryImplementation
     {
         void Execute(MapAreaQuery query);
     }

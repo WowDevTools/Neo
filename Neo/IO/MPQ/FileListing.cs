@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Neo.IO.MPQ
 {
-    class FileListing : IFileListing
+	public class FileListing : IFileListing
     {
         public DirectoryEntry RootEntry { get; private set; }
 

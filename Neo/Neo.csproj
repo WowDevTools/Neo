@@ -155,9 +155,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application.xaml.cs">
-      <DependentUpon>Application.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Crypto\DataProtection.cs" />
     <Compile Include="Dbc\DBCStores.cs" />
     <Compile Include="Dbc\DBCStores.Load.cs" />
@@ -785,9 +782,6 @@
     <Content Include="Resources\Shaders\WmoVertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Application.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UI\Components\AssetBrowserFilePreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -883,6 +877,10 @@
   <ItemGroup>
     <ProjectReference Include="..\lib\DBCLib\DBCLib.csproj">
       <Project>{56986b19-61b4-41a0-b366-598a20c85eba}</Project>
+      <Name>DBCLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\lib\DBCLib\DBCLib.csproj">
+      <Project>{56986B19-61B4-41A0-B366-598A20C85EBA}</Project>
       <Name>DBCLib</Name>
     </ProjectReference>
   </ItemGroup>

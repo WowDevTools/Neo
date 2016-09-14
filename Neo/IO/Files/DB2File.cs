@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Neo.IO.Files
 {
-    unsafe class DB2Record : IDataStorageRecord
+	public unsafe class DB2Record : IDataStorageRecord
     {
         private readonly int mSize;
         private readonly byte[] mData;
@@ -130,7 +130,7 @@ namespace Neo.IO.Files
 
     }
 
-    class DB2File : IDataStorageFile
+	public class DB2File : IDataStorageFile
     {
         private int mRecordSize;
         private int mStringTableSize;
@@ -257,7 +257,7 @@ namespace Neo.IO.Files
 
             var idLookup = mIdLookup.First(x => x.Value == index);
             var maxId = mIdLookup.Last().Key;
-            
+
             mReader.BaseStream.Position = 0;
             byte[] data = mReader.ReadBytes((int)mStream.Length);
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Neo.IO.Files.Terrain
 {
-    class WdtFile
+	public class WdtFile
     {
         public uint Flags { get; set; }
 

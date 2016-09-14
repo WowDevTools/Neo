@@ -1,10 +1,10 @@
-﻿using System.Runtime.InteropServices;
-using SharpDX;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace Neo.IO.Files.Terrain.Wotlk
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct Mhdr
+    public struct Mhdr
     {
         public uint Flags;
         public int ofsMcin;
@@ -22,7 +22,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Mcin
+    public struct Mcin
     {
         public int OfsMcnk;
         public int SizeMcnk;
@@ -31,7 +31,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Mcnk
+    public struct Mcnk
     {
         public uint Flags;
         public readonly int IndexX;

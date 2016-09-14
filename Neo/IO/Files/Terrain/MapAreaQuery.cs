@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Neo.IO.Files.Terrain
 {
-    class MapAreaQuery
+	public class MapAreaQuery
     {
         private readonly Dictionary<uint, DataChunk> mResults = new Dictionary<uint, DataChunk>();
 

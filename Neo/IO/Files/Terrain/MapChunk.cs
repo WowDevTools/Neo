@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SharpDX;
+using System.Numerics;
 using Neo.Editing;
 using Neo.Scene;
 
 namespace Neo.IO.Files.Terrain
 {
-    abstract class MapChunk : IDisposable
+	public abstract class MapChunk : IDisposable
     {
         protected Vector3 mMidPoint;
         protected float mMinHeight = float.MaxValue;
@@ -26,8 +26,8 @@ namespace Neo.IO.Files.Terrain
         public uint[] AlphaValues { get; private set; }
         public byte[] HoleValues { get; private set; }
         public IList<Graphics.Texture> Textures { get; protected set; }
-        public IList<Graphics.Texture> SpecularTextures { get; protected set; } 
-        public IList<string> TextureNames { get; protected set; } 
+        public IList<Graphics.Texture> SpecularTextures { get; protected set; }
+        public IList<string> TextureNames { get; protected set; }
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
         public float[] TextureScales { get; protected set; }

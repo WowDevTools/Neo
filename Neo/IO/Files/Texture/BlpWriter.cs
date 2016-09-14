@@ -12,7 +12,7 @@ using Rectangle = System.Drawing.Rectangle;
 
 namespace Neo.IO.Files.Texture
 {
-    static class BlpWriter
+	public static class BlpWriter
     {
         public unsafe static void Write(Stream output, Bitmap image, Format format, bool hasMipMap = true)
         {

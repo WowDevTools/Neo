@@ -2,7 +2,7 @@
 
 namespace Neo.IO.Files.Terrain
 {
-    class AdtFactory
+	public class AdtFactory
     {
         public static AdtFactory Instance { get; private set; }
 

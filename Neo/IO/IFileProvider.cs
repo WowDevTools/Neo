@@ -2,7 +2,7 @@
 
 namespace Neo.IO
 {
-    interface IFileProvider
+    public interface IFileProvider
     {
         Stream OpenFile(string path);
         bool Exists(string path);

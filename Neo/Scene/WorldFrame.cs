@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using SharpDX;
 using Neo.Editing;
 using Neo.Graphics;
 using Neo.Scene.Models;
@@ -23,10 +24,10 @@ namespace Neo.Scene
             public Matrix matProj;
             public Vector4 viewport;
 
-            public Color4 ambientLight;
-            public Color4 diffuseLight;
+            public Vector4 ambientLight;
+            public Vector4 diffuseLight;
 
-            public Color4 fogColor;
+            public Vector4 fogColor;
             // x -> fogStart
             // y -> fotEnd
             // z -> farClip
@@ -100,7 +101,7 @@ namespace Neo.Scene
             WorldTextManager = new WorldTextManager();
             BoundingBoxDrawManager = new BoundingBoxDrawManager();
             mState = AppState.Idle;
-            
+
             // set the settings on creation
             HighlightModelsInBrush = Properties.Settings.Default.HighlightModelsInBrush;
             //this.UpdateDrawBrushOnModels = Properties.Settings.Default.UpdateDrawBrushOnModels; // todo: notimplemented!
@@ -150,9 +151,9 @@ namespace Neo.Scene
                 matView = Matrix.Identity,
                 matProj = Matrix.Identity,
                 viewport = Vector4.Zero,
-                ambientLight = new Color4(0.5f, 0.5f, 0.5f, 1.0f),
-                diffuseLight = new Color4(0.25f, 0.5f, 1.0f, 1.0f),
-                fogColor = new Color4(0.25f, 0.5f, 1.0f, 1.0f),
+                ambientLight = new Vector4(0.5f, 0.5f, 0.5f, 1.0f),
+                diffuseLight = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
+                fogColor = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
                 fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f),
                 mousePosition = new Vector4(float.MaxValue),
                 eyePosition = Vector4.Zero,
@@ -249,30 +250,30 @@ namespace Neo.Scene
             CamControl.HandleMouseWheel(delta);
         }
 
-        public void UpdateMapAmbient(Color3 ambient)
+        public void UpdateMapAmbient(Vector3 ambient)
         {
             lock (mGlobalBuffer)
             {
-                mGlobalBufferStore.ambientLight = new Color4(ambient, 1.0f);
+                mGlobalBufferStore.ambientLight = new Vector4(ambient, 1.0f);
                 mGlobalBufferChanged = true;
             }
         }
 
-        public void UpdateMapDiffuse(Color3 diffuse)
+        public void UpdateMapDiffuse(Vector3 diffuse)
         {
             lock (mGlobalBuffer)
             {
-                mGlobalBufferStore.diffuseLight = new Color4(diffuse, 1.0f);
+                mGlobalBufferStore.diffuseLight = new Vector4(diffuse, 1.0f);
                 mGlobalBufferChanged = true;
             }
         }
 
-        public void UpdateFogParams(Color3 fogColor, float fogStart)
+        public void UpdateFogParams(Vector3 fogColor, float fogStart)
         {
             fogStart = Math.Min(fogStart, 899.0f);
             lock (mGlobalBuffer)
             {
-                mGlobalBufferStore.fogColor = new Color4(fogColor, 1.0f);
+                mGlobalBufferStore.fogColor = new Vector4(fogColor, 1.0f);
                 mGlobalBufferStore.fogParams = new Vector4(fogStart, 900.0f, mMainCamera.FarClip, 0.0f);
                 mGlobalBufferChanged = true;
             }
@@ -396,7 +397,7 @@ namespace Neo.Scene
                         selected.CreateModelNameplate();
                         mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
                         ModelEditManager.Instance.SelectedModel = selected;
-                    } 
+                    }
                     else if (selected == null)
                     {
                         ModelEditManager.Instance.SelectedModel = null;

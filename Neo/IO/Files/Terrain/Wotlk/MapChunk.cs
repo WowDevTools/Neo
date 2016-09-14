@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using SharpDX;
 using Neo.Editing;
 using Neo.Scene;
 
 namespace Neo.IO.Files.Terrain.Wotlk
 {
-    class MapChunk : Terrain.MapChunk
+	public class MapChunk : Terrain.MapChunk
     {
         private WeakReference<MapArea> mParent;
         private Mcnk mHeader;

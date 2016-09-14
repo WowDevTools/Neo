@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using SharpDX;
+using System.Numerics;
 
 namespace Neo.IO.Files.Sky.WoD
 {
-    class MapLight
+    public class MapLight
     {
         private readonly LightEntryData mEntry;
         private LightParamsEntry mParams;
@@ -96,7 +96,7 @@ namespace Neo.IO.Files.Sky.WoD
             return true;
         }
 
-        public bool GetAllColorsForTime(int time, Color3[] colors)
+        public bool GetAllColorsForTime(int time, Vector3[] colors)
         {
             if (mDataEntries.Count == 0)
                 return false;

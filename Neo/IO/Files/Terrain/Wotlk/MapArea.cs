@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
-using SharpDX;
 using Neo.Editing;
 using Neo.IO.Files.Models;
 using Neo.Scene;
@@ -11,13 +11,13 @@ using Neo.Scene.Texture;
 
 namespace Neo.IO.Files.Terrain.Wotlk
 {
-    struct ChunkInfo
+	public struct ChunkInfo
     {
         public int Offset;
         public int Size;
     }
 
-    class MapArea : Terrain.MapArea
+	public class MapArea : Terrain.MapArea
     {
         private List<ChunkInfo> mChunkInfos = new List<ChunkInfo>();
         private List<MapChunk> mChunks = new List<MapChunk>();
@@ -28,7 +28,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
         private Mcin[] mChunkOffsets = new Mcin[0];
         private Mddf[] mDoodadDefs = new Mddf[0];
         private int[] mDoodadNameIds = new int[0];
-        private readonly List<string> mDoodadNames = new List<string>(); 
+        private readonly List<string> mDoodadNames = new List<string>();
 
         private bool mWasChanged;
 
@@ -307,7 +307,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
                     var bytes = reader.ReadBytes(size);
                     if (mSaveChunks.ContainsKey(signature))
                         continue;
-                    
+
                     mSaveChunks.Add(signature, new DataChunk {Data = bytes, Signature = signature, Size = size});
                 }
 

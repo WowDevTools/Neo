@@ -1,9 +1,9 @@
-﻿using System.Runtime.InteropServices;
-using SharpDX;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace Neo.IO.Files.Sky.WoD
 {
-    class LightEntryData
+	public class LightEntryData
     {
         public LightEntryData(LightEntry e)
         {
@@ -32,7 +32,7 @@ namespace Neo.IO.Files.Sky.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct LightEntry
+    public struct LightEntry
     {
         public readonly int Id;
         public readonly int MapId;
@@ -48,7 +48,7 @@ namespace Neo.IO.Files.Sky.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct LightDataEntry
+    public struct LightDataEntry
     {
         public readonly uint id;
         public readonly uint skyId;
@@ -78,7 +78,7 @@ namespace Neo.IO.Files.Sky.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct LightParamsEntry
+    public struct LightParamsEntry
     {
         public readonly int Id;
         public readonly int HightlightSky;
@@ -93,7 +93,7 @@ namespace Neo.IO.Files.Sky.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct ZoneLightPoint
+    public struct ZoneLightPoint
     {
         public readonly int Id;
         public readonly int RefZoneLight;
@@ -102,7 +102,7 @@ namespace Neo.IO.Files.Sky.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct DbcZoneLight
+    public struct DbcZoneLight
     {
         public readonly int Id;
         public readonly int ofsName;

@@ -1,7 +1,7 @@
 ﻿
 namespace Neo.IO.Files.Terrain
 {
-    class TerrainQueryManager
+	public class TerrainQueryManager
     {
         private IMapAreaQueryImplementation mMapAreaImplementation;
 

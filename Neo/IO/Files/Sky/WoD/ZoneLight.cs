@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SharpDX;
+using System.Numerics;
 using Neo.Utils;
 
 namespace Neo.IO.Files.Sky.WoD
 {
-    class ZoneLight
+    public class ZoneLight
     {
         private readonly Polygon mInnerPolygon = new Polygon();
         private readonly List<ZoneLightPoint> mPoints = new List<ZoneLightPoint>();

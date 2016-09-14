@@ -1,9 +1,9 @@
 ﻿using System;
-using SharpDX;
+using System.Numerics;
 
 namespace Neo.IO.Files.Sky
 {
-    enum LightColor
+	public enum LightColor
     {
         Diffuse = 0,
         Ambient = 1,
@@ -19,7 +19,7 @@ namespace Neo.IO.Files.Sky
         MaxLightType
     }
 
-    enum LightFloat
+	public enum LightFloat
     {
         FogEnd,
         FogDensity,
@@ -27,7 +27,7 @@ namespace Neo.IO.Files.Sky
         MaxLightFloat
     }
 
-    abstract class SkyManager
+	public abstract class SkyManager
     {
         public abstract void OnEnterWorld(int mapId);
         public abstract void AsyncUpdate();

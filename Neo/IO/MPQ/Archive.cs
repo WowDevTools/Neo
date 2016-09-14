@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Neo.IO.MPQ
 {
-    class Archive
+    public class Archive
     {
         private readonly IntPtr mHandle;
 

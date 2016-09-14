@@ -3,11 +3,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using Neo.IO.CASC;
 
 namespace Neo.IO
 {
-    class FileManager
+    public class FileManager
     {
         public static FileManager Instance { get; private set; }
 
@@ -59,7 +58,7 @@ namespace Neo.IO
 
         public Stream GetExportStream(string path)
         {
-            
+
             var fullPath = Path.Combine(Properties.Settings.Default.ExportPath ?? ".\\Export", path);
             try
             {

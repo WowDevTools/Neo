@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Neo.IO.Files
 {
-    interface IDataStorageRecord
+	public interface IDataStorageRecord
     {
         T Get<T>() where T : struct;
         T Get<T>(int offset) where T : struct;
@@ -17,7 +14,7 @@ namespace Neo.IO.Files
         string GetString(int field);
     }
 
-    interface IDataStorageFile : IDisposable
+	public interface IDataStorageFile : IDisposable
     {
         int NumRows { get; }
         int NumFields { get; }

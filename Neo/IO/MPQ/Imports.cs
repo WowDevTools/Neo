@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Neo.IO.MPQ
 {
-    static class Imports
+	public static class Imports
     {
         [DllImport("Stormlib.dll", CharSet = CharSet.Ansi)]
         public static extern bool SFileOpenArchive(string mpqName, uint priority, uint flags, out IntPtr handle);

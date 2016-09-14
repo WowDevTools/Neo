@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SharpDX;
+using System.Numerics;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Scene;
@@ -10,7 +10,7 @@ using Neo.Scene.Texture;
 
 namespace Neo.IO.Files.Terrain
 {
-    abstract class MapArea : IDisposable
+	public abstract class MapArea : IDisposable
     {
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
@@ -21,14 +21,14 @@ namespace Neo.IO.Files.Terrain
 
         public AdtVertex[] FullVertices { get; private set; }
 
-        public List<string> TextureNames { get; private set; }  
+        public List<string> TextureNames { get; private set; }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
 
         protected List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
-        private List<Graphics.Texture> mSpecularTextures = new List<Graphics.Texture>();  
+        private List<Graphics.Texture> mSpecularTextures = new List<Graphics.Texture>();
 
         protected MapArea()
         {

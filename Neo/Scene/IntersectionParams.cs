@@ -1,5 +1,5 @@
-﻿using System.Security.RightsManagement;
-using SharpDX;
+﻿using System.Drawing.Drawing2D;
+using System.Numerics;
 using Neo.IO.Files.Models;
 using Neo.IO.Files.Terrain;
 using Neo.Scene.Models.M2;
