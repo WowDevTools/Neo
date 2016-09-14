@@ -215,3 +215,6 @@ ModelManifest.xml
 /WoWEditor6/Resources/Shaders/WmoPixelBlendIndoor.dxc
 *.dxc
 DBC/
+
+# IntelliJ IDE files
+.idea*/
