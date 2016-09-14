@@ -7,7 +7,7 @@
     <ProjectGuid>{B1BF37BF-C6E1-4D7C-A0BA-AAE59EEBB913}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WoWEditor6</RootNamespace>
+    <RootNamespace>Neo</RootNamespace>
     <AssemblyName>Neo</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
