@@ -150,7 +150,7 @@ namespace WoWEditor6.Scene.Models.M2
 
             if (opCount == 1)
             {
-                return ((shaderId & 0x80) != 0) ? M2VertexShaderType.VS_Diffuse_T1_T2
+                return ((shaderId & 0x80) != 0) ? M2VertexShaderType.VS_Diffuse_Env
                      : ((shaderId & 0x4000) != 0) ? M2VertexShaderType.VS_Diffuse_T2
                                                   : M2VertexShaderType.VS_Diffuse_T1;
             }
