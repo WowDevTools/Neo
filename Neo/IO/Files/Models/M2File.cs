@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using SharpDX;
 
 namespace Neo.IO.Files.Models
 {
@@ -10,7 +9,7 @@ namespace Neo.IO.Files.Models
         public int TextureType { get; set; }
         public Graphics.Texture.SamplerFlagType SamplerFlags { get; set; }
         public Graphics.Texture Texture { get; set; }
-    } 
+    }
 
     abstract class M2File
     {

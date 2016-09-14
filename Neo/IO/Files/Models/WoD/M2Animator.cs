@@ -1,6 +1,8 @@
-﻿using SharpDX;
-using System;
+﻿using System;
+using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Numerics;
+
 // ReSharper disable InconsistentlySynchronizedField
 
 namespace Neo.IO.Files.Models.WoD

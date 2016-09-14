@@ -1,5 +1,5 @@
 ﻿using System;
-using SharpDX;
+using System.Numerics;
 using Neo.Scene;
 using Neo.Utils;
 
@@ -27,7 +27,7 @@ namespace Neo.Editing
     class TextureChangeManager
     {
         public static TextureChangeManager Instance { get; private set; }
-        
+
         public float Amount { get; set; }
         public float TargetValue { get; set; }
         public string SelectedTexture { get; set; }

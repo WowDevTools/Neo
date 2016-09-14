@@ -1,9 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Threading;
-using SharpDX;
-using Neo.UI.Components;
+﻿using Neo.UI.Components;
 using Neo.UI.Models;
 using Neo.Editing;
+using System.Numerics;
 
 namespace Neo.UI
 {

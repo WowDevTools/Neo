@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Drawing.Drawing2D;
 using System.Linq;
-using SharpDX;
+using System.Numerics;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
@@ -51,7 +52,7 @@ namespace Neo.IO.Files.Models.Wotlk
         {
             if (mAnimations.Length == 0 && mAnimationLookup.Length == 0)
                 return false;
-            
+
             if (Array.IndexOf(mAnimationLookup, (short)animation) >= 0)
             {
                 mAnimationId = mAnimationLookup[animation];

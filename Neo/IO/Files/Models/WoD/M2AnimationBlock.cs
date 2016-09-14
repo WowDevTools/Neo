@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
-using SharpDX;
-using Xceed.Wpf.AvalonDock.Layout;
+using System.Numerics;
 
 namespace Neo.IO.Files.Models.WoD
 {

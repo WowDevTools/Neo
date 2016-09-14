@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using SharpDX;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace Neo.IO.Files.Models.Wotlk
 {

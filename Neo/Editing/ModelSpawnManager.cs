@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using SharpDX;
+using System.Numerics;
 using Neo.IO;
 using Neo.IO.Files.Models;
 using Neo.IO.Files.Terrain;
@@ -34,7 +33,7 @@ namespace Neo.Editing
 
         private ModelSpawnManager()
         {
-            
+
         }
 
         public void CopyClickedModel()

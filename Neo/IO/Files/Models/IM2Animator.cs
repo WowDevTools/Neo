@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System.Drawing.Drawing2D;
+using System.Numerics;
 
 namespace Neo.IO.Files.Models
 {

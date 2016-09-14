@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using SharpDX;
+using System.Numerics;
 
 namespace Neo.IO.Files.Models.Wotlk
 {

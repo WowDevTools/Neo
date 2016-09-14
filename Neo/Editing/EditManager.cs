@@ -1,12 +1,9 @@
 ﻿using System;
-using SharpDX;
 using Neo.Scene;
 using Neo.UI;
 using Neo.Utils;
-using System.Windows.Forms;
 using Point = System.Drawing.Point;
-using WintabDN;
-using System.Windows;
+using System.Numerics;
 
 namespace Neo.Editing
 {
@@ -92,7 +89,7 @@ namespace Neo.Editing
             get { return mIsSprayOn;  }
             set { HandleSprayModeChanged(value);  }
         }
-        
+
         public bool IsTablet_RChange
         {
             get { return mIsTablet_RChange; }
@@ -105,7 +102,7 @@ namespace Neo.Editing
             set { HandleTabletInnerRadiusChanged(value); }
         }
 
-        public bool IsTablet_PChange 
+        public bool IsTablet_PChange
         {
             get { return mIsTablet_PChange; }
             set { HandleTabletControlPressureChanged(value); }
@@ -208,7 +205,7 @@ namespace Neo.Editing
                 {
                     if (EditorWindowController.Instance.TexturingModel != null)
                     {
-                        //float proportion = mInnerRadius / mOuterRadius; 
+                        //float proportion = mInnerRadius / mOuterRadius;
 
                         mOuterRadius = TabletManager.Instance.TabletPressure * (mAmplitude / 10.0f);
 
@@ -217,11 +214,11 @@ namespace Neo.Editing
                             mOuterRadius = 0.1f;
                         }
 
-                        if(mInnerRadius > mAmplitude)   
+                        if(mInnerRadius > mAmplitude)
                         {
                             mInnerRadius = mAmplitude;
                         }
-                        
+
                         if(mInnerRadius > mOuterRadius)
                         {
                             mInnerRadius = mOuterRadius;
@@ -230,7 +227,7 @@ namespace Neo.Editing
                         HandleOuterRadiusChanged(mOuterRadius);
                         HandleInnerRadiusChanged(mInnerRadius);
                     }
-                        
+
                 }
 
                 if (mIsTablet_IRChange) // If inner radius change is enabled.
@@ -254,16 +251,16 @@ namespace Neo.Editing
                 }
             }
 
-            
+
             /*if (!LMBDown && IsTabletOn) // When tablet mode is on we always set those to minimal value (NEEDS TO BE MOVED OUT OF HERE).
             {
                 mAmount = 1.0f;
                 mIntensity = 1.0f;
             }*/
-                 
+
 
             if (curPos != mLastCursorPosition)
-            { 
+            {
                 if (altDown && RMBDown)
                 {
                     mInnerRadius += amount;
@@ -287,7 +284,7 @@ namespace Neo.Editing
                     HandleInnerRadiusChanged(mInnerRadius);
 
                 }
-                
+
 
                 if (altDown && LMBDown)
                 {
@@ -321,7 +318,7 @@ namespace Neo.Editing
 
                     HandleInnerRadiusChanged(mInnerRadius);
                     HandleOuterRadiusChanged(mOuterRadius);
-                    
+
 
                 }
 
@@ -359,7 +356,7 @@ namespace Neo.Editing
 
                         HandleAmountChanged(mAmount);
                     }
-                                     
+
                 }
 
                 if(altDown && MMBDown)

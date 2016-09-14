@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using SharpDX;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 
 #pragma warning disable 649
 

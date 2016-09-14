@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SharpDX;
+using System.Numerics;
 
 namespace Neo.IO.Files.Models.Wotlk
 {

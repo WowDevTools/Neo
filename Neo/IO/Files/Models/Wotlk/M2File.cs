@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
-using SharpDX;
 using Neo.Scene.Models.M2;
 
 namespace Neo.IO.Files.Models.Wotlk
@@ -59,7 +59,7 @@ namespace Neo.IO.Files.Models.Wotlk
                     strm.Position = ofsBlendMaps;
                     mBlendMap = reader.ReadArray<ushort>(nBlendMaps);
                 }
-                
+
                 strm.Position = mHeader.OfsName;
                 if (mHeader.LenName > 0)
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
@@ -127,7 +127,7 @@ namespace Neo.IO.Files.Models.Wotlk
             mSkin = new M2SkinFile(ModelRoot, mModelName, 0);
             if (mSkin.Load() == false)
                 throw new InvalidOperationException("Unable to load skin file");
-            
+
             Indices = mSkin.Indices;
 
             var texLookup = ReadArrayOf<ushort>(reader, mHeader.OfsTexLookup, mHeader.NTexLookup);

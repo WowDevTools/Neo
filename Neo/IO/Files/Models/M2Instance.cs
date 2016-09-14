@@ -1,5 +1,4 @@
-﻿using SharpDX;
-using Neo.Scene.Models.M2;
+﻿using Neo.Scene.Models.M2;
 
 namespace Neo.IO.Files.Models
 {

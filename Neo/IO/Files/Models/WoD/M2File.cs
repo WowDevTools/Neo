@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using SharpDX;
 using Neo.Scene.Models.M2;
 
 namespace Neo.IO.Files.Models.WoD

@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using SharpDX;
+﻿using System.Numerics;
 using Neo.Scene;
 using Neo.Scene.Models;
 using Neo.Scene.Models.M2;
@@ -76,7 +75,7 @@ namespace Neo.Editing
                 SelectedModel.UpdateScale(amount);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
-            if (mmbDown && !altDown && Cursor.Position != mLastCursorPosition) // Moving 
+            if (mmbDown && !altDown && Cursor.Position != mLastCursorPosition) // Moving
             {
                 Vector3 delta;
 

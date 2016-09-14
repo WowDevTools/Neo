@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using SharpDX;
 
 namespace Neo.IO.Files.Models.WoD
 {
@@ -180,7 +179,7 @@ namespace Neo.IO.Files.Models.WoD
             {
                 var groupName = string.Format("{0}_{1:D3}.wmo", rootPath, i);
                 var group = new WmoGroup(groupName, this);
-           
+
                 if (group.Load())
                 {
                     mGroups.Add(group);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SharpDX;
+using System.Numerics;
 
 namespace Neo.IO.Files.Models.WoD
 {
@@ -14,7 +14,7 @@ namespace Neo.IO.Files.Models.WoD
 
         private readonly WeakReference<WmoRoot> mParent;
         private readonly string mFileName;
-        
+
         private Mogp mHeader;
         private bool mTexCoordsLoaded;
         private uint[] mColors = new uint[0];
