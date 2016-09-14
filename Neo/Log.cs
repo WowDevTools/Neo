@@ -61,14 +61,14 @@ namespace Neo
             if (Directory.Exists("Logs") == false)
                 Directory.CreateDirectory("Logs");
 
-            File.Create("Logs\\Log.txt").Close();
+            File.Create($"Log{Path.DirectorySeparatorChar}Log.txt").Close();
         }
 
         public void AddMessage(LogLevel level, string title, string message)
         {
             lock (this)
             {
-                File.AppendAllText("Logs\\Log.txt", string.Format("{0}{1}\r\n", title, message));
+                File.AppendAllText($"Log{Path.DirectorySeparatorChar}Log.txt", $"{title}{message}\n");
             }
         }
     }
@@ -86,7 +86,7 @@ namespace Neo
 
         private static string GetTitle(string fileName, int line)
         {
-            return string.Format("{0:HH:mm:ss} {1}:{2}", DateTime.Now, Path.GetFileName(fileName), line);
+            return $"{DateTime.Now:HH:mm:ss} {Path.GetFileName(fileName)}:{line}";
         }
 
         private static void AddMessage(LogLevel level, string title, string message)
@@ -115,22 +115,22 @@ namespace Neo
 
         public static void Debug(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Debug, GetTitle(fileName, line) + " - Debug: ", message == null ? "null" : message.ToString());
+            AddMessage(LogLevel.Debug, GetTitle(fileName, line) + " - Debug: ", message?.ToString() ?? "null");
         }
 
         public static void Warning(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Warning, GetTitle(fileName, line) + " - Warning: ", message == null ? "null" : message.ToString());
+            AddMessage(LogLevel.Warning, GetTitle(fileName, line) + " - Warning: ", message?.ToString() ?? "null");
         }
 
         public static void Error(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Error, GetTitle(fileName, line) + " - ERROR: ", message == null ? "null" : message.ToString());
+            AddMessage(LogLevel.Error, GetTitle(fileName, line) + " - ERROR: ", message?.ToString() ?? "null");
         }
 
         public static void Fatal(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)
         {
-            AddMessage(LogLevel.Fatal, GetTitle(fileName, line) + " - FATAL: ", message == null ? "null" : message.ToString());
+            AddMessage(LogLevel.Fatal, GetTitle(fileName, line) + " - FATAL: ", message?.ToString() ?? "null");
         }
     }
 }
