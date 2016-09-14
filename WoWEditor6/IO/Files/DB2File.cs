@@ -232,16 +232,20 @@ namespace WoWEditor6.IO.Files
             return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
         }
 
-        public IEnumerable<IDataStorageRecord> GetAllRows()
+        public IList<IDataStorageRecord> GetAllRows()
         {
-            foreach (var i in Enumerable.Range(0, NumRows))
-                yield return GetRow(i);
+            List<IDataStorageRecord> files = new List<IDataStorageRecord>();
+            for (int i = 0; i < NumRows; i++)
+                files.Add(GetRow(i));
+            return files;
         }
 
-        public IEnumerable<T> GetAllRows<T>() where T : struct
+        public IList<T> GetAllRows<T>() where T : struct
         {
-            foreach (var i in Enumerable.Range(0, NumRows))
-                yield return GetRow(i).Get<T>();
+            List<T> files = new List<T>();
+            for (int i = 0; i < NumRows; i++)
+                files.Add(GetRow(i).Get<T>());
+            return files;
         }
 
 

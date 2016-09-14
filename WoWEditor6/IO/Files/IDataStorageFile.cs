@@ -29,8 +29,8 @@ namespace WoWEditor6.IO.Files
 
         IDataStorageRecord GetRow(int index);
         IDataStorageRecord GetRowById(int id);
-        IEnumerable<IDataStorageRecord> GetAllRows();
-        IEnumerable<T> GetAllRows<T>() where T : struct;
+        IList<IDataStorageRecord> GetAllRows();
+        IList<T> GetAllRows<T>() where T : struct;
 
         int AddString(string value);
         void AddRow<T>(T entry);
