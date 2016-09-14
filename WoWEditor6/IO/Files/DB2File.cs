@@ -326,6 +326,13 @@ namespace WoWEditor6.IO.Files
         }
 
         #region Helpers
+        /// <summary>
+        /// Returns record bytes and any new strings to be added to the StringTable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entry"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
         private Tuple<byte[], IEnumerable<string>> ParseRecord<T>(T entry, bool update = false)
         {
             Type type = entry.GetType();
