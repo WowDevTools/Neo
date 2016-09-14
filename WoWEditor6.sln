@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWEditor6", "WoWEditor6\Wo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBCLib", "DBCLib\DBCLib.csproj", "{56986B19-61B4-41A0-B366-598A20C85EBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WDBXLib", "WDBXLib\WDBXLib.csproj", "{BF2D7358-804E-4299-8972-301F1D5E2400}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,18 +41,6 @@ Global
 		{56986B19-61B4-41A0-B366-598A20C85EBA}.Release|x64.Build.0 = Release|Any CPU
 		{56986B19-61B4-41A0-B366-598A20C85EBA}.Release|x86.ActiveCfg = Release|Any CPU
 		{56986B19-61B4-41A0-B366-598A20C85EBA}.Release|x86.Build.0 = Release|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Debug|x64.Build.0 = Debug|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Debug|x86.Build.0 = Debug|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Release|x64.ActiveCfg = Release|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Release|x64.Build.0 = Release|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Release|x86.ActiveCfg = Release|Any CPU
-		{BF2D7358-804E-4299-8972-301F1D5E2400}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

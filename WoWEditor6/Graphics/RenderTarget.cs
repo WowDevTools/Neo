@@ -16,7 +16,7 @@ namespace WoWEditor6.Graphics
         public RenderTargetView Native { get; private set; }
         public Texture2D Texture { get; private set; }
 
-        private Color4 backgroundcolor = Color4.Black; //local for less processing each frame
+        private Color4 backgroundcolor = Color4.Black;
         private Func<System.Drawing.Color, Color4> ConvertColor = c => new Color4(c.R / 255f, c.G / 255f, c.B / 255f, 1);
 
         public RenderTarget(GxContext context)
