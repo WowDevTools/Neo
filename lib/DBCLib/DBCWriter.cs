@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Windows.Forms;
 
 namespace DBCLib
 {
@@ -26,12 +26,10 @@ namespace DBCLib
                 var fields = type.GetFields();
                 int fieldCount = DBCHelper.FieldCount(fields, type);
 
-                var classAttribs = typeof(T).GetCustomAttributes(typeof(NoPrimaryAttribute), false);
-
-                bw.Write(fieldCount);
+               bw.Write(fieldCount);
 
                 //The charBaseInfo.dbc is weird, and don't have *4.
-                string charBaseInfoPath = Application.ExecutablePath + "\\DBC\\CharBaseInfo.dbc";
+                string charBaseInfoPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().FullName) + "\\DBC\\CharBaseInfo.dbc";
 
                 if (path == charBaseInfoPath)
                     bw.Write(fieldCount);
@@ -159,7 +157,7 @@ namespace DBCLib
             }
             catch (IOException ex)
             {
-                MessageBox.Show(ex.Message);
+	            Console.WriteLine(ex.Message);
             }
         }
 

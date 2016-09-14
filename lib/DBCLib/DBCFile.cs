@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace DBCLib
 {
@@ -153,7 +152,7 @@ namespace DBCLib
                                 }
                                 catch (System.Exception ex)
                                 {
-                                    MessageBox.Show(ex.ToString());
+	                                Console.WriteLine(ex.Message);
                                 }
 
                                 break;
