@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Neo.IO.Files
@@ -18,6 +20,13 @@ namespace Neo.IO.Files
                 throw new IndexOutOfRangeException("Trying to read past the end of a dbc record");
         }
 
+        private void AssertString<T>() where T : struct
+        {
+            if (typeof(T).GetFields().Any(x => x.FieldType == typeof(string)))
+                throw new TypeLoadException();
+        }
+
+
         public DB2Record(int size, int offset, BinaryReader reader, Dictionary<int, string> stringTable)
         {
             mSize = size;
@@ -27,9 +36,54 @@ namespace Neo.IO.Files
             mStringTable = stringTable;
         }
 
+        /// <summary>
+        /// Use this for DB2 structs with strings
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T Get<T>() where T : struct
+        {
+            ValueType ret = new T();
+
+            using (var ms = new MemoryStream(mData))
+            using (var br = new BinaryReader(ms))
+            {
+                foreach (var field in typeof(T).GetFields())
+                {
+                    if (field.FieldType == typeof(string)) //StringTable
+                    {
+                        int strId = br.ReadInt32();
+                        string strVal = string.Empty;
+                        mStringTable.TryGetValue(strId, out strVal);
+                        field.SetValue(ret, strVal);
+                    }
+                    else
+                    {
+                        int sizeOf = Marshal.SizeOf(field.FieldType);
+                        byte[] bytes = br.ReadBytes(sizeOf);
+                        fixed (byte* dataPtr = bytes)
+                        {
+                            object val = Marshal.PtrToStructure(new IntPtr(dataPtr), field.FieldType);
+                            field.SetValue(ret, val);
+                        }
+                    }
+                }
+            }
+
+            return (T)ret;
+        }
+
+        /// <summary>
+        /// Use this for DB2 structs without strings
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public T Get<T>(int offset) where T : struct
         {
             AssertValid(offset, SizeCache<T>.Size);
+            AssertString<T>();
+
             var ret = new T();
             var ptr = SizeCache<T>.GetUnsafePtr(ref ret);
             fixed (byte* data = mData)
@@ -73,6 +127,7 @@ namespace Neo.IO.Files
             mStringTable.TryGetValue(offset, out str);
             return str;
         }
+
     }
 
     class DB2File : IDataStorageFile
@@ -85,7 +140,9 @@ namespace Neo.IO.Files
         private int mMinId;
         private int mMaxId;
         private int mLocal;
-        private int mUnk2;
+        private int mCopyTableSize;
+
+        private const int HEADER = 48;
 
         private Stream mStream;
         private BinaryReader mReader;
@@ -95,24 +152,20 @@ namespace Neo.IO.Files
         public int NumFields { get; private set; }
         public int NumRows { get; private set; }
 
-        public IDataStorageRecord GetRow(int index)
-        {
-            return new DB2Record(mRecordSize, 48 + index * mRecordSize, mReader, mStringTable);
-        }
-
-        public IDataStorageRecord GetRowById(int id)
-        {
-            int index;
-            return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
-        }
-
         public void Load(string file)
         {
-            mStream = FileManager.Instance.Provider.OpenFile(file);
-            if (mStream == null)
+            Stream stream = FileManager.Instance.Provider.OpenFile(file);
+            if (stream == null)
                 throw new FileNotFoundException(file);
 
+            Load(stream);
+        }
+
+        public void Load(Stream stream)
+        {
+            mStream = stream;
             mReader = new BinaryReader(mStream);
+            mReader.BaseStream.Position = 0;
             mReader.ReadInt32(); // signature
             NumRows = mReader.ReadInt32();
             NumFields = mReader.ReadInt32();
@@ -124,7 +177,7 @@ namespace Neo.IO.Files
             mMinId = mReader.ReadInt32();
             mMaxId = mReader.ReadInt32();
             mLocal = mReader.ReadInt32();
-            mUnk2 = mReader.ReadInt32();
+            mCopyTableSize = mReader.ReadInt32();
 
             mStream.Position = NumRows * mRecordSize + 20;
             var strBytes = mReader.ReadBytes(mStringTableSize);
@@ -146,6 +199,223 @@ namespace Neo.IO.Files
             for (var i = 0; i < NumRows; ++i)
                 mIdLookup.Add(GetRow(i).GetInt32(0), i);
         }
+
+        public void Save(string file)
+        {
+            using (var fs = new FileStream(file, FileMode.Create))
+            {
+                mReader.BaseStream.Position = 0;
+                byte[] data = mReader.ReadBytes((int)mStream.Length);
+                fs.Write(data, 0, data.Length);
+            }
+        }
+
+        public void ReLoad(Stream stream)
+        {
+            mStream.Dispose();
+            mReader.Dispose();
+            mStringTable.Clear();
+            mIdLookup.Clear();
+
+            Load(stream);
+        }
+
+
+        public IDataStorageRecord GetRow(int index)
+        {
+            return new DB2Record(mRecordSize, HEADER + index * mRecordSize, mReader, mStringTable);
+        }
+
+        public IDataStorageRecord GetRowById(int id)
+        {
+            int index;
+            return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
+        }
+
+        public IList<IDataStorageRecord> GetAllRows()
+        {
+            List<IDataStorageRecord> files = new List<IDataStorageRecord>();
+            for (int i = 0; i < NumRows; i++)
+                files.Add(GetRow(i));
+            return files;
+        }
+
+        public IList<T> GetAllRows<T>() where T : struct
+        {
+            List<T> files = new List<T>();
+            for (int i = 0; i < NumRows; i++)
+                files.Add(GetRow(i).Get<T>());
+            return files;
+        }
+
+
+        public bool DeleteRow(int index)
+        {
+            //TODO remove strings from string table
+            if (!mIdLookup.ContainsValue(index))
+                return false;
+
+            var idLookup = mIdLookup.First(x => x.Value == index);
+            var maxId = mIdLookup.Last().Key;
+            
+            mReader.BaseStream.Position = 0;
+            byte[] data = mReader.ReadBytes((int)mStream.Length);
+
+            var ms = new MemoryStream();
+            int start = HEADER + index * mRecordSize;
+            int end = data.Length - start - mRecordSize;
+            ms.Write(data, 0, start); //Header + rows before data
+            ms.Write(data, start + mRecordSize, end); //Skip row being removed's bytes
+
+            ms.Position = 4;
+            ms.Write(BitConverter.GetBytes(NumRows - 1), 0, 4); //Update the record count
+
+            if(idLookup.Key == maxId)
+            {
+                mIdLookup.Remove(maxId);
+                ms.Position = 0x24;
+                ms.Write(BitConverter.GetBytes(mIdLookup.Keys.Max()), 0, 4); //Update max id
+            }
+
+            ReLoad(ms);
+            return true;
+        }
+
+        public bool DeleteRowById(int id)
+        {
+            int index;
+            return mIdLookup.TryGetValue(id, out index) ? DeleteRow(index) : false;
+        }
+
+
+        public int AddString(string value)
+        {
+            var maxIndex = 0;
+            var maxLen = 0;
+
+            foreach (var pair in mStringTable)
+            {
+                if (pair.Value.Equals(value))
+                    return pair.Key;
+
+                if (pair.Key <= maxIndex) continue;
+
+                maxIndex = pair.Key;
+                maxLen = pair.Value.Length;
+            }
+
+            maxIndex += maxLen + 1;
+            mStringTable.Add(maxIndex, value);
+            return maxIndex;
+        }
+
+        public void AddRow<T>(T entry)
+        {
+            var newRecord = ParseRecord(entry);
+            NumRows += 1;
+            Update(newRecord.Item1, newRecord.Item2);
+        }
+
+
+        public void UpdateRow<T>(T entry)
+        {
+            var newRecord = ParseRecord(entry, true);
+            var id = BitConverter.ToInt32(newRecord.Item1.Take(4).ToArray(), 0);
+            var index = mIdLookup[id];
+
+            mStream.Position = HEADER + index * mRecordSize;
+            mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length); //Overwrite existing data
+
+            Update(new byte[0], newRecord.Item2);
+        }
+
+        #region Helpers
+        /// <summary>
+        /// Returns record bytes and any new strings to be added to the StringTable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entry"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        private Tuple<byte[], IEnumerable<string>> ParseRecord<T>(T entry, bool update = false)
+        {
+            Type type = entry.GetType();
+
+            byte[] newRecord = new byte[mRecordSize];
+            List<string> newStrings = new List<string>();
+            bool first = true;
+
+            using (var ms = new MemoryStream(newRecord))
+            using (var bw = new BinaryWriter(ms))
+            {
+                foreach (var field in type.GetFields())
+                {
+                    if (first && !update) //Autoincrement Id only if adding a new record
+                    {
+                        bw.Write(mIdLookup.Keys.Max() + 1);
+                        first = false;
+                        continue;
+                    }
+
+                    if (field.FieldType == typeof(string))
+                    {
+                        int stSize = mStringTable.Count;
+                        string strVal = Convert.ToString(field.GetValue(entry));
+                        int strID = AddString(strVal);
+                        bw.Write(strID);
+
+                        if (mStringTable.Count > stSize) //Append to our list of new strings
+                            newStrings.Add(strVal);
+                    }
+                    else
+                    {
+                        int sizeOf = Marshal.SizeOf(field.FieldType);
+                        byte[] arr = new byte[sizeOf];
+                        IntPtr ptr = Marshal.AllocHGlobal(sizeOf);
+                        Marshal.StructureToPtr(field.GetValue(entry), ptr, true);
+                        Marshal.Copy(ptr, arr, 0, sizeOf);
+                        Marshal.FreeHGlobal(ptr);
+                        bw.Write(arr);
+                    }
+                }
+            }
+
+            return new Tuple<byte[], IEnumerable<string>>(newRecord, newStrings);
+        }
+
+        private void Update(byte[] newRecord, IEnumerable<string> newStrings)
+        {
+            mReader.BaseStream.Position = 0;
+            byte[] curdata = mReader.ReadBytes((int)mStream.Length - mStringTableSize);
+            byte[] stringtable = mReader.ReadBytes(mStringTableSize);
+
+            var ms = new MemoryStream();
+            var bw = new BinaryWriter(ms, Encoding.UTF8);
+
+            bw.Write(curdata); //Write header and record data
+            bw.Write(newRecord); //Write new record if any
+
+            bw.Write(stringtable); //Write existing string table
+            foreach (var s in newStrings) //Write new strings if any
+            {
+                byte[] sd = Encoding.UTF8.GetBytes(s);
+                bw.Write(sd);
+                bw.Write((byte)0);
+                mStringTableSize += (sd.Length + 1);
+            }
+
+            bw.BaseStream.Position = 4;
+            bw.Write(NumRows + 1); //Number of rows
+            bw.BaseStream.Position = 0x10;
+            bw.Write(mStringTable.Count); //StringTable size
+            bw.BaseStream.Position = 0x20;
+            bw.Write(mIdLookup.Keys.Max() + 1); //MaxId
+            bw.BaseStream.Position = 0;
+            bw.Flush();
+
+            ReLoad(ms);
+        }
+        #endregion
 
         ~DB2File()
         {

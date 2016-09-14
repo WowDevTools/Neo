@@ -237,6 +237,7 @@
     <Compile Include="IO\Files\Models\Wotlk\M2Structs.cs" />
     <Compile Include="IO\Files\Models\Wotlk\M2TexColorAninmation.cs" />
     <Compile Include="IO\Files\Models\Wotlk\M2UVAnimation.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\ModelStructs.cs" />
     <Compile Include="IO\Files\Models\Wotlk\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\Wotlk\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\Wotlk\WmoStructures.cs" />
