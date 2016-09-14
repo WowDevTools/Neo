@@ -104,9 +104,6 @@
     <ManifestCertificateThumbprint>EDA1AE14F53C00B16CE5AB9FFF5D517C4EB54C39</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>WoWEditor6_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
@@ -136,26 +133,6 @@
     <Reference Include="MySql.Data, Version=7.0.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d">
       <HintPath>..\packages\MySql.Data.7.0.5-IR21\lib\net451\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="Prism, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8">
-      <HintPath>..\packages\Prism.Core.6.2.0\lib\net45\Prism.dll</HintPath>
-    </Reference>
-    <Reference Include="Prism.Wpf, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8">
-      <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX, Version=3.0.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
-      <HintPath>..\packages\SharpDX.3.0.2\lib\net45\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.D3DCompiler, Version=3.0.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
-      <HintPath>..\packages\SharpDX.D3DCompiler.3.0.2\lib\net45\SharpDX.D3DCompiler.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D11, Version=3.0.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
-      <HintPath>..\packages\SharpDX.Direct3D11.3.0.2\lib\net45\SharpDX.Direct3D11.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.DXGI, Version=3.0.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
-      <HintPath>..\packages\SharpDX.DXGI.3.0.2\lib\net45\SharpDX.DXGI.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -166,10 +143,6 @@
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -177,49 +150,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationProvider" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
-    <Reference Include="WintabDN, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WintabDN.1.0.0.4\lib\net40\WintabDN.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.AvalonDock.3.1.16356.12170\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.Aero.3.1.16356.12170\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.Metro.3.1.16356.12170\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.MetroAccent, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.MetroAccent.3.1.16356.12170\lib\net40\Xceed.Wpf.AvalonDock.Themes.MetroAccent.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Office2007, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.Office2007.3.1.16356.12170\lib\net40\Xceed.Wpf.AvalonDock.Themes.Office2007.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.VS2010.3.1.16356.12170\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Windows10, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.AvalonDock.Themes.Windows10.3.1.16356.12170\lib\net40\Xceed.Wpf.AvalonDock.Themes.Windows10.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Themes, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.Themes.3.1.16356.12170\lib\net40\Xceed.Wpf.Themes.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Themes.Metro, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.Themes.Metro.3.1.16356.12170\lib\net40\Xceed.Wpf.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Themes.Office2007, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.Themes.Office2007.3.1.16356.12170\lib\net40\Xceed.Wpf.Themes.Office2007.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Themes.Windows10, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.Themes.Windows10.3.1.16356.12170\lib\net40\Xceed.Wpf.Themes.Windows10.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=3.1.16356.12170, Culture=neutral, PublicKeyToken=ba83ff368b7563c6">
-      <HintPath>..\packages\Xceed.Wpf.Toolkit.3.1.16356.12170\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.xaml.cs">
@@ -445,7 +375,7 @@
     <Compile Include="Storage\Database\WotLk\TrinityCore\SpawnedGameObject.cs" />
     <Compile Include="Storage\DBCStorage.cs" />
     <Compile Include="Storage\MapFormatGuess.cs" />
-    <None Include="listfile.bin">
+    <None Include="Resources\Listfiles\listfile.bin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\app.manifest" />
@@ -657,7 +587,6 @@
     <Compile Include="Win32\IFileOpenDialog.cs" />
     <Compile Include="Win32\IShellItem.cs" />
     <Compile Include="Win32\IShellItemArray.cs" />
-    <None Include="WoWEditor6_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -805,15 +734,12 @@
     <Resource Include="Resources\Images\terrain.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="ReleaseNotes.txt" />
     <Content Include="Resources\Shaders\BoundingBoxPixel.hlsl" />
     <Content Include="Resources\Shaders\BoundingBoxVertex.hlsl" />
     <Content Include="Resources\Shaders\M2PixelOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexInstancedOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexSingleOld.hlsl" />
     <None Include="Resources\up_and_down_arrows.png" />
-    <Content Include="Tools\ShaderCompiler.exe" />
-    <Content Include="Tools\ShaderProcessor.pdb" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -830,10 +756,6 @@
     <Content Include="Resources\Shaders\ShaderBuildDefinition.xml" />
     <Content Include="Resources\Shaders\WorldTextVertex.hlsl" />
     <Content Include="Resources\Shaders\WorldTextPixel.hlsl" />
-    <Content Include="StormLib.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\d3dcompiler_43.dll" />
     <Resource Include="Resources\Images\joystick-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
