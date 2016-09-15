@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace Neo.IO.Files.Sky.WoD
 {
@@ -46,7 +47,7 @@ namespace Neo.IO.Files.Sky.WoD
                 var lightElem = row.Get<LightEntry>(0);
                 var light = new LightEntryData(lightElem);
 
-                light.Position = new SharpDX.Vector3(light.Position.X / 36.0f, light.Position.Y / 36.0f,
+                light.Position = new Vector3(light.Position.X / 36.0f, light.Position.Y / 36.0f,
                     light.Position.Z / 36.0f);
                 light.Position.Z = 64.0f * Metrics.TileSize - light.Position.Z;
                 light.InnerRadius /= 36.0f;
@@ -109,7 +110,7 @@ namespace Neo.IO.Files.Sky.WoD
         {
             var globalLightElem = Storage.DbcStorage.Light.GetRow(0).Get<LightEntry>(0);
             var globalLight = new LightEntryData(globalLightElem);
-            globalLight.Position = new SharpDX.Vector3(globalLight.Position.X / 36.0f, globalLight.Position.Y / 36.0f,
+            globalLight.Position = new Vector3(globalLight.Position.X / 36.0f, globalLight.Position.Y / 36.0f,
                     globalLight.Position.Z / 36.0f);
             globalLight.Position.Z = 64.0f * Metrics.TileSize - globalLight.Position.Z;
             globalLight.InnerRadius /= 36.0f;

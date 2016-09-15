@@ -1,4 +1,6 @@
-﻿using SharpDX;
+﻿using System.Drawing.Drawing2D;
+using OpenTK;
+
 // ReSharper disable FunctionComplexityOverflow
 
 namespace Neo.Scene

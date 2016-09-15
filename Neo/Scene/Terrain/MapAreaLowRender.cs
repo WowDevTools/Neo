@@ -1,6 +1,6 @@
 ﻿using System;
-using SharpDX;
 using Neo.Graphics;
+using OpenTK;
 
 namespace Neo.Scene.Terrain
 {

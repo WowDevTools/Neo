@@ -5,14 +5,14 @@ using Neo.Utils;
 
 namespace Neo.Editing
 {
-    enum TextureFalloffMode
+	public enum TextureFalloffMode
     {
         Flat,
         Linear,
         Trigonometric
     }
 
-    class TextureChangeParameters
+	public class TextureChangeParameters
     {
         public Vector3 Center;
         public string Texture;
@@ -24,7 +24,7 @@ namespace Neo.Editing
         public bool IsInverted;
     }
 
-    class TextureChangeManager
+	public class TextureChangeManager
     {
         public static TextureChangeManager Instance { get; private set; }
 

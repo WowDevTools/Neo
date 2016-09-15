@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using SharpDX;
 using Neo.Graphics;
 using Neo.IO;
 using Neo.IO.Files.Models;
 using Neo.Storage;
+using OpenTK;
 
 namespace Neo.Scene.Models.M2
 {

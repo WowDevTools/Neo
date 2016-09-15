@@ -6,7 +6,7 @@ using SharpDX.DXGI;
 
 namespace Neo.Graphics
 {
-    class Texture : IDisposable
+	public class Texture : IDisposable
     {
         private static Texture2D gDefaultTexture;
         private static ShaderResourceView gDefaultView;
@@ -21,7 +21,7 @@ namespace Neo.Graphics
             WrapV,
             ClampBoth
         }
-        
+
         public ShaderResourceView NativeView { get; private set; }
 
         public Texture(GxContext context)

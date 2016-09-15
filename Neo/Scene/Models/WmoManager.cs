@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using SharpDX;
 using Neo.Scene.Models.WMO;
 using System;
-using System.Windows.Forms;
+using System.Numerics;
 
 namespace Neo.Scene.Models
 {
@@ -97,7 +96,7 @@ namespace Neo.Scene.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -129,7 +128,7 @@ namespace Neo.Scene.Models
                 }
             }
         }
-        
+
         public void AddInstance(string model, int uuid, Vector3 position, Vector3 rotation)
         {
             var hash = model.ToUpperInvariant().GetHashCode();

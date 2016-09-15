@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using SharpDX;
+using System.Drawing.Drawing2D;
+using System.Numerics;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Storage;

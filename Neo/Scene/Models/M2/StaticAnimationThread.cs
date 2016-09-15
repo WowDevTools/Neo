@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using SharpDX;
 using Neo.IO.Files.Models;
 
 namespace Neo.Scene.Models.M2

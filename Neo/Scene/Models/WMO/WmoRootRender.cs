@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SharpDX;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
 
@@ -142,7 +141,7 @@ namespace Neo.Scene.Models.WMO
 
             Data = root;
 
-            Groups = root.Groups.Select(@group => new WmoGroupRender(@group, this)).ToList();
+            Groups = root.Groups.Select(group => new WmoGroupRender(group, this)).ToList();
             mBoundingBox = Data.BoundingBox;
 
             foreach (var group in Groups)

@@ -1,5 +1,6 @@
 ﻿using System;
-using SharpDX;
+using System.Drawing.Drawing2D;
+using System.Numerics;
 using Neo.Utils;
 using Neo.IO.Files.Models;
 
@@ -13,7 +14,7 @@ namespace Neo.Scene.Models.M2
 
         private Vector3 mPosition;
         private Vector3 mRotation;
-        private Color4 mHighlightColor = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
+        private Vector4 mHighlightColor = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         private Vector3 mScale;
 
         private bool mIsHighlighted;
@@ -49,7 +50,7 @@ namespace Neo.Scene.Models.M2
         public Matrix InverseMatrix { get { return mInverseMatrix; } }
         public Matrix InverseRotation { get { return mInverseRotation; } }
 
-        public Color4 HighlightColor { get { return mHighlightColor; } }
+        public Vector4 HighlightColor { get { return mHighlightColor; } }
 
         public float Depth { get; private set; }
 
@@ -128,7 +129,7 @@ namespace Neo.Scene.Models.M2
             UpdateModelNameplate();
         }
 
-        public void UpdatePosition(Vector3 position) 
+        public void UpdatePosition(Vector3 position)
         {
             mPosition.X += position.X;
             mPosition.Y += position.Y;
@@ -237,7 +238,7 @@ namespace Neo.Scene.Models.M2
             mWorldModelName.Position = position;
         }
 
-        private void UpdateHighlightColor(Color4 highlightColor)
+        private void UpdateHighlightColor(Vector4 highlightColor)
         {
             mHighlightColor = highlightColor;
         }
@@ -257,8 +258,8 @@ namespace Neo.Scene.Models.M2
             var timeDelta = time - mHighlightStartTime;
             var timeMs = timeDelta.TotalMilliseconds;
 
-            var src = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
-            var dst = new Color4(1.5f, 1.5f, 1.5f, 1.0f);
+            var src = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            var dst = new Vector4(1.5f, 1.5f, 1.5f, 1.0f);
 
             var fac = (float)(timeMs / 500.0);
             if (fac > 1.0f)

@@ -1,7 +1,7 @@
 ﻿
 namespace Neo.IO.Files.Models
 {
-    class WmoMaterial
+	public class WmoMaterial
     {
         private readonly int mTexture1;
         private readonly int mTexture2;

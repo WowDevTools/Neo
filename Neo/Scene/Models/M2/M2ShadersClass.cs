@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SharpDX.Direct3D11;
 
 // ReSharper disable InconsistentNaming
 
@@ -346,7 +345,7 @@ namespace Neo.Scene.Models.M2
                 var ps = mPixelShaders[pixelShaderType];
                 if (ps != null) return ps;
             }
-            
+
             return mPixelShaders[(int)M2PixelShaderType.PS_Combiners_Opaque];
         }
     }

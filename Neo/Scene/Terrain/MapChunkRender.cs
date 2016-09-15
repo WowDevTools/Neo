@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using SharpDX;
-using SharpDX.DXGI;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Scene.Models;
+using OpenTK;
 
 namespace Neo.Scene.Terrain
 {
     [StructLayout(LayoutKind.Sequential)]
     struct TexAnimBuffer
     {
-        public Matrix Layer0;
-        public Matrix Layer1;
-        public Matrix Layer2;
-        public Matrix Layer3;
+        public Matrix4 Layer0;
+        public Matrix4 Layer1;
+        public Matrix4 Layer2;
+        public Matrix4 Layer3;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -221,7 +220,7 @@ namespace Neo.Scene.Terrain
                    if((mData.Layers[i].Flags & 4) != 0)
                         rotation += (float)Math.PI;
 
-                    var matrix = Matrix.RotationZ(rotation);
+                    var matrix = Matrix4.RotationZ(rotation);
                     var dir = Vector2.TransformCoordinate(new Vector2(0, 1), matrix);
                     mTexAnimDirections[i] = dir;
 
@@ -246,13 +245,13 @@ namespace Neo.Scene.Terrain
 
             var curTime = (int)(Utils.TimeManager.Instance.GetTime().TotalMilliseconds / 15.0f);
 
-            mTexAnimStore.Layer0 = Matrix.Translation(mTexAnimDirections[0].X * curTime / 1000.0f,
+            mTexAnimStore.Layer0 = Matrix4.Translation(mTexAnimDirections[0].X * curTime / 1000.0f,
                 mTexAnimDirections[0].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer1 = Matrix.Translation(mTexAnimDirections[1].X * curTime / 1000.0f,
+            mTexAnimStore.Layer1 = Matrix4.Translation(mTexAnimDirections[1].X * curTime / 1000.0f,
                 mTexAnimDirections[1].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer2 = Matrix.Translation(mTexAnimDirections[2].X * curTime / 1000.0f,
+            mTexAnimStore.Layer2 = Matrix4.Translation(mTexAnimDirections[2].X * curTime / 1000.0f,
                 mTexAnimDirections[2].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer3 = Matrix.Translation(mTexAnimDirections[3].X * curTime / 1000.0f,
+            mTexAnimStore.Layer3 = Matrix4.Translation(mTexAnimDirections[3].X * curTime / 1000.0f,
                 mTexAnimDirections[3].Y * curTime / 1000.0f, 0.0f);
 
             mTexAnimBuffer.UpdateData(mTexAnimStore);
@@ -283,7 +282,7 @@ namespace Neo.Scene.Terrain
             mTexParams.SpecularFactors = new Vector4(mData.SpecularFactors);
 
             mTexAnimBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
-            mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix.Identity;
+            mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix4.Identity;
             mTexAnimBuffer.UpdateData(mTexAnimStore);
             mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
             mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);

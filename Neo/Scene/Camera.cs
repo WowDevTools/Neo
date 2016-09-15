@@ -1,17 +1,18 @@
 ﻿using System;
-using SharpDX;
+using System.Drawing.Drawing2D;
 using Neo.Graphics;
+using OpenTK;
 
 namespace Neo.Scene
 {
     class Camera
     {
-        private Matrix mView;
-        private Matrix mProj;
+        private Matrix4 mView;
+        private Matrix4 mProj;
 
-        private Matrix mViewProj;
-        private Matrix mViewInverse;
-        private Matrix mProjInverse;
+        private Matrix4 mViewProj;
+        private Matrix4 mViewInverse;
+        private Matrix4 mProjInverse;
 
         private Vector3 mTarget;
         private Vector3 mUp;
@@ -19,16 +20,16 @@ namespace Neo.Scene
         private Vector3 mForward;
         private readonly ViewFrustum mFrustum = new ViewFrustum();
 
-        public event Action<Camera, Matrix> ViewChanged , ProjectionChanged;
+        public event Action<Camera, Matrix4> ViewChanged , ProjectionChanged;
 
         public bool LeftHanded { get; set; }
 
-        public Matrix View { get { return mView; } }
-        public Matrix Projection { get { return mProj; } }
-        public Matrix ViewProjection { get { return mViewProj; } }
+        public Matrix4 View { get { return mView; } }
+        public Matrix4 Projection { get { return mProj; } }
+        public Matrix4 ViewProjection { get { return mViewProj; } }
 
-        public Matrix ViewInverse { get { return mViewInverse; } }
-        public Matrix ProjectionInverse { get { return mProjInverse; } }
+        public Matrix4 ViewInverse { get { return mViewInverse; } }
+        public Matrix4 ProjectionInverse { get { return mProjInverse; } }
 
         public Vector3 Position { get; private set; }
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using SharpDX;
 using Neo.IO;
 using Neo.IO.Files.Sky;
 using Neo.IO.Files.Terrain;
 using Neo.UI;
+using OpenTK;
 
 namespace Neo.Scene.Terrain
 {
@@ -198,7 +198,7 @@ namespace Neo.Scene.Terrain
 
             if (chunkx < 0 || chunky < 0 || chunkx > 15 || chunky > 15)
                 return false;
-            
+
             var chunk = tile.AreaFile.GetChunk(chunkx + chunky * 16);
             if (chunk == null)
                 return false;
@@ -357,7 +357,7 @@ namespace Neo.Scene.Terrain
                 }
             }
 
-            if (data == null) 
+            if (data == null)
                 return;
 
             var tile = new MapAreaRender(data.IndexX, data.IndexY);

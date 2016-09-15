@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Neo.IO.Files.Models
 {
-    abstract class WmoRoot : IDisposable
+	public abstract class WmoRoot : IDisposable
     {
         public string FileName { get; protected set; }
 

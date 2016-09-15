@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Policy;
-using SharpDX;
 using Neo.Graphics;
+using OpenTK;
 
 namespace Neo.Scene.Models.WMO
 {
@@ -186,7 +185,7 @@ namespace Neo.Scene.Models.WMO
             Sampler = new Sampler(context);
 
             InstanceBuffer = new ConstantBuffer(context);
-            InstanceBuffer.UpdateData(Matrix.Identity); // preallocate space so the underlying buffer wont change anymore
+            InstanceBuffer.UpdateData(Matrix4.Identity); // preallocate space so the underlying buffer wont change anymore
 
             Mesh = new Mesh(context)
             {

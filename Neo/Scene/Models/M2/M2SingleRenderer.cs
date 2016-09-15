@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Drawing.Drawing2D;
+using System.Numerics;
 using System.Runtime.InteropServices;
-using SharpDX;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Storage;
@@ -25,7 +26,7 @@ namespace Neo.Scene.Models.M2
         struct PerDrawCallBuffer
         {
             public Matrix instanceMat;
-            public Color4 colorMod;
+            public Vector4 colorMod;
         }
 
         private static Mesh gMesh;
@@ -154,7 +155,7 @@ namespace Neo.Scene.Models.M2
 
                 gMesh.Program = gCustomProgram;
                 gCustomProgram.Bind();
-                             
+
                 var depthState = gDepthNoWriteState;
                 if (pass.BlendMode == 0 || pass.BlendMode == 1)
                     depthState = gDepthWriteState;

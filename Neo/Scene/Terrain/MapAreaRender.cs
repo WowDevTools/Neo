@@ -1,5 +1,4 @@
 ﻿using System;
-using SharpDX;
 using Neo.Graphics;
 using Neo.Scene.Models;
 

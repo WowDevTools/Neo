@@ -1,12 +1,10 @@
-﻿using System.Drawing.Drawing2D;
-using System.Numerics;
-using SharpDX;
+﻿using OpenTK;
 
 namespace Neo.Utils
 {
     static class MathExtensions
     {
-        public static BoundingBox Transform(this BoundingBox box, ref Matrix matrix)
+        public static BoundingBox Transform(this BoundingBox box, ref Matrix4 matrix)
         {
             var corners = new Vector3[8];
             box.GetCorners(corners);

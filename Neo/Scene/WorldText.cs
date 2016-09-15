@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
-using SharpDX;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using Neo.Graphics;
 using Neo.IO.Files.Texture;
+using OpenTK;
 
 namespace Neo.Scene
 {
@@ -203,7 +202,7 @@ namespace Neo.Scene
                 new WorldTextVertex(center - (right + up) * scale, 0.0f, 0.0f),
                 new WorldTextVertex(center + (right - up) * scale, 1.0f, 0.0f),
                 new WorldTextVertex(center - (right - up) * scale, 0.0f, 1.0f),
-                new WorldTextVertex(center + (right + up) * scale, 1.0f, 1.0f) 
+                new WorldTextVertex(center + (right + up) * scale, 1.0f, 1.0f)
             });
 
             gMesh.UpdateDepthState(gNoDepthState);
@@ -239,7 +238,7 @@ namespace Neo.Scene
                 new WorldTextVertex(center - (right + up) * scale, 0.0f, 0.0f),
                 new WorldTextVertex(center + (right - up) * scale, 1.0f, 0.0f),
                 new WorldTextVertex(center - (right - up) * scale, 0.0f, 1.0f),
-                new WorldTextVertex(center + (right + up) * scale, 1.0f, 1.0f) 
+                new WorldTextVertex(center + (right + up) * scale, 1.0f, 1.0f)
             });
 
             gMesh.UpdateDepthState(noDepth ? gNoDepthState : gDepthState);

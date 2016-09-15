@@ -1,10 +1,10 @@
-﻿using System.Runtime.InteropServices;
-using SharpDX;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace Neo.IO.Files.Terrain.WoD
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct Mcnk
+    public struct Mcnk
     {
         public int Flags;
         public readonly int IndexX;

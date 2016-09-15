@@ -1,16 +1,16 @@
 using System;
-using SharpDX;
 using Neo.IO.Files.Models;
 using Neo.Utils;
+using OpenTK;
 
 namespace Neo.Scene.Models.WMO
 {
     class WmoInstance : IModelInstance
     {
-        private Matrix mInstanceMatrix;
-        private Matrix mInverseInstanceMatrix;
+        private Matrix4 mInstanceMatrix;
+        private Matrix4 mInverseInstanceMatrix;
 
-        private WeakReference<WmoRootRender> mRenderer; 
+        private WeakReference<WmoRootRender> mRenderer;
 
         public BoundingBox BoundingBox;
 
@@ -45,8 +45,8 @@ namespace Neo.Scene.Models.WMO
             mRotation = rotation;
             mModel = model;
 
-            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
-                MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix.Translation(position);
+            mInstanceMatrix = Matrix4.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
+                MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix4.Translation(position);
 
             mRenderer = new WeakReference<WmoRootRender>(model);
 
@@ -60,9 +60,9 @@ namespace Neo.Scene.Models.WMO
                 var group = model.Groups[i];
                 GroupBoxes[i] = group.BoundingBox.Transform(ref mInstanceMatrix);
             }
-            Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+            Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
-            mInstanceMatrix = Matrix.Transpose(mInstanceMatrix);
+            mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
             ModelRoot = model.Data;
         }
 
@@ -137,15 +137,15 @@ namespace Neo.Scene.Models.WMO
             mRotation.Y += y;
             mRotation.Z += z;
 
-            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+            mInstanceMatrix = Matrix4.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
                 MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
 
-            mInstanceMatrix *= Matrix.Translation(mPosition);
+            mInstanceMatrix *= Matrix4.Translation(mPosition);
 
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
 
 
-            Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+            Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
             BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
             GroupBoxes = new BoundingBox[mModel.Groups.Count];
@@ -157,7 +157,7 @@ namespace Neo.Scene.Models.WMO
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
             Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
-            mInstanceMatrix = Matrix.Transpose(mInstanceMatrix);
+            mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
             ModelRoot = mModel.Data;
             UpdateModelNameplate();
         }
@@ -173,11 +173,11 @@ namespace Neo.Scene.Models.WMO
             mPosition.Y += position.Y;
             mPosition.Z += position.Z;
 
-            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+            mInstanceMatrix = Matrix4.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
              MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
 
-            mInstanceMatrix *= Matrix.Translation(mPosition);
+            mInstanceMatrix *= Matrix4.Translation(mPosition);
 
             Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
@@ -192,7 +192,7 @@ namespace Neo.Scene.Models.WMO
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
             Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
-            mInstanceMatrix = Matrix.Transpose(mInstanceMatrix);
+            mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
             ModelRoot = mModel.Data;
             UpdateModelNameplate();
         }

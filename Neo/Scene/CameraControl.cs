@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Windows.Forms;
-using SharpDX;
 using Neo.Settings;
 using Neo.Utils;
+using OpenTK;
 using Point = System.Drawing.Point;
 
 namespace Neo.Scene

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.InteropServices;
-using SharpDX;
-using SharpDX.DXGI;
 using Neo.Graphics;
 
 namespace Neo.Scene.Models
@@ -133,7 +132,7 @@ namespace Neo.Scene.Models
         public void OnFrame()
         {
             gMesh.BeginDraw();
-            
+
             foreach (var bbox in mBoundingBoxes)
             {
                 bbox.OnFrame(gMesh);

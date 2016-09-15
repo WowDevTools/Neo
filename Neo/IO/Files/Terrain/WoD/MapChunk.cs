@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
-using SharpDX;
 using Neo.Editing;
 using Neo.Scene;
 
 namespace Neo.IO.Files.Terrain.WoD
 {
-    sealed class MapChunk : Terrain.MapChunk
+	public sealed class MapChunk : Terrain.MapChunk
     {
         private ChunkStreamInfo mMainInfo;
         private ChunkStreamInfo mTexInfo;
@@ -27,8 +27,8 @@ namespace Neo.IO.Files.Terrain.WoD
         private Vector4[] mShadingFloats = new Vector4[145];
 
         private Dictionary<uint, DataChunk> mOriginalMainChunks = new Dictionary<uint, DataChunk>();
-        private Dictionary<uint, DataChunk> mOriginalObjChunks = new Dictionary<uint, DataChunk>(); 
-        private Dictionary<uint, DataChunk> mOriginalTexChunks = new Dictionary<uint, DataChunk>(); 
+        private Dictionary<uint, DataChunk> mOriginalObjChunks = new Dictionary<uint, DataChunk>();
+        private Dictionary<uint, DataChunk> mOriginalTexChunks = new Dictionary<uint, DataChunk>();
         private static readonly uint[] Indices = new uint[768];
 
         public bool HasMccv { get; private set; }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using Neo.Editing;
 using Neo.Graphics;
@@ -12,6 +10,8 @@ using Neo.Scene.Terrain;
 using Neo.Scene.Texture;
 using Neo.UI;
 using Neo.Utils;
+using OpenTK;
+using OpenTK.Input;
 
 namespace Neo.Scene
 {
@@ -20,8 +20,8 @@ namespace Neo.Scene
         [StructLayout(LayoutKind.Sequential)]
         struct GlobalParamsBuffer
         {
-            public Matrix matView;
-            public Matrix matProj;
+            public Matrix4 matView;
+            public Matrix4 matProj;
             public Vector4 viewport;
 
             public Vector4 ambientLight;
@@ -148,8 +148,8 @@ namespace Neo.Scene
             mGlobalBuffer = new ConstantBuffer(context);
             mGlobalBufferStore = new GlobalParamsBuffer
             {
-                matView = Matrix.Identity,
-                matProj = Matrix.Identity,
+                matView = Matrix4.Identity,
+                matProj = Matrix4.Identity,
                 viewport = Vector4.Zero,
                 ambientLight = new Vector4(0.5f, 0.5f, 0.5f, 1.0f),
                 diffuseLight = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
@@ -322,7 +322,7 @@ namespace Neo.Scene
             ActiveCamera = camera;
         }
 
-        private void ViewChanged(Camera camera, Matrix matView)
+        private void ViewChanged(Camera camera, Matrix4 matView)
         {
             if (camera != ActiveCamera)
                 return;
@@ -335,7 +335,7 @@ namespace Neo.Scene
             UpdateCursorPosition(true);
         }
 
-        private void ProjectionChanged(Camera camera, Matrix matProj)
+        private void ProjectionChanged(Camera camera, Matrix4 matProj)
         {
             if (camera != ActiveCamera)
                 return;

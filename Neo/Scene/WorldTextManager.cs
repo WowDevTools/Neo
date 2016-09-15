@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Drawing;
-using SharpDX;
+﻿using System.Collections.Generic;
 
 namespace Neo.Scene
 {

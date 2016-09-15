@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Numerics;
+using OpenTK;
 
 namespace Neo.Utils
 {
@@ -71,28 +71,28 @@ namespace Neo.Utils
             {
                 var p1 = mPoints[i];
                 var p2 = mPoints[i + 1];
-                if ((point - p1).LengthSquared() < 1e-5)
+                if ((point - p1).LengthSquared < 1e-5)
                     return 0.0f;
 
-                if ((point - p2).LengthSquared() < 1e-5)
+                if ((point - p2).LengthSquared < 1e-5)
                     return 0.0f;
 
-                var l2 = (p2 - p1).LengthSquared();
+                var l2 = (p2 - p1).LengthSquared;
                 if(l2 < 1e-5)
                 {
-                    dist = Math.Min(dist, (point - p1).Length());
+                    dist = Math.Min(dist, (point - p1).Length);
                     continue;
                 }
 
                 var t = Vector2.Dot(point - p1, p2 - p1) / l2;
                 if (t < 0)
-                    dist = Math.Min(dist, (point - p1).Length());
+                    dist = Math.Min(dist, (point - p1).Length);
                 else if (t > 1.0f)
-                    dist = Math.Min(dist, (point - p2).Length());
+                    dist = Math.Min(dist, (point - p2).Length);
                 else
                 {
                     var proj = p1 + (p2 - p1) * t;
-                    dist = Math.Min(dist, (point - proj).Length());
+                    dist = Math.Min(dist, (point - proj).Length);
                 }
             }
 

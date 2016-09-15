@@ -1,4 +1,4 @@
-﻿using SharpDX;
+﻿using OpenTK;
 
 namespace Neo.Scene
 {
@@ -27,8 +27,8 @@ namespace Neo.Scene
         private void UpdateProjection()
         {
             var matProjection = (LeftHanded == false)
-                ? Matrix.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip)
-                : Matrix.PerspectiveFovLH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
+                ? Matrix4.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip)
+                : Matrix4.PerspectiveFovLH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
 
             OnProjectionChanged(ref matProjection);
         }

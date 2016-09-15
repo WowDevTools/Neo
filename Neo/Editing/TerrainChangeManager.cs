@@ -6,7 +6,7 @@ using Neo.UI.Dialogs;
 
 namespace Neo.Editing
 {
-    enum TerrainChangeType
+	public enum TerrainChangeType
     {
         Elevate,
         Flatten,
@@ -14,7 +14,7 @@ namespace Neo.Editing
         Shading
     }
 
-    enum TerrainAlgorithm
+	public enum TerrainAlgorithm
     {
         Flat,
         Linear,
@@ -22,7 +22,7 @@ namespace Neo.Editing
         Trigonometric
     }
 
-    class TerrainChangeParameters
+	public class TerrainChangeParameters
     {
         public TerrainChangeType Method;
         public TerrainAlgorithm Algorithm;
@@ -36,7 +36,7 @@ namespace Neo.Editing
         public bool AlignModels;
     }
 
-    class TerrainChangeManager
+	public class TerrainChangeManager
     {
         public static TerrainChangeManager Instance { get; private set; }
 

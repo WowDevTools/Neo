@@ -1,9 +1,8 @@
-﻿using System.Drawing.Drawing2D;
-using System.Numerics;
-using Neo.IO.Files.Models;
+﻿using Neo.IO.Files.Models;
 using Neo.IO.Files.Terrain;
 using Neo.Scene.Models.M2;
 using Neo.Scene.Models.WMO;
+using OpenTK;
 
 namespace Neo.Scene
 {
@@ -27,11 +26,11 @@ namespace Neo.Scene
         public bool M2Hit { get; set; }
         public bool TerrainHit { get; set; }
 
-        public Matrix InverseView;
-        public Matrix InverseProjection;
+        public Matrix4 InverseView;
+        public Matrix4 InverseProjection;
         public Vector2 ScreenPosition;
 
-        public IntersectionParams(Matrix inverseView, Matrix inverseProjection, Vector2 screenPosition)
+        public IntersectionParams(Matrix4 inverseView, Matrix4 inverseProjection, Vector2 screenPosition)
         {
             InverseView = inverseView;
             InverseProjection = inverseProjection;

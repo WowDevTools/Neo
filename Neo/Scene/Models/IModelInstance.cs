@@ -1,5 +1,5 @@
 ﻿using System;
-using SharpDX;
+using System.Numerics;
 
 namespace Neo.Scene.Models
 {

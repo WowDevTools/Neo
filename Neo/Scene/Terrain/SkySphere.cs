@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using SharpDX;
 using Neo.Graphics;
+using OpenTK;
 
 namespace Neo.Scene.Terrain
 {
@@ -41,7 +41,7 @@ namespace Neo.Scene.Terrain
             mMesh.VertexBuffer.UpdateData(mVertices);
 
             mMatrixBuffer = new ConstantBuffer(context);
-            mMatrixBuffer.UpdateData(Matrix.Identity);
+            mMatrixBuffer.UpdateData(Matrix4.Identity);
 
             var program = new ShaderProgram(context);
             program.SetVertexShader(Resources.Shaders.SkyVertex);

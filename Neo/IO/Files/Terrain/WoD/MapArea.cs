@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
-using SharpDX;
 using Neo.Editing;
 using Neo.IO.Files.Models;
 using Neo.Scene;
@@ -11,14 +11,14 @@ using Neo.Scene.Texture;
 
 namespace Neo.IO.Files.Terrain.WoD
 {
-    class ChunkStreamInfo
+	public class ChunkStreamInfo
     {
         public BinaryReader Stream;
         public int PosStart;
         public int Size;
     }
 
-    class MapArea : Terrain.MapArea
+	public class MapArea : Terrain.MapArea
     {
         private Stream mMainStream;
         private Stream mTexStream;
@@ -38,8 +38,8 @@ namespace Neo.IO.Files.Terrain.WoD
         private List<LoadedModel> mWmoInstances = new List<LoadedModel>();
 
         private Dictionary<uint, DataChunk> mBaseChunks = new Dictionary<uint, DataChunk>();
-        private Dictionary<uint, DataChunk> mObjOrigChunks = new Dictionary<uint, DataChunk>(); 
-        private Dictionary<uint, DataChunk> mTexOrigChunks = new Dictionary<uint, DataChunk>(); 
+        private Dictionary<uint, DataChunk> mObjOrigChunks = new Dictionary<uint, DataChunk>();
+        private Dictionary<uint, DataChunk> mTexOrigChunks = new Dictionary<uint, DataChunk>();
 
         private bool mWasChanged;
 
@@ -759,7 +759,7 @@ namespace Neo.IO.Files.Terrain.WoD
                 Scale = (ushort)(scale * 1024),
                 UniqueId = uuid,
                 Rotation = new Vector3(360 - rotation.X, rotation.Z + 90, 360 - rotation.Y)
-            }; 
+            };
 
             var instance = WorldFrame.Instance.M2Manager.AddInstance(modelName, uuid, position, rotation,
                 new Vector3(scale));
