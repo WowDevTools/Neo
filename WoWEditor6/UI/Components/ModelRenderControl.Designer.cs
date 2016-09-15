@@ -37,7 +37,10 @@ namespace WoWEditor6.UI.Components
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.nudVariation = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVariation)).BeginInit();
             this.SuspendLayout();
             // 
             // renderTimer
@@ -49,10 +52,12 @@ namespace WoWEditor6.UI.Components
             this.flowLayoutPanel1.Controls.Add(this.checkBox1);
             this.flowLayoutPanel1.Controls.Add(this.checkBox2);
             this.flowLayoutPanel1.Controls.Add(this.comboBox1);
+            this.flowLayoutPanel1.Controls.Add(this.label1);
+            this.flowLayoutPanel1.Controls.Add(this.nudVariation);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 116);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 425);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(150, 34);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(838, 34);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // checkBox1
@@ -81,12 +86,41 @@ namespace WoWEditor6.UI.Components
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(3, 26);
+            this.comboBox1.Location = new System.Drawing.Point(141, 3);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 2;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyDown);
+            // 
+            // nudVariation
+            // 
+            this.nudVariation.Location = new System.Drawing.Point(365, 3);
+            this.nudVariation.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudVariation.Name = "nudVariation";
+            this.nudVariation.Size = new System.Drawing.Size(42, 20);
+            this.nudVariation.TabIndex = 3;
+            this.nudVariation.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudVariation.ValueChanged += new System.EventHandler(this.nudVariation_ValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(268, 0);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
+            this.label1.Size = new System.Drawing.Size(91, 17);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Creature Variation";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ModelRenderControl
             // 
@@ -94,8 +128,10 @@ namespace WoWEditor6.UI.Components
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "ModelRenderControl";
+            this.Size = new System.Drawing.Size(838, 459);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVariation)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -107,5 +143,7 @@ namespace WoWEditor6.UI.Components
         private CheckBox checkBox1;
         private CheckBox checkBox2;
         private ComboBox comboBox1;
+        private Label label1;
+        private NumericUpDown nudVariation;
     }
 }

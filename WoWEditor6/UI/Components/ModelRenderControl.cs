@@ -59,9 +59,10 @@ namespace WoWEditor6.UI.Components
             InitializeComponent();
         }
 
-        public void SetModel(string model)
+        public void SetModel(string model, int variation = 0)
         {
             var file = ModelFactory.Instance.CreateM2(model);
+            file.CreatureVariationCurrent = variation;
             if (file.Load() == false)
                 return;
 
@@ -181,6 +182,20 @@ namespace WoWEditor6.UI.Components
                     mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)((AnimationIndexEntry)comboBox1.Items[0]).AnimationIndex);
                 }
             });
+
+            
+            if (file.CreatureVariations.Count > 1)
+            {
+                nudVariation.ReadOnly = false;
+                nudVariation.Maximum = file.CreatureVariations.Count;
+                nudVariation.Value = file.CreatureVariationCurrent + 1;
+                nudVariation.Increment = 1;
+            }                
+            else
+            {
+                nudVariation.Increment = 0;
+                nudVariation.ReadOnly = true;
+            }                
         }
 
         private string GetSkinName(string root, IDataStorageRecord displayInfo, int index)
@@ -361,6 +376,13 @@ namespace WoWEditor6.UI.Components
                 return;
 
             e.Handled = true;
+        }
+
+        private void nudVariation_ValueChanged(object sender, EventArgs e)
+        {
+            nudVariation.ReadOnly = true;
+            nudVariation.Increment = 0;
+            SetModel(mRenderer.Model.FileName, (int)(nudVariation.Value - 1));
         }
     }
 }
