@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Numerics;
+using OpenTK;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
@@ -204,8 +204,7 @@ namespace Neo.IO.Files.Models.Wotlk
             q1.Z = -q1.Z;
             q2.X = -q2.X;
             q2.Z = -q2.Z;
-            Quaternion ret;
-            Quaternion.Slerp(ref q1, ref q2, fac, out ret);
+	        var ret = Quaternion.Slerp(q1, q2, fac);
             return ret;
         }
 

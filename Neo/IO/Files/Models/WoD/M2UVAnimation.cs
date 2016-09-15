@@ -1,6 +1,5 @@
-﻿using System.Drawing.Drawing2D;
-using System.IO;
-using System.Numerics;
+﻿using System.IO;
+using OpenTK;
 
 namespace Neo.IO.Files.Models.WoD
 {
@@ -17,13 +16,13 @@ namespace Neo.IO.Files.Models.WoD
             mScaling = new M2Vector3AnimationBlock(file, texAnim.scaling, reader, Vector3.One);
         }
 
-        public void UpdateMatrix(int animation, uint time, out Matrix matrix)
+        public void UpdateMatrix(int animation, uint time, out Matrix4 matrix)
         {
             var position = mTranslation.GetValueDefaultLength(animation, time);
             var scaling = mScaling.GetValueDefaultLength(animation, time);
             var rotation = mRotation.GetValueDefaultLength(animation, time);
 
-            matrix = Matrix.RotationQuaternion(rotation) * Matrix.Scaling(scaling) * Matrix.Translation(position);
+            matrix = Matrix4.Rotate(rotation) * Matrix4.Scale(scaling) * Matrix4.Translation(position);
         }
     }
 }

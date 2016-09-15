@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Drawing.Drawing2D;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Storage;
+using OpenTK;
 
 namespace Neo.Scene.Models.M2
 {
@@ -13,10 +12,10 @@ namespace Neo.Scene.Models.M2
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer
         {
-            public Matrix uvAnimMatrix1;
-            public Matrix uvAnimMatrix2;
-            public Matrix uvAnimMatrix3;
-            public Matrix uvAnimMatrix4;
+            public Matrix4 uvAnimMatrix1;
+            public Matrix4 uvAnimMatrix2;
+            public Matrix4 uvAnimMatrix3;
+            public Matrix4 uvAnimMatrix4;
             public Vector4 modelPassParams;
             public Vector4 animatedColor;
             public Vector4 transparency;
@@ -25,7 +24,7 @@ namespace Neo.Scene.Models.M2
         [StructLayout(LayoutKind.Sequential)]
         struct PerDrawCallBuffer
         {
-            public Matrix instanceMat;
+            public Matrix4 instanceMat;
             public Vector4 colorMod;
         }
 
@@ -53,7 +52,7 @@ namespace Neo.Scene.Models.M2
 
         private M2File mModel;
         private IM2Animator mAnimator;
-        private Matrix[] mAnimationMatrices;
+        private Matrix4[] mAnimationMatrices;
         private ConstantBuffer mAnimBuffer;
 
         private static ConstantBuffer gPerDrawCallBuffer;
@@ -64,7 +63,7 @@ namespace Neo.Scene.Models.M2
             mModel = model;
             if (model.NeedsPerInstanceAnimation)
             {
-                mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
+                mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
                 mAnimator = ModelFactory.Instance.CreateAnimator(model);
 
                 if (mAnimator.SetAnimation(AnimationType.Stand) == false)
@@ -175,10 +174,10 @@ namespace Neo.Scene.Models.M2
                 for (var i = 0; i < pass.OpCount; ++i)
                     alphaValues[i] = animator.GetAlphaValue(pass.AlphaAnimIndex + i);
 
-                var uvAnimMatrix1 = Matrix.Identity;
-                var uvAnimMatrix2 = Matrix.Identity;
-                var uvAnimMatrix3 = Matrix.Identity;
-                var uvAnimMatrix4 = Matrix.Identity;
+                var uvAnimMatrix1 = Matrix4.Identity;
+                var uvAnimMatrix2 = Matrix4.Identity;
+                var uvAnimMatrix3 = Matrix4.Identity;
+                var uvAnimMatrix4 = Matrix4.Identity;
 
                 animator.GetUvAnimMatrix(pass.TexAnimIndex + 0, out uvAnimMatrix1);
                 if (pass.OpCount >= 2) animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
@@ -297,7 +296,7 @@ namespace Neo.Scene.Models.M2
                 var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
-                Matrix uvAnimMat;
+                Matrix4 uvAnimMat;
                 animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
                 var color = animator.GetColorValue(pass.ColorAnimIndex);
                 var alpha = animator.GetAlphaValue(pass.AlphaAnimIndex);
@@ -410,17 +409,17 @@ namespace Neo.Scene.Models.M2
             gPerDrawCallBuffer = new ConstantBuffer(context);
             gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
             {
-                instanceMat = Matrix.Identity
+                instanceMat = Matrix4.Identity
             });
 
             gPerPassBuffer = new ConstantBuffer(context);
 
             gPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {
-                uvAnimMatrix1 = Matrix.Identity,
-                uvAnimMatrix2 = Matrix.Identity,
-                uvAnimMatrix3 = Matrix.Identity,
-                uvAnimMatrix4 = Matrix.Identity,
+                uvAnimMatrix1 = Matrix4.Identity,
+                uvAnimMatrix2 = Matrix4.Identity,
+                uvAnimMatrix3 = Matrix4.Identity,
+                uvAnimMatrix4 = Matrix4.Identity,
                 modelPassParams = Vector4.Zero
             });
 

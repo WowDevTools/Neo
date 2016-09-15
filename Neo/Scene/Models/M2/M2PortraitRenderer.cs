@@ -14,10 +14,10 @@ namespace Neo.Scene.Models.M2
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer
         {
-            public Matrix uvAnimMatrix1;
-            public Matrix uvAnimMatrix2;
-            public Matrix uvAnimMatrix3;
-            public Matrix uvAnimMatrix4;
+            public Matrix4 uvAnimMatrix1;
+            public Matrix4 uvAnimMatrix2;
+            public Matrix4 uvAnimMatrix3;
+            public Matrix4 uvAnimMatrix4;
             public Vector4 modelPassParams;
             public Vector4 animatedColor;
             public Vector4 transparency;
@@ -40,7 +40,7 @@ namespace Neo.Scene.Models.M2
 
         public TextureInfo[] Textures { get; private set; }
 
-        private Matrix[] mAnimationMatrices;
+        private Matrix4[] mAnimationMatrices;
 
         private ConstantBuffer mAnimBuffer;
         private ConstantBuffer mPerPassBuffer;
@@ -50,7 +50,7 @@ namespace Neo.Scene.Models.M2
             Model = model;
             Textures = model.TextureInfos.ToArray();
 
-            mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
+            mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
             Animator = ModelFactory.Instance.CreateAnimator(model);
             Animator.SetAnimation(AnimationType.Stand);
             Animator.Update(null);
@@ -149,7 +149,7 @@ namespace Neo.Scene.Models.M2
                 var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
-                Matrix uvAnimMat;
+                Matrix4 uvAnimMat;
                 Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
                 var color = Animator.GetColorValue(pass.ColorAnimIndex);
                 var alpha = Animator.GetAlphaValue(pass.AlphaAnimIndex);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Models
 {
@@ -11,7 +12,7 @@ namespace Neo.IO.Files.Models
         public abstract WmoMaterial GetMaterial(int index);
         public abstract bool Load(string fileName);
 
-        public BoundingBox BoundingBox { get; protected set; }
+        public Box BoundingBox { get; protected set; }
 
         public IList<WmoGroup> Groups { get; protected set; }
 

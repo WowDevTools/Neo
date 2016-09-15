@@ -2,6 +2,7 @@
 using System.Drawing.Drawing2D;
 using Neo.Graphics;
 using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.Scene
 {
@@ -48,12 +49,12 @@ namespace Neo.Scene
             UpdateView();
         }
 
-        public bool Contains(ref BoundingBox box)
+        public bool Contains(ref Box box)
         {
             return mFrustum.Contains(ref box) != ContainmentType.Disjoint;
         }
 
-        public bool Contains(ref BoundingSphere sphere)
+        public bool Contains(ref Box sphere)
         {
             return mFrustum.Contains(ref sphere) != ContainmentType.Disjoint;
         }
@@ -148,7 +149,7 @@ namespace Neo.Scene
 
         public void Pitch(float angle)
         {
-            var matRot = Matrix.RotationAxis(mRight, MathUtil.DegreesToRadians(angle));
+            var matRot = Matrix4.CreateFromAxisAngle(mRight, MathHelper.DegreesToRadians(angle));
             mUp = Vector3.TransformCoordinate(mUp, matRot);
             mUp.Normalize();
 
@@ -163,7 +164,7 @@ namespace Neo.Scene
 
         public void Yaw(float angle)
         {
-            var matRot = Matrix.RotationAxis(Vector3.UnitZ, MathUtil.DegreesToRadians(angle));
+            var matRot = Matrix4.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.DegreesToRadians(angle));
             mForward = Vector3.TransformCoordinate(mForward, matRot);
             mForward.Normalize();
 
@@ -179,7 +180,7 @@ namespace Neo.Scene
 
         public void Roll(float angle)
         {
-            var matRot = Matrix.RotationAxis(mForward, MathUtil.DegreesToRadians(angle));
+            var matRot = Matrix.CreateFromAxisAngle(mForward, MathHelper.DegreesToRadians(angle));
             mUp = Vector3.TransformCoordinate(mUp, matRot);
             mUp.Normalize();
 

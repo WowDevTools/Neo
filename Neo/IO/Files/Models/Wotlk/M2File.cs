@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using Neo.Scene.Models.M2;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
@@ -83,7 +84,7 @@ namespace Neo.IO.Files.Models.Wotlk
                     if (p.Z > maxPos.Z) maxPos.Z = p.Z;
                 }
 
-                BoundingBox = new BoundingBox(minPos, maxPos);
+                BoundingBox = new Box(minPos, maxPos);
 
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];
@@ -137,7 +138,7 @@ namespace Neo.IO.Files.Models.Wotlk
             mSubMeshes = mSkin.SubMeshes.Select(sm => new M2SubMeshInfo
             {
                 BoundingSphere =
-                    new BoundingSphere(new Vector3(sm.centerBoundingBox.X, -sm.centerBoundingBox.Y, sm.centerBoundingBox.Z), sm.radius),
+                    new Sphere(new Vector3(sm.centerBoundingBox.X, -sm.centerBoundingBox.Y, sm.centerBoundingBox.Z), sm.radius),
                 NumIndices = sm.nTriangles,
                 StartIndex = sm.startTriangle + (((sm.unk1 & 1) != 0) ? (ushort.MaxValue + 1) : 0)
             }).ToArray();

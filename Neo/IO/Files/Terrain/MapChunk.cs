@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using Neo.Editing;
 using Neo.Scene;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Terrain
 {
@@ -28,8 +29,8 @@ namespace Neo.IO.Files.Terrain
         public IList<Graphics.Texture> Textures { get; protected set; }
         public IList<Graphics.Texture> SpecularTextures { get; protected set; }
         public IList<string> TextureNames { get; protected set; }
-        public BoundingBox BoundingBox { get; protected set; }
-        public BoundingBox ModelBox { get; protected set; }
+        public Box BoundingBox { get; protected set; }
+        public Box ModelBox { get; protected set; }
         public float[] TextureScales { get; protected set; }
         public float[] SpecularFactors { get; protected set; }
 
@@ -186,7 +187,7 @@ namespace Neo.IO.Files.Terrain
             for(var i = 0; i < 145; ++i)
             {
                 var p = Vertices[i].Position;
-                var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length();
+                var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length;
                 if (dist > radius)
                     continue;
 
@@ -269,7 +270,7 @@ namespace Neo.IO.Files.Terrain
             for (var i = 0; i < 145; ++i)
             {
                 var p = Vertices[i].Position;
-                var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length();
+                var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length;
                 if (dist > radius)
                     continue;
 
@@ -324,7 +325,7 @@ namespace Neo.IO.Files.Terrain
             for(var i = 0; i < 145; ++i)
             {
                 var p = Vertices[i].Position;
-                var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length();
+                var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length;
                 if (dist > radius)
                     continue;
 
@@ -500,8 +501,8 @@ namespace Neo.IO.Files.Terrain
                 return false;
 
             var layer = -1;
-            var minPos = BoundingBox.Minimum;
-            var maxPos = BoundingBox.Maximum;
+            var minPos = BoundingBox.BottomCorner;
+            var maxPos = BoundingBox.TopCorner;
             var changed = false;
             var inverted = parameters.IsInverted;
 

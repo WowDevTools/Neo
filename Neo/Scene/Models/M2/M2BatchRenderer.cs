@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using SharpDX;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
+using OpenTK;
+using OpenTK.Graphics;
 
 namespace Neo.Scene.Models.M2
 {
@@ -12,17 +13,17 @@ namespace Neo.Scene.Models.M2
         [StructLayout(LayoutKind.Sequential)]
         struct PerInstanceBuffer
         {
-            public Matrix matInstance;
+            public Matrix4 matInstance;
             public Color4 colorMod;
         }
 
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer
         {
-            public Matrix uvAnimMatrix1;
-            public Matrix uvAnimMatrix2;
-            public Matrix uvAnimMatrix3;
-            public Matrix uvAnimMatrix4;
+            public Matrix4 uvAnimMatrix1;
+            public Matrix4 uvAnimMatrix2;
+            public Matrix4 uvAnimMatrix3;
+            public Matrix4 uvAnimMatrix4;
             public Vector4 modelPassParams;
             public Vector4 animatedColor;
             public Vector4 transparency;
@@ -96,7 +97,7 @@ namespace Neo.Scene.Models.M2
                 gMesh.InitLayout(gNoBlendProgram);
             else
                 gMesh.InitLayout(gCustomProgram);
-            
+
             gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(2, gSamplerWrapBoth);
@@ -129,7 +130,7 @@ namespace Neo.Scene.Models.M2
 
                 gMesh.Program = gCustomProgram;
                 gCustomProgram.Bind();
-     
+
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
                 gMesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
                 gMesh.UpdateBlendState(BlendStates[pass.BlendMode]);
@@ -143,10 +144,10 @@ namespace Neo.Scene.Models.M2
                 for (var i = 0; i < pass.OpCount; ++i)
                     alphaValues[i] = renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex + i);
 
-                var uvAnimMatrix1 = Matrix.Identity;
-                var uvAnimMatrix2 = Matrix.Identity;
-                var uvAnimMatrix3 = Matrix.Identity;
-                var uvAnimMatrix4 = Matrix.Identity;
+                var uvAnimMatrix1 = Matrix4.Identity;
+                var uvAnimMatrix2 = Matrix4.Identity;
+                var uvAnimMatrix3 = Matrix4.Identity;
+                var uvAnimMatrix4 = Matrix4.Identity;
 
                 renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 0, out uvAnimMatrix1);
                 if (pass.OpCount >= 2) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
@@ -224,7 +225,7 @@ namespace Neo.Scene.Models.M2
                 var unlit = ((pass.RenderFlag & 0x01) != 0) ? 0.0f : 1.0f;
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
-                Matrix uvAnimMat;
+                Matrix4 uvAnimMat;
                 renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
                 var color = renderer.Animator.GetColorValue(pass.ColorAnimIndex);
                 color.W *= renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex);
@@ -319,15 +320,15 @@ namespace Neo.Scene.Models.M2
             gMaskBlendProgram = new ShaderProgram(context);
             gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
             gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlphaOld);
-            
+
             gPerPassBuffer = new ConstantBuffer(context);
 
             gPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {
-                uvAnimMatrix1 = Matrix.Identity,
-                uvAnimMatrix2 = Matrix.Identity,
-                uvAnimMatrix3 = Matrix.Identity,
-                uvAnimMatrix4 = Matrix.Identity,
+                uvAnimMatrix1 = Matrix4.Identity,
+                uvAnimMatrix2 = Matrix4.Identity,
+                uvAnimMatrix3 = Matrix4.Identity,
+                uvAnimMatrix4 = Matrix4.Identity,
                 modelPassParams = Vector4.Zero
             });
 

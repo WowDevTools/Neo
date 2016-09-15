@@ -1,5 +1,5 @@
-﻿using System.Numerics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using OpenTK;
 
 namespace Neo.IO.Files.Models
 {
@@ -48,8 +48,7 @@ namespace Neo.IO.Files.Models
         {
             var q1 = v1.ToQuaternion();
             var q2 = v2.ToQuaternion();
-            Quaternion ret;
-            Quaternion.Slerp(ref q1, ref q2, fac, out ret);
+            Quaternion ret = Quaternion.Slerp(q1, q2, fac);
             return ret;
         }
 
@@ -62,9 +61,8 @@ namespace Neo.IO.Files.Models
         {
             var q1 = v1.ToQuaternion();
             var q2 = v2.ToQuaternion();
-            Quaternion ret;
-            Quaternion.Slerp(ref q1, ref q2, fac, out ret);
-            return ret;
+	        Quaternion ret = Quaternion.Slerp(q1, q2, fac);
+	        return ret;
         }
 
         public Quaternion Interpolate(ref InvQuaternion16 v1)

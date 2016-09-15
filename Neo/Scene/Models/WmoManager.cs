@@ -2,7 +2,7 @@
 using System.Threading;
 using Neo.Scene.Models.WMO;
 using System;
-using System.Numerics;
+using OpenTK;
 
 namespace Neo.Scene.Models
 {

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using SharpDX;
 using Neo.Scene;
+using OpenTK;
 
 namespace Neo.IO.Files.Sky.WoD
 {

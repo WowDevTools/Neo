@@ -1,5 +1,4 @@
-﻿using System.Drawing.Drawing2D;
-using System.Numerics;
+﻿using OpenTK;
 
 namespace Neo.IO.Files.Models
 {
@@ -8,7 +7,7 @@ namespace Neo.IO.Files.Models
         public Vector3 Forward;
         public Vector3 Right;
         public Vector3 Up;
-        public Matrix InverseRotation;
+        public Matrix4 InverseRotation;
     }
 
     interface IM2Animator
@@ -21,9 +20,9 @@ namespace Neo.IO.Files.Models
         void ResetAnimationTimes();
         Vector4 GetColorValue(int texAnim);
         float GetAlphaValue(int alphaAnim);
-        bool GetUvAnimMatrix(int uvIndex, out Matrix matrix);
-        Matrix GetBoneMatrix(int bone, BillboardParameters billboard);
-        Matrix GetBoneMatrix(uint time, short bone, BillboardParameters billboard);
-        bool GetBones(Matrix[] bones);
+        bool GetUvAnimMatrix(int uvIndex, out Matrix4 matrix);
+        Matrix4 GetBoneMatrix(int bone, BillboardParameters billboard);
+        Matrix4 GetBoneMatrix(uint time, short bone, BillboardParameters billboard);
+        bool GetBones(Matrix4[] bones);
     }
 }

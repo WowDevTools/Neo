@@ -1,9 +1,9 @@
-﻿using System.Numerics;
-using Neo.Scene;
+﻿using Neo.Scene;
 using Neo.Scene.Models;
 using Neo.Scene.Models.M2;
 using Neo.Utils;
 using Neo.UI;
+using OpenTK;
 using Point = System.Drawing.Point;
 
 namespace Neo.Editing
@@ -65,7 +65,7 @@ namespace Neo.Editing
 
             if ((altDown || ctrlDown || shiftDown) & rmbDown) // Rotating
             {
-                var angle = MathUtil.DegreesToRadians(dpos.X * 6);
+                var angle = MathHelper.DegreesToRadians(dpos.X * 6);
                 SelectedModel.Rotate(altDown ? angle : 0, ctrlDown ? angle : 0, shiftDown ? angle : 0);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }

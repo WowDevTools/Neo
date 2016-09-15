@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
-using System.Numerics;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Storage;
+using OpenTK;
 
 namespace Neo.Scene.Models.M2
 {
@@ -20,7 +19,7 @@ namespace Neo.Scene.Models.M2
 
         public M2File Model { get; private set; }
 
-        private Matrix[] mAnimationMatrices;
+        private Matrix4[] mAnimationMatrices;
         private Dictionary<int, M2RenderInstance> mFullInstances = new Dictionary<int, M2RenderInstance>();
 
         public List<M2RenderInstance> VisibleInstances { get; private set; }
@@ -39,7 +38,7 @@ namespace Neo.Scene.Models.M2
 
             if (!model.NeedsPerInstanceAnimation)
             {
-                mAnimationMatrices = new Matrix[model.GetNumberOfBones()];
+                mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
                 Animator = ModelFactory.Instance.CreateAnimator(model);
                 if (Animator.SetAnimation(AnimationType.Stand) == false)
                     Animator.SetAnimationByIndex(0);

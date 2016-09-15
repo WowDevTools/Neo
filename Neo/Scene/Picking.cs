@@ -1,5 +1,4 @@
-﻿using System.Drawing.Drawing2D;
-using OpenTK;
+﻿using OpenTK;
 
 // ReSharper disable FunctionComplexityOverflow
 
@@ -7,7 +6,7 @@ namespace Neo.Scene
 {
     static class Picking
     {
-        public static Ray Build(ref Vector2 screenPos, ref Matrix invView, ref Matrix invProj)
+        public static Ray Build(ref Vector2 screenPos, ref Matrix4 invView, ref Matrix4 invProj)
         {
             var vp = WorldFrame.Instance.GraphicsContext.Viewport;
             var sx = (((2.0f * screenPos.X) / vp.Width) - 1);
@@ -26,7 +25,7 @@ namespace Neo.Scene
             return new Ray(nearPos, dir);
         }
 
-        public static Ray Build(ref Vector2 screenPos, ref Matrix invView, ref Matrix invProj, ref Matrix invWorld)
+        public static Ray Build(ref Vector2 screenPos, ref Matrix4 invView, ref Matrix4 invProj, ref Matrix4 invWorld)
         {
             var vp = WorldFrame.Instance.GraphicsContext.Viewport;
             var sx = (((2.0f * screenPos.X) / vp.Width) - 1);

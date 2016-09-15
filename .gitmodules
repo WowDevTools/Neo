@@ -1,3 +1,6 @@
 [submodule "lib/StormLib"]
 	path = lib/StormLib
 	url = git@github.com:ladislav-zezula/StormLib.git
+[submodule "lib/libwarcraft"]
+	path = lib/libwarcraft
+	url = git@github.com:WowDevTools/libwarcraft.git

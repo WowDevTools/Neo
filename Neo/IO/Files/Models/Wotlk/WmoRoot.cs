@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Text;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
@@ -201,7 +202,7 @@ namespace Neo.IO.Files.Models.Wotlk
 
             Groups = mGroups.Select(g => (Models.WmoGroup)g).ToList().AsReadOnly();
 
-            BoundingBox = new BoundingBox(minPos, maxPos);
+            BoundingBox = new Box(minPos, maxPos);
             return true;
         }
 

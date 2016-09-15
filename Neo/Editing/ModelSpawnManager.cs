@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using Neo.IO;
 using Neo.IO.Files.Models;
 using Neo.IO.Files.Terrain;
@@ -9,6 +8,8 @@ using Neo.Scene;
 using Neo.Scene.Models.M2;
 using Neo.UI;
 using Neo.Utils;
+using OpenTK;
+using OpenTK.Input;
 using Point = System.Drawing.Point;
 
 namespace Neo.Editing

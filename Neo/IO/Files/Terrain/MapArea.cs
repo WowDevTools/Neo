@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Scene;
 using Neo.Scene.Texture;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Terrain
 {
@@ -24,8 +25,8 @@ namespace Neo.IO.Files.Terrain
         public List<string> TextureNames { get; private set; }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public BoundingBox BoundingBox { get; protected set; }
-        public BoundingBox ModelBox { get; protected set; }
+        public Box BoundingBox { get; protected set; }
+        public Box ModelBox { get; protected set; }
 
         protected List<Graphics.Texture> mTextures = new List<Graphics.Texture>();
         private List<Graphics.Texture> mSpecularTextures = new List<Graphics.Texture>();
@@ -43,7 +44,7 @@ namespace Neo.IO.Files.Terrain
             Dispose(false);
         }
 
-        public abstract void AddDoodadInstance(int uuid, string modelName, BoundingBox box, Vector3 position, Vector3 rotation, float scale);
+        public abstract void AddDoodadInstance(int uuid, string modelName, Box boundingBox, Vector3 position, Vector3 rotation, float scale);
 
         public int GetFreeM2Uuid()
         {

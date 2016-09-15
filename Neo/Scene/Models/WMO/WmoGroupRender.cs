@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Neo.Graphics;
+using Warcraft.Core;
 using OpenTK;
 
 namespace Neo.Scene.Models.WMO
@@ -36,7 +37,7 @@ namespace Neo.Scene.Models.WMO
 
         public IO.Files.Models.WmoGroup Data { get; private set; }
 
-        public BoundingBox BoundingBox { get { return Data.BoundingBox; } }
+        public Box BoundingBox { get { return Data.BoundingBox; } }
 
         public WmoGroupRender(IO.Files.Models.WmoGroup group, WmoRootRender root)
         {

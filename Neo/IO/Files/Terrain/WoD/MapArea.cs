@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using Neo.Editing;
 using Neo.IO.Files.Models;
 using Neo.Scene;
 using Neo.Scene.Texture;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Terrain.WoD
 {
@@ -86,7 +87,7 @@ namespace Neo.IO.Files.Terrain.WoD
                 var pos = mDoodadDefs[inst.MddfIndex].Position;
                 var old_pos = pos;
                 var invZ = 64.0f * Metrics.TileSize - pos.Z;
-                var dist = (new Vector2(pos.X, invZ) - center).Length();
+                var dist = (new Vector2(pos.X, invZ) - center).Length;
                 if (dist > parameters.OuterRadius)
                     continue;
 
@@ -121,13 +122,13 @@ namespace Neo.IO.Files.Terrain.WoD
             return changed;
         }
 
-        public void UpdateBoundingBox(BoundingBox chunkBox)
+        public void UpdateBoundingBox(Box chunkBox)
         {
-            var minPos = chunkBox.Minimum;
-            var maxPos = chunkBox.Maximum;
+            var minPos = chunkBox.BottomCorner;
+            var maxPos = chunkBox.TopCorner;
 
-            var omin = BoundingBox.Minimum;
-            var omax = BoundingBox.Maximum;
+            var omin = BoundingBox.BottomCorner;
+            var omax = BoundingBox.TopCorner;
 
             omin.X = Math.Min(omin.X, minPos.X);
             omin.Y = Math.Min(omin.Y, minPos.Y);
@@ -136,7 +137,7 @@ namespace Neo.IO.Files.Terrain.WoD
             omax.Y = Math.Max(omax.Y, maxPos.Y);
             omax.Z = Math.Max(omax.Z, maxPos.Z);
 
-            BoundingBox = new BoundingBox(omin, omax);
+            BoundingBox = new Box(omin, omax);
         }
 
         public void UpdateVertices(MapChunk chunk)
@@ -425,7 +426,7 @@ namespace Neo.IO.Files.Terrain.WoD
                 {
                     Hash = modelName.ToUpperInvariant().GetHashCode(),
                     Uuid = entry.UniqueId,
-                    BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
+                    BoundingBox = (instance != null ? instance.BoundingBox : new Box(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
                     RenderInstance = instance,
                     MddfIndex = index
                 });
@@ -531,8 +532,8 @@ namespace Neo.IO.Files.Terrain.WoD
             {
                 var chunk = new MapChunk(mMainChunks[i], mTexChunks[i], mObjChunks[i], i % 16, i / 16, this);
                 chunk.AsyncLoad();
-                var bbmin = chunk.BoundingBox.Minimum;
-                var bbmax = chunk.BoundingBox.Maximum;
+                var bbmin = chunk.BoundingBox.BottomCorner;
+                var bbmax = chunk.BoundingBox.TopCorner;
                 if (bbmin.X < minPos.X)
                     minPos.X = bbmin.X;
                 if (bbmax.X > maxPos.X)
@@ -546,8 +547,8 @@ namespace Neo.IO.Files.Terrain.WoD
                 if (bbmax.Z > maxPos.Z)
                     maxPos.Z = bbmax.Z;
 
-                bbmin = chunk.ModelBox.Minimum;
-                bbmax = chunk.ModelBox.Maximum;
+                bbmin = chunk.ModelBox.BottomCorner;
+                bbmax = chunk.ModelBox.TopCorner;
                 if (bbmin.X < modelMin.X)
                     modelMin.X = bbmin.X;
                 if (bbmax.X > modelMax.X)
@@ -565,8 +566,8 @@ namespace Neo.IO.Files.Terrain.WoD
                 Array.Copy(chunk.Vertices, 0, FullVertices, i * 145, 145);
             }
 
-            BoundingBox = new BoundingBox(minPos, maxPos);
-            ModelBox = new BoundingBox(modelMin, modelMax);
+            BoundingBox = new Box(minPos, maxPos);
+            ModelBox = new Box(modelMin, modelMax);
         }
 
         private void WriteBaseFile()
@@ -696,15 +697,15 @@ namespace Neo.IO.Files.Terrain.WoD
             }
         }
 
-        public override void AddDoodadInstance(int uuid, string modelName, BoundingBox box, Vector3 position, Vector3 rotation, float scale)
+        public override void AddDoodadInstance(int uuid, string modelName, Box boundingBox, Vector3 position, Vector3 rotation, float scale)
         {
-            //box.Maximum.Y = 64.0f * Metrics.TileSize - box.Maximum.Y;
-            //box.Minimum.Y = 64.0f * Metrics.TileSize - box.Minimum.Y;
-            //if (box.Maximum.Y < box.Minimum.Y)
+            //boundingBox.Maximum.Y = 64.0f * Metrics.TileSize - boundingBox.Maximum.Y;
+            //boundingBox.Minimum.Y = 64.0f * Metrics.TileSize - boundingBox.Minimum.Y;
+            //if (boundingBox.Maximum.Y < boundingBox.Minimum.Y)
             //{
-            //    var tmp = box.Maximum;
-            //    box.Maximum.Y = box.Minimum.Y;
-            //    box.Minimum.Y = tmp.Y;
+            //    var tmp = boundingBox.Maximum;
+            //    boundingBox.Maximum.Y = boundingBox.Minimum.Y;
+            //    boundingBox.Minimum.Y = tmp.Y;
             //}
 
             var mmidValue = 0;
@@ -768,13 +769,13 @@ namespace Neo.IO.Files.Terrain.WoD
             {
                 Hash = modelName.ToUpperInvariant().GetHashCode(),
                 Uuid = uuid,
-                BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
+                BoundingBox = (instance != null ? instance.BoundingBox : new Box(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
                 RenderInstance = instance,
                 MddfIndex = mDoodadDefs.Length - 1
             });
 
             foreach (var chunk in mChunks)
-                chunk.TryAddDoodad(mcrfValue, box);
+                chunk.TryAddDoodad(mcrfValue, boundingBox);
 
             mWasChanged = true;
         }

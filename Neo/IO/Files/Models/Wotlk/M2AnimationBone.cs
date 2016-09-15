@@ -1,6 +1,6 @@
 ﻿using System.Drawing.Drawing2D;
 using System.IO;
-using System.Numerics;
+using OpenTK;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
@@ -25,8 +25,8 @@ namespace Neo.IO.Files.Models.Wotlk
             IsTransformed = (bone.flags & 0x200) != 0;
 
             bone.pivot.Y = -bone.pivot.Y;
-            mPivot = Matrix.Translation(bone.pivot);
-            mInvPivot = Matrix.Translation(-bone.pivot);
+            mPivot = Matrix4.Translation(bone.pivot);
+            mInvPivot = Matrix4.Translation(-bone.pivot);
 
             mTranslation = new M2Vector3AnimationBlock(file, bone.translation, reader);
             mRotation = new M2Quaternion16AnimationBlock(file, bone.rotation, reader, Quaternion.Identity);
@@ -36,10 +36,10 @@ namespace Neo.IO.Files.Models.Wotlk
         public void UpdateMatrix(uint time, int animation, out Matrix matrix,
             M2Animator animator, BillboardParameters billboard)
         {
-            var boneMatrix = Matrix.Identity;
+            var boneMatrix = Matrix4.Identity;
             if (IsBillboarded && billboard != null)
             {
-                var billboardMatrix = Matrix.Identity;
+                var billboardMatrix = Matrix4.Identity;
                 billboardMatrix.Row1 = new Vector4(billboard.Forward, 0);
                 billboardMatrix.Row2 = new Vector4(billboard.Right, 0);
                 billboardMatrix.Row3 = new Vector4(billboard.Up, 0);
@@ -52,7 +52,7 @@ namespace Neo.IO.Files.Models.Wotlk
                 position.Y = -position.Y;
                 var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
                 var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
-                boneMatrix *= Matrix.RotationQuaternion(rotation) * Matrix.Scaling(scaling) * Matrix.Translation(position);
+                boneMatrix *= Matrix4.Rotate(rotation) * Matrix4.Scale(scaling) * Matrix4.Translation(position);
             }
 
             boneMatrix = mInvPivot * boneMatrix * mPivot;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Models
 {
@@ -10,6 +11,6 @@ namespace Neo.IO.Files.Models
     {
         public int StartIndex { get; set; }
         public int NumIndices { get; set; }
-        public BoundingSphere BoundingSphere;
+        public Sphere BoundingSphere;
     }
 }

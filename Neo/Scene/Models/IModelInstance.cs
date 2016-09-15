@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Numerics;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.Scene.Models
 {
     interface IModelInstance : IDisposable
     {
-        BoundingBox InstanceBoundingBox { get; }
+        Box InstanceBoundingBox { get; }
         Vector3[] InstanceCorners { get; }
 
         bool IsSpecial { get; }

@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Drawing.Drawing2D;
-using System.Numerics;
 using Neo.Utils;
 using Neo.IO.Files.Models;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.Scene.Models.M2
 {
     class M2RenderInstance : IModelInstance
     {
-        private Matrix mInstanceMatrix;
-        private Matrix mInverseMatrix;
-        private Matrix mInverseRotation;
+        private Matrix4 mInstanceMatrix;
+        private Matrix4 mInverseMatrix;
+        private Matrix4 mInverseRotation;
 
         private Vector3 mPosition;
         private Vector3 mRotation;
@@ -23,7 +23,7 @@ namespace Neo.Scene.Models.M2
 
         private M2File mModel;
         private M2Renderer mRenderer;
-        private BoundingBox mBoundingBox;
+        private Box mBoundingBox;
 
         private WorldText mWorldModelName;
 
@@ -35,8 +35,8 @@ namespace Neo.Scene.Models.M2
 
         public M2Renderer Renderer { get { return mRenderer; } }
 
-        public BoundingBox BoundingBox { get { return mBoundingBox; } }
-        public BoundingBox InstanceBoundingBox { get { return BoundingBox; } }
+        public Box BoundingBox { get { return mBoundingBox; } }
+        public Box InstanceBoundingBox { get { return BoundingBox; } }
 
         public Vector3[] InstanceCorners { get; private set; }
 
@@ -46,9 +46,9 @@ namespace Neo.Scene.Models.M2
 
         public int Uuid { get; private set; }
 
-        public Matrix InstanceMatrix { get { return mInstanceMatrix; } }
-        public Matrix InverseMatrix { get { return mInverseMatrix; } }
-        public Matrix InverseRotation { get { return mInverseRotation; } }
+        public Matrix4 InstanceMatrix { get { return mInstanceMatrix; } }
+        public Matrix4 InverseMatrix { get { return mInverseMatrix; } }
+        public Matrix4 InverseRotation { get { return mInverseRotation; } }
 
         public Vector4 HighlightColor { get { return mHighlightColor; } }
 
@@ -68,13 +68,13 @@ namespace Neo.Scene.Models.M2
             mModel = mRenderer.Model;
             mBoundingBox = mModel.BoundingBox;
 
-            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
-                MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z));
+            var rotationMatrix = Matrix4.RotationYawPitchRoll(MathHelper.DegreesToRadians(rotation.Y),
+                MathHelper.DegreesToRadians(rotation.X), MathHelper.DegreesToRadians(rotation.Z));
 
-            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
-            mInstanceMatrix = rotationMatrix * Matrix.Scaling(scale) * Matrix.Translation(position);
+            Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
+            mInstanceMatrix = rotationMatrix * Matrix4.Scale(scale) * Matrix4.Translation(position);
             mBoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
-            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+            Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
             Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
@@ -117,12 +117,12 @@ namespace Neo.Scene.Models.M2
             mRotation.Y += y;
             mRotation.Z += z;
 
-            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
-                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
-            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
+            var rotationMatrix = Matrix4.RotationYawPitchRoll(MathHelper.DegreesToRadians(mRotation.Y),
+                MathHelper.DegreesToRadians(mRotation.X), MathHelper.DegreesToRadians(mRotation.Z));
+            Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
 
-            mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
-            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+            mInstanceMatrix = rotationMatrix * Matrix4.Scaling(mScale) * Matrix4.Translation(mPosition);
+            Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
             InstanceCorners = mModel.BoundingBox.GetCorners();
             Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
@@ -135,12 +135,12 @@ namespace Neo.Scene.Models.M2
             mPosition.Y += position.Y;
             mPosition.Z += position.Z;
 
-            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
-                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
-            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
+            var rotationMatrix = Matrix4.RotationYawPitchRoll(MathHelper.DegreesToRadians(mRotation.Y),
+	            MathHelper.DegreesToRadians(mRotation.X), MathHelper.DegreesToRadians(mRotation.Z));
+            Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
 
-            mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
-            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+            mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
+            Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
             InstanceCorners = mModel.BoundingBox.GetCorners();
             Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
@@ -185,12 +185,12 @@ namespace Neo.Scene.Models.M2
                 mScale.Z = 63.9f;
             }
 
-            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
-                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
-            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
+            var rotationMatrix = Matrix4.RotationYawPitchRoll(MathHelper.DegreesToRadians(mRotation.Y),
+	            MathHelper.DegreesToRadians(mRotation.X), MathHelper.DegreesToRadians(mRotation.Z));
+            Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
 
-            mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(mPosition);
-            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+            mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
+            Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
             InstanceCorners = mModel.BoundingBox.GetCorners();
             Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
@@ -251,7 +251,7 @@ namespace Neo.Scene.Models.M2
         public void UpdateBrushHighlighting(Vector3 brushPosition, float radius)
         {
             var targetVec = mPosition - brushPosition;
-            var distance = targetVec.LengthSquared();
+            var distance = targetVec.LengthSquared;
             var radiusSquared = radius * radius;
 
             var time = TimeManager.Instance.GetTime();
@@ -297,7 +297,7 @@ namespace Neo.Scene.Models.M2
         public void UpdateDepth()
         {
             var camera = WorldFrame.Instance.ActiveCamera;
-            Depth = (camera.Position - mPosition).LengthSquared();
+            Depth = (camera.Position - mPosition).LengthSquared;
         }
 
         public Vector3 GetNamePlatePosition()

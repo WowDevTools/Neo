@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
+using OpenTK;
 
 namespace Neo.IO.Files.Sky.Wotlk
 {
@@ -79,7 +79,7 @@ namespace Neo.IO.Files.Sky.Wotlk
                     continue;
                 }
 
-                var dist = (position - le.Position).Length();
+                var dist = (position - le.Position).Length;
                 if (dist < le.InnerRadius)
                 {
                     w[i] = 1.0f;

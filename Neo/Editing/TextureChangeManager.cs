@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Numerics;
 using Neo.Scene;
 using Neo.Utils;
+using OpenTK;
 
 namespace Neo.Editing
 {

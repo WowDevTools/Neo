@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Threading;
-using SharpDX;
 using Neo.IO.Files.Models;
 using Neo.Scene.Models.M2;
-using System.Windows.Forms;
+using OpenTK;
 
 namespace Neo.Scene.Models
 {

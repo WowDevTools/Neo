@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Models
 {
     abstract class WmoGroup
     {
-        public BoundingBox BoundingBox { get; protected set; }
+        public Box BoundingBox { get; protected set; }
         public IList<ushort> Indices { get; protected set; }
         public IList<WmoBatch> Batches { get; protected set; }
         public WmoVertex[] Vertices { get; protected set; }

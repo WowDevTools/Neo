@@ -1,6 +1,7 @@
 ﻿using System;
 using Neo.Graphics;
 using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.Scene.Terrain
 {
@@ -13,7 +14,7 @@ namespace Neo.Scene.Terrain
         private bool mSyncLoaded;
 
         private Vector3[] mVertexData;
-        private BoundingBox mBoudingBox;
+        private Box mBoundingBox;
         private VertexBuffer mVertexBuffer;
 
         public static Mesh Mesh { get; private set; }
@@ -60,7 +61,7 @@ namespace Neo.Scene.Terrain
             if (mAsyncLoaded == false)
                 return;
 
-            if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoudingBox) == false)
+            if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
                 return;
 
             if(mSyncLoaded == false)
@@ -110,7 +111,7 @@ namespace Neo.Scene.Terrain
                 }
             }
 
-            mBoudingBox = new BoundingBox(posMin, posMax);
+            mBoundingBox = new BoundingBox(posMin, posMax);
             mAsyncLoaded = true;
         }
 

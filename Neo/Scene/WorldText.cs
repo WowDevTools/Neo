@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
@@ -23,7 +22,7 @@ namespace Neo.Scene
         [StructLayout(LayoutKind.Sequential)]
         struct PerDrawCallBuffer
         {
-            public Matrix matTransform;
+            public Matrix4 matTransform;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -444,7 +443,7 @@ namespace Neo.Scene
             gPerDrawCallBuffer = new ConstantBuffer(context);
             gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
             {
-                matTransform = Matrix.Identity
+                matTransform = Matrix4.Identity
             });
         }
     }

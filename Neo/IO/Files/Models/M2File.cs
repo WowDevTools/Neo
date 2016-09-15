@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Models
 {
@@ -19,7 +21,7 @@ namespace Neo.IO.Files.Models
         public List<M2RenderPass> Passes { get; private set; }
         public ushort[] Indices { get; protected set; }
 
-        public BoundingBox BoundingBox { get; protected set; }
+        public Box BoundingBox { get; protected set; }
         public bool HasBlendPass { get; protected set; }
         public bool HasOpaquePass { get; protected set; }
 

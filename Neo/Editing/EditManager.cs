@@ -3,7 +3,6 @@ using Neo.Scene;
 using Neo.UI;
 using Neo.Utils;
 using Point = System.Drawing.Point;
-using System.Numerics;
 
 namespace Neo.Editing
 {

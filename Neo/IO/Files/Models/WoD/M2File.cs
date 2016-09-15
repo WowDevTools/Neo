@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Neo.Scene.Models.M2;
+using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.WoD
 {
@@ -59,7 +60,7 @@ namespace Neo.IO.Files.Models.WoD
                     mBlendMap = reader.ReadArray<ushort>(nBlendMaps);
                 }
 
-                BoundingBox = new BoundingBox(mHeader.VertexBoxMin, mHeader.VertexBoxMax);
+                BoundingBox = new Box(mHeader.VertexBoxMin, mHeader.VertexBoxMax);
                 strm.Position = mHeader.OfsName;
                 if (mHeader.LenName > 0)
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
@@ -114,7 +115,7 @@ namespace Neo.IO.Files.Models.WoD
             mSubMeshes = mSkin.SubMeshes.Select(sm => new M2SubMeshInfo
             {
                 BoundingSphere =
-                    new BoundingSphere(sm.centerBoundingBox, sm.radius),
+                    new Sphere(sm.centerBoundingBox, sm.radius),
                 NumIndices = sm.nTriangles,
                 StartIndex = sm.startTriangle + (((sm.unk1 & 1) != 0) ? (ushort.MaxValue + 1) : 0)
             }).ToArray();
