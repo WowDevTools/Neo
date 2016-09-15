@@ -59,7 +59,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     strm.Position = ofsBlendMaps;
                     mBlendMap = reader.ReadArray<ushort>(nBlendMaps);
                 }
-                
+
                 strm.Position = mHeader.OfsName;
                 if (mHeader.LenName > 0)
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
@@ -69,7 +69,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
                 var minPos = new Vector3(float.MaxValue);
                 var maxPos = new Vector3(float.MinValue);
-                for(var i = 0; i < Vertices.Length; ++i)
+                for (var i = 0; i < Vertices.Length; ++i)
                 {
                     var p = Vertices[i].position;
                     p = new Vector3(p.X, -p.Y, p.Z);
@@ -85,6 +85,8 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
 
                 BoundingBox = new BoundingBox(minPos, maxPos);
 
+                LoadCreatureVariations();
+
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];
                 TextureInfos = new TextureInfo[textures.Length];
@@ -93,12 +95,34 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     var tex = textures[i];
                     if (tex.type == 0 && tex.lenName > 0)
                     {
-                        var texName =
-                            Encoding.ASCII.GetString(ReadArrayOf<byte>(reader, tex.ofsName, tex.lenName - 1)).Trim();
+                        var texName = Encoding.ASCII.GetString(ReadArrayOf<byte>(reader, tex.ofsName, tex.lenName - 1)).Trim();
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(texName);
                     }
                     else
-                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
+                    {
+                        switch (tex.type)
+                        {
+                            case 11:
+                                if (CreatureVariations.Count > CreatureVariationCurrent)
+                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item1))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item1);
+                                break;
+                            case 12:
+                                if (CreatureVariations.Count > CreatureVariationCurrent)
+                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item2))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item2);
+                                break;
+                            case 13:
+                                if (CreatureVariations.Count > CreatureVariationCurrent)
+                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item3))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item3);
+                                break;
+                            default:
+                                mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
+                                break;
+                        }
+                    }
+
 
                     Graphics.Texture.SamplerFlagType samplerFlags;
 
@@ -122,12 +146,44 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             return true;
         }
 
+        private void LoadCreatureVariations()
+        {
+            Func<string, string> FormatPath = f =>
+            {
+                if (f == "") return string.Empty; //Ignore blank
+                if (Path.GetExtension(f) != ".blp") f += ".blp"; //Append filetype
+                return Path.Combine(Path.GetDirectoryName(mFileName), f); //Add full directory location
+            };
+
+            HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>();
+            var modelData = Storage.DbcStorage.CreatureModelData
+                                              .GetAllRows<Wotlk.CreatureModelDataEntry>()
+                                              .Where(x => x.ModelPath.ToLower() == Path.ChangeExtension(mFileName, ".mdx").ToLower())
+                                              .Select(x => x.ID)
+                                              .ToList(); //Get all model data references
+
+            var modelDisplay = Storage.DbcStorage.CreatureDisplayInfo
+                                                 .GetAllRows<Wotlk.CreatureDisplayInfoEntry>()
+                                                 .Where(x => modelData.Contains(x.ModelId))
+                                                 .ToList(); //Get all display entries
+
+            foreach (var display in modelDisplay)
+            {
+                variations.Add(new Tuple<string, string, string>(
+                    FormatPath(display.TextureVariation1),
+                    FormatPath(display.TextureVariation2),
+                    FormatPath(display.TextureVariation3)));
+            }
+
+            CreatureVariations = new List<Tuple<string, string, string>>(variations);
+        }
+
         private void LoadSkins(BinaryReader reader)
         {
             mSkin = new M2SkinFile(ModelRoot, mModelName, 0);
             if (mSkin.Load() == false)
                 throw new InvalidOperationException("Unable to load skin file");
-            
+
             Indices = mSkin.Indices;
 
             var texLookup = ReadArrayOf<ushort>(reader, mHeader.OfsTexLookup, mHeader.NTexLookup);
@@ -293,5 +349,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             reader.BaseStream.Position = offset;
             return reader.ReadArray<T>(count);
         }
+
     }
 }
