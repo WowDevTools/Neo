@@ -17,8 +17,8 @@ namespace Neo.Scene
             var matrix = invProj * invView;
 
             Vector3 nearPos, farPos;
-            Vector3.TransformCoordinate(ref screenNear, ref matrix, out nearPos);
-            Vector3.TransformCoordinate(ref screenFar, ref matrix, out farPos);
+            Vector3.Transform(ref screenNear, ref matrix, out nearPos);
+            Vector3.Transform(ref screenFar, ref matrix, out farPos);
 
             var dir = farPos - nearPos;
             dir.Normalize();
@@ -34,8 +34,8 @@ namespace Neo.Scene
             var screenFar = new Vector3(sx, sy, 1.0f);
             var matrix = invProj * invView * invWorld;
             Vector3 nearPos, farPos;
-            Vector3.TransformCoordinate(ref screenNear, ref matrix, out nearPos);
-            Vector3.TransformCoordinate(ref screenFar, ref matrix, out farPos);
+            Vector3.Transform(ref screenNear, ref matrix, out nearPos);
+            Vector3.Transform(ref screenFar, ref matrix, out farPos);
 
             var dir = farPos - nearPos;
             dir.Normalize();

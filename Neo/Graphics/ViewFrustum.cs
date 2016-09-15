@@ -1,5 +1,6 @@
 ﻿using System;
-using SharpDX;
+using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.Graphics
 {
@@ -9,7 +10,7 @@ namespace Neo.Graphics
         private static readonly Vector3[] BoxCorners = new Vector3[8];
         private readonly Plane[] mPlanes = new Plane[6];
 
-        public ContainmentType Contains(ref BoundingBox box)
+        public ContainmentType Contains(ref Box box)
         {
             var result = ContainmentType.Contains;
             box.GetCorners(BoxCorners);
@@ -39,7 +40,7 @@ namespace Neo.Graphics
             return result;
         }
 
-        public ContainmentType Contains(ref BoundingSphere sphere)
+        public ContainmentType Contains(ref Sphere sphere)
         {
             float distance;
 
@@ -57,7 +58,7 @@ namespace Neo.Graphics
         }
 
         // ReSharper disable once FunctionComplexityOverflow
-        public void Update(Matrix matView, Matrix matProj)
+        public void Update(Matrix4 matView, Matrix4 matProj)
         {
             Clip[0] = matView[0] * matProj[0] + matView[1] * matProj[4] + matView[2] * matProj[8]
                       + matView[3] * matProj[12];

@@ -2,6 +2,7 @@ using System;
 using Neo.IO.Files.Models;
 using Neo.Utils;
 using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.Scene.Models.WMO
 {
@@ -12,15 +13,15 @@ namespace Neo.Scene.Models.WMO
 
         private WeakReference<WmoRootRender> mRenderer;
 
-        public BoundingBox BoundingBox;
+        public Box BoundingBox;
 
         private WorldText mWorldModelName;
 
-        public BoundingBox InstanceBoundingBox { get { return BoundingBox; } }
+        public Box InstanceBoundingBox { get { return BoundingBox; } }
 
         public int Uuid { get; private set; }
-        public BoundingBox[] GroupBoxes { get; private set; }
-        public Matrix InstanceMatrix { get { return mInstanceMatrix; } }
+        public Box[] GroupBoxes { get; private set; }
+        public Matrix4 InstanceMatrix { get { return mInstanceMatrix; } }
         public Vector3[] InstanceCorners { get; private set; }
 
         public bool IsSpecial { get { return false; } }
@@ -45,16 +46,17 @@ namespace Neo.Scene.Models.WMO
             mRotation = rotation;
             mModel = model;
 
-            mInstanceMatrix = Matrix4.RotationYawPitchRoll(MathUtil.DegreesToRadians(rotation.Y),
-                MathUtil.DegreesToRadians(rotation.X), MathUtil.DegreesToRadians(rotation.Z)) * Matrix4.Translation(position);
+	        mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mRotation.X)) *
+	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mRotation.Y)) *
+	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
 
-            mRenderer = new WeakReference<WmoRootRender>(model);
+	        mRenderer = new WeakReference<WmoRootRender>(model);
 
             InstanceCorners = model.BoundingBox.GetCorners();
-            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
 
             BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
-            GroupBoxes = new BoundingBox[model.Groups.Count];
+            GroupBoxes = new Box[model.Groups.Count];
             for(var i = 0; i < GroupBoxes.Length; ++i)
             {
                 var group = model.Groups[i];
@@ -137,10 +139,11 @@ namespace Neo.Scene.Models.WMO
             mRotation.Y += y;
             mRotation.Z += z;
 
-            mInstanceMatrix = Matrix4.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
-                MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
+	        mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mRotation.X)) *
+	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mRotation.Y)) *
+	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
 
-            mInstanceMatrix *= Matrix4.Translation(mPosition);
+	        mInstanceMatrix *= Matrix4.Translation(mPosition);
 
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
 
@@ -148,7 +151,7 @@ namespace Neo.Scene.Models.WMO
             Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
             BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
-            GroupBoxes = new BoundingBox[mModel.Groups.Count];
+            GroupBoxes = new Box[mModel.Groups.Count];
             for (var i = 0; i < GroupBoxes.Length; ++i)
             {
                 var group = mModel.Groups[i];
@@ -156,7 +159,7 @@ namespace Neo.Scene.Models.WMO
             }
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
             ModelRoot = mModel.Data;
             UpdateModelNameplate();
@@ -173,17 +176,18 @@ namespace Neo.Scene.Models.WMO
             mPosition.Y += position.Y;
             mPosition.Z += position.Z;
 
-            mInstanceMatrix = Matrix4.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
-             MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
+	        mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mRotation.X)) *
+	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mRotation.Y)) *
+	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
 
             mInstanceMatrix *= Matrix4.Translation(mPosition);
 
-            Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+            Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
             BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix); //here is the problem, after this line the bBox is fucked up
 
-            GroupBoxes = new BoundingBox[mModel.Groups.Count];
+            GroupBoxes = new Box[mModel.Groups.Count];
             for (var i = 0; i < GroupBoxes.Length; ++i)
             {
                 var group = mModel.Groups[i];
@@ -191,7 +195,7 @@ namespace Neo.Scene.Models.WMO
             }
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
             ModelRoot = mModel.Data;
             UpdateModelNameplate();
@@ -222,13 +226,13 @@ namespace Neo.Scene.Models.WMO
             if (mWorldModelName == null)
                 return;
 
-            var diff = BoundingBox.Maximum - BoundingBox.Minimum;
-            mWorldModelName.Scaling = diff.Length() / 60.0f;
+            Vector3 diff = BoundingBox.TopCorner - BoundingBox.BottomCorner;
+            mWorldModelName.Scaling = diff.Length / 60.0f;
             if (mWorldModelName.Scaling < 0.3f)
                 mWorldModelName.Scaling = 0.3f;
 
-            var position = BoundingBox.Minimum + (diff * 0.5f);
-            position.Z = 1.5f + BoundingBox.Minimum.Z + (diff.Z * 1.08f);
+            var position = BoundingBox.BottomCorner + (diff * 0.5f);
+            position.Z = 1.5f + BoundingBox.BottomCorner.Z + (diff.Z * 1.08f);
             mWorldModelName.Position = position;
         }
 

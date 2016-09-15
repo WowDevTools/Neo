@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
+using Warcraft.Core;
 
 namespace Neo.Scene.Models.WMO
 {
@@ -14,14 +15,14 @@ namespace Neo.Scene.Models.WMO
         private bool mIsSyncLoaded;
         private object mSyncLoadToken;
 
-        private BoundingBox mBoundingBox;
+        private Box mBoundingBox;
         private WmoVertex[] mVertices;
         private uint[] mIndices;
 
         private VertexBuffer mVertexBuffer;
         private IndexBuffer mIndexBuffer;
 
-        public BoundingBox BoundingBox { get { return mBoundingBox; } }
+        public Box BoundingBox { get { return mBoundingBox; } }
 
         public List<WmoGroupRender> Groups { get; private set; }
 

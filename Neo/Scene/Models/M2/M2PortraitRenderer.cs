@@ -181,7 +181,7 @@ namespace Neo.Scene.Models.M2
             mPerPassBuffer = new ConstantBuffer(ctx);
             mPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {
-                uvAnimMatrix1 = Matrix.Identity,
+                uvAnimMatrix1 = Matrix4.Identity,
                 modelPassParams = Vector4.Zero
             });
 

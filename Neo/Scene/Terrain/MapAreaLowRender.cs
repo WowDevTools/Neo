@@ -111,7 +111,7 @@ namespace Neo.Scene.Terrain
                 }
             }
 
-            mBoundingBox = new BoundingBox(posMin, posMax);
+            mBoundingBox = new Box(posMin, posMax);
             mAsyncLoaded = true;
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing.Drawing2D;
 using Neo.Graphics;
 using OpenTK;
 using Warcraft.Core;
@@ -54,7 +53,7 @@ namespace Neo.Scene
             return mFrustum.Contains(ref box) != ContainmentType.Disjoint;
         }
 
-        public bool Contains(ref Box sphere)
+        public bool Contains(ref Sphere sphere)
         {
             return mFrustum.Contains(ref sphere) != ContainmentType.Disjoint;
         }
@@ -69,10 +68,8 @@ namespace Neo.Scene
             mForward = mTarget - Position;
             mForward.Normalize();
 
-            mView = (LeftHanded == false)
-                ? Matrix.LookAtRH(Position, mTarget, mUp)
-                : Matrix.LookAtLH(Position, mTarget, mUp);
-            Matrix.Invert(ref mView, out mViewInverse);
+	        mView = Matrix4.LookAt(Position, mTarget, mUp);
+            Matrix4.Invert(ref mView, out mViewInverse);
 
             mFrustum.Update(mView, mProj);
             mViewProj = mView * mProj;
@@ -81,10 +78,10 @@ namespace Neo.Scene
                 ViewChanged(this, mView);
         }
 
-        protected void OnProjectionChanged(ref Matrix matProj)
+        protected void OnProjectionChanged(ref Matrix4 matProj)
         {
             mProj = matProj;
-            Matrix.Invert(ref mProj, out mProjInverse);
+            Matrix4.Invert(ref mProj, out mProjInverse);
 
             mFrustum.Update(mView, mProj);
             mViewProj = mView * mProj;
@@ -150,7 +147,7 @@ namespace Neo.Scene
         public void Pitch(float angle)
         {
             var matRot = Matrix4.CreateFromAxisAngle(mRight, MathHelper.DegreesToRadians(angle));
-            mUp = Vector3.TransformCoordinate(mUp, matRot);
+            mUp = Vector3.Transform(mUp, matRot);
             mUp.Normalize();
 
             if (mUp.Z < 0)
@@ -165,14 +162,14 @@ namespace Neo.Scene
         public void Yaw(float angle)
         {
             var matRot = Matrix4.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.DegreesToRadians(angle));
-            mForward = Vector3.TransformCoordinate(mForward, matRot);
+            mForward = Vector3.Transform(mForward, matRot);
             mForward.Normalize();
 
             mTarget = Position + mForward;
-            mUp = Vector3.TransformCoordinate(mUp, matRot);
+            mUp = Vector3.Transform(mUp, matRot);
             mUp.Normalize();
 
-            mRight = Vector3.TransformCoordinate(mRight, matRot);
+            mRight = Vector3.Transform(mRight, matRot);
             mRight.Normalize();
 
             UpdateView();
@@ -180,11 +177,11 @@ namespace Neo.Scene
 
         public void Roll(float angle)
         {
-            var matRot = Matrix.CreateFromAxisAngle(mForward, MathHelper.DegreesToRadians(angle));
-            mUp = Vector3.TransformCoordinate(mUp, matRot);
+            var matRot = Matrix4.CreateFromAxisAngle(mForward, MathHelper.DegreesToRadians(angle));
+            mUp = Vector3.Transform(mUp, matRot);
             mUp.Normalize();
 
-            mRight = Vector3.TransformCoordinate(mRight, matRot);
+            mRight = Vector3.Transform(mRight, matRot);
             mRight.Normalize();
 
             UpdateView();

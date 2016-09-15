@@ -26,10 +26,7 @@ namespace Neo.Scene
 
         private void UpdateProjection()
         {
-            var matProjection = (LeftHanded == false)
-                ? Matrix4.PerspectiveFovRH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip)
-                : Matrix4.PerspectiveFovLH(MathUtil.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
-
+	        var matProjection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
             OnProjectionChanged(ref matProjection);
         }
 
