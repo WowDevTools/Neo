@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Collections.Generic;
-using SharpDX;
+using OpenTK;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {

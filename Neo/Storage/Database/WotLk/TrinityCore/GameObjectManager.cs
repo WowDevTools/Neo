@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
-using SharpDX;
+using OpenTK;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
@@ -80,7 +78,7 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
                         Z = float.Parse(dRow[11].ToString())
                     };
                     var gameobject = new SpawnedGameObject()
-                    { 
+                    {
                         SpawnGuid = int.Parse(dRow[0].ToString()),
                         GameObject = GetGameObjectByEntry(int.Parse(dRow[1].ToString())),
                         Map = int.Parse(dRow[2].ToString()),

@@ -34,14 +34,14 @@ namespace Neo.Storage.Database
                 }
                 catch (MySql.Data.MySqlClient.MySqlException ex)
                 {
-                    System.Windows.MessageBox.Show(ex.ToString());
+	                Console.WriteLine(ex.Message);
                 }
             }
             else
             {
-                MessageBox.Show("The connection is already open");
+	            Console.WriteLine("The connection is already open.");
             }
-            
+
             if (mMySqlConn.State != ConnectionState.Open)
                 throw new TimeoutException("Can't connect to the server.");
         }
@@ -97,7 +97,7 @@ namespace Neo.Storage.Database
                 }
                 catch (MySql.Data.MySqlClient.MySqlException ex)
                 {
-                    MessageBox.Show(ex.Message);
+	                Console.WriteLine(ex.Message);
                 }
                 return true;
             }

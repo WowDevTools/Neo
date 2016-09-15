@@ -1,4 +1,4 @@
-﻿using SharpDX;
+﻿using OpenTK;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {

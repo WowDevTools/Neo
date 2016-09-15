@@ -1,10 +1,11 @@
 ﻿using OpenTK;
+using Warcraft.Core;
 
 namespace Neo.Utils
 {
     static class MathExtensions
     {
-        public static BoundingBox Transform(this BoundingBox box, ref Matrix4 matrix)
+        public static Box Transform(this Box box, ref Matrix4 matrix)
         {
             var corners = new Vector3[8];
             box.GetCorners(corners);
@@ -14,12 +15,12 @@ namespace Neo.Utils
             for(var i = 0; i < corners.Length; ++i)
             {
                 Vector3 v;
-                Vector3.TransformCoordinate(ref corners[i], ref matrix, out v);
+                Vector3.Transform(ref corners[i], ref matrix, out v);
                 TakeMin(ref newMin, ref v);
                 TakeMax(ref newMax, ref v);
             }
 
-            return new BoundingBox(newMin, newMax);
+            return new Box(newMin, newMax);
         }
 
         public static void TakeMin(ref Vector3 v , ref Vector3 other)

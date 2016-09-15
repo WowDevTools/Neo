@@ -10,6 +10,7 @@ using Neo.UI;
 using Neo.Utils;
 using OpenTK;
 using OpenTK.Input;
+using Warcraft.Core;
 using Point = System.Drawing.Point;
 
 namespace Neo.Editing
@@ -259,7 +260,7 @@ namespace Neo.Editing
             WorldFrame.Instance.M2Manager.ViewChanged();
         }
 
-        private void AddDoodadToFileArea(int x, int y, int uuid, BoundingBox box)
+        private void AddDoodadToFileArea(int x, int y, int uuid, Box box)
         {
             var area = AdtFactory.Instance.CreateArea(WorldFrame.Instance.MapManager.Continent, x, y);
             try

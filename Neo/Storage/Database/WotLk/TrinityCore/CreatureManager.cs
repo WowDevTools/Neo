@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
-using SharpDX;
+using OpenTK;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
@@ -22,7 +22,7 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
             foreach (DataRow dRow in pDataTable.Rows)
             {
                 var creature = new Creature()
-                { 
+                {
                     EntryId = int.Parse(dRow[0].ToString()),
                     DifficultyEntry1 = int.Parse(dRow[1].ToString()),
                     DifficultyEntry2 = int.Parse(dRow[2].ToString()),

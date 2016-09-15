@@ -2,6 +2,7 @@
 using Neo.Scene;
 using Neo.UI;
 using Neo.Utils;
+using OpenTK;
 using Point = System.Drawing.Point;
 
 namespace Neo.Editing

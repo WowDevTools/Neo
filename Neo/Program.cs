@@ -13,7 +13,7 @@ namespace Neo
         [STAThread]
         static void Main()
         {
-            System.Windows.Forms.Application.EnableVisualStyles();
+            //System.Windows.Forms.Application.EnableVisualStyles();
             AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
 
             var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? Directory.GetCurrentDirectory();
@@ -25,8 +25,8 @@ namespace Neo
             if (!Directory.Exists(dbcdir))
                 Directory.CreateDirectory(dbcdir);
 
-            ProfileOptimization.SetProfileRoot(profilesDir);
-            ProfileOptimization.StartProfile("JitProfile.jpf");
+            //ProfileOptimization.SetProfileRoot(profilesDir);
+           // ProfileOptimization.StartProfile("JitProfile.jpf");
 
             FontCollection.Initialize();
             Settings.KeyBindings.Initialize();
@@ -42,6 +42,7 @@ namespace Neo
             WorldFrame.Instance.Initialize(window.DrawTarget, context);
             WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
 
+	        /*
             var wnd = new MainWindow {elementHost1 = {Child = window}};
             wnd.Show();
             var isClosed = false;
@@ -54,6 +55,7 @@ namespace Neo
                 context.EndFrame();
                 System.Windows.Forms.Application.DoEvents();
             }
+			*/
 
             WorldFrame.Instance.Shutdown();
         }
