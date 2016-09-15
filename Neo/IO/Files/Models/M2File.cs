@@ -27,6 +27,9 @@ namespace Neo.IO.Files.Models
 
         public TextureInfo[] TextureInfos { get; protected set; }
 
+        public List<Tuple<string, string, string>> CreatureVariations { get; protected set; }
+        public int CreatureVariationCurrent { get; set; } = 0;
+
         public string ModelRoot { get; private set; }
 
         public bool NeedsPerInstanceAnimation { get; protected set; }
@@ -48,6 +51,7 @@ namespace Neo.IO.Files.Models
             Vertices = new M2Vertex[0];
             Passes = new List<M2RenderPass>();
             Indices = new ushort[0];
+            CreatureVariations = new List<Tuple<string, string, string>>();
         }
 
         public abstract int GetNumberOfBones();
@@ -114,5 +118,7 @@ namespace Neo.IO.Files.Models
 
             return hasHit;
         }
+        
     }
+
 }
