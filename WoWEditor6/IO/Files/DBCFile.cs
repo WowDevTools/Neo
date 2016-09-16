@@ -137,6 +137,7 @@ namespace WoWEditor6.IO.Files
         private BinaryReader mReader;
         private Dictionary<int, string> mStringTable = new Dictionary<int, string>();
         private Dictionary<int, int> mIdLookup = new Dictionary<int, int>();
+        private List<object> mCache = new List<object>(); 
 
         private const int HEADER = 20;
 
@@ -205,6 +206,19 @@ namespace WoWEditor6.IO.Files
         }
 
 
+        public void BuildCache<T>() where T : struct
+        {
+            for (int i = 0; i < NumRows; i++)
+                mCache.Add(GetRow(i).Get<T>());
+        }
+
+        public void ClearCache()
+        {
+            mCache.Clear();
+            mCache.TrimExcess();
+        }
+
+
         public IDataStorageRecord GetRow(int index)
         {
             return new DbcRecord(mRecordSize, HEADER + index * mRecordSize, mReader, mStringTable);
@@ -226,6 +240,9 @@ namespace WoWEditor6.IO.Files
 
         public IList<T> GetAllRows<T>() where T : struct
         {
+            if (mCache.Count > 0)
+                return mCache.Cast<T>().ToList();
+
             List<T> files = new List<T>();
             for (int i = 0; i < NumRows; i++)
                 files.Add(GetRow(i).Get<T>());
@@ -425,5 +442,6 @@ namespace WoWEditor6.IO.Files
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+        
     }
 }

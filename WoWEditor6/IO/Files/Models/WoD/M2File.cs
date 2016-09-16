@@ -138,18 +138,25 @@ namespace WoWEditor6.IO.Files.Models.WoD
                 return Path.Combine(Path.GetDirectoryName(mFileName), f); //Add full directory location
             };
 
+            CreatureVariations = new List<Tuple<string, string, string>>();
             HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>();
+
             var fileid = Storage.DbcStorage.FileData
                                            .GetAllRows<WoD.FileDataIDEntry>()
                                            .Where(x => x.FilePath.ToLower() == Path.GetDirectoryName(mFileName).ToLower() && x.FileName.ToLower() == Path.GetFileName(mFileName).ToLower())
                                            .FirstOrDefault();
 
-
+            if(fileid.ID == 0) //Shouldn't happen (File Not Found)
+                return;
+            
             var modelData = Storage.DbcStorage.CreatureModelData
                                               .GetAllRows<WoD.CreatureModelDataEntry>()
                                               .Where(x => x.Filedataid == fileid.ID)
                                               .Select(x => x.Id)
                                               .ToList(); //Get all model data references
+
+            if(modelData.Count == 0) //No model data
+                return;
 
             var modelDisplay = Storage.DbcStorage.CreatureDisplayInfo
                                                  .GetAllRows<WoD.CreatureDisplayInfoEntry>()

@@ -155,12 +155,17 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                 return Path.Combine(Path.GetDirectoryName(mFileName), f); //Add full directory location
             };
 
-            HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>();
+            CreatureVariations = new List<Tuple<string, string, string>>();
+            HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>(); //Unique combinations only
+
             var modelData = Storage.DbcStorage.CreatureModelData
                                               .GetAllRows<Wotlk.CreatureModelDataEntry>()
                                               .Where(x => x.ModelPath.ToLower() == Path.ChangeExtension(mFileName, ".mdx").ToLower())
                                               .Select(x => x.ID)
                                               .ToList(); //Get all model data references
+
+            if (modelData.Count > 0) //No model data
+                return;
 
             var modelDisplay = Storage.DbcStorage.CreatureDisplayInfo
                                                  .GetAllRows<Wotlk.CreatureDisplayInfoEntry>()
@@ -175,7 +180,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     FormatPath(display.TextureVariation3)));
             }
 
-            CreatureVariations = new List<Tuple<string, string, string>>(variations);
+            CreatureVariations.AddRange(variations);
         }
 
         private void LoadSkins(BinaryReader reader)
