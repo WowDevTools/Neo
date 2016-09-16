@@ -174,7 +174,7 @@ namespace Neo.Scene
         private static Vector3 WorldToScreenCoords(Camera camera, Vector3 world)
         {
             var viewport = WorldFrame.Instance.GraphicsContext.Viewport;
-            var screenCoords = Vector3.Transform(world, camera.ViewProjection);
+            var screenCoords = Vector3.TransformVector(world, camera.ViewProjection);
 
             screenCoords.X = viewport.X + (1.0f + screenCoords.X) * viewport.Width / 2.0f;
             screenCoords.Y = viewport.Y + (1.0f - screenCoords.Y) * viewport.Height / 2.0f;

@@ -79,7 +79,7 @@ namespace Neo.Scene.Models.M2
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
         }
 
         ~M2RenderInstance()
@@ -125,11 +125,11 @@ namespace Neo.Scene.Models.M2
 
 	        Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
 
-            mInstanceMatrix = rotationMatrix * Matrix4.Scaling(mScale) * Matrix4.Translation(mPosition);
+            mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             UpdateModelNameplate();
         }
 
@@ -149,7 +149,7 @@ namespace Neo.Scene.Models.M2
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             UpdateModelNameplate();
         }
 
@@ -201,7 +201,7 @@ namespace Neo.Scene.Models.M2
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             UpdateModelNameplate();
         }
 

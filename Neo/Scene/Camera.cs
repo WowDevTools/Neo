@@ -147,7 +147,7 @@ namespace Neo.Scene
         public void Pitch(float angle)
         {
             var matRot = Matrix4.CreateFromAxisAngle(mRight, MathHelper.DegreesToRadians(angle));
-            mUp = Vector3.Transform(mUp, matRot);
+            mUp = Vector3.TransformVector(mUp, matRot);
             mUp.Normalize();
 
             if (mUp.Z < 0)
@@ -162,14 +162,14 @@ namespace Neo.Scene
         public void Yaw(float angle)
         {
             var matRot = Matrix4.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.DegreesToRadians(angle));
-            mForward = Vector3.Transform(mForward, matRot);
+            mForward = Vector3.TransformVector(mForward, matRot);
             mForward.Normalize();
 
             mTarget = Position + mForward;
-            mUp = Vector3.Transform(mUp, matRot);
+            mUp = Vector3.TransformVector(mUp, matRot);
             mUp.Normalize();
 
-            mRight = Vector3.Transform(mRight, matRot);
+            mRight = Vector3.TransformVector(mRight, matRot);
             mRight.Normalize();
 
             UpdateView();
@@ -178,10 +178,10 @@ namespace Neo.Scene
         public void Roll(float angle)
         {
             var matRot = Matrix4.CreateFromAxisAngle(mForward, MathHelper.DegreesToRadians(angle));
-            mUp = Vector3.Transform(mUp, matRot);
+            mUp = Vector3.TransformVector(mUp, matRot);
             mUp.Normalize();
 
-            mRight = Vector3.Transform(mRight, matRot);
+            mRight = Vector3.TransformVector(mRight, matRot);
             mRight.Normalize();
 
             UpdateView();

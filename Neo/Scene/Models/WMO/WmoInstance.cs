@@ -53,7 +53,7 @@ namespace Neo.Scene.Models.WMO
 	        mRenderer = new WeakReference<WmoRootRender>(model);
 
             InstanceCorners = model.BoundingBox.GetCorners();
-            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
 
             BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
             GroupBoxes = new Box[model.Groups.Count];
@@ -159,7 +159,7 @@ namespace Neo.Scene.Models.WMO
             }
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
             ModelRoot = mModel.Data;
             UpdateModelNameplate();
@@ -195,7 +195,7 @@ namespace Neo.Scene.Models.WMO
             }
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.Transform(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
             ModelRoot = mModel.Data;
             UpdateModelNameplate();

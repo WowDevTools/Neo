@@ -15,7 +15,7 @@ namespace Neo.Utils
             for(var i = 0; i < corners.Length; ++i)
             {
                 Vector3 v;
-                Vector3.Transform(ref corners[i], ref matrix, out v);
+                Vector3.TransformVector(ref corners[i], ref matrix, out v);
                 TakeMin(ref newMin, ref v);
                 TakeMax(ref newMax, ref v);
             }
