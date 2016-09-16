@@ -164,7 +164,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                                               .Select(x => x.ID)
                                               .ToList(); //Get all model data references
 
-            if (modelData.Count > 0) //No model data
+            if (modelData.Count == 0) //No model data
                 return;
 
             var modelDisplay = Storage.DbcStorage.CreatureDisplayInfo
