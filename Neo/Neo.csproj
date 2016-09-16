@@ -897,14 +897,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\lib\DBCLib\DBCLib.csproj">
-      <Project>{56986b19-61b4-41a0-b366-598a20c85eba}</Project>
-      <Name>DBCLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\lib\DBCLib\DBCLib.csproj">
-      <Project>{56986B19-61B4-41A0-B366-598A20C85EBA}</Project>
-      <Name>DBCLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\lib\libwarcraft\libwarcraft\libwarcraft.csproj">
       <Project>{DA06A44E-A67B-46C7-B07D-E90AEBED0502}</Project>
       <Name>libwarcraft</Name>
