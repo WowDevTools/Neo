@@ -180,7 +180,7 @@
                                 </StatusBar>
                             </Grid>
                         </avalon:LayoutDocument>
-                        <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800" x:Name="AssetBrowserDocument">
+                        <avalon:LayoutAnchorable Title="Asset Browser" AutoHideWidth="800" FloatingHeight="800" x:Name="AssetBrowserDocument" IsActiveChanged="AssetBrowserDocument_IsActiveChanged">
                             <dialogs:AssetBrowser VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                 <!-- Things todo here -->
                             </dialogs:AssetBrowser>

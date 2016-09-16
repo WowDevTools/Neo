@@ -7,7 +7,6 @@ using Neo.Resources;
 using Neo.Scene;
 using Neo.UI.Components;
 using Neo.Win32;
-using System.Windows.Input;
 using Neo.UI.Dialogs;
 using Neo.UI.Models;
 using Neo.UI.Widget;
@@ -84,7 +83,7 @@ namespace Neo.UI
 
         private void CreatureEditor_Click(object sender, RoutedEventArgs e)
         {
-            if(Storage.Database.MySqlConnector.Instance.CheckConnection())
+            if (Storage.Database.MySqlConnector.Instance.CheckConnection())
             {
                 var creatureEditor = new Dialogs.CreatureEditor();
                 creatureEditor.ShowDialog();
@@ -162,7 +161,7 @@ namespace Neo.UI
             CurrentPositionLabel.Content = "Position: " + position;
         }
 
-        public void OnUpdate(Vector3 modelPosition,Vector3 namePlatePosition)
+        public void OnUpdate(Vector3 modelPosition, Vector3 namePlatePosition)
         {
             CurrentModelPositionLabel.Content = "Model Position: " + modelPosition;
             CurrentNamePlatePositionLabel.Content = "NamePlate Position: " + namePlatePosition;
@@ -175,7 +174,7 @@ namespace Neo.UI
 
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                var pr = new Paragraph {Margin = new Thickness(0, 0, 0, 0)};
+                var pr = new Paragraph { Margin = new Thickness(0, 0, 0, 0) };
                 var titleRun = new Run(title);
                 switch (logLevel)
                 {
@@ -215,7 +214,7 @@ namespace Neo.UI
                     return;
 
                 var scrollView = border.Child as ScrollViewer;
-                if(scrollView != null) scrollView.ScrollToBottom();
+                if (scrollView != null) scrollView.ScrollToBottom();
             }));
         }
 
@@ -304,7 +303,7 @@ namespace Neo.UI
                     Width = 120,
                     Height = 120,
                     Background = new SolidColorBrush(Color.FromRgb(80, 80, 80)),
-                    Margin = new Thickness(5,5,0,0)
+                    Margin = new Thickness(5, 5, 0, 0)
                 };
 
                 var titleLabel = new TextBlock
@@ -315,7 +314,7 @@ namespace Neo.UI
                     FontSize = 16,
                     Foreground = Brushes.White,
                     TextWrapping = TextWrapping.Wrap,
-                    Margin = new Thickness(3,3,3,3)
+                    Margin = new Thickness(3, 3, 3, 3)
                 };
 
                 panel.Children.Add(titleLabel);
@@ -372,7 +371,7 @@ namespace Neo.UI
             }
 
             if (MapSortTypeCheckBox.IsChecked ?? false)
-                children.Sort((e1, e2) => String.Compare(((TextBlock) e1.Children[0]).Text, ((TextBlock) e2.Children[0]).Text, StringComparison.Ordinal));
+                children.Sort((e1, e2) => String.Compare(((TextBlock)e1.Children[0]).Text, ((TextBlock)e2.Children[0]).Text, StringComparison.Ordinal));
 
             children.ForEach(c => MapTileGrid.Children.Add(c));
 
@@ -562,6 +561,32 @@ namespace Neo.UI
 
             if (EditorWindowController.Instance.IEditingModel != null)
                 EditorWindowController.Instance.IEditingModel.SwitchWidgets(5);
+        }
+
+        private void AssetBrowserDocument_IsActiveChanged(object sender, EventArgs e)
+        {
+            if (AssetBrowserDocument.IsActive)
+            {
+                if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
+                {
+                    Storage.DbcStorage.CreatureDisplayInfo.BuildCache<IO.Files.Models.WoD.CreatureDisplayInfoEntry>();
+                    Storage.DbcStorage.CreatureModelData.BuildCache<IO.Files.Models.WoD.CreatureModelDataEntry>();
+                    Storage.DbcStorage.FileData.BuildCache<IO.Files.Models.WoD.FileDataIDEntry>();
+                }
+                else if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+                {
+                    Storage.DbcStorage.CreatureDisplayInfo.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoEntry>();
+                    Storage.DbcStorage.CreatureModelData.BuildCache<IO.Files.Models.Wotlk.CreatureModelDataEntry>();
+                }
+            }
+            else
+            {
+                if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
+                    Storage.DbcStorage.FileData.ClearCache();
+
+                Storage.DbcStorage.CreatureDisplayInfo.ClearCache();
+                Storage.DbcStorage.CreatureModelData.ClearCache();
+            }
         }
     }
 }

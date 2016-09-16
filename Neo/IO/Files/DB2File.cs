@@ -148,6 +148,7 @@ namespace Neo.IO.Files
         private BinaryReader mReader;
         private Dictionary<int, string> mStringTable = new Dictionary<int, string>();
         private Dictionary<int, int> mIdLookup = new Dictionary<int, int>();
+        private List<object> mCache = new List<object>();
 
         public int NumFields { get; private set; }
         public int NumRows { get; private set; }
@@ -242,10 +243,26 @@ namespace Neo.IO.Files
 
         public IList<T> GetAllRows<T>() where T : struct
         {
+            if (mCache.Count > 0)
+                return mCache.Cast<T>().ToList();
+
             List<T> files = new List<T>();
             for (int i = 0; i < NumRows; i++)
                 files.Add(GetRow(i).Get<T>());
             return files;
+        }
+
+
+        public void BuildCache<T>() where T : struct
+        {
+            for (int i = 0; i < NumRows; i++)
+                mCache.Add(GetRow(i).Get<T>());
+        }
+
+        public void ClearCache()
+        {
+            mCache.Clear();
+            mCache.TrimExcess();
         }
 
 
@@ -270,7 +287,7 @@ namespace Neo.IO.Files
             ms.Position = 4;
             ms.Write(BitConverter.GetBytes(NumRows - 1), 0, 4); //Update the record count
 
-            if(idLookup.Key == maxId)
+            if (idLookup.Key == maxId)
             {
                 mIdLookup.Remove(maxId);
                 ms.Position = 0x24;

@@ -24,6 +24,9 @@ namespace Neo.IO.Files
         void Save(string file);
         void ReLoad(Stream stream);
 
+        void BuildCache<T>() where T : struct;
+        void ClearCache();
+
         IDataStorageRecord GetRow(int index);
         IDataStorageRecord GetRowById(int id);
         IList<IDataStorageRecord> GetAllRows();
