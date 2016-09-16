@@ -52,7 +52,7 @@ namespace Neo.Scene
 
         private static ShaderProgram gWorldTextShader;
         private static ShaderProgram gWorldTextShader2D;
-        private static Graphics.BlendState gBlendState;
+        private static BlendState gBlendState;
 
         private static ConstantBuffer gPerDrawCallBuffer;
 
@@ -211,7 +211,7 @@ namespace Neo.Scene
             gMesh.IndexCount = 4;
             gMesh.StartVertex = 0;
             gMesh.StartIndex = 0;
-            gMesh.Topology = SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
+            gMesh.Topology = BeginMode.TriangleStrip;
 
             if (gMesh.Program != gWorldTextShader2D)
             {
@@ -311,7 +311,7 @@ namespace Neo.Scene
                     graphics.DrawString(mText, mFont, mBrush, 0, 0);
                 }
 
-                var rect = new System.Drawing.Rectangle(0, 0, width, height);
+                var rect = new Rectangle(0, 0, width, height);
                 var bits = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
 
                 width = bits.Width;
