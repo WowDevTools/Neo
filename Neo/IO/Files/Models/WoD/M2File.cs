@@ -61,7 +61,10 @@ namespace Neo.IO.Files.Models.WoD
                     mBlendMap = reader.ReadArray<ushort>(nBlendMaps);
                 }
 
-                BoundingBox = new Box(mHeader.VertexBoxMin.AsWarcraftVector(), mHeader.VertexBoxMax.AsWarcraftVector());
+                BoundingBox = new BoundingBox(mHeader.VertexBoxMin, mHeader.VertexBoxMax);
+
+                LoadCreatureVariations();
+
                 strm.Position = mHeader.OfsName;
                 if (mHeader.LenName > 0)
                     mModelName = Encoding.ASCII.GetString(reader.ReadBytes(mHeader.LenName - 1));
@@ -81,7 +84,29 @@ namespace Neo.IO.Files.Models.WoD
                         mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(texName);
                     }
                     else
-                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
+                    {
+                        switch (tex.type)
+                        {
+                            case 11:
+                                if (CreatureVariations.Count > CreatureVariationCurrent)
+                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item1))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item1);
+                                break;
+                            case 12:
+                                if (CreatureVariations.Count > CreatureVariationCurrent)
+                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item2))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item2);
+                                break;
+                            case 13:
+                                if (CreatureVariations.Count > CreatureVariationCurrent)
+                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item3))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item3);
+                                break;
+                            default:
+                                mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
+                                break;
+                        }
+                    }
 
                     Graphics.Texture.SamplerFlagType samplerFlags;
 
@@ -103,6 +128,44 @@ namespace Neo.IO.Files.Models.WoD
             }
 
             return true;
+        }
+
+        private void LoadCreatureVariations()
+        {
+            Func<string, string> FormatPath = f =>
+            {
+                if (f == "") return string.Empty; //Ignore blank
+                if (Path.GetExtension(f) != ".blp") f += ".blp"; //Append filetype
+                return Path.Combine(Path.GetDirectoryName(mFileName), f); //Add full directory location
+            };
+
+            HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>();
+            var fileid = Storage.DbcStorage.FileData
+                                           .GetAllRows<WoD.FileDataIDEntry>()
+                                           .Where(x => x.FilePath.ToLower() == Path.GetDirectoryName(mFileName).ToLower() && x.FileName.ToLower() == Path.GetFileName(mFileName).ToLower())
+                                           .FirstOrDefault();
+
+
+            var modelData = Storage.DbcStorage.CreatureModelData
+                                              .GetAllRows<WoD.CreatureModelDataEntry>()
+                                              .Where(x => x.Filedataid == fileid.ID)
+                                              .Select(x => x.Id)
+                                              .ToList(); //Get all model data references
+
+            var modelDisplay = Storage.DbcStorage.CreatureDisplayInfo
+                                                 .GetAllRows<WoD.CreatureDisplayInfoEntry>()
+                                                 .Where(x => modelData.Contains(x.ModelId))
+                                                 .ToList(); //Get all display entries
+
+            foreach (var display in modelDisplay)
+            {
+                variations.Add(new Tuple<string, string, string>(
+                    FormatPath(display.TextureVariation1),
+                    FormatPath(display.TextureVariation2),
+                    FormatPath(display.TextureVariation3)));
+            }
+
+            CreatureVariations = new List<Tuple<string, string, string>>(variations);
         }
 
         private void LoadSkins(BinaryReader reader)

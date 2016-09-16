@@ -242,6 +242,7 @@
     <Compile Include="IO\Files\Models\WoD\M2SkinFile.cs" />
     <Compile Include="IO\Files\Models\WoD\M2TexColorAnimation.cs" />
     <Compile Include="IO\Files\Models\WoD\M2UVAnimation.cs" />
+    <Compile Include="IO\Files\Models\WoD\ModelStructs.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoGroup.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoRoot.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoStructures.cs" />
