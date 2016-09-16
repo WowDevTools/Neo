@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
+using OpenTK;
 
-namespace WoWEditor6.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.WoD
 {
     [StructLayout(LayoutKind.Sequential)]
     struct CreatureDisplayInfoEntry
@@ -53,8 +49,8 @@ namespace WoWEditor6.IO.Files.Models.WoD
         public readonly float Collisionwidth;
         public readonly float Collisionheight;
         public readonly float Mountheight;
-        public readonly SharpDX.Vector3 Geoboxmin;
-        public readonly SharpDX.Vector3 Geoboxmax;
+        public readonly Vector3 Geoboxmin;
+        public readonly Vector3 Geoboxmax;
         public readonly float Worldeffectscale;
         public readonly float Attachedeffectscale;
         public readonly float Missilecollisionradius;
