@@ -90,6 +90,8 @@ namespace Neo.Editing
                 return false;
 
             var bindings = Settings.KeyBindings.Instance;
+
+	        // TODO: Replace with GDK keyboard monitoring
             var state = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(state);
 

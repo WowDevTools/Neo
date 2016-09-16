@@ -14,7 +14,7 @@ namespace Neo.Editing
 
         public IModelInstance SelectedModel { get; set; }
 
-        private Point mLastCursorPosition = Cursor.Position;
+	    private Point mLastCursorPosition = InterfaceHelper.GetCursorPosition();
         private Vector3 mLastPos = EditManager.Instance.MousePosition;
         private const int Slowness = 1;
         public bool IsCopying { get; set; }
@@ -29,15 +29,15 @@ namespace Neo.Editing
             if (SelectedModel == null)
             {
                 IsCopying = false;
-                mLastCursorPosition = Cursor.Position;
-                mLastPos = EditManager.Instance.MousePosition;
+                mLastCursorPosition = InterfaceHelper.GetCursorPosition();
+	            mLastPos = EditManager.Instance.MousePosition;
 
                 EditorWindowController.Instance.OnUpdate(Vector3.Zero, Vector3.Zero);
                 return;
             }
 
-            var curPos = Cursor.Position;
-            var dpos = new Point(curPos.X - mLastCursorPosition.X, curPos.Y - mLastCursorPosition.Y);
+            var curPos = InterfaceHelper.GetCursorPosition();
+	        var dpos = new Point(curPos.X - mLastCursorPosition.X, curPos.Y - mLastCursorPosition.Y);
 
             EditorWindowController.Instance.OnUpdate(SelectedModel.GetPosition(),SelectedModel.GetNamePlatePosition());
 
@@ -75,13 +75,13 @@ namespace Neo.Editing
                 SelectedModel.UpdateScale(amount);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
-            if (mmbDown && !altDown && Cursor.Position != mLastCursorPosition) // Moving
+            if (mmbDown && !altDown && InterfaceHelper.GetCursorPosition() != mLastCursorPosition) // Moving
             {
                 Vector3 delta;
 
                 delta.X = EditManager.Instance.MousePosition.X - mLastPos.X;
                 delta.Y = EditManager.Instance.MousePosition.Y - mLastPos.Y;
-                delta.Z = -(Cursor.Position.Y - mLastCursorPosition.Y); //Better to use the 2d screen pos of the mouse.
+                delta.Z = -(InterfaceHelper.GetCursorPosition().Y - mLastCursorPosition.Y); //Better to use the 2d screen pos of the mouse.
 
                 var position = new Vector3(!shiftDown ? delta.X/ Slowness : 0, !shiftDown ? delta.Y/ Slowness : 0, shiftDown ? delta.Z/ Slowness : 0);
 

@@ -86,8 +86,8 @@ namespace Neo.Editing
 
         public void OnUpdate()
         {
-            var cursor = Cursor.Position;
-            if (mHoveredInstance == null)
+	        var cursor = InterfaceHelper.GetCursorPosition();
+	        if (mHoveredInstance == null)
             {
                 mLastCursorPos = cursor;
                 return;

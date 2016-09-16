@@ -313,7 +313,7 @@ namespace Neo.UI.Components
             var vp = ctx.Viewport;
             ctx.Context.Rasterizer.SetViewport(new Viewport(0, 0, ClientSize.Width, ClientSize.Height, 0.0f, 1.0f));
 
-            ctx.Context.VertexShader.SetConstantBuffer(0, mMatrixBuffer.Native);
+            ctx.Context.VertexShader.SetConstantBuffer(0, mMatrixBuffer.BufferID);
             mRenderer.RenderPortrait();
 
             mTarget.Remove();

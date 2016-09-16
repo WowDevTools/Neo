@@ -4,12 +4,12 @@ using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
 {
-    abstract class Buffer : IDisposable
+    public abstract class Buffer : IDisposable
     {
         private BufferDescription mDescription;
         private GxContext mContext;
 
-        public SharpDX.Direct3D11.Buffer Native { get; private set; }
+        public SharpDX.Direct3D11.Buffer BufferID { get; private set; }
 
         protected Buffer(GxContext context, BindFlags binding)
         {
@@ -33,10 +33,10 @@ namespace Neo.Graphics
 
         private void Dispose(bool disposing)
         {
-            if (Native != null)
+            if (BufferID != null)
             {
-                Native.Dispose();
-                Native = null;
+                BufferID.Dispose();
+                BufferID = null;
             }
 
             mContext = null;
@@ -63,18 +63,18 @@ namespace Neo.Graphics
             if (length > mDescription.SizeInBytes)
             {
                 mDescription.SizeInBytes = length;
-                if (Native != null)
-                    Native.Dispose();
+                if (BufferID != null)
+                    BufferID.Dispose();
 
                 using (var strm = new DataStream(length, true, true))
                 {
                     strm.Write(value);
                     strm.Position = 0;
-                    Native = new SharpDX.Direct3D11.Buffer(mContext.Device, strm, mDescription);
+                    BufferID = new SharpDX.Direct3D11.Buffer(mContext.Device, strm, mDescription);
                 }
             }
             else
-                mContext.Context.UpdateSubresource(ref value, Native);
+                mContext.Context.UpdateSubresource(ref value, BufferID);
         }
 
         private void Resize<T>(int length, T[] data) where T : struct
@@ -82,8 +82,8 @@ namespace Neo.Graphics
             if (length > mDescription.SizeInBytes)
             {
                 mDescription.SizeInBytes = length;
-                if (Native != null)
-                    Native.Dispose();
+                if (BufferID != null)
+                    BufferID.Dispose();
 
                 if (data != null)
                 {
@@ -91,14 +91,14 @@ namespace Neo.Graphics
                     {
                         strm.WriteRange(data);
                         strm.Position = 0;
-                        Native = new SharpDX.Direct3D11.Buffer(mContext.Device, strm, mDescription);
+                        BufferID = new SharpDX.Direct3D11.Buffer(mContext.Device, strm, mDescription);
                     }
                 }
                 else
-                    Native = new SharpDX.Direct3D11.Buffer(mContext.Device, mDescription);
+                    BufferID = new SharpDX.Direct3D11.Buffer(mContext.Device, mDescription);
             }
             else
-                mContext.Context.UpdateSubresource(data, Native);
+                mContext.Context.UpdateSubresource(data, BufferID);
         }
     }
 }

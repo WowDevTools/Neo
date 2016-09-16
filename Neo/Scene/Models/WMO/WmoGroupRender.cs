@@ -38,7 +38,7 @@ namespace Neo.Scene.Models.WMO
 
         public IO.Files.Models.WmoGroup Data { get; private set; }
 
-        public Box BoundingBox { get { return Data.BoundingBox; } }
+        public BoundingBox BoundingBox { get { return Data.BoundingBox; } }
 
         public WmoGroupRender(IO.Files.Models.WmoGroup group, WmoRootRender root)
         {

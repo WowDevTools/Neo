@@ -235,8 +235,8 @@ namespace Neo.Scene
                 CheckUpdateGlobalBuffer();
             }
 
-            GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.Native);
-            GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.Native);
+            GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
+            GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
 
             MapManager.OnFrame(ActiveCamera);
             WmoManager.OnFrame(ActiveCamera);
@@ -294,7 +294,7 @@ namespace Neo.Scene
 
         private void UpdateCursorPosition(bool forced = false)
         {
-            var pos = mWindow.PointToClient(Cursor.Position);
+            var pos = mWindow.PointToClient(InterfaceHelper.GetCursorPosition());
             if (LastMouseIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
             {
                 mLastCursorPosition = new Point(pos.X, pos.Y);
@@ -366,7 +366,7 @@ namespace Neo.Scene
 
         private void OnRenderWindowMouseDown(object sender, MouseEventArgs mouseEventArgs)
         {
-            var pos = mWindow.PointToClient(Cursor.Position);
+            var pos = mWindow.PointToClient(InterfaceHelper.GetCursorPosition());
             var intersection = new IntersectionParams(ActiveCamera.ViewInverse, ActiveCamera.ProjectionInverse,
                 new Vector2(pos.X, pos.Y));
 

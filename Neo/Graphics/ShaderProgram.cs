@@ -79,22 +79,22 @@ namespace Neo.Graphics
 
         public void SetVertexConstantBuffer(int slot, ConstantBuffer buffer)
         {
-            mContext.Context.VertexShader.SetConstantBuffer(slot, buffer.Native);
+            mContext.Context.VertexShader.SetConstantBuffer(slot, buffer.BufferID);
         }
 
         public void SetVertexConstantBuffers(int slot, params ConstantBuffer[] buffers)
         {
-            mContext.Context.VertexShader.SetConstantBuffers(slot, buffers.Select(b => b.Native).ToArray());
+            mContext.Context.VertexShader.SetConstantBuffers(slot, buffers.Select(b => b.BufferID).ToArray());
         }
 
         public void SetPixelConstantBuffer(int slot, ConstantBuffer buffer)
         {
-            mContext.Context.PixelShader.SetConstantBuffer(slot, buffer.Native);
+            mContext.Context.PixelShader.SetConstantBuffer(slot, buffer.BufferID);
         }
 
         public void SetPixelConstantBuffers(int slot, params ConstantBuffer[] buffers)
         {
-            mContext.Context.PixelShader.SetConstantBuffers(slot, buffers.Select(b => b.Native).ToArray());
+            mContext.Context.PixelShader.SetConstantBuffers(slot, buffers.Select(b => b.BufferID).ToArray());
         }
 
         public void SetVertexShader(byte[] code)

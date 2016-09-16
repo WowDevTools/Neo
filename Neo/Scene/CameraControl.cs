@@ -50,7 +50,7 @@ namespace Neo.Scene
         {
             if (mWindow.Focused == false || stateOnly)
             {
-                mLastCursorPos = Cursor.Position;
+                mLastCursorPos = InterfaceHelper.GetCursorPosition();
                 mLastUpdate = DateTime.Now;
                 return;
             }
@@ -106,7 +106,7 @@ namespace Neo.Scene
 
             if (KeyHelper.IsKeyDown(keyState, Keys.RButton) && !KeyHelper.IsKeyDown(keyState, Keys.ControlKey) && !KeyHelper.IsKeyDown(keyState, Keys.Menu) && !KeyHelper.IsKeyDown(keyState, Keys.ShiftKey))
             {
-                var curPos = Cursor.Position;
+                var curPos = InterfaceHelper.GetCursorPosition();
                 var dx = curPos.X - mLastCursorPos.X;
                 var dy = curPos.Y - mLastCursorPos.Y;
 
@@ -121,7 +121,7 @@ namespace Neo.Scene
                 PositionChanged(cam.Position, updateTerrain);
 
             mLastUpdate = DateTime.Now;
-            mLastCursorPos = Cursor.Position;
+            mLastCursorPos = InterfaceHelper.GetCursorPosition();
         }
 
         public void HandleMouseWheel(int delta)

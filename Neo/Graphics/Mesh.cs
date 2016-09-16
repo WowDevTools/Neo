@@ -43,10 +43,10 @@ namespace Neo.Graphics
         {
             var ctx = mContext.Context;
             if (VertexBuffer != null)
-                ctx.InputAssembler.SetVertexBuffers(0, new[] {VertexBuffer.Native}, new[] {Stride}, new[] {0});
+                ctx.InputAssembler.SetVertexBuffers(0, new[] {VertexBuffer.BufferID}, new[] {Stride}, new[] {0});
 
             if (IndexBuffer != null)
-                ctx.InputAssembler.SetIndexBuffer(IndexBuffer.Native, IndexBuffer.IndexFormat, 0);
+                ctx.InputAssembler.SetIndexBuffer(IndexBuffer.BufferID, IndexBuffer.IndexFormat, 0);
 
             if (DepthState != null)
                 ctx.OutputMerger.DepthStencilState = DepthState.Native;
@@ -83,17 +83,17 @@ namespace Neo.Graphics
                 return;
 
             mContext.Context.InputAssembler.SetVertexBuffers(1,
-                new VertexBufferBinding(buffer.Native, InstanceStride, 0));
+                new VertexBufferBinding(buffer.BufferID, InstanceStride, 0));
         }
 
         public void UpdateIndexBuffer(IndexBuffer ib)
         {
-            mContext.Context.InputAssembler.SetIndexBuffer(ib.Native, ib.IndexFormat, 0);
+            mContext.Context.InputAssembler.SetIndexBuffer(ib.BufferID, ib.IndexFormat, 0);
         }
 
         public void UpdateVertexBuffer(VertexBuffer vb)
         {
-            mContext.Context.InputAssembler.SetVertexBuffers(0, new[] { vb.Native }, new[] { Stride }, new[] { 0 });
+            mContext.Context.InputAssembler.SetVertexBuffers(0, new[] { vb.BufferID }, new[] { Stride }, new[] { 0 });
         }
 
         public void UpdateBlendState(BlendState state)

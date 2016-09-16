@@ -13,7 +13,7 @@ namespace Neo.Editing
 
         private DateTime mLastChange = DateTime.Now;
 
-        private Point mLastCursorPosition = Cursor.Position;
+	    private Point mLastCursorPosition = InterfaceHelper.GetCursorPosition();
 
         private float mInnerRadius = 18.0f;
         private float mOuterRadius = 20.0f;
@@ -172,6 +172,7 @@ namespace Neo.Editing
             else if ((CurrentMode & EditMode.Texturing) != 0)
                 TextureChangeManager.Instance.OnChange(diff);
 
+	        // TODO: GDK hotkey implementation
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);
             var altDown = KeyHelper.IsKeyDown(keyState, Keys.Menu);
@@ -181,8 +182,8 @@ namespace Neo.Editing
             var MMBDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
             var tDown = KeyHelper.IsKeyDown(keyState, Keys.T);
 
-            var curPos = Cursor.Position;
-            var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
+	        Point curPos = InterfaceHelper.GetCursorPosition();
+	        var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
 
             if (mIsTabletOn) // All tablet control editing is here.
             {
@@ -412,11 +413,8 @@ namespace Neo.Editing
                     HandleTabletControlChanged(mIsTabletOn);
                 }
 
-                mLastCursorPosition = Cursor.Position;
-
+	            mLastCursorPosition = curPos;
             }
-
-
         }
 
         public void EnableShading()
