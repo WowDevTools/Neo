@@ -1,6 +1,6 @@
 ﻿using System;
 using OpenTK;
-using Warcraft.Core;
+using SlimTK;
 
 namespace Neo.Graphics
 {
@@ -10,7 +10,7 @@ namespace Neo.Graphics
         private static readonly Vector3[] BoxCorners = new Vector3[8];
         private readonly Plane[] mPlanes = new Plane[6];
 
-        public ContainmentType Contains(ref Box box)
+        public ContainmentType Contains(ref BoundingBox box)
         {
             var result = ContainmentType.Contains;
             box.GetCorners(BoxCorners);
@@ -40,7 +40,7 @@ namespace Neo.Graphics
             return result;
         }
 
-        public ContainmentType Contains(ref Sphere sphere)
+        public ContainmentType Contains(ref BoundingSphere sphere)
         {
             float distance;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Neo.Graphics;
 using Neo.Scene.Models;
-using Warcraft.Core;
+using SlimTK;
 
 namespace Neo.Scene.Terrain
 {
@@ -12,8 +12,8 @@ namespace Neo.Scene.Terrain
 
         private VertexBuffer mVertexBuffer;
         private MapChunkRender[] mChunks = new MapChunkRender[256];
-        private Box mBoundingBox;
-        private Box mModelBox;
+        private BoundingBox mBoundingBox;
+        private BoundingBox mModelBox;
         private bool mIsDirty;
 
         public int IndexX { get; private set; }

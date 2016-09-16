@@ -3,11 +3,12 @@ using Neo.Utils;
 using Neo.IO.Files.Models;
 using OpenTK;
 using OpenTK.Graphics;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.Scene.Models.M2
 {
-    class M2RenderInstance : IModelInstance
+    public class M2RenderInstance : IModelInstance
     {
         private Matrix4 mInstanceMatrix;
         private Matrix4 mInverseMatrix;
@@ -24,7 +25,7 @@ namespace Neo.Scene.Models.M2
 
         private M2File mModel;
         private M2Renderer mRenderer;
-        private Box mBoundingBox;
+        private BoundingBox mBoundingBox;
 
         private WorldText mWorldModelName;
 
@@ -36,8 +37,8 @@ namespace Neo.Scene.Models.M2
 
         public M2Renderer Renderer { get { return mRenderer; } }
 
-        public Box BoundingBox { get { return mBoundingBox; } }
-        public Box InstanceBoundingBox { get { return BoundingBox; } }
+        public BoundingBox BoundingBox { get { return mBoundingBox; } }
+        public BoundingBox InstanceBoundingBox { get { return BoundingBox; } }
 
         public Vector3[] InstanceCorners { get; private set; }
 
@@ -236,17 +237,17 @@ namespace Neo.Scene.Models.M2
             if (mWorldModelName == null)
                 return;
 
-            Vector3 diff = mBoundingBox.TopCorner - mBoundingBox.BottomCorner;
+            Vector3 diff = mBoundingBox.Minimum - mBoundingBox.Maximum;
             mWorldModelName.Scaling = diff.Length / 60.0f;
             if (mWorldModelName.Scaling < 0.3f)
                 mWorldModelName.Scaling = 0.3f;
 
-            Vector3 position = mBoundingBox.BottomCorner + (diff * 0.5f);
-            position.Z = 1.5f + mBoundingBox.BottomCorner.Z + (diff.Z * 1.08f);
+            Vector3 position = mBoundingBox.Minimum + (diff * 0.5f);
+            position.Z = 1.5f + mBoundingBox.Minimum.Z + (diff.Z * 1.08f);
             mWorldModelName.Position = position;
         }
 
-        private void UpdateHighlightColor(Vector4 highlightColor)
+        private void UpdateHighlightColor(Color4 highlightColor)
         {
             mHighlightColor = highlightColor;
         }
@@ -266,8 +267,8 @@ namespace Neo.Scene.Models.M2
             var timeDelta = time - mHighlightStartTime;
             var timeMs = timeDelta.TotalMilliseconds;
 
-            var src = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-            var dst = new Vector4(1.5f, 1.5f, 1.5f, 1.0f);
+            var src = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
+            var dst = new Color4(1.5f, 1.5f, 1.5f, 1.0f);
 
             var fac = (float)(timeMs / 500.0);
             if (fac > 1.0f)

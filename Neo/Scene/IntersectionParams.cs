@@ -6,7 +6,7 @@ using OpenTK;
 
 namespace Neo.Scene
 {
-    class IntersectionParams
+    public class IntersectionParams
     {
         public M2File M2Model { get; set; }
         public M2RenderInstance M2Instance { get; set; }

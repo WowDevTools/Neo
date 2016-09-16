@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Numerics;
+using OpenTK;
 
 namespace Neo.IO.Files.Sky
 {

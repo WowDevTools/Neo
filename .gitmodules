@@ -4,3 +4,6 @@
 [submodule "lib/libwarcraft"]
 	path = lib/libwarcraft
 	url = git@github.com:WowDevTools/libwarcraft.git
+[submodule "lib/SlimTK"]
+	path = lib/SlimTK
+	url = https://github.com/WowDevTools/SlimTK.git

@@ -9,7 +9,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Neo.Graphics
 {
-    class GxContext : IDisposable
+    public class GxContext : IDisposable
     {
         private readonly Factory1 mFactory;
         private readonly RenderControl mWindow;

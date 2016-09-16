@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using OpenTK;
-using Warcraft.Core;
+using SlimTK;
 
 namespace Neo.IO.Files.Models
 {
-    class TextureInfo
+	public class TextureInfo
     {
         public int TextureType { get; set; }
         public Graphics.Texture.SamplerFlagType SamplerFlags { get; set; }
         public Graphics.Texture Texture { get; set; }
     }
 
-    abstract class M2File
+    public abstract class M2File
     {
         protected M2SubMeshInfo[] mSubMeshes = new M2SubMeshInfo[0];
 
@@ -21,7 +21,7 @@ namespace Neo.IO.Files.Models
         public List<M2RenderPass> Passes { get; private set; }
         public ushort[] Indices { get; protected set; }
 
-        public Box BoundingBox { get; protected set; }
+        public BoundingBox BoundingBox { get; protected set; }
         public bool HasBlendPass { get; protected set; }
         public bool HasOpaquePass { get; protected set; }
 
@@ -118,7 +118,7 @@ namespace Neo.IO.Files.Models
 
             return hasHit;
         }
-        
+
     }
 
 }

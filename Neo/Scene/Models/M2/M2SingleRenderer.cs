@@ -4,6 +4,7 @@ using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Storage;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace Neo.Scene.Models.M2
 {
@@ -25,7 +26,7 @@ namespace Neo.Scene.Models.M2
         struct PerDrawCallBuffer
         {
             public Matrix4 instanceMat;
-            public Vector4 colorMod;
+            public Color4 colorMod;
         }
 
         private static Mesh gMesh;

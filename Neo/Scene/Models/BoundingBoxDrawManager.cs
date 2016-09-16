@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Microsoft.SqlServer.Server;
 using Neo.Graphics;
 using OpenTK;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.Scene.Models
@@ -16,10 +18,10 @@ namespace Neo.Scene.Models
             public Vector3 texCoord;
         }
 
-        private Box mBox;
+        private BoundingBox mBox;
         private VertexBuffer mVertexBuffer;
 
-        public BoundingBoxInstance(Box box)
+        public BoundingBoxInstance(BoundingBox box)
         {
             mBox = box;
             BuildVertices();
@@ -50,8 +52,8 @@ namespace Neo.Scene.Models
 
         private void BuildVertices()
         {
-            var minimum = mBox.BottomCorner;
-            var maximum = mBox.TopCorner;
+            var minimum = mBox.Minimum;
+            var maximum = mBox.Maximum;
 
             #region Vertex Building
             var vertices = new[]

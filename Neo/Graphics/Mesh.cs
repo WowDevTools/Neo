@@ -5,7 +5,7 @@ using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
 {
-    class Mesh
+    public class Mesh
     {
         private readonly List<VertexElement> mElements = new List<VertexElement>();
         private ShaderProgram mProgram;

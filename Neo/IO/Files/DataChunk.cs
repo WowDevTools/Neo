@@ -1,7 +1,7 @@
 ﻿
 namespace Neo.IO.Files
 {
-    struct DataChunk
+    public struct DataChunk
     {
         public uint Signature;
         public int Size;

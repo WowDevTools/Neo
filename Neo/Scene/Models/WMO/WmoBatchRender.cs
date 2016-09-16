@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenTK;
+using SlimTK;
 
 namespace Neo.Scene.Models.WMO
 {

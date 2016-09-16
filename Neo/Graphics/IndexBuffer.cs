@@ -2,7 +2,7 @@
 
 namespace Neo.Graphics
 {
-    class IndexBuffer : Buffer
+	public class IndexBuffer : Buffer
     {
         public IndexBuffer(GxContext context) :
             base(context, SharpDX.Direct3D11.BindFlags.IndexBuffer)

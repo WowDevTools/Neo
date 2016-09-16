@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenTK;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.Wotlk
@@ -22,8 +23,8 @@ namespace Neo.IO.Files.Models.Wotlk
         private Vector3[] mNormals = new Vector3[0];
         private Vector2[] mTexCoords = new Vector2[0];
 
-        public Vector3 MinPosition { get { return BoundingBox.BottomCorner; } }
-        public Vector3 MaxPosition { get { return BoundingBox.TopCorner; } }
+        public Vector3 MinPosition { get { return BoundingBox.Minimum; } }
+        public Vector3 MaxPosition { get { return BoundingBox.Maximum; } }
 
         public WmoGroup(string fileName, WmoRoot root)
         {
@@ -285,7 +286,7 @@ namespace Neo.IO.Files.Models.Wotlk
                 if (v.Z > maxPos.Z) maxPos.Z = v.Z;
             }
 
-            BoundingBox = new Box(minPos, maxPos);
+            BoundingBox = new BoundingBox(minPos, maxPos);
             Vertices = mVertices;
 
             return true;

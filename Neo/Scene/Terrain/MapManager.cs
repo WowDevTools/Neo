@@ -290,9 +290,9 @@ namespace Neo.Scene.Terrain
             if (GetLandHeight(mEntryPoint.X, 64.0f * Metrics.TileSize - mEntryPoint.Y, out height))
             {
                 height += 50.0f;
-                SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint, height));
+                SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint.X, mEntryPoint.Y, height));
 
-                var entryPoint = new Vector3(mEntryPoint, height);
+                var entryPoint = new Vector3(mEntryPoint.X, mEntryPoint.Y, height);
                 if (FileManager.Instance.Version > FileDataVersion.Mists)
                     entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
 
@@ -302,7 +302,7 @@ namespace Neo.Scene.Terrain
                 WorldFrame.Instance.Dispatcher.BeginInvoke(
                     () =>
                     {
-                        SkySphere.UpdatePosition(new Vector3(mEntryPoint, height));
+                        SkySphere.UpdatePosition(new Vector3(mEntryPoint.X, mEntryPoint.Y, height));
                         SkyManager.Instance.SyncUpdate();
                         WorldFrame.Instance.CamControl.ForceUpdate(WorldFrame.Instance.ActiveCamera.Position);
                         WorldFrame.Instance.M2Manager.ViewChanged();

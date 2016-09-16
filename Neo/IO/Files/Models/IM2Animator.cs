@@ -2,7 +2,7 @@
 
 namespace Neo.IO.Files.Models
 {
-    class BillboardParameters
+	public class BillboardParameters
     {
         public Vector3 Forward;
         public Vector3 Right;
@@ -10,7 +10,7 @@ namespace Neo.IO.Files.Models
         public Matrix4 InverseRotation;
     }
 
-    interface IM2Animator
+	public interface IM2Animator
     {
         void Update(BillboardParameters billboard);
 

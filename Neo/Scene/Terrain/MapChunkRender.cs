@@ -5,6 +5,7 @@ using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Scene.Models;
 using OpenTK;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.Scene.Terrain
@@ -41,8 +42,8 @@ namespace Neo.Scene.Terrain
         private Graphics.Texture mAlphaTexture;
         private Graphics.Texture mHoleTexture;
 
-        private Box mBoundingBox;
-        private Box mModelBox;
+        private BoundingBox mBoundingBox;
+        private BoundingBox mModelBox;
 
         private TexAnimBuffer mTexAnimStore;
         private readonly Vector2[] mTexAnimDirections = new Vector2[4];
@@ -222,7 +223,8 @@ namespace Neo.Scene.Terrain
                         rotation += (float)Math.PI;
 
                     var matrix = Matrix4.CreateRotationZ(rotation);
-                    var dir = Vector2.TransformCoordinate(new Vector2(0, 1), matrix);
+	                // PORT: Potentional bug (TransformVector -> Transform)
+                    var dir = Vector2.Transform(new Vector2(0, 1), matrix);
                     mTexAnimDirections[i] = dir;
 
                     mTexAnimDirections[i].Normalize();

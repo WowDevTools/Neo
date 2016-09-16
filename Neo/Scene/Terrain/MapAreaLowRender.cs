@@ -1,11 +1,12 @@
 ﻿using System;
 using Neo.Graphics;
 using OpenTK;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.Scene.Terrain
 {
-    class MapAreaLowRender : IDisposable
+    public class MapAreaLowRender : IDisposable
     {
         private const float StepX = Metrics.TileSize / 16.0f;
         private const float StepY = Metrics.TileSize / 32.0f;
@@ -14,7 +15,7 @@ namespace Neo.Scene.Terrain
         private bool mSyncLoaded;
 
         private Vector3[] mVertexData;
-        private Box mBoundingBox;
+        private BoundingBox mBoundingBox;
         private VertexBuffer mVertexBuffer;
 
         public static Mesh Mesh { get; private set; }
@@ -111,7 +112,7 @@ namespace Neo.Scene.Terrain
                 }
             }
 
-            mBoundingBox = new Box(posMin, posMax);
+            mBoundingBox = new BoundingBox(posMin, posMax);
             mAsyncLoaded = true;
         }
 

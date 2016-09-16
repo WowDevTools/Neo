@@ -5,7 +5,7 @@ using System.Linq;
 using Neo.Editing;
 using Neo.Scene;
 using OpenTK;
-using Warcraft.Core;
+using SlimTK;
 
 namespace Neo.IO.Files.Terrain
 {
@@ -29,8 +29,8 @@ namespace Neo.IO.Files.Terrain
         public IList<Graphics.Texture> Textures { get; protected set; }
         public IList<Graphics.Texture> SpecularTextures { get; protected set; }
         public IList<string> TextureNames { get; protected set; }
-        public Box BoundingBox { get; protected set; }
-        public Box ModelBox { get; protected set; }
+        public BoundingBox BoundingBox { get; protected set; }
+        public BoundingBox ModelBox { get; protected set; }
         public float[] TextureScales { get; protected set; }
         public float[] SpecularFactors { get; protected set; }
 
@@ -501,8 +501,8 @@ namespace Neo.IO.Files.Terrain
                 return false;
 
             var layer = -1;
-            var minPos = BoundingBox.BottomCorner;
-            var maxPos = BoundingBox.TopCorner;
+            var minPos = BoundingBox.Minimum;
+            var maxPos = BoundingBox.Maximum;
             var changed = false;
             var inverted = parameters.IsInverted;
 

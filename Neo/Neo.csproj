@@ -887,6 +887,10 @@
       <Project>{DA06A44E-A67B-46C7-B07D-E90AEBED0502}</Project>
       <Name>libwarcraft</Name>
     </ProjectReference>
+    <ProjectReference Include="..\lib\SlimTK\SlimTK\SlimTK.csproj">
+      <Project>{06C99D4B-9FD6-4AAA-83FD-CEB5CB308121}</Project>
+      <Name>SlimTK</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

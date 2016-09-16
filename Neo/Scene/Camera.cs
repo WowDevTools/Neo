@@ -1,11 +1,11 @@
 ﻿using System;
 using Neo.Graphics;
 using OpenTK;
-using Warcraft.Core;
+using SlimTK;
 
 namespace Neo.Scene
 {
-    class Camera
+    public class Camera
     {
         private Matrix4 mView;
         private Matrix4 mProj;
@@ -48,12 +48,12 @@ namespace Neo.Scene
             UpdateView();
         }
 
-        public bool Contains(ref Box box)
+        public bool Contains(ref BoundingBox box)
         {
             return mFrustum.Contains(ref box) != ContainmentType.Disjoint;
         }
 
-        public bool Contains(ref Sphere sphere)
+        public bool Contains(ref BoundingSphere sphere)
         {
             return mFrustum.Contains(ref sphere) != ContainmentType.Disjoint;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Neo.Graphics;
 using Warcraft.Core;
 using OpenTK;
+using SlimTK;
 
 namespace Neo.Scene.Models.WMO
 {

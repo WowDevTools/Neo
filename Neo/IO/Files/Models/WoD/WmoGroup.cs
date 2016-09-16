@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenTK;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.WoD
@@ -282,7 +283,7 @@ namespace Neo.IO.Files.Models.WoD
                 if (v.Z > maxPos.Z) maxPos.Z = v.Z;
             }
 
-            BoundingBox = new Box(minPos, maxPos);
+            BoundingBox = new BoundingBox(minPos, maxPos);
             Vertices = mVertices;
 
             return true;

@@ -2,25 +2,25 @@ using System;
 using Neo.IO.Files.Models;
 using Neo.Utils;
 using OpenTK;
-using Warcraft.Core;
+using SlimTK;
 
 namespace Neo.Scene.Models.WMO
 {
-    class WmoInstance : IModelInstance
+	public class WmoInstance : IModelInstance
     {
         private Matrix4 mInstanceMatrix;
         private Matrix4 mInverseInstanceMatrix;
 
         private WeakReference<WmoRootRender> mRenderer;
 
-        public Box BoundingBox;
+        public BoundingBox BoundingBox;
 
         private WorldText mWorldModelName;
 
-        public Box InstanceBoundingBox { get { return BoundingBox; } }
+        public BoundingBox InstanceBoundingBox { get { return BoundingBox; } }
 
         public int Uuid { get; private set; }
-        public Box[] GroupBoxes { get; private set; }
+        public BoundingBox[] GroupBoxes { get; private set; }
         public Matrix4 InstanceMatrix { get { return mInstanceMatrix; } }
         public Vector3[] InstanceCorners { get; private set; }
 
@@ -56,7 +56,7 @@ namespace Neo.Scene.Models.WMO
             Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
 
             BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
-            GroupBoxes = new Box[model.Groups.Count];
+            GroupBoxes = new BoundingBox[model.Groups.Count];
             for(var i = 0; i < GroupBoxes.Length; ++i)
             {
                 var group = model.Groups[i];
@@ -151,7 +151,7 @@ namespace Neo.Scene.Models.WMO
             Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
             BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
-            GroupBoxes = new Box[mModel.Groups.Count];
+            GroupBoxes = new BoundingBox[mModel.Groups.Count];
             for (var i = 0; i < GroupBoxes.Length; ++i)
             {
                 var group = mModel.Groups[i];
@@ -187,7 +187,7 @@ namespace Neo.Scene.Models.WMO
 
             BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix); //here is the problem, after this line the bBox is fucked up
 
-            GroupBoxes = new Box[mModel.Groups.Count];
+            GroupBoxes = new BoundingBox[mModel.Groups.Count];
             for (var i = 0; i < GroupBoxes.Length; ++i)
             {
                 var group = mModel.Groups[i];
@@ -226,13 +226,13 @@ namespace Neo.Scene.Models.WMO
             if (mWorldModelName == null)
                 return;
 
-            Vector3 diff = BoundingBox.TopCorner - BoundingBox.BottomCorner;
+            Vector3 diff = BoundingBox.Maximum - BoundingBox.Minimum;
             mWorldModelName.Scaling = diff.Length / 60.0f;
             if (mWorldModelName.Scaling < 0.3f)
                 mWorldModelName.Scaling = 0.3f;
 
-            var position = BoundingBox.BottomCorner + (diff * 0.5f);
-            position.Z = 1.5f + BoundingBox.BottomCorner.Z + (diff.Z * 1.08f);
+            var position = BoundingBox.Minimum + (diff * 0.5f);
+            position.Z = 1.5f + BoundingBox.Minimum.Z + (diff.Z * 1.08f);
             mWorldModelName.Position = position;
         }
 

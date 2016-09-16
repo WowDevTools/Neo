@@ -7,7 +7,7 @@ using OpenTK;
 
 namespace Neo.Scene.Models.M2
 {
-    class M2Renderer : IDisposable
+    public class M2Renderer : IDisposable
     {
         private M2BatchRenderer mBatchRenderer;
         private M2PortraitRenderer mPortraitRenderer;

@@ -9,7 +9,7 @@ using OpenTK;
 
 namespace Neo.Scene.Models.M2
 {
-    class M2PortraitRenderer : IDisposable
+	public class M2PortraitRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBuffer

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenTK;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.WoD
@@ -202,7 +203,7 @@ namespace Neo.IO.Files.Models.WoD
 
             Groups = mGroups.Select(g => (Models.WmoGroup)g).ToList().AsReadOnly();
 
-            BoundingBox = new Box(minPos, maxPos);
+            BoundingBox = new BoundingBox(minPos, maxPos);
             return true;
         }
 

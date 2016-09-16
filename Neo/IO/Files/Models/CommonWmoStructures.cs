@@ -4,7 +4,7 @@ using OpenTK;
 namespace Neo.IO.Files.Models
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct WmoVertex
+    public struct WmoVertex
     {
         public Vector3 Position;
         public Vector3 Normal;
@@ -12,7 +12,7 @@ namespace Neo.IO.Files.Models
         public uint Color;
     }
 
-    class WmoBatch
+	public class WmoBatch
     {
         public int StartIndex;
         public int NumIndices;

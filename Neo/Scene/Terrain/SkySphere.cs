@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Neo.Graphics;
 using OpenTK;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.Scene.Terrain
@@ -20,15 +21,15 @@ namespace Neo.Scene.Terrain
         private Graphics.Texture mSkyTexture;
         private readonly Sampler mSampler;
         private readonly Mesh mMesh;
-        private Sphere mBoundingSphere;
+        private BoundingSphere mBoundingSphere;
         private readonly float mRadius;
 
-        public Sphere BoundingSphere { get { return mBoundingSphere; } }
+        public BoundingSphere BoundingSphere { get { return mBoundingSphere; } }
 
         public SkySphere(float radius, int rings, int sectors, GxContext context)
         {
             mRadius = radius;
-            mBoundingSphere = new Sphere(Vector3.Zero, radius);
+            mBoundingSphere = new BoundingSphere(Vector3.Zero, radius);
             mSampler = new Sampler(context);
             mMesh = new Mesh(context);
             mMesh.AddElement("POSITION", 0, 3);
@@ -66,7 +67,7 @@ namespace Neo.Scene.Terrain
 
         public void UpdatePosition(Vector3 position)
         {
-            mBoundingSphere = new Sphere(position, mRadius);
+            mBoundingSphere = new BoundingSphere(position, mRadius);
             mMatrixBuffer.UpdateData(new Vector4(position, 1.0f));
         }
 

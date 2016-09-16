@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using OpenTK;
 
@@ -7,12 +6,12 @@ namespace Neo.IO.Files.Models.Wotlk
 {
     class M2Animator : IM2Animator
     {
-        public Matrix[] BoneMatrices { get; private set; }
+        public Matrix4[] BoneMatrices { get; private set; }
         private M2AnimationBone[] mBones;
         private bool[] mBoneCalculated;
         private int mBoneStart;
 
-        public Matrix[] UvMatrices { get; private set; }
+        public Matrix4[] UvMatrices { get; private set; }
         private M2UVAnimation[] mUvAnimations;
         private int mUvStart;
 
@@ -187,7 +186,7 @@ namespace Neo.IO.Files.Models.Wotlk
             }
         }
 
-        public bool GetUvAnimMatrix(int animation, out Matrix matrix)
+        public bool GetUvAnimMatrix(int animation, out Matrix4 matrix)
         {
             lock (mUvAnimations)
             {
@@ -197,12 +196,12 @@ namespace Neo.IO.Files.Models.Wotlk
                     return true;
                 }
 
-                matrix = Matrix.Identity;
+                matrix = Matrix4.Identity;
                 return false;
             }
         }
 
-        public bool GetBones(Matrix[] bones)
+        public bool GetBones(Matrix4[] bones)
         {
             if (mIsDirty == false)
                 return false;
@@ -217,18 +216,18 @@ namespace Neo.IO.Files.Models.Wotlk
             }
         }
 
-        public Matrix GetBoneMatrix(int bone, BillboardParameters billboard)
+        public Matrix4 GetBoneMatrix(int bone, BillboardParameters billboard)
         {
             uint time = (uint)(Environment.TickCount - mBoneStart);
             return GetBoneMatrix(time, (short)bone, billboard);
         }
 
-        public Matrix GetBoneMatrix(uint time, short bone, BillboardParameters billboard)
+        public Matrix4 GetBoneMatrix(uint time, short bone, BillboardParameters billboard)
         {
             lock (mBones)
             {
                 if (bone < 0 || bone >= mBones.Length)
-                    return Matrix.Identity;
+                    return Matrix4.Identity;
 
                 if (mBoneCalculated[bone])
                     return BoneMatrices[bone];
@@ -251,16 +250,16 @@ namespace Neo.IO.Files.Models.Wotlk
         {
             mBones = bones;
             mBoneCalculated = new bool[bones.Length];
-            BoneMatrices = new Matrix[bones.Length];
+            BoneMatrices = new Matrix4[bones.Length];
             mBoneStart = Environment.TickCount;
             for (var i = 0; i < bones.Length; ++i)
-                BoneMatrices[i] = Matrix.Identity;
+                BoneMatrices[i] = Matrix4.Identity;
         }
 
         private void SetUvData(M2UVAnimation[] animations)
         {
             mUvAnimations = animations;
-            UvMatrices = new Matrix[animations.Length];
+            UvMatrices = new Matrix4[animations.Length];
             mUvStart = Environment.TickCount;
         }
 

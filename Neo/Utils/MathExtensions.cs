@@ -1,15 +1,15 @@
 ﻿using OpenTK;
-using Warcraft.Core;
+using SlimTK;
 
 namespace Neo.Utils
 {
     static class MathExtensions
     {
-        public static Box Transform(this Box box, ref Matrix4 matrix)
+        public static BoundingBox Transform(this BoundingBox box, ref Matrix4 matrix)
         {
-            var corners = new Vector3[8];
-            box.GetCorners(corners);
-            var newMin = new Vector3(float.MaxValue);
+            var corners = box.GetCorners();
+
+	        var newMin = new Vector3(float.MaxValue);
             var newMax = new Vector3(float.MinValue);
 
             for(var i = 0; i < corners.Length; ++i)
@@ -20,7 +20,7 @@ namespace Neo.Utils
                 TakeMax(ref newMax, ref v);
             }
 
-            return new Box(newMin, newMax);
+            return new BoundingBox(newMin, newMax);
         }
 
         public static void TakeMin(ref Vector3 v , ref Vector3 other)

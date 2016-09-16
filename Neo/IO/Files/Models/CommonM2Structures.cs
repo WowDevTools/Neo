@@ -4,7 +4,7 @@ using OpenTK;
 namespace Neo.IO.Files.Models
 {
     [StructLayout(LayoutKind.Sequential)]
-    unsafe struct M2Vertex
+    public unsafe struct M2Vertex
     {
         public Vector3 position;
         public fixed byte boneWeights[4];

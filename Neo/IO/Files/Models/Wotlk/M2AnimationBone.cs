@@ -1,5 +1,4 @@
-﻿using System.Drawing.Drawing2D;
-using System.IO;
+﻿using System.IO;
 using OpenTK;
 
 namespace Neo.IO.Files.Models.Wotlk
@@ -7,8 +6,8 @@ namespace Neo.IO.Files.Models.Wotlk
     class M2AnimationBone
     {
         private readonly M2Bone mBone;
-        private readonly Matrix mInvPivot;
-        private readonly Matrix mPivot;
+        private readonly Matrix4 mInvPivot;
+        private readonly Matrix4 mPivot;
 
         private readonly M2Vector3AnimationBlock mTranslation;
         private readonly M2Quaternion16AnimationBlock mRotation;
@@ -33,7 +32,7 @@ namespace Neo.IO.Files.Models.Wotlk
             mScaling = new M2Vector3AnimationBlock(file, bone.scaling, reader, Vector3.One);
         }
 
-        public void UpdateMatrix(uint time, int animation, out Matrix matrix,
+        public void UpdateMatrix(uint time, int animation, out Matrix4 matrix,
             M2Animator animator, BillboardParameters billboard)
         {
             var boneMatrix = Matrix4.Identity;

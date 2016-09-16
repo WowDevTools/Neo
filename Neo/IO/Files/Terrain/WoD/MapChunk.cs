@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Neo.Editing;
 using Neo.Scene;
 using OpenTK;
+using SlimTK;
 using Warcraft.Core;
 
 namespace Neo.IO.Files.Terrain.WoD
@@ -54,10 +55,10 @@ namespace Neo.IO.Files.Terrain.WoD
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
-        public void TryAddDoodad(int mcrfValue, Box box)
+        public void TryAddDoodad(int mcrfValue, BoundingBox box)
         {
-            var chunkBox = new Box(new Vector3(BoundingBox.BottomCorner.X, BoundingBox.BottomCorner.Y, float.MinValue),
-                new Vector3(BoundingBox.TopCorner.X, BoundingBox.TopCorner.Y, float.MaxValue));
+            var chunkBox = new BoundingBox(new Vector3(BoundingBox.Minimum.X, BoundingBox.Minimum.Y, float.MinValue),
+                new Vector3(BoundingBox.Maximum.X, BoundingBox.Maximum.Y, float.MaxValue));
 
             var intersects = chunkBox.Intersects(ref box);
             if (intersects == false)
@@ -208,9 +209,9 @@ namespace Neo.IO.Files.Terrain.WoD
                 MapArea parent;
                 mParent.TryGetTarget(out parent);
 
-                var omin = BoundingBox.BottomCorner;
-                var omax = BoundingBox.TopCorner;
-                BoundingBox = new Box(new Vector3(omin.X, omin.Y, mMinHeight),
+                var omin = BoundingBox.Minimum;
+                var omax = BoundingBox.Maximum;
+                BoundingBox = new BoundingBox(new Vector3(omin.X, omin.Y, mMinHeight),
                     new Vector3(omax.X, omax.Y, mMaxHeight));
 
                 if (parent != null)
@@ -381,8 +382,8 @@ namespace Neo.IO.Files.Terrain.WoD
         private void LoadMcrd(int size)
         {
             DoodadReferences = mObjReader.ReadArray<int>(size / 4);
-            var minPos = BoundingBox.BottomCorner;
-            var maxPos = BoundingBox.TopCorner;
+            var minPos = BoundingBox.Minimum;
+            var maxPos = BoundingBox.Maximum;
 
             MapArea parent;
             if (mParent.TryGetTarget(out parent) == false)
@@ -391,8 +392,8 @@ namespace Neo.IO.Files.Terrain.WoD
             foreach (var reference in DoodadReferences)
             {
                 var inst = parent.DoodadInstances[reference];
-                var min = inst.BoundingBox.BottomCorner;
-                var max = inst.BoundingBox.TopCorner;
+                var min = inst.BoundingBox.Minimum;
+                var max = inst.BoundingBox.Maximum;
 
                 if (min.X < minPos.X)
                     minPos.X = min.X;
@@ -408,7 +409,7 @@ namespace Neo.IO.Files.Terrain.WoD
                     maxPos.Z = max.Z;
             }
 
-            ModelBox = new Box(minPos, maxPos);
+            ModelBox = new BoundingBox(minPos, maxPos);
         }
 
         private void LoadTexData()
@@ -621,7 +622,7 @@ namespace Neo.IO.Files.Terrain.WoD
             mMinHeight = minPos.Z;
             mMaxHeight = maxPos.Z;
 
-            BoundingBox = new Box(minPos, maxPos);
+            BoundingBox = new BoundingBox(minPos, maxPos);
             mMidPoint = minPos + (maxPos - minPos) / 2.0f;
         }
 

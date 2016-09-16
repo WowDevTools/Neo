@@ -1,12 +1,12 @@
 ﻿using System;
 using OpenTK;
-using Warcraft.Core;
+using SlimTK;
 
 namespace Neo.Scene.Models
 {
     interface IModelInstance : IDisposable
     {
-        Box InstanceBoundingBox { get; }
+	    BoundingBox InstanceBoundingBox { get; }
         Vector3[] InstanceCorners { get; }
 
         bool IsSpecial { get; }
