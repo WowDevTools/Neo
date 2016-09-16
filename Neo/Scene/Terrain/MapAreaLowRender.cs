@@ -1,6 +1,7 @@
 ﻿using System;
 using Neo.Graphics;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using SlimTK;
 using Warcraft.Core;
 
@@ -153,9 +154,9 @@ namespace Neo.Scene.Terrain
             }
 
             Mesh.IndexBuffer.UpdateData(indices);
-            Mesh.IndexBuffer.IndexFormat = SharpDX.DXGI.Format.R32_UInt;
+	        Mesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
 
-            var program = new ShaderProgram(context);
+	        var program = new ShaderProgram(context);
             program.SetVertexShader(Resources.Shaders.MapLowVertex);
             program.SetPixelShader(Resources.Shaders.MapLowPixel);
             Mesh.Program = program;

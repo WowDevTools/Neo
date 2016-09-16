@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Microsoft.SqlServer.Server;
 using Neo.Graphics;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using SlimTK;
 using Warcraft.Core;
 
@@ -182,7 +182,7 @@ namespace Neo.Scene.Models
 
             gIndexBuffer = new IndexBuffer(WorldFrame.Instance.GraphicsContext);
             gIndexBuffer.UpdateData(indices);
-            gIndexBuffer.IndexFormat = Format.R16_UInt;
+            gIndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
 
             var program = new ShaderProgram(WorldFrame.Instance.GraphicsContext);
             program.SetVertexShader(Resources.Shaders.BoundingBoxVertex);

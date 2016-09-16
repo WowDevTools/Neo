@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using OpenTK.Graphics.OpenGL;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 
@@ -10,7 +11,7 @@ namespace Neo.Graphics
         private readonly List<VertexElement> mElements = new List<VertexElement>();
         private ShaderProgram mProgram;
         private InputLayout mLayout;
-        private PrimitiveTopology mTopology = PrimitiveTopology.TriangleList;
+        private BeginMode mTopology = BeginMode.Triangles;
         private readonly GxContext mContext;
 
         public VertexBuffer VertexBuffer { get; set; }
@@ -25,7 +26,7 @@ namespace Neo.Graphics
         public RasterState RasterizerState { get; set; }
         public BlendState BlendState { get; set; }
         public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }
-        public PrimitiveTopology Topology { get { return mTopology; } set { UpdateTopology(value); } }
+        public BeginMode Topology { get { return mTopology; } set { UpdateTopology(value); } }
         public InputLayout Layout { get { return mLayout; } set { UpdateLayout(value); } }
 
         public Mesh(GxContext context)
@@ -149,7 +150,7 @@ namespace Neo.Graphics
             mProgram = program;
         }
 
-        private void UpdateTopology(PrimitiveTopology topology)
+        private void UpdateTopology(BeginMode topology)
         {
             mTopology = topology;
 

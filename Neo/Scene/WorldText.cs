@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 using Neo.Graphics;
 using Neo.IO.Files.Texture;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Neo.Scene
 {
@@ -245,7 +247,7 @@ namespace Neo.Scene
             gMesh.IndexCount = 4;
             gMesh.StartVertex = 0;
             gMesh.StartIndex = 0;
-            gMesh.Topology = SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
+            gMesh.Topology = BeginMode.TriangleStrip;
 
             if (gMesh.Program != gWorldTextShader)
             {

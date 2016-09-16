@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using Neo.Graphics;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.Scene.Terrain
 {
@@ -117,8 +117,8 @@ namespace Neo.Scene.Terrain
             }
 
             mMesh.IndexCount = indices.Length;
-            mMesh.IndexBuffer.IndexFormat = SharpDX.DXGI.Format.R32_UInt;
-            mMesh.IndexBuffer.UpdateData(indices);
+	        mMesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
+	        mMesh.IndexBuffer.UpdateData(indices);
         }
     }
 }

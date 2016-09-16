@@ -4,7 +4,6 @@ using Neo.IO.Files.Models;
 using OpenTK;
 using OpenTK.Graphics;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.Scene.Models.M2
 {
@@ -80,6 +79,8 @@ namespace Neo.Scene.Models.M2
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
 
             InstanceCorners = mModel.BoundingBox.GetCorners();
+
+	        // TODO: Investigate correct function to use here
             Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
         }
 
@@ -128,9 +129,13 @@ namespace Neo.Scene.Models.M2
 
             mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
+
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+
+	        // TODO: Investigate correct function to use here
+	        Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             UpdateModelNameplate();
         }
 
@@ -148,9 +153,13 @@ namespace Neo.Scene.Models.M2
 
             mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
+
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+
+	        // TODO: Investigate correct function to use here
+	        Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             UpdateModelNameplate();
         }
 
@@ -200,9 +209,13 @@ namespace Neo.Scene.Models.M2
 
             mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
+
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
+
             InstanceCorners = mModel.BoundingBox.GetCorners();
-            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+
+	        // TODO: Investigate correct function to use here
+	        Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
             UpdateModelNameplate();
         }
 

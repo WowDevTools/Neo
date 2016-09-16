@@ -1,6 +1,6 @@
 ﻿namespace Neo.Storage
 {
-    enum AnimationType
+    public enum AnimationType
     {
         Stand = 0,
         Death = 1,

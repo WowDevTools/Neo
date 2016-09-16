@@ -1,4 +1,4 @@
-﻿using SharpDX.DXGI;
+﻿using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {
@@ -7,9 +7,9 @@ namespace Neo.Graphics
         public IndexBuffer(GxContext context) :
             base(context, SharpDX.Direct3D11.BindFlags.IndexBuffer)
         {
-            IndexFormat = Format.R16_UInt;
+	        IndexFormat = DrawElementsType.UnsignedInt;
         }
 
-        public Format IndexFormat { get; set; }
+        public DrawElementsType IndexFormat { get; set; }
     }
 }

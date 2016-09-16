@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Threading;
 using Microsoft.Win32;
-using SharpDX;
 using Neo.Editing;
 using Neo.Resources;
 using Neo.Scene;
 using Neo.UI.Components;
 using Neo.Win32;
-using Color = System.Windows.Media.Color;
 using System.Windows.Input;
 using Neo.UI.Dialogs;
 using Neo.UI.Models;
 using Neo.UI.Widget;
 using Neo.UI.Widgets;
-using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Neo.UI
 {
@@ -128,7 +120,7 @@ namespace Neo.UI
                 MessageBox.Show("Please connect to the database before you use the item editor");
             }
         }
-      
+
         private void ExempleEditor_Click(object sender, RoutedEventArgs e)
         {
             var ExempleEditor = new DbcEditors.Exemple.ExempleEditor();
@@ -336,7 +328,7 @@ namespace Neo.UI
                         return;
 
                     panel.Background = new SolidColorBrush(Color.FromRgb(120, 120, 120));
-                    
+
                 };
 
                 panel.MouseLeave += (sender, args) =>
@@ -467,9 +459,9 @@ namespace Neo.UI
         {
             var window = new Window
             {
-                Title = "About", 
-                Height = 170, 
-                Width = 300, 
+                Title = "About",
+                Height = 170,
+                Width = 300,
                 Content = new Dialogs.AboutBox()
             };
             window.ShowDialog();
