@@ -592,6 +592,7 @@ namespace WoWEditor6.UI
                 {
                     Storage.DbcStorage.CreatureDisplayInfo.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoEntry>();
                     Storage.DbcStorage.CreatureModelData.BuildCache<IO.Files.Models.Wotlk.CreatureModelDataEntry>();
+                    Storage.DbcStorage.CreatureDisplayInfoExtra.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoExtraEntry>();
                 }
             }
             else
@@ -603,6 +604,7 @@ namespace WoWEditor6.UI
 
                 Storage.DbcStorage.CreatureDisplayInfo.ClearCache();
                 Storage.DbcStorage.CreatureModelData.ClearCache();
+                Storage.DbcStorage.CreatureDisplayInfoExtra.ClearCache();
             }
         }
     }

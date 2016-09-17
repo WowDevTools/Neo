@@ -183,11 +183,14 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                                    on md.ExtendedDisplayInfoId equals cdi.ID
                                    select cdi;
 
-                DisplayOptions.FaceOptions = extraDisplay.Select(x => x.FaceID).Distinct().ToArray();
-                DisplayOptions.FacialHairOptions = extraDisplay.Select(x => x.FacialHairID).Distinct().ToArray();
-                DisplayOptions.SkinOptions = extraDisplay.Select(x => x.SkinID).Distinct().ToArray();
-                DisplayOptions.HairColorOptions = extraDisplay.Select(x => x.HairColorID).Distinct().ToArray();
-                DisplayOptions.HairStyleOptions = extraDisplay.Select(x => x.HairStyleID).Distinct().ToArray();
+                if(extraDisplay.Count() > 0)
+                {
+                    DisplayOptions.FaceOptions = extraDisplay.Select(x => x.FaceID).Distinct().ToArray();
+                    DisplayOptions.FacialHairOptions = extraDisplay.Select(x => x.FacialHairID).Distinct().ToArray();
+                    DisplayOptions.SkinOptions = extraDisplay.Select(x => x.SkinID).Distinct().ToArray();
+                    DisplayOptions.HairColorOptions = extraDisplay.Select(x => x.HairColorID).Distinct().ToArray();
+                    DisplayOptions.HairStyleOptions = extraDisplay.Select(x => x.HairStyleID).Distinct().ToArray();
+                }
             }
 
             DisplayOptions.TextureVariationFiles.AddRange(variations);
