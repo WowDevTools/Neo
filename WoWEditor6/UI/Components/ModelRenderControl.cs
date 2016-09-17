@@ -55,7 +55,7 @@ namespace WoWEditor6.UI.Components
                 return base.Focused || IsFocusedElementInTree(flowLayoutPanel1);
             }
         }
-                
+
 
         public ModelRenderControl()
         {
@@ -66,7 +66,7 @@ namespace WoWEditor6.UI.Components
         public void SetModel(string model, int variation = 0)
         {
             var file = ModelFactory.Instance.CreateM2(model);
-            file.CreatureVariationCurrent = variation;
+            file.DisplayOptions.TextureVariation = variation;
             if (file.Load() == false)
                 return;
 
@@ -125,10 +125,10 @@ namespace WoWEditor6.UI.Components
 
                 switch (tex.TextureType)
                 {
-                    case 13:
-                    case 12:
-                    case 11:
-                        tex.Texture = TextureManager.Instance.GetTexture(GetSkinName(root, displayInfo, tex.TextureType - 11));
+                    case TextureType.MonsterSkin3:
+                    case TextureType.MonsterSkin2:
+                    case TextureType.MonsterSkin1:
+                        tex.Texture = TextureManager.Instance.GetTexture(GetSkinName(root, displayInfo, (int)tex.TextureType - 11));
                         break;
                 }
             }
@@ -189,11 +189,11 @@ namespace WoWEditor6.UI.Components
             });
 
 
-            if (file.CreatureVariations.Count > 1)
+            if (file.DisplayOptions.TextureVariationFiles.Count > 1)
             {
                 nudVariation.ReadOnly = false;
-                nudVariation.Maximum = file.CreatureVariations.Count;
-                nudVariation.Value = file.CreatureVariationCurrent + 1;
+                nudVariation.Maximum = file.DisplayOptions.TextureVariationFiles.Count;
+                nudVariation.Value = file.DisplayOptions.TextureVariation + 1;
                 nudVariation.Increment = 1;
             }
             else

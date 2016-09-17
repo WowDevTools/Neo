@@ -7,9 +7,26 @@ namespace WoWEditor6.IO.Files.Models
 {
     class TextureInfo
     {
-        public int TextureType { get; set; }
+        public TextureType TextureType { get; set; }
         public Graphics.Texture.SamplerFlagType SamplerFlags { get; set; }
         public Graphics.Texture Texture { get; set; }
+    }
+
+    class CreatureDisplayInfo
+    {
+        public int TextureVariation { get; set; }
+        public int SkinId { get; set; }
+        public int FaceId { get; set; }
+        public int HairStyleId { get; set; }
+        public int HairColorId { get; set; }
+        public int FacialHairId { get; set; }
+
+        public List<Tuple<string, string, string>> TextureVariationFiles { get; set; }
+        public int[] SkinOptions { get; set; }
+        public int[] FaceOptions { get; set; }
+        public int[] HairStyleOptions { get; set; }
+        public int[] HairColorOptions { get; set; }
+        public int[] FacialHairOptions { get; set; }
     }
 
     abstract class M2File
@@ -25,9 +42,7 @@ namespace WoWEditor6.IO.Files.Models
         public bool HasOpaquePass { get; protected set; }
 
         public TextureInfo[] TextureInfos { get; protected set; }
-
-        public List<Tuple<string, string, string>> CreatureVariations { get; protected set; }
-        public int CreatureVariationCurrent { get; set; } = 0;
+        public CreatureDisplayInfo DisplayOptions { get; set; }
 
         public string ModelRoot { get; private set; }
 
@@ -50,7 +65,7 @@ namespace WoWEditor6.IO.Files.Models
             Vertices = new M2Vertex[0];
             Passes = new List<M2RenderPass>();
             Indices = new ushort[0];
-            CreatureVariations = new List<Tuple<string, string, string>>();
+            DisplayOptions = new CreatureDisplayInfo();
         }
 
         public abstract int GetNumberOfBones();
@@ -118,6 +133,29 @@ namespace WoWEditor6.IO.Files.Models
             return hasHit;
         }
         
+    }
+
+    public enum TextureType : uint
+    {
+        None = 0,
+        Skin = 1,
+        ObjectSkin = 2,
+        WeaponBlade = 3,
+        WeaponHandle = 4,
+        Environment = 5,
+        CharacterHair = 6,
+        CharacterFacialHair = 7,
+        SkinExtra = 8,
+        UiSkin = 9,
+        TaurenMane = 10,
+        MonsterSkin1 = 11,
+        MonsterSkin2 = 12,
+        MonsterSkin3 = 13,
+        ItemIcon = 14,
+        GuildBackgroundColor = 15,
+        GuildEmblemColor = 16,
+        GuildBorderColor = 17,
+        GuildEmblem = 18
     }
 
 }
