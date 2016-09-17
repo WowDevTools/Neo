@@ -90,7 +90,7 @@ namespace WoWEditor6.IO
         {
             try
             {
-                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "Output", path);
+                var fullPath = Path.Combine(Properties.Settings.Default.OutputPath ?? ".\\Output", path);
                 if (!File.Exists(fullPath))
                     return null;
 
