@@ -10,7 +10,7 @@
              xmlns:themes="clr-namespace:WoWEditor6.UI.Themes"
              xmlns:widgets="clr-namespace:WoWEditor6.UI.Widgets"
              xmlns:widget="clr-namespace:WoWEditor6.UI.Widget"
-             mc:Ignorable="d" Width="1600" Height="900" Loaded="Window_Loaded">
+             mc:Ignorable="d" Width="1600" Height="900" Loaded="Window_Loaded" Unloaded="Window_Unloaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>

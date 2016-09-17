@@ -28,7 +28,7 @@ namespace WoWEditor6.UI.Models
         private bool mShowSpecularTextures;
         private AssetBrowserDirectory mCurrentDirectory;
         private readonly ObservableCollection<AssetBrowserFilePreviewElement> mCurFiles = new ObservableCollection<AssetBrowserFilePreviewElement>();
-        private IEnumerable<AssetBrowserFilePreviewElement> mFullElements = new List<AssetBrowserFilePreviewElement>(); 
+        private IEnumerable<AssetBrowserFilePreviewElement> mFullElements = new List<AssetBrowserFilePreviewElement>();
 
         public bool ShowTextures { get { return mShowTextures; } set { mShowTextures = value; UpdateShowTextures(value); } }
 
@@ -81,7 +81,7 @@ namespace WoWEditor6.UI.Models
             var selected = mBrowser.AssetTreeView.SelectedItem as AssetBrowserDirectory;
             if (selected == null)
                 return;
-            
+
             mBrowser.ExportFolderLink.IsEnabled = false;
             mBrowser.ExportOneFileLink.IsEnabled = false;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
@@ -97,7 +97,7 @@ namespace WoWEditor6.UI.Models
             mBrowser.ExportOneFileLink.IsEnabled = true;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
-                        
+
             var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath ?? ".\\Export"), selected.FullPath);
             MessageBox.Show(String.Format("The selected folder has been successfully exported to:\n{0}", exportPath), "Neo - Export Folder");
         }
@@ -113,8 +113,11 @@ namespace WoWEditor6.UI.Models
             else if (element.View.FileEntry.Extension.Contains("m2"))
             {
                 mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
+                if (mBrowser.ModelPreviewRender.ThumbnailCached == null)
+                    mBrowser.ModelPreviewRender.ThumbnailCached += UpdateThumbnail;
+
                 mBrowser.ModelPreviewRender.SetModel(element.View.FileEntry.FullPath);
-                mBrowser.ModelPreviewControl.Visibility = Visibility.Visible;
+                mBrowser.ModelPreviewControl.Visibility = Visibility.Visible;                
             }
             else
             {
@@ -237,7 +240,6 @@ namespace WoWEditor6.UI.Models
                 return;
             }
 
-
             var files =
                 mCurrentDirectory.Files.Select(
                     f => new AssetBrowserFilePreviewElement {View = new AssetBrowserFilePreview(f)}).ToList();
@@ -269,7 +271,12 @@ namespace WoWEditor6.UI.Models
 
             mCurFiles.Clear();
             foreach(var elem in elements)
-               mCurFiles.Add(elem);
+                mCurFiles.Add(elem);
+        }
+
+        private void UpdateThumbnail(string filename)
+        {
+            mBrowser.Dispatcher.Invoke(() => mCurFiles.FirstOrDefault(x => x.View.FileEntry.FullPath == filename)?.View.ReloadImage());
         }
 
         private void OnInitialized(object sender, EventArgs args)

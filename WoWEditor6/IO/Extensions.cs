@@ -71,6 +71,16 @@ namespace WoWEditor6.IO
             return s;
         }
 
+        public static string ReadCString(this BinaryReader reader)
+        {
+            byte num;
+            List<byte> temp = new List<byte>();
+            while ((num = reader.ReadByte()) != 0 && reader.BaseStream.Position != reader.BaseStream.Length)
+                temp.Add(num);
+
+            return Encoding.UTF8.GetString(temp.ToArray());
+        }
+
         public static T Read<T>(this BinaryReader br) where T : struct
         {
             if (SizeCache<T>.TypeRequiresMarshal)

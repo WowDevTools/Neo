@@ -22,11 +22,17 @@ namespace WoWEditor6.UI.Components
             DataContext = file;
             InitializeComponent();
 
-            if (file.Extension == ".blp")
-                LoadImage(file);
+            ReloadImage();
+        }
+
+        public void ReloadImage()
+        {
+            if (FileEntry.Extension == ".blp")
+                LoadImage(FileEntry);
+            else if (FileEntry.Extension == ".m2")
+                PreviewImage.Source = WpfImageSource.FromGdiImage(ThumbnailCache.TryGetThumbnail(FileEntry.FullPath, Images.Page_Icon_48));
             else
                 PreviewImage.Source = PageImageSource;
-
         }
 
         private void LoadImage(AssetBrowserFile file)

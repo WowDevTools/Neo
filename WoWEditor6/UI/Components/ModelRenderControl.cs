@@ -18,6 +18,8 @@ using WoWEditor6.Storage;
 using Color = System.Drawing.Color;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace WoWEditor6.UI.Components
 {
@@ -43,6 +45,8 @@ namespace WoWEditor6.UI.Components
         private Bitmap mPaintBitmap;
 
         private M2Renderer mRenderer;
+        private int mThumbnailCaptureFrame; //What frame to capture for the thumbnail
+        public Action<string> ThumbnailCached;
 
         public override bool Focused
         {
@@ -51,7 +55,7 @@ namespace WoWEditor6.UI.Components
                 return base.Focused || IsFocusedElementInTree(flowLayoutPanel1);
             }
         }
-
+                
 
         public ModelRenderControl()
         {
@@ -66,6 +70,7 @@ namespace WoWEditor6.UI.Components
             if (file.Load() == false)
                 return;
 
+            mThumbnailCaptureFrame = 10; //10th frame allows everything to render : 100ms
             mRenderer = new M2Renderer(file);
             SetModelCameraParameters(file);
         }
@@ -183,19 +188,19 @@ namespace WoWEditor6.UI.Components
                 }
             });
 
-            
+
             if (file.CreatureVariations.Count > 1)
             {
                 nudVariation.ReadOnly = false;
                 nudVariation.Maximum = file.CreatureVariations.Count;
                 nudVariation.Value = file.CreatureVariationCurrent + 1;
                 nudVariation.Increment = 1;
-            }                
+            }
             else
             {
                 nudVariation.Increment = 0;
                 nudVariation.ReadOnly = true;
-            }                
+            }
         }
 
         private string GetSkinName(string root, IDataStorageRecord displayInfo, int index)
@@ -211,7 +216,18 @@ namespace WoWEditor6.UI.Components
         {
             e.Graphics.Clear(Color.Black);
             if (mPaintBitmap != null)
+            {
                 e.Graphics.DrawImage(mPaintBitmap, new PointF(0, 0));
+
+                //Cache thumbnail
+                if (mThumbnailCaptureFrame > 0 && --mThumbnailCaptureFrame == 0)
+                {
+                    Bitmap thumbnail = new Bitmap(this.DisplayRectangle.Width, this.DisplayRectangle.Height - flowLayoutPanel1.Height);
+                    this.DrawToBitmap(thumbnail, this.DisplayRectangle);
+                    Task.Run(() => ThumbnailCache.Cache(mRenderer.Model.FileName, thumbnail))
+                                                 .ContinueWith(x => ThumbnailCached?.Invoke(mRenderer.Model.FileName));
+                }
+            }
         }
 
         protected override void OnLoad(EventArgs e)

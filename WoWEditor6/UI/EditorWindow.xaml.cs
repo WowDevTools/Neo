@@ -161,6 +161,11 @@ namespace WoWEditor6.UI
             Log.AddSink(this);
         }
 
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ThumbnailCache.Write(true);
+        }
+
         public void OnUpdateCurrentAdt(int x, int y)
         {
             CurrentAdtLabel.Content = "ADT: " + x + "/" + y;
@@ -591,6 +596,8 @@ namespace WoWEditor6.UI
             }
             else
             {
+                ThumbnailCache.Write(true);
+
                 if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
                     Storage.DbcStorage.FileData.ClearCache();
 

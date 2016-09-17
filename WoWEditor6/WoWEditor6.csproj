@@ -495,6 +495,7 @@
     <Compile Include="UI\DbcEditors\Exemple\ExempleEditorControl.Designer.cs">
       <DependentUpon>ExempleEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ThumbnailCache.cs" />
     <Compile Include="UI\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -133,6 +133,8 @@ namespace WoWEditor6.IO
             }
             else
                 InitMpq();
+
+            UI.ThumbnailCache.Reload(); //Load thumbnails of models
         }
 
         private void InitMpq()
