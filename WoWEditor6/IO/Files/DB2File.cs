@@ -272,6 +272,9 @@ namespace WoWEditor6.IO.Files
             if (!mIdLookup.ContainsValue(index))
                 return false;
 
+            if (mCache.Count > 0)
+                mCache.RemoveAt(index);
+
             var idLookup = mIdLookup.First(x => x.Value == index);
             var maxId = mIdLookup.Last().Key;
 
@@ -328,6 +331,11 @@ namespace WoWEditor6.IO.Files
 
         public void AddRow<T>(T entry)
         {
+            typeof(T).GetFields().First().SetValue(entry, mIdLookup.Keys.Max() + 1); //Set Id
+
+            if (mCache.Count > 0)
+                mCache.Add(entry);
+
             var newRecord = ParseRecord(entry);
             NumRows += 1;
             Update(newRecord.Item1, newRecord.Item2);
@@ -339,6 +347,9 @@ namespace WoWEditor6.IO.Files
             var newRecord = ParseRecord(entry, true);
             var id = BitConverter.ToInt32(newRecord.Item1.Take(4).ToArray(), 0);
             var index = mIdLookup[id];
+
+            if (mCache.Count > 0)
+                mCache[index] = entry;
 
             mStream.Position = HEADER + index * mRecordSize;
             mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length); //Overwrite existing data
@@ -360,21 +371,13 @@ namespace WoWEditor6.IO.Files
 
             byte[] newRecord = new byte[mRecordSize];
             List<string> newStrings = new List<string>();
-            bool first = true;
 
             using (var ms = new MemoryStream(newRecord))
             using (var bw = new BinaryWriter(ms))
             {
                 foreach (var field in type.GetFields())
                 {
-                    if (first && !update) //Autoincrement Id only if adding a new record
-                    {
-                        bw.Write(mIdLookup.Keys.Max() + 1);
-                        first = false;
-                        continue;
-                    }
-
-                    if (field.FieldType == typeof(string))
+                     if (field.FieldType == typeof(string))
                     {
                         int stSize = mStringTable.Count;
                         string strVal = Convert.ToString(field.GetValue(entry));
