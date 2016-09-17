@@ -17,6 +17,7 @@ namespace WoWEditor6.Storage
         public static IDataStorageFile LightIntBand { get;private set;  }
         public static IDataStorageFile LightFloatBand { get;private set;  }
         public static IDataStorageFile CreatureDisplayInfo { get; private set; }
+        public static IDataStorageFile CreatureDisplayInfoExtra { get; private set; }
         public static IDataStorageFile CreatureModelData { get; private set; }
         public static IDataStorageFile FileData { get; private set; }
         public static IDataStorageFile GroundEffectTexture { get; private set; }
@@ -34,6 +35,7 @@ namespace WoWEditor6.Storage
             LightIntBand = new DbcFile();
             LightFloatBand = new DbcFile();
             CreatureDisplayInfo = new DbcFile();
+            CreatureDisplayInfoExtra = new DbcFile();
             CreatureModelData = new DbcFile();
             FileData = new DbcFile();
             GroundEffectDoodad = new DbcFile();
@@ -58,6 +60,7 @@ namespace WoWEditor6.Storage
                 CreatureDisplayInfo.Load(@"DBFilesClient\CreatureDisplayInfo.db2");
             }
 
+            CreatureDisplayInfoExtra.Load(@"DBFilesClient\CreatureDisplayInfoExtra.dbc");
             CreatureModelData.Load(@"DBFilesClient\CreatureModelData.dbc");
 
             if (FileManager.Instance.Version <= FileDataVersion.Mists)
