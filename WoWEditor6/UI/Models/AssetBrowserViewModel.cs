@@ -288,7 +288,7 @@ namespace WoWEditor6.UI.Models
         private void OnInitialized(object sender, EventArgs args)
         {
             mBrowser.SelectedFilesListView.ItemsSource = mCurFiles;
-            mThumbCapture = new ThumbnailCapture(148, 148);
+            mThumbCapture = new ThumbnailCapture(114, 114);
         }
 
         private void OnFilesLoaded()

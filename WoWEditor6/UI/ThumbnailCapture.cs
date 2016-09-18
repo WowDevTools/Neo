@@ -92,17 +92,16 @@ namespace WoWEditor6.UI
         void LoadModel()
         {
             string model;
-            if (!mModels.TryDequeue(out model))
+            mModels.TryDequeue(out model);
+
+            var file = ModelFactory.Instance.CreateM2(model);
+            if (file.Load() == false)
             {
                 if (mModels.Count > 0)
                     LoadModel();
                 else
                     return;
             }
-
-            var file = ModelFactory.Instance.CreateM2(model);
-            if (file.Load() == false)
-                return;
 
             mRenderer = new M2Renderer(file);
             var bboxMin = file.BoundingBox.Minimum.Z;
