@@ -276,7 +276,8 @@ namespace WoWEditor6.UI.Models
                 mCurFiles.Add(elem);
 
                 if (elem.View.FileEntry.Extension.Contains("m2"))
-                    mThumbCapture.AddModel(elem.View.FileEntry.FullPath);
+                    if (!ThumbnailCache.IsCached(elem.View.FileEntry.FullPath))
+                        mThumbCapture.AddModel(elem.View.FileEntry.FullPath);
             }
         }
 
