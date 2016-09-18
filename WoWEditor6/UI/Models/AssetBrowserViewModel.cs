@@ -29,6 +29,7 @@ namespace WoWEditor6.UI.Models
         private AssetBrowserDirectory mCurrentDirectory;
         private readonly ObservableCollection<AssetBrowserFilePreviewElement> mCurFiles = new ObservableCollection<AssetBrowserFilePreviewElement>();
         private IEnumerable<AssetBrowserFilePreviewElement> mFullElements = new List<AssetBrowserFilePreviewElement>();
+        private ThumbnailCapture mThumbCapture;
 
         public bool ShowTextures { get { return mShowTextures; } set { mShowTextures = value; UpdateShowTextures(value); } }
 
@@ -36,7 +37,7 @@ namespace WoWEditor6.UI.Models
         public bool HideUnknownFiles { get { return mHideUnknown; } set { mHideUnknown = value; UpdateHideUnknownFiles(value); } }
         public bool ShowSpecularTextures { get { return mShowSpecularTextures; } set { UpdateShowSpecularTextures(value); } }
 
-        public IEnumerable<AssetBrowserDirectory> AssetBrowserRoot { get { return new []{mRootDiretory}; } }
+        public IEnumerable<AssetBrowserDirectory> AssetBrowserRoot { get { return new[] { mRootDiretory }; } }
 
 
         public AssetBrowserViewModel(Dialogs.AssetBrowser browser)
@@ -46,6 +47,9 @@ namespace WoWEditor6.UI.Models
             FileManager.Instance.LoadComplete += OnFilesLoaded;
             mRootDiretory = new AssetBrowserDirectory(this, new DirectoryEntry {Name = ""}, null);
             EditorWindowController.Instance.AssetBrowserModel = this;
+
+            if (ThumbnailCache.ThumnailAdded == null)
+                ThumbnailCache.ThumnailAdded += UpdateThumbnail;
         }
 
         public void HandleImportFile()
@@ -113,11 +117,8 @@ namespace WoWEditor6.UI.Models
             else if (element.View.FileEntry.Extension.Contains("m2"))
             {
                 mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
-                if (mBrowser.ModelPreviewRender.ThumbnailCached == null)
-                    mBrowser.ModelPreviewRender.ThumbnailCached += UpdateThumbnail;
-
                 mBrowser.ModelPreviewRender.SetModel(element.View.FileEntry.FullPath);
-                mBrowser.ModelPreviewControl.Visibility = Visibility.Visible;                
+                mBrowser.ModelPreviewControl.Visibility = Visibility.Visible;
             }
             else
             {
@@ -271,7 +272,12 @@ namespace WoWEditor6.UI.Models
 
             mCurFiles.Clear();
             foreach(var elem in elements)
+            {
                 mCurFiles.Add(elem);
+
+                if (elem.View.FileEntry.Extension.Contains("m2"))
+                    mThumbCapture.AddModel(elem.View.FileEntry.FullPath);
+            }
         }
 
         private void UpdateThumbnail(string filename)
@@ -282,6 +288,7 @@ namespace WoWEditor6.UI.Models
         private void OnInitialized(object sender, EventArgs args)
         {
             mBrowser.SelectedFilesListView.ItemsSource = mCurFiles;
+            mThumbCapture = new ThumbnailCapture(148, 148);
         }
 
         private void OnFilesLoaded()

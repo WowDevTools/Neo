@@ -46,7 +46,6 @@ namespace WoWEditor6.UI.Components
 
         private M2Renderer mRenderer;
         private int mThumbnailCaptureFrame; //What frame to capture for the thumbnail
-        public Action<string> ThumbnailCached;
 
         public override bool Focused
         {
@@ -218,15 +217,6 @@ namespace WoWEditor6.UI.Components
             if (mPaintBitmap != null)
             {
                 e.Graphics.DrawImage(mPaintBitmap, new PointF(0, 0));
-
-                //Cache thumbnail
-                if (mThumbnailCaptureFrame > 0 && --mThumbnailCaptureFrame == 0)
-                {
-                    Bitmap thumbnail = new Bitmap(this.DisplayRectangle.Width, this.DisplayRectangle.Height - flowLayoutPanel1.Height);
-                    this.DrawToBitmap(thumbnail, this.DisplayRectangle);
-                    Task.Run(() => ThumbnailCache.Cache(mRenderer.Model.FileName, thumbnail))
-                                                 .ContinueWith(x => ThumbnailCached?.Invoke(mRenderer.Model.FileName));
-                }
             }
         }
 
