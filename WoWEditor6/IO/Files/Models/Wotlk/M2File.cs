@@ -18,6 +18,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
         private bool mRemapBlend;
         private ushort[] mBlendMap = new ushort[0];
         private M2SkinFile mSkin;
+        private string[] mDirectoryParts;
 
         public M2AnimationBone[] Bones { get; private set; }
         public M2UVAnimation[] UvAnimations { get; private set; }
@@ -40,6 +41,7 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             AnimationLookup = new short[0];
             mModelName = string.Empty;
             mFileName = fileName;
+            mDirectoryParts = Path.GetDirectoryName(fileName).Split(Path.DirectorySeparatorChar);
         }
 
         public override bool Load()
@@ -102,6 +104,21 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                     {
                         switch ((TextureType)tex.type)
                         {
+                            //case TextureType.Skin:
+                            //    string skinTexName = $"{mDirectoryParts[1]}{mDirectoryParts[2]}NakedTorsoSkin00_{DisplayOptions.SkinId.ToString("00")}.blp";
+                            //    skinTexName = Path.Combine(Path.GetDirectoryName(mFileName), skinTexName);
+                            //    mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(skinTexName);
+                            //    break;
+
+                            ////case TextureType.ObjectSkin:
+                            ////    break;
+
+                            //case TextureType.CharacterHair:
+                            //    string hairTexName = $"{mDirectoryParts[1]}NakedTorsoSkin00_{DisplayOptions.SkinId.ToString("00")}.blp";
+                            //    skinTexName = Path.Combine(Path.GetDirectoryName(mFileName), hairTexName);
+                            //    mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(skinTexName);
+                            //    break;
+
                             case TextureType.MonsterSkin1:
                                 if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
                                     if (!string.IsNullOrEmpty(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item1))
@@ -122,7 +139,6 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
                                 break;
                         }
                     }
-
 
                     Graphics.Texture.SamplerFlagType samplerFlags;
 
@@ -158,10 +174,19 @@ namespace WoWEditor6.IO.Files.Models.Wotlk
             DisplayOptions.TextureVariationFiles = new List<Tuple<string, string, string>>();
             HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>(); //Unique combinations only
 
+            //First check creatures/characters 
+            if (mDirectoryParts.Length > 0 && mDirectoryParts[0].ToLower() != "character" && mDirectoryParts[0].ToLower() != "creature")
+                return;
+
+            //Second check MDX exists
+            string mdx = Path.ChangeExtension(mFileName, ".mdx").ToLower();
+            if (!Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>().Any(x => x.ModelPath.ToLower() == mdx))
+                return;
+
             var modelDisplay = from cmd in Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>()
                                join cdi in Storage.DbcStorage.CreatureDisplayInfo.GetAllRows<Wotlk.CreatureDisplayInfoEntry>()
                                on cmd.ID equals cdi.ModelId
-                               where cmd.ModelPath.ToLower() == Path.ChangeExtension(mFileName, ".mdx").ToLower()
+                               where cmd.ModelPath.ToLower() == mdx
                                select cdi;
 
             if (modelDisplay.Count() == 0)
