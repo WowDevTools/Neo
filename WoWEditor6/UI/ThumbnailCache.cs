@@ -107,11 +107,8 @@ namespace WoWEditor6.UI
 
         private static Bitmap BytesToImage(byte[] data)
         {
-            using (var ms = new MemoryStream(data))
-            {
-                Image img = Image.FromStream(ms);
-                return new Bitmap(img);
-            }
+            ImageConverter converter = new ImageConverter();
+            return new Bitmap((Image)converter.ConvertFrom(data));
         }
 
         private static Bitmap ResizeImage(Bitmap image)
