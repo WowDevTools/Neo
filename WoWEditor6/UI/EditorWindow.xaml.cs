@@ -580,32 +580,8 @@ namespace WoWEditor6.UI
 
         private void AssetBrowserDocument_IsActiveChanged(object sender, EventArgs e)
         {
-            if (AssetBrowserDocument.IsActive)
-            {
-                if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
-                {
-                    Storage.DbcStorage.CreatureDisplayInfo.BuildCache<IO.Files.Models.WoD.CreatureDisplayInfoEntry>();
-                    Storage.DbcStorage.CreatureModelData.BuildCache<IO.Files.Models.WoD.CreatureModelDataEntry>();
-                    Storage.DbcStorage.FileData.BuildCache<IO.Files.Models.WoD.FileDataIDEntry>();
-                }
-                else if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
-                {
-                    Storage.DbcStorage.CreatureDisplayInfo.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoEntry>();
-                    Storage.DbcStorage.CreatureModelData.BuildCache<IO.Files.Models.Wotlk.CreatureModelDataEntry>();
-                    Storage.DbcStorage.CreatureDisplayInfoExtra.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoExtraEntry>();
-                }
-            }
-            else
-            {
+            if (!AssetBrowserDocument.IsActive)
                 ThumbnailCache.Write(true);
-
-                if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
-                    Storage.DbcStorage.FileData.ClearCache();
-
-                Storage.DbcStorage.CreatureDisplayInfo.ClearCache();
-                Storage.DbcStorage.CreatureModelData.ClearCache();
-                Storage.DbcStorage.CreatureDisplayInfoExtra.ClearCache();
-            }
         }
     }
 }

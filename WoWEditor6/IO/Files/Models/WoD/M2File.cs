@@ -141,6 +141,9 @@ namespace WoWEditor6.IO.Files.Models.WoD
             DisplayOptions.TextureVariationFiles = new List<Tuple<string, string, string>>();
             HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>();
 
+            if (!Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>().Any(x => x.ModelPath.ToLower() == Path.ChangeExtension(mFileName, ".mdx").ToLower()))
+                return;
+
             var modelDisplay = from fd in Storage.DbcStorage.FileData.GetAllRows<WoD.FileDataIDEntry>()
                                join cmd in Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>()
                                on Path.Combine(fd.FilePath, fd.FileName).ToLower() equals mFileName.ToLower()

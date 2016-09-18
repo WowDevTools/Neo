@@ -134,6 +134,7 @@ namespace WoWEditor6.IO
             else
                 InitMpq();
 
+            Storage.DbcStorage.BuildModelCache();
             UI.ThumbnailCache.Reload(); //Load thumbnails of models
         }
 

@@ -89,5 +89,21 @@ namespace WoWEditor6.Storage
             ZoneLight.Load(@"DBFilesClient\ZoneLight.dbc");
             ZoneLightPoint.Load(@"DBFilesClient\ZoneLightPoint.dbc");
         }
+
+        public static void BuildModelCache()
+        {
+            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
+            {
+                CreatureDisplayInfo.BuildCache<IO.Files.Models.WoD.CreatureDisplayInfoEntry>();
+                CreatureModelData.BuildCache<IO.Files.Models.WoD.CreatureModelDataEntry>();
+                FileData.BuildCache<IO.Files.Models.WoD.FileDataIDEntry>();
+            }
+            else if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+            {
+                CreatureDisplayInfo.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoEntry>();
+                CreatureModelData.BuildCache<IO.Files.Models.Wotlk.CreatureModelDataEntry>();
+                CreatureDisplayInfoExtra.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoExtraEntry>();
+            }
+        }
     }
 }
