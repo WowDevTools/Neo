@@ -465,6 +465,7 @@
     <Compile Include="UI\DbcEditors\Exemple\ExempleEditorControl.Designer.cs">
       <DependentUpon>ExempleEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ThumbnailCache.cs" />
     <Compile Include="UI\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -477,6 +478,7 @@
     <Compile Include="UI\Models\IEditingViewModel.cs" />
     <Compile Include="UI\Models\SculptingViewModel.cs" />
     <Compile Include="UI\Services\XmlService.cs" />
+    <Compile Include="UI\ThumbnailCapture.cs" />
     <Compile Include="UI\ViewModels\MySqlConnectionsViewModel.cs" />
     <Compile Include="UI\ViewModels\NewConnectionViewModel.cs" />
     <Compile Include="UI\Widgets\AboutBox.xaml.cs">

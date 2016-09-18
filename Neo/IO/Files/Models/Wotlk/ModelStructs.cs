@@ -25,6 +25,32 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    struct CreatureDisplayInfoExtraEntry
+    {
+        public readonly uint ID;
+        public readonly int DisplayRaceID;
+        public readonly int DisplaySexID;
+        public readonly int SkinID;
+        public readonly int FaceID;
+        public readonly int HairStyleID;
+        public readonly int HairColorID;
+        public readonly int FacialHairID;
+        public readonly int Helm;
+        public readonly int Shoulder;
+        public readonly int Shirt;
+        public readonly int Cuirass;
+        public readonly int Belt;
+        public readonly int Legs;
+        public readonly int Boots;
+        public readonly int Wrist;
+        public readonly int Gloves;
+        public readonly int Tabard;
+        public readonly int Cape;
+        public readonly int CanEquip;
+        public readonly string Texture;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     struct CreatureModelDataEntry
     {
         public readonly uint ID;

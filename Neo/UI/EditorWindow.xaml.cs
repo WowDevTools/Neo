@@ -151,6 +151,11 @@ namespace Neo.UI
             Log.AddSink(this);
         }
 
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ThumbnailCache.Write(true);
+        }
+
         public void OnUpdateCurrentAdt(int x, int y)
         {
             CurrentAdtLabel.Content = "ADT: " + x + "/" + y;
@@ -577,15 +582,19 @@ namespace Neo.UI
                 {
                     Storage.DbcStorage.CreatureDisplayInfo.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoEntry>();
                     Storage.DbcStorage.CreatureModelData.BuildCache<IO.Files.Models.Wotlk.CreatureModelDataEntry>();
+                    Storage.DbcStorage.CreatureDisplayInfoExtra.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoExtraEntry>();
                 }
             }
             else
             {
+                ThumbnailCache.Write(true);
+
                 if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
                     Storage.DbcStorage.FileData.ClearCache();
 
                 Storage.DbcStorage.CreatureDisplayInfo.ClearCache();
                 Storage.DbcStorage.CreatureModelData.ClearCache();
+                Storage.DbcStorage.CreatureDisplayInfoExtra.ClearCache();
             }
         }
     }

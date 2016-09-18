@@ -74,7 +74,7 @@ namespace Neo.IO.Files.Models.WoD
                 var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
                 mTextures = new Graphics.Texture[textures.Length];
                 TextureInfos = new TextureInfo[textures.Length];
-                for(var i = 0; i < textures.Length; ++i)
+                for (var i = 0; i < textures.Length; ++i)
                 {
                     var tex = textures[i];
                     if (tex.type == 0 && tex.lenName > 0)
@@ -85,22 +85,22 @@ namespace Neo.IO.Files.Models.WoD
                     }
                     else
                     {
-                        switch (tex.type)
+                        switch ((TextureType)tex.type)
                         {
-                            case 11:
-                                if (CreatureVariations.Count > CreatureVariationCurrent)
-                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item1))
-                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item1);
+                            case TextureType.MonsterSkin1:
+                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                    if (!string.IsNullOrEmpty(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item1))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item1);
                                 break;
-                            case 12:
-                                if (CreatureVariations.Count > CreatureVariationCurrent)
-                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item2))
-                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item2);
+                            case TextureType.MonsterSkin2:
+                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                    if (!string.IsNullOrEmpty(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item2))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item2);
                                 break;
-                            case 13:
-                                if (CreatureVariations.Count > CreatureVariationCurrent)
-                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item3))
-                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item3);
+                            case TextureType.MonsterSkin3:
+                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                    if (!string.IsNullOrEmpty(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item3))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item3);
                                 break;
                             default:
                                 mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
@@ -118,7 +118,7 @@ namespace Neo.IO.Files.Models.WoD
                     TextureInfos[i] = new TextureInfo
                     {
                         Texture = mTextures[i],
-                        TextureType = tex.type,
+                        TextureType = (TextureType)tex.type,
                         SamplerFlags = samplerFlags
                     };
                 }
@@ -139,40 +139,33 @@ namespace Neo.IO.Files.Models.WoD
                 return Path.Combine(Path.GetDirectoryName(mFileName), f); //Add full directory location
             };
 
-            CreatureVariations = new List<Tuple<string, string, string>>();
+            DisplayOptions.TextureVariationFiles = new List<Tuple<string, string, string>>();
             HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>();
 
-            var fileid = Storage.DbcStorage.FileData
-                                           .GetAllRows<WoD.FileDataIDEntry>()
-                                           .Where(x => x.FilePath.ToLower() == Path.GetDirectoryName(mFileName).ToLower() && x.FileName.ToLower() == Path.GetFileName(mFileName).ToLower())
-                                           .FirstOrDefault();
+            var modelDisplay = from fd in Storage.DbcStorage.FileData.GetAllRows<WoD.FileDataIDEntry>()
+                               join cmd in Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>()
+                               on Path.Combine(fd.FilePath, fd.FileName).ToLower() equals mFileName.ToLower()
+                               join cdi in Storage.DbcStorage.CreatureDisplayInfo.GetAllRows<Wotlk.CreatureDisplayInfoEntry>()
+                               on cmd.ID equals cdi.ModelId
+                               where cmd.ModelPath.ToLower() == Path.ChangeExtension(mFileName, ".mdx").ToLower()
+                               select cdi;
 
-            if(fileid.ID == 0) //Shouldn't happen (File Not Found)
-                return;
-            
-            var modelData = Storage.DbcStorage.CreatureModelData
-                                              .GetAllRows<WoD.CreatureModelDataEntry>()
-                                              .Where(x => x.Filedataid == fileid.ID)
-                                              .Select(x => x.Id)
-                                              .ToList(); //Get all model data references
-
-            if(modelData.Count == 0) //No model data
-                return;
-
-            var modelDisplay = Storage.DbcStorage.CreatureDisplayInfo
-                                                 .GetAllRows<WoD.CreatureDisplayInfoEntry>()
-                                                 .Where(x => modelData.Contains(x.ModelId))
-                                                 .ToList(); //Get all display entries
-
-            foreach (var display in modelDisplay)
+            if(modelDisplay.Count() == 0)
             {
-                variations.Add(new Tuple<string, string, string>(
-                    FormatPath(display.TextureVariation1),
-                    FormatPath(display.TextureVariation2),
-                    FormatPath(display.TextureVariation3)));
+                variations.Add(new Tuple<string, string, string>("default_texture", "", ""));
             }
-
-            CreatureVariations = new List<Tuple<string, string, string>>(variations);
+            else
+            {
+                foreach (var display in modelDisplay)
+                {
+                    variations.Add(new Tuple<string, string, string>(
+                        FormatPath(display.TextureVariation1),
+                        FormatPath(display.TextureVariation2),
+                        FormatPath(display.TextureVariation3)));
+                }
+            }
+            
+            DisplayOptions.TextureVariationFiles.AddRange(variations);
         }
 
         private void LoadSkins(BinaryReader reader)

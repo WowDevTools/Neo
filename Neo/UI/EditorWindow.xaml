@@ -10,8 +10,8 @@
              xmlns:themes="clr-namespace:Neo.UI.Themes"
              xmlns:widgets="clr-namespace:Neo.UI.Widgets"
              xmlns:widget="clr-namespace:Neo.UI.Widget"
-             mc:Ignorable="d" Width="1600" Height="900" Loaded="Window_Loaded">
-    <Grid>
+			 mc:Ignorable="d" Width="1600" Height="900" Loaded="Window_Loaded" Unloaded="Window_Unloaded">
+	<Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition/>

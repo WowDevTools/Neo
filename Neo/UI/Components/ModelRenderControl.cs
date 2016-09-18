@@ -18,6 +18,8 @@ using Neo.Storage;
 using Color = System.Drawing.Color;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Neo.UI.Components
 {
@@ -43,6 +45,7 @@ namespace Neo.UI.Components
         private Bitmap mPaintBitmap;
 
         private M2Renderer mRenderer;
+        private int mThumbnailCaptureFrame; //What frame to capture for the thumbnail
 
         public override bool Focused
         {
@@ -62,10 +65,11 @@ namespace Neo.UI.Components
         public void SetModel(string model, int variation = 0)
         {
             var file = ModelFactory.Instance.CreateM2(model);
-            file.CreatureVariationCurrent = variation;
+            file.DisplayOptions.TextureVariation = variation;
             if (file.Load() == false)
                 return;
 
+            mThumbnailCaptureFrame = 10; //10th frame allows everything to render : 100ms
             mRenderer = new M2Renderer(file);
             SetModelCameraParameters(file);
         }
@@ -120,10 +124,10 @@ namespace Neo.UI.Components
 
                 switch (tex.TextureType)
                 {
-                    case 13:
-                    case 12:
-                    case 11:
-                        tex.Texture = TextureManager.Instance.GetTexture(GetSkinName(root, displayInfo, tex.TextureType - 11));
+                    case TextureType.MonsterSkin3:
+                    case TextureType.MonsterSkin2:
+                    case TextureType.MonsterSkin1:
+                        tex.Texture = TextureManager.Instance.GetTexture(GetSkinName(root, displayInfo, (int)tex.TextureType - 11));
                         break;
                 }
             }
@@ -183,19 +187,19 @@ namespace Neo.UI.Components
                 }
             });
 
-            
-            if (file.CreatureVariations.Count > 1)
+
+            if (file.DisplayOptions.TextureVariationFiles.Count > 1)
             {
                 nudVariation.ReadOnly = false;
-                nudVariation.Maximum = file.CreatureVariations.Count;
-                nudVariation.Value = file.CreatureVariationCurrent + 1;
+                nudVariation.Maximum = file.DisplayOptions.TextureVariationFiles.Count;
+                nudVariation.Value = file.DisplayOptions.TextureVariation + 1;
                 nudVariation.Increment = 1;
-            }                
+            }
             else
             {
                 nudVariation.Increment = 0;
                 nudVariation.ReadOnly = true;
-            }                
+            }
         }
 
         private string GetSkinName(string root, IDataStorageRecord displayInfo, int index)
@@ -211,7 +215,9 @@ namespace Neo.UI.Components
         {
             e.Graphics.Clear(Color.Black);
             if (mPaintBitmap != null)
+            {
                 e.Graphics.DrawImage(mPaintBitmap, new PointF(0, 0));
+            }
         }
 
         protected override void OnLoad(EventArgs e)

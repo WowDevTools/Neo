@@ -28,7 +28,8 @@ namespace Neo.UI.Models
         private bool mShowSpecularTextures;
         private AssetBrowserDirectory mCurrentDirectory;
         private readonly ObservableCollection<AssetBrowserFilePreviewElement> mCurFiles = new ObservableCollection<AssetBrowserFilePreviewElement>();
-        private IEnumerable<AssetBrowserFilePreviewElement> mFullElements = new List<AssetBrowserFilePreviewElement>(); 
+        private IEnumerable<AssetBrowserFilePreviewElement> mFullElements = new List<AssetBrowserFilePreviewElement>();
+        private ThumbnailCapture mThumbCapture;
 
         public bool ShowTextures { get { return mShowTextures; } set { mShowTextures = value; UpdateShowTextures(value); } }
 
@@ -36,7 +37,7 @@ namespace Neo.UI.Models
         public bool HideUnknownFiles { get { return mHideUnknown; } set { mHideUnknown = value; UpdateHideUnknownFiles(value); } }
         public bool ShowSpecularTextures { get { return mShowSpecularTextures; } set { UpdateShowSpecularTextures(value); } }
 
-        public IEnumerable<AssetBrowserDirectory> AssetBrowserRoot { get { return new []{mRootDiretory}; } }
+        public IEnumerable<AssetBrowserDirectory> AssetBrowserRoot { get { return new[] { mRootDiretory }; } }
 
 
         public AssetBrowserViewModel(Dialogs.AssetBrowser browser)
@@ -46,6 +47,9 @@ namespace Neo.UI.Models
             FileManager.Instance.LoadComplete += OnFilesLoaded;
             mRootDiretory = new AssetBrowserDirectory(this, new DirectoryEntry {Name = ""}, null);
             EditorWindowController.Instance.AssetBrowserModel = this;
+
+            if (ThumbnailCache.ThumnailAdded == null)
+                ThumbnailCache.ThumnailAdded += UpdateThumbnail;
         }
 
         public void HandleImportFile()
@@ -81,7 +85,7 @@ namespace Neo.UI.Models
             var selected = mBrowser.AssetTreeView.SelectedItem as AssetBrowserDirectory;
             if (selected == null)
                 return;
-            
+
             mBrowser.ExportFolderLink.IsEnabled = false;
             mBrowser.ExportOneFileLink.IsEnabled = false;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
@@ -97,7 +101,7 @@ namespace Neo.UI.Models
             mBrowser.ExportOneFileLink.IsEnabled = true;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
-                        
+
             var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath ?? ".\\Export"), selected.FullPath);
             MessageBox.Show(String.Format("The selected folder has been successfully exported to:\n{0}", exportPath), "Neo - Export Folder");
         }
@@ -237,7 +241,6 @@ namespace Neo.UI.Models
                 return;
             }
 
-
             var files =
                 mCurrentDirectory.Files.Select(
                     f => new AssetBrowserFilePreviewElement {View = new AssetBrowserFilePreview(f)}).ToList();
@@ -269,12 +272,24 @@ namespace Neo.UI.Models
 
             mCurFiles.Clear();
             foreach(var elem in elements)
-               mCurFiles.Add(elem);
+            {
+                mCurFiles.Add(elem);
+
+                if (elem.View.FileEntry.Extension.Contains("m2"))
+                    if (!ThumbnailCache.IsCached(elem.View.FileEntry.FullPath))
+                        mThumbCapture.AddModel(elem.View.FileEntry.FullPath);
+            }
+        }
+
+        private void UpdateThumbnail(string filename)
+        {
+            mBrowser.Dispatcher.Invoke(() => mCurFiles.FirstOrDefault(x => x.View.FileEntry.FullPath == filename)?.View.ReloadImage());
         }
 
         private void OnInitialized(object sender, EventArgs args)
         {
             mBrowser.SelectedFilesListView.ItemsSource = mCurFiles;
+            mThumbCapture = new ThumbnailCapture(114, 114);
         }
 
         private void OnFilesLoaded()

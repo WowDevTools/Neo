@@ -102,22 +102,22 @@ namespace Neo.IO.Files.Models.Wotlk
                     }
                     else
                     {
-                        switch (tex.type)
+                        switch ((TextureType)tex.type)
                         {
-                            case 11:
-                                if (CreatureVariations.Count > CreatureVariationCurrent)
-                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item1))
-                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item1);
+                            case TextureType.MonsterSkin1:
+                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                    if (!string.IsNullOrEmpty(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item1))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item1);
                                 break;
-                            case 12:
-                                if (CreatureVariations.Count > CreatureVariationCurrent)
-                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item2))
-                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item2);
+                            case TextureType.MonsterSkin2:
+                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                    if (!string.IsNullOrEmpty(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item2))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item2);
                                 break;
-                            case 13:
-                                if (CreatureVariations.Count > CreatureVariationCurrent)
-                                    if (!string.IsNullOrEmpty(CreatureVariations[CreatureVariationCurrent].Item3))
-                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(CreatureVariations[CreatureVariationCurrent].Item3);
+                            case TextureType.MonsterSkin3:
+                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                    if (!string.IsNullOrEmpty(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item3))
+                                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(DisplayOptions.TextureVariationFiles[DisplayOptions.TextureVariation].Item3);
                                 break;
                             default:
                                 mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
@@ -136,7 +136,7 @@ namespace Neo.IO.Files.Models.Wotlk
                     TextureInfos[i] = new TextureInfo
                     {
                         Texture = mTextures[i],
-                        TextureType = tex.type,
+                        TextureType = (TextureType)tex.type,
                         SamplerFlags = samplerFlags
                     };
                 }
@@ -157,32 +157,45 @@ namespace Neo.IO.Files.Models.Wotlk
                 return Path.Combine(Path.GetDirectoryName(mFileName), f); //Add full directory location
             };
 
-            CreatureVariations = new List<Tuple<string, string, string>>();
+            DisplayOptions.TextureVariationFiles = new List<Tuple<string, string, string>>();
             HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>(); //Unique combinations only
 
-            var modelData = Storage.DbcStorage.CreatureModelData
-                                              .GetAllRows<Wotlk.CreatureModelDataEntry>()
-                                              .Where(x => x.ModelPath.ToLower() == Path.ChangeExtension(mFileName, ".mdx").ToLower())
-                                              .Select(x => x.ID)
-                                              .ToList(); //Get all model data references
+            var modelDisplay = from cmd in Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>()
+                               join cdi in Storage.DbcStorage.CreatureDisplayInfo.GetAllRows<Wotlk.CreatureDisplayInfoEntry>()
+                               on cmd.ID equals cdi.ModelId
+                               where cmd.ModelPath.ToLower() == Path.ChangeExtension(mFileName, ".mdx").ToLower()
+                               select cdi;
 
-            if (modelData.Count == 0) //No model data
-                return;
-
-            var modelDisplay = Storage.DbcStorage.CreatureDisplayInfo
-                                                 .GetAllRows<Wotlk.CreatureDisplayInfoEntry>()
-                                                 .Where(x => modelData.Contains(x.ModelId))
-                                                 .ToList(); //Get all display entries
-
-            foreach (var display in modelDisplay)
+            if (modelDisplay.Count() == 0)
             {
-                variations.Add(new Tuple<string, string, string>(
-                    FormatPath(display.TextureVariation1),
-                    FormatPath(display.TextureVariation2),
-                    FormatPath(display.TextureVariation3)));
+                variations.Add(new Tuple<string, string, string>("default_texture", "", ""));
+            }
+            else
+            {
+                foreach (var display in modelDisplay)
+                {
+                    variations.Add(new Tuple<string, string, string>(FormatPath(display.TextureVariation1),
+                                                                     FormatPath(display.TextureVariation2),
+                                                                     FormatPath(display.TextureVariation3)));
+                }
+
+                //Get Extra display info
+                var extraDisplay = from md in modelDisplay
+                                   join cdi in Storage.DbcStorage.CreatureDisplayInfoExtra.GetAllRows<Wotlk.CreatureDisplayInfoExtraEntry>()
+                                   on md.ExtendedDisplayInfoId equals cdi.ID
+                                   select cdi;
+
+                if(extraDisplay.Count() > 0)
+                {
+                    DisplayOptions.FaceOptions = extraDisplay.Select(x => x.FaceID).Distinct().ToArray();
+                    DisplayOptions.FacialHairOptions = extraDisplay.Select(x => x.FacialHairID).Distinct().ToArray();
+                    DisplayOptions.SkinOptions = extraDisplay.Select(x => x.SkinID).Distinct().ToArray();
+                    DisplayOptions.HairColorOptions = extraDisplay.Select(x => x.HairColorID).Distinct().ToArray();
+                    DisplayOptions.HairStyleOptions = extraDisplay.Select(x => x.HairStyleID).Distinct().ToArray();
+                }
             }
 
-            CreatureVariations.AddRange(variations);
+            DisplayOptions.TextureVariationFiles.AddRange(variations);
         }
 
         private void LoadSkins(BinaryReader reader)
