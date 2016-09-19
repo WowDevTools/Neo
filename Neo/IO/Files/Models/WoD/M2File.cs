@@ -19,6 +19,7 @@ namespace Neo.IO.Files.Models.WoD
         private bool mRemapBlend;
         private ushort[] mBlendMap = new ushort[0];
         private M2SkinFile mSkin;
+        private string[] mDirectoryParts;
 
         public M2AnimationBone[] Bones { get; private set; }
         public M2UVAnimation[] UvAnimations { get; private set; }
@@ -41,6 +42,7 @@ namespace Neo.IO.Files.Models.WoD
             AnimationLookup = new short[0];
             mModelName = string.Empty;
             mFileName = fileName;
+            mDirectoryParts = Path.GetDirectoryName(fileName).Split(Path.DirectorySeparatorChar);
         }
 
         public override bool Load()
@@ -142,12 +144,21 @@ namespace Neo.IO.Files.Models.WoD
             DisplayOptions.TextureVariationFiles = new List<Tuple<string, string, string>>();
             HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>();
 
+            //First check creatures/characters 
+            if (mDirectoryParts.Length > 0 && mDirectoryParts[0].ToLower() != "character" && mDirectoryParts[0].ToLower() != "creature")
+                return;
+
+            //Second check MDX exists
+            string mdx = Path.ChangeExtension(mFileName, ".mdx").ToLower();
+            if (!Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>().Any(x => x.ModelPath.ToLower() == mdx))
+                return;
+
             var modelDisplay = from fd in Storage.DbcStorage.FileData.GetAllRows<WoD.FileDataIDEntry>()
                                join cmd in Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>()
                                on Path.Combine(fd.FilePath, fd.FileName).ToLower() equals mFileName.ToLower()
                                join cdi in Storage.DbcStorage.CreatureDisplayInfo.GetAllRows<Wotlk.CreatureDisplayInfoEntry>()
                                on cmd.ID equals cdi.ModelId
-                               where cmd.ModelPath.ToLower() == Path.ChangeExtension(mFileName, ".mdx").ToLower()
+                               where cmd.ModelPath.ToLower() == mdx
                                select cdi;
 
             if(modelDisplay.Count() == 0)
