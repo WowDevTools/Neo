@@ -128,6 +128,22 @@ namespace WoWEditor6.Scene.Models.M2
             UpdateModelNameplate();
         }
 
+        public void SetPosition(Vector3 position)
+        {
+            mPosition = position;
+            var rotationMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+               MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
+
+            Matrix.Invert(ref rotationMatrix, out mInverseRotation);
+            mInstanceMatrix = rotationMatrix * Matrix.Scaling(mScale) * Matrix.Translation(position);
+            mBoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
+            Matrix.Invert(ref mInstanceMatrix, out mInverseMatrix);
+
+            InstanceCorners = mModel.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            UpdateModelNameplate();
+        }
+
         public void UpdatePosition(Vector3 position) 
         {
             mPosition.X += position.X;

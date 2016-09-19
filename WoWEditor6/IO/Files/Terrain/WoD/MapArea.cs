@@ -774,7 +774,8 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             });
 
             foreach (var chunk in mChunks)
-                chunk.TryAddDoodad(mcrfValue, box);
+                if (chunk.BoundingBox.Contains(position) == ContainmentType.Contains)
+                    chunk.AddDoodad(mcrfValue, box);
 
             mWasChanged = true;
         }

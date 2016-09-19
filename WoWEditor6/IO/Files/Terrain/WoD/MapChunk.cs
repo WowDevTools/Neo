@@ -53,6 +53,16 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
             for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
         }
 
+        public void AddDoodad(int mcrfValue, BoundingBox box)
+        {
+            var references = DoodadReferences;
+            Array.Resize(ref references, references.Length + 1);
+            references[references.Length - 1] = mcrfValue;
+            DoodadReferences = references;
+
+            DoodadsChanged = true;
+        }
+
         public void TryAddDoodad(int mcrfValue, BoundingBox box)
         {
             var chunkBox = new BoundingBox(new Vector3(BoundingBox.Minimum.X, BoundingBox.Minimum.Y, float.MinValue),

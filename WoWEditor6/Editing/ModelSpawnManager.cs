@@ -34,7 +34,7 @@ namespace WoWEditor6.Editing
 
         private ModelSpawnManager()
         {
-            
+
         }
 
         public void CopyClickedModel()
@@ -101,7 +101,7 @@ namespace WoWEditor6.Editing
 
             CheckUpdateScale(cursor);
 
-            mHoveredInstance.UpdatePosition(intersection.TerrainPosition);
+            mHoveredInstance.SetPosition(intersection.TerrainPosition);
             mInstanceRef[0].BoundingBox = mHoveredInstance.BoundingBox;
 
             WorldFrame.Instance.M2Manager.PushMapReferences(mInstanceRef);
@@ -178,32 +178,33 @@ namespace WoWEditor6.Editing
             }
 
             var adtMinX = (int)(minPos.X / Metrics.TileSize);
-            var adtMinY = (int) (minPos.Y / Metrics.TileSize);
+            var adtMinY = (int)(minPos.Y / Metrics.TileSize);
 
-            var adtMaxX = (int) (maxPos.X / Metrics.TileSize);
-            var adtMaxY = (int) (maxPos.Y / Metrics.TileSize);
+            var adtMaxX = (int)(maxPos.X / Metrics.TileSize);
+            var adtMaxY = (int)(maxPos.Y / Metrics.TileSize);
 
             // if the model is only on one adt dont bother checking
             // all adts for the UUID - THIS IS WRONG. THEY MUST ALWAYS BE UNIQUE.
             if (adtMinX == adtMaxX && adtMinY == adtMaxY)
             {
-                var area = WorldFrame.Instance.MapManager.GetAreaByIndex(adtMinX, adtMinY);
+                var area = WorldFrame.Instance.MapManager.GetAreaByPosition(rootPosition);
                 if (area == null)
                     return;
 
                 if (area.AreaFile == null || area.AreaFile.IsValid == false)
                     return;
 
+                mHoveredInstance.SetPosition(rootPosition);
+
                 area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, mHoveredInstance.BoundingBox,
-                    mHoveredInstance.Position,
-                    new Vector3(0, 0, 0), mHoveredInstance.Scale);
+                    mHoveredInstance.Position, new Vector3(0, 0, 0), mHoveredInstance.Scale);
 
                 WorldFrame.Instance.M2Manager.ViewChanged();
             }
             else
             {
-                AddToGrid(adtMinX, adtMaxX, adtMinY, adtMaxY, (int) (rootPosition.X / Metrics.TileSize),
-                    (int) (rootPosition.Y / Metrics.TileSize));
+                AddToGrid(adtMinX, adtMaxX, adtMinY, adtMaxY, (int)(rootPosition.X / Metrics.TileSize),
+                    (int)(rootPosition.Y / Metrics.TileSize));
             }
         }
 

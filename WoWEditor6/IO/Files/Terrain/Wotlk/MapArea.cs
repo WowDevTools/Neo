@@ -28,7 +28,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private Mcin[] mChunkOffsets = new Mcin[0];
         private Mddf[] mDoodadDefs = new Mddf[0];
         private int[] mDoodadNameIds = new int[0];
-        private readonly List<string> mDoodadNames = new List<string>(); 
+        private readonly List<string> mDoodadNames = new List<string>();
 
         private bool mWasChanged;
 
@@ -107,8 +107,9 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                 MddfIndex = mDoodadDefs.Length - 1
             });
 
-            foreach(var chunk in mChunks)
-                chunk.TryAddDoodad(mcrfValue, box);
+            foreach (var chunk in mChunks)
+                if (chunk.BoundingBox.Contains(position) == ContainmentType.Contains)
+                    chunk.AddDoodad(mcrfValue, box);
 
             mWasChanged = true;
         }
@@ -307,7 +308,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
                     var bytes = reader.ReadBytes(size);
                     if (mSaveChunks.ContainsKey(signature))
                         continue;
-                    
+
                     mSaveChunks.Add(signature, new DataChunk {Data = bytes, Signature = signature, Size = size});
                 }
 
