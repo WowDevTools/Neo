@@ -5,6 +5,8 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Neo.Scene.Models.M2;
 using Neo.UI;
+using OpenTK.Graphics;
+using SlimTK;
 using Device = SharpDX.Direct3D11.Device;
 
 namespace Neo.Graphics

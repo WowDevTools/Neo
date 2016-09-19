@@ -21,3 +21,4 @@ Thank you to everyone listed below for your various commits, patches, code fixes
 - Steff
 - Tripleslash
 - Westtunger
+- Nihlus

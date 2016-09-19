@@ -10,13 +10,13 @@
 2. 
 3. 
 
-**Branch(es)**:  
+**Branch(es)**:
 
-**Neo hash/commit**:    
+**Neo hash/commit**:
 
 **WoW Version**:
 
-**Operating system**:  
+**Operating system**:
 
 [//]: # (This template is for problem reports, for other type of reports edit it accordingly)
 [//]: # (If this is a crash report, include the crashlog with https://gist.github.com/)

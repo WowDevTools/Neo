@@ -60,38 +60,38 @@ namespace Neo.Graphics
         // ReSharper disable once FunctionComplexityOverflow
         public void Update(Matrix4 matView, Matrix4 matProj)
         {
-            Clip[0] = matView[0] * matProj[0] + matView[1] * matProj[4] + matView[2] * matProj[8]
-                      + matView[3] * matProj[12];
-            Clip[1] = matView[0] * matProj[1] + matView[1] * matProj[5] + matView[2] * matProj[9]
-                      + matView[3] * matProj[13];
-            Clip[2] = matView[0] * matProj[2] + matView[1] * matProj[6] + matView[2] * matProj[10]
-                      + matView[3] * matProj[14];
-            Clip[3] = matView[0] * matProj[3] + matView[1] * matProj[7] + matView[2] * matProj[11]
-                      + matView[3] * matProj[15];
-            Clip[4] = matView[4] * matProj[0] + matView[5] * matProj[4] + matView[6] * matProj[8]
-                      + matView[7] * matProj[12];
-            Clip[5] = matView[4] * matProj[1] + matView[5] * matProj[5] + matView[6] * matProj[9]
-                      + matView[7] * matProj[13];
-            Clip[6] = matView[4] * matProj[2] + matView[5] * matProj[6] + matView[6] * matProj[10]
-                      + matView[7] * matProj[14];
-            Clip[7] = matView[4] * matProj[3] + matView[5] * matProj[7] + matView[6] * matProj[11]
-                      + matView[7] * matProj[15];
-            Clip[8] = matView[8] * matProj[0] + matView[9] * matProj[4] + matView[10] * matProj[8]
-                      + matView[11] * matProj[12];
-            Clip[9] = matView[8] * matProj[1] + matView[9] * matProj[5] + matView[10] * matProj[9]
-                      + matView[11] * matProj[13];
-            Clip[10] = matView[8] * matProj[2] + matView[9] * matProj[6] + matView[10]
-                       * matProj[10] + matView[11] * matProj[14];
-            Clip[11] = matView[8] * matProj[3] + matView[9] * matProj[7] + matView[10]
-                       * matProj[11] + matView[11] * matProj[15];
-            Clip[12] = matView[12] * matProj[0] + matView[13] * matProj[4] + matView[14]
-                       * matProj[8] + matView[15] * matProj[12];
-            Clip[13] = matView[12] * matProj[1] + matView[13] * matProj[5] + matView[14]
-                       * matProj[9] + matView[15] * matProj[13];
-            Clip[14] = matView[12] * matProj[2] + matView[13] * matProj[6] + matView[14]
-                       * matProj[10] + matView[15] * matProj[14];
-            Clip[15] = matView[12] * matProj[3] + matView[13] * matProj[7] + matView[14]
-                       * matProj[11] + matView[15] * matProj[15];
+            Clip[0] = matView.M11 * matProj.M11 + matView.M12 * matProj.M21 + matView.M13 * matProj.M31
+                      + matView.M14 * matProj.M41;
+            Clip[1] = matView.M11 * matProj.M12 + matView.M12 * matProj.M22 + matView.M13 * matProj.M32
+                      + matView.M14 * matProj.M42;
+            Clip[2] = matView.M11 * matProj.M13 + matView.M12 * matProj.M23 + matView.M13 * matProj.M33
+                      + matView.M14 * matProj.M43;
+            Clip[3] = matView.M11 * matProj.M14 + matView.M12 * matProj.M24 + matView.M13 * matProj.M34
+                      + matView.M14 * matProj.M44;
+            Clip[4] = matView.M21 * matProj.M11 + matView.M22 * matProj.M21 + matView.M23 * matProj.M31
+                      + matView.M24 * matProj.M41;
+            Clip[5] = matView.M21 * matProj.M12 + matView.M22 * matProj.M22 + matView.M23 * matProj.M32
+                      + matView.M24 * matProj.M42;
+            Clip[6] = matView.M21 * matProj.M13 + matView.M22 * matProj.M23 + matView.M23 * matProj.M33
+                      + matView.M24 * matProj.M43;
+            Clip[7] = matView.M21 * matProj.M14 + matView.M22 * matProj.M24 + matView.M23 * matProj.M34
+                      + matView.M24 * matProj.M44;
+            Clip[8] = matView.M31 * matProj.M11 + matView.M32 * matProj.M21 + matView.M33 * matProj.M31
+                      + matView.M34 * matProj.M41;
+            Clip[9] = matView.M31 * matProj.M12 + matView.M32 * matProj.M22 + matView.M33 * matProj.M32
+                      + matView.M34 * matProj.M42;
+            Clip[10] = matView.M31 * matProj.M13 + matView.M32 * matProj.M23 + matView.M33
+                       * matProj.M33 + matView.M34 * matProj.M43;
+            Clip[11] = matView.M31 * matProj.M14 + matView.M32 * matProj.M24 + matView.M33
+                       * matProj.M34 + matView.M34 * matProj.M44;
+            Clip[12] = matView.M41 * matProj.M11 + matView.M42 * matProj.M21 + matView.M43
+                       * matProj.M31 + matView.M44 * matProj.M41;
+            Clip[13] = matView.M41 * matProj.M12 + matView.M42 * matProj.M22 + matView.M43
+                       * matProj.M32 + matView.M44 * matProj.M42;
+            Clip[14] = matView.M41 * matProj.M13 + matView.M42 * matProj.M23 + matView.M43
+                       * matProj.M33 + matView.M44 * matProj.M43;
+            Clip[15] = matView.M41 * matProj.M14 + matView.M42 * matProj.M24 + matView.M43
+                       * matProj.M34 + matView.M44 * matProj.M44;
 
             mPlanes[0] = new Plane(
                 Clip[3] - Clip[0],

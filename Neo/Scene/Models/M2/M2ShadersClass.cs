@@ -79,7 +79,7 @@ namespace Neo.Scene.Models.M2
         PS_Illum,
     };
 
-    class M2ShadersClass
+    public class M2ShadersClass
     {
         readonly List<PixelShader> mPixelShaders = new List<PixelShader>();
         readonly List<VertexShader> mVertexShaders_Instanced = new List<VertexShader>();
