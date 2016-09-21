@@ -123,7 +123,7 @@ namespace WoWEditor6.Editing
             }
         }
 
-        private void OnTerrainClicked(IntersectionParams parameters, MouseEventArgs args)
+        public void OnTerrainClicked(IntersectionParams parameters, MouseEventArgs args)
         {
             if (args.Button != MouseButtons.Left)
             {
@@ -152,9 +152,9 @@ namespace WoWEditor6.Editing
 
             SpawnModel(parameters.TerrainPosition);
 
-            ModelEditManager.Instance.IsCopying = false;
+            ModelEditManager.Instance.IsCopying = !EditorWindowController.Instance.SpawnModel.DeselectModelOnClick;
 
-            if (EditorWindowController.Instance.SpawnModel.DeselectModelOnClick)
+            if (!ModelEditManager.Instance.IsCopying)
             {
                 WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
                 mHoveredInstance = null;

@@ -397,6 +397,11 @@ namespace WoWEditor6.Scene
                         mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
                         ModelEditManager.Instance.SelectedModel = selected;
                     } 
+                    else if (selected == null && ModelEditManager.Instance.IsCopying)
+                    {
+                        selected = ModelEditManager.Instance.SelectedModel;
+                        mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
+                    }
                     else if (selected == null)
                     {
                         ModelEditManager.Instance.SelectedModel = null;
