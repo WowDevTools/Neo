@@ -391,17 +391,17 @@ namespace WoWEditor6.Scene
                     if (mSelectedInstance != null)
                         mSelectedInstance.DestroyModelNameplate();
 
-                    if (selected != null && selected.IsSpecial == false)
+                    if (ModelEditManager.Instance.IsCopying && selected != ModelEditManager.Instance.SelectedModel)
+                    {
+                        selected = ModelEditManager.Instance.SelectedModel;
+                        mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
+                    }
+                    else if (selected != null && selected.IsSpecial == false)
                     {
                         selected.CreateModelNameplate();
                         mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
                         ModelEditManager.Instance.SelectedModel = selected;
                     } 
-                    else if (selected == null && ModelEditManager.Instance.IsCopying)
-                    {
-                        selected = ModelEditManager.Instance.SelectedModel;
-                        mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
-                    }
                     else if (selected == null)
                     {
                         ModelEditManager.Instance.SelectedModel = null;
