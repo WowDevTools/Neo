@@ -33,7 +33,7 @@ namespace WoWEditor6.UI
                     if (!AssertSize(4)) return;
                     int size = reader.ReadInt32(); //Image byte size
 
-                    if (!AssertSize(size)) return;
+                    if (!AssertSize(size) || size == 0) return;
                     mCache.Add(key, BytesToImage(reader.ReadBytes(size)));
                 }
             }
