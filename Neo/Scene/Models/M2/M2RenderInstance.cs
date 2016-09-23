@@ -139,7 +139,7 @@ namespace Neo.Scene.Models.M2
             UpdateModelNameplate();
         }
 
-        public void UpdatePosition(Vector3 position)
+        public void SetPosition(Vector3 position)
         {
             mPosition.X += position.X;
             mPosition.Y += position.Y;

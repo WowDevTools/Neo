@@ -52,15 +52,19 @@ namespace Neo.Editing
             var rDown = KeyHelper.IsKeyDown(keyState, Keys.R);
             var mDown = KeyHelper.IsKeyDown(keyState, Keys.M);
             var vDown = KeyHelper.IsKeyDown(keyState, Keys.V);
+            var cDown = KeyHelper.IsKeyDown(keyState, Keys.C);
             var pagedownDown = KeyHelper.IsKeyDown(keyState, Keys.PageDown);
+
+            if (ctrlDown && cDown) // Copying
+            {
+                ModelSpawnManager.Instance.CopyClickedModel();
+                IsCopying = !(ModelSpawnManager.Instance.ClickedInstance == null);
+            }
 
             if (ctrlDown && vDown) // Pasting
             {
-                if (IsCopying == false)
-                {
-                    IsCopying = true;
-                    Editing.ModelSpawnManager.Instance.CopyClickedModel();
-                }
+                if (IsCopying)
+                    ModelSpawnManager.Instance.OnTerrainClicked(WorldFrame.Instance.LastMouseIntersection, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
             }
 
             if ((altDown || ctrlDown || shiftDown) & rmbDown) // Rotating
@@ -96,7 +100,7 @@ namespace Neo.Editing
                 SelectedModel.Remove();
             }
 
-           if(ctrlDown && rDown) // Reset rotation
+            if(ctrlDown && rDown) // Reset rotation
             {
                 var newRotation = SelectedModel.GetRotation() * (-1);
                 SelectedModel.Rotate(newRotation.X, newRotation.Y, newRotation.Z);

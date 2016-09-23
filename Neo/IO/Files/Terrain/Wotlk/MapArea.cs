@@ -108,8 +108,9 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 MddfIndex = mDoodadDefs.Length - 1
             });
 
-            foreach(var chunk in mChunks)
-                chunk.TryAddDoodad(mcrfValue, box);
+            foreach (var chunk in mChunks)
+                if (chunk.BoundingBox.Contains(position) == ContainmentType.Contains)
+                    chunk.AddDoodad(mcrfValue, box);
 
             mWasChanged = true;
         }

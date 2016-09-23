@@ -774,10 +774,12 @@ namespace Neo.IO.Files.Terrain.WoD
                 MddfIndex = mDoodadDefs.Length - 1
             });
 
-            foreach (var chunk in mChunks)
-                chunk.TryAddDoodad(mcrfValue, boundingBox);
+	        foreach (var chunk in mChunks)
+	        {
+		        chunk.TryAddDoodad(mcrfValue, boundingBox);
+	        }
 
-            mWasChanged = true;
+	        mWasChanged = true;
         }
 
         // ReSharper disable once FunctionComplexityOverflow

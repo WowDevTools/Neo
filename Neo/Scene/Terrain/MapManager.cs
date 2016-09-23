@@ -53,6 +53,12 @@ namespace Neo.Scene.Terrain
                 return mAreas.ContainsKey(index) ? mAreas[index] : null;
         }
 
+        public MapAreaRender GetAreaByPosition(Vector3 position)
+        {
+            lock(mAreas)
+                return mAreas.Values.FirstOrDefault(x => x.AreaFile.BoundingBox.Contains(position) == ContainmentType.Contains);
+        }
+
         public void OnEditTerrain(Editing.TerrainChangeParameters parameters)
         {
             // ReSharper disable once InconsistentlySynchronizedField
