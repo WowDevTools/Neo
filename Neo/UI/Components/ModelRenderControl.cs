@@ -41,7 +41,7 @@ namespace Neo.UI.Components
 
         private PerspectiveCamera mCamera;
         private CameraControl mCamControl;
-        private ConstantBuffer mMatrixBuffer;
+        private UniformBuffer mMatrixBuffer;
         private RenderTarget mTarget;
         private Texture2D mResolveTexture;
         private Texture2D mMapTexture;
@@ -233,7 +233,7 @@ namespace Neo.UI.Components
                 return;
 
             mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
-            mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
+            mMatrixBuffer = new UniformBuffer(WorldFrame.Instance.GraphicsContext);
 
             mCamera = new PerspectiveCamera();
             mCamera.ViewChanged += ViewChanged;

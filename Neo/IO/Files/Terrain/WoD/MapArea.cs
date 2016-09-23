@@ -94,7 +94,7 @@ namespace Neo.IO.Files.Terrain.WoD
                 if (WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
                 {
                     mDoodadDefs[inst.MddfIndex].Position = pos;
-                    inst.RenderInstance.UpdatePosition(new Vector3(0, 0, pos.Y - old_pos.Y));
+                    inst.RenderInstance.SetPosition(new Vector3(0, 0, pos.Y - old_pos.Y));
                 }
             }
         }
@@ -254,7 +254,8 @@ namespace Neo.IO.Files.Terrain.WoD
             catch(Exception e)
             {
                 Log.Error(e.ToString());
-                Log.Warning(string.Format("Attempted to load ADT {0}_{1}_{2}.adt but it caused an error: {3}. Skipping the adt.", Continent, IndexX, IndexY, e.Message));
+                Log.Warning(
+	                $"Attempted to load ADT {Continent}_{IndexX}_{IndexY}.adt but it caused an error: {e.Message}. Skipping the adt.");
                 IsValid = false;
                 return;
             }

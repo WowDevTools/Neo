@@ -74,7 +74,7 @@ namespace Neo.Scene.Models.M2
 							     Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
 
 	        Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
-            mInstanceMatrix = rotationMatrix * Matrix4.Scale(scale) * Matrix4.Translation(position);
+            mInstanceMatrix = rotationMatrix * Matrix4.CreateScale(scale) * Matrix4.CreateTranslation(position);
             mBoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
 
@@ -127,7 +127,7 @@ namespace Neo.Scene.Models.M2
 
 	        Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
 
-            mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
+            mInstanceMatrix = rotationMatrix * Matrix4.CreateScale(mScale) * Matrix4.CreateTranslation(mPosition);
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
 
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
@@ -151,7 +151,7 @@ namespace Neo.Scene.Models.M2
 
 	        Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
 
-            mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
+            mInstanceMatrix = rotationMatrix * Matrix4.CreateScale(mScale) * Matrix4.CreateTranslation(mPosition);
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
 
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
@@ -163,21 +163,15 @@ namespace Neo.Scene.Models.M2
             UpdateModelNameplate();
         }
 
+	    [Obsolete]
         public Vector3 GetRotation()
         {
-            if(mRotation == null)
-            {
-                return new Vector3(0.0f, 0.0f, 0.0f);
-            }
-
             return mRotation;
         }
 
+	    [Obsolete]
         public Vector3 GetPosition()
         {
-            if (mPosition == null)
-                return new Vector3(0.0f, 0.0f, 0.0f);
-
             return mPosition;
         }
 
@@ -207,7 +201,7 @@ namespace Neo.Scene.Models.M2
 
 	        Matrix4.Invert(ref rotationMatrix, out mInverseRotation);
 
-            mInstanceMatrix = rotationMatrix * Matrix4.Scale(mScale) * Matrix4.Translation(mPosition);
+            mInstanceMatrix = rotationMatrix * Matrix4.CreateScale(mScale) * Matrix4.CreateTranslation(mPosition);
             Matrix4.Invert(ref mInstanceMatrix, out mInverseMatrix);
 
             mBoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);

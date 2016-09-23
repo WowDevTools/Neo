@@ -4,12 +4,12 @@ namespace Neo.Graphics
 {
 	public class IndexBuffer : Buffer
     {
-        public IndexBuffer(GxContext context) :
-            base(context, SharpDX.Direct3D11.BindFlags.IndexBuffer)
+	    public DrawElementsType IndexFormat { get; set; }
+
+	    public IndexBuffer() :
+            base(BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw)
         {
 	        IndexFormat = DrawElementsType.UnsignedInt;
         }
-
-        public DrawElementsType IndexFormat { get; set; }
     }
 }

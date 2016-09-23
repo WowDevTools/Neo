@@ -52,7 +52,7 @@ namespace Neo.Scene.Models.M2
         private int mInstanceCount;
 
         private PerInstanceBuffer[] mActiveInstances = new PerInstanceBuffer[0];
-        private static ConstantBuffer gPerPassBuffer;
+        private static UniformBuffer gPerPassBuffer;
 
         public M2BatchRenderer(M2File model)
         {
@@ -321,7 +321,7 @@ namespace Neo.Scene.Models.M2
             gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
             gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlphaOld);
 
-            gPerPassBuffer = new ConstantBuffer(context);
+            gPerPassBuffer = new UniformBuffer(context);
 
             gPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {

@@ -19,7 +19,7 @@ namespace Neo.UI
     class ThumbnailCapture : IDisposable
     {
         private PerspectiveCamera mCamera;
-        private ConstantBuffer mMatrixBuffer;
+        private UniformBuffer mMatrixBuffer;
         private RenderTarget mTarget;
         private Texture2D mResolveTexture;
         private Texture2D mMapTexture;
@@ -41,7 +41,7 @@ namespace Neo.UI
                 return;
 
             mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
-            mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
+            mMatrixBuffer = new UniformBuffer(WorldFrame.Instance.GraphicsContext);
 
             mCamera = new PerspectiveCamera();
             mCamera.ViewChanged += delegate { mMatrixBuffer.UpdateData(mCamera.ViewProjection); };

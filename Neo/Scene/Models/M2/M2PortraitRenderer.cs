@@ -42,8 +42,8 @@ namespace Neo.Scene.Models.M2
 
         private Matrix4[] mAnimationMatrices;
 
-        private ConstantBuffer mAnimBuffer;
-        private ConstantBuffer mPerPassBuffer;
+        private UniformBuffer mAnimBuffer;
+        private UniformBuffer mPerPassBuffer;
 
         public M2PortraitRenderer(M2File model)
         {
@@ -175,17 +175,17 @@ namespace Neo.Scene.Models.M2
         public void OnSyncLoad()
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
-            mAnimBuffer = new ConstantBuffer(ctx);
+            mAnimBuffer = new UniformBuffer(ctx);
             mAnimBuffer.UpdateData(mAnimationMatrices);
 
-            mPerPassBuffer = new ConstantBuffer(ctx);
+            mPerPassBuffer = new UniformBuffer(ctx);
             mPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {
                 uvAnimMatrix1 = Matrix4.Identity,
                 modelPassParams = Vector4.Zero
             });
 
-            gCullState.CullCounterClock = FileManager.Instance.Version >= FileDataVersion.Lichking;
+            gCullState.CullingWindingDirection = FileManager.Instance.Version >= FileDataVersion.Lichking;
         }
 
         public static void Initialize(GxContext context)
@@ -302,7 +302,7 @@ namespace Neo.Scene.Models.M2
             g3PassProgram.SetPixelShader(Resources.Shaders.M2PixelPortrait3Pass);
 
             gNoCullState = new RasterState(context) {CullEnabled = false};
-            gCullState = new RasterState(context) {CullEnabled = true, CullCounterClock = true};
+            gCullState = new RasterState(context) {CullEnabled = true, CullingWindingDirection = true};
         }
     }
 }

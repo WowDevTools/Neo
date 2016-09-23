@@ -54,10 +54,10 @@ namespace Neo.Scene.Models.M2
         private M2File mModel;
         private IM2Animator mAnimator;
         private Matrix4[] mAnimationMatrices;
-        private ConstantBuffer mAnimBuffer;
+        private UniformBuffer mAnimBuffer;
 
-        private static ConstantBuffer gPerDrawCallBuffer;
-        private static ConstantBuffer gPerPassBuffer;
+        private static UniformBuffer gPerDrawCallBuffer;
+        private static UniformBuffer gPerPassBuffer;
 
         public M2SingleRenderer(M2File model)
         {
@@ -340,7 +340,7 @@ namespace Neo.Scene.Models.M2
             var ctx = WorldFrame.Instance.GraphicsContext;
             if (mAnimator != null)
             {
-                mAnimBuffer = new ConstantBuffer(ctx);
+                mAnimBuffer = new UniformBuffer(ctx);
                 mAnimBuffer.UpdateData(mAnimationMatrices);
             }
         }
@@ -407,13 +407,13 @@ namespace Neo.Scene.Models.M2
             g3PassProgram.SetPixelShader(Resources.Shaders.M2Pixel3PassOld);
             g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
-            gPerDrawCallBuffer = new ConstantBuffer(context);
+            gPerDrawCallBuffer = new UniformBuffer(context);
             gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
             {
                 instanceMat = Matrix4.Identity
             });
 
-            gPerPassBuffer = new ConstantBuffer(context);
+            gPerPassBuffer = new UniformBuffer(context);
 
             gPerPassBuffer.UpdateData(new PerModelPassBuffer()
             {

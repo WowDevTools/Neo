@@ -1,5 +1,4 @@
-﻿using SharpDX.DXGI;
-
+﻿
 namespace Neo.Graphics
 {
     static class DefaultTextures
@@ -12,9 +11,9 @@ namespace Neo.Graphics
             if (Color != null)
                 return;
 
-            Color = new Texture(context);
-            Specular = new Texture(context);
-            Specular.UpdateMemory(1, 1, Format.R8_UNorm, new byte[] {255}, 1);
+            Color = new Texture();
+            Specular = new Texture();
+            //Specular.UpdateMemory(1, 1, Format.R8_UNorm, new byte[] {255}, 1);
         }
     }
 }

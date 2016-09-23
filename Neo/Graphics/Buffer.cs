@@ -1,29 +1,55 @@
 ﻿using System;
-using SharpDX;
-using SharpDX.Direct3D11;
+using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {
+	/// <summary>
+	/// The <see cref="Buffer"/> class acts as a wrapper around an OpenGL data buffer
+	/// with arbitrary values, and serves to simplyfy management of these buffers.
+	///
+	/// When this object is disposed, the memory occupied by the data is marked as
+	/// released on the GPU.
+	/// </summary>
     public abstract class Buffer : IDisposable
     {
-        private BufferDescription mDescription;
-        private GxContext mContext;
+        //private BufferDescription mDescription;
+        //private GxContext mContext;
+        //public SharpDX.Direct3D11.Buffer BufferID { get; private set; }
 
-        public SharpDX.Direct3D11.Buffer BufferID { get; private set; }
+	    /// <summary>
+		/// The native handle on the GPU which refers to the buffer data held by this object.
+		/// </summary>
+	    public int glBufferID
+	    {
+		    get;
+		    private set;
+	    }
 
-        protected Buffer(GxContext context, BindFlags binding)
+	    /// <summary>
+		/// The type of buffer this is. By default, the buffer is assumed
+		/// to be an <see cref="BufferTarget.ArrayBuffer"/>.
+		/// </summary>
+	    public BufferTarget BufferType
+	    {
+		    get;
+		    private set;
+	    }
+
+	    /// <summary>
+		/// The intended use for the buffer. This is used to hint the OpenGL driver as to how
+		/// to pack and manipulate the buffer, improving performance.
+		/// </summary>
+	    public BufferUsageHint BufferUsage
+	    {
+		    get;
+		    private set;
+	    }
+
+        protected Buffer(BufferTarget bufferType, BufferUsageHint bufferUsageHint)
         {
-            mContext = context;
-
-            mDescription = new BufferDescription
-            {
-                BindFlags = binding,
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = 0,
-                StructureByteStride = 0,
-                Usage = ResourceUsage.Default
-            };
+	        this.glBufferID = GL.GenBuffer();
+	        this.BufferType = bufferType;
+	        this.BufferUsage = bufferUsageHint;
         }
 
         ~Buffer()
@@ -31,15 +57,21 @@ namespace Neo.Graphics
             Dispose(false);
         }
 
+	    /// <summary>
+	    /// Binds this buffer object, setting it as the current object to be operated on in the
+	    /// scope of the OpenGL pipeline.
+	    /// </summary>
+	    public void Bind()
+	    {
+		    GL.BindBuffer(BufferType, this.glBufferID);
+	    }
+
         private void Dispose(bool disposing)
         {
-            if (BufferID != null)
-            {
-                BufferID.Dispose();
-                BufferID = null;
-            }
-
-            mContext = null;
+	        if (this.glBufferID > 0)
+	        {
+		        GL.DeleteBuffer(this.glBufferID);
+	        }
         }
 
         public virtual void Dispose()
@@ -48,16 +80,19 @@ namespace Neo.Graphics
             GC.SuppressFinalize(this);
         }
 
+	    [Obsolete]
         public void UpdateData<T>(T data) where T : struct
         {
-            Resize(IO.SizeCache<T>.Size, data);
+            //Resize(IO.SizeCache<T>.Size, data);
         }
 
+	    [Obsolete]
         public void UpdateData<T>(T[] data) where T : struct
         {
-            Resize(data.Length * IO.SizeCache<T>.Size, data);
+            //Resize(data.Length * IO.SizeCache<T>.Size, data);
         }
 
+	    /*
         private void Resize<T>(int length, T value) where T : struct
         {
             if (length > mDescription.SizeInBytes)
@@ -100,5 +135,6 @@ namespace Neo.Graphics
             else
                 mContext.Context.UpdateSubresource(data, BufferID);
         }
+		*/
     }
 }

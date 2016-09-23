@@ -17,7 +17,7 @@ namespace Neo.Scene.Terrain
         }
 
         private SphereVertex[] mVertices;
-        private readonly ConstantBuffer mMatrixBuffer;
+        private readonly UniformBuffer mMatrixBuffer;
         private Graphics.Texture mSkyTexture;
         private readonly Sampler mSampler;
         private readonly Mesh mMesh;
@@ -42,7 +42,7 @@ namespace Neo.Scene.Terrain
 
             mMesh.VertexBuffer.UpdateData(mVertices);
 
-            mMatrixBuffer = new ConstantBuffer(context);
+            mMatrixBuffer = new UniformBuffer(context);
             mMatrixBuffer.UpdateData(Matrix4.Identity);
 
             var program = new ShaderProgram(context);

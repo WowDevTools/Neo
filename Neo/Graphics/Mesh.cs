@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using OpenTK.Graphics.OpenGL;
-using SharpDX.Direct3D;
-using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
 {
@@ -10,7 +8,6 @@ namespace Neo.Graphics
     {
         private readonly List<VertexElement> mElements = new List<VertexElement>();
         private ShaderProgram mProgram;
-        private InputLayout mLayout;
         private BeginMode mTopology = BeginMode.Triangles;
         private readonly GxContext mContext;
 
@@ -27,15 +24,15 @@ namespace Neo.Graphics
         public BlendState BlendState { get; set; }
         public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }
         public BeginMode Topology { get { return mTopology; } set { UpdateTopology(value); } }
-        public InputLayout Layout { get { return mLayout; } set { UpdateLayout(value); } }
 
         public Mesh(GxContext context)
         {
             mContext = context;
-            VertexBuffer = new VertexBuffer(context);
-            IndexBuffer = new IndexBuffer(context);
-            DepthState = new DepthState(context);
-            RasterizerState = new RasterState(context);
+            VertexBuffer = new VertexBuffer();
+            IndexBuffer = new IndexBuffer();
+
+            DepthState = new DepthState();
+	        RasterizerState = new RasterState();
             BlendState = new BlendState(context);
         }
 
@@ -51,13 +48,9 @@ namespace Neo.Graphics
             if (DepthState != null)
                 ctx.OutputMerger.DepthStencilState = DepthState.Native;
 
-            if (RasterizerState != null)
-                ctx.Rasterizer.State = RasterizerState.Native;
-
             if (BlendState != null)
                 ctx.OutputMerger.BlendState = BlendState.Native;
 
-            ctx.InputAssembler.InputLayout = mLayout;
             ctx.InputAssembler.PrimitiveTopology = mTopology;
             mProgram.Bind();
         }
@@ -98,25 +91,20 @@ namespace Neo.Graphics
 
         public void UpdateBlendState(BlendState state)
         {
-            if (mContext.Context.OutputMerger.BlendState != state.Native)
-                mContext.Context.OutputMerger.BlendState = state.Native;
-
+			mContext.Context.OutputMerger.BlendState = state.Native;
             BlendState = state;
         }
 
         public void UpdateRasterizerState(RasterState state)
         {
-            if (mContext.Context.Rasterizer.State != state.Native)
-                mContext.Context.Rasterizer.State = state.Native;
+			mContext.Context.Rasterizer.State = state.Native;
 
             RasterizerState = state;
         }
 
         public void UpdateDepthState(DepthState state)
         {
-            if (mContext.Context.OutputMerger.DepthStencilState != state.Native)
-                mContext.Context.OutputMerger.DepthStencilState = state.Native;
-
+			mContext.Context.OutputMerger.DepthStencilState = state.Native;
             DepthState = state;
         }
 
@@ -127,14 +115,6 @@ namespace Neo.Graphics
             AddElement(new VertexElement(semantic, index, components, type, normalized, slot, instanceData));
         }
 
-        private void UpdateLayout(InputLayout Layout)
-        {
-            mLayout = Layout;
-
-            if (mContext.Context.InputAssembler.InputLayout != Layout)
-                mContext.Context.InputAssembler.InputLayout = Layout;
-        }
-
         public void InitLayout(ShaderProgram program)
         {
             if (mLayout != null) return;
@@ -143,10 +123,6 @@ namespace Neo.Graphics
 
         private void UpdateProgram(ShaderProgram program)
         {
-            if (program == mProgram)
-                return;
-
-            //mLayout = InputLayoutCache.GetLayout(mContext, mElements.Select(e => e.Element).ToArray(), this, program);
             mProgram = program;
         }
 
@@ -154,8 +130,7 @@ namespace Neo.Graphics
         {
             mTopology = topology;
 
-            if (mContext.Context.InputAssembler.PrimitiveTopology != topology)
-                mContext.Context.InputAssembler.PrimitiveTopology = topology;
+			mContext.Context.InputAssembler.PrimitiveTopology = topology;
         }
     }
 }

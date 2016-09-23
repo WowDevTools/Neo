@@ -1,105 +1,54 @@
 ﻿using System;
-using SharpDX.Direct3D11;
+using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {
-	public class BlendState : IDisposable
+	public class BlendState
     {
-        private SharpDX.Direct3D11.BlendState mState;
-        private BlendStateDescription mDescription;
-        private bool mChanged;
-        private GxContext mContext;
-
         public bool BlendEnabled
         {
-            get { return mDescription.RenderTarget[0].IsBlendEnabled; }
-            set { mDescription.RenderTarget[0].IsBlendEnabled = value; mChanged = true; }
+	        get;
+	        set;
         }
 
-        public SharpDX.Direct3D11.BlendState Native
+	    public BlendingFactorSrc SourceBlend
+	    {
+		    get;
+		    set;
+	    }
+
+	    public BlendingFactorDest DestinationBlend
+	    {
+		    get; set;
+	    }
+
+	    public BlendingFactorSrc SourceAlphaBlend
+	    {
+		    get; set;
+	    }
+
+	    public BlendingFactorDest DestinationAlphaBlend
+	    {
+		    get; set;
+	    }
+
+	    public BlendState()
         {
-            get
-            {
-                if (mChanged != true) return mState;
 
-                if (mState != null)
-                    mState.Dispose();
-
-                mState = new SharpDX.Direct3D11.BlendState(mContext.Device, mDescription);
-                mChanged = false;
-
-                return mState;
-            }
         }
 
-        public BlendOption SourceBlend
-        {
-            get { return mDescription.RenderTarget[0].SourceBlend; }
-            set { mDescription.RenderTarget[0].SourceBlend = value; mChanged = true; }
-        }
+	    public void Apply()
+	    {
+		    if (BlendEnabled)
+		    {
+			    GL.Enable(EnableCap.Blend);
+		    }
+		    else
+		    {
+			    GL.Disable(EnableCap.Blend);
+		    }
 
-        public BlendOption DestinationBlend
-        {
-            get { return mDescription.RenderTarget[0].DestinationBlend; }
-            set { mDescription.RenderTarget[0].DestinationBlend = value; mChanged = true; }
-        }
-
-        public BlendOption SourceAlphaBlend
-        {
-            get { return mDescription.RenderTarget[0].SourceAlphaBlend; }
-            set { mDescription.RenderTarget[0].SourceAlphaBlend = value; mChanged = true; }
-        }
-
-        public BlendOption DestinationAlphaBlend
-        {
-            get { return mDescription.RenderTarget[0].DestinationAlphaBlend; }
-            set { mDescription.RenderTarget[0].DestinationAlphaBlend = value; mChanged = true; }
-        }
-
-        public BlendState(GxContext context)
-        {
-            mContext = context;
-            mDescription = new BlendStateDescription
-            {
-                AlphaToCoverageEnable = false,
-                IndependentBlendEnable = false
-            };
-
-            mDescription.RenderTarget[0] = new RenderTargetBlendDescription
-            {
-                IsBlendEnabled = true,
-                SourceBlend = BlendOption.SourceAlpha,
-                DestinationBlend = BlendOption.InverseSourceAlpha,
-                BlendOperation = BlendOperation.Add,
-                SourceAlphaBlend = BlendOption.One,
-                DestinationAlphaBlend = BlendOption.Zero,
-                AlphaBlendOperation = BlendOperation.Add,
-                RenderTargetWriteMask = ColorWriteMaskFlags.All
-            };
-
-            mChanged = true;
-        }
-
-        ~BlendState()
-        {
-            Dispose(false);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (mState != null)
-            {
-                mState.Dispose();
-                mState = null;
-            }
-
-            mContext = null;
-        }
-
-        public virtual void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+			GL.BlendFuncSeparate(SourceBlend, DestinationBlend, SourceAlphaBlend, DestinationAlphaBlend);
+	    }
     }
 }

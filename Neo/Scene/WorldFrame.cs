@@ -70,7 +70,7 @@ namespace Neo.Scene
         private readonly PerspectiveCamera mMainCamera = new PerspectiveCamera();
         public Camera ActiveCamera { get; private set; }
 
-        private ConstantBuffer mGlobalBuffer;
+        private UniformBuffer mGlobalBuffer;
         private GlobalParamsBuffer mGlobalBufferStore;
         private bool mGlobalBufferChanged;
 
@@ -144,8 +144,8 @@ namespace Neo.Scene
             GraphicsContext = context;
             mWindow = window;
             context.Resize += (w, h) => OnResize((int) w, (int) h);
-            mGlobalBuffer = new ConstantBuffer(context);
-            mGlobalBuffer = new ConstantBuffer(context);
+            mGlobalBuffer = new UniformBuffer(context);
+            mGlobalBuffer = new UniformBuffer(context);
             mGlobalBufferStore = new GlobalParamsBuffer
             {
                 matView = Matrix4.Identity,

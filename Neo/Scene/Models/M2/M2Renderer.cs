@@ -15,7 +15,7 @@ namespace Neo.Scene.Models.M2
 
         public VertexBuffer VertexBuffer { get; private set; }
         public IndexBuffer IndexBuffer { get; private set; }
-        public ConstantBuffer AnimBuffer { get; private set; }
+        public UniformBuffer AnimBuffer { get; private set; }
 
         public M2File Model { get; private set; }
 
@@ -218,7 +218,7 @@ namespace Neo.Scene.Models.M2
 
             if (Animator != null)
             {
-                AnimBuffer = new ConstantBuffer(ctx);
+                AnimBuffer = new UniformBuffer(ctx);
                 AnimBuffer.UpdateData(mAnimationMatrices);
             }
 

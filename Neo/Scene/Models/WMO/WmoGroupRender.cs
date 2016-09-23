@@ -27,7 +27,7 @@ namespace Neo.Scene.Models.WMO
         private static RasterState gCullState;
 
         public static Sampler Sampler { get; private set; }
-        public static ConstantBuffer InstanceBuffer { get; private set; }
+        public static UniformBuffer InstanceBuffer { get; private set; }
 
         private List<WmoRenderBatch> mBatches = new List<WmoRenderBatch>();
 
@@ -186,7 +186,7 @@ namespace Neo.Scene.Models.WMO
 
             Sampler = new Sampler(context);
 
-            InstanceBuffer = new ConstantBuffer(context);
+            InstanceBuffer = new UniformBuffer(context);
             InstanceBuffer.UpdateData(Matrix4.Identity); // preallocate space so the underlying buffer wont change anymore
 
             Mesh = new Mesh(context)

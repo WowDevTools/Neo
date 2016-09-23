@@ -54,7 +54,7 @@ namespace Neo.Scene
         private static ShaderProgram gWorldTextShader2D;
         private static BlendState gBlendState;
 
-        private static ConstantBuffer gPerDrawCallBuffer;
+        private static UniformBuffer gPerDrawCallBuffer;
 
         public Vector3 Position { get; set; }
         public float Scaling { get; set; }
@@ -442,7 +442,7 @@ namespace Neo.Scene
             gMesh.Program = gWorldTextShader;
             gMesh.InitLayout(gWorldTextShader);
 
-            gPerDrawCallBuffer = new ConstantBuffer(context);
+            gPerDrawCallBuffer = new UniformBuffer(context);
             gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
             {
                 matTransform = Matrix4.Identity

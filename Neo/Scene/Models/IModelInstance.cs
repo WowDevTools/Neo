@@ -19,7 +19,7 @@ namespace Neo.Scene.Models
 
         void UpdateScale(float s);
 
-        void UpdatePosition(Vector3 position);
+        void SetPosition(Vector3 position);
 
         Vector3 GetPosition();
 
