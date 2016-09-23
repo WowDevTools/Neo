@@ -181,8 +181,8 @@ namespace Neo.Scene.Models.WMO
             gNoBlendState = new BlendState(context) { BlendEnabled = false };
             gAlphaBlendState = new BlendState(context) { BlendEnabled = true };
 
-            gNoCullState = new RasterState(context) {CullEnabled = false};
-            gCullState = new RasterState(context) {CullEnabled = true};
+            gNoCullState = new RasterState(context) {BackfaceCullingEnabled = false};
+            gCullState = new RasterState(context) {BackfaceCullingEnabled = true};
 
             Sampler = new Sampler(context);
 

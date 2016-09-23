@@ -6,7 +6,7 @@ namespace Neo.Graphics
         public static Texture Color { get; private set; }
         public static Texture Specular { get; private set; }
 
-        public static void Initialize(GxContext context)
+        public static void Initialize()
         {
             if (Color != null)
                 return;

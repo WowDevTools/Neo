@@ -301,8 +301,8 @@ namespace Neo.Scene.Models.M2
             g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
             g3PassProgram.SetPixelShader(Resources.Shaders.M2PixelPortrait3Pass);
 
-            gNoCullState = new RasterState(context) {CullEnabled = false};
-            gCullState = new RasterState(context) {CullEnabled = true, CullingWindingDirection = true};
+            gNoCullState = new RasterState(context) {BackfaceCullingEnabled = false};
+            gCullState = new RasterState(context) {BackfaceCullingEnabled = true, CullingWindingDirection = true};
         }
     }
 }

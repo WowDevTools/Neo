@@ -385,8 +385,8 @@ namespace Neo.Scene.Models.M2
                 DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.Zero
             };
 
-            gNoCullState = new RasterState(context) { CullEnabled = false };
-            gCullState = new RasterState(context) { CullEnabled = true };
+            gNoCullState = new RasterState(context) { BackfaceCullingEnabled = false };
+            gCullState = new RasterState(context) { BackfaceCullingEnabled = true };
         }
     }
 }

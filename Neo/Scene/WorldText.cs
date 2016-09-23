@@ -397,7 +397,7 @@ namespace Neo.Scene
 
             gRasterState = new RasterState(context)
             {
-                CullEnabled = false
+                BackfaceCullingEnabled = false
             };
 
             gDepthState = new DepthState(context)
