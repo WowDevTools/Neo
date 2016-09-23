@@ -49,6 +49,17 @@ namespace Neo.Graphics
         }
 
 	    /// <summary>
+	    /// Creates a new instance of the <see cref="RasterState"/> class with a set of default values.
+	    /// </summary>
+	    public RasterState()
+	    {
+		    this.BackfaceCullingEnabled = true;
+		    this.CullingMode = CullFaceMode.Back;
+		    this.CullingWindingDirection = FrontFaceDirection.Cw;
+		    this.RenderingMode = PolygonMode.Fill;
+	    }
+
+	    /// <summary>
 		/// Creates a new instance of the <see cref="RasterState"/> class, and initializes it with a set of
 	    /// rasterization settings.
 	    /// </summary>

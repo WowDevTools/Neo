@@ -31,6 +31,15 @@ namespace Neo.Graphics
         }
 
 	    /// <summary>
+	    /// Creates a new instance of the <see cref="DepthState"/> class with a set of default values.
+	    /// </summary>
+	    public DepthState()
+	    {
+		    this.DepthEnabled = true;
+		    this.DepthWriteEnabled = false;
+	    }
+
+	    /// <summary>
 		/// Creates a new instance of the <see cref="DepthState"/> class, and initializes it with a set of
 	    /// depth settings.
 	    /// </summary>

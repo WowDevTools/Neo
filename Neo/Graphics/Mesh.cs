@@ -7,33 +7,41 @@ namespace Neo.Graphics
     public class Mesh
     {
         private readonly List<VertexElement> mElements = new List<VertexElement>();
-        private ShaderProgram mProgram;
-        private BeginMode mTopology = BeginMode.Triangles;
-        private readonly GxContext mContext;
 
         public VertexBuffer VertexBuffer { get; set; }
         public IndexBuffer IndexBuffer { get; set; }
+
         public int Stride { get; set; }
         public int InstanceStride { get; set; }
         public int IndexCount { get; set; }
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+
         public int StartIndex { get; set; }
         public int StartVertex { get; set; }
+
         public DepthState DepthState { get; set; }
         public RasterState RasterizerState { get; set; }
         public BlendState BlendState { get; set; }
-        public ShaderProgram Program { get { return mProgram; } set { UpdateProgram(value); } }
-        public BeginMode Topology { get { return mTopology; } set { UpdateTopology(value); } }
 
-        public Mesh(GxContext context)
+        public ShaderProgram Program
         {
-            mContext = context;
+	        get;
+	        set;
+        }
+
+	    public BeginMode Topology
+	    {
+		    get;
+		    set;
+	    } = BeginMode.Triangles;
+
+	    public Mesh()
+        {
             VertexBuffer = new VertexBuffer();
             IndexBuffer = new IndexBuffer();
 
             DepthState = new DepthState();
 	        RasterizerState = new RasterState();
-            BlendState = new BlendState(context);
+            BlendState = new BlendState();
         }
 
         public void BeginDraw()
@@ -119,18 +127,6 @@ namespace Neo.Graphics
         {
             if (mLayout != null) return;
             mLayout = new InputLayout(mContext.Device, program.VertexShaderCode.Data, mElements.Select(e => e.Element).ToArray());
-        }
-
-        private void UpdateProgram(ShaderProgram program)
-        {
-            mProgram = program;
-        }
-
-        private void UpdateTopology(BeginMode topology)
-        {
-            mTopology = topology;
-
-			mContext.Context.InputAssembler.PrimitiveTopology = topology;
         }
     }
 }

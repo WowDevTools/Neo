@@ -58,6 +58,20 @@ namespace Neo.Graphics
 	    }
 
 	    /// <summary>
+	    /// Creates a new instance of the <see cref="DepthState"/> class with a set of default values.
+	    /// </summary>
+	    public BlendState()
+	    {
+		    this.BlendEnabled = true;
+
+		    this.SourceBlend = BlendingFactorSrc.SrcAlpha;
+		    this.DestinationBlend = BlendingFactorDest.OneMinusSrcAlpha;
+
+		    this.SourceAlphaBlend = BlendingFactorSrc.SrcAlpha;
+		    this.DestinationAlphaBlend = BlendingFactorDest.OneMinusSrcAlpha;
+	    }
+
+	    /// <summary>
 		/// Creates a new instance of the <see cref="BlendState"/> class, and initializes it with a set of
 		/// blend settings.
 		/// </summary>
@@ -70,8 +84,10 @@ namespace Neo.Graphics
 		    BlendingFactorSrc sourceAlphaBlend, BlendingFactorDest destinationAlphaBlend)
 	    {
 		    this.BlendEnabled = isBlendEnabled;
+
 		    this.SourceBlend = sourceBlend;
 		    this.DestinationBlend = destinationBlend;
+
 		    this.SourceAlphaBlend = sourceAlphaBlend;
 		    this.DestinationAlphaBlend = destinationAlphaBlend;
 	    }

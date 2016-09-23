@@ -2,9 +2,6 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
-using System.Text;
-using SharpDX.D3DCompiler;
-using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
 {
