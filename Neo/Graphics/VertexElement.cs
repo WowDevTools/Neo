@@ -4,13 +4,13 @@ using SharpDX.DXGI;
 
 namespace Neo.Graphics
 {
-    enum DataType
+	public enum DataType
     {
         Float,
         Byte
     }
 
-    class VertexElement
+	public class VertexElement
     {
         private readonly InputElement mDescription;
 

@@ -4,17 +4,17 @@ using System.Drawing.Imaging;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using WoWEditor6.Graphics;
-using WoWEditor6.IO.Files.Models;
-using WoWEditor6.Scene;
-using WoWEditor6.Scene.Models.M2;
+using Neo.Graphics;
+using Neo.IO.Files.Models;
+using Neo.Scene;
+using Neo.Scene.Models.M2;
 using Color = System.Drawing.Color;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
 using System.Windows.Forms;
 using System.Collections.Concurrent;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     class ThumbnailCapture : IDisposable
     {

@@ -3,7 +3,7 @@ using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
 {
-    class DepthState : IDisposable
+    public class DepthState : IDisposable
     {
         private DepthStencilState mState;
         private DepthStencilStateDescription mDescription;

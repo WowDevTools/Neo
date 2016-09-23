@@ -8,7 +8,7 @@ using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
 {
-    class ShaderProgram : IDisposable
+	public class ShaderProgram : IDisposable
     {
         private static readonly ShaderResourceView[] ShaderViews = new ShaderResourceView[64];
 

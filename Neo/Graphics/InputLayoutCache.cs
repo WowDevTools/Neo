@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿/* // PORT: This class is seemingly not used anywhere. Investigate.
+using System.Collections.Generic;
 using SharpDX.Direct3D11;
 using SharpDX.D3DCompiler;
 
@@ -16,3 +17,4 @@ namespace Neo.Graphics
         }
     }
 }
+*/

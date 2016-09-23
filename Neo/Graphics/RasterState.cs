@@ -3,7 +3,7 @@ using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
 {
-    class RasterState : IDisposable
+	public class RasterState : IDisposable
     {
         private RasterizerState mState;
         private RasterizerStateDescription mDescription;

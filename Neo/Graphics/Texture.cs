@@ -1,62 +1,154 @@
 ﻿using System;
 using System.Collections.Generic;
-using SharpDX;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
+using System.Drawing;
+using Warcraft.BLP;
+using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {
-	public class Texture : IDisposable
+	/// <summary>
+	/// The texture wrapping type.
+	/// </summary>
+	public enum SamplerFlagType
+	{
+		/// <summary>
+		/// Wrap on both the U and V axes.
+		/// </summary>
+		WrapBoth,
+
+		/// <summary>
+		/// Wrap on the U axis.
+		/// </summary>
+		WrapU,
+
+		/// <summary>
+		/// Wrap on the V axis.
+		/// </summary>
+		WrapV,
+
+		/// <summary>
+		/// Clamp all coordinates to the standard [0.0f, 1.0f] range.
+		/// </summary>
+		ClampBoth
+	}
+
+	/// <summary>
+	/// The <see cref="Texture"/> class acts as a wrapper around an OpenGL texture ID, and serves
+	/// to simplyfy loading of textures into graphics memory.
+	///
+	/// When the object is disposed, the memory occupied by the loaded texture and its
+	/// mipmaps is marked as released on the GPU.
+	///
+	/// Textures initialize with a default texture, and can be used right away. However,
+	/// for normal use it is recommended to initialize the texture with a <see cref="Bitmap"/>
+	/// or <see cref="Warcraft.BLP"/> image object. Bitmaps always have their mipmaps generated,
+	/// while <see cref="Warcraft.BLP"/> images can usually be directly loaded into memory as
+	/// DXT-compressed images.
+	///
+	/// Should a texture fail to load or otherwise be uploaded to the GPU, the default texture will be
+	/// used instead.
+	/// </summary>
+	public sealed class Texture : IDisposable
     {
-        private static Texture2D gDefaultTexture;
-        private static ShaderResourceView gDefaultView;
+	    /// <summary>
+		/// The native handle on the GPU which refers to the texture data held by this object.
+		/// </summary>
+	    private uint glTextureID;
 
-        private Texture2D mTexture;
-        private GxContext mContext;
 
-        public enum SamplerFlagType
+	    /// <summary>
+		/// The reference path of the texture in the game files. Used for texture lookup in the
+		/// resource cache.
+		/// </summary>
+	    public string TexturePath
+	    {
+		    get
+		    {
+			   return texturePath;
+		    }
+		    set
+		    {
+			    texturePath = value.ToUpperInvariant();
+		    }
+	    }
+	    private string texturePath;
+
+	    /// <summary>
+		/// The format of the internal texture on the GPU.
+		/// </summary>
+	    public PixelInternalFormat Format;
+
+	    /// <summary>
+	    /// The absolute width of the texture. This corresponds to the width of the
+	    /// largest mipmap.
+	    /// </summary>
+	    public uint Width;
+
+	    /// <summary>
+	    /// The absoltue height of the texture. This corresponds to the width of the
+	    /// largest mipmap.
+	    /// </summary>
+	    public uint Height;
+
+	    /// <summary>
+	    /// The number of mipmaps for this texture.
+	    /// </summary>
+	    public uint MipLevels;
+
+       /// <summary>
+		/// Initializes a new <see cref="Texture"/> object and uploads an image, using the default
+		/// texture as data.
+		/// </summary>
+        public Texture()
         {
-            WrapBoth,
-            WrapU,
-            WrapV,
-            ClampBoth
+			// TODO: Implement
         }
 
-        public ShaderResourceView NativeView { get; private set; }
+	    /// <summary>
+		/// Initializes a new <see cref="Texture"/> object and uploads the provided <paramref name="texture"/>
+		/// as data. Depending on the format of the <see cref="BLP"/> image, mipmaps may be generated. If the
+		/// <see cref="BLP"/> is in DXTC format, the stored mipmaps will be used instead.
+		///
+		/// Non-power-of-two images will be resized to the nearest power of two.
+		/// </summary>
+		/// <param name="texture">The texture object to use.</param>
+		/// <param name="texturePath">The reference path to the texture in the game files.</param>
+	    public Texture(BLP texture, string texturePath)
+	    {
+		    // TODO: Implement
+	    }
 
-        public Texture(GxContext context)
-        {
-            mContext = context;
-            NativeView = gDefaultView;
-            mTexture = gDefaultTexture;
-        }
+	    /// <summary>
+		/// Initializes a new <see cref="Texture"/> object and uploads the provided <paramref name="texture"/>
+	    /// as data.
+	    ///
+	    /// Mipmaps will be generated for any input <see cref="Bitmap"/>.
+	    /// Non-power-of-two images will be resized to the nearest power of two.
+	    /// </summary>
+	    /// <param name="texture">The texture object to use.</param>
+	    /// <param name="texturePath">The reference path to the texture in the game files.</param>
+	    public Texture(Bitmap texture, string texturePath)
+	    {
+		    // TODO: Implement
+	    }
 
         ~Texture()
         {
             Dispose(false);
         }
 
-        private void Dispose(bool disposing)
-        {
-            if (mTexture != gDefaultTexture)
-            {
-                if (mTexture != null)
-                    mTexture.Dispose();
+	    public void LoadFromBLP(BLP image)
+	    {
+		    // TODO: Implement
+	    }
 
-                if (NativeView != null)
-                    NativeView.Dispose();
-            }
+	    public void LoadFromBitmap(Bitmap bitmap, bool generateMipMaps)
+	    {
+		    // TODO: Implement
+	    }
 
-            mContext = null;
-        }
-
-        public virtual void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public void LoadFromLoadInfo(IO.Files.Texture.TextureLoadInfo loadInfo)
+		[Obsolete]
+	    public void LoadFromLoadInfo(IO.Files.Texture.TextureLoadInfo loadInfo)
         {
             var totalMips = loadInfo.Layers.Count;
             if (loadInfo.GenerateMipMaps)
@@ -140,7 +232,8 @@ namespace Neo.Graphics
             }
         }
 
-        public void UpdateMemory(int width, int height, Format format, byte[] data, int pitch)
+	    [Obsolete]
+	    public void UpdateMemory(int width, int height, Format format, byte[] data, int pitch)
         {
             if (data == null)
                 return;
@@ -173,7 +266,8 @@ namespace Neo.Graphics
             }
         }
 
-        public void UpdateMemory(int width, int height, Format format, uint[] data, int pitch)
+	    [Obsolete]
+	    public void UpdateMemory(int width, int height, Format format, uint[] data, int pitch)
         {
             if (data == null)
                 return;
@@ -202,6 +296,7 @@ namespace Neo.Graphics
             }
         }
 
+	    [Obsolete]
         public void UpdateTexture(int width, int height, Format format, List<byte[]> layers, List<int> rowSizes)
         {
             var boxes = new DataBox[layers.Count];
@@ -306,5 +401,19 @@ namespace Neo.Graphics
 
             DefaultTextures.Initialize(context);
         }
+
+	    private void Dispose(bool disposing)
+	    {
+		    if (this.glTextureID > 0)
+		    {
+			    GL.DeleteTexture(this.glTextureID);
+		    }
+	    }
+
+	    public void Dispose()
+	    {
+		    Dispose(true);
+		    GC.SuppressFinalize(this);
+	    }
     }
 }

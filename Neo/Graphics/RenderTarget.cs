@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK.Graphics;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -34,7 +35,7 @@ namespace Neo.Graphics
 
         private void SettingsChanging(object sender, System.Configuration.SettingChangingEventArgs e)
         {
-            if (e.SettingName == "AssetRenderBackgroundColor")            
+            if (e.SettingName == "AssetRenderBackgroundColor")
                 backgroundcolor = ConvertColor((System.Drawing.Color)e.NewValue);
         }
 
@@ -89,7 +90,7 @@ namespace Neo.Graphics
         {
             if (Native == null)
                 return;
-                        
+
             mContext.Context.ClearRenderTargetView(Native, backgroundcolor);
             mContext.Context.ClearDepthStencilView(mDepthView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
         }

@@ -20,6 +20,9 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using OpenTK;
+using OpenTK.Input;
+using SlimTK;
 
 namespace Neo.UI.Components
 {
@@ -297,12 +300,12 @@ namespace Neo.UI.Components
                 OnRenderModel();
         }
 
-        void ViewChanged(Camera cam, Matrix matView)
+        void ViewChanged(Camera cam, Matrix4 matView)
         {
             mMatrixBuffer.UpdateData(cam.ViewProjection);
         }
 
-        void ProjChanged(Camera cam, Matrix matProj)
+        void ProjChanged(Camera cam, Matrix4 matProj)
         {
             mMatrixBuffer.UpdateData(cam.ViewProjection);
         }

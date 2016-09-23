@@ -4,15 +4,15 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
-using WoWEditor6.IO;
+using Neo.IO;
 
-namespace WoWEditor6.UI
+namespace Neo.UI
 {
     static class ThumbnailCache
     {
         public static Action<string> ThumnailAdded;
 
-        private static readonly string mFilename = $@"Cache\ThumbCache-{((int)FileManager.Instance.Version).ToString()}.bin";
+        private static readonly string mFilename = $@"Cache\ThumbCache-{((int)FileManager.Instance.Version)}.bin";
         private static Dictionary<string, Bitmap> mCache = new Dictionary<string, Bitmap>();
         private const int MaxWidth = 114;
         private const int MaxHeight = 114;
@@ -76,7 +76,7 @@ namespace WoWEditor6.UI
             {
                 mCache.Add(filename, ResizeImage(image));
                 ThumnailAdded?.Invoke(filename);
-            }                
+            }
         }
 
         public static bool IsCached(string filename)

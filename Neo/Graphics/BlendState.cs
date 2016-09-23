@@ -2,8 +2,8 @@
 using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
-{ 
-    class BlendState : IDisposable
+{
+	public class BlendState : IDisposable
     {
         private SharpDX.Direct3D11.BlendState mState;
         private BlendStateDescription mDescription;
