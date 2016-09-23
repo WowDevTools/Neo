@@ -70,7 +70,7 @@ namespace Neo.IO.Files.Sky.Wotlk
 
         public override void Initialize()
         {
-            mSkyTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
+            mSkyTexture = new Graphics.Texture();
             WorldFrame.Instance.MapManager.SkySphere.UpdateSkyTexture(mSkyTexture);
 
             for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)

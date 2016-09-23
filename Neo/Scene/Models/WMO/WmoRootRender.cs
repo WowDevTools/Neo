@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Neo.Graphics;
 using Neo.IO.Files.Models;
+using OpenTK.Graphics.OpenGL;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.Scene.Models.WMO
 {
@@ -82,11 +82,15 @@ namespace Neo.Scene.Models.WMO
 
         public void OnFrame(IEnumerable<WmoInstance> instances)
         {
-            if (mAsyncLoaded == false)
-                return;
+	        if (mAsyncLoaded == false)
+	        {
+		        return;
+	        }
 
-            if (mIndices.Length == 0 || mVertices.Length == 0)
-                return;
+	        if (mIndices.Length == 0 || mVertices.Length == 0)
+	        {
+		        return;
+	        }
 
             if (mIsSyncLoaded == false)
             {
@@ -103,16 +107,20 @@ namespace Neo.Scene.Models.WMO
             {
                 if (WorldFrame.Instance.MapManager.IsInitialLoad == false)
                 {
-                    if (WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox) == false)
-                        continue;
+	                if (WorldFrame.Instance.ActiveCamera.Contains(ref instance.BoundingBox) == false)
+	                {
+		                continue;
+	                }
                 }
 
-                WmoGroupRender.InstanceBuffer.UpdateData(instance.InstanceMatrix);
+                WmoGroupRender.InstanceBuffer.BufferData(instance.InstanceMatrix);
 
                 for(var i = 0; i < Groups.Count; ++i)
                 {
-                    if (WorldFrame.Instance.ActiveCamera.Contains(ref instance.GroupBoxes[i]) == false)
-                        continue;
+	                if (WorldFrame.Instance.ActiveCamera.Contains(ref instance.GroupBoxes[i]) == false)
+	                {
+		                continue;
+	                }
 
                     Groups[i].OnFrame();
                 }
@@ -121,8 +129,10 @@ namespace Neo.Scene.Models.WMO
 
         private bool BeginSyncLoad()
         {
-            if (mSyncLoadToken != null)
-                return false;
+	        if (mSyncLoadToken != null)
+	        {
+		        return false;
+	        }
 
             if (WorldFrame.Instance.MapManager.IsInitialLoad)
             {
@@ -163,23 +173,24 @@ namespace Neo.Scene.Models.WMO
             mIsSyncLoaded = true;
             mSyncLoadToken = null;
 
-            if (mVertices == null || mIndices == null || Groups == null)
-                return;
+	        if (mVertices == null || mIndices == null || Groups == null)
+	        {
+		        return;
+	        }
 
-            mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
-            mIndexBuffer = new IndexBuffer(WorldFrame.Instance.GraphicsContext)
-            {
-                IndexFormat = SharpDX.DXGI.Format.R32_UInt
-            };
+            mVertexBuffer = new VertexBuffer();
+	        mIndexBuffer = new IndexBuffer(DrawElementsType.UnsignedInt);
 
             if (mVertices.Length != 0 && mIndices.Length != 0)
             {
-                mVertexBuffer.UpdateData(mVertices);
-                mIndexBuffer.UpdateData(mIndices);
+                mVertexBuffer.BufferData(mVertices);
+                mIndexBuffer.BufferData(mIndices);
             }
 
-            foreach (var group in Groups)
-                group.SyncLoad();
+	        foreach (var group in Groups)
+	        {
+		        group.SyncLoad();
+	        }
         }
     }
 }

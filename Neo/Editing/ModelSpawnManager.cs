@@ -115,7 +115,7 @@ namespace Neo.Editing
             var state = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(state);
 
-            if (KeyHelper.AreKeysDown(state, Keys.Menu, Keys.RButton))
+            if (KeyHelper.AreKeysDown(state, Key.Menu, Key.RButton))
             {
                 var dx = cursor.X - mLastCursorPos.X;
                 var newScale = mHoveredInstance.Scale + dx * 0.05f;

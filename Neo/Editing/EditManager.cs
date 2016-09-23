@@ -1,4 +1,5 @@
 ﻿using System;
+using Gdk;
 using Neo.Scene;
 using Neo.UI;
 using Neo.Utils;
@@ -175,12 +176,12 @@ namespace Neo.Editing
 	        // TODO: GDK hotkey implementation
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);
-            var altDown = KeyHelper.IsKeyDown(keyState, Keys.Menu);
-            var LMBDown = KeyHelper.IsKeyDown(keyState, Keys.LButton);
-            var RMBDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
-            var spaceDown = KeyHelper.IsKeyDown(keyState, Keys.Space);
-            var MMBDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
-            var tDown = KeyHelper.IsKeyDown(keyState, Keys.T);
+            var altDown = KeyHelper.IsKeyDown(keyState, Key.Menu);
+            var LMBDown = KeyHelper.IsKeyDown(keyState, Key.LButton);
+            var RMBDown = KeyHelper.IsKeyDown(keyState, Key.RButton);
+            var spaceDown = KeyHelper.IsKeyDown(keyState, Key.Space);
+            var MMBDown = KeyHelper.IsKeyDown(keyState, Key.MButton);
+            var tDown = KeyHelper.IsKeyDown(keyState, Key.T);
 
 	        Point curPos = InterfaceHelper.GetCursorPosition();
 	        var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;

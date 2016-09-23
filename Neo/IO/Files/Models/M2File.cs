@@ -9,7 +9,7 @@ namespace Neo.IO.Files.Models
 	public class TextureInfo
     {
         public TextureType TextureType { get; set; }
-        public Graphics.Texture.SamplerFlagType SamplerFlags { get; set; }
+        public Graphics.SamplerFlagType SamplerFlags { get; set; }
         public Graphics.Texture Texture { get; set; }
     }
 

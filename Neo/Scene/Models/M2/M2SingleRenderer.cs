@@ -5,6 +5,8 @@ using Neo.IO.Files.Models;
 using Neo.Storage;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using DataType = Neo.Graphics.DataType;
 
 namespace Neo.Scene.Models.M2
 {
@@ -67,8 +69,10 @@ namespace Neo.Scene.Models.M2
                 mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
                 mAnimator = ModelFactory.Instance.CreateAnimator(model);
 
-                if (mAnimator.SetAnimation(AnimationType.Stand) == false)
-                    mAnimator.SetAnimationByIndex(0);
+	            if (mAnimator.SetAnimation(AnimationType.Stand) == false)
+	            {
+		            mAnimator.SetAnimationByIndex(0);
+	            }
             }
         }
 
@@ -84,8 +88,10 @@ namespace Neo.Scene.Models.M2
                 var ab = mAnimBuffer;
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
-                    if (ab != null)
-                        ab.Dispose();
+	                if (ab != null)
+	                {
+		                ab.Dispose();
+	                }
                 });
 
                 mAnimBuffer = null;
@@ -107,10 +113,14 @@ namespace Neo.Scene.Models.M2
             gMesh.BeginDraw();
 
             // TODO: Get rid of this switch
-            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
-                gMesh.InitLayout(gNoBlendProgram);
-            else
-                gMesh.InitLayout(gCustomProgram);
+	        if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+	        {
+		        gMesh.InitLayout(gNoBlendProgram);
+	        }
+	        else
+	        {
+		        gMesh.InitLayout(gCustomProgram);
+	        }
 
             gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
@@ -124,13 +134,15 @@ namespace Neo.Scene.Models.M2
         public void OnFrame(M2Renderer renderer, M2RenderInstance instance)
         {
             var animator = mAnimator ?? renderer.Animator;
-            if (mAnimator != null)
-                UpdateAnimations(instance);
+	        if (mAnimator != null)
+	        {
+		        UpdateAnimations(instance);
+	        }
 
             gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-            gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
+            gPerDrawCallBuffer.BufferData(new PerDrawCallBuffer
             {
                 instanceMat = instance.InstanceMatrix,
                 colorMod = instance.HighlightColor
@@ -144,8 +156,10 @@ namespace Neo.Scene.Models.M2
                 {
                     // Prevent double rendering since this model pass
                     // was already processed by the batch renderer
-                    if (pass.BlendMode == 0 || pass.BlendMode == 1)
-                        continue;
+	                if (pass.BlendMode == 0 || pass.BlendMode == 1)
+	                {
+		                continue;
+	                }
                 }
 
                 // TODO: Since this isn't choosing among static programs anymore, cache a different way (comparison func?)
@@ -157,8 +171,10 @@ namespace Neo.Scene.Models.M2
                 gCustomProgram.Bind();
 
                 var depthState = gDepthNoWriteState;
-                if (pass.BlendMode == 0 || pass.BlendMode == 1)
-                    depthState = gDepthWriteState;
+	            if (pass.BlendMode == 0 || pass.BlendMode == 1)
+	            {
+		            depthState = gDepthWriteState;
+	            }
 
                 gMesh.UpdateDepthState(depthState);
 
@@ -172,8 +188,10 @@ namespace Neo.Scene.Models.M2
 
                 // These are per texture
                 var alphaValues = new float[] { 1, 1, 1, 1 };
-                for (var i = 0; i < pass.OpCount; ++i)
-                    alphaValues[i] = animator.GetAlphaValue(pass.AlphaAnimIndex + i);
+	            for (var i = 0; i < pass.OpCount; ++i)
+	            {
+		            alphaValues[i] = animator.GetAlphaValue(pass.AlphaAnimIndex + i);
+	            }
 
                 var uvAnimMatrix1 = Matrix4.Identity;
                 var uvAnimMatrix2 = Matrix4.Identity;
@@ -185,7 +203,7 @@ namespace Neo.Scene.Models.M2
                 if (pass.OpCount >= 3) animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
                 if (pass.OpCount >= 4) animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
 
-                gPerPassBuffer.UpdateData(new PerModelPassBuffer()
+                gPerPassBuffer.BufferData(new PerModelPassBuffer
                 {
                     uvAnimMatrix1 = uvAnimMatrix1,
                     uvAnimMatrix2 = uvAnimMatrix2,
@@ -200,18 +218,26 @@ namespace Neo.Scene.Models.M2
                 {
                     switch (mModel.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
                     {
-                        case Graphics.Texture.SamplerFlagType.WrapBoth:
-                            gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
-                            break;
-                        case Graphics.Texture.SamplerFlagType.WrapU:
-                            gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
-                            break;
-                        case Graphics.Texture.SamplerFlagType.WrapV:
-                            gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
-                            break;
-                        case Graphics.Texture.SamplerFlagType.ClampBoth:
-                            gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
-                            break;
+                        case Graphics.SamplerFlagType.WrapBoth:
+	                    {
+		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
+		                    break;
+	                    }
+                        case Graphics.SamplerFlagType.WrapU:
+	                    {
+		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
+		                    break;
+	                    }
+                        case Graphics.SamplerFlagType.WrapV:
+	                    {
+		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
+		                    break;
+	                    }
+                        case Graphics.SamplerFlagType.ClampBoth:
+	                    {
+		                    gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
+		                    break;
+	                    }
                     }
 
                     gMesh.Program.SetPixelTexture(i, pass.Textures[i]);
@@ -228,13 +254,15 @@ namespace Neo.Scene.Models.M2
         public void OnFrame_Old(M2Renderer renderer, M2RenderInstance instance)
         {
             var animator = mAnimator ?? renderer.Animator;
-            if (mAnimator != null)
-                UpdateAnimations(instance);
+	        if (mAnimator != null)
+	        {
+		        UpdateAnimations(instance);
+	        }
 
             gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-            gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
+            gPerDrawCallBuffer.BufferData(new PerDrawCallBuffer
             {
                 instanceMat = instance.InstanceMatrix,
                 colorMod = instance.HighlightColor
@@ -248,8 +276,10 @@ namespace Neo.Scene.Models.M2
                 {
                     // Prevent double rendering since this model pass
                     // was already processed by the batch renderer
-                    if (pass.BlendMode == 0 || pass.BlendMode == 1)
-                        continue;
+	                if (pass.BlendMode == 0 || pass.BlendMode == 1)
+	                {
+		                continue;
+	                }
                 }
 
                 var oldProgram = gMesh.Program;
@@ -257,25 +287,31 @@ namespace Neo.Scene.Models.M2
                 switch (pass.BlendMode)
                 {
                     case 0:
-                        newProgram = gNoBlendProgram;
-                        break;
+	                {
+		                newProgram = gNoBlendProgram;
+		                break;
+	                }
                     case 1:
-                        newProgram = gBlendTestProgram;
-                        break;
+					{
+						newProgram = gBlendTestProgram;
+						break;
+					}
                     default:
-                        switch (pass.Textures.Count)
-                        {
-                            case 2:
-                                newProgram = g2PassProgram;
-                                break;
-                            case 3:
-                                newProgram = g3PassProgram;
-                                break;
-                            default:
-                                newProgram = gBlendProgram;
-                                break;
-                        }
-                        break;
+					{
+						switch (pass.Textures.Count)
+						{
+							case 2:
+								newProgram = g2PassProgram;
+								break;
+							case 3:
+								newProgram = g3PassProgram;
+								break;
+							default:
+								newProgram = gBlendProgram;
+								break;
+						}
+						break;
+					}
                 }
 
                 if (newProgram != oldProgram)
@@ -285,8 +321,10 @@ namespace Neo.Scene.Models.M2
                 }
 
                 var depthState = gDepthNoWriteState;
-                if (pass.BlendMode == 0 || pass.BlendMode == 1)
-                    depthState = gDepthWriteState;
+	            if (pass.BlendMode == 0 || pass.BlendMode == 1)
+	            {
+		            depthState = gDepthWriteState;
+	            }
 
                 gMesh.UpdateDepthState(depthState);
 
@@ -303,15 +341,17 @@ namespace Neo.Scene.Models.M2
                 var alpha = animator.GetAlphaValue(pass.AlphaAnimIndex);
                 color.W *= alpha;
 
-                gPerPassBuffer.UpdateData(new PerModelPassBuffer()
+                gPerPassBuffer.BufferData(new PerModelPassBuffer
                 {
                     uvAnimMatrix1 = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
                     animatedColor = color
                 });
 
-                for (var i = 0; i < pass.Textures.Count && i < 3; ++i)
-                    gMesh.Program.SetPixelTexture(i, pass.Textures[i]);
+	            for (var i = 0; i < pass.Textures.Count && i < 3; ++i)
+	            {
+		            gMesh.Program.SetPixelTexture(i, pass.Textures[i]);
+	            }
 
                 gMesh.StartVertex = 0;
                 gMesh.StartIndex = pass.StartIndex;
@@ -331,45 +371,44 @@ namespace Neo.Scene.Models.M2
                 InverseRotation = instance.InverseRotation
             });
 
-            if (mAnimator.GetBones(mAnimationMatrices))
-                mAnimBuffer.UpdateData(mAnimationMatrices);
+	        if (mAnimator.GetBones(mAnimationMatrices))
+	        {
+		        mAnimBuffer.BufferData(mAnimationMatrices);
+	        }
         }
 
         public void OnSyncLoad()
         {
-            var ctx = WorldFrame.Instance.GraphicsContext;
             if (mAnimator != null)
             {
-                mAnimBuffer = new UniformBuffer(ctx);
-                mAnimBuffer.UpdateData(mAnimationMatrices);
+                mAnimBuffer = new UniformBuffer();
+                mAnimBuffer.BufferData(mAnimationMatrices);
             }
         }
 
         public static void Initialize(GxContext context)
         {
-            gDepthWriteState = new DepthState(context)
+            gDepthWriteState = new DepthState
             {
                 DepthEnabled = true,
                 DepthWriteEnabled = true
             };
 
-            gDepthNoWriteState = new DepthState(context)
+            gDepthNoWriteState = new DepthState
             {
                 DepthEnabled = true,
                 DepthWriteEnabled = false
             };
 
-            gMesh = new Mesh(context)
+            gMesh = new Mesh
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
                 DepthState = gDepthNoWriteState
             };
 
-            gMesh.BlendState.Dispose();
             gMesh.IndexBuffer.Dispose();
             gMesh.VertexBuffer.Dispose();
 
-            gMesh.BlendState = null;
             gMesh.IndexBuffer = null;
             gMesh.VertexBuffer = null;
 
@@ -407,15 +446,15 @@ namespace Neo.Scene.Models.M2
             g3PassProgram.SetPixelShader(Resources.Shaders.M2Pixel3PassOld);
             g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
-            gPerDrawCallBuffer = new UniformBuffer(context);
-            gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer()
+            gPerDrawCallBuffer = new UniformBuffer();
+            gPerDrawCallBuffer.BufferData(new PerDrawCallBuffer
             {
                 instanceMat = Matrix4.Identity
             });
 
-            gPerPassBuffer = new UniformBuffer(context);
+            gPerPassBuffer = new UniformBuffer();
 
-            gPerPassBuffer.UpdateData(new PerModelPassBuffer()
+            gPerPassBuffer.BufferData(new PerModelPassBuffer
             {
                 uvAnimMatrix1 = Matrix4.Identity,
                 uvAnimMatrix2 = Matrix4.Identity,
@@ -460,70 +499,80 @@ namespace Neo.Scene.Models.M2
                 MaximumAnisotropy = 16
             };
 
-            for (var i = 0; i < BlendStates.Length; ++i)
-                BlendStates[i] = new BlendState(context);
+	        for (var i = 0; i < BlendStates.Length; ++i)
+	        {
+		        BlendStates[i] = new BlendState();
+	        }
 
-            BlendStates[0] = new BlendState(context)
+	        BlendStates[0] = new BlendState
+	        {
+		        BlendEnabled = false
+	        };
+
+	        BlendStates[1] = new BlendState
+	        {
+		        BlendEnabled = true,
+		        SourceBlend = BlendingFactorSrc.One,
+		        DestinationBlend = BlendingFactorDest.Zero,
+		        SourceAlphaBlend = BlendingFactorSrc.One,
+		        DestinationAlphaBlend = BlendingFactorDest.Zero
+	        };
+
+	        BlendStates[2] = new BlendState
+	        {
+		        BlendEnabled = true,
+		        SourceBlend = BlendingFactorSrc.SrcAlpha,
+		        DestinationBlend = BlendingFactorDest.OneMinusSrcAlpha,
+		        SourceAlphaBlend = BlendingFactorSrc.SrcAlpha,
+		        DestinationAlphaBlend = BlendingFactorDest.OneMinusSrcAlpha
+	        };
+
+	        BlendStates[3] = new BlendState
+	        {
+		        BlendEnabled = true,
+		        // INVESTIGATE: Workaround for enum value not present
+		        SourceBlend = (BlendingFactorSrc) BlendingFactorDest.SrcColor,
+		        // INVESTIGATE: Workaround for enum value not present
+		        DestinationBlend = (BlendingFactorDest) BlendingFactorSrc.DstColor,
+		        SourceAlphaBlend = BlendingFactorSrc.SrcAlpha,
+		        DestinationAlphaBlend = BlendingFactorDest.DstAlpha
+	        };
+
+	        BlendStates[4] = new BlendState(
+	        {
+		        BlendEnabled = true,
+		        SourceBlend = BlendingFactorSrc.SrcAlpha,
+		        DestinationBlend = BlendingFactorDest.One,
+		        SourceAlphaBlend = BlendingFactorSrc.SrcAlpha,
+		        DestinationAlphaBlend = BlendingFactorDest.One
+	        };
+
+	        BlendStates[5] = new BlendState
+	        {
+		        BlendEnabled = true,
+		        SourceBlend = BlendingFactorSrc.SrcAlpha,
+		        DestinationBlend = BlendingFactorDest.OneMinusSrcAlpha,
+		        SourceAlphaBlend = BlendingFactorSrc.SrcAlpha,
+		        DestinationAlphaBlend = BlendingFactorDest.OneMinusSrcAlpha
+	        };
+
+	        BlendStates[6] = new BlendState
+	        {
+		        BlendEnabled = true,
+		        SourceBlend = BlendingFactorSrc.DstColor,
+		        DestinationBlend = BlendingFactorDest.SrcColor,
+		        SourceAlphaBlend = BlendingFactorSrc.DstAlpha,
+		        DestinationAlphaBlend = BlendingFactorDest.SrcAlpha
+	        };
+
+	        gNoCullState = new RasterState
             {
-                BlendEnabled = false
+	            BackfaceCullingEnabled = false
             };
-
-            BlendStates[1] = new BlendState(context)
+            gCullState = new RasterState
             {
-                BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.One,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.Zero,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.One,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.Zero
+	            BackfaceCullingEnabled = true
             };
-
-            BlendStates[2] = new BlendState(context)
-            {
-                BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha
-            };
-
-            BlendStates[3] = new BlendState(context)
-            {
-                BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceColor,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.DestinationColor,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.DestinationAlpha
-            };
-
-            BlendStates[4] = new BlendState(context)
-            {
-                BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.One,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.One
-            };
-
-            BlendStates[5] = new BlendState(context)
-            {
-                BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha
-            };
-
-            BlendStates[6] = new BlendState(context)
-            {
-                BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.DestinationColor,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.SourceColor,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.DestinationAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha
-            };
-
-            gNoCullState = new RasterState(context) { BackfaceCullingEnabled = false };
-            gCullState = new RasterState(context) { BackfaceCullingEnabled = true };
         }
     }
 }

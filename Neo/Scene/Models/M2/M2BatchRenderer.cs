@@ -5,20 +5,22 @@ using Neo.Graphics;
 using Neo.IO.Files.Models;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using DataType = Neo.Graphics.DataType;
 
 namespace Neo.Scene.Models.M2
 {
     class M2BatchRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct PerInstanceBuffer
+        struct PerInstanceBufferContent
         {
             public Matrix4 matInstance;
             public Color4 colorMod;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct PerModelPassBuffer
+        struct PerModelPassBufferContent
         {
             public Matrix4 uvAnimMatrix1;
             public Matrix4 uvAnimMatrix2;
@@ -51,7 +53,7 @@ namespace Neo.Scene.Models.M2
 
         private int mInstanceCount;
 
-        private PerInstanceBuffer[] mActiveInstances = new PerInstanceBuffer[0];
+        private PerInstanceBufferContent[] mActiveInstances = new PerInstanceBufferContent[0];
         private static UniformBuffer gPerPassBuffer;
 
         public M2BatchRenderer(M2File model)
@@ -154,7 +156,7 @@ namespace Neo.Scene.Models.M2
                 if (pass.OpCount >= 3) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
                 if (pass.OpCount >= 4) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
 
-                gPerPassBuffer.UpdateData(new PerModelPassBuffer
+                gPerPassBuffer.BufferData(new PerModelPassBufferContent
                 {
                     uvAnimMatrix1 = uvAnimMatrix1,
                     uvAnimMatrix2 = uvAnimMatrix2,
@@ -169,16 +171,16 @@ namespace Neo.Scene.Models.M2
                 {
                     switch (Model.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
                     {
-                        case Graphics.Texture.SamplerFlagType.WrapBoth:
+                        case Graphics.SamplerFlagType.WrapBoth:
                             gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
                             break;
-                        case Graphics.Texture.SamplerFlagType.WrapU:
+                        case Graphics.SamplerFlagType.WrapU:
                             gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
                             break;
-                        case Graphics.Texture.SamplerFlagType.WrapV:
+                        case Graphics.SamplerFlagType.WrapV:
                             gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
                             break;
-                        case Graphics.Texture.SamplerFlagType.ClampBoth:
+                        case Graphics.SamplerFlagType.ClampBoth:
                             gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
                             break;
                     }
@@ -230,7 +232,7 @@ namespace Neo.Scene.Models.M2
                 var color = renderer.Animator.GetColorValue(pass.ColorAnimIndex);
                 color.W *= renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex);
 
-                gPerPassBuffer.UpdateData(new PerModelPassBuffer
+                gPerPassBuffer.BufferData(new PerModelPassBufferContent
                 {
                     uvAnimMatrix1 = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
@@ -250,7 +252,7 @@ namespace Neo.Scene.Models.M2
             lock (renderer.VisibleInstances)
             {
                 if (mActiveInstances.Length < renderer.VisibleInstances.Count)
-                    mActiveInstances = new PerInstanceBuffer[renderer.VisibleInstances.Count];
+                    mActiveInstances = new PerInstanceBufferContent[renderer.VisibleInstances.Count];
 
                 for (var i = 0; i < renderer.VisibleInstances.Count; ++i)
                 {
@@ -263,32 +265,29 @@ namespace Neo.Scene.Models.M2
                     return;
             }
 
-            mInstanceBuffer.UpdateData(mActiveInstances);
+            mInstanceBuffer.BufferData(mActiveInstances);
         }
 
         public void OnSyncLoad()
         {
-            var ctx = WorldFrame.Instance.GraphicsContext;
-            mInstanceBuffer = new VertexBuffer(ctx);
+            mInstanceBuffer = new VertexBuffer();
         }
 
         public static void Initialize(GxContext context)
         {
-            gMesh = new Mesh(context)
+            gMesh = new Mesh
             {
                 Stride = IO.SizeCache<M2Vertex>.Size,
-                InstanceStride = IO.SizeCache<PerInstanceBuffer>.Size,
+                InstanceStride = IO.SizeCache<PerInstanceBufferContent>.Size,
                 DepthState = {
                     DepthEnabled = true,
                     DepthWriteEnabled = true
                 }
             };
 
-            gMesh.BlendState.Dispose();
             gMesh.IndexBuffer.Dispose();
             gMesh.VertexBuffer.Dispose();
 
-            gMesh.BlendState = null;
             gMesh.IndexBuffer = null;
             gMesh.VertexBuffer = null;
 
@@ -321,9 +320,8 @@ namespace Neo.Scene.Models.M2
             gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
             gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlphaOld);
 
-            gPerPassBuffer = new UniformBuffer(context);
-
-            gPerPassBuffer.UpdateData(new PerModelPassBuffer()
+            gPerPassBuffer = new UniformBuffer();
+            gPerPassBuffer.BufferData(new PerModelPassBufferContent()
             {
                 uvAnimMatrix1 = Matrix4.Identity,
                 uvAnimMatrix2 = Matrix4.Identity,
@@ -368,25 +366,36 @@ namespace Neo.Scene.Models.M2
                 MaximumAnisotropy = 16
             };
 
-            for (var i = 0; i < BlendStates.Length; ++i)
-                BlendStates[i] = new BlendState(context);
+	        for (var i = 0; i < BlendStates.Length; ++i)
+	        {
+		        BlendStates[i] = new BlendState();
+	        }
 
-            BlendStates[0] = new BlendState(context)
+            BlendStates[0] = new BlendState(
             {
                 BlendEnabled = false
             };
 
-            BlendStates[1] = new BlendState(context)
+            BlendStates[1] = new BlendState
             {
                 BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.One,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.Zero,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.One,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.Zero
+                SourceBlend = BlendingFactorSrc.One,
+                DestinationBlend = BlendingFactorDest.Zero,
+                SourceAlphaBlend = BlendingFactorSrc.One,
+                DestinationAlphaBlend = BlendingFactorDest.Zero
             };
 
-            gNoCullState = new RasterState(context) { BackfaceCullingEnabled = false };
-            gCullState = new RasterState(context) { BackfaceCullingEnabled = true };
+	        // TODO: Create static member for reusable states like this
+            gNoCullState = new RasterState
+            {
+	            BackfaceCullingEnabled = false
+            };
+
+	        // TODO: Create static member for reusable states like this
+	        gCullState = new RasterState
+            {
+	            BackfaceCullingEnabled = true
+            };
         }
     }
 }

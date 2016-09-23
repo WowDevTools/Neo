@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Neo.Scene.Models.M2;
+using Neo.Storage;
 using OpenTK;
 using SlimTK;
 using Warcraft.Core;
@@ -142,12 +143,12 @@ namespace Neo.IO.Files.Models.Wotlk
                         }
                     }
 
-                    Graphics.Texture.SamplerFlagType samplerFlags;
+                    Graphics.SamplerFlagType samplerFlags;
 
-                    if (tex.flags == 3) samplerFlags = Graphics.Texture.SamplerFlagType.WrapBoth;
-                    else if (tex.flags == 2) samplerFlags = Graphics.Texture.SamplerFlagType.WrapV;
-                    else if (tex.flags == 1) samplerFlags = Graphics.Texture.SamplerFlagType.WrapU;
-                    else samplerFlags = Graphics.Texture.SamplerFlagType.ClampBoth;
+                    if (tex.flags == 3) samplerFlags = Graphics.SamplerFlagType.WrapBoth;
+                    else if (tex.flags == 2) samplerFlags = Graphics.SamplerFlagType.WrapV;
+                    else if (tex.flags == 1) samplerFlags = Graphics.SamplerFlagType.WrapU;
+                    else samplerFlags = Graphics.SamplerFlagType.ClampBoth;
 
                     TextureInfos[i] = new TextureInfo
                     {
@@ -176,13 +177,13 @@ namespace Neo.IO.Files.Models.Wotlk
             DisplayOptions.TextureVariationFiles = new List<Tuple<string, string, string>>();
             HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>(); //Unique combinations only
 
-            //First check creatures/characters 
+            //First check creatures/characters
             if (mDirectoryParts.Length > 0 && mDirectoryParts[0].ToLower() != "character" && mDirectoryParts[0].ToLower() != "creature")
                 return;
 
             //Second check MDX exists
             string mdx = Path.ChangeExtension(mFileName, ".mdx").ToLower();
-            if (!Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>().Any(x => x.ModelPath.ToLower() == mdx))
+	        if (DbcStorage.CreatureModelData.GetAllRows<CreatureModelDataEntry>().All(x => x.ModelPath.ToLower() != mdx))
                 return;
 
             var modelDisplay = from cmd in Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>()
@@ -191,7 +192,7 @@ namespace Neo.IO.Files.Models.Wotlk
                                where cmd.ModelPath.ToLower() == mdx
                                select cdi;
 
-            if (modelDisplay.Count() == 0)
+            if (!modelDisplay.Any())
             {
                 variations.Add(new Tuple<string, string, string>("default_texture", "", ""));
             }
@@ -210,7 +211,7 @@ namespace Neo.IO.Files.Models.Wotlk
                                    on md.ExtendedDisplayInfoId equals cdi.ID
                                    select cdi;
 
-                if(extraDisplay.Count() > 0)
+                if(extraDisplay.Any())
                 {
                     DisplayOptions.FaceOptions = extraDisplay.Select(x => x.FaceID).Distinct().ToArray();
                     DisplayOptions.FacialHairOptions = extraDisplay.Select(x => x.FacialHairID).Distinct().ToArray();

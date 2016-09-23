@@ -3,7 +3,6 @@ using Neo.Graphics;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.Scene.Terrain
 {
@@ -66,10 +65,11 @@ namespace Neo.Scene.Terrain
             if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
                 return;
 
+	        // Investigate: Possible performance issue
             if(mSyncLoaded == false)
             {
-                mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
-                mVertexBuffer.UpdateData(mVertexData);
+                mVertexBuffer = new VertexBuffer();
+                mVertexBuffer.BufferData(mVertexData);
                 mSyncLoaded = true;
             }
 
@@ -119,7 +119,7 @@ namespace Neo.Scene.Terrain
 
         public static void Initialize(GxContext context)
         {
-            Mesh = new Mesh(context)
+            Mesh = new Mesh
             {
                 IndexCount = 16 * 16 * 4 * 3,
                 Stride = IO.SizeCache<Vector3>.Size,
@@ -153,7 +153,7 @@ namespace Neo.Scene.Terrain
                 }
             }
 
-            Mesh.IndexBuffer.UpdateData(indices);
+            Mesh.IndexBuffer.BufferData(indices);
 	        Mesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
 
 	        var program = new ShaderProgram(context);

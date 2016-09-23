@@ -1,4 +1,5 @@
 ﻿using System;
+using Gdk;
 using Neo.Scene;
 using Neo.Utils;
 using OpenTK;
@@ -136,7 +137,7 @@ namespace Neo.Editing
             var state = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(state);
 
-            if (!KeyHelper.IsKeyDown(state, System.Windows.Forms.Keys.LButton))
+            if (!KeyHelper.IsKeyDown(state, Key.LButton))
             {
                 return false;
             }

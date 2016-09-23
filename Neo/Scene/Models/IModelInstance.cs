@@ -21,6 +21,7 @@ namespace Neo.Scene.Models
 
         void SetPosition(Vector3 position);
 
+	    [Obsolete]
         Vector3 GetPosition();
 
         void Remove();

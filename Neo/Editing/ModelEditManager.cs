@@ -1,4 +1,5 @@
-﻿using Neo.Scene;
+﻿using Gdk;
+using Neo.Scene;
 using Neo.Scene.Models;
 using Neo.Scene.Models.M2;
 using Neo.Utils;
@@ -43,17 +44,17 @@ namespace Neo.Editing
 
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);
-            var altDown = KeyHelper.IsKeyDown(keyState, Keys.Menu);
-            var ctrlDown = KeyHelper.IsKeyDown(keyState, Keys.ControlKey);
-            var shiftDown = KeyHelper.IsKeyDown(keyState, Keys.ShiftKey);
-            var rmbDown = KeyHelper.IsKeyDown(keyState, Keys.RButton);
-            var mmbDown = KeyHelper.IsKeyDown(keyState, Keys.MButton);
-            var delDown = KeyHelper.IsKeyDown(keyState, Keys.Delete);
-            var rDown = KeyHelper.IsKeyDown(keyState, Keys.R);
-            var mDown = KeyHelper.IsKeyDown(keyState, Keys.M);
-            var vDown = KeyHelper.IsKeyDown(keyState, Keys.V);
-            var cDown = KeyHelper.IsKeyDown(keyState, Keys.C);
-            var pagedownDown = KeyHelper.IsKeyDown(keyState, Keys.PageDown);
+            var altDown = KeyHelper.IsKeyDown(keyState, Key.Menu);
+            var ctrlDown = KeyHelper.IsKeyDown(keyState, Key.ControlKey);
+            var shiftDown = KeyHelper.IsKeyDown(keyState, Key.ShiftKey);
+            var rmbDown = KeyHelper.IsKeyDown(keyState, Key.RButton);
+            var mmbDown = KeyHelper.IsKeyDown(keyState, Key.MButton);
+            var delDown = KeyHelper.IsKeyDown(keyState, Key.Delete);
+            var rDown = KeyHelper.IsKeyDown(keyState, Key.R);
+            var mDown = KeyHelper.IsKeyDown(keyState, Key.M);
+            var vDown = KeyHelper.IsKeyDown(keyState, Key.V);
+            var cDown = KeyHelper.IsKeyDown(keyState, Key.C);
+            var pagedownDown = KeyHelper.IsKeyDown(keyState, Key.PageDown);
 
             if (ctrlDown && cDown) // Copying
             {
@@ -89,7 +90,7 @@ namespace Neo.Editing
 
                 var position = new Vector3(!shiftDown ? delta.X/ Slowness : 0, !shiftDown ? delta.Y/ Slowness : 0, shiftDown ? delta.Z/ Slowness : 0);
 
-                SelectedModel.UpdatePosition(position);
+                SelectedModel.SetPosition(position);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
             mLastCursorPosition = curPos;
@@ -113,7 +114,7 @@ namespace Neo.Editing
                 Vector3 brushPos = EditManager.Instance.MousePosition;
 
                 var delta = brushPos - SelectedModel.GetPosition();
-                SelectedModel.UpdatePosition(delta);
+                SelectedModel.SetPosition(delta);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
 
             }
@@ -123,7 +124,7 @@ namespace Neo.Editing
                 var curPosition = SelectedModel.GetPosition();
                 WorldFrame.Instance.MapManager.GetLandHeight(curPosition.X, curPosition.Y, out curPosition.Z);
                 var delta = curPosition - SelectedModel.GetPosition();
-                SelectedModel.UpdatePosition(delta);
+                SelectedModel.SetPosition(delta);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
         }

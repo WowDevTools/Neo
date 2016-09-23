@@ -6,13 +6,15 @@ using Neo.IO;
 using Neo.IO.Files.Models;
 using Neo.Storage;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
+using DataType = Neo.Graphics.DataType;
 
 namespace Neo.Scene.Models.M2
 {
 	public class M2PortraitRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct PerModelPassBuffer
+        struct PerModelPassBufferContent
         {
             public Matrix4 uvAnimMatrix1;
             public Matrix4 uvAnimMatrix2;
@@ -99,8 +101,10 @@ namespace Neo.Scene.Models.M2
             Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
             Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-            if (Animator.GetBones(mAnimationMatrices))
-                mAnimBuffer.UpdateData(mAnimationMatrices);
+	        if (Animator.GetBones(mAnimationMatrices))
+	        {
+		        mAnimBuffer.BufferData(mAnimationMatrices);
+	        }
 
             Mesh.Program.SetVertexConstantBuffer(1, mAnimBuffer);
             Mesh.Program.SetVertexConstantBuffer(2, mPerPassBuffer);
@@ -117,27 +121,33 @@ namespace Neo.Scene.Models.M2
                 switch (pass.BlendMode)
                 {
                     case 0:
-                        newProgram = gNoBlendProgram;
-                        break;
+	                {
+					 	newProgram = gNoBlendProgram;
+					 	break;
+	                }
                     case 1:
-                        newProgram = gBlendMaskProgram;
-                        break;
+	                {
+		                newProgram = gBlendMaskProgram;
+		                break;
+	                }
                     default:
-                        switch (pass.TextureIndices.Count)
-                        {
-                            case 2:
-                                newProgram = g2PassProgram;
-                                break;
+	                {
+		                switch (pass.TextureIndices.Count)
+		                {
+			                case 2:
+				                newProgram = g2PassProgram;
+				                break;
 
-                            case 3:
-                                newProgram = g3PassProgram;
-                                break;
+			                case 3:
+				                newProgram = g3PassProgram;
+				                break;
 
-                            default:
-                                newProgram = gBlendProgram;
-                                break;
-                        }
-                        break;
+			                default:
+				                newProgram = gBlendProgram;
+				                break;
+		                }
+		                break;
+	                }
                 }
 
                 if (newProgram != oldProgram)
@@ -155,7 +165,7 @@ namespace Neo.Scene.Models.M2
                 var alpha = Animator.GetAlphaValue(pass.AlphaAnimIndex);
                 color.W *= alpha;
 
-                mPerPassBuffer.UpdateData(new PerModelPassBuffer
+                mPerPassBuffer.BufferData(new PerModelPassBufferContent
                 {
                     uvAnimMatrix1 = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
@@ -174,29 +184,27 @@ namespace Neo.Scene.Models.M2
 
         public void OnSyncLoad()
         {
-            var ctx = WorldFrame.Instance.GraphicsContext;
-            mAnimBuffer = new UniformBuffer(ctx);
-            mAnimBuffer.UpdateData(mAnimationMatrices);
+            mAnimBuffer = new UniformBuffer();
+            mAnimBuffer.BufferData(mAnimationMatrices);
 
-            mPerPassBuffer = new UniformBuffer(ctx);
-            mPerPassBuffer.UpdateData(new PerModelPassBuffer()
+            mPerPassBuffer = new UniformBuffer();
+            mPerPassBuffer.BufferData(new PerModelPassBufferContent()
             {
                 uvAnimMatrix1 = Matrix4.Identity,
                 modelPassParams = Vector4.Zero
             });
 
-            gCullState.CullingWindingDirection = FileManager.Instance.Version >= FileDataVersion.Lichking;
+            gCullState.CullingWindingDirection = (FileManager.Instance.Version >= FileDataVersion.Lichking) ? FrontFaceDirection.Ccw : FrontFaceDirection.Cw;
         }
 
         public static void Initialize(GxContext context)
         {
-            Mesh = new Mesh(context)
+            Mesh = new Mesh
             {
                 Stride = SizeCache<M2Vertex>.Size,
                 DepthState = { DepthEnabled = true }
             };
 
-            Mesh.BlendState.Dispose();
             Mesh.IndexBuffer.Dispose();
             Mesh.VertexBuffer.Dispose();
 
@@ -221,66 +229,70 @@ namespace Neo.Scene.Models.M2
                 Filter = SharpDX.Direct3D11.Filter.MinMagMipLinear
             };
 
-            for (var i = 0; i < BlendStates.Length; ++i)
-                BlendStates[i] = new BlendState(context);
+	        for (var i = 0; i < BlendStates.Length; ++i)
+	        {
+		        BlendStates[i] = new BlendState();
+	        }
 
-            BlendStates[0] = new BlendState(context)
+            BlendStates[0] = new BlendState
             {
                 BlendEnabled = false
             };
 
-            BlendStates[1] = new BlendState(context)
+            BlendStates[1] = new BlendState
             {
                 BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.One,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.Zero,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.One,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.Zero
+                SourceBlend = BlendingFactorSrc.One,
+                DestinationBlend = BlendingFactorDest.Zero,
+                SourceAlphaBlend = BlendingFactorSrc.One,
+                DestinationAlphaBlend = BlendingFactorDest.Zero
             };
 
-            BlendStates[2] = new BlendState(context)
+            BlendStates[2] = new BlendState
             {
                 BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha
+                SourceBlend = BlendingFactorSrc.SrcAlpha,
+                DestinationBlend = BlendingFactorDest.OneMinusSrcAlpha,
+                SourceAlphaBlend = BlendingFactorSrc.SrcAlpha,
+                DestinationAlphaBlend = BlendingFactorDest.OneMinusSrcAlpha
             };
 
-            BlendStates[3] = new BlendState(context)
+            BlendStates[3] = new BlendState
             {
                 BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceColor,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.DestinationColor,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.DestinationAlpha
+	            // INVESTIGATE: Workaround for enum value not present
+	            SourceBlend = (BlendingFactorSrc)BlendingFactorDest.SrcColor,
+	            // INVESTIGATE: Workaround for enum value not present
+                DestinationBlend = (BlendingFactorDest) BlendingFactorSrc.DstColor,
+                SourceAlphaBlend = BlendingFactorSrc.SrcAlpha,
+                DestinationAlphaBlend = BlendingFactorDest.DstAlpha
             };
 
-            BlendStates[4] = new BlendState(context)
+            BlendStates[4] = new BlendState(
             {
                 BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.One,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.One
+                SourceBlend = BlendingFactorSrc.SrcAlpha,
+                DestinationBlend = BlendingFactorDest.One,
+                SourceAlphaBlend = BlendingFactorSrc.SrcAlpha,
+                DestinationAlphaBlend = BlendingFactorDest.One
             };
 
-            BlendStates[5] = new BlendState(context)
-            {
+            BlendStates[5] = new BlendState
+           {
                 BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.InverseSourceAlpha
-            };
+                SourceBlend = BlendingFactorSrc.SrcAlpha,
+                DestinationBlend = BlendingFactorDest.OneMinusSrcAlpha,
+                SourceAlphaBlend = BlendingFactorSrc.SrcAlpha,
+                DestinationAlphaBlend = BlendingFactorDest.OneMinusSrcAlpha
+           };
 
-            BlendStates[6] = new BlendState(context)
+            BlendStates[6] = new BlendState
             {
                 BlendEnabled = true,
-                SourceBlend = SharpDX.Direct3D11.BlendOption.DestinationColor,
-                DestinationBlend = SharpDX.Direct3D11.BlendOption.SourceColor,
-                SourceAlphaBlend = SharpDX.Direct3D11.BlendOption.DestinationAlpha,
-                DestinationAlphaBlend = SharpDX.Direct3D11.BlendOption.SourceAlpha
+                SourceBlend = BlendingFactorSrc.DstColor,
+                DestinationBlend = BlendingFactorDest.SrcColor,
+                SourceAlphaBlend = BlendingFactorSrc.DstAlpha,
+                DestinationAlphaBlend = BlendingFactorDest.SrcAlpha
             };
 
             gNoBlendProgram = program;
@@ -301,8 +313,14 @@ namespace Neo.Scene.Models.M2
             g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
             g3PassProgram.SetPixelShader(Resources.Shaders.M2PixelPortrait3Pass);
 
-            gNoCullState = new RasterState(context) {BackfaceCullingEnabled = false};
-            gCullState = new RasterState(context) {BackfaceCullingEnabled = true, CullingWindingDirection = true};
+            gNoCullState = new RasterState
+            {
+	            BackfaceCullingEnabled = false
+            };
+            gCullState = new RasterState
+            {
+	            BackfaceCullingEnabled = true, CullingWindingDirection = FrontFaceDirection.Ccw
+            };
         }
     }
 }

@@ -101,8 +101,8 @@ namespace Neo.Scene.Models
             };
             #endregion
 
-            mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
-            mVertexBuffer.UpdateData(vertices);
+            mVertexBuffer = new VertexBuffer();
+            mVertexBuffer.BufferData(vertices);
         }
 
         private void BuildVertices(IReadOnlyList<Vector3> positions)
@@ -119,10 +119,12 @@ namespace Neo.Scene.Models
                 new BoundingVertex {position = positions[7], texCoord = new Vector3(0, 1, 1)}
             };
 
-            if (mVertexBuffer == null)
-                mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
+	        if (mVertexBuffer == null)
+	        {
+		        mVertexBuffer = new VertexBuffer();
+	        }
 
-            mVertexBuffer.UpdateData(vertices);
+            mVertexBuffer.BufferData(vertices);
         }
     }
 
@@ -180,15 +182,14 @@ namespace Neo.Scene.Models
                 4, 6, 7
             };
 
-            gIndexBuffer = new IndexBuffer(WorldFrame.Instance.GraphicsContext);
-            gIndexBuffer.UpdateData(indices);
-            gIndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
+            gIndexBuffer = new IndexBuffer(DrawElementsType.UnsignedInt);
+            gIndexBuffer.BufferData(indices);
 
             var program = new ShaderProgram(WorldFrame.Instance.GraphicsContext);
             program.SetVertexShader(Resources.Shaders.BoundingBoxVertex);
             program.SetPixelShader(Resources.Shaders.BoundingBoxPixel);
 
-            gMesh = new Mesh(WorldFrame.Instance.GraphicsContext)
+            gMesh = new Mesh
             {
                 IndexBuffer = gIndexBuffer,
                 IndexCount = 36,

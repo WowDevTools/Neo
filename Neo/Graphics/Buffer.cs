@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
@@ -61,13 +62,13 @@ namespace Neo.Graphics
 	        this.BufferUsage = bufferUsageHint;
         }
 
-        ~Buffer()
+	    ~Buffer()
         {
             Dispose(false);
         }
 
 	    /// <summary>
-		/// Buffers a n array of data into graphics memory. If the buffer already contains a
+		/// Buffers an array of data into graphics memory. If the buffer already contains a
 		/// set of data, the old data is deleted and replaced with the new data.
 		/// </summary>
 		/// <param name="data">An array of data values.</param>
@@ -87,6 +88,19 @@ namespace Neo.Graphics
 		    Bind();
 
 		    GL.BufferData(this.BufferType, (IntPtr)data.Length, data, this.BufferUsage);
+	    }
+
+	    /// <summary>
+	    /// Buffers a structure of data into graphics memory. If the buffer already contains a
+	    /// set of data, the old data is deleted and replaced with the new data.
+	    /// </summary>
+	    /// <param name="data">A structure containing the data..</param>
+	    /// <typeparam name="T">The type of the data to buffer.</typeparam>
+	    public void BufferData<T>(T data) where T : struct
+	    {
+		    Bind();
+
+		    GL.BufferData(this.BufferType, (IntPtr)Marshal.SizeOf(data), new []{data}, this.BufferUsage);
 	    }
 
 	    /// <summary>

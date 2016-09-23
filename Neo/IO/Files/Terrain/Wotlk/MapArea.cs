@@ -132,7 +132,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 if(WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
                 {
                     mDoodadDefs[inst.MddfIndex].Position = pos;
-                    inst.RenderInstance.UpdatePosition(new Vector3(0, 0, pos.Y - old_pos.Y));
+                    inst.RenderInstance.SetPosition(new Vector3(0, 0, pos.Y - old_pos.Y));
                 }
             }
         }

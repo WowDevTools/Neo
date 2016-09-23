@@ -40,10 +40,10 @@ namespace Neo.Scene.Terrain
 
             InitVertices(radius, rings, sectors);
 
-            mMesh.VertexBuffer.UpdateData(mVertices);
+            mMesh.VertexBuffer.BufferData(mVertices);
 
             mMatrixBuffer = new UniformBuffer();
-            mMatrixBuffer.UpdateData(Matrix4.Identity);
+            mMatrixBuffer.BufferData(Matrix4.Identity);
 
             var program = new ShaderProgram(context);
             program.SetVertexShader(Resources.Shaders.SkyVertex);
@@ -68,7 +68,7 @@ namespace Neo.Scene.Terrain
         public void UpdatePosition(Vector3 position)
         {
             mBoundingSphere = new BoundingSphere(position, mRadius);
-            mMatrixBuffer.UpdateData(new Vector4(position, 1.0f));
+            mMatrixBuffer.BufferData(new Vector4(position, 1.0f));
         }
 
         public void UpdateSkyTexture(Graphics.Texture tex)
@@ -118,7 +118,7 @@ namespace Neo.Scene.Terrain
 
             mMesh.IndexCount = indices.Length;
 	        mMesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
-	        mMesh.IndexBuffer.UpdateData(indices);
+	        mMesh.IndexBuffer.BufferData(indices);
         }
     }
 }

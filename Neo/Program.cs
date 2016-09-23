@@ -13,7 +13,6 @@ namespace Neo
         [STAThread]
         static void Main()
         {
-            //System.Windows.Forms.Application.EnableVisualStyles();
             AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
 
             var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? Directory.GetCurrentDirectory();
@@ -22,11 +21,11 @@ namespace Neo
                 Directory.CreateDirectory(profilesDir);
 
             var dbcdir = Path.Combine(baseDir, "DBC");
-            if (!Directory.Exists(dbcdir))
-                Directory.CreateDirectory(dbcdir);
+	        if (!Directory.Exists(dbcdir))
+	        {
+		        Directory.CreateDirectory(dbcdir);
+	        }
 
-            //ProfileOptimization.SetProfileRoot(profilesDir);
-           // ProfileOptimization.StartProfile("JitProfile.jpf");
 
             FontCollection.Initialize();
             Settings.KeyBindings.Initialize();

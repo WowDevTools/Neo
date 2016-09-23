@@ -32,7 +32,7 @@ namespace Neo.IO.Files.Sky.WoD
         public override void Initialize()
         {
             mLightCollection.FillLights();
-            mSkyTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
+            mSkyTexture = new Graphics.Texture();
             WorldFrame.Instance.MapManager.SkySphere.UpdateSkyTexture(mSkyTexture);
         }
 

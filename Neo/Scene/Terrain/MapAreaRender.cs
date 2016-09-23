@@ -69,10 +69,11 @@ namespace Neo.Scene.Terrain
             if (AreaFile.IsValid == false)
                 return;
 
-            if(mSyncLoaded == false)
+	        // INVESTIGATE: Possible performance issue
+	        if(mSyncLoaded == false)
             {
-                mVertexBuffer = new VertexBuffer(WorldFrame.Instance.GraphicsContext);
-                mVertexBuffer.UpdateData(AreaFile.FullVertices);
+                mVertexBuffer = new VertexBuffer();
+                mVertexBuffer.BufferData(AreaFile.FullVertices);
                 mSyncLoaded = true;
             }
 
@@ -92,22 +93,31 @@ namespace Neo.Scene.Terrain
 
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
                 {
-                    if (!M2Manager.IsViewDirty || WorldFrame.Instance.State != AppState.World)
-                        return;
+	                if (!M2Manager.IsViewDirty || WorldFrame.Instance.State != AppState.World)
+	                {
+		                return;
+	                }
 
-                    if (!WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))
-                        return;
+	                if (!WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))
+	                {
+		                return;
+	                }
 
-                    foreach (var chunk in mChunks)
-                        chunk.PushDoodadReferences();
+	                // INVESTIGATE: Possible early return bug
+	                foreach (var chunk in mChunks)
+	                {
+		                chunk.PushDoodadReferences();
+	                }
+
                     return;
                 }
             }
 
-            if (mIsDirty)
+	        // INVESTIGATE: Possible performance issue
+	        if (mIsDirty)
             {
                 AreaFile.UpdateNormals();
-                mVertexBuffer.UpdateData(AreaFile.FullVertices);
+                mVertexBuffer.BufferData(AreaFile.FullVertices);
                 mIsDirty = false;
             }
 

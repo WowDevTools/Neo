@@ -4,6 +4,7 @@ using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Storage;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Scene.Models.M2
 {
@@ -58,46 +59,64 @@ namespace Neo.Scene.Models.M2
                     return;
             }
 
-            if (mSkipRendering || Model.NeedsPerInstanceAnimation)
-                return;
+	        if (mSkipRendering || Model.NeedsPerInstanceAnimation)
+	        {
+		        return;
+	        }
 
-            if (Animator.GetBones(mAnimationMatrices))
-                AnimBuffer.UpdateData(mAnimationMatrices);
+	        if (Animator.GetBones(mAnimationMatrices))
+	        {
+		        AnimBuffer.BufferData(mAnimationMatrices);
+	        }
 
-            if (!Model.HasOpaquePass)
-                return;
+	        if (!Model.HasOpaquePass)
+	        {
+		        return;
+	        }
 
             // TODO: We *really* need to get rid of this!
-            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
-                mBatchRenderer.OnFrame_Old(this);
-            else
-                mBatchRenderer.OnFrame(this);
+	        if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+	        {
+		        mBatchRenderer.OnFrame_Old(this);
+	        }
+	        else
+	        {
+		        mBatchRenderer.OnFrame(this);
+	        }
         }
 
         public void RenderSingleInstance(M2RenderInstance instance)
         {
             if (mIsSyncLoaded == false)
             {
-                if (!BeginSyncLoad())
-                    return;
+	            if (!BeginSyncLoad())
+	            {
+		            return;
+	            }
             }
 
             if (mSkipRendering)
                 return;
 
             // TODO: We *really* need to get rid of this!
-            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
-                mSingleRenderer.OnFrame_Old(this, instance);
-            else
-                mSingleRenderer.OnFrame(this, instance);
+	        if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+	        {
+		        mSingleRenderer.OnFrame_Old(this, instance);
+	        }
+	        else
+	        {
+		        mSingleRenderer.OnFrame(this, instance);
+	        }
         }
 
         public void RenderPortrait()
         {
             if (mIsSyncLoaded == false)
             {
-                if (!BeginSyncLoad())
-                    return;
+	            if (!BeginSyncLoad())
+	            {
+		            return;
+	            }
             }
 
             if (!mSkipRendering)
@@ -111,14 +130,18 @@ namespace Neo.Scene.Models.M2
 
         public bool RemoveInstance(int uuid)
         {
-            if (mFullInstances == null || VisibleInstances == null)
-                return false;
+	        if (mFullInstances == null || VisibleInstances == null)
+	        {
+		        return false;
+	        }
 
             lock (mFullInstances)
             {
                 M2RenderInstance inst;
-                if (mFullInstances.TryGetValue(uuid, out inst) == false)
-                    return false;
+	            if (mFullInstances.TryGetValue(uuid, out inst) == false)
+	            {
+		            return false;
+	            }
 
                 --inst.NumReferences;
                 if (inst.NumReferences > 0)
@@ -131,8 +154,10 @@ namespace Neo.Scene.Models.M2
                 inst.Dispose();
             }
 
-            lock (VisibleInstances)
-                VisibleInstances.RemoveAll(inst => inst.Uuid == uuid);
+	        lock (VisibleInstances)
+	        {
+		        VisibleInstances.RemoveAll(inst => inst.Uuid == uuid);
+	        }
 
             return mFullInstances.Count == 0;
         }
@@ -151,11 +176,15 @@ namespace Neo.Scene.Models.M2
             lock (mFullInstances)
             {
                 mFullInstances.Add(uuid, instance);
-                if (!instance.IsVisible(WorldFrame.Instance.ActiveCamera))
-                    return instance;
+	            if (!instance.IsVisible(WorldFrame.Instance.ActiveCamera))
+	            {
+		            return instance;
+	            }
 
-                lock (VisibleInstances)
-                    VisibleInstances.Add(instance);
+	            lock (VisibleInstances)
+	            {
+		            VisibleInstances.Add(instance);
+	            }
                 return instance;
             }
         }
@@ -163,30 +192,40 @@ namespace Neo.Scene.Models.M2
         public void PushMapReference(M2Instance instance)
         {
             var renderInstance = instance.RenderInstance;
-            if (Model.HasBlendPass)
-                renderInstance.UpdateDepth();
+	        if (Model.HasBlendPass)
+	        {
+		        renderInstance.UpdateDepth();
+	        }
 
             renderInstance.IsUpdated = true;
-            lock (VisibleInstances)
-                VisibleInstances.Add(renderInstance);
+	        lock (VisibleInstances)
+	        {
+		        VisibleInstances.Add(renderInstance);
+	        }
         }
 
         public void ViewChanged()
         {
-            lock (VisibleInstances)
-                VisibleInstances.Clear();
+	        lock (VisibleInstances)
+	        {
+		        VisibleInstances.Clear();
+	        }
 
             lock (mFullInstances)
             {
-                foreach (var pair in mFullInstances)
-                    pair.Value.IsUpdated = false;
+	            foreach (var pair in mFullInstances)
+	            {
+		            pair.Value.IsUpdated = false;
+	            }
             }
         }
 
         private bool BeginSyncLoad()
         {
-            if (mSyncLoadToken != null)
-                return false;
+	        if (mSyncLoadToken != null)
+	        {
+		        return false;
+	        }
 
             if (WorldFrame.Instance.MapManager.IsInitialLoad)
             {
@@ -209,17 +248,16 @@ namespace Neo.Scene.Models.M2
                 return;
             }
 
-            var ctx = WorldFrame.Instance.GraphicsContext;
-            VertexBuffer = new VertexBuffer(ctx);
-            IndexBuffer = new IndexBuffer(ctx);
+            VertexBuffer = new VertexBuffer();
+            IndexBuffer = new IndexBuffer(DrawElementsType.UnsignedShort);
 
-            VertexBuffer.UpdateData(Model.Vertices);
-            IndexBuffer.UpdateData(Model.Indices);
+            VertexBuffer.BufferData(Model.Vertices);
+            IndexBuffer.BufferData(Model.Indices);
 
             if (Animator != null)
             {
-                AnimBuffer = new UniformBuffer(ctx);
-                AnimBuffer.UpdateData(mAnimationMatrices);
+                AnimBuffer = new UniformBuffer();
+                AnimBuffer.BufferData(mAnimationMatrices);
             }
 
             mBatchRenderer.OnSyncLoad();
@@ -271,12 +309,18 @@ namespace Neo.Scene.Models.M2
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                if (vb != null)
-                    vb.Dispose();
-                if (ib != null)
-                    ib.Dispose();
-                if (ab != null)
-                    ab.Dispose();
+	            if (vb != null)
+	            {
+		            vb.Dispose();
+	            }
+	            if (ib != null)
+	            {
+		            ib.Dispose();
+	            }
+	            if (ab != null)
+	            {
+		            ab.Dispose();
+	            }
             });
 
             VertexBuffer = null;

@@ -144,7 +144,7 @@ namespace Neo.Scene.Models.WMO
 	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mRotation.Y)) *
 	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
 
-	        mInstanceMatrix *= Matrix4.Translation(mPosition);
+	        mInstanceMatrix *= Matrix4.CreateTranslation(mPosition);
 
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
 
@@ -172,7 +172,7 @@ namespace Neo.Scene.Models.WMO
             // Unsupported by WMO.
         }
 
-        public void UpdatePosition(Vector3 position)
+        public void SetPosition(Vector3 position)
         {
             mPosition.X += position.X;
             mPosition.Y += position.Y;
@@ -183,7 +183,7 @@ namespace Neo.Scene.Models.WMO
 	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
 
-            mInstanceMatrix *= Matrix4.Translation(mPosition);
+            mInstanceMatrix *= Matrix4.CreateTranslation(mPosition);
 
             Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
@@ -204,11 +204,13 @@ namespace Neo.Scene.Models.WMO
             UpdateModelNameplate();
         }
 
+	    [Obsolete]
         public Vector3 GetPosition()
         {
             return mPosition;
         }
 
+	    [Obsolete]
         public Vector3 GetRotation()
         {
             return mRotation;

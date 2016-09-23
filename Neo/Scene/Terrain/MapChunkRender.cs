@@ -5,8 +5,9 @@ using Neo.Graphics;
 using Neo.IO.Files.Models;
 using Neo.Scene.Models;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using SlimTK;
-using Warcraft.Core;
+using DataType = Neo.Graphics.DataType;
 
 namespace Neo.Scene.Terrain
 {
@@ -222,9 +223,8 @@ namespace Neo.Scene.Terrain
                    if((mData.Layers[i].Flags & 4) != 0)
                         rotation += (float)Math.PI;
 
-                    var matrix = Matrix4.CreateRotationZ(rotation);
-	                // PORT: Potentional bug (TransformVector -> Transform)
-                    var dir = Vector2.Transform(new Vector2(0, 1), matrix);
+	                var quat = Quaternion.FromAxisAngle(Vector3.UnitZ, rotation);
+                    var dir = Vector2.Transform(new Vector2(0, 1), quat);
                     mTexAnimDirections[i] = dir;
 
                     mTexAnimDirections[i].Normalize();
@@ -257,7 +257,7 @@ namespace Neo.Scene.Terrain
             mTexAnimStore.Layer3 = Matrix4.Translation(mTexAnimDirections[3].X * curTime / 1000.0f,
                 mTexAnimDirections[3].Y * curTime / 1000.0f, 0.0f);
 
-            mTexAnimBuffer.UpdateData(mTexAnimStore);
+            mTexAnimBuffer.BufferData(mTexAnimStore);
         }
 
         private bool BeginSyncLoad()
@@ -286,12 +286,15 @@ namespace Neo.Scene.Terrain
 
             mTexAnimBuffer = new UniformBuffer();
             mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix4.Identity;
-            mTexAnimBuffer.UpdateData(mTexAnimStore);
+            mTexAnimBuffer.BufferData(mTexAnimStore);
+
             mAlphaTexture = new Graphics.Texture();
             mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
-            mHoleTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
+
+            mHoleTexture = new Graphics.Texture();
             mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
-            mScaleBuffer = new UniformBuffer(WorldFrame.Instance.GraphicsContext);
+
+            mScaleBuffer = new UniformBuffer();
             mScaleBuffer.UpdateData(mTexParams);
             mShaderTextures = mData.Textures.ToArray();
             mShaderSpecularTextures = mData.SpecularTextures.ToArray();
@@ -301,7 +304,7 @@ namespace Neo.Scene.Terrain
 
         public static void Initialize(GxContext context)
         {
-            ChunkMesh = new Mesh(context);
+            ChunkMesh = new Mesh();
             InitMesh(context);
         }
 
@@ -383,8 +386,8 @@ namespace Neo.Scene.Terrain
                 }
             }
 
-            ChunkMesh.IndexBuffer.UpdateData(indices);
-            ChunkMesh.IndexBuffer.IndexFormat = Format.R32_UInt;
+            ChunkMesh.IndexBuffer.BufferData(indices);
+            ChunkMesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
         }
     }
 }

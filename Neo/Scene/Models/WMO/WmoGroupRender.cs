@@ -178,18 +178,33 @@ namespace Neo.Scene.Models.WMO
 
         public static void Initialize(GxContext context)
         {
-            gNoBlendState = new BlendState(context) { BlendEnabled = false };
-            gAlphaBlendState = new BlendState(context) { BlendEnabled = true };
+            gNoBlendState = new BlendState
+            {
+	            BlendEnabled = false
+            };
 
-            gNoCullState = new RasterState(context) {BackfaceCullingEnabled = false};
-            gCullState = new RasterState(context) {BackfaceCullingEnabled = true};
+            gAlphaBlendState = new BlendState
+            {
+	            BlendEnabled = true
+            };
+
+            gNoCullState = new RasterState
+            {
+	            BackfaceCullingEnabled = false
+            };
+
+            gCullState = new RasterState
+            {
+	            BackfaceCullingEnabled = true
+            };
 
             Sampler = new Sampler(context);
 
-            InstanceBuffer = new UniformBuffer(context);
-            InstanceBuffer.UpdateData(Matrix4.Identity); // preallocate space so the underlying buffer wont change anymore
+            InstanceBuffer = new UniformBuffer();
+	        // INVESTIGATE: Preallcation most likely not needed in OpenGL
+            //InstanceBuffer.BufferData(Matrix4.Identity); // preallocate space so the underlying buffer wont change anymore
 
-            Mesh = new Mesh(context)
+            Mesh = new Mesh
             {
                 DepthState = { DepthEnabled = true },
                 Stride = IO.SizeCache<IO.Files.Models.WmoVertex>.Size
