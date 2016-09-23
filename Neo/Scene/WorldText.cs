@@ -287,6 +287,7 @@ namespace Neo.Scene
             mIsDirty = true;
         }
 
+	    // INVESTIGATE: Is this creating an internal BLP from a bitmap?
         private unsafe void OnRenderText()
         {
             var size = gGraphics.MeasureString(mText, mFont);
@@ -363,7 +364,7 @@ namespace Neo.Scene
         private void OnSyncLoad()
         {
             var ctx = WorldFrame.Instance.GraphicsContext;
-            mTexture = new Graphics.Texture(ctx);
+            mTexture = new Graphics.Texture();
         }
 
         public static void Initialize(GxContext context)
@@ -386,7 +387,7 @@ namespace Neo.Scene
                 Filter = Filter.MinMagMipPoint
             };
 
-            gBlendState = new Graphics.BlendState(context)
+            gBlendState = new BlendState
             {
                 BlendEnabled = true,
                 SourceBlend = BlendOption.SourceAlpha,
@@ -395,32 +396,30 @@ namespace Neo.Scene
                 DestinationAlphaBlend = BlendOption.InverseSourceAlpha
             };
 
-            gRasterState = new RasterState(context)
+            gRasterState = new RasterState
             {
                 BackfaceCullingEnabled = false
             };
 
-            gDepthState = new DepthState(context)
+            gDepthState = new DepthState
             {
                 DepthEnabled = true,
                 DepthWriteEnabled = false
             };
 
-            gNoDepthState = new DepthState(context)
+            gNoDepthState = new DepthState
             {
                 DepthEnabled = false,
                 DepthWriteEnabled = false
             };
 
-            gVertexBuffer = new VertexBuffer(context);
+            gVertexBuffer = new VertexBuffer();
 
-            gMesh = new Mesh(context)
+            gMesh = new Mesh
             {
                 Stride = IO.SizeCache<WorldTextVertex>.Size
             };
 
-            gMesh.DepthState.Dispose();
-            gMesh.BlendState.Dispose();
             gMesh.IndexBuffer.Dispose();
             gMesh.VertexBuffer.Dispose();
 

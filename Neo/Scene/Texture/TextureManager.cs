@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Neo.Graphics;
 using Neo.IO.Files.Texture;
 
 namespace Neo.Scene.Texture
@@ -27,17 +26,14 @@ namespace Neo.Scene.Texture
             Instance = new TextureManager();
         }
 
-        private GxContext mContext;
         private readonly Dictionary<int, WeakReference<Graphics.Texture>> mCache = new Dictionary<int, WeakReference<Graphics.Texture>>();
         private readonly List<TextureWorkItem> mWorkItems = new List<TextureWorkItem>();
         private readonly object mWorkEvent = new object();
         private bool mIsRunning = true;
         private readonly List<Thread> mThreads = new List<Thread>();
-        
-        public void Initialize(GxContext context)
-        {
-            mContext = context;
 
+        public void Initialize()
+        {
             for(var i = 0; i < 2; ++i)
             {
                 var t = new Thread(ThreadProc);
@@ -61,7 +57,7 @@ namespace Neo.Scene.Texture
         public Graphics.Texture GetTexture(string path)
         {
             if (string.IsNullOrEmpty(path))
-                return new Graphics.Texture(mContext);
+                return new Graphics.Texture();
 
             var hash = path.ToUpperInvariant().GetHashCode();
             TextureWorkItem workItem;
@@ -77,7 +73,7 @@ namespace Neo.Scene.Texture
                     mCache.Remove(hash);
                 }
 
-                retTexture = new Graphics.Texture(mContext);
+                retTexture = new Graphics.Texture();
                 mCache.Add(hash, new WeakReference<Graphics.Texture>(retTexture));
                 workItem = new TextureWorkItem(path, retTexture);
             }

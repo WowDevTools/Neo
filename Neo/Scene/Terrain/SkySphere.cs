@@ -31,7 +31,7 @@ namespace Neo.Scene.Terrain
             mRadius = radius;
             mBoundingSphere = new BoundingSphere(Vector3.Zero, radius);
             mSampler = new Sampler(context);
-            mMesh = new Mesh(context);
+            mMesh = new Mesh();
             mMesh.AddElement("POSITION", 0, 3);
             mMesh.AddElement("TEXCOORD", 0, 2);
             mMesh.BlendState.BlendEnabled = false;
@@ -42,7 +42,7 @@ namespace Neo.Scene.Terrain
 
             mMesh.VertexBuffer.UpdateData(mVertices);
 
-            mMatrixBuffer = new UniformBuffer(context);
+            mMatrixBuffer = new UniformBuffer();
             mMatrixBuffer.UpdateData(Matrix4.Identity);
 
             var program = new ShaderProgram(context);

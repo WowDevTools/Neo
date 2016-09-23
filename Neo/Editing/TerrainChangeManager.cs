@@ -100,11 +100,11 @@ namespace Neo.Editing
                 return false;
             }
 
-                if (KeyHelper.AreKeysDown(state, bindings.Interaction.Edit) == false &&
-                    KeyHelper.AreKeysDown(state, bindings.Interaction.EditInverse) == false)
+                if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.Edit) == false &&
+                    KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse) == false)
                     return false;
 
-                if (KeyHelper.AreKeysDown(state, bindings.Interaction.EditInverse))
+                if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse))
                     isInverted = true;
 
             return true;

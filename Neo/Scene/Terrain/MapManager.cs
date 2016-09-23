@@ -7,6 +7,7 @@ using Neo.IO.Files.Sky;
 using Neo.IO.Files.Terrain;
 using Neo.UI;
 using OpenTK;
+using SlimTK;
 
 namespace Neo.Scene.Terrain
 {

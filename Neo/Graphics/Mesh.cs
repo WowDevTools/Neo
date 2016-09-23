@@ -4,6 +4,8 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {
+	// TODO: Activate states before drawing
+	// TODO: Bind and draw from buffers
     public class Mesh
     {
         private readonly List<VertexElement> mElements = new List<VertexElement>();
@@ -59,8 +61,7 @@ namespace Neo.Graphics
             if (BlendState != null)
                 ctx.OutputMerger.BlendState = BlendState.Native;
 
-            ctx.InputAssembler.PrimitiveTopology = mTopology;
-            mProgram.Bind();
+            Program.Bind();
         }
 
         public void Draw()
@@ -99,20 +100,16 @@ namespace Neo.Graphics
 
         public void UpdateBlendState(BlendState state)
         {
-			mContext.Context.OutputMerger.BlendState = state.Native;
             BlendState = state;
         }
 
         public void UpdateRasterizerState(RasterState state)
         {
-			mContext.Context.Rasterizer.State = state.Native;
-
             RasterizerState = state;
         }
 
         public void UpdateDepthState(DepthState state)
         {
-			mContext.Context.OutputMerger.DepthStencilState = state.Native;
             DepthState = state;
         }
 

@@ -1,23 +1,56 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using Gdk;
 
 namespace Neo.Settings
 {
-    public class Camera
+    public class CameraKeys
     {
-        public Keys[] Forward = {Keys.W};
-        public Keys[] Backward = {Keys.S};
-        public Keys[] Left = {Keys.A};
-        public Keys[] Right = {Keys.D};
-        public Keys[] Up = {Keys.Q};
-        public Keys[] Down = {Keys.E};
+        public Key[] Forward =
+        {
+	        Key.W
+        };
+
+        public Key[] Backward =
+        {
+	        Key.S
+        };
+
+        public Key[] Left =
+        {
+	        Key.A
+        };
+
+        public Key[] Right =
+        {
+	        Key.D
+        };
+
+        public Key[] Up =
+        {
+	        Key.Q
+        };
+
+        public Key[] Down =
+        {
+	        Key.E
+        };
     }
 
-    public class Interaction
+    public class InteractionKeys
     {
-        public Keys[] Edit = {Keys.ShiftKey};
-        public Keys[] EditInverse = {Keys.ControlKey};
+        public Key[] Edit =
+        {
+	        Key.Shift_L,
+	        Key.Shift_R
+        };
+
+        public Key[] EditInverse =
+        {
+	        Key.Control_L,
+	        Key.Control_R
+        };
     }
 
     public class KeyBindings
@@ -25,13 +58,13 @@ namespace Neo.Settings
         [XmlIgnore]
         public static KeyBindings Instance { get; private set; }
 
-        public Camera Camera { get; set; }
-        public Interaction Interaction { get; set; }
+        public CameraKeys CameraKeys { get; set; }
+        public InteractionKeys InteractionKeys { get; set; }
 
         public KeyBindings()
         {
-            Camera = new Camera();
-            Interaction = new Interaction();
+            CameraKeys = new CameraKeys();
+            InteractionKeys = new InteractionKeys();
         }
 
         public static void Save()

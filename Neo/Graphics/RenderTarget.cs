@@ -1,7 +1,5 @@
 ﻿using System;
 using OpenTK.Graphics;
-using SharpDX;
-using SharpDX.Direct3D11;
 
 namespace Neo.Graphics
 {

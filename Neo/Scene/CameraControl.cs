@@ -62,7 +62,7 @@ namespace Neo.Scene
             var updateTerrain = false;
             var diff = (float)(DateTime.Now - mLastUpdate).TotalSeconds;
 
-            var camBind = KeyBindings.Instance.Camera;
+            var camBind = KeyBindings.Instance.CameraKeys;
 
             if (KeyHelper.AreKeysDown(keyState, camBind.Forward))
             {
@@ -129,7 +129,7 @@ namespace Neo.Scene
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);
 
-            if (KeyHelper.IsKeyDown(keyState, Keys.RButton))
+            if (KeyHelper.IsKeyDown(keyState, Key.RButton))
             {
                 var cam = WorldFrame.Instance.ActiveCamera;
                 cam.MoveForward(delta * mSpeedFactorWheel);

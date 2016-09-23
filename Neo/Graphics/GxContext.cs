@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
-using SharpDX;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using Neo.Scene.Models.M2;
 using Neo.UI;
 using OpenTK.Graphics;
@@ -11,6 +7,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Neo.Graphics
 {
+	// TODO: Rework or retire this class in favor of direct access to the thread context
     public class GxContext : IDisposable
     {
         private readonly Factory1 mFactory;
@@ -94,11 +91,11 @@ namespace Neo.Graphics
             modeDesc.Height = mWindow.ClientSize.Height;
             mSwapChainDesc.ModeDescription = modeDesc;
 
-#if DEBUG
-            Device = new Device(Adapter, DeviceCreationFlags.Debug);
-#else
-            Device = new Device(Adapter);
-#endif
+			#if DEBUG
+				Device = new Device(Adapter, DeviceCreationFlags.Debug);
+			#else
+            	Device = new Device(Adapter);
+			#endif
 
             BuildMultisample();
 
@@ -147,24 +144,24 @@ namespace Neo.Graphics
 
         private void BuildMultisample()
         {
-#if DEBUG
-            mHasMultisample = false;
-            mSwapChainDesc.SampleDescription = new SampleDescription(1, 0);
-#else
-            var maxCount = 1;
-            var maxQuality = 0;
-            for (var i = 0; i <= Device.MultisampleCountMaximum; ++i)
-            {
-                var quality = Device.CheckMultisampleQualityLevels(Format.R8G8B8A8_UNorm, i);
-                if (quality <= 0) continue;
+			#if DEBUG
+				mHasMultisample = false;
+				mSwapChainDesc.SampleDescription = new SampleDescription(1, 0);
+			#else
+				var maxCount = 1;
+				var maxQuality = 0;
+				for (var i = 0; i <= Device.MultisampleCountMaximum; ++i)
+				{
+					var quality = Device.CheckMultisampleQualityLevels(Format.R8G8B8A8_UNorm, i);
+					if (quality <= 0) continue;
 
-                maxCount = i;
-                maxQuality = quality - 1;
-            }
+					maxCount = i;
+					maxQuality = quality - 1;
+				}
 
-            mSwapChainDesc.SampleDescription = new SampleDescription(maxCount, maxQuality);
-            mHasMultisample = maxQuality > 0 || maxCount > 1;
-#endif
+				mSwapChainDesc.SampleDescription = new SampleDescription(maxCount, maxQuality);
+				mHasMultisample = maxQuality > 0 || maxCount > 1;
+			#endif
         }
 
         private void InitRenderTarget()

@@ -284,10 +284,10 @@ namespace Neo.Scene.Terrain
             mTexParams.TextureScales = new Vector4(mData.TextureScales);
             mTexParams.SpecularFactors = new Vector4(mData.SpecularFactors);
 
-            mTexAnimBuffer = new UniformBuffer(WorldFrame.Instance.GraphicsContext);
+            mTexAnimBuffer = new UniformBuffer();
             mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix4.Identity;
             mTexAnimBuffer.UpdateData(mTexAnimStore);
-            mAlphaTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
+            mAlphaTexture = new Graphics.Texture();
             mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
             mHoleTexture = new Graphics.Texture(WorldFrame.Instance.GraphicsContext);
             mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
