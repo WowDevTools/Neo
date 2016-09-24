@@ -764,9 +764,15 @@
     <Content Include="Resources\Shaders\GLSL\BoundingBoxVertex.glsl" />
     <Content Include="Resources\Shaders\GLSL\MapLowFragment.glsl" />
     <Content Include="Resources\Shaders\GLSL\MapLowVertex.glsl" />
+    <Content Include="Resources\Shaders\GLSL\TerrainFragment.glsl" />
+    <Content Include="Resources\Shaders\GLSL\TerrainFragmentNew.glsl" />
     <Content Include="Resources\Shaders\GLSL\TerrainVertex.glsl" />
     <Content Include="Resources\Shaders\GLSL\SkyFragment.glsl" />
     <Content Include="Resources\Shaders\GLSL\SkyVertex.glsl" />
+    <Content Include="Resources\Shaders\GLSL\TexturedQuadFragment.glsl" />
+    <Content Include="Resources\Shaders\GLSL\TexturedQuadVertex.glsl" />
+    <Content Include="Resources\Shaders\GLSL\WorldTextFragment.glsl" />
+    <Content Include="Resources\Shaders\GLSL\WorldTextVertex.glsl" />
     <Content Include="Resources\Shaders\M2PixelOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexInstancedOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexSingleOld.hlsl" />
