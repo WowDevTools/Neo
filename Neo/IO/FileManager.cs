@@ -31,15 +31,21 @@ namespace Neo.IO
         {
             using (var file = Provider.OpenFile(path))
             {
-                if (file == null)
-                    return;
+	            if (file == null)
+	            {
+		            return;
+	            }
 
                 var extension = Path.GetExtension(path);
-                if (string.IsNullOrEmpty(extension))
-                    return;
+	            if (string.IsNullOrEmpty(extension))
+	            {
+		            return;
+	            }
 
-                if (extension.StartsWith("."))
-                    extension = extension.Substring(1);
+	            if (extension.StartsWith("."))
+	            {
+		            extension = extension.Substring(1);
+	            }
 
                 extension = extension.ToLowerInvariant();
 

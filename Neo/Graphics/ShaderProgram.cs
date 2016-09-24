@@ -5,22 +5,35 @@ using System.Linq;
 
 namespace Neo.Graphics
 {
-	public class ShaderProgram : IDisposable
-    {
-        private static readonly ShaderResourceView[] ShaderViews = new ShaderResourceView[64];
+	public sealed class ShaderProgram : IDisposable
+	{
+		private int glProgramID
+		{
+			get;
+			set;
+		}
 
-        private VertexShader mVertexShader;
-        private PixelShader mPixelShader;
-        private GxContext mContext;
+		private int glVertexShaderID
+		{
+			get;
+			set;
+		}
 
-        public ShaderBytecode VertexShaderCode { get; private set; }
+		private int glFragmentShaderID
+		{
+			get;
+			set;
+		}
+
+		//private static readonly ShaderResourceView[] ShaderViews = new ShaderResourceView[64];
+
+        //public ShaderBytecode VertexShaderCode { get; private set; }
 
         private static Hashtable mVertexShaderCache = new Hashtable();
         private static Hashtable mPixelShaderCache = new Hashtable();
 
-        public ShaderProgram(GxContext context)
+        public ShaderProgram()
         {
-            mContext = context;
         }
 
         public void SetVertexSampler(int slot, Sampler sampler)
@@ -40,8 +53,10 @@ namespace Neo.Graphics
 
         public void SetVertexTextures(int slot, params Texture[] textures)
         {
-            for (var i = 0; i < textures.Length; ++i)
-                ShaderViews[i] = textures[i].NativeView;
+	        for (var i = 0; i < textures.Length; ++i)
+	        {
+		        ShaderViews[i] = textures[i].NativeView;
+	        }
 
             mContext.Context.VertexShader.SetShaderResources(slot, textures.Length, ShaderViews);
         }
@@ -63,8 +78,10 @@ namespace Neo.Graphics
 
         public void SetPixelTextures(int slot, params Texture[] textures)
         {
-            for (var i = 0; i < textures.Length; ++i)
-                ShaderViews[i] = textures[i].NativeView;
+	        for (var i = 0; i < textures.Length; ++i)
+	        {
+		        ShaderViews[i] = textures[i].NativeView;
+	        }
 
             mContext.Context.PixelShader.SetShaderResources(slot, textures.Length, ShaderViews);
         }
@@ -100,11 +117,15 @@ namespace Neo.Graphics
             {
                 var result = ShaderBytecode.FromStream(new MemoryStream(code));
 
-                if (mVertexShader != null)
-                    mVertexShader.Dispose();
+	            if (mVertexShader != null)
+	            {
+		            mVertexShader.Dispose();
+	            }
 
-                if (VertexShaderCode != null)
-                    VertexShaderCode.Dispose();
+	            if (VertexShaderCode != null)
+	            {
+		            VertexShaderCode.Dispose();
+	            }
 
                 VertexShaderCode = result;
                 mVertexShaderCache[code] = new VertexShader(mContext.Device, VertexShaderCode.Data);
@@ -118,8 +139,10 @@ namespace Neo.Graphics
             {
                 using (var result = ShaderBytecode.FromStream(new MemoryStream(code)))
                 {
-                    if (mPixelShader != null)
-                        mPixelShader.Dispose();
+	                if (mPixelShader != null)
+	                {
+		                mPixelShader.Dispose();
+	                }
 
                     mPixelShaderCache[code] = new PixelShader(mContext.Device, result.Data);
                 }
@@ -139,11 +162,15 @@ namespace Neo.Graphics
 
         public void Bind()
         {
-            if (mContext.Context.VertexShader.Get() != mVertexShader)
-                mContext.Context.VertexShader.Set(mVertexShader);
+	        if (mContext.Context.VertexShader.Get() != mVertexShader)
+	        {
+		        mContext.Context.VertexShader.Set(mVertexShader);
+	        }
 
-            if (mContext.Context.PixelShader.Get() != mPixelShader)
-                mContext.Context.PixelShader.Set(mPixelShader);
+	        if (mContext.Context.PixelShader.Get() != mPixelShader)
+	        {
+		        mContext.Context.PixelShader.Set(mPixelShader);
+	        }
         }
 
         ~ShaderProgram()
@@ -153,19 +180,25 @@ namespace Neo.Graphics
 
         private void Dispose(bool disposing)
         {
-            if (mVertexShader != null)
-                mVertexShader.Dispose();
+	        if (mVertexShader != null)
+	        {
+		        mVertexShader.Dispose();
+	        }
 
-            if (mPixelShader != null)
-                mPixelShader.Dispose();
+	        if (mPixelShader != null)
+	        {
+		        mPixelShader.Dispose();
+	        }
 
-            if (VertexShaderCode != null)
-                VertexShaderCode.Dispose();
+	        if (VertexShaderCode != null)
+	        {
+		        VertexShaderCode.Dispose();
+	        }
 
             mContext = null;
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);

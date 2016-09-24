@@ -13,10 +13,6 @@ namespace Neo.Graphics
 	/// </summary>
     public abstract class Buffer : IDisposable
     {
-        //private BufferDescription mDescription;
-        //private GxContext mContext;
-        //public SharpDX.Direct3D11.Buffer BufferID { get; private set; }
-
 	    /// <summary>
 		/// The native handle on the GPU which refers to the buffer data held by this object.
 		/// </summary>
@@ -87,7 +83,13 @@ namespace Neo.Graphics
 
 		    Bind();
 
-		    GL.BufferData(this.BufferType, (IntPtr)data.Length, data, this.BufferUsage);
+		    int dataSize = 0;
+		    foreach (T dataElement in data)
+		    {
+			    dataSize += Marshal.SizeOf(dataElement);
+		    }
+
+		    GL.BufferData(this.BufferType, (IntPtr)dataSize, data, this.BufferUsage);
 	    }
 
 	    /// <summary>
@@ -111,18 +113,6 @@ namespace Neo.Graphics
 	    {
 		    GL.BindBuffer(BufferType, this.glBufferID);
 	    }
-
-	    [Obsolete]
-        public void UpdateData<T>(T data) where T : struct
-        {
-	        BufferData(new []{data});
-        }
-
-	    [Obsolete]
-        public void UpdateData<T>(T[] data) where T : struct
-        {
-	        BufferData(data);
-        }
 
 	    private void Dispose(bool disposing)
 	    {

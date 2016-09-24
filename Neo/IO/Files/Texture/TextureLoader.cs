@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using SharpDX.Direct3D11;
 using Neo.Utils;
 
 namespace Neo.IO.Files.Texture

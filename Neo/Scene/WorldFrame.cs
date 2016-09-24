@@ -160,7 +160,7 @@ namespace Neo.Scene
                 brushParams = new Vector4(45.0f, 55.0f, 0.0f, 0.0f)
             };
 
-            mGlobalBuffer.UpdateData(mGlobalBufferStore);
+            mGlobalBuffer.BufferData(mGlobalBufferStore);
 
             Dispatcher = new GraphicsDispatcher();
             Dispatcher.AssignToThread();
@@ -180,7 +180,7 @@ namespace Neo.Scene
             WorldTextManager.Initialize();
 
             SetActiveCamera(mMainCamera);
-            TextureManager.Instance.Initialize(context);
+            TextureManager.Instance.Initialize();
 
             MapManager.Initialize();
 
@@ -358,7 +358,7 @@ namespace Neo.Scene
             {
                 lock (mGlobalBuffer)
                 {
-                    mGlobalBuffer.UpdateData(mGlobalBufferStore);
+                    mGlobalBuffer.BufferData(mGlobalBufferStore);
                     mGlobalBufferChanged = false;
                 }
             }

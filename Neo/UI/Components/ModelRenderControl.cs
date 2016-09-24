@@ -302,12 +302,12 @@ namespace Neo.UI.Components
 
         void ViewChanged(Camera cam, Matrix4 matView)
         {
-            mMatrixBuffer.UpdateData(cam.ViewProjection);
+            mMatrixBuffer.BufferData(cam.ViewProjection);
         }
 
         void ProjChanged(Camera cam, Matrix4 matProj)
         {
-            mMatrixBuffer.UpdateData(cam.ViewProjection);
+            mMatrixBuffer.BufferData(cam.ViewProjection);
         }
 
         unsafe void OnRenderModel()

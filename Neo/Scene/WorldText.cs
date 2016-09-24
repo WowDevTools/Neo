@@ -198,7 +198,7 @@ namespace Neo.Scene
             var right = new Vector3(mWidth, 0, 0) * 0.5f;
             var up = new Vector3(0, mHeight, 0) * 0.5f;
 
-            gVertexBuffer.UpdateData(new[]
+            gVertexBuffer.BufferData(new[]
             {
                 new WorldTextVertex(center - (right + up) * scale, 0.0f, 0.0f),
                 new WorldTextVertex(center + (right - up) * scale, 1.0f, 0.0f),
@@ -234,7 +234,7 @@ namespace Neo.Scene
             if (camera.LeftHanded)
                 right = -right;
 
-            gVertexBuffer.UpdateData(new[]
+            gVertexBuffer.BufferData(new[]
             {
                 new WorldTextVertex(center - (right + up) * scale, 0.0f, 0.0f),
                 new WorldTextVertex(center + (right - up) * scale, 1.0f, 0.0f),
@@ -441,8 +441,8 @@ namespace Neo.Scene
             gMesh.Program = gWorldTextShader;
             gMesh.InitLayout(gWorldTextShader);
 
-            gPerDrawCallBuffer = new UniformBuffer(context);
-            gPerDrawCallBuffer.UpdateData(new PerDrawCallBuffer
+            gPerDrawCallBuffer = new UniformBuffer();
+            gPerDrawCallBuffer.BufferData(new PerDrawCallBuffer
             {
                 matTransform = Matrix4.Identity
             });

@@ -206,8 +206,10 @@ namespace Neo.Scene.Terrain
             mBoundingBox = chunk.BoundingBox;
             mModelBox = chunk.ModelBox;
             mReferences = new M2Instance[chunk.DoodadReferences.Length];
-            for (var i = 0; i < mReferences.Length; ++i)
-                mReferences[i] = parent.AreaFile.DoodadInstances[chunk.DoodadReferences[i]];
+	        for (var i = 0; i < mReferences.Length; ++i)
+	        {
+		        mReferences[i] = parent.AreaFile.DoodadInstances[chunk.DoodadReferences[i]];
+	        }
 
             for (var i = 0; i < mData.Layers.Length; ++i)
             {
@@ -228,12 +230,18 @@ namespace Neo.Scene.Terrain
                     mTexAnimDirections[i] = dir;
 
                     mTexAnimDirections[i].Normalize();
-                    if ((mData.Layers[i].Flags & 8) != 0)
-                        mTexAnimDirections[i] *= 1.2f;
+	                if ((mData.Layers[i].Flags & 8) != 0)
+	                {
+		                mTexAnimDirections[i] *= 1.2f;
+	                }
                     else if ((mData.Layers[i].Flags & 0x10) != 0)
-                        mTexAnimDirections[i] *= 1.44f;
+                    {
+	                    mTexAnimDirections[i] *= 1.44f;
+                    }
                     else if ((mData.Layers[i].Flags & 0x20) != 0)
-                        mTexAnimDirections[i] *= 1.728f;
+                    {
+	                    mTexAnimDirections[i] *= 1.728f;
+                    }
                 }
             }
 
@@ -243,18 +251,20 @@ namespace Neo.Scene.Terrain
 
         private void UpdateTextureAnimations()
         {
-            if (mHasTexAnim == false)
-                return;
+	        if (mHasTexAnim == false)
+	        {
+		        return;
+	        }
 
             var curTime = (int)(Utils.TimeManager.Instance.GetTime().TotalMilliseconds / 15.0f);
 
-            mTexAnimStore.Layer0 = Matrix4.Translation(mTexAnimDirections[0].X * curTime / 1000.0f,
+            mTexAnimStore.Layer0 = Matrix4.CreateTranslation(mTexAnimDirections[0].X * curTime / 1000.0f,
                 mTexAnimDirections[0].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer1 = Matrix4.Translation(mTexAnimDirections[1].X * curTime / 1000.0f,
+            mTexAnimStore.Layer1 = Matrix4.CreateTranslation(mTexAnimDirections[1].X * curTime / 1000.0f,
                 mTexAnimDirections[1].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer2 = Matrix4.Translation(mTexAnimDirections[2].X * curTime / 1000.0f,
+            mTexAnimStore.Layer2 = Matrix4.CreateTranslation(mTexAnimDirections[2].X * curTime / 1000.0f,
                 mTexAnimDirections[2].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer3 = Matrix4.Translation(mTexAnimDirections[3].X * curTime / 1000.0f,
+            mTexAnimStore.Layer3 = Matrix4.CreateTranslation(mTexAnimDirections[3].X * curTime / 1000.0f,
                 mTexAnimDirections[3].Y * curTime / 1000.0f, 0.0f);
 
             mTexAnimBuffer.BufferData(mTexAnimStore);
@@ -262,8 +272,10 @@ namespace Neo.Scene.Terrain
 
         private bool BeginSyncLoad()
         {
-            if (mSyncLoadToken != null)
-                return false;
+	        if (mSyncLoadToken != null)
+	        {
+		        return false;
+	        }
 
             if (WorldFrame.Instance.MapManager.IsInitialLoad)
             {
@@ -272,8 +284,10 @@ namespace Neo.Scene.Terrain
                 return true;
             }
 
-            lock (this)
-                mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
+	        lock (this)
+	        {
+		        mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
+	        }
             return false;
         }
 
@@ -295,7 +309,8 @@ namespace Neo.Scene.Terrain
             mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
 
             mScaleBuffer = new UniformBuffer();
-            mScaleBuffer.UpdateData(mTexParams);
+            mScaleBuffer.BufferData(mTexParams);
+
             mShaderTextures = mData.Textures.ToArray();
             mShaderSpecularTextures = mData.SpecularTextures.ToArray();
 

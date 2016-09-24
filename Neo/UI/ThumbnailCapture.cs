@@ -13,6 +13,7 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
 using System.Windows.Forms;
 using System.Collections.Concurrent;
+using OpenTK;
 
 namespace Neo.UI
 {
@@ -41,11 +42,11 @@ namespace Neo.UI
                 return;
 
             mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
-            mMatrixBuffer = new UniformBuffer(WorldFrame.Instance.GraphicsContext);
+	        mMatrixBuffer = new UniformBuffer();
 
             mCamera = new PerspectiveCamera();
-            mCamera.ViewChanged += delegate { mMatrixBuffer.UpdateData(mCamera.ViewProjection); };
-            mCamera.ProjectionChanged += delegate { mMatrixBuffer.UpdateData(mCamera.ViewProjection); };
+            mCamera.ViewChanged += delegate { mMatrixBuffer.BufferData(mCamera.ViewProjection); };
+            mCamera.ProjectionChanged += delegate { mMatrixBuffer.BufferData(mCamera.ViewProjection); };
             mCamera.SetClip(0.2f, 1000.0f);
             mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
 
