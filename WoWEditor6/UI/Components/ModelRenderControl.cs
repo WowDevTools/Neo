@@ -18,8 +18,6 @@ using WoWEditor6.Storage;
 using Color = System.Drawing.Color;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace WoWEditor6.UI.Components
 {
@@ -45,7 +43,6 @@ namespace WoWEditor6.UI.Components
         private Bitmap mPaintBitmap;
 
         private M2Renderer mRenderer;
-        private int mThumbnailCaptureFrame; //What frame to capture for the thumbnail
 
         public override bool Focused
         {
@@ -68,8 +65,7 @@ namespace WoWEditor6.UI.Components
             file.DisplayOptions.TextureVariation = variation;
             if (file.Load() == false)
                 return;
-
-            mThumbnailCaptureFrame = 10; //10th frame allows everything to render : 100ms
+            
             mRenderer = new M2Renderer(file);
             SetModelCameraParameters(file);
         }
