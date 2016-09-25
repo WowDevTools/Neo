@@ -22,6 +22,7 @@ namespace WoWEditor6.Storage
         public static IDataStorageFile FileData { get; private set; }
         public static IDataStorageFile GroundEffectTexture { get; private set; }
         public static IDataStorageFile GroundEffectDoodad { get; private set; }
+        public static IDataStorageFile AreaTable { get; private set; }
 
         static DbcStorage()
         {
@@ -40,6 +41,7 @@ namespace WoWEditor6.Storage
             FileData = new DbcFile();
             GroundEffectDoodad = new DbcFile();
             GroundEffectTexture = new DbcFile();
+            AreaTable = new DbcFile();
         }
 
         public static void Initialize()
@@ -77,6 +79,7 @@ namespace WoWEditor6.Storage
 
             GroundEffectDoodad.Load(@"DBFilesClient\GroundEffectDoodad.dbc");
             GroundEffectTexture.Load(@"DBFilesClient\GroundEffectTexture.dbc");
+            AreaTable.Load(@"DBFilesClient\AreaTable.dbc");
 
             MapFormatGuess.Initialize();
             SkyManager.Instance.Initialize();
@@ -90,7 +93,7 @@ namespace WoWEditor6.Storage
             ZoneLightPoint.Load(@"DBFilesClient\ZoneLightPoint.dbc");
         }
 
-        public static void BuildModelCache()
+        public static void BuildCache()
         {
             if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
             {
@@ -103,6 +106,7 @@ namespace WoWEditor6.Storage
                 CreatureDisplayInfo.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoEntry>();
                 CreatureModelData.BuildCache<IO.Files.Models.Wotlk.CreatureModelDataEntry>();
                 CreatureDisplayInfoExtra.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoExtraEntry>();
+                AreaTable.BuildCache<IO.Files.Terrain.Wotlk.AreaTable>();
             }
         }
     }
