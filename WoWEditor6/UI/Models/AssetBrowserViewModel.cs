@@ -112,18 +112,28 @@ namespace WoWEditor6.UI.Models
             {
                 mBrowser.TexturePreviewImage.Source = element.View.PreviewImage.Source;
                 mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
+                mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
                 mBrowser.TexturePreviewImage.Visibility = Visibility.Visible;
             }
             else if (element.View.FileEntry.Extension.Contains("m2"))
             {
                 mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
+                mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
                 mBrowser.ModelPreviewRender.SetModel(element.View.FileEntry.FullPath);
                 mBrowser.ModelPreviewControl.Visibility = Visibility.Visible;
+            }
+            else if (element.View.FileEntry.Extension.Contains("wmo"))
+            {
+                mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
+                mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
+                mBrowser.WmoPreviewControl.Visibility = Visibility.Visible;
+                mBrowser.WmoPreviewRender.SetModel(element.View.FileEntry.FullPath);
             }
             else
             {
                 mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
                 mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
+                mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
                 mBrowser.TexturePreviewImage.Source = null;
             }
         }
@@ -246,6 +256,8 @@ namespace WoWEditor6.UI.Models
                     f => new AssetBrowserFilePreviewElement {View = new AssetBrowserFilePreview(f)}).ToList();
             var elements = files.Where(f =>
             {
+                string[] known = new string[] { "m2", "blp", "wmo" };
+
                 var ext = f.View.FileEntry.Extension.ToLowerInvariant();
                 if (ext.Contains("blp") && mShowTextures == false)
                     return false;
@@ -259,7 +271,7 @@ namespace WoWEditor6.UI.Models
                 if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp") && mShowSpecularTextures == false)
                     return false;
 
-                if (ext.Contains("m2") == false && ext.Contains("blp") == false && mHideUnknown)
+                if (!known.Contains(ext.TrimStart('.')) && mHideUnknown)
                     return false;
 
                 return true;

@@ -71,7 +71,7 @@ namespace WoWEditor6.UI.Models
 
         private IEnumerable<AssetBrowserFile> GetFiles()
         {
-            if (mFiles != null)
+            if (!(mEntry is DirectoryEntry) && mFiles != null)
                 return mFiles;
 
             if (mEntry is FileEntry)
