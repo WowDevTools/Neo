@@ -6,6 +6,7 @@ using SharpDX.DXGI;
 using WoWEditor6.Graphics;
 using WoWEditor6.IO.Files.Models;
 using WoWEditor6.Scene.Models;
+using WoWEditor6.Editing;
 
 namespace WoWEditor6.Scene.Terrain
 {
@@ -23,6 +24,17 @@ namespace WoWEditor6.Scene.Terrain
     {
         public Vector4 TextureScales;
         public Vector4 SpecularFactors;
+        public Vector4 AreaColour;
+        public Vector4 ChunkLine;
+    }
+
+    [Flags]
+    public enum ChunkRenderFlags
+    {
+        ShowArea = 0x1,
+        ShowLines = 0x2,
+        HideArea = 0x4,
+        HideLines = 0x8,
     }
 
     class MapChunkRender : IDisposable
@@ -64,6 +76,40 @@ namespace WoWEditor6.Scene.Terrain
             mBoundingBox = mData.BoundingBox;
         }
 
+        public MapChunkRender()
+        {
+            ChunkEditManager.Instance.OnChunkRenderModeChange += SetRenderMode;
+            ChunkEditManager.Instance.ForceRenderUpdate += ForceRenderMode;
+        }
+
+        private void ForceRenderMode(IO.Files.Terrain.MapChunk chunk)
+        {
+            if(chunk == mData)
+            {
+                mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId);
+                SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode);
+                mScaleBuffer.UpdateData(mTexParams);
+            }  
+        }
+
+        private void SetRenderMode(ChunkRenderFlags flags)
+        {
+            if (mScaleBuffer == null)
+                return;
+
+            if (flags.HasFlag(ChunkRenderFlags.ShowLines) || flags.HasFlag(ChunkRenderFlags.HideLines))
+            {
+                mTexParams.ChunkLine.W = (flags.HasFlag(ChunkRenderFlags.HideLines) ? 0f : 1f);
+                mScaleBuffer.UpdateData(mTexParams);
+            }
+
+            if (flags.HasFlag(ChunkRenderFlags.ShowArea) || flags.HasFlag(ChunkRenderFlags.HideArea))
+            {
+                mTexParams.AreaColour.W = (flags.HasFlag(ChunkRenderFlags.HideArea) ? 0f : 1f);
+                mScaleBuffer.UpdateData(mTexParams);
+            }
+        }
+
         ~MapChunkRender()
         {
             Dispose(false);
@@ -97,6 +143,9 @@ namespace WoWEditor6.Scene.Terrain
                     mSyncLoadToken = null;
                 }
             }
+
+            ChunkEditManager.Instance.OnChunkRenderModeChange -= SetRenderMode;
+            ChunkEditManager.Instance.ForceRenderUpdate -= ForceRenderMode;
 
             mAlphaTexture = null;
             mHoleTexture = null;
@@ -218,7 +267,7 @@ namespace WoWEditor6.Scene.Terrain
                         rotation += (float)Math.PI / 4.0f;
                     if ((mData.Layers[i].Flags & 2) != 0)
                         rotation += (float)Math.PI / 2.0f;
-                   if((mData.Layers[i].Flags & 4) != 0)
+                    if((mData.Layers[i].Flags & 4) != 0)
                         rotation += (float)Math.PI;
 
                     var matrix = Matrix.RotationZ(rotation);
@@ -281,6 +330,8 @@ namespace WoWEditor6.Scene.Terrain
 
             mTexParams.TextureScales = new Vector4(mData.TextureScales);
             mTexParams.SpecularFactors = new Vector4(mData.SpecularFactors);
+            mTexParams.ChunkLine = new Vector4(0.0f, 0.7f, 0.0f, 0.0f);            
+            mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId);
 
             mTexAnimBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
             mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix.Identity;
@@ -293,6 +344,8 @@ namespace WoWEditor6.Scene.Terrain
             mScaleBuffer.UpdateData(mTexParams);
             mShaderTextures = mData.Textures.ToArray();
             mShaderSpecularTextures = mData.SpecularTextures.ToArray();
+
+            SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode); //Set current render mode
 
             mIsSyncLoaded = true;
         }

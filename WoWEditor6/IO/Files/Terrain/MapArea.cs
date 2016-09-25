@@ -174,5 +174,7 @@ namespace WoWEditor6.IO.Files.Terrain
             var tex = GetSpecularTexture(index);
             return tex != DefaultTextures.Specular;
         }
+
+        public abstract void SetChanged();
     }
 }

@@ -426,6 +426,7 @@ namespace WoWEditor6.Editing
         {
             CurrentMode |= EditMode.Sculpting;
             CurrentMode &= ~EditMode.Texturing;
+            CurrentMode &= ~EditMode.Chunk;
             mChangeType = TerrainChangeType.Shading;
 
         }
@@ -434,6 +435,7 @@ namespace WoWEditor6.Editing
         {
             CurrentMode |= EditMode.Sculpting;
             CurrentMode &= ~EditMode.Texturing;
+            CurrentMode &= ~EditMode.Chunk;
             mChangeType = TerrainChangeType.Elevate;
         }
 
@@ -446,11 +448,22 @@ namespace WoWEditor6.Editing
         {
             CurrentMode |= EditMode.Texturing;
             CurrentMode &= ~EditMode.Sculpting;
+            CurrentMode &= ~EditMode.Chunk;
         }
 
         public void DisableTexturing()
         {
             CurrentMode &= ~EditMode.Texturing;
+        }
+
+        public void EnableChunkEditing()
+        {
+            CurrentMode = EditMode.Chunk;
+        }
+
+        public void DisableChunkEditing()
+        {
+            CurrentMode &= ~EditMode.Chunk;
         }
 
         private void HandleInnerRadiusChanged(float value)
@@ -465,8 +478,6 @@ namespace WoWEditor6.Editing
 
             if (EditorWindowController.Instance.ShadingModel != null)
                 EditorWindowController.Instance.ShadingModel.HandleInnerRadiusChanged(value);
-
-
         }
 
         private void HandleOuterRadiusChanged(float value)

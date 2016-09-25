@@ -15,7 +15,6 @@
         <Widgets:TexturingWidget  x:Name="TexturingWidget"/>
         <Widgets:ShadingWidget  x:Name="ShadingWidget" VerticalAlignment="Top"/>
         <Widgets:ModelSpawnWidget x:Name="ModelSpawnWidget" VerticalAlignment="Top"/>
-
-
+        <Widgets:ChunkEditingWidget x:Name="ChunkEditingWidget" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

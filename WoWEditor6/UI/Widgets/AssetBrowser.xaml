@@ -28,9 +28,10 @@
                     <Label Grid.Row="0" FontSize="20" FontWeight="Bold">Preview</Label>
                     <Image x:Name="TexturePreviewImage" Grid.Row="1" Stretch="Uniform" StretchDirection="DownOnly" Visibility="Hidden"></Image>
                     <WindowsFormsHost x:Name="ModelPreviewControl" Grid.Row="1" Visibility="Hidden" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <controls:ModelRenderControl x:Name="ModelPreviewRender">
-                            
-                        </controls:ModelRenderControl>
+                        <controls:ModelRenderControl x:Name="ModelPreviewRender"></controls:ModelRenderControl>
+                    </WindowsFormsHost>
+                    <WindowsFormsHost x:Name="WmoPreviewControl" Grid.Row="1" Visibility="Hidden" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <controls:WmoRenderControl x:Name="WmoPreviewRender"></controls:WmoRenderControl>
                     </WindowsFormsHost>
                 </Grid>
             </Grid>

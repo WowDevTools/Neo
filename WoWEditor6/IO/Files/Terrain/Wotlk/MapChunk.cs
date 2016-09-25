@@ -21,6 +21,7 @@ namespace WoWEditor6.IO.Files.Terrain.Wotlk
         private int[] mWmoRefs;
 
         public bool HasMccv { get; private set; }
+        public override int AreaId { get { return mHeader.AreaId; } set { mHeader.AreaId = value; } }
 
         public MapChunk(int indexX, int indexY, WeakReference<MapArea> parent)
         {

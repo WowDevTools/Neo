@@ -210,6 +210,7 @@
     <Compile Include="Dbc\DBCStores.Load.cs" />
     <Compile Include="Dbc\DBCStores.Save.cs" />
     <Compile Include="Dbc\IniParser.cs" />
+    <Compile Include="Editing\ChunkEditManager.cs" />
     <Compile Include="Editing\EditManager.cs" />
     <Compile Include="Editing\EditMode.cs" />
     <Compile Include="Editing\MapCreator.cs" />
@@ -455,6 +456,12 @@
     </Compile>
     <None Include="UI\old\MapSelectQuad.cs" />
     <None Include="UI\old\Message.cs" />
+    <Compile Include="UI\Components\WmoRenderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Components\WmoRenderControl.Designer.cs">
+      <DependentUpon>WmoRenderControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\ModelRenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -495,6 +502,7 @@
     <Compile Include="UI\DbcEditors\Exemple\ExempleEditorControl.Designer.cs">
       <DependentUpon>ExempleEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Models\ChunkEditingViewModel.cs" />
     <Compile Include="UI\ThumbnailCache.cs" />
     <Compile Include="UI\MainWindow.cs">
       <SubType>Form</SubType>
@@ -516,6 +524,9 @@
     </Compile>
     <Compile Include="UI\Widgets\AssetBrowser.xaml.cs">
       <DependentUpon>AssetBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Widgets\ChunkEditingWidget.xaml.cs">
+      <DependentUpon>ChunkEditingWidget.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Widgets\CreatureEditor.cs">
       <SubType>Form</SubType>
@@ -678,6 +689,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Components\WmoRenderControl.resx">
+      <DependentUpon>WmoRenderControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Components\ModelRenderControl.resx">
       <DependentUpon>ModelRenderControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -789,11 +803,21 @@
     <Resource Include="Resources\Images\terrain.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Resources\Shaders\BoundingBoxPixel.hlsl" />
-    <Content Include="Resources\Shaders\BoundingBoxVertex.hlsl" />
-    <Content Include="Resources\Shaders\M2PixelOld.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexInstancedOld.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexSingleOld.hlsl" />
+    <Content Include="Resources\Shaders\BoundingBoxPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\BoundingBoxVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2PixelOld.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2VertexInstancedOld.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2VertexSingleOld.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\up_and_down_arrows.png" />
     <Content Include="Tools\ShaderCompiler.exe" />
     <Content Include="Tools\ShaderProcessor.pdb" />
@@ -807,12 +831,22 @@
     <Resource Include="Resources\Images\Page.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Resources\Shaders\M2PixelPortrait.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexSingle.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexPortrait.hlsl" />
+    <Content Include="Resources\Shaders\M2PixelPortrait.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2VertexSingle.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2VertexPortrait.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Shaders\ShaderBuildDefinition.xml" />
-    <Content Include="Resources\Shaders\WorldTextVertex.hlsl" />
-    <Content Include="Resources\Shaders\WorldTextPixel.hlsl" />
+    <Content Include="Resources\Shaders\WorldTextVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\WorldTextPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="StormLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -827,19 +861,45 @@
     <Resource Include="Resources\Images\save-48.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Resources\Shaders\M2Pixel.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexInstanced.hlsl" />
-    <Content Include="Resources\Shaders\MapLowPixel.hlsl" />
-    <Content Include="Resources\Shaders\MapLowVertex.hlsl" />
-    <Content Include="Resources\Shaders\SkyPixel.hlsl" />
-    <Content Include="Resources\Shaders\SkyVertex.hlsl" />
-    <Content Include="Resources\Shaders\TerrainPixel.hlsl" />
-    <Content Include="Resources\Shaders\TerrainPixelNew.hlsl" />
-    <Content Include="Resources\Shaders\TerrainVertex.hlsl" />
-    <Content Include="Resources\Shaders\TexturedQuadVertex.hlsl" />
-    <Content Include="Resources\Shaders\TexturedQuadPixel.hlsl" />
-    <Content Include="Resources\Shaders\WmoPixel.hlsl" />
-    <Content Include="Resources\Shaders\WmoVertex.hlsl" />
+    <Content Include="Resources\Shaders\M2Pixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2VertexInstanced.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\MapLowPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\MapLowVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\SkyPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\SkyVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TerrainPixel.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TerrainPixelNew.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TerrainVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TexturedQuadVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TexturedQuadPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\WmoPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\WmoVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Application.xaml">
@@ -870,6 +930,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Widgets\AssetBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Widgets\ChunkEditingWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

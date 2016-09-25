@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WoWEditor6.Editing;
+using WoWEditor6.Scene.Terrain;
+using WoWEditor6.UI.Widgets;
+
+namespace WoWEditor6.UI.Models
+{
+    class ChunkEditingViewModel
+    {
+        private readonly ChunkEditingWidget mWidget;
+
+        public ChunkEditingWidget Widget { get { return mWidget; } }
+
+        public ChunkEditingViewModel(ChunkEditingWidget widget)
+        {
+            mWidget = widget;
+        }
+
+        public void SetChunkEditState(ChunkEditMode mode)
+        {
+            ChunkEditManager.Instance.ChunkEditMode = mode;
+        }
+
+        public void HandleChunkLinesChange(bool value)
+        {
+            ChunkRenderFlags flags = ChunkEditManager.Instance.ChunkRenderMode;
+            if (value)
+            {
+                flags &= ~ChunkRenderFlags.HideLines;
+                flags |= ChunkRenderFlags.ShowLines;
+            }
+            else
+            {
+                flags &= ~ChunkRenderFlags.ShowLines;
+                flags |= ChunkRenderFlags.HideLines;
+            }
+
+            ChunkEditManager.Instance.SetChunkRenderMode(flags);
+        }
+
+        public void HandleAreaColourChange(bool value)
+        {
+            ChunkRenderFlags flags = ChunkEditManager.Instance.ChunkRenderMode;
+            if (value)
+            {
+                flags &= ~ChunkRenderFlags.HideArea;
+                flags |= ChunkRenderFlags.ShowArea;
+            }
+            else
+            {
+                flags &= ~ChunkRenderFlags.ShowArea;
+                flags |= ChunkRenderFlags.HideArea;
+            }
+
+            ChunkEditManager.Instance.SetChunkRenderMode(flags);
+        }
+
+        public void HandleAreaSelectionChange(int areaid)
+        {
+            ChunkEditManager.Instance.SetSelectedAreaId(areaid);
+        }
+    }
+}

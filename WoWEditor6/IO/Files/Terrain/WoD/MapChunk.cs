@@ -32,6 +32,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         private static readonly uint[] Indices = new uint[768];
 
         public bool HasMccv { get; private set; }
+        public override int AreaId { get { return mHeader.AreaId; } set { mHeader.AreaId = value; } }
 
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {

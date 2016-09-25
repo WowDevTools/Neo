@@ -124,6 +124,7 @@ namespace WoWEditor6.IO
                 mgr.LoadComplete += () =>
                 {
                     Storage.DbcStorage.Initialize();
+                    Storage.DbcStorage.BuildCache();
                     if (LoadComplete != null)
                         LoadComplete();
                 };
@@ -134,7 +135,6 @@ namespace WoWEditor6.IO
             else
                 InitMpq();
 
-            Storage.DbcStorage.BuildModelCache();
             UI.ThumbnailCache.Reload(); //Load thumbnails of models
         }
 
@@ -153,6 +153,7 @@ namespace WoWEditor6.IO
             mgr.LoadComplete += () =>
             {
                 Storage.DbcStorage.Initialize();
+                Storage.DbcStorage.BuildCache();
                 if (LoadComplete != null)
                     LoadComplete();
             };

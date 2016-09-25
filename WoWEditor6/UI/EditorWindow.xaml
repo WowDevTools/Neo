@@ -165,6 +165,9 @@
                                     <Button x:Name="Models" Height="30" Width="30" ToolTip="Model Spawning" Click="ModelSpawningClick">
                                         <Image Source="/Neo;component/Resources/Images/codepen-draw-logo.png" ToolTip="Model Spawning" />
                                     </Button>
+                                    <Button x:Name="Chunks" Height="30" Width="30" ToolTip="Chunk Editing" Click="ChunkEditingClick">
+                                        <Image Source="/Neo;component/Resources/Images/codepen-draw-logo.png" ToolTip="Chunk Editing" />
+                                    </Button>
                                 </ToolBar>
                                 <WindowsFormsHost Grid.Row="1">
                                     <local:RenderControl x:Name="RenderTarget"/>
