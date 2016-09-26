@@ -8,6 +8,7 @@ using WoWEditor6.Storage.Database;
 using WoWEditor6.Storage.Database.WotLk.TrinityCore;
 using WoWEditor6.UI.Models;
 using WoWEditor6.UI.Services;
+using System.Windows.Forms;
 
 namespace WoWEditor6.UI.ViewModels
 {
@@ -123,18 +124,25 @@ namespace WoWEditor6.UI.ViewModels
             }
             else
             {
-                MySqlConnector.Instance.Configuration(ConnectionsModel.Address, ConnectionsModel.Username,
-                    ConnectionsModel.Password, ConnectionsModel.Database);
-                MySqlConnector.Instance.OpenConnection();
-                var dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM creature_template");
-                CreatureManager.Instance.LoadCreatures(dt);
-                dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM gameobject_template");
-                GameObjectManager.Instance.LoadGameObjects(dt);
-                dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM item_template");
-                ItemManager.Instance.LoadItem(dt);
+                try
+                {
+                    MySqlConnector.Instance.Configuration(ConnectionsModel.Address, ConnectionsModel.Username,
+                        ConnectionsModel.Password, ConnectionsModel.Database);
+                    MySqlConnector.Instance.OpenConnection();
+                    var dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM creature_template");
+                    CreatureManager.Instance.LoadCreatures(dt);
+                    dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM gameobject_template");
+                    GameObjectManager.Instance.LoadGameObjects(dt);
+                    dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM item_template");
+                    ItemManager.Instance.LoadItem(dt);
 
-                ConnectionsModel.LoginIsEnabled = false;
-                ConnectionsModel.LoginContent = "Succesful!";
+                    ConnectionsModel.LoginIsEnabled = false;
+                    ConnectionsModel.LoginContent = "Succesful!";
+                }
+                catch (System.Exception)
+                {
+                    MessageBox.Show("An error has occurred when trying to connect to the database.\nPlease verify the database information.");
+                }
             }
 
             /*

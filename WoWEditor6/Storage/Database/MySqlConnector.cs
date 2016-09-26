@@ -32,9 +32,8 @@ namespace WoWEditor6.Storage.Database
                 {
                     mMySqlConn.Open();
                 }
-                catch (MySql.Data.MySqlClient.MySqlException ex)
+                catch (MySql.Data.MySqlClient.MySqlException)
                 {
-                    System.Windows.MessageBox.Show(ex.ToString());
                 }
             }
             else
