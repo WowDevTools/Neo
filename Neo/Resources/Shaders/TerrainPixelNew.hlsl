@@ -66,6 +66,8 @@ cbuffer TextureScaleParams : register(b2)
 {
 	float4 texScales;
 	float4 specularFactors;
+	float4 areaColour;
+	float4 chunkLine;
 };
 
 float4 sinusInterpolate(float4 src, float4 dst, float pct)
@@ -143,6 +145,20 @@ LightConstantData buildConstantLighting(float3 normal, float3 worldPos)
 	return ret;
 }
 
+float4 applyChunkLines(float4 color, float3 position)
+{
+	float chunkSize = (533.3333333333f / 16.0f);
+	float modX = abs(position.x) % chunkSize;
+	float modZ = abs(position.y) % chunkSize;
+	float tolMin = chunkSize - 0.15f;
+	if (modX < 0.15f || modX > tolMin)
+		return chunkLine;
+	if (modZ < 0.15f || modZ > tolMin)
+		return chunkLine;
+
+	return color;
+}
+
 float4 main(PixelInput input) : SV_Target
 {
     float4 alpha = alphaTexture.Sample(alphaSampler, input.texCoordAlpha);
@@ -199,6 +215,13 @@ float4 main(PixelInput input) : SV_Target
 
     color.rgb = (1.0 - fog) * fogColor.rgb + fog * color.rgb;
     color = applyBrush(color, input.worldPosition);
+
+	if (areaColour.a > 0.0f)
+		color.rgb = lerp(color.rgb, areaColour.rgb, 0.45f);
+
+	if (chunkLine.a > 0.0f)
+		color = applyChunkLines(color, input.worldPosition);
+
     color.a = holeValue;
 
     return color;

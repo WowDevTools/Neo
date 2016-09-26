@@ -4,10 +4,18 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
+<<<<<<< HEAD:Neo/UI/ViewModels/MySqlConnectionsViewModel.cs
 using Neo.Storage.Database;
 using Neo.Storage.Database.WotLk.TrinityCore;
 using Neo.UI.Models;
 using Neo.UI.Services;
+=======
+using WoWEditor6.Storage.Database;
+using WoWEditor6.Storage.Database.WotLk.TrinityCore;
+using WoWEditor6.UI.Models;
+using WoWEditor6.UI.Services;
+using System.Windows.Forms;
+>>>>>>> 68061948880901a73043ec22a51fa0c733353565:WoWEditor6/UI/ViewModels/MySqlConnectionsViewModel.cs
 
 namespace Neo.UI.ViewModels
 {
@@ -123,18 +131,25 @@ namespace Neo.UI.ViewModels
             }
             else
             {
-                MySqlConnector.Instance.Configuration(ConnectionsModel.Address, ConnectionsModel.Username,
-                    ConnectionsModel.Password, ConnectionsModel.Database);
-                MySqlConnector.Instance.OpenConnection();
-                var dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM creature_template");
-                CreatureManager.Instance.LoadCreatures(dt);
-                dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM gameobject_template");
-                GameObjectManager.Instance.LoadGameObjects(dt);
-                dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM item_template");
-                ItemManager.Instance.LoadItem(dt);
+                try
+                {
+                    MySqlConnector.Instance.Configuration(ConnectionsModel.Address, ConnectionsModel.Username,
+                        ConnectionsModel.Password, ConnectionsModel.Database);
+                    MySqlConnector.Instance.OpenConnection();
+                    var dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM creature_template");
+                    CreatureManager.Instance.LoadCreatures(dt);
+                    dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM gameobject_template");
+                    GameObjectManager.Instance.LoadGameObjects(dt);
+                    dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM item_template");
+                    ItemManager.Instance.LoadItem(dt);
 
-                ConnectionsModel.LoginIsEnabled = false;
-                ConnectionsModel.LoginContent = "Succesful!";
+                    ConnectionsModel.LoginIsEnabled = false;
+                    ConnectionsModel.LoginContent = "Succesful!";
+                }
+                catch (System.Exception)
+                {
+                    MessageBox.Show("An error has occurred when trying to connect to the database.\nPlease verify the database information.");
+                }
             }
 
             /*

@@ -867,5 +867,10 @@ namespace Neo.IO.Files.Terrain.WoD
             mDoodadDefs = null;
             base.Dispose(disposing);
         }
+
+        public override void SetChanged()
+        {
+            mWasChanged = true;
+        }
     }
 }

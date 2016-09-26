@@ -6,6 +6,7 @@ namespace Neo.Editing
     enum EditMode
     {
         Sculpting = 1,
-        Texturing = 2
+        Texturing = 2,
+        Chunk = 3,
     }
 }

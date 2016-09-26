@@ -568,6 +568,17 @@ namespace Neo.UI
                 EditorWindowController.Instance.IEditingModel.SwitchWidgets(5);
         }
 
+        private void ChunkEditingClick(object sender, RoutedEventArgs e)
+        {
+            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            {
+                IEditingPane.Dock();
+            }
+
+            if (EditorWindowController.Instance.IEditingModel != null)
+                EditorWindowController.Instance.IEditingModel.SwitchWidgets(6);
+        }
+
         private void AssetBrowserDocument_IsActiveChanged(object sender, EventArgs e)
         {
             if (!AssetBrowserDocument.IsActive)

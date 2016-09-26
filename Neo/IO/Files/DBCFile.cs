@@ -57,6 +57,19 @@ namespace Neo.IO.Files
                         mStringTable.TryGetValue(strId, out strVal);
                         field.SetValue(ret, strVal);
                     }
+                    else if (field.FieldType == typeof(LocalisedString))
+                    {
+                        string[] strings = new string[16];
+                        for (int i = 0; i < 16; i++)
+                        {
+                            int strId = br.ReadInt32();
+                            string strVal = string.Empty;
+                            mStringTable.TryGetValue(strId, out strVal);
+                            strings[i] = strVal;
+                        }
+                        var loc = new LocalisedString(strings, br.ReadInt32());
+                        field.SetValue(ret, loc);
+                    }
                     else
                     {
                         int sizeOf = Marshal.SizeOf(field.FieldType);
@@ -137,7 +150,7 @@ namespace Neo.IO.Files
         private BinaryReader mReader;
         private Dictionary<int, string> mStringTable = new Dictionary<int, string>();
         private Dictionary<int, int> mIdLookup = new Dictionary<int, int>();
-        private List<object> mCache = new List<object>(); 
+        private List<object> mCache = new List<object>();
 
         private const int HEADER = 20;
 
@@ -257,7 +270,7 @@ namespace Neo.IO.Files
                 return false;
 
             if (mCache.Count > 0)
-                mCache.RemoveAt(index);     
+                mCache.RemoveAt(index);
 
             mReader.BaseStream.Position = 0;
             byte[] data = mReader.ReadBytes((int)mStream.Length);
@@ -361,6 +374,24 @@ namespace Neo.IO.Files
                         if (mStringTable.Count > stSize) //Append to our list of new strings
                             newStrings.Add(strVal);
                     }
+                    else if(field.FieldType == typeof(LocalisedString))
+                    {
+                        foreach(var locfield in typeof(LocalisedString).GetFields())
+                        {
+                            if (locfield.FieldType == typeof(string))
+                            {
+                                int stSize = mStringTable.Count;
+                                string strVal = Convert.ToString(locfield.GetValue(entry));
+                                int strID = AddString(strVal);
+                                bw.Write(strID);
+
+                                if (mStringTable.Count > stSize)
+                                    newStrings.Add(strVal);
+                            }
+                            else
+                                bw.Write(Convert.ToInt32(locfield.GetValue(entry)));
+                        }
+                    }
                     else
                     {
                         int sizeOf = Marshal.SizeOf(field.FieldType);
@@ -445,6 +476,6 @@ namespace Neo.IO.Files
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        
+
     }
 }

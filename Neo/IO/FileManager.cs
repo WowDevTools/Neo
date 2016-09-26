@@ -129,6 +129,7 @@ namespace Neo.IO
                 mgr.LoadComplete += () =>
                 {
                     Storage.DbcStorage.Initialize();
+                    Storage.DbcStorage.BuildCache();
                     if (LoadComplete != null)
                         LoadComplete();
                 };
@@ -139,7 +140,6 @@ namespace Neo.IO
             else
                 InitMpq();
 
-            Storage.DbcStorage.BuildModelCache();
             UI.ThumbnailCache.Reload(); //Load thumbnails of models
         }
 
@@ -158,6 +158,7 @@ namespace Neo.IO
             mgr.LoadComplete += () =>
             {
                 Storage.DbcStorage.Initialize();
+                Storage.DbcStorage.BuildCache();
                 if (LoadComplete != null)
                     LoadComplete();
             };

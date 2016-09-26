@@ -18,11 +18,14 @@ using Neo.Storage;
 using Color = System.Drawing.Color;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 using Rectangle = System.Drawing.Rectangle;
+<<<<<<< HEAD:Neo/UI/Components/ModelRenderControl.cs
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Input;
 using SlimTK;
+=======
+>>>>>>> 68061948880901a73043ec22a51fa0c733353565:WoWEditor6/UI/Components/ModelRenderControl.cs
 
 namespace Neo.UI.Components
 {
@@ -48,7 +51,6 @@ namespace Neo.UI.Components
         private Bitmap mPaintBitmap;
 
         private M2Renderer mRenderer;
-        private int mThumbnailCaptureFrame; //What frame to capture for the thumbnail
 
         public override bool Focused
         {
@@ -71,8 +73,7 @@ namespace Neo.UI.Components
             file.DisplayOptions.TextureVariation = variation;
             if (file.Load() == false)
                 return;
-
-            mThumbnailCaptureFrame = 10; //10th frame allows everything to render : 100ms
+            
             mRenderer = new M2Renderer(file);
             SetModelCameraParameters(file);
         }

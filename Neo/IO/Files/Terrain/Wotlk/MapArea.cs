@@ -697,5 +697,10 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
             base.Dispose(disposing);
         }
+
+        public override void SetChanged()
+        {
+            mWasChanged = true;
+        }
     }
 }

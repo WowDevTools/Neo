@@ -422,6 +422,7 @@ namespace Neo.Editing
         {
             CurrentMode |= EditMode.Sculpting;
             CurrentMode &= ~EditMode.Texturing;
+            CurrentMode &= ~EditMode.Chunk;
             mChangeType = TerrainChangeType.Shading;
 
         }
@@ -430,6 +431,7 @@ namespace Neo.Editing
         {
             CurrentMode |= EditMode.Sculpting;
             CurrentMode &= ~EditMode.Texturing;
+            CurrentMode &= ~EditMode.Chunk;
             mChangeType = TerrainChangeType.Elevate;
         }
 
@@ -442,11 +444,22 @@ namespace Neo.Editing
         {
             CurrentMode |= EditMode.Texturing;
             CurrentMode &= ~EditMode.Sculpting;
+            CurrentMode &= ~EditMode.Chunk;
         }
 
         public void DisableTexturing()
         {
             CurrentMode &= ~EditMode.Texturing;
+        }
+
+        public void EnableChunkEditing()
+        {
+            CurrentMode = EditMode.Chunk;
+        }
+
+        public void DisableChunkEditing()
+        {
+            CurrentMode &= ~EditMode.Chunk;
         }
 
         private void HandleInnerRadiusChanged(float value)
@@ -461,8 +474,6 @@ namespace Neo.Editing
 
             if (EditorWindowController.Instance.ShadingModel != null)
                 EditorWindowController.Instance.ShadingModel.HandleInnerRadiusChanged(value);
-
-
         }
 
         private void HandleOuterRadiusChanged(float value)

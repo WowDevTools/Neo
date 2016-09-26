@@ -20,6 +20,7 @@ namespace Neo.IO.Files.Terrain
 
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
+        public virtual int AreaId { get; set; }
 
         public int StartVertex {get{return (IndexX + IndexY * 16) * 145;}}
 
@@ -31,10 +32,10 @@ namespace Neo.IO.Files.Terrain
         public IList<string> TextureNames { get; protected set; }
         public BoundingBox BoundingBox { get; protected set; }
         public BoundingBox ModelBox { get; protected set; }
-        public float[] TextureScales { get; protected set; }
-        public float[] SpecularFactors { get; protected set; }
+        public float[] TextureScales { get; protected set; } // TODO: Use vector instead of float array
+        public float[] SpecularFactors { get; protected set; } // TODO: Use vector instead of float array
 
-        public int[] DoodadReferences { get; protected set; }
+	    public int[] DoodadReferences { get; protected set; }
         public int[] GroundEffectLayer { get; protected set; }
 
         public bool IsAlphaChanged { get; set; }
@@ -226,24 +227,24 @@ namespace Neo.IO.Files.Terrain
                         break;
 
                     case TerrainAlgorithm.Linear:
-                    {
-                        var nremain = 1 - (1 - amount) * (1 - dist / radius);
-                        p.Z = nremain * p.Z + (1 - nremain) * h;
-                    }
+                        {
+                            var nremain = 1 - (1 - amount) * (1 - dist / radius);
+                            p.Z = nremain * p.Z + (1 - nremain) * h;
+                        }
                         break;
 
                     case TerrainAlgorithm.Quadratic:
-                    {
-                        var nremain = 1 - (float)Math.Pow(1 - amount, 1 + dist / radius);
-                        p.Z = nremain * p.Z + (1 - nremain) * h;
-                    }
+                        {
+                            var nremain = 1 - (float)Math.Pow(1 - amount, 1 + dist / radius);
+                            p.Z = nremain * p.Z + (1 - nremain) * h;
+                        }
                         break;
 
                     case TerrainAlgorithm.Trigonometric:
-                    {
-                        var nremain = 1 - (1 - amount) * (float)Math.Cos(dist / radius);
-                        p.Z = nremain * p.Z + (1 - nremain) * h;
-                    }
+                        {
+                            var nremain = 1 - (1 - amount) * (float)Math.Cos(dist / radius);
+                            p.Z = nremain * p.Z + (1 - nremain) * h;
+                        }
                         break;
                 }
 
@@ -284,25 +285,25 @@ namespace Neo.IO.Files.Terrain
                         break;
 
                     case TerrainAlgorithm.Linear:
-                    {
-                        var nremain = 1 - (1 - amount) * (1 - factor);
-                        p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
-                        break;
-                    }
+                        {
+                            var nremain = 1 - (1 - amount) * (1 - factor);
+                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
+                            break;
+                        }
 
                     case TerrainAlgorithm.Quadratic:
-                    {
-                        var nremain = 1 - (float)Math.Pow(1 - amount, 1 + factor);
-                        p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
-                        break;
-                    }
+                        {
+                            var nremain = 1 - (float)Math.Pow(1 - amount, 1 + factor);
+                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
+                            break;
+                        }
 
                     case TerrainAlgorithm.Trigonometric:
-                    {
-                        var nremain = 1 - (1 - amount) * (1 - (float)Math.Cos(factor * Math.PI / 2.0f));
-                        p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
-                        break;
-                    }
+                        {
+                            var nremain = 1 - (1 - amount) * (1 - (float)Math.Cos(factor * Math.PI / 2.0f));
+                            p.Z = nremain * p.Z + (1 - nremain) * parameters.Center.Z;
+                            break;
+                        }
                 }
 
                 if (p.Z < mMinHeight)

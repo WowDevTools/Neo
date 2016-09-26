@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="WoWEditor6.UI.Widgets.ChunkEditingWidget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WoWEditor6.UI.Widgets"
+             mc:Ignorable="d" 
+             d:DesignWidth="340" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" x:Name="label1" Content="Editing mode: Chunk editing" FontSize="14" FontWeight="Bold"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5,5,5,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Row="1" Grid.Column="0" x:Name="chkChunkLines" Content="Toggle Chunk Lines" Margin="0,5,0,0" Checked="chkChunkLines_Change" Unchecked="chkChunkLines_Change"/>
+                <CheckBox Grid.Row="1" Grid.Column="1" x:Name="chkAreaColour" Content="Toggle Area Colours" Margin="0,5,0,0" Checked="chkAreaColour_Change" Unchecked="chkAreaColour_Change"/>
+                <TabControl x:Name="tabChunkMode" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,0" SelectionChanged="tabChunkMode_SelectionChanged" >
+                    <TabItem x:Name="tabChunkPaint" Header="Area Painting">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <RadioButton Grid.Row="0" Grid.Column="0" Margin="5,5,0,0" GroupName="AreaPaint" x:Name="rdoPaintChunk" IsChecked="True" Content="Paint Area" Checked="rdoMode_Checked" ></RadioButton>
+                            <RadioButton Grid.Row="0" Grid.Column="1" Margin="0,5,0,0" GroupName="AreaPaint" x:Name="rdoSelectChunk" Content="Select Area" Checked="rdoMode_Checked"></RadioButton>
+
+                            <Label Grid.Row="1" Margin="0,5,0,0">Filter:</Label>
+                            <TextBox x:Name="txtSearchArea" Grid.Row="1" Grid.ColumnSpan="2" Margin="40,5,0,0" TextChanged="txtSearchArea_TextChanged"></TextBox>
+
+                            <ListBox x:Name="lstArea" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,0" Height="400" SelectionChanged="lstArea_SelectionChanged" />
+                            <TextBlock Grid.Row="3" Grid.ColumnSpan="3" x:Name="txtAreaName" Margin="0,5,0,0" Text="Current Area: Unknown"></TextBlock>
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="tabFlags" Header="Chunk Flags"></TabItem>
+                    <TabItem x:Name="tabHoles" Header="Hole Editing"></TabItem>
+                </TabControl>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

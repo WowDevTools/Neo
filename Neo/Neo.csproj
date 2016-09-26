@@ -180,6 +180,7 @@
     <Compile Include="Dbc\DBCStores.Load.cs" />
     <Compile Include="Dbc\DBCStores.Save.cs" />
     <Compile Include="Dbc\IniParser.cs" />
+    <Compile Include="Editing\ChunkEditManager.cs" />
     <Compile Include="Editing\EditManager.cs" />
     <Compile Include="Editing\EditMode.cs" />
     <Compile Include="Editing\MapCreator.cs" />
@@ -374,24 +375,24 @@
     <Compile Include="Settings\KeyBindings.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Storage\AnimationType.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\Creature.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\CreatureManager.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\GameObject.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\GameObjectManager.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\ICreature.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\ICreatureManager.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Creature_template\Creature.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Creature_template\CreatureManager.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\GameObject_template\GameObject.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\GameObject_template\GameObjectManager.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Creature_template\ICreature.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Creature_template\ICreatureManager.cs" />
     <Compile Include="Storage\Database\IMySqlConnector.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\IGameObject.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\IGameObjectManager.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\IItem.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\IItemManager.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\ISpawnedCreature.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\GameObject_template\IGameObject.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\GameObject_template\IGameObjectManager.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Item_template\IItem.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Item_template\IItemManager.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Creature\ISpawnedCreature.cs" />
     <Compile Include="Storage\Database\MySqlConnector.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\ISpawnedGameObject.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\Item.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\ItemManager.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\SpawnedCreature.cs" />
-    <Compile Include="Storage\Database\WotLk\TrinityCore\SpawnedGameObject.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\GameObject\ISpawnedGameObject.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Item_template\Item.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Item_template\ItemManager.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\Creature\SpawnedCreature.cs" />
+    <Compile Include="Storage\Database\WotLk\TrinityCore\GameObject\SpawnedGameObject.cs" />
     <Compile Include="Storage\DBCStorage.cs" />
     <Compile Include="Storage\MapFormatGuess.cs" />
     <None Include="Resources\Listfiles\listfile.bin">
@@ -422,6 +423,12 @@
     </Compile>
     <None Include="UI\old\MapSelectQuad.cs" />
     <None Include="UI\old\Message.cs" />
+    <Compile Include="UI\Components\WmoRenderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Components\WmoRenderControl.Designer.cs">
+      <DependentUpon>WmoRenderControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\ModelRenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -462,6 +469,7 @@
     <Compile Include="UI\DbcEditors\Exemple\ExempleEditorControl.Designer.cs">
       <DependentUpon>ExempleEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Models\ChunkEditingViewModel.cs" />
     <Compile Include="UI\ThumbnailCache.cs" />
     <Compile Include="UI\MainWindow.cs">
       <SubType>Form</SubType>
@@ -484,49 +492,52 @@
     <Compile Include="UI\Widgets\AssetBrowser.xaml.cs">
       <DependentUpon>AssetBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Widgets\CreatureEditor.cs">
+    <Compile Include="UI\Widgets\ChunkEditingWidget.xaml.cs">
+      <DependentUpon>ChunkEditingWidget.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Widgets\DatabaseEditors\CreatureEditor\CreatureEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Widgets\CreatureEditor.Designer.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\CreatureEditor\CreatureEditor.Designer.cs">
       <DependentUpon>CreatureEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Widgets\CreatureEditorControl.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\CreatureEditor\CreatureEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Widgets\CreatureEditorControl.Designer.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\CreatureEditor\CreatureEditorControl.Designer.cs">
       <DependentUpon>CreatureEditorControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Widgets\DatabaseSettings.xaml.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\DatabaseSettings.xaml.cs">
       <DependentUpon>DatabaseSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Widgets\DBCEditor.xaml.cs">
       <DependentUpon>DBCEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Widgets\GameObjectEditor.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\GameObjectEditor\GameObjectEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Widgets\GameObjectEditor.Designer.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\GameObjectEditor\GameObjectEditor.Designer.cs">
       <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Widgets\GameObjectEditorControl.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\GameObjectEditor\GameObjectEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Widgets\GameObjectEditorControl.Designer.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\GameObjectEditor\GameObjectEditorControl.Designer.cs">
       <DependentUpon>GameObjectEditorControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Widgets\ImportFileDialog.xaml.cs">
       <DependentUpon>ImportFileDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Widgets\ItemEditor.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\ItemEditor\ItemEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Widgets\ItemEditor.Designer.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\ItemEditor\ItemEditor.Designer.cs">
       <DependentUpon>ItemEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Widgets\ItemEditorControl.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\ItemEditor\ItemEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Widgets\ItemEditorControl.Designer.cs">
+    <Compile Include="UI\Widgets\DatabaseEditors\ItemEditor\ItemEditorControl.Designer.cs">
       <DependentUpon>ItemEditorControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Widgets\KeyBindingControl.xaml.cs">
@@ -645,6 +656,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Components\WmoRenderControl.resx">
+      <DependentUpon>WmoRenderControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Components\ModelRenderControl.resx">
       <DependentUpon>ModelRenderControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -663,25 +677,25 @@
     <EmbeddedResource Include="UI\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Widgets\CreatureEditor.resx">
+    <EmbeddedResource Include="UI\Widgets\DatabaseEditors\CreatureEditor\CreatureEditor.resx">
       <DependentUpon>CreatureEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Widgets\CreatureEditorControl.resx">
+    <EmbeddedResource Include="UI\Widgets\DatabaseEditors\CreatureEditor\CreatureEditorControl.resx">
       <DependentUpon>CreatureEditorControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Widgets\GameObjectEditor.resx">
+    <EmbeddedResource Include="UI\Widgets\DatabaseEditors\GameObjectEditor\GameObjectEditor.resx">
       <DependentUpon>GameObjectEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\RenderControl.resx">
       <DependentUpon>RenderControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Widgets\GameObjectEditorControl.resx">
+    <EmbeddedResource Include="UI\Widgets\DatabaseEditors\GameObjectEditor\GameObjectEditorControl.resx">
       <DependentUpon>GameObjectEditorControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Widgets\ItemEditor.resx">
+    <EmbeddedResource Include="UI\Widgets\DatabaseEditors\ItemEditor\ItemEditor.resx">
       <DependentUpon>ItemEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Widgets\ItemEditorControl.resx">
+    <EmbeddedResource Include="UI\Widgets\DatabaseEditors\ItemEditor\ItemEditorControl.resx">
       <DependentUpon>ItemEditorControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -786,9 +800,15 @@
     <Resource Include="Resources\Images\Page.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Resources\Shaders\M2PixelPortrait.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexSingle.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexPortrait.hlsl" />
+    <Content Include="Resources\Shaders\M2PixelPortrait.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2VertexSingle.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2VertexPortrait.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Shaders\ShaderBuildDefinition.xml" />
     <Content Include="Resources\Shaders\WorldTextVertex.hlsl" />
     <Content Include="Resources\Shaders\WorldTextPixel.hlsl" />
@@ -802,19 +822,45 @@
     <Resource Include="Resources\Images\save-48.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Resources\Shaders\M2Pixel.hlsl" />
-    <Content Include="Resources\Shaders\M2VertexInstanced.hlsl" />
-    <Content Include="Resources\Shaders\MapLowPixel.hlsl" />
-    <Content Include="Resources\Shaders\MapLowVertex.hlsl" />
-    <Content Include="Resources\Shaders\SkyPixel.hlsl" />
-    <Content Include="Resources\Shaders\SkyVertex.hlsl" />
-    <Content Include="Resources\Shaders\TerrainPixel.hlsl" />
-    <Content Include="Resources\Shaders\TerrainPixelNew.hlsl" />
-    <Content Include="Resources\Shaders\TerrainVertex.hlsl" />
-    <Content Include="Resources\Shaders\TexturedQuadVertex.hlsl" />
-    <Content Include="Resources\Shaders\TexturedQuadPixel.hlsl" />
-    <Content Include="Resources\Shaders\WmoPixel.hlsl" />
-    <Content Include="Resources\Shaders\WmoVertex.hlsl" />
+    <Content Include="Resources\Shaders\M2Pixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\M2VertexInstanced.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\MapLowPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\MapLowVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\SkyPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\SkyVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TerrainPixel.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TerrainPixelNew.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TerrainVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TexturedQuadVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\TexturedQuadPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\WmoPixel.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Shaders\WmoVertex.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Include="UI\Components\AssetBrowserFilePreview.xaml">
@@ -845,11 +891,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Widgets\ChunkEditingWidget.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Widgets\ColorPickerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Widgets\DatabaseSettings.xaml">
+    <Page Include="UI\Widgets\DatabaseEditors\DatabaseSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

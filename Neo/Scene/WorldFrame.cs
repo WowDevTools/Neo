@@ -172,6 +172,7 @@ namespace Neo.Scene
             M2PortraitRenderer.Initialize(context);
             WorldText.Initialize(context);
             BoundingBoxDrawManager.Initialize();
+            ChunkEditManager.Instance.Initialize();
 
             StaticAnimationThread.Instance.Initialize();
 
@@ -243,6 +244,7 @@ namespace Neo.Scene
             M2Manager.OnFrame(ActiveCamera);
             WorldTextManager.OnFrame(ActiveCamera);
             BoundingBoxDrawManager.OnFrame();
+            ChunkEditManager.Instance.OnFrame();
         }
 
         public void OnMouseWheel(int delta)
@@ -408,8 +410,11 @@ namespace Neo.Scene
                         ModelEditManager.Instance.SelectedModel = null;
                     }
 
-                    mSelectedInstance = selected;
-                    ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;
+                    if(EditManager.Instance.CurrentMode != EditMode.Chunk)
+                    {
+                        mSelectedInstance = selected;
+                        ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;
+                    }                    
                 }
             }
 

@@ -126,6 +126,9 @@ namespace Neo.Editing
 
         public void OnTerrainClicked(IntersectionParams parameters, MouseEventArgs args)
         {
+            if (EditManager.Instance.CurrentMode == EditMode.Chunk)
+                return;
+
             if (args.Button != MouseButtons.Left)
             {
                 if (args.Button == MouseButtons.Right)
