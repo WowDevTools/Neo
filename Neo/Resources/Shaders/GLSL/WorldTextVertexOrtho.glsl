@@ -3,7 +3,6 @@
 layout(position = 0) in vec3 vertexPosition;
 layout(position = 1) in vec2 vertexUV;
 
-
 uniform GlobalParameters
 {
 	mat4 ModelViewProjection;
@@ -36,7 +35,11 @@ out vec2 UV;
 
 void main()
 {
-	gl_Position = ModelViewProjection * transformMatrix * vec4(vertexPosition, 1);
-	UV.x = vertexUV.x;
-    UV.y = 1.0f - vertexUV.y;
+	vec4 position = vec4(vertexPositon, 1);
+	position *= transformMatrix;
+	position.x = (position.x * 2.0f) / viewport.x - 1.0f;
+	position.y = 1.0f - (position.y * 2.0f) / viewport.y;
+
+	gl_Position = position;
+	UV = vertexUV;
 }

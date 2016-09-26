@@ -10,8 +10,8 @@
 
 namespace Neo.Resources {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Neo.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Shaders {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Shaders() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Neo.Resources {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,924 +59,924 @@ namespace Neo.Resources {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] BoundingBoxPixel {
+        internal static string BoundingBoxFragment {
             get {
-                object obj = ResourceManager.GetObject("BoundingBoxPixel", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("BoundingBoxFragment", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] BoundingBoxVertex {
+        internal static string BoundingBoxVertex {
             get {
                 object obj = ResourceManager.GetObject("BoundingBoxVertex", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod {
+        internal static string M2Fragment_PS_Combiners_Mod {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_Add {
+        internal static string M2Fragment_PS_Combiners_Mod_Add {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Add", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_Add", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_Add_Alpha {
+        internal static string M2Fragment_PS_Combiners_Mod_Add_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Add_Alpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_Add_Alpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_AddAlpha {
+        internal static string M2Fragment_PS_Combiners_Mod_AddAlpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_AddAlpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_AddAlpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_AddAlpha_Alpha {
+        internal static string M2Fragment_PS_Combiners_Mod_AddAlpha_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_AddAlpha_Alpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_AddAlpha_Alpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_AddNA {
+        internal static string M2Fragment_PS_Combiners_Mod_AddNA {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_AddNA", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_AddNA", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_Dual_Crossfade {
+        internal static string M2Fragment_PS_Combiners_Mod_Dual_Crossfade {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Dual_Crossfade", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_Dual_Crossfade", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_Masked_Dual_Crossfade {
+        internal static string M2Fragment_PS_Combiners_Mod_Masked_Dual_Crossfade {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Masked_Dual_Crossfade", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_Masked_Dual_Crossfade", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_Mod {
+        internal static string M2Fragment_PS_Combiners_Mod_Mod {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Mod", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_Mod", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_Mod2x {
+        internal static string M2Fragment_PS_Combiners_Mod_Mod2x {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Mod2x", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_Mod2x", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_Mod2xNA {
+        internal static string M2Fragment_PS_Combiners_Mod_Mod2xNA {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Mod2xNA", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_Mod2xNA", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod_Opaque {
+        internal static string M2Fragment_PS_Combiners_Mod_Opaque {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod_Opaque", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod_Opaque", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Mod1 {
+        internal static string M2Fragment_PS_Combiners_Mod1 {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Mod1", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Mod1", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque {
+        internal static string M2Fragment_PS_Combiners_Opaque {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_AddAlpha {
+        internal static string M2Fragment_PS_Combiners_Opaque_AddAlpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_AddAlpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_AddAlpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_AddAlpha_Alpha {
+        internal static string M2Fragment_PS_Combiners_Opaque_AddAlpha_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_AddAlpha_Alpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_AddAlpha_Alpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_AddAlpha_Wgt {
+        internal static string M2Fragment_PS_Combiners_Opaque_AddAlpha_Wgt {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_AddAlpha_Wgt", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_AddAlpha_Wgt", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_Alpha {
+        internal static string M2Fragment_PS_Combiners_Opaque_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Alpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_Alpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_Alpha_Alpha {
+        internal static string M2Fragment_PS_Combiners_Opaque_Alpha_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Alpha_Alpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_Alpha_Alpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_Mod {
+        internal static string M2Fragment_PS_Combiners_Opaque_Mod {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Mod", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_Mod", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_Mod2x {
+        internal static string M2Fragment_PS_Combiners_Opaque_Mod2x {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Mod2x", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_Mod2x", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_Mod2xNA {
+        internal static string M2Fragment_PS_Combiners_Opaque_Mod2xNA {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Mod2xNA", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_Mod2xNA", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha {
+        internal static string M2Fragment_PS_Combiners_Opaque_Mod2xNA_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Mod2xNA_Alpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_Mod2xNA_Alpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_ModNA_Alpha {
+        internal static string M2Fragment_PS_Combiners_Opaque_ModNA_Alpha {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_ModNA_Alpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_ModNA_Alpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque_Opaque {
+        internal static string M2Fragment_PS_Combiners_Opaque_Opaque {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque_Opaque", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque_Opaque", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel_PS_Combiners_Opaque1 {
+        internal static string M2Fragment_PS_Combiners_Opaque1 {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel_PS_Combiners_Opaque1", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment_PS_Combiners_Opaque1", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel2PassOld {
+        internal static string M2Fragment2PassOld {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel2PassOld", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment2PassOld", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2Pixel3PassOld {
+        internal static string M2Fragment3PassOld {
             get {
-                object obj = ResourceManager.GetObject("M2Pixel3PassOld", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2Fragment3PassOld", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2PixelBlendAlphaOld {
+        internal static string M2FragmentBlendAlphaOld {
             get {
-                object obj = ResourceManager.GetObject("M2PixelBlendAlphaOld", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2FragmentBlendAlphaOld", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2PixelBlendOld {
+        internal static string M2FragmentBlendOld {
             get {
-                object obj = ResourceManager.GetObject("M2PixelBlendOld", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2FragmentBlendOld", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2PixelOld {
+        internal static string M2FragmentOld {
             get {
-                object obj = ResourceManager.GetObject("M2PixelOld", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2FragmentOld", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2PixelPortrait {
+        internal static string M2FragmentPortrait {
             get {
-                object obj = ResourceManager.GetObject("M2PixelPortrait", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2FragmentPortrait", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2PixelPortrait2Pass {
+        internal static string M2FragmentPortrait2Pass {
             get {
-                object obj = ResourceManager.GetObject("M2PixelPortrait2Pass", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2FragmentPortrait2Pass", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2PixelPortrait3Pass {
+        internal static string M2FragmentPortrait3Pass {
             get {
-                object obj = ResourceManager.GetObject("M2PixelPortrait3Pass", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2FragmentPortrait3Pass", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2PixelPortraitBlend {
+        internal static string M2FragmentPortraitBlend {
             get {
-                object obj = ResourceManager.GetObject("M2PixelPortraitBlend", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2FragmentPortraitBlend", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2PixelPortraitBlendAlpha {
+        internal static string M2FragmentPortraitBlendAlpha {
             get {
-                object obj = ResourceManager.GetObject("M2PixelPortraitBlendAlpha", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("M2FragmentPortraitBlendAlpha", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_EdgeFade_Env {
+        internal static string M2VertexInstanced_VS_Diffuse_EdgeFade_Env {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_EdgeFade_Env", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_EdgeFade_T1 {
+        internal static string M2VertexInstanced_VS_Diffuse_EdgeFade_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_EdgeFade_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_EdgeFade_T1_T2 {
+        internal static string M2VertexInstanced_VS_Diffuse_EdgeFade_T1_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_EdgeFade_T1_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_Env {
+        internal static string M2VertexInstanced_VS_Diffuse_Env {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_Env", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_Env_Env {
+        internal static string M2VertexInstanced_VS_Diffuse_Env_Env {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_Env_Env", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_Env_T1 {
+        internal static string M2VertexInstanced_VS_Diffuse_Env_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_Env_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1 {
+        internal static string M2VertexInstanced_VS_Diffuse_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_Env {
+        internal static string M2VertexInstanced_VS_Diffuse_T1_Env {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_Env", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_Env_T1 {
+        internal static string M2VertexInstanced_VS_Diffuse_T1_Env_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_Env_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_Env_T2 {
+        internal static string M2VertexInstanced_VS_Diffuse_T1_Env_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_Env_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T1 {
+        internal static string M2VertexInstanced_VS_Diffuse_T1_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T1_T1 {
+        internal static string M2VertexInstanced_VS_Diffuse_T1_T1_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T1_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2 {
+        internal static string M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T1_T1_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T2 {
+        internal static string M2VertexInstanced_VS_Diffuse_T1_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T1_T2_T1 {
+        internal static string M2VertexInstanced_VS_Diffuse_T1_T2_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T1_T2_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T11 {
+        internal static string M2VertexInstanced_VS_Diffuse_T11 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T11", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstanced_VS_Diffuse_T2 {
+        internal static string M2VertexInstanced_VS_Diffuse_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstanced_VS_Diffuse_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexInstancedOld {
+        internal static string M2VertexInstancedOld {
             get {
                 object obj = ResourceManager.GetObject("M2VertexInstancedOld", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexPortrait {
+        internal static string M2VertexPortrait {
             get {
                 object obj = ResourceManager.GetObject("M2VertexPortrait", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_EdgeFade_Env {
+        internal static string M2VertexSingle_VS_Diffuse_EdgeFade_Env {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_EdgeFade_Env", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_EdgeFade_T1 {
+        internal static string M2VertexSingle_VS_Diffuse_EdgeFade_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_EdgeFade_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2 {
+        internal static string M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_EdgeFade_T1_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_Env {
+        internal static string M2VertexSingle_VS_Diffuse_Env {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_Env", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_Env_Env {
+        internal static string M2VertexSingle_VS_Diffuse_Env_Env {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_Env_Env", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_Env_T1 {
+        internal static string M2VertexSingle_VS_Diffuse_Env_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_Env_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1 {
+        internal static string M2VertexSingle_VS_Diffuse_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1_Env {
+        internal static string M2VertexSingle_VS_Diffuse_T1_Env {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_Env", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1_Env_T1 {
+        internal static string M2VertexSingle_VS_Diffuse_T1_Env_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_Env_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1_Env_T2 {
+        internal static string M2VertexSingle_VS_Diffuse_T1_Env_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_Env_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T1 {
+        internal static string M2VertexSingle_VS_Diffuse_T1_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T1_T1 {
+        internal static string M2VertexSingle_VS_Diffuse_T1_T1_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T1_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T1_T1_T2 {
+        internal static string M2VertexSingle_VS_Diffuse_T1_T1_T1_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T1_T1_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T2 {
+        internal static string M2VertexSingle_VS_Diffuse_T1_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T1_T2_T1 {
+        internal static string M2VertexSingle_VS_Diffuse_T1_T2_T1 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T1_T2_T1", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T11 {
+        internal static string M2VertexSingle_VS_Diffuse_T11 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T11", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingle_VS_Diffuse_T2 {
+        internal static string M2VertexSingle_VS_Diffuse_T2 {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingle_VS_Diffuse_T2", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] M2VertexSingleOld {
+        internal static string M2VertexSingleOld {
             get {
                 object obj = ResourceManager.GetObject("M2VertexSingleOld", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] MapLowPixel {
+        internal static string MapLowFragment {
             get {
-                object obj = ResourceManager.GetObject("MapLowPixel", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("MapLowFragment", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] MapLowVertex {
+        internal static string MapLowVertex {
             get {
                 object obj = ResourceManager.GetObject("MapLowVertex", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] SkyPixel {
+        internal static string SkyFragment {
             get {
-                object obj = ResourceManager.GetObject("SkyPixel", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("SkyFragment", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] SkyVertex {
+        internal static string SkyVertex {
             get {
                 object obj = ResourceManager.GetObject("SkyVertex", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] TerrainPixel {
+        internal static string TerrainFragment {
             get {
-                object obj = ResourceManager.GetObject("TerrainPixel", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("TerrainFragment", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] TerrainPixelNew {
+        internal static string TerrainFragmentNew {
             get {
-                object obj = ResourceManager.GetObject("TerrainPixelNew", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("TerrainFragmentNew", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] TerrainVertex {
+        internal static string TerrainVertex {
             get {
                 object obj = ResourceManager.GetObject("TerrainVertex", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] TexturedQuadPixel {
+        internal static string TexturedQuadFragment {
             get {
-                object obj = ResourceManager.GetObject("TexturedQuadPixel", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("TexturedQuadFragment", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] TexturedQuadVertex {
+        internal static string TexturedQuadVertex {
             get {
                 object obj = ResourceManager.GetObject("TexturedQuadVertex", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] WmoPixel {
+        internal static string WmoFragment {
             get {
-                object obj = ResourceManager.GetObject("WmoPixel", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("WmoFragment", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] WmoPixelBlend {
+        internal static string WmoFragmentBlend {
             get {
-                object obj = ResourceManager.GetObject("WmoPixelBlend", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("WmoFragmentBlend", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] WmoPixelBlendIndoor {
+        internal static string WmoFragmentBlendIndoor {
             get {
-                object obj = ResourceManager.GetObject("WmoPixelBlendIndoor", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("WmoFragmentBlendIndoor", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] WmoPixelIndoor {
+        internal static string WmoFragmentIndoor {
             get {
-                object obj = ResourceManager.GetObject("WmoPixelIndoor", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("WmoFragmentIndoor", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] WmoVertex {
+        internal static string WmoVertex {
             get {
                 object obj = ResourceManager.GetObject("WmoVertex", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] WorldTextPixel {
+        internal static string WorldTextFragment {
             get {
-                object obj = ResourceManager.GetObject("WorldTextPixel", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("WorldTextFragment", resourceCulture);
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] WorldTextVertex {
+        internal static string WorldTextVertex {
             get {
                 object obj = ResourceManager.GetObject("WorldTextVertex", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.String.
         /// </summary>
-        internal static byte[] WorldTextVertexOrtho {
+        internal static string WorldTextVertexOrtho {
             get {
                 object obj = ResourceManager.GetObject("WorldTextVertexOrtho", resourceCulture);
-                return ((byte[])(obj));
+                return ((string)(obj));
             }
         }
     }

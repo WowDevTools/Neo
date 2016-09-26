@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
+using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {

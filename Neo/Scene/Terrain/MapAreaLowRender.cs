@@ -3,6 +3,7 @@ using Neo.Graphics;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SlimTK;
+using Warcraft.WDL.Chunks;
 
 namespace Neo.Scene.Terrain
 {
@@ -77,7 +78,7 @@ namespace Neo.Scene.Terrain
             Mesh.Draw();
         }
 
-        public unsafe void InitFromHeightData(IO.Files.Terrain.MareEntry entry)
+        public unsafe void InitFromHeightData(WorldLODMapArea entry)
         {
             mVertexData = new Vector3[17 * 17 + 16 * 16];
 
@@ -91,7 +92,7 @@ namespace Neo.Scene.Terrain
                 for(var x = 0; x < ((y % 2 != 0) ? 16 : 17); ++x)
                 {
                     var inner = (y % 2) != 0;
-                    float height = inner ? entry.inner[(y / 2) * 16 + x] : entry.outer[(y / 2) * 17 + x];
+                    float height = inner ? entry.LowResVertices[(y / 2) * 16 + x] : entry.HighResVertices[(y / 2) * 17 + x];
 
                     var v = new Vector3(x * StepX, y * StepY, height);
                     v.X += IndexX * Metrics.TileSize;
@@ -156,9 +157,9 @@ namespace Neo.Scene.Terrain
             Mesh.IndexBuffer.BufferData(indices);
 	        Mesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
 
-	        var program = new ShaderProgram(context);
+	        var program = new ShaderProgram();
             program.SetVertexShader(Resources.Shaders.MapLowVertex);
-            program.SetPixelShader(Resources.Shaders.MapLowPixel);
+            program.SetPixelShader(Resources.Shaders.MapLowFragment);
             Mesh.Program = program;
             Mesh.InitLayout(program);
         }

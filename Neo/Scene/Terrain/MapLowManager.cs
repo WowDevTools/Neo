@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
+using Neo.IO;
 using OpenTK;
+using Warcraft.WDL;
 
 namespace Neo.Scene.Terrain
 {
     class MapLowManager
     {
-        private IO.Files.Terrain.WdlFile mWdlFile;
+        private WorldLOD mWdlFile;
 
         private readonly List<MapAreaLowRender> mAreas = new List<MapAreaLowRender>();
         private readonly List<MapAreaLowRender> mDataToLoad = new List<MapAreaLowRender>();
@@ -32,8 +35,19 @@ namespace Neo.Scene.Terrain
 
         public void OnEnterWorld(string continent, ref Vector2 position)
         {
-            mWdlFile = new IO.Files.Terrain.WdlFile();
-            mWdlFile.Load(continent);
+	        var wdlPath = string.Format(@"World\Maps\{0}\{0}.wdl", continent);
+	        using (MemoryStream wdlFileStream = new MemoryStream())
+	        {
+		        using (var strm = FileManager.Instance.Provider.OpenFile(wdlPath))
+		        {
+			        strm.CopyTo(wdlFileStream);
+		        }
+
+		        mWdlFile = new WorldLOD(wdlFileStream.ToArray());
+	        }
+
+	        //mWdlFile = new IO.Files.Terrain.WdlFile();
+            //mWdlFile.Load(continent);
 
             UpdatePosition(ref position);
         }

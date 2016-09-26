@@ -431,13 +431,13 @@ namespace Neo.Scene
             gMesh.AddElement("POSITION", 0, 3);
             gMesh.AddElement("TEXCOORD", 0, 2);
 
-            gWorldTextShader = new ShaderProgram(context);
+            gWorldTextShader = new ShaderProgram();
             gWorldTextShader.SetVertexShader(Resources.Shaders.WorldTextVertex);
-            gWorldTextShader.SetPixelShader(Resources.Shaders.WorldTextPixel);
+            gWorldTextShader.SetPixelShader(Resources.Shaders.WorldTextFragment);
 
-            gWorldTextShader2D = new ShaderProgram(context);
+            gWorldTextShader2D = new ShaderProgram();
             gWorldTextShader2D.SetVertexShader(Resources.Shaders.WorldTextVertexOrtho);
-            gWorldTextShader2D.SetPixelShader(Resources.Shaders.WorldTextPixel);
+            gWorldTextShader2D.SetPixelShader(Resources.Shaders.WorldTextFragment);
             gMesh.Program = gWorldTextShader;
             gMesh.InitLayout(gWorldTextShader);
 

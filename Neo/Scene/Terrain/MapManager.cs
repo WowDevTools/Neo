@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Neo.IO;
@@ -8,6 +9,9 @@ using Neo.IO.Files.Terrain;
 using Neo.UI;
 using OpenTK;
 using SlimTK;
+using Warcraft.WDL;
+using Warcraft.WDT;
+using Warcraft.WDT.Chunks;
 
 namespace Neo.Scene.Terrain
 {
@@ -30,7 +34,7 @@ namespace Neo.Scene.Terrain
         private readonly List<int> mCurrentValidLinks = new List<int>();
 
         public string Continent { get; private set; }
-        public WdtFile CurrentWdt { get; private set; }
+        public WorldTable CurrentWdt { get; private set; }
         public bool HasNewBlend { get; private set; }
         public bool IsInitialLoad { get; private set; }
         public SkySphere SkySphere { get; private set; }
@@ -129,9 +133,20 @@ namespace Neo.Scene.Terrain
             Continent = continent;
             WorldFrame.Instance.State = AppState.LoadingScreen;
 
-            CurrentWdt = new WdtFile();
-            CurrentWdt.Load(continent);
-            HasNewBlend = (CurrentWdt.Flags & 0x84) != 0;
+	        var wdtPath = string.Format(@"World\Maps\{0}\{0}.wdt", continent);
+	        using (MemoryStream wdtFileStream = new MemoryStream())
+	        {
+		        using (var strm = FileManager.Instance.Provider.OpenFile(wdtPath))
+		        {
+			        strm.CopyTo(wdtFileStream);
+		        }
+
+		        CurrentWdt = new WorldTable(wdtFileStream.ToArray());
+	        }
+
+	        // PORT: Possible introduction of bug (bitwise flag comparison to HasFlag)
+	        HasNewBlend = CurrentWdt.Header.Flags.HasFlag(WorldTableFlags.UsesEnvironmentMapping) ||
+	                       CurrentWdt.Header.Flags.HasFlag(WorldTableFlags.UsesHardAlphaFalloff);
 
             MapChunkRender.ChunkMesh.Program = HasNewBlend ? MapChunkRender.BlendNew : MapChunkRender.BlendOld;
 

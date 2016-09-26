@@ -26,7 +26,6 @@ namespace Neo
 		        Directory.CreateDirectory(dbcdir);
 	        }
 
-
             FontCollection.Initialize();
             Settings.KeyBindings.Initialize();
             XmlService.Initialize();

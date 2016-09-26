@@ -1,11 +1,12 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using SharpDX;
+﻿using System.Data.Linq;
+using System.IO;
+using Gtk;
 using Neo.IO;
-using Neo.IO.Files.Terrain;
 using Neo.Storage;
+using OpenTK;
+using OpenTK.Input;
+using Warcraft.WDL;
+using Warcraft.WDL.Chunks;
 
 namespace Neo.UI.Components
 {
@@ -137,9 +138,19 @@ namespace Neo.UI.Components
             if (record == null)
                 return colors;
 
+	        WorldLOD wdlFile;
             var mapName = record.GetString(MapFormatGuess.FieldMapName);
-            var wdlFile = new WdlFile();
-            wdlFile.Load(mapName);
+	        var wdlPath = string.Format(@"World\Maps\{0}\{0}.wdl", mapName);
+	        using (MemoryStream wdlFileStream = new MemoryStream())
+	        {
+		        using (var strm = FileManager.Instance.Provider.OpenFile(wdlPath))
+		        {
+			        strm.CopyTo(wdlFileStream);
+		        }
+
+		        wdlFile = new WorldLOD(wdlFileStream.ToArray());
+	        }
+
             for (var i = 0; i < 64; ++i)
             {
                 for (var j = 0; j < 64; ++j)
@@ -155,7 +166,7 @@ namespace Neo.UI.Components
             return colors;
         }
 
-        private static unsafe void LoadEntry(MareEntry entry, uint[] textureData, ref int i, ref int j)
+        private static unsafe void LoadEntry(WorldLODMapArea entry, uint[] textureData, ref int i, ref int j)
         {
             for (var k = 0; k < 17; ++k)
             {
@@ -164,7 +175,7 @@ namespace Neo.UI.Components
                     uint r;
                     uint g;
                     uint b;
-                    var h = entry.outer[k * 17 + l];
+                    var h = entry.LowResVertices[k * 17 + l];
                     if (h > 2000)
                     {
                         r = g = b = 255;

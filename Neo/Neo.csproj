@@ -286,13 +286,11 @@
     <Compile Include="IO\Files\Terrain\MapAreaQuery.cs" />
     <Compile Include="IO\Files\Terrain\MapChunk.cs" />
     <Compile Include="IO\Files\Terrain\TerrainQueryManager.cs" />
-    <Compile Include="IO\Files\Terrain\WdlFile.cs" />
     <Compile Include="IO\Files\Terrain\WoD\MapArea.cs" />
     <Compile Include="IO\Files\Terrain\WoD\MapChunk.cs" />
     <Compile Include="IO\Files\Terrain\WoD\MapQueryImpl.cs" />
     <Compile Include="IO\Files\Terrain\Wotlk\MapQueryImpl.cs" />
     <Compile Include="IO\Files\Terrain\WoD\MapStructs.cs" />
-    <Compile Include="IO\Files\Terrain\WdtFile.cs" />
     <Compile Include="IO\Files\Terrain\Wotlk\MapArea.cs" />
     <Compile Include="IO\Files\Terrain\Wotlk\MapChunk.cs" />
     <Compile Include="IO\Files\Terrain\Wotlk\MapStructs.cs" />
@@ -327,11 +325,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <!--<Compile Include="Resources\Shaders.Designer.cs">
+    <Compile Include="Resources\Shaders.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Shaders.resx</DependentUpon>
-    </Compile> -->
+    </Compile>
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -638,11 +636,11 @@
       <LastGenOutput>Images.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <!-- <EmbeddedResource Include="Resources\Shaders.resx">
+    <EmbeddedResource Include="Resources\Shaders.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Shaders.Designer.cs</LastGenOutput>
-    </EmbeddedResource> -->
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
@@ -773,6 +771,7 @@
     <Content Include="Resources\Shaders\GLSL\TexturedQuadVertex.glsl" />
     <Content Include="Resources\Shaders\GLSL\WorldTextFragment.glsl" />
     <Content Include="Resources\Shaders\GLSL\WorldTextVertex.glsl" />
+    <Content Include="Resources\Shaders\GLSL\WorldTextVertexOrtho.glsl" />
     <Content Include="Resources\Shaders\M2PixelOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexInstancedOld.hlsl" />
     <Content Include="Resources\Shaders\M2VertexSingleOld.hlsl" />
@@ -919,6 +918,10 @@
       <Project>{06C99D4B-9FD6-4AAA-83FD-CEB5CB308121}</Project>
       <Name>SlimTK</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IO\Files\Terrain" />
+    <Folder Include="Resources\Shaders" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
