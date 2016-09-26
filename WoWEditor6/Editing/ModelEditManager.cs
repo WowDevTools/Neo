@@ -93,6 +93,7 @@ namespace WoWEditor6.Editing
                 SelectedModel.UpdatePosition(position);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
+
             mLastCursorPosition = curPos;
             mLastPos = EditManager.Instance.MousePosition;
 
