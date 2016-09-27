@@ -169,9 +169,7 @@ namespace WoWEditor6.Scene.Models.WMO
 
         public void UpdatePosition(Vector3 position)
         {
-            mPosition.X += position.X;
-            mPosition.Y += position.Y;
-            mPosition.Z += position.Z;
+            mPosition += position;
 
             mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
              MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
@@ -182,6 +180,33 @@ namespace WoWEditor6.Scene.Models.WMO
             Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
 
             BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix); //here is the problem, after this line the bBox is fucked up
+
+            GroupBoxes = new BoundingBox[mModel.Groups.Count];
+            for (var i = 0; i < GroupBoxes.Length; ++i)
+            {
+                var group = mModel.Groups[i];
+                GroupBoxes[i] = group.BoundingBox.Transform(ref mInstanceMatrix);
+            }
+
+            InstanceCorners = mModel.BoundingBox.GetCorners();
+            Vector3.TransformCoordinate(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            mInstanceMatrix = Matrix.Transpose(mInstanceMatrix);
+            ModelRoot = mModel.Data;
+            UpdateModelNameplate();
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            mPosition = position;
+
+            mInstanceMatrix = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(mRotation.Y),
+             MathUtil.DegreesToRadians(mRotation.X), MathUtil.DegreesToRadians(mRotation.Z));
+
+            mInstanceMatrix *= Matrix.Translation(mPosition);
+
+            Matrix.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+
+            BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix); 
 
             GroupBoxes = new BoundingBox[mModel.Groups.Count];
             for (var i = 0; i < GroupBoxes.Length; ++i)

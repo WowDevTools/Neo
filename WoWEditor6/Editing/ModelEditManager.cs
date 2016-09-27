@@ -112,10 +112,8 @@ namespace WoWEditor6.Editing
 
             if (ctrlDown && mDown) // Move to cursor pos.
             {
-                Vector3 brushPos = EditManager.Instance.MousePosition;
 
-                var delta = brushPos - SelectedModel.GetPosition();
-                SelectedModel.UpdatePosition(delta);
+                SelectedModel.SetPosition(EditManager.Instance.MousePosition);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
 
             }

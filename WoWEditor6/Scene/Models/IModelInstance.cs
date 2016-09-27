@@ -20,6 +20,8 @@ namespace WoWEditor6.Scene.Models
 
         void UpdatePosition(Vector3 position);
 
+        void SetPosition(Vector3 position);
+
         Vector3 GetPosition();
 
         void Remove();
