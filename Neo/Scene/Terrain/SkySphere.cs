@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Neo.Graphics;
+using Neo.Resources;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SlimTK;
@@ -45,9 +46,9 @@ namespace Neo.Scene.Terrain
             mMatrixBuffer = new UniformBuffer();
             mMatrixBuffer.BufferData(Matrix4.Identity);
 
-            var program = new ShaderProgram(context);
-            program.SetVertexShader(Resources.Shaders.SkyVertex);
-            program.SetPixelShader(Resources.Shaders.SkyFragment);
+            var program = new ShaderProgram();
+            program.SetVertexShader(Shaders.SkyVertex);
+            program.SetPixelShader(Shaders.SkyFragment);
 
             mMesh.Program = program;
             mMesh.InitLayout(program);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Neo.IO.Files.Terrain;
 using Neo.Scene;
 using Neo.Scene.Terrain;
+using Neo.Utils;
 using OpenTK;
 using OpenTK.Input;
 
@@ -90,7 +91,7 @@ namespace Neo.Editing
             SelectedAreaId = id;
         }
 
-        private void OnChunkClicked(IntersectionParams intersection, MouseEventArgs e)
+        private void OnChunkClicked(IntersectionParams intersection, MouseState e)
         {
             var chunk = intersection.ChunkHit;
 
@@ -98,7 +99,7 @@ namespace Neo.Editing
             {
                 case ChunkEditMode.AreaPaint:
 				{
-					if (SelectedAreaId == 0 || !e.Mouse.IsButtonDown(MouseButton.Left))
+					if (SelectedAreaId == 0 || !e.IsButtonDown(MouseButton.Left))
 					{
 						return;
 					}
@@ -114,7 +115,7 @@ namespace Neo.Editing
 	            }
 	            case ChunkEditMode.AreaSelect:
 				{
-					if (!e.Mouse.IsButtonDown(MouseButton.Left))
+					if (!e.IsButtonDown(MouseButton.Left))
 					{
 						return;
 					}

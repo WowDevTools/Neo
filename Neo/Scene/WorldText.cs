@@ -5,9 +5,9 @@ using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using Neo.Graphics;
 using Neo.IO.Files.Texture;
+using Neo.Resources;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Neo.Scene
 {
@@ -304,7 +304,7 @@ namespace Neo.Scene
             }
 
             byte[] buffer;
-            using (var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb))
+            using (var bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
             {
                 using (var graphics = System.Drawing.Graphics.FromImage(bitmap))
                 {
@@ -432,12 +432,12 @@ namespace Neo.Scene
             gMesh.AddElement("TEXCOORD", 0, 2);
 
             gWorldTextShader = new ShaderProgram();
-            gWorldTextShader.SetVertexShader(Resources.Shaders.WorldTextVertex);
-            gWorldTextShader.SetPixelShader(Resources.Shaders.WorldTextFragment);
+            gWorldTextShader.SetVertexShader(Shaders.WorldTextVertex);
+            gWorldTextShader.SetPixelShader(Shaders.WorldTextFragment);
 
             gWorldTextShader2D = new ShaderProgram();
-            gWorldTextShader2D.SetVertexShader(Resources.Shaders.WorldTextVertexOrtho);
-            gWorldTextShader2D.SetPixelShader(Resources.Shaders.WorldTextFragment);
+            gWorldTextShader2D.SetVertexShader(Shaders.WorldTextVertexOrtho);
+            gWorldTextShader2D.SetPixelShader(Shaders.WorldTextFragment);
             gMesh.Program = gWorldTextShader;
             gMesh.InitLayout(gWorldTextShader);
 

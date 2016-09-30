@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
-using Gdk;
+using OpenTK.Input;
 
 namespace Neo.Settings
 {
@@ -42,14 +42,14 @@ namespace Neo.Settings
     {
         public Key[] Edit =
         {
-	        Key.Shift_L,
-	        Key.Shift_R
+	        Key.ShiftLeft,
+	        Key.ShiftRight
         };
 
         public Key[] EditInverse =
         {
-	        Key.Control_L,
-	        Key.Control_R
+	        Key.ControlLeft,
+	        Key.ControlRight
         };
     }
 

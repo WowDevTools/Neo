@@ -1,6 +1,5 @@
 ﻿using Neo.Scene;
 using Neo.Scene.Models;
-using Neo.Scene.Models.M2;
 using Neo.Utils;
 using Neo.UI;
 using OpenTK;
@@ -69,7 +68,7 @@ namespace Neo.Editing
             {
 	            if (IsCopying)
 	            {
-		            ModelSpawnManager.Instance.OnTerrainClicked(WorldFrame.Instance.LastMouseIntersection, new MouseEventArgs(MouseButton.Left, 1, 0, 0, 0));
+		            ModelSpawnManager.Instance.OnTerrainClicked(WorldFrame.Instance.LastMouseIntersection, mouseState);
 	            }
             }
 
@@ -109,7 +108,7 @@ namespace Neo.Editing
 
             if(ctrlDown && rDown) // Reset rotation
             {
-                var newRotation = SelectedModel.GetRotation() * (-1);
+                var newRotation = SelectedModel.GetRotation() * -1;
                 SelectedModel.Rotate(newRotation.X, newRotation.Y, newRotation.Z);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
 

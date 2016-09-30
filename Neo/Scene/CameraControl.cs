@@ -62,47 +62,52 @@ namespace Neo.Scene
 
             var camBind = KeyBindings.Instance.CameraKeys;
 
-            if (KeyHelper.AreKeysDown(keyState, camBind.Forward))
+            if (KeyHelper.AreKeysDown(camBind.Forward))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveForward(diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(keyState, camBind.Backward))
+            if (KeyHelper.AreKeysDown(camBind.Backward))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveForward(-diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(keyState, camBind.Right))
+            if (KeyHelper.AreKeysDown(camBind.Right))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveRight(diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(keyState, camBind.Left))
+            if (KeyHelper.AreKeysDown(camBind.Left))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveRight(-diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(keyState, camBind.Up))
+            if (KeyHelper.AreKeysDown(camBind.Up))
             {
                 positionChanged = true;
                 cam.MoveUp(diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(keyState, camBind.Down))
+            if (KeyHelper.AreKeysDown(camBind.Down))
             {
                 positionChanged = true;
                 cam.MoveUp(-diff * mSpeedFactor);
             }
 
-            if (KeyHelper.IsKeyDown(keyState, Keys.RButton) && !KeyHelper.IsKeyDown(keyState, Keys.ControlKey) && !KeyHelper.IsKeyDown(keyState, Keys.Menu) && !KeyHelper.IsKeyDown(keyState, Keys.ShiftKey))
+	        KeyboardState keyboardState = Keyboard.GetState();
+	        MouseState mouseState = Mouse.GetState();
+            if (mouseState.IsButtonDown(MouseButton.Right) &&
+                !keyboardState.IsKeyDown(Key.ControlLeft) &&
+                !keyboardState.IsKeyDown(Key.Menu) &&
+                !keyboardState.IsKeyDown(Key.ShiftLeft))
             {
                 var curPos = InterfaceHelper.GetCursorPosition();
                 var dx = curPos.X - mLastCursorPos.X;

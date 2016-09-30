@@ -98,14 +98,13 @@ namespace Neo.Editing
                 return false;
             }
 
-	        KeyboardState keyboardState = Keyboard.GetState();
-	        if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.Edit) == false &&
-	            KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse) == false)
+	        if (!KeyHelper.AreKeysDown(bindings.InteractionKeys.Edit) &&
+	            !KeyHelper.AreKeysDown(bindings.InteractionKeys.EditInverse))
 	        {
 		        return false;
 	        }
 
-	        if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse))
+	        if (KeyHelper.AreKeysDown(bindings.InteractionKeys.EditInverse))
 	        {
 		        isInverted = true;
 	        }

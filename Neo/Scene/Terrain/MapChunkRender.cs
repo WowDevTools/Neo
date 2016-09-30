@@ -396,7 +396,7 @@ namespace Neo.Scene.Terrain
 
             BlendNew = new ShaderProgram(context);
             BlendNew.SetVertexShader(Resources.Shaders.TerrainVertex);
-            BlendNew.SetPixelShader(Resources.Shaders.TerrainPixelNew);
+            BlendNew.SetPixelShader(Resources.Shaders.TerrainFragmentNew);
 
             ChunkMesh.Program = BlendNew;
             ChunkMesh.InitLayout(BlendNew);

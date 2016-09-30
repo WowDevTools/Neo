@@ -84,19 +84,21 @@ namespace Neo.Editing
                 // The spray itself.
 
                 var sprayParticleSize = EditManager.Instance.SprayParticleSize * Metrics.ChunkSize / 2.0f;
-                var inc = (float)r.NextDouble(sprayParticleSize / 4.0f, sprayParticleSize / 3.0f);
 
-                for (var py = curPos.Y - outerRadius; py < curPos.Y + outerRadius; py += inc)
+	            double minValue = sprayParticleSize / 4.0d;
+	            double maxValue = sprayParticleSize / 3.0f;
+	            var inc = (float)r.NextDouble() * (maxValue - minValue) + minValue;
+
+                for (double py = curPos.Y - outerRadius; py < curPos.Y + outerRadius; py += inc)
                 {
-                    for (var px = curPos.X - outerRadius; px < curPos.X + outerRadius; px += inc)
+                    for (double px = curPos.X - outerRadius; px < curPos.X + outerRadius; px += inc)
                     {
-
                         if ((Math.Sqrt(Math.Pow(py - curPos.Y, 2) + Math.Pow(px - curPos.X, 2)) <= outerRadius) &&
                             (r.Next(0, 110) < EditManager.Instance.SprayParticleAmount))
                         {
                             var parameters = new TextureChangeParameters
                             {
-                                Center = new Vector3(px, py, EditManager.Instance.MousePosition.Z),
+                                Center = new Vector3((float)px, (float)py, EditManager.Instance.MousePosition.Z),
                                 InnerRadius = sprayParticleSize / 20.0f,
                                 OuterRadius = sprayParticleSize / 20.0f,
                                 Texture = SelectedTexture,
@@ -131,13 +133,10 @@ namespace Neo.Editing
                 };
 
                 WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
-
             }
-
-
         }
 
-        private bool CheckRequirements(out bool isInverted)
+        private static bool CheckRequirements(out bool isInverted)
         {
             isInverted = false;
 
@@ -152,12 +151,16 @@ namespace Neo.Editing
                 return false;
             }
 
-            if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.Edit) == false &&
-                KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse) == false)
-                return false;
+	        if (!KeyHelper.AreKeysDown(bindings.InteractionKeys.Edit) &&
+	            !KeyHelper.AreKeysDown(bindings.InteractionKeys.EditInverse))
+	        {
+		        return false;
+	        }
 
-            if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse))
-                isInverted = true;
+	        if (KeyHelper.AreKeysDown(bindings.InteractionKeys.EditInverse))
+	        {
+		        isInverted = true;
+	        }
 
             return true;
         }

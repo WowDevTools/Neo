@@ -84,7 +84,7 @@ namespace Neo.Scene
 
         public IntersectionParams LastMouseIntersection { get; private set; }
 
-        public event Action<IntersectionParams, MouseEventArgs> OnWorldClicked;
+        public event Action<IntersectionParams, MouseState> OnWorldClicked;
 
         public bool HighlightModelsInBrush { get; set; }
 
@@ -418,8 +418,10 @@ namespace Neo.Scene
                 }
             }
 
-            if (OnWorldClicked != null)
-                OnWorldClicked(intersection, mouseEventArgs);
+	        if (OnWorldClicked != null)
+	        {
+		        OnWorldClicked(intersection, Mouse.GetState());
+	        }
         }
     }
 }

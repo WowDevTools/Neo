@@ -1,5 +1,6 @@
 ﻿using System;
 using Neo.Graphics;
+using Neo.Resources;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SlimTK;
@@ -158,8 +159,8 @@ namespace Neo.Scene.Terrain
 	        Mesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
 
 	        var program = new ShaderProgram();
-            program.SetVertexShader(Resources.Shaders.MapLowVertex);
-            program.SetPixelShader(Resources.Shaders.MapLowFragment);
+            program.SetVertexShader(Shaders.MapLowVertex);
+            program.SetPixelShader(Shaders.MapLowFragment);
             Mesh.Program = program;
             Mesh.InitLayout(program);
         }
