@@ -208,24 +208,13 @@ namespace WoWEditor6.Editing
                 {
                     if (EditorWindowController.Instance.TexturingModel != null)
                     {
-                        //float proportion = mInnerRadius / mOuterRadius; 
-
-                        mOuterRadius = TabletManager.Instance.TabletPressure * (mAmplitude / 10.0f);
-
-                        if(mOuterRadius < 0.1f)
-                        {
-                            mOuterRadius = 0.1f;
-                        }
-
-                        if(mInnerRadius > mAmplitude)   
-                        {
-                            mInnerRadius = mAmplitude;
-                        }
                         
-                        if(mInnerRadius > mOuterRadius)
-                        {
-                            mInnerRadius = mOuterRadius;
-                        }
+                        mOuterRadius = Math.Max( TabletManager.Instance.TabletPressure * (mAmplitude / 10.0f), 0.1f );
+
+                        mInnerRadius = Math.Min(mInnerRadius, mAmplitude);
+
+                        mInnerRadius = Math.Min(mInnerRadius, mOuterRadius);
+
 
                         HandleOuterRadiusChanged(mOuterRadius);
                         HandleInnerRadiusChanged(mInnerRadius);
@@ -237,16 +226,10 @@ namespace WoWEditor6.Editing
                 {
                     if (EditorWindowController.Instance.TexturingModel != null)
                     {
-                        mInnerRadius = TabletManager.Instance.TabletPressure * mInnerAmplitude / 10.0f;
-                        if(mInnerRadius < 0.1f)
-                        {
-                            mInnerRadius = 0.1f;
-                        }
+                        mInnerRadius = Math.Max( TabletManager.Instance.TabletPressure * (mInnerAmplitude / 10.0f), 0.1f);
 
-                        if(mInnerRadius > mOuterRadius)
-                        {
-                            mInnerRadius = mOuterRadius;
-                        }
+                        mInnerRadius = Math.Min(mInnerRadius, mOuterRadius);
+
 
                         HandleInnerRadiusChanged(mInnerRadius);
 
@@ -268,21 +251,9 @@ namespace WoWEditor6.Editing
                 {
                     mInnerRadius += amount;
 
-
-                    if (mInnerRadius < 0)
-                    {
-                        mInnerRadius = 0.0f;
-                    }
-
-                    if (mInnerRadius > 200)
-                    {
-                        mInnerRadius = 200.0f;
-                    }
-
-                    if (mInnerRadius > mOuterRadius)
-                    {
-                        mInnerRadius = mOuterRadius;
-                    }
+                    mInnerRadius = Math.Max(mInnerRadius, 0.1f);
+                    mInnerRadius = Math.Min(mInnerRadius, 200.0f);
+                    mInnerRadius = Math.Min(mInnerRadius, mOuterRadius);
 
                     HandleInnerRadiusChanged(mInnerRadius);
 
@@ -294,30 +265,13 @@ namespace WoWEditor6.Editing
                     mInnerRadius += amount;
                     mOuterRadius += amount;
 
-                    if (mInnerRadius < 0)
-                    {
-                        mInnerRadius = 0.0f;
-                    }
+                    mInnerRadius = Math.Max(mInnerRadius, 0.1f);
+                    mInnerRadius = Math.Min(mInnerRadius, 200.0f);
 
-                    if (mInnerRadius > 200)
-                    {
-                        mInnerRadius = 200.0f;
-                    }
+                    mOuterRadius = Math.Max(mOuterRadius, 0.1f);
+                    mOuterRadius = Math.Min(mOuterRadius, 200.0f);
 
-                    if (mOuterRadius < 0)
-                    {
-                        mOuterRadius = 0.0f;
-                    }
-
-                    if (mOuterRadius > 200)
-                    {
-                        mOuterRadius = 200.0f;
-                    }
-
-                    if (mInnerRadius > mOuterRadius)
-                    {
-                        mInnerRadius = mOuterRadius;
-                    }
+                    mInnerRadius = Math.Min(mInnerRadius, mOuterRadius);
 
                     HandleInnerRadiusChanged(mInnerRadius);
                     HandleOuterRadiusChanged(mOuterRadius);
@@ -332,30 +286,17 @@ namespace WoWEditor6.Editing
 
                     if (EditorWindowController.Instance.TerrainManager != null)
                     {
-                        if (mIntensity < 1)
-                        {
-                            mIntensity = 1.0f;
-                        }
 
-                        if (mIntensity > 40)
-                        {
-                            mIntensity = 40.0f;
-                        }
+                        mIntensity = Math.Max(mIntensity, 1.0f);
+                        mIntensity = Math.Min(mIntensity, 40.0f);
 
                         HandleIntensityChanged(mIntensity);
                     }
 
                     if (EditorWindowController.Instance.TexturingModel != null)
                     {
-                        if(mAmount < 1)
-                        {
-                            mAmount = 1.0f;
-                        }
-
-                        if (mAmount > 40)
-                        {
-                            mAmount = 40.0f;
-                        }
+                        mAmount = Math.Max(mAmount, 1.0f);
+                        mAmount = Math.Min(mAmount, 40.0f);
 
                         HandleAmountChanged(mAmount);
                     }
@@ -368,15 +309,9 @@ namespace WoWEditor6.Editing
 
                     if (EditorWindowController.Instance.TexturingModel != null)
                     {
-                        if (mOpacity < 0)
-                        {
-                            mOpacity = 0.0f;
-                        }
 
-                        if (mOpacity > 255)
-                        {
-                            mOpacity = 255.0f;
-                        }
+                        mOpacity = Math.Max(mOpacity, 0.0f);
+                        mOpacity = Math.Min(mOpacity, 255.0f);
 
                         HandleOpacityChanged(mOpacity);
                     }
@@ -388,15 +323,8 @@ namespace WoWEditor6.Editing
 
                     if(EditorWindowController.Instance.TexturingModel != null)
                     {
-                        if (mPenSensivity < 0.1f)
-                        {
-                            mPenSensivity = 0.1f;
-                        }
-
-                        if (mPenSensivity > 1.0f)
-                        {
-                            mPenSensivity = 1.0f;
-                        }
+                        mPenSensivity = Math.Max(mPenSensivity, 0.1f);
+                        mPenSensivity = Math.Min(mPenSensivity, 1.0f);
 
                         HandlePenSensivityChanged(mPenSensivity);
                     }
