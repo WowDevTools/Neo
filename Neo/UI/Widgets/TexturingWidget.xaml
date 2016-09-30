@@ -142,12 +142,12 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Particle size       "/>
-                        <Slider x:Name="Spray_ParticleSizeSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="10" Value="0.34" ValueChanged="Handle_ParticleSizeChanged"/>
+                        <Slider x:Name="Spray_ParticleSizeSlider" VerticalAlignment="Center" Width="180" Minimum="0.1" Maximum="40" Value="0.34" ValueChanged="Handle_ParticleSizeChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Spray_ParticleSizeSlider, StringFormat=\{0:F2\}}" Width="29"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Particle amount " Width="94"/>
-                        <Slider x:Name="Spray_ParticleAmountSlider" VerticalAlignment="Center" Width="180" Minimum="1" Maximum="200" Value="150" ValueChanged="Handle_ParticleAmountChanged"/>
+                        <Slider x:Name="Spray_ParticleAmountSlider" VerticalAlignment="Center" Width="180" Minimum="1" Maximum="100" Value="20" ValueChanged="Handle_ParticleAmountChanged"/>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Value, ElementName=Spray_ParticleAmountSlider, StringFormat=\{0:F2\}}" Width="38"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">

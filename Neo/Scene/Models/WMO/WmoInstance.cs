@@ -174,9 +174,7 @@ namespace Neo.Scene.Models.WMO
 
         public void SetPosition(Vector3 position)
         {
-            mPosition.X += position.X;
-            mPosition.Y += position.Y;
-            mPosition.Z += position.Z;
+            mPosition += position;
 
 	        mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mRotation.X)) *
 	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mRotation.Y)) *

@@ -1,5 +1,4 @@
 ﻿using System;
-using Gdk;
 using Neo.Scene;
 using Neo.Utils;
 using OpenTK;
@@ -36,6 +35,8 @@ namespace Neo.Editing
 
         public TextureFalloffMode FalloffMode { get; set; }
 
+        public Random r;
+
         static TextureChangeManager()
         {
             Instance = new TextureChangeManager();
@@ -47,6 +48,7 @@ namespace Neo.Editing
             Amount = 0.0f;
             TargetValue = 255.0f;
             SelectedTexture = "TILESET\\GENERIC\\black.blp";
+            r = new Random();
         }
 
         public void OnChange(TimeSpan diff)
@@ -55,15 +57,20 @@ namespace Neo.Editing
             if (CheckRequirements(out inverted) == false)
                 return;
 
+            var curPos = EditManager.Instance.MousePosition;
+            var innerRadius = EditManager.Instance.InnerRadius;
+            var outerRadius = EditManager.Instance.OuterRadius;
+
             if (EditManager.Instance.IsSprayOn) // Spray Texturing.
             {
-                if (EditManager.Instance.IsSpraySolidInnerRadius)
+
+                if (EditManager.Instance.IsSpraySolidInnerRadius) // Paint solid inner radius if required.
                 {
                     var parameters = new TextureChangeParameters
                     {
-                        Center = EditManager.Instance.MousePosition,
-                        InnerRadius = EditManager.Instance.InnerRadius * (EditManager.Instance.InnerRadius / EditManager.Instance.OuterRadius),
-                        OuterRadius = EditManager.Instance.InnerRadius,
+                        Center = curPos,
+                        InnerRadius = innerRadius * (innerRadius / outerRadius),
+                        OuterRadius = innerRadius,
                         Texture = SelectedTexture,
                         Amount = Amount / 40,
                         FalloffMode = FalloffMode,
@@ -74,43 +81,46 @@ namespace Neo.Editing
                     WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
                 }
 
-                for (var i = 0; i < EditManager.Instance.SprayParticleAmount; ++i)
+                // The spray itself.
+
+                var sprayParticleSize = EditManager.Instance.SprayParticleSize * Metrics.ChunkSize / 2.0f;
+                var inc = (float)r.NextDouble(sprayParticleSize / 4.0f, sprayParticleSize / 3.0f);
+
+                for (var py = curPos.Y - outerRadius; py < curPos.Y + outerRadius; py += inc)
                 {
-                    var r = new Random();
-                    Vector3 rCenter;
-
-                        rCenter.X =(float)r.NextDouble(EditManager.Instance.MousePosition.X - EditManager.Instance.OuterRadius,
-                                EditManager.Instance.OuterRadius + EditManager.Instance.MousePosition.X);
-
-                        rCenter.Y =(float)r.NextDouble(EditManager.Instance.MousePosition.Y - EditManager.Instance.OuterRadius,
-                                EditManager.Instance.OuterRadius + EditManager.Instance.MousePosition.Y);
-
-                        rCenter.Z = EditManager.Instance.MousePosition.Z;
-
-
-                    var parameters = new TextureChangeParameters
+                    for (var px = curPos.X - outerRadius; px < curPos.X + outerRadius; px += inc)
                     {
-                        Center = rCenter,
-                        InnerRadius = EditManager.Instance.SprayParticleSize,
-                        OuterRadius = EditManager.Instance.SprayParticleSize,
-                        Texture = SelectedTexture,
-                        Amount = Amount / 20,
-                        FalloffMode = FalloffMode,
-                        TargetValue = TargetValue,
-                        IsInverted = inverted
-                    };
 
-                    WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
+                        if ((Math.Sqrt(Math.Pow(py - curPos.Y, 2) + Math.Pow(px - curPos.X, 2)) <= outerRadius) &&
+                            (r.Next(0, 110) < EditManager.Instance.SprayParticleAmount))
+                        {
+                            var parameters = new TextureChangeParameters
+                            {
+                                Center = new Vector3(px, py, EditManager.Instance.MousePosition.Z),
+                                InnerRadius = sprayParticleSize / 20.0f,
+                                OuterRadius = sprayParticleSize / 20.0f,
+                                Texture = SelectedTexture,
+                                Amount = Amount / 20,
+                                FalloffMode = FalloffMode,
+                                TargetValue = TargetValue,
+                                IsInverted = inverted
+                            };
+
+                            WorldFrame.Instance.MapManager.OnTextureTerrain(parameters);
+                        }
+                    }
                 }
+
+
             }
 
             else // Normal texturing.
             {
                 var parameters = new TextureChangeParameters
                 {
-                    Center = EditManager.Instance.MousePosition,
-                    InnerRadius = EditManager.Instance.InnerRadius,
-                    OuterRadius = EditManager.Instance.OuterRadius,
+                    Center = curPos,
+                    InnerRadius = innerRadius,
+                    OuterRadius = outerRadius,
                     Texture = SelectedTexture,
                     //Amount = 4 + Amount,
                     // if tablet is connected override the amount set in thee menus

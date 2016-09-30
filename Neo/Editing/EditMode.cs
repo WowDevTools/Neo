@@ -7,6 +7,6 @@ namespace Neo.Editing
     {
         Sculpting = 1,
         Texturing = 2,
-        Chunk = 3,
+        Chunk = 4,
     }
 }
