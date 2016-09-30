@@ -19,7 +19,7 @@ namespace Neo.UI.Services
             doc.Save(@".\Config\Connections.xml");
         }
 
-        public void SaveConnection(List<string> value)
+        public static void SaveConnection(List<string> value)
         {
             var data = new DataProtection();
 
@@ -48,7 +48,7 @@ namespace Neo.UI.Services
             }
         }
 
-        public List<string> GetIdAttributes()
+        public static List<string> GetIdAttributes()
         {
             var connectionList = new List<string>();
 
@@ -69,7 +69,7 @@ namespace Neo.UI.Services
             return null;
         }
 
-        public List<string> ReadConnection(string id)
+        public static List<string> ReadConnection(string id)
         {
             var connectionList = new List<string>();
             var data = new DataProtection();
@@ -97,7 +97,7 @@ namespace Neo.UI.Services
             return null;
         }
 
-        public void DeleteConnection(string id)
+        public static void DeleteConnection(string id)
         {
             try
             {

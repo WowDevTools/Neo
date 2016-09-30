@@ -144,8 +144,8 @@ namespace Neo.Scene
             GraphicsContext = context;
             mWindow = window;
             context.Resize += (w, h) => OnResize((int) w, (int) h);
-            mGlobalBuffer = new UniformBuffer(context);
-            mGlobalBuffer = new UniformBuffer(context);
+            mGlobalBuffer = new UniformBuffer();
+            mGlobalBuffer = new UniformBuffer();
             mGlobalBufferStore = new GlobalParamsBuffer
             {
                 matView = Matrix4.Identity,
@@ -414,7 +414,7 @@ namespace Neo.Scene
                     {
                         mSelectedInstance = selected;
                         ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;
-                    }                    
+                    }
                 }
             }
 

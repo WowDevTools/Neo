@@ -3,12 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
-using SharpDX.Direct3D;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using Neo.Scene;
-using MapFlags = SharpDX.Direct3D11.MapFlags;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace Neo.IO.Files.Texture
 {

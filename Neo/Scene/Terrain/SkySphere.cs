@@ -47,7 +47,7 @@ namespace Neo.Scene.Terrain
 
             var program = new ShaderProgram(context);
             program.SetVertexShader(Resources.Shaders.SkyVertex);
-            program.SetPixelShader(Resources.Shaders.SkyPixel);
+            program.SetPixelShader(Resources.Shaders.SkyFragment);
 
             mMesh.Program = program;
             mMesh.InitLayout(program);

@@ -185,9 +185,9 @@ namespace Neo.Scene.Models
             gIndexBuffer = new IndexBuffer(DrawElementsType.UnsignedInt);
             gIndexBuffer.BufferData(indices);
 
-            var program = new ShaderProgram(WorldFrame.Instance.GraphicsContext);
+            var program = new ShaderProgram();
             program.SetVertexShader(Resources.Shaders.BoundingBoxVertex);
-            program.SetPixelShader(Resources.Shaders.BoundingBoxPixel);
+	        program.SetPixelShader(Resources.Shaders.BoundingBoxFragment);
 
             gMesh = new Mesh
             {

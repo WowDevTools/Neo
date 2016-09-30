@@ -3,6 +3,7 @@ using Gdk;
 using Neo.Scene;
 using Neo.Utils;
 using OpenTK;
+using OpenTK.Input;
 
 namespace Neo.Editing
 {
@@ -134,11 +135,10 @@ namespace Neo.Editing
                 return false;
 
             var bindings = Settings.KeyBindings.Instance;
-            var state = new byte[256];
-            UnsafeNativeMethods.GetKeyboardState(state);
 
-            if (!KeyHelper.IsKeyDown(state, Key.LButton))
-            {
+	        MouseState mouseState = Mouse.GetState();
+	        if (!mouseState.IsButtonDown(MouseButton.Left))
+	        {
                 return false;
             }
 

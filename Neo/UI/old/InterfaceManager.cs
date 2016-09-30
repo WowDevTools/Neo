@@ -202,7 +202,7 @@ namespace Neo.UI
         {
             var program = new ShaderProgram(mContext);
             program.SetVertexShader(Shaders.TexturedQuadVertex);
-            program.SetPixelShader(Shaders.TextureQuadPixel);
+	        program.SetPixelShader(Shaders.TextureQuadFragment);
 
             mMesh = new Mesh(mContext) {IndexCount = 6, Stride = 16};
 

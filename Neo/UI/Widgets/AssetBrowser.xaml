@@ -28,16 +28,10 @@
                     <Label Grid.Row="0" FontSize="20" FontWeight="Bold">Preview</Label>
                     <Image x:Name="TexturePreviewImage" Grid.Row="1" Stretch="Uniform" StretchDirection="DownOnly" Visibility="Hidden"></Image>
                     <WindowsFormsHost x:Name="ModelPreviewControl" Grid.Row="1" Visibility="Hidden" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-<<<<<<< HEAD:Neo/UI/Widgets/AssetBrowser.xaml
-                        <controls:ModelRenderControl x:Name="ModelPreviewRender">
-
-                        </controls:ModelRenderControl>
-=======
                         <controls:ModelRenderControl x:Name="ModelPreviewRender"></controls:ModelRenderControl>
                     </WindowsFormsHost>
                     <WindowsFormsHost x:Name="WmoPreviewControl" Grid.Row="1" Visibility="Hidden" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <controls:WmoRenderControl x:Name="WmoPreviewRender"></controls:WmoRenderControl>
->>>>>>> 68061948880901a73043ec22a51fa0c733353565:WoWEditor6/UI/Widgets/AssetBrowser.xaml
                     </WindowsFormsHost>
                 </Grid>
             </Grid>

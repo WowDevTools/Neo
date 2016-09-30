@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace WoWEditor6.UI.Dialogs
+namespace Neo.UI.Dialogs
 {
     public partial class GameObjectEditor : Form
     {

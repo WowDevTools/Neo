@@ -58,10 +58,10 @@ namespace Neo.Settings
         [XmlIgnore]
         public static KeyBindings Instance { get; private set; }
 
-        public CameraKeys CameraKeys { get; set; }
-        public InteractionKeys InteractionKeys { get; set; }
+        public CameraKeys CameraKeys { get; private set; }
+        public InteractionKeys InteractionKeys { get; private set; }
 
-        public KeyBindings()
+	    private KeyBindings()
         {
             CameraKeys = new CameraKeys();
             InteractionKeys = new InteractionKeys();

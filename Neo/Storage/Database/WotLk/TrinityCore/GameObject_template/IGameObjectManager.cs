@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Data;
-using SharpDX;
+using OpenTK;
 
-namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
+namespace Neo.Storage.Database.WotLk.TrinityCore
 {
     interface IGameObjectManager
     {

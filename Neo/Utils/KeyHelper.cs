@@ -1,10 +1,10 @@
-﻿using System.Windows.Forms;
+﻿using Gdk;
 
 namespace Neo.Utils
 {
     static class KeyHelper
     {
-        public static bool AreKeysDown(byte[] keyState, params Keys[] keys)
+        public static bool AreKeysDown(byte[] keyState, params Key[] keys)
         {
             if (keys.Length == 0)
                 return false;
@@ -21,7 +21,7 @@ namespace Neo.Utils
             return true;
         }
 
-        public static bool IsKeyDown(byte[] keyState, Keys key)
+        public static bool IsKeyDown(byte[] keyState, Key key)
         {
             return ((keyState[(int)key]) & 0x80) != 0;
         }

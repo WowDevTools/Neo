@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WoWEditor6.Editing;
-using WoWEditor6.Scene.Terrain;
-using WoWEditor6.UI.Widgets;
+using Neo.Editing;
+using Neo.Scene.Terrain;
+using Neo.UI.Widgets;
 
-namespace WoWEditor6.UI.Models
+namespace Neo.UI.Models
 {
     class ChunkEditingViewModel
     {

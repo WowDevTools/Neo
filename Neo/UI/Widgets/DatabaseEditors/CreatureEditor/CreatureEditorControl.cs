@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace WoWEditor6.UI.Dialogs
+namespace Neo.UI.Dialogs
 {
     [Designer(typeof(CreatureEditorControlDesigner))]
     public partial class CreatureEditorControl : UserControl
@@ -51,9 +51,9 @@ namespace WoWEditor6.UI.Dialogs
                 if(Int32.TryParse(pModelId, out displayId))
                 {
                     MessageBox.Show("" + displayId);
-                    modelRenderControl1.SetCreatureDisplayEntry(displayId);  
+                    modelRenderControl1.SetCreatureDisplayEntry(displayId);
                 }
-                    
+
             }
         }
 
@@ -103,7 +103,7 @@ namespace WoWEditor6.UI.Dialogs
             creature.RacialLeader = int.Parse(RacialLeader.Text);
             creature.RangeAttackTime = int.Parse(RangeAtkSpeed.Text);
             creature.RangeVariance = float.Parse(RangeAtkSpeedVariance.Text);
-            creature.Rank = (Storage.Database.WotLk.TrinityCore.Rank)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.Rank), Rank.Text);           
+            creature.Rank = (Storage.Database.WotLk.TrinityCore.Rank)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.Rank), Rank.Text);
             creature.RegenHealth = int.Parse(RegenHealth.Text);
             creature.Resistance1 = int.Parse(ResHoly.Text);
             creature.Resistance2 = int.Parse(ResFire.Text);
@@ -142,7 +142,7 @@ namespace WoWEditor6.UI.Dialogs
                 Storage.Database.MySqlConnector.Instance.Query(creature.GetInsertSqlQuery());
                 Storage.Database.WotLk.TrinityCore.CreatureManager.Instance.addCreatedCreature(creature);
                 MessageBox.Show("Inserted");
-            }                
+            }
             else
             {
                 Storage.Database.MySqlConnector.Instance.Query(creature.GetUpdateSqlQuery());

@@ -1,17 +1,17 @@
-﻿<UserControl x:Class="WoWEditor6.UI.Widgets.ChunkEditingWidget"
+﻿<UserControl x:Class="Neo.UI.Widgets.ChunkEditingWidget"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WoWEditor6.UI.Widgets"
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Neo.UI.Widgets"
+             mc:Ignorable="d"
              d:DesignWidth="340" d:DesignHeight="592" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Loaded="UserControl_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        
+
         <Label Grid.Row="0" x:Name="label1" Content="Editing mode: Chunk editing" FontSize="14" FontWeight="Bold"/>
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5,5,5,5">
             <Grid>

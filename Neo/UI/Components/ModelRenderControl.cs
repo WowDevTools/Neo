@@ -25,7 +25,7 @@ using OpenTK;
 using OpenTK.Input;
 using SlimTK;
 =======
->>>>>>> 68061948880901a73043ec22a51fa0c733353565:WoWEditor6/UI/Components/ModelRenderControl.cs
+>>>>>>> 68061948880901a73043ec22a51fa0c733353565:Neo/UI/Components/ModelRenderControl.cs
 
 namespace Neo.UI.Components
 {
@@ -73,7 +73,7 @@ namespace Neo.UI.Components
             file.DisplayOptions.TextureVariation = variation;
             if (file.Load() == false)
                 return;
-            
+
             mRenderer = new M2Renderer(file);
             SetModelCameraParameters(file);
         }

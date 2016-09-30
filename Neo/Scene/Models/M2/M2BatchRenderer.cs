@@ -305,20 +305,20 @@ namespace Neo.Scene.Models.M2
             gMesh.AddElement("COLOR", 0, 4, DataType.Float, false, 1, true);
 
             // all combinations are set in this one each time
-            gCustomProgram = new ShaderProgram(context);
+            gCustomProgram = new ShaderProgram();
             gCustomProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1);
-            gCustomProgram.SetPixelShader(Resources.Shaders.M2Pixel_PS_Combiners_Opaque);
+            gCustomProgram.SetPixelShader(Resources.Shaders.M2Fragment_PS_Combiners_Opaque);
 
             gMesh.Program = gCustomProgram;
 
             // Old versions for temporary WOTLK compatibility.. can we figure out how to map these to the actual types??
-            gNoBlendProgram = new ShaderProgram(context);
+            gNoBlendProgram = new ShaderProgram();
             gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
-            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2PixelOld);
+            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentOld);
 
-            gMaskBlendProgram = new ShaderProgram(context);
+            gMaskBlendProgram = new ShaderProgram();
             gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
-            gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlphaOld);
+            gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentBlendAlphaOld);
 
             gPerPassBuffer = new UniformBuffer();
             gPerPassBuffer.BufferData(new PerModelPassBufferContent()

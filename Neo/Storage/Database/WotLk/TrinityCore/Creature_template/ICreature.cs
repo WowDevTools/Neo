@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
+﻿namespace Neo.Storage.Database.WotLk.TrinityCore
 {
     public interface ICreature
     {
@@ -378,5 +378,5 @@
         //DungeonBoss = 0x10000000 - Will crash the core if set
         IgnorePathFinding = 0x20000000,
         ImmunityKnockback = 0x40000000
-    } 
+    }
 }

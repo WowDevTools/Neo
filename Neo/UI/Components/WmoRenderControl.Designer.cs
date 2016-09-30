@@ -1,16 +1,16 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace WoWEditor6.UI.Components
+namespace Neo.UI.Components
 {
     partial class WmoRenderControl
     {
-        /// <summary> 
+        /// <summary>
         /// Required designer variable.
         /// </summary>
         private IContainer components = null;
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -25,8 +25,8 @@ namespace WoWEditor6.UI.Components
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -34,13 +34,13 @@ namespace WoWEditor6.UI.Components
             this.components = new System.ComponentModel.Container();
             this.renderTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
-            // 
+            //
             // renderTimer
-            // 
+            //
             this.renderTimer.Interval = 10;
-            // 
+            //
             // WmoRenderControl
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "WmoRenderControl";

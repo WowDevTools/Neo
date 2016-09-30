@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Neo.Graphics;
+using Neo.Resources;
 using Warcraft.Core;
 using OpenTK;
 using SlimTK;
@@ -215,21 +216,21 @@ namespace Neo.Scene.Models.WMO
             Mesh.AddElement("TEXCOORD", 0, 2);
             Mesh.AddElement("COLOR", 0, 4, DataType.Byte, true);
 
-            gNoBlendProgram = new ShaderProgram(context);
-            gNoBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
-            gNoBlendProgram.SetPixelShader(Resources.Shaders.WmoPixel);
+            gNoBlendProgram = new ShaderProgram();
+            gNoBlendProgram.SetVertexShader(Shaders.WmoVertex);
+	        gNoBlendProgram.SetPixelShader(Shaders.WmoFragment);
 
-            gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
-            gBlendProgram.SetPixelShader(Resources.Shaders.WmoPixelBlend);
+            gBlendProgram = new ShaderProgram();
+            gBlendProgram.SetVertexShader(Shaders.WmoVertex);
+            gBlendProgram.SetPixelShader(Shaders.WmoFragmentBlend);
 
-            gIndoorNoBlendProgram = new ShaderProgram(context);
-            gIndoorNoBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
-            gIndoorNoBlendProgram.SetPixelShader(Resources.Shaders.WmoPixelIndoor);
+            gIndoorNoBlendProgram = new ShaderProgram();
+            gIndoorNoBlendProgram.SetVertexShader(Shaders.WmoVertex);
+            gIndoorNoBlendProgram.SetPixelShader(Shaders.WmoFragmentIndoor);
 
-            gIndoorBlendProgram = new ShaderProgram(context);
-            gIndoorBlendProgram.SetVertexShader(Resources.Shaders.WmoVertex);
-            gIndoorBlendProgram.SetPixelShader(Resources.Shaders.WmoPixelBlendIndoor);
+            gIndoorBlendProgram = new ShaderProgram();
+            gIndoorBlendProgram.SetVertexShader(Shaders.WmoVertex);
+            gIndoorBlendProgram.SetPixelShader(Shaders.WmoFragmentBlendIndoor);
 
             Mesh.Program = gNoBlendProgram;
 

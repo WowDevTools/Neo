@@ -2,6 +2,7 @@
 using Neo.Settings;
 using Neo.Utils;
 using OpenTK;
+using OpenTK.Input;
 using Point = System.Drawing.Point;
 
 namespace Neo.Scene
@@ -54,9 +55,6 @@ namespace Neo.Scene
                 mLastUpdate = DateTime.Now;
                 return;
             }
-
-            var keyState = new byte[256];
-            UnsafeNativeMethods.GetKeyboardState(keyState);
 
             var positionChanged = false;
             var updateTerrain = false;
@@ -126,11 +124,9 @@ namespace Neo.Scene
 
         public void HandleMouseWheel(int delta)
         {
-            var keyState = new byte[256];
-            UnsafeNativeMethods.GetKeyboardState(keyState);
-
-            if (KeyHelper.IsKeyDown(keyState, Key.RButton))
-            {
+	        MouseState mouseState = Mouse.GetState();
+	        if (mouseState.IsButtonDown(MouseButton.Right))
+	        {
                 var cam = WorldFrame.Instance.ActiveCamera;
                 cam.MoveForward(delta * mSpeedFactorWheel);
                 WorldFrame.Instance.MapManager.UpdatePosition(cam.Position, true);

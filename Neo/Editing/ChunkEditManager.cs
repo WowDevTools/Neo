@@ -55,8 +55,10 @@ namespace Neo.Editing
             var chunk = WorldFrame.Instance.LastMouseIntersection.ChunkHit;
             if (chunk != null && chunk != mHoveredChunk)
             {
-                if (chunk.AreaId != mHoveredChunk?.AreaId)
-                    HoveredAreaChange?.Invoke(chunk.AreaId);
+	            if (chunk.AreaId != mHoveredChunk?.AreaId)
+	            {
+		            HoveredAreaChange?.Invoke(chunk.AreaId);
+	            }
                 mHoveredChunk = chunk;
             }
         }
@@ -95,8 +97,11 @@ namespace Neo.Editing
             switch (ChunkEditMode)
             {
                 case ChunkEditMode.AreaPaint:
-                    if (SelectedAreaId == 0 || e.Button != MouseButtons.Left)
-                        return;
+				{
+					if (SelectedAreaId == 0 || !e.Mouse.IsButtonDown(MouseButton.Left))
+					{
+						return;
+					}
 
                     MapArea parent;
                     if (chunk.Parent.TryGetTarget(out parent))
@@ -106,20 +111,26 @@ namespace Neo.Editing
                         ForceRenderUpdate?.Invoke(chunk);
                     }
                     break;
-
-                case ChunkEditMode.AreaSelect:
-                    if (e.Button != MouseButtons.Left)
-                        return;
+	            }
+	            case ChunkEditMode.AreaSelect:
+				{
+					if (!e.Mouse.IsButtonDown(MouseButton.Left))
+					{
+						return;
+					}
 
                     SelectedAreaId = chunk.AreaId;
                     SelectedAreaIdChange?.Invoke(SelectedAreaId);
                     break;
-
-                case ChunkEditMode.Hole:
-                    break;
-
+	            }
+	            case ChunkEditMode.Hole:
+	            {
+		            break;
+	            }
                 case ChunkEditMode.Flags:
-                    break;
+	            {
+		            break;
+	            }
             }
         }
     }

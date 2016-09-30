@@ -112,10 +112,8 @@ namespace Neo.Editing
 
         private void CheckUpdateScale(Point cursor)
         {
-            var state = new byte[256];
-            UnsafeNativeMethods.GetKeyboardState(state);
-
-            if (KeyHelper.AreKeysDown(state, Key.Menu, Key.RButton))
+	        MouseState mouseState = Mouse.GetState();
+	        if (mouseState.IsButtonDown(MouseButton.Right))
             {
                 var dx = cursor.X - mLastCursorPos.X;
                 var newScale = mHoveredInstance.Scale + dx * 0.05f;
@@ -126,16 +124,17 @@ namespace Neo.Editing
 
         public void OnTerrainClicked(IntersectionParams parameters, MouseEventArgs args)
         {
-            if (EditManager.Instance.CurrentMode == EditMode.Chunk)
-                return;
+	        if (EditManager.Instance.CurrentMode == EditMode.Chunk)
+	        {
+		        return;
+	        }
 
-            if (args.Button != MouseButtons.Left)
+            if (!args.Mouse.IsButtonDown(MouseButton.Left))
             {
-                if (args.Button == MouseButtons.Right)
+                if (args.Mouse.IsButtonDown(MouseButton.Left))
                 {
-                    var state = new byte[256];
-                    UnsafeNativeMethods.GetKeyboardState(state);
-                    if (KeyHelper.IsKeyDown(state, Keys.ControlKey))
+	                KeyboardState keyboardState = Keyboard.GetState();
+                    if (keyboardState.IsKeyDown(Key.ControlLeft))
                     {
                         WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
                         mHoveredInstance = null;
@@ -148,11 +147,15 @@ namespace Neo.Editing
                 return;
             }
 
-            if (parameters.TerrainHit == false)
-                return;
+	        if (parameters.TerrainHit == false)
+	        {
+		        return;
+	        }
 
-            if (mHoveredInstance == null)
-                return;
+	        if (mHoveredInstance == null)
+	        {
+		        return;
+	        }
 
             SpawnModel(parameters.TerrainPosition);
 
@@ -192,11 +195,15 @@ namespace Neo.Editing
             if (adtMinX == adtMaxX && adtMinY == adtMaxY)
             {
                 var area = WorldFrame.Instance.MapManager.GetAreaByPosition(rootPosition);
-                if (area == null)
-                    return;
+	            if (area == null)
+	            {
+		            return;
+	            }
 
-                if (area.AreaFile == null || area.AreaFile.IsValid == false)
-                    return;
+	            if (area.AreaFile == null || area.AreaFile.IsValid == false)
+	            {
+		            return;
+	            }
 
                 mHoveredInstance.SetPosition(rootPosition);
 
@@ -215,12 +222,16 @@ namespace Neo.Editing
         private void AddToGrid(int adtMinX, int adtMaxX, int adtMinY, int adtMaxY, int clickX, int clickY)
         {
             var area = WorldFrame.Instance.MapManager.GetAreaByIndex(clickX, clickY);
-            if (area == null || area.AreaFile == null || area.AreaFile.IsValid == false)
-                return;
+	        if (area == null || area.AreaFile == null || area.AreaFile.IsValid == false)
+	        {
+		        return;
+	        }
 
             var baseUuid = area.AreaFile.GetFreeM2Uuid();
-            if (baseUuid == -1)
-                return;
+	        if (baseUuid == -1)
+	        {
+		        return;
+	        }
 
             for (var x = adtMinX; x <= adtMaxX; ++x)
             {
@@ -296,31 +307,37 @@ namespace Neo.Editing
             var fileName = string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", WorldFrame.Instance.MapManager.Continent, x, y);
             using (var strm = FileManager.Instance.Provider.OpenFile(fileName))
             {
-                if (strm == null)
-                    return true;
+	            if (strm == null)
+	            {
+		            return true;
+	            }
 
                 var reader = new BinaryReader(strm);
                 while (strm.Position + 8 < strm.Length)
                 {
                     var signature = reader.ReadUInt32();
                     var size = reader.ReadInt32();
-                    if (signature == Chunks.Mddf)
-                    {
-                        var doodads = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
-                        var id = uuid;
-                        while (doodads.Any(d => d.UniqueId == id))
-                        {
-                            if ((id & 0xFFFFF) < 0xFFFFF)
-                                ++id;
-                            else
-                                return false;
-                        }
+	                if (signature == Chunks.Mddf)
+	                {
+		                var doodads = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
+		                var id = uuid;
+		                while (doodads.Any(d => d.UniqueId == id))
+		                {
+			                if ((id & 0xFFFFF) < 0xFFFFF)
+			                {
+				                ++id;
+			                }
+			                else
+			                {
+				                return false;
+			                }
+		                }
 
-                        uuid = id;
-                        return true;
-                    }
-                    else
-                        strm.Position += size;
+		                uuid = id;
+		                return true;
+	                }
+
+	                strm.Position += size;
                 }
 
                 return true;

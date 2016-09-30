@@ -217,7 +217,7 @@ namespace Neo.Scene.Models.M2
 
             var program = new ShaderProgram(context);
             program.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-            program.SetPixelShader(Resources.Shaders.M2PixelPortrait);
+            program.SetPixelShader(Resources.Shaders.M2FragmentPortrait);
 
             Mesh.Program = program;
 
@@ -298,20 +298,20 @@ namespace Neo.Scene.Models.M2
             gNoBlendProgram = program;
 
             gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelPortraitBlend);
+            gBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentPortraitBlend);
             gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
 
             gBlendMaskProgram = new ShaderProgram(context);
-            gBlendMaskProgram.SetPixelShader(Resources.Shaders.M2PixelPortraitBlendAlpha);
+            gBlendMaskProgram.SetPixelShader(Resources.Shaders.M2FragmentPortraitBlendAlpha);
             gBlendMaskProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
 
             g2PassProgram = new ShaderProgram(context);
             g2PassProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-            g2PassProgram.SetPixelShader(Resources.Shaders.M2PixelPortrait2Pass);
+            g2PassProgram.SetPixelShader(Resources.Shaders.M2FragmentPortrait2Pass);
 
             g3PassProgram = new ShaderProgram(context);
             g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-            g3PassProgram.SetPixelShader(Resources.Shaders.M2PixelPortrait3Pass);
+            g3PassProgram.SetPixelShader(Resources.Shaders.M2FragmentPortrait3Pass);
 
             gNoCullState = new RasterState
             {

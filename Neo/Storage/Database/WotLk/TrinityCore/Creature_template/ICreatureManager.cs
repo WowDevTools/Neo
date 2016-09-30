@@ -1,8 +1,8 @@
 ﻿using System.Data;
 using System.Collections.Generic;
-using SharpDX;
+using OpenTK;
 
-namespace WoWEditor6.Storage.Database.WotLk.TrinityCore
+namespace Neo.Storage.Database.WotLk.TrinityCore
 {
     interface ICreatureManager
     {

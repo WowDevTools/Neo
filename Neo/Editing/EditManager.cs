@@ -1,9 +1,9 @@
 ﻿using System;
-using Gdk;
 using Neo.Scene;
 using Neo.UI;
 using Neo.Utils;
 using OpenTK;
+using OpenTK.Input;
 using Point = System.Drawing.Point;
 
 namespace Neo.Editing
@@ -173,15 +173,16 @@ namespace Neo.Editing
             else if ((CurrentMode & EditMode.Texturing) != 0)
                 TextureChangeManager.Instance.OnChange(diff);
 
-	        // TODO: GDK hotkey implementation
-            var keyState = new byte[256];
-            UnsafeNativeMethods.GetKeyboardState(keyState);
-            var altDown = KeyHelper.IsKeyDown(keyState, Key.Menu);
-            var LMBDown = KeyHelper.IsKeyDown(keyState, Key.LButton);
-            var RMBDown = KeyHelper.IsKeyDown(keyState, Key.RButton);
-            var spaceDown = KeyHelper.IsKeyDown(keyState, Key.Space);
-            var MMBDown = KeyHelper.IsKeyDown(keyState, Key.MButton);
-            var tDown = KeyHelper.IsKeyDown(keyState, Key.T);
+
+	        KeyboardState keyboardState = Keyboard.GetState();
+	        var altDown = keyboardState.IsKeyDown(Key.AltLeft);
+	        var spaceDown =  keyboardState.IsKeyDown(Key.Space);
+	        var tDown = keyboardState.IsKeyDown(Key.T);
+
+	        MouseState mouseState = Mouse.GetState();
+	        var LMBDown = mouseState.IsButtonDown(MouseButton.Left);
+	        var RMBDown = mouseState.IsButtonDown(MouseButton.Right);
+	        var MMBDown = mouseState.IsButtonDown(MouseButton.Middle);
 
 	        Point curPos = InterfaceHelper.GetCursorPosition();
 	        var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;

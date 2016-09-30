@@ -422,28 +422,28 @@ namespace Neo.Scene.Models.M2
             // all combinations are set in this one each time
             gCustomProgram = new ShaderProgram(context);
             gCustomProgram.SetVertexShader(Resources.Shaders.M2VertexSingle_VS_Diffuse_T1);
-            gCustomProgram.SetPixelShader(Resources.Shaders.M2Pixel_PS_Combiners_Mod);
+            gCustomProgram.SetPixelShader(Resources.Shaders.M2Fragment_PS_Combiners_Mod);
 
             gMesh.Program = gCustomProgram;
 
             gNoBlendProgram = new ShaderProgram(context);
-            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2PixelOld);
+            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentOld);
             gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
             gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetPixelShader(Resources.Shaders.M2PixelBlendOld);
+            gBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentBlendOld);
             gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
             gBlendTestProgram = new ShaderProgram(context);
-            gBlendTestProgram.SetPixelShader(Resources.Shaders.M2PixelBlendAlphaOld);
+            gBlendTestProgram.SetPixelShader(Resources.Shaders.M2FragmentBlendAlphaOld);
             gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
             g2PassProgram = new ShaderProgram(context);
-            g2PassProgram.SetPixelShader(Resources.Shaders.M2Pixel2PassOld);
+            g2PassProgram.SetPixelShader(Resources.Shaders.M2Fragment2PassOld);
             g2PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
             g3PassProgram = new ShaderProgram(context);
-            g3PassProgram.SetPixelShader(Resources.Shaders.M2Pixel3PassOld);
+            g3PassProgram.SetPixelShader(Resources.Shaders.M2Fragment3PassOld);
             g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
             gPerDrawCallBuffer = new UniformBuffer();

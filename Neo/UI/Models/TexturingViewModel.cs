@@ -14,6 +14,7 @@ using Neo.IO.Files.Texture;
 using Neo.Scene;
 using Neo.UI.Widgets;
 using Neo.Utils;
+using OpenTK.Input;
 using CheckBox = System.Windows.Controls.CheckBox;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
@@ -26,8 +27,8 @@ namespace Neo.UI.Models
         private WeakReference<MapArea> mLastArea;
         private WeakReference<MapChunk> mLastChunk;
         private readonly List<string> mRecentTextures = new List<string>();
-        private readonly List<string> mFavoriteTextures = new List<string>(); 
-        private readonly List<string> mTilesets = new List<string>(); 
+        private readonly List<string> mFavoriteTextures = new List<string>();
+        private readonly List<string> mTilesets = new List<string>();
 
         public TexturingWidget Widget { get { return mWidget; } }
 
@@ -611,13 +612,16 @@ namespace Neo.UI.Models
 
         private void OnWorldClick(IntersectionParams intersectionParams, MouseEventArgs args)
         {
-            if (args.Button != MouseButtons.Left)
-                return;
+	        if (!args.Mouse.IsButtonDown(MouseButton.Left))
+	        {
+		        return;
+	        }
 
-            var keys = new byte[256];
-            UnsafeNativeMethods.GetKeyboardState(keys);
-            if (KeyHelper.IsKeyDown(keys, Keys.ControlKey) || KeyHelper.IsKeyDown(keys, Keys.ShiftKey))
-                return;
+	        KeyboardState keyboardState = Keyboard.GetState();
+	        if (keyboardState.IsKeyDown(Key.ControlLeft) || keyboardState.IsKeyDown(Key.ShiftLeft))
+	        {
+		        return;
+	        }
 
             if (intersectionParams.ChunkHit == null)
             {
@@ -626,27 +630,35 @@ namespace Neo.UI.Models
             }
 
             MapArea area;
-            if (intersectionParams.ChunkHit.Parent.TryGetTarget(out area) == false)
-                return;
+	        if (intersectionParams.ChunkHit.Parent.TryGetTarget(out area) == false)
+	        {
+		        return;
+	        }
 
             var updateArea = true;
             if (mLastArea != null)
             {
                 MapArea lastArea;
-                if (mLastArea.TryGetTarget(out lastArea) && lastArea == area)
-                    updateArea = false;
+	            if (mLastArea.TryGetTarget(out lastArea) && lastArea == area)
+	            {
+		            updateArea = false;
+	            }
 
             }
 
             mLastArea = intersectionParams.ChunkHit.Parent;
-            if (updateArea)
-                SetSelectedTileTextures(mWidget.SelectedTileWrapPanel, area.TextureNames);
+	        if (updateArea)
+	        {
+		        SetSelectedTileTextures(mWidget.SelectedTileWrapPanel, area.TextureNames);
+	        }
 
             MapChunk lastChunk;
             if (mLastChunk != null && mLastChunk.TryGetTarget(out lastChunk))
             {
-                if (lastChunk == intersectionParams.ChunkHit)
-                    return;
+	            if (lastChunk == intersectionParams.ChunkHit)
+	            {
+		            return;
+	            }
             }
 
             mLastChunk = new WeakReference<MapChunk>(intersectionParams.ChunkHit);
@@ -656,8 +668,10 @@ namespace Neo.UI.Models
         private void OnTextureSelected(PictureBox box)
         {
             var texName = box.Tag as string;
-            if (string.IsNullOrEmpty(texName))
-                return;
+	        if (string.IsNullOrEmpty(texName))
+	        {
+		        return;
+	        }
 
             mWidget.TexturePreviewImage.Image = box.Image;
             mWidget.TexturePreviewImage.Tag = texName;
@@ -675,8 +689,10 @@ namespace Neo.UI.Models
             box.MouseEnter += (sender, args) =>
             {
                 var panel = box.Parent as Panel;
-                if (panel == null)
-                    return;
+	            if (panel == null)
+	            {
+		            return;
+	            }
 
                 panel.BackColor = Color.Black;
             };
@@ -684,8 +700,10 @@ namespace Neo.UI.Models
             box.MouseLeave += (sender, args) =>
             {
                 var panel = box.Parent as Panel;
-                if (panel == null)
-                    return;
+	            if (panel == null)
+	            {
+		            return;
+	            }
 
                 panel.BackColor = Color.Transparent;
             };

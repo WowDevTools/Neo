@@ -11,7 +11,7 @@ namespace Neo.UI
         private static readonly PrivateFontCollection gCollection = new PrivateFontCollection();
         private static readonly List<WeakReference<Font>> gFontsList = new List<WeakReference<Font>>();
 
-        public unsafe static void Initialize()
+        public static unsafe void Initialize()
         {
             IO.FileManager.Instance.LoadComplete += () =>
             {

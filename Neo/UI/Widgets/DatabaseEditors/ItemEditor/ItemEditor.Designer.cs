@@ -1,4 +1,4 @@
-﻿namespace WoWEditor6.UI.Dialogs
+﻿namespace Neo.UI.Dialogs
 {
     partial class ItemEditor
     {
@@ -28,19 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.itemEditorControl1 = new WoWEditor6.UI.Dialog.ItemEditorControl();
+            this.itemEditorControl1 = new Neo.UI.Dialog.ItemEditorControl();
             this.itemEditorControl1.TabControl.SuspendLayout();
             this.itemEditorControl1.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // itemEditorControl1
-            // 
+            //
             this.itemEditorControl1.Location = new System.Drawing.Point(0, 0);
             this.itemEditorControl1.Name = "itemEditorControl1";
             this.itemEditorControl1.Size = new System.Drawing.Size(699, 478);
-            // 
+            //
             // itemEditorControl1.TabControl
-            // 
+            //
             this.itemEditorControl1.TabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.itemEditorControl1.TabControl.ItemSize = new System.Drawing.Size(0, 1);
             this.itemEditorControl1.TabControl.Location = new System.Drawing.Point(156, 3);
@@ -50,9 +50,9 @@
             this.itemEditorControl1.TabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.itemEditorControl1.TabControl.TabIndex = 132;
             this.itemEditorControl1.TabIndex = 0;
-            // 
+            //
             // ItemEditor
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(695, 475);

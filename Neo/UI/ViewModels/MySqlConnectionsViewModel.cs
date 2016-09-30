@@ -1,21 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Prism.Commands;
-using Prism.Interactivity.InteractionRequest;
-using Prism.Mvvm;
-<<<<<<< HEAD:Neo/UI/ViewModels/MySqlConnectionsViewModel.cs
 using Neo.Storage.Database;
 using Neo.Storage.Database.WotLk.TrinityCore;
 using Neo.UI.Models;
 using Neo.UI.Services;
-=======
-using WoWEditor6.Storage.Database;
-using WoWEditor6.Storage.Database.WotLk.TrinityCore;
-using WoWEditor6.UI.Models;
-using WoWEditor6.UI.Services;
-using System.Windows.Forms;
->>>>>>> 68061948880901a73043ec22a51fa0c733353565:WoWEditor6/UI/ViewModels/MySqlConnectionsViewModel.cs
 
 namespace Neo.UI.ViewModels
 {
@@ -83,7 +72,7 @@ namespace Neo.UI.ViewModels
         {
             var xml = new XmlService();
 
-            foreach (var connection in xml.GetIdAttributes())
+            foreach (var connection in XmlService.GetIdAttributes())
             {
                 ConnectionsModel.Connections.Add(connection);
             }
@@ -176,7 +165,7 @@ namespace Neo.UI.ViewModels
                 return;
             }
             var xml = new XmlService();
-            xml.SaveConnection(GetConnection());
+            XmlService.SaveConnection(GetConnection());
 
             ConnectionsModel.SaveIsEnabled = false;
             ConnectionsModel.DeleteIsEnabled = true;
@@ -189,7 +178,7 @@ namespace Neo.UI.ViewModels
             var xml = new XmlService();
 
             if (ConnectionsModel.SelectedItem == null) return;
-            xml.DeleteConnection(ConnectionsModel.SelectedItem);
+            XmlService.DeleteConnection(ConnectionsModel.SelectedItem);
             ConnectionsModel.Connections.Remove(ConnectionsModel.SelectedItem);
         }
 
@@ -206,7 +195,7 @@ namespace Neo.UI.ViewModels
         {
             var xml = new XmlService();
             if (ConnectionsModel.SelectedItem == null || ConnectionsModel.SaveIsEnabled) return;
-            var list = xml.ReadConnection(ConnectionsModel.SelectedItem);
+            var list = XmlService.ReadConnection(ConnectionsModel.SelectedItem);
 
             ConnectionsModel.Address = list[0];
             ConnectionsModel.Username = list[1];

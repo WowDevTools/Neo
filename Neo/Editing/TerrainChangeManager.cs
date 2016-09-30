@@ -3,6 +3,7 @@ using Neo.Scene;
 using Neo.Utils;
 using Neo.UI.Dialogs;
 using OpenTK;
+using OpenTK.Input;
 
 namespace Neo.Editing
 {
@@ -91,21 +92,23 @@ namespace Neo.Editing
 
             var bindings = Settings.KeyBindings.Instance;
 
-	        // TODO: Replace with GDK keyboard monitoring
-            var state = new byte[256];
-            UnsafeNativeMethods.GetKeyboardState(state);
-
-            if (!KeyHelper.IsKeyDown(state, Key.LButton))
+	        MouseState mouseState = Mouse.GetState();
+            if (!mouseState.IsButtonDown(MouseButton.Left))
             {
                 return false;
             }
 
-                if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.Edit) == false &&
-                    KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse) == false)
-                    return false;
+	        KeyboardState keyboardState = Keyboard.GetState();
+	        if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.Edit) == false &&
+	            KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse) == false)
+	        {
+		        return false;
+	        }
 
-                if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse))
-                    isInverted = true;
+	        if (KeyHelper.AreKeysDown(state, bindings.InteractionKeys.EditInverse))
+	        {
+		        isInverted = true;
+	        }
 
             return true;
         }

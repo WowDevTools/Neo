@@ -1,13 +1,13 @@
-﻿namespace WoWEditor6.UI.Dialog
+﻿namespace Neo.UI.Dialog
 {
     partial class ItemEditorControl
     {
-        /// <summary> 
+        /// <summary>
         /// Variable nécessaire au concepteur.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
+        /// <summary>
         /// Nettoyage des ressources utilisées.
         /// </summary>
         /// <param name="disposing">true si les ressources managées doivent être supprimées ; sinon, false.</param>
@@ -22,8 +22,8 @@
 
         #region Code généré par le Concepteur de composants
 
-        /// <summary> 
-        /// Méthode requise pour la prise en charge du concepteur - ne modifiez pas 
+        /// <summary>
+        /// Méthode requise pour la prise en charge du concepteur - ne modifiez pas
         /// le contenu de cette méthode avec l'éditeur de code.
         /// </summary>
         private void InitializeComponent()
@@ -347,7 +347,7 @@
             this.label97 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SoundOverrideSubclass = new System.Windows.Forms.ComboBox();
-            this.modelRenderControl1 = new WoWEditor6.UI.Components.ModelRenderControl();
+            this.modelRenderControl1 = new Neo.UI.Components.ModelRenderControl();
             this.tbcEditor.SuspendLayout();
             this.tbItemInfo.SuspendLayout();
             this.tbItemInfo2.SuspendLayout();
@@ -388,9 +388,9 @@
             this.groupBox18.SuspendLayout();
             this.tbOptional.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // LoadButton
-            // 
+            //
             this.LoadButton.BackColor = System.Drawing.Color.Transparent;
             this.LoadButton.Location = new System.Drawing.Point(79, 172);
             this.LoadButton.Name = "LoadButton";
@@ -399,16 +399,16 @@
             this.LoadButton.Text = "Load";
             this.LoadButton.UseVisualStyleBackColor = false;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
-            // 
+            //
             // LoadEntry
-            // 
+            //
             this.LoadEntry.Location = new System.Drawing.Point(3, 172);
             this.LoadEntry.Name = "LoadEntry";
             this.LoadEntry.Size = new System.Drawing.Size(71, 20);
             this.LoadEntry.TabIndex = 130;
-            // 
+            //
             // btnSave
-            // 
+            //
             this.btnSave.Location = new System.Drawing.Point(3, 143);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(150, 23);
@@ -416,9 +416,9 @@
             this.btnSave.Text = "Save and execute to DB";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
+            //
             // lbMenu
-            // 
+            //
             this.lbMenu.FormattingEnabled = true;
             this.lbMenu.Items.AddRange(new object[] {
             "Item Info",
@@ -435,9 +435,9 @@
             this.lbMenu.Size = new System.Drawing.Size(150, 121);
             this.lbMenu.TabIndex = 128;
             this.lbMenu.SelectedIndexChanged += new System.EventHandler(this.lbMenu_SelectedIndexChanged);
-            // 
+            //
             // tbcEditor
-            // 
+            //
             this.tbcEditor.Controls.Add(this.tbItemInfo);
             this.tbcEditor.Controls.Add(this.tbItemInfo2);
             this.tbcEditor.Controls.Add(this.tbModelInfo);
@@ -452,9 +452,9 @@
             this.tbcEditor.SelectedIndex = 0;
             this.tbcEditor.Size = new System.Drawing.Size(545, 479);
             this.tbcEditor.TabIndex = 132;
-            // 
+            //
             // tbItemInfo
-            // 
+            //
             this.tbItemInfo.Controls.Add(this.Bonding);
             this.tbItemInfo.Controls.Add(this.Quality);
             this.tbItemInfo.Controls.Add(this.Entry);
@@ -490,9 +490,9 @@
             this.tbItemInfo.TabIndex = 0;
             this.tbItemInfo.Text = "Item Info";
             this.tbItemInfo.UseVisualStyleBackColor = true;
-            // 
+            //
             // Bonding
-            // 
+            //
             this.Bonding.FormattingEnabled = true;
             this.Bonding.Items.AddRange(new object[] {
             "NoBounds",
@@ -506,9 +506,9 @@
             this.Bonding.Size = new System.Drawing.Size(377, 21);
             this.Bonding.TabIndex = 29;
             this.Bonding.Text = "NoBounds";
-            // 
+            //
             // Quality
-            // 
+            //
             this.Quality.FormattingEnabled = true;
             this.Quality.Items.AddRange(new object[] {
             "Poor",
@@ -524,111 +524,111 @@
             this.Quality.Size = new System.Drawing.Size(377, 21);
             this.Quality.TabIndex = 28;
             this.Quality.Text = "Poor";
-            // 
+            //
             // Entry
-            // 
+            //
             this.Entry.Location = new System.Drawing.Point(139, 7);
             this.Entry.Name = "Entry";
             this.Entry.Size = new System.Drawing.Size(377, 20);
             this.Entry.TabIndex = 27;
-            // 
+            //
             // ItemName
-            // 
+            //
             this.ItemName.Location = new System.Drawing.Point(139, 37);
             this.ItemName.Name = "ItemName";
             this.ItemName.Size = new System.Drawing.Size(377, 20);
             this.ItemName.TabIndex = 26;
-            // 
+            //
             // Description
-            // 
+            //
             this.Description.Location = new System.Drawing.Point(139, 67);
             this.Description.Name = "Description";
             this.Description.Size = new System.Drawing.Size(377, 20);
             this.Description.TabIndex = 25;
-            // 
+            //
             // BuyCount
-            // 
+            //
             this.BuyCount.Location = new System.Drawing.Point(139, 127);
             this.BuyCount.Name = "BuyCount";
             this.BuyCount.Size = new System.Drawing.Size(377, 20);
             this.BuyCount.TabIndex = 24;
             this.BuyCount.Text = "0";
-            // 
+            //
             // BuyPrice
-            // 
+            //
             this.BuyPrice.Location = new System.Drawing.Point(139, 157);
             this.BuyPrice.Name = "BuyPrice";
             this.BuyPrice.Size = new System.Drawing.Size(377, 20);
             this.BuyPrice.TabIndex = 23;
             this.BuyPrice.Text = "0";
-            // 
+            //
             // SellPrice
-            // 
+            //
             this.SellPrice.Location = new System.Drawing.Point(139, 187);
             this.SellPrice.Name = "SellPrice";
             this.SellPrice.Size = new System.Drawing.Size(377, 20);
             this.SellPrice.TabIndex = 22;
             this.SellPrice.Text = "0";
-            // 
+            //
             // ItemLevel
-            // 
+            //
             this.ItemLevel.Location = new System.Drawing.Point(139, 217);
             this.ItemLevel.Name = "ItemLevel";
             this.ItemLevel.Size = new System.Drawing.Size(377, 20);
             this.ItemLevel.TabIndex = 21;
             this.ItemLevel.Text = "0";
-            // 
+            //
             // MaxCount
-            // 
+            //
             this.MaxCount.Location = new System.Drawing.Point(139, 247);
             this.MaxCount.Name = "MaxCount";
             this.MaxCount.Size = new System.Drawing.Size(377, 20);
             this.MaxCount.TabIndex = 20;
             this.MaxCount.Text = "0";
-            // 
+            //
             // Stackable
-            // 
+            //
             this.Stackable.Location = new System.Drawing.Point(139, 277);
             this.Stackable.Name = "Stackable";
             this.Stackable.Size = new System.Drawing.Size(377, 20);
             this.Stackable.TabIndex = 19;
             this.Stackable.Text = "0";
-            // 
+            //
             // VerifiedBuild
-            // 
+            //
             this.VerifiedBuild.Location = new System.Drawing.Point(139, 397);
             this.VerifiedBuild.Name = "VerifiedBuild";
             this.VerifiedBuild.Size = new System.Drawing.Size(377, 20);
             this.VerifiedBuild.TabIndex = 18;
             this.VerifiedBuild.Text = "12340";
-            // 
+            //
             // DisenchantId
-            // 
+            //
             this.DisenchantId.Location = new System.Drawing.Point(139, 367);
             this.DisenchantId.Name = "DisenchantId";
             this.DisenchantId.Size = new System.Drawing.Size(377, 20);
             this.DisenchantId.TabIndex = 17;
             this.DisenchantId.Text = "0";
-            // 
+            //
             // ReqDisenchantSkill
-            // 
+            //
             this.ReqDisenchantSkill.Location = new System.Drawing.Point(139, 337);
             this.ReqDisenchantSkill.Name = "ReqDisenchantSkill";
             this.ReqDisenchantSkill.Size = new System.Drawing.Size(377, 20);
             this.ReqDisenchantSkill.TabIndex = 16;
             this.ReqDisenchantSkill.Text = "0";
-            // 
+            //
             // label133
-            // 
+            //
             this.label133.AutoSize = true;
             this.label133.Location = new System.Drawing.Point(3, 397);
             this.label133.Name = "label133";
             this.label133.Size = new System.Drawing.Size(68, 13);
             this.label133.TabIndex = 15;
             this.label133.Text = "Verified Build";
-            // 
+            //
             // label131
-            // 
+            //
             this.label131.AutoSize = true;
             this.label131.Location = new System.Drawing.Point(3, 367);
             this.label131.Name = "label131";
@@ -636,9 +636,9 @@
             this.label131.TabIndex = 14;
             this.label131.Text = "Disenchant Id";
             this.toolTip1.SetToolTip(this.label131, "The disenchant loot template ID.");
-            // 
+            //
             // label127
-            // 
+            //
             this.label127.AutoSize = true;
             this.label127.Location = new System.Drawing.Point(3, 337);
             this.label127.Name = "label127";
@@ -647,9 +647,9 @@
             this.label127.Text = "Required Disenchant Skill";
             this.toolTip1.SetToolTip(this.label127, "The required proficiency in disenchanting that the player needs to have to be abl" +
         "e to disenchant this item.");
-            // 
+            //
             // label96
-            // 
+            //
             this.label96.AutoSize = true;
             this.label96.Location = new System.Drawing.Point(3, 67);
             this.label96.Name = "label96";
@@ -658,9 +658,9 @@
             this.label96.Text = "Description";
             this.toolTip1.SetToolTip(this.label96, "The description that appears in orange letters at the bottom of the item tooltip." +
         "");
-            // 
+            //
             // label95
-            // 
+            //
             this.label95.AutoSize = true;
             this.label95.Location = new System.Drawing.Point(3, 307);
             this.label95.Name = "label95";
@@ -668,9 +668,9 @@
             this.label95.TabIndex = 11;
             this.label95.Text = "Bonding";
             this.toolTip1.SetToolTip(this.label95, "The bonding for the item.");
-            // 
+            //
             // label24
-            // 
+            //
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(3, 277);
             this.label24.Name = "label24";
@@ -678,9 +678,9 @@
             this.label24.TabIndex = 10;
             this.label24.Text = "Stackable";
             this.toolTip1.SetToolTip(this.label24, "The number of copies of this item that can be stacked in the same slot.");
-            // 
+            //
             // label23
-            // 
+            //
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(3, 247);
             this.label23.Name = "label23";
@@ -688,9 +688,9 @@
             this.label23.TabIndex = 9;
             this.label23.Text = "Max Count";
             this.toolTip1.SetToolTip(this.label23, "Maximum number of copies of this item a player can have. Use 0 for infinite.");
-            // 
+            //
             // label22
-            // 
+            //
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(3, 217);
             this.label22.Name = "label22";
@@ -698,9 +698,9 @@
             this.label22.TabIndex = 8;
             this.label22.Text = "Item Level";
             this.toolTip1.SetToolTip(this.label22, "Base item level.");
-            // 
+            //
             // label10
-            // 
+            //
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(3, 187);
             this.label10.Name = "label10";
@@ -710,9 +710,9 @@
             this.toolTip1.SetToolTip(this.label10, "The price that the vendor will pay you for the item when you sell it and if it is" +
         " possible to be sold, in copper. Put in 0 if the item cannot be sold to a vendor" +
         ".");
-            // 
+            //
             // label9
-            // 
+            //
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(3, 157);
             this.label9.Name = "label9";
@@ -720,9 +720,9 @@
             this.label9.TabIndex = 6;
             this.label9.Text = "Buy Price";
             this.toolTip1.SetToolTip(this.label9, "The price required to pay to buy this item from a vendor, in copper.");
-            // 
+            //
             // label8
-            // 
+            //
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(3, 127);
             this.label8.Name = "label8";
@@ -730,9 +730,9 @@
             this.label8.TabIndex = 5;
             this.label8.Text = "Buy Count";
             this.toolTip1.SetToolTip(this.label8, "The size of the item stack when sold by vendors.");
-            // 
+            //
             // label5
-            // 
+            //
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(3, 97);
             this.label5.Name = "label5";
@@ -740,9 +740,9 @@
             this.label5.TabIndex = 4;
             this.label5.Text = "Quality";
             this.toolTip1.SetToolTip(this.label5, "The quality of the item.");
-            // 
+            //
             // label4
-            // 
+            //
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(3, 37);
             this.label4.Name = "label4";
@@ -750,9 +750,9 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "Name";
             this.toolTip1.SetToolTip(this.label4, "The name of the item.");
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 7);
             this.label1.Name = "label1";
@@ -760,9 +760,9 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Entry";
             this.toolTip1.SetToolTip(this.label1, "The unique ID of the item.");
-            // 
+            //
             // tbItemInfo2
-            // 
+            //
             this.tbItemInfo2.Controls.Add(this.ScriptName);
             this.tbItemInfo2.Controls.Add(this.MaxMoneyLoot);
             this.tbItemInfo2.Controls.Add(this.MinMoneyLoot);
@@ -793,48 +793,48 @@
             this.tbItemInfo2.TabIndex = 7;
             this.tbItemInfo2.Text = "Item Info 2";
             this.tbItemInfo2.UseVisualStyleBackColor = true;
-            // 
+            //
             // ScriptName
-            // 
+            //
             this.ScriptName.Location = new System.Drawing.Point(103, 367);
             this.ScriptName.Name = "ScriptName";
             this.ScriptName.Size = new System.Drawing.Size(393, 20);
             this.ScriptName.TabIndex = 26;
-            // 
+            //
             // MaxMoneyLoot
-            // 
+            //
             this.MaxMoneyLoot.Location = new System.Drawing.Point(103, 337);
             this.MaxMoneyLoot.Name = "MaxMoneyLoot";
             this.MaxMoneyLoot.Size = new System.Drawing.Size(393, 20);
             this.MaxMoneyLoot.TabIndex = 25;
             this.MaxMoneyLoot.Text = "0";
-            // 
+            //
             // MinMoneyLoot
-            // 
+            //
             this.MinMoneyLoot.Location = new System.Drawing.Point(103, 307);
             this.MinMoneyLoot.Name = "MinMoneyLoot";
             this.MinMoneyLoot.Size = new System.Drawing.Size(393, 20);
             this.MinMoneyLoot.TabIndex = 24;
             this.MinMoneyLoot.Text = "0";
-            // 
+            //
             // MaxDurability
-            // 
+            //
             this.MaxDurability.Location = new System.Drawing.Point(103, 157);
             this.MaxDurability.Name = "MaxDurability";
             this.MaxDurability.Size = new System.Drawing.Size(393, 20);
             this.MaxDurability.TabIndex = 23;
             this.MaxDurability.Text = "0";
-            // 
+            //
             // ContainerSlots
-            // 
+            //
             this.ContainerSlots.Location = new System.Drawing.Point(103, 97);
             this.ContainerSlots.Name = "ContainerSlots";
             this.ContainerSlots.Size = new System.Drawing.Size(393, 20);
             this.ContainerSlots.TabIndex = 22;
             this.ContainerSlots.Text = "0";
-            // 
+            //
             // BagFamily
-            // 
+            //
             this.BagFamily.FormattingEnabled = true;
             this.BagFamily.Items.AddRange(new object[] {
             "None",
@@ -857,9 +857,9 @@
             this.BagFamily.Name = "BagFamily";
             this.BagFamily.Size = new System.Drawing.Size(393, 49);
             this.BagFamily.TabIndex = 21;
-            // 
+            //
             // Sheath
-            // 
+            //
             this.Sheath.FormattingEnabled = true;
             this.Sheath.Items.AddRange(new object[] {
             "None",
@@ -874,9 +874,9 @@
             this.Sheath.Size = new System.Drawing.Size(393, 21);
             this.Sheath.TabIndex = 20;
             this.Sheath.Text = "None";
-            // 
+            //
             // Material
-            // 
+            //
             this.Material.FormattingEnabled = true;
             this.Material.Items.AddRange(new object[] {
             "Consumables",
@@ -894,9 +894,9 @@
             this.Material.Size = new System.Drawing.Size(393, 21);
             this.Material.TabIndex = 19;
             this.Material.Text = "Consumables";
-            // 
+            //
             // AmmoType
-            // 
+            //
             this.AmmoType.FormattingEnabled = true;
             this.AmmoType.Items.AddRange(new object[] {
             "None",
@@ -907,9 +907,9 @@
             this.AmmoType.Size = new System.Drawing.Size(393, 21);
             this.AmmoType.TabIndex = 18;
             this.AmmoType.Text = "None";
-            // 
+            //
             // InventoryType
-            // 
+            //
             this.InventoryType.FormattingEnabled = true;
             this.InventoryType.Items.AddRange(new object[] {
             "NonEquipable",
@@ -946,18 +946,18 @@
             this.InventoryType.Size = new System.Drawing.Size(393, 21);
             this.InventoryType.TabIndex = 17;
             this.InventoryType.Text = "NonEquipable";
-            // 
+            //
             // SubClass
-            // 
+            //
             this.SubClass.FormattingEnabled = true;
             this.SubClass.Location = new System.Drawing.Point(103, 37);
             this.SubClass.Name = "SubClass";
             this.SubClass.Size = new System.Drawing.Size(393, 21);
             this.SubClass.TabIndex = 16;
             this.SubClass.Text = "Please choose a class first.";
-            // 
+            //
             // ItemClass
-            // 
+            //
             this.ItemClass.FormattingEnabled = true;
             this.ItemClass.Items.AddRange(new object[] {
             "Consumable",
@@ -983,9 +983,9 @@
             this.ItemClass.TabIndex = 15;
             this.ItemClass.Text = "Consumable";
             this.ItemClass.SelectedIndexChanged += new System.EventHandler(this.ItemClass_SelectedIndexChanged);
-            // 
+            //
             // label135
-            // 
+            //
             this.label135.AutoSize = true;
             this.label135.Location = new System.Drawing.Point(3, 337);
             this.label135.Name = "label135";
@@ -994,9 +994,9 @@
             this.label135.Text = "Max Money Loot";
             this.toolTip1.SetToolTip(this.label135, "If the item is a container that can contain money, then this field defines the ma" +
         "ximum coinage held in this container, in copper.");
-            // 
+            //
             // label134
-            // 
+            //
             this.label134.AutoSize = true;
             this.label134.Location = new System.Drawing.Point(3, 307);
             this.label134.Name = "label134";
@@ -1005,9 +1005,9 @@
             this.label134.Text = "Min Money Loot";
             this.toolTip1.SetToolTip(this.label134, "If the item is a container that can contain money, then this field defines the mi" +
         "nimum coinage held in this container, in copper.");
-            // 
+            //
             // label132
-            // 
+            //
             this.label132.AutoSize = true;
             this.label132.Location = new System.Drawing.Point(4, 367);
             this.label132.Name = "label132";
@@ -1015,9 +1015,9 @@
             this.label132.TabIndex = 12;
             this.label132.Text = "Scipt Name";
             this.toolTip1.SetToolTip(this.label132, "The name of the script that the item should use.");
-            // 
+            //
             // label117
-            // 
+            //
             this.label117.AutoSize = true;
             this.label117.Location = new System.Drawing.Point(3, 247);
             this.label117.Name = "label117";
@@ -1026,9 +1026,9 @@
             this.label117.Text = "Bag Family";
             this.toolTip1.SetToolTip(this.label117, "If the item is a bag, this field is a bitmask controlling what types of items can" +
         " be put in this bag.");
-            // 
+            //
             // label110
-            // 
+            //
             this.label110.AutoSize = true;
             this.label110.Location = new System.Drawing.Point(3, 217);
             this.label110.Name = "label110";
@@ -1036,9 +1036,9 @@
             this.label110.TabIndex = 10;
             this.label110.Text = "Sheath";
             this.toolTip1.SetToolTip(this.label110, "Controls how the item is put away on the character.");
-            // 
+            //
             // label109
-            // 
+            //
             this.label109.AutoSize = true;
             this.label109.Location = new System.Drawing.Point(3, 187);
             this.label109.Name = "label109";
@@ -1047,9 +1047,9 @@
             this.label109.Text = "Material";
             this.toolTip1.SetToolTip(this.label109, "The material that the item is made of. The value here affects the sound that the " +
         "item makes when moved.");
-            // 
+            //
             // label66
-            // 
+            //
             this.label66.AutoSize = true;
             this.label66.Location = new System.Drawing.Point(3, 157);
             this.label66.Name = "label66";
@@ -1057,9 +1057,9 @@
             this.label66.TabIndex = 8;
             this.label66.Text = "Max Durability";
             this.toolTip1.SetToolTip(this.label66, "The maximum durability of this item.");
-            // 
+            //
             // label65
-            // 
+            //
             this.label65.AutoSize = true;
             this.label65.Location = new System.Drawing.Point(3, 127);
             this.label65.Name = "label65";
@@ -1067,9 +1067,9 @@
             this.label65.TabIndex = 7;
             this.label65.Text = "Ammo Type";
             this.toolTip1.SetToolTip(this.label65, "The type of ammunition the item uses.");
-            // 
+            //
             // label25
-            // 
+            //
             this.label25.AutoSize = true;
             this.label25.Location = new System.Drawing.Point(3, 97);
             this.label25.Name = "label25";
@@ -1077,9 +1077,9 @@
             this.label25.TabIndex = 6;
             this.label25.Text = "Container Slots";
             this.toolTip1.SetToolTip(this.label25, "If the item is a bag, this field controls the number of slots the bag has.");
-            // 
+            //
             // label11
-            // 
+            //
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(3, 67);
             this.label11.Name = "label11";
@@ -1087,9 +1087,9 @@
             this.label11.TabIndex = 5;
             this.label11.Text = "Inventory Type";
             this.toolTip1.SetToolTip(this.label11, "In what slot the item can be equipped.");
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 37);
             this.label3.Name = "label3";
@@ -1097,9 +1097,9 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "SubClass";
             this.toolTip1.SetToolTip(this.label3, "The Subclass of the item.");
-            // 
+            //
             // label2
-            // 
+            //
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 7);
             this.label2.Name = "label2";
@@ -1107,9 +1107,9 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Class";
             this.toolTip1.SetToolTip(this.label2, "The Class of the item.");
-            // 
+            //
             // tbModelInfo
-            // 
+            //
             this.tbModelInfo.Controls.Add(this.label50);
             this.tbModelInfo.Controls.Add(this.ModelId);
             this.tbModelInfo.Controls.Add(this.btnShowModelId1);
@@ -1121,9 +1121,9 @@
             this.tbModelInfo.TabIndex = 1;
             this.tbModelInfo.Text = "Model Info";
             this.tbModelInfo.UseVisualStyleBackColor = true;
-            // 
+            //
             // label50
-            // 
+            //
             this.label50.AutoSize = true;
             this.label50.Location = new System.Drawing.Point(3, 394);
             this.label50.Name = "label50";
@@ -1132,26 +1132,26 @@
             this.label50.Text = "Display ID";
             this.toolTip1.SetToolTip(this.label50, "The model ID of the item. Each model has its own icon assigned so this field cont" +
         "rols both the model appearance and the icon.");
-            // 
+            //
             // ModelId
-            // 
+            //
             this.ModelId.Location = new System.Drawing.Point(6, 428);
             this.ModelId.Name = "ModelId";
             this.ModelId.Size = new System.Drawing.Size(54, 20);
             this.ModelId.TabIndex = 26;
             this.ModelId.Text = "0";
-            // 
+            //
             // btnShowModelId1
-            // 
+            //
             this.btnShowModelId1.Location = new System.Drawing.Point(66, 428);
             this.btnShowModelId1.Name = "btnShowModelId1";
             this.btnShowModelId1.Size = new System.Drawing.Size(54, 20);
             this.btnShowModelId1.TabIndex = 27;
             this.btnShowModelId1.Text = "Show";
             this.btnShowModelId1.UseVisualStyleBackColor = true;
-            // 
+            //
             // tbCombat
-            // 
+            //
             this.tbCombat.AutoScroll = true;
             this.tbCombat.Controls.Add(this.Armor);
             this.tbCombat.Controls.Add(this.label124);
@@ -1170,17 +1170,17 @@
             this.tbCombat.TabIndex = 2;
             this.tbCombat.Text = "Combat";
             this.tbCombat.UseVisualStyleBackColor = true;
-            // 
+            //
             // Armor
-            // 
+            //
             this.Armor.Location = new System.Drawing.Point(129, 215);
             this.Armor.Name = "Armor";
             this.Armor.Size = new System.Drawing.Size(365, 20);
             this.Armor.TabIndex = 88;
             this.Armor.Text = "0";
-            // 
+            //
             // label124
-            // 
+            //
             this.label124.AutoSize = true;
             this.label124.Location = new System.Drawing.Point(6, 215);
             this.label124.Name = "label124";
@@ -1188,33 +1188,33 @@
             this.label124.TabIndex = 87;
             this.label124.Text = "Armor";
             this.toolTip1.SetToolTip(this.label124, "The armor value of the item.");
-            // 
+            //
             // ArmorDmgMod
-            // 
+            //
             this.ArmorDmgMod.Location = new System.Drawing.Point(129, 272);
             this.ArmorDmgMod.Name = "ArmorDmgMod";
             this.ArmorDmgMod.Size = new System.Drawing.Size(365, 20);
             this.ArmorDmgMod.TabIndex = 86;
             this.ArmorDmgMod.Text = "0";
-            // 
+            //
             // Block
-            // 
+            //
             this.Block.Location = new System.Drawing.Point(129, 253);
             this.Block.Name = "Block";
             this.Block.Size = new System.Drawing.Size(365, 20);
             this.Block.TabIndex = 85;
             this.Block.Text = "0";
-            // 
+            //
             // Delay
-            // 
+            //
             this.Delay.Location = new System.Drawing.Point(129, 234);
             this.Delay.Name = "Delay";
             this.Delay.Size = new System.Drawing.Size(365, 20);
             this.Delay.TabIndex = 84;
             this.Delay.Text = "0";
-            // 
+            //
             // groupBox23
-            // 
+            //
             this.groupBox23.Controls.Add(this.dmgType2);
             this.groupBox23.Controls.Add(this.DmgMax2);
             this.groupBox23.Controls.Add(this.DmgMin2);
@@ -1227,9 +1227,9 @@
             this.groupBox23.TabIndex = 83;
             this.groupBox23.TabStop = false;
             this.groupBox23.Text = "Damage 2";
-            // 
+            //
             // dmgType2
-            // 
+            //
             this.dmgType2.FormattingEnabled = true;
             this.dmgType2.Items.AddRange(new object[] {
             "Physical",
@@ -1244,52 +1244,52 @@
             this.dmgType2.Size = new System.Drawing.Size(396, 21);
             this.dmgType2.TabIndex = 84;
             this.dmgType2.Text = "Physical";
-            // 
+            //
             // DmgMax2
-            // 
+            //
             this.DmgMax2.Location = new System.Drawing.Point(89, 46);
             this.DmgMax2.Name = "DmgMax2";
             this.DmgMax2.Size = new System.Drawing.Size(396, 20);
             this.DmgMax2.TabIndex = 81;
             this.DmgMax2.Text = "0";
-            // 
+            //
             // DmgMin2
-            // 
+            //
             this.DmgMin2.Location = new System.Drawing.Point(89, 16);
             this.DmgMin2.Name = "DmgMin2";
             this.DmgMin2.Size = new System.Drawing.Size(396, 20);
             this.DmgMin2.TabIndex = 80;
             this.DmgMin2.Text = "0";
-            // 
+            //
             // label59
-            // 
+            //
             this.label59.AutoSize = true;
             this.label59.Location = new System.Drawing.Point(6, 76);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(74, 13);
             this.label59.TabIndex = 78;
             this.label59.Text = "Damage Type";
-            // 
+            //
             // label60
-            // 
+            //
             this.label60.AutoSize = true;
             this.label60.Location = new System.Drawing.Point(6, 46);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(70, 13);
             this.label60.TabIndex = 77;
             this.label60.Text = "Damage Max";
-            // 
+            //
             // label61
-            // 
+            //
             this.label61.AutoSize = true;
             this.label61.Location = new System.Drawing.Point(6, 16);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(67, 13);
             this.label61.TabIndex = 76;
             this.label61.Text = "Damage Min";
-            // 
+            //
             // groupBox22
-            // 
+            //
             this.groupBox22.Controls.Add(this.dmgType1);
             this.groupBox22.Controls.Add(this.DmgMax1);
             this.groupBox22.Controls.Add(this.DmgMin1);
@@ -1302,9 +1302,9 @@
             this.groupBox22.TabIndex = 82;
             this.groupBox22.TabStop = false;
             this.groupBox22.Text = "Damage 1";
-            // 
+            //
             // dmgType1
-            // 
+            //
             this.dmgType1.FormattingEnabled = true;
             this.dmgType1.Items.AddRange(new object[] {
             "Physical",
@@ -1319,25 +1319,25 @@
             this.dmgType1.Size = new System.Drawing.Size(396, 21);
             this.dmgType1.TabIndex = 81;
             this.dmgType1.Text = "Physical";
-            // 
+            //
             // DmgMax1
-            // 
+            //
             this.DmgMax1.Location = new System.Drawing.Point(89, 46);
             this.DmgMax1.Name = "DmgMax1";
             this.DmgMax1.Size = new System.Drawing.Size(396, 20);
             this.DmgMax1.TabIndex = 80;
             this.DmgMax1.Text = "0";
-            // 
+            //
             // DmgMin1
-            // 
+            //
             this.DmgMin1.Location = new System.Drawing.Point(89, 16);
             this.DmgMin1.Name = "DmgMin1";
             this.DmgMin1.Size = new System.Drawing.Size(396, 20);
             this.DmgMin1.TabIndex = 79;
             this.DmgMin1.Text = "0";
-            // 
+            //
             // label58
-            // 
+            //
             this.label58.AutoSize = true;
             this.label58.Location = new System.Drawing.Point(6, 76);
             this.label58.Name = "label58";
@@ -1345,9 +1345,9 @@
             this.label58.TabIndex = 78;
             this.label58.Text = "Damage Type";
             this.toolTip1.SetToolTip(this.label58, "The damage type that the item uses.");
-            // 
+            //
             // label57
-            // 
+            //
             this.label57.AutoSize = true;
             this.label57.Location = new System.Drawing.Point(6, 46);
             this.label57.Name = "label57";
@@ -1355,9 +1355,9 @@
             this.label57.TabIndex = 77;
             this.label57.Text = "Damage Max";
             this.toolTip1.SetToolTip(this.label57, "The maximum damage of the item.");
-            // 
+            //
             // label56
-            // 
+            //
             this.label56.AutoSize = true;
             this.label56.Location = new System.Drawing.Point(6, 16);
             this.label56.Name = "label56";
@@ -1365,18 +1365,18 @@
             this.label56.TabIndex = 76;
             this.label56.Text = "Damage Min";
             this.toolTip1.SetToolTip(this.label56, "The minimum damage of the item.");
-            // 
+            //
             // label64
-            // 
+            //
             this.label64.AutoSize = true;
             this.label64.Location = new System.Drawing.Point(6, 272);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(117, 13);
             this.label64.TabIndex = 81;
             this.label64.Text = "Armor Damage Modifier";
-            // 
+            //
             // label62
-            // 
+            //
             this.label62.AutoSize = true;
             this.label62.Location = new System.Drawing.Point(6, 234);
             this.label62.Name = "label62";
@@ -1384,9 +1384,9 @@
             this.label62.TabIndex = 79;
             this.label62.Text = "Delay";
             this.toolTip1.SetToolTip(this.label62, "The time in milliseconds between successive hits.");
-            // 
+            //
             // label63
-            // 
+            //
             this.label63.AutoSize = true;
             this.label63.Location = new System.Drawing.Point(6, 253);
             this.label63.Name = "label63";
@@ -1394,9 +1394,9 @@
             this.label63.TabIndex = 78;
             this.label63.Text = "Block";
             this.toolTip1.SetToolTip(this.label63, "If the item is a shield, the block chance of the shield.");
-            // 
+            //
             // groupBox5
-            // 
+            //
             this.groupBox5.Controls.Add(this.ResArcane);
             this.groupBox5.Controls.Add(this.label49);
             this.groupBox5.Controls.Add(this.ResShadow);
@@ -1415,9 +1415,9 @@
             this.groupBox5.TabIndex = 71;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Resistances";
-            // 
+            //
             // ResArcane
-            // 
+            //
             this.ResArcane.Location = new System.Drawing.Point(6, 227);
             this.ResArcane.Maximum = new decimal(new int[] {
             9999,
@@ -1427,9 +1427,9 @@
             this.ResArcane.Name = "ResArcane";
             this.ResArcane.Size = new System.Drawing.Size(485, 20);
             this.ResArcane.TabIndex = 78;
-            // 
+            //
             // label49
-            // 
+            //
             this.label49.AutoSize = true;
             this.label49.Location = new System.Drawing.Point(6, 211);
             this.label49.Name = "label49";
@@ -1437,9 +1437,9 @@
             this.label49.TabIndex = 77;
             this.label49.Text = "Arcane";
             this.toolTip1.SetToolTip(this.label49, "Arcane resistance.");
-            // 
+            //
             // ResShadow
-            // 
+            //
             this.ResShadow.Location = new System.Drawing.Point(6, 188);
             this.ResShadow.Maximum = new decimal(new int[] {
             9999,
@@ -1449,9 +1449,9 @@
             this.ResShadow.Name = "ResShadow";
             this.ResShadow.Size = new System.Drawing.Size(485, 20);
             this.ResShadow.TabIndex = 76;
-            // 
+            //
             // label51
-            // 
+            //
             this.label51.AutoSize = true;
             this.label51.Location = new System.Drawing.Point(6, 172);
             this.label51.Name = "label51";
@@ -1459,9 +1459,9 @@
             this.label51.TabIndex = 75;
             this.label51.Text = "Shadow";
             this.toolTip1.SetToolTip(this.label51, "Shadow resistance.");
-            // 
+            //
             // ResFrost
-            // 
+            //
             this.ResFrost.Location = new System.Drawing.Point(6, 149);
             this.ResFrost.Maximum = new decimal(new int[] {
             9999,
@@ -1471,9 +1471,9 @@
             this.ResFrost.Name = "ResFrost";
             this.ResFrost.Size = new System.Drawing.Size(485, 20);
             this.ResFrost.TabIndex = 74;
-            // 
+            //
             // label52
-            // 
+            //
             this.label52.AutoSize = true;
             this.label52.Location = new System.Drawing.Point(6, 133);
             this.label52.Name = "label52";
@@ -1481,9 +1481,9 @@
             this.label52.TabIndex = 73;
             this.label52.Text = "Frost";
             this.toolTip1.SetToolTip(this.label52, "Frost resistance.");
-            // 
+            //
             // ResNature
-            // 
+            //
             this.ResNature.Location = new System.Drawing.Point(6, 110);
             this.ResNature.Maximum = new decimal(new int[] {
             9999,
@@ -1493,9 +1493,9 @@
             this.ResNature.Name = "ResNature";
             this.ResNature.Size = new System.Drawing.Size(485, 20);
             this.ResNature.TabIndex = 72;
-            // 
+            //
             // ResFire
-            // 
+            //
             this.ResFire.Location = new System.Drawing.Point(6, 71);
             this.ResFire.Maximum = new decimal(new int[] {
             9999,
@@ -1505,9 +1505,9 @@
             this.ResFire.Name = "ResFire";
             this.ResFire.Size = new System.Drawing.Size(485, 20);
             this.ResFire.TabIndex = 72;
-            // 
+            //
             // label53
-            // 
+            //
             this.label53.AutoSize = true;
             this.label53.Location = new System.Drawing.Point(6, 94);
             this.label53.Name = "label53";
@@ -1515,9 +1515,9 @@
             this.label53.TabIndex = 71;
             this.label53.Text = "Nature";
             this.toolTip1.SetToolTip(this.label53, "Nature resistance.");
-            // 
+            //
             // ResHoly
-            // 
+            //
             this.ResHoly.Location = new System.Drawing.Point(6, 32);
             this.ResHoly.Maximum = new decimal(new int[] {
             9999,
@@ -1527,9 +1527,9 @@
             this.ResHoly.Name = "ResHoly";
             this.ResHoly.Size = new System.Drawing.Size(485, 20);
             this.ResHoly.TabIndex = 72;
-            // 
+            //
             // label54
-            // 
+            //
             this.label54.AutoSize = true;
             this.label54.Location = new System.Drawing.Point(6, 55);
             this.label54.Name = "label54";
@@ -1537,9 +1537,9 @@
             this.label54.TabIndex = 71;
             this.label54.Text = "Fire";
             this.toolTip1.SetToolTip(this.label54, "Fire resistance.");
-            // 
+            //
             // label55
-            // 
+            //
             this.label55.AutoSize = true;
             this.label55.Location = new System.Drawing.Point(6, 16);
             this.label55.Name = "label55";
@@ -1547,9 +1547,9 @@
             this.label55.TabIndex = 71;
             this.label55.Text = "Holy";
             this.toolTip1.SetToolTip(this.label55, "Holy resistance.");
-            // 
+            //
             // tbStat
-            // 
+            //
             this.tbStat.AutoScroll = true;
             this.tbStat.Controls.Add(this.groupBox17);
             this.tbStat.Controls.Add(this.groupBox16);
@@ -1570,9 +1570,9 @@
             this.tbStat.TabIndex = 3;
             this.tbStat.Text = "Stats";
             this.tbStat.UseVisualStyleBackColor = true;
-            // 
+            //
             // groupBox17
-            // 
+            //
             this.groupBox17.Controls.Add(this.ScalingStatValue);
             this.groupBox17.Controls.Add(this.ScalingStatDistribution);
             this.groupBox17.Controls.Add(this.label47);
@@ -1583,25 +1583,25 @@
             this.groupBox17.TabIndex = 54;
             this.groupBox17.TabStop = false;
             this.groupBox17.Text = "Scalling Stat";
-            // 
+            //
             // ScalingStatValue
-            // 
+            //
             this.ScalingStatValue.Location = new System.Drawing.Point(131, 63);
             this.ScalingStatValue.Name = "ScalingStatValue";
             this.ScalingStatValue.Size = new System.Drawing.Size(330, 20);
             this.ScalingStatValue.TabIndex = 48;
             this.ScalingStatValue.Text = "0";
-            // 
+            //
             // ScalingStatDistribution
-            // 
+            //
             this.ScalingStatDistribution.Location = new System.Drawing.Point(131, 33);
             this.ScalingStatDistribution.Name = "ScalingStatDistribution";
             this.ScalingStatDistribution.Size = new System.Drawing.Size(330, 20);
             this.ScalingStatDistribution.TabIndex = 47;
             this.ScalingStatDistribution.Text = "0";
-            // 
+            //
             // label47
-            // 
+            //
             this.label47.AutoSize = true;
             this.label47.Location = new System.Drawing.Point(6, 33);
             this.label47.Name = "label47";
@@ -1610,9 +1610,9 @@
             this.label47.Text = "Scaling Stat Distribution";
             this.toolTip1.SetToolTip(this.label47, "Similar to Static Stats these are the Stats that grow along with the users level " +
         "(mainly heirloom leveling gear)\r\n");
-            // 
+            //
             // label48
-            // 
+            //
             this.label48.AutoSize = true;
             this.label48.Location = new System.Drawing.Point(6, 63);
             this.label48.Name = "label48";
@@ -1620,9 +1620,9 @@
             this.label48.TabIndex = 46;
             this.label48.Text = "Scaling Stat Value";
             this.toolTip1.SetToolTip(this.label48, "Final (level 80) value of the scaling-stat");
-            // 
+            //
             // groupBox16
-            // 
+            //
             this.groupBox16.Controls.Add(this.StatType10);
             this.groupBox16.Controls.Add(this.StatValue10);
             this.groupBox16.Controls.Add(this.label45);
@@ -1633,9 +1633,9 @@
             this.groupBox16.TabIndex = 53;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Stat 10";
-            // 
+            //
             // StatType10
-            // 
+            //
             this.StatType10.FormattingEnabled = true;
             this.StatType10.Items.AddRange(new object[] {
             "Mana",
@@ -1687,35 +1687,35 @@
             this.StatType10.Size = new System.Drawing.Size(330, 21);
             this.StatType10.TabIndex = 47;
             this.StatType10.Text = "Mana";
-            // 
+            //
             // StatValue10
-            // 
+            //
             this.StatValue10.Location = new System.Drawing.Point(79, 59);
             this.StatValue10.Name = "StatValue10";
             this.StatValue10.Size = new System.Drawing.Size(330, 20);
             this.StatValue10.TabIndex = 46;
             this.StatValue10.Text = "0";
-            // 
+            //
             // label45
-            // 
+            //
             this.label45.AutoSize = true;
             this.label45.Location = new System.Drawing.Point(6, 59);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(56, 13);
             this.label45.TabIndex = 5;
             this.label45.Text = "Stat Value";
-            // 
+            //
             // label46
-            // 
+            //
             this.label46.AutoSize = true;
             this.label46.Location = new System.Drawing.Point(6, 29);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(53, 13);
             this.label46.TabIndex = 4;
             this.label46.Text = "Stat Type";
-            // 
+            //
             // groupBox15
-            // 
+            //
             this.groupBox15.Controls.Add(this.StatType9);
             this.groupBox15.Controls.Add(this.StatValue9);
             this.groupBox15.Controls.Add(this.label43);
@@ -1726,9 +1726,9 @@
             this.groupBox15.TabIndex = 52;
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "Stat 9";
-            // 
+            //
             // StatType9
-            // 
+            //
             this.StatType9.FormattingEnabled = true;
             this.StatType9.Items.AddRange(new object[] {
             "Mana",
@@ -1780,35 +1780,35 @@
             this.StatType9.Size = new System.Drawing.Size(330, 21);
             this.StatType9.TabIndex = 47;
             this.StatType9.Text = "Mana";
-            // 
+            //
             // StatValue9
-            // 
+            //
             this.StatValue9.Location = new System.Drawing.Point(79, 59);
             this.StatValue9.Name = "StatValue9";
             this.StatValue9.Size = new System.Drawing.Size(330, 20);
             this.StatValue9.TabIndex = 46;
             this.StatValue9.Text = "0";
-            // 
+            //
             // label43
-            // 
+            //
             this.label43.AutoSize = true;
             this.label43.Location = new System.Drawing.Point(6, 59);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(56, 13);
             this.label43.TabIndex = 5;
             this.label43.Text = "Stat Value";
-            // 
+            //
             // label44
-            // 
+            //
             this.label44.AutoSize = true;
             this.label44.Location = new System.Drawing.Point(6, 29);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(53, 13);
             this.label44.TabIndex = 4;
             this.label44.Text = "Stat Type";
-            // 
+            //
             // groupBox14
-            // 
+            //
             this.groupBox14.Controls.Add(this.StatType8);
             this.groupBox14.Controls.Add(this.StatValue8);
             this.groupBox14.Controls.Add(this.label41);
@@ -1819,9 +1819,9 @@
             this.groupBox14.TabIndex = 48;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Stat 8";
-            // 
+            //
             // StatType8
-            // 
+            //
             this.StatType8.FormattingEnabled = true;
             this.StatType8.Items.AddRange(new object[] {
             "Mana",
@@ -1873,35 +1873,35 @@
             this.StatType8.Size = new System.Drawing.Size(330, 21);
             this.StatType8.TabIndex = 47;
             this.StatType8.Text = "Mana";
-            // 
+            //
             // StatValue8
-            // 
+            //
             this.StatValue8.Location = new System.Drawing.Point(79, 59);
             this.StatValue8.Name = "StatValue8";
             this.StatValue8.Size = new System.Drawing.Size(330, 20);
             this.StatValue8.TabIndex = 46;
             this.StatValue8.Text = "0";
-            // 
+            //
             // label41
-            // 
+            //
             this.label41.AutoSize = true;
             this.label41.Location = new System.Drawing.Point(6, 59);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(56, 13);
             this.label41.TabIndex = 5;
             this.label41.Text = "Stat Value";
-            // 
+            //
             // label42
-            // 
+            //
             this.label42.AutoSize = true;
             this.label42.Location = new System.Drawing.Point(6, 29);
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(53, 13);
             this.label42.TabIndex = 4;
             this.label42.Text = "Stat Type";
-            // 
+            //
             // groupBox13
-            // 
+            //
             this.groupBox13.Controls.Add(this.StatType7);
             this.groupBox13.Controls.Add(this.StatValue7);
             this.groupBox13.Controls.Add(this.label39);
@@ -1912,9 +1912,9 @@
             this.groupBox13.TabIndex = 48;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Stat 7";
-            // 
+            //
             // StatType7
-            // 
+            //
             this.StatType7.FormattingEnabled = true;
             this.StatType7.Items.AddRange(new object[] {
             "Mana",
@@ -1966,35 +1966,35 @@
             this.StatType7.Size = new System.Drawing.Size(330, 21);
             this.StatType7.TabIndex = 47;
             this.StatType7.Text = "Mana";
-            // 
+            //
             // StatValue7
-            // 
+            //
             this.StatValue7.Location = new System.Drawing.Point(79, 59);
             this.StatValue7.Name = "StatValue7";
             this.StatValue7.Size = new System.Drawing.Size(330, 20);
             this.StatValue7.TabIndex = 46;
             this.StatValue7.Text = "0";
-            // 
+            //
             // label39
-            // 
+            //
             this.label39.AutoSize = true;
             this.label39.Location = new System.Drawing.Point(6, 59);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(56, 13);
             this.label39.TabIndex = 5;
             this.label39.Text = "Stat Value";
-            // 
+            //
             // label40
-            // 
+            //
             this.label40.AutoSize = true;
             this.label40.Location = new System.Drawing.Point(6, 29);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(53, 13);
             this.label40.TabIndex = 4;
             this.label40.Text = "Stat Type";
-            // 
+            //
             // groupBox12
-            // 
+            //
             this.groupBox12.Controls.Add(this.StatType6);
             this.groupBox12.Controls.Add(this.StatValue6);
             this.groupBox12.Controls.Add(this.label37);
@@ -2005,9 +2005,9 @@
             this.groupBox12.TabIndex = 51;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Stat 6";
-            // 
+            //
             // StatType6
-            // 
+            //
             this.StatType6.FormattingEnabled = true;
             this.StatType6.Items.AddRange(new object[] {
             "Mana",
@@ -2059,35 +2059,35 @@
             this.StatType6.Size = new System.Drawing.Size(330, 21);
             this.StatType6.TabIndex = 47;
             this.StatType6.Text = "Mana";
-            // 
+            //
             // StatValue6
-            // 
+            //
             this.StatValue6.Location = new System.Drawing.Point(79, 59);
             this.StatValue6.Name = "StatValue6";
             this.StatValue6.Size = new System.Drawing.Size(330, 20);
             this.StatValue6.TabIndex = 46;
             this.StatValue6.Text = "0";
-            // 
+            //
             // label37
-            // 
+            //
             this.label37.AutoSize = true;
             this.label37.Location = new System.Drawing.Point(6, 59);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(56, 13);
             this.label37.TabIndex = 5;
             this.label37.Text = "Stat Value";
-            // 
+            //
             // label38
-            // 
+            //
             this.label38.AutoSize = true;
             this.label38.Location = new System.Drawing.Point(6, 29);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(53, 13);
             this.label38.TabIndex = 4;
             this.label38.Text = "Stat Type";
-            // 
+            //
             // groupBox11
-            // 
+            //
             this.groupBox11.Controls.Add(this.StatType5);
             this.groupBox11.Controls.Add(this.StatValue5);
             this.groupBox11.Controls.Add(this.label35);
@@ -2098,9 +2098,9 @@
             this.groupBox11.TabIndex = 50;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Stat 5";
-            // 
+            //
             // StatType5
-            // 
+            //
             this.StatType5.FormattingEnabled = true;
             this.StatType5.Items.AddRange(new object[] {
             "Mana",
@@ -2152,35 +2152,35 @@
             this.StatType5.Size = new System.Drawing.Size(330, 21);
             this.StatType5.TabIndex = 47;
             this.StatType5.Text = "Mana";
-            // 
+            //
             // StatValue5
-            // 
+            //
             this.StatValue5.Location = new System.Drawing.Point(79, 59);
             this.StatValue5.Name = "StatValue5";
             this.StatValue5.Size = new System.Drawing.Size(330, 20);
             this.StatValue5.TabIndex = 46;
             this.StatValue5.Text = "0";
-            // 
+            //
             // label35
-            // 
+            //
             this.label35.AutoSize = true;
             this.label35.Location = new System.Drawing.Point(6, 59);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(56, 13);
             this.label35.TabIndex = 5;
             this.label35.Text = "Stat Value";
-            // 
+            //
             // label36
-            // 
+            //
             this.label36.AutoSize = true;
             this.label36.Location = new System.Drawing.Point(6, 29);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(53, 13);
             this.label36.TabIndex = 4;
             this.label36.Text = "Stat Type";
-            // 
+            //
             // groupBox10
-            // 
+            //
             this.groupBox10.Controls.Add(this.StatType4);
             this.groupBox10.Controls.Add(this.StatValue4);
             this.groupBox10.Controls.Add(this.label33);
@@ -2191,9 +2191,9 @@
             this.groupBox10.TabIndex = 49;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Stat 4";
-            // 
+            //
             // StatType4
-            // 
+            //
             this.StatType4.FormattingEnabled = true;
             this.StatType4.Items.AddRange(new object[] {
             "Mana",
@@ -2245,35 +2245,35 @@
             this.StatType4.Size = new System.Drawing.Size(330, 21);
             this.StatType4.TabIndex = 47;
             this.StatType4.Text = "Mana";
-            // 
+            //
             // StatValue4
-            // 
+            //
             this.StatValue4.Location = new System.Drawing.Point(79, 59);
             this.StatValue4.Name = "StatValue4";
             this.StatValue4.Size = new System.Drawing.Size(330, 20);
             this.StatValue4.TabIndex = 46;
             this.StatValue4.Text = "0";
-            // 
+            //
             // label33
-            // 
+            //
             this.label33.AutoSize = true;
             this.label33.Location = new System.Drawing.Point(6, 59);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(56, 13);
             this.label33.TabIndex = 5;
             this.label33.Text = "Stat Value";
-            // 
+            //
             // label34
-            // 
+            //
             this.label34.AutoSize = true;
             this.label34.Location = new System.Drawing.Point(6, 29);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(53, 13);
             this.label34.TabIndex = 4;
             this.label34.Text = "Stat Type";
-            // 
+            //
             // groupBox9
-            // 
+            //
             this.groupBox9.Controls.Add(this.StatType3);
             this.groupBox9.Controls.Add(this.StatValue3);
             this.groupBox9.Controls.Add(this.label31);
@@ -2284,9 +2284,9 @@
             this.groupBox9.TabIndex = 48;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Stat 3";
-            // 
+            //
             // StatType3
-            // 
+            //
             this.StatType3.FormattingEnabled = true;
             this.StatType3.Items.AddRange(new object[] {
             "Mana",
@@ -2338,35 +2338,35 @@
             this.StatType3.Size = new System.Drawing.Size(330, 21);
             this.StatType3.TabIndex = 47;
             this.StatType3.Text = "Mana";
-            // 
+            //
             // StatValue3
-            // 
+            //
             this.StatValue3.Location = new System.Drawing.Point(79, 59);
             this.StatValue3.Name = "StatValue3";
             this.StatValue3.Size = new System.Drawing.Size(330, 20);
             this.StatValue3.TabIndex = 46;
             this.StatValue3.Text = "0";
-            // 
+            //
             // label31
-            // 
+            //
             this.label31.AutoSize = true;
             this.label31.Location = new System.Drawing.Point(6, 59);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(56, 13);
             this.label31.TabIndex = 5;
             this.label31.Text = "Stat Value";
-            // 
+            //
             // label32
-            // 
+            //
             this.label32.AutoSize = true;
             this.label32.Location = new System.Drawing.Point(6, 29);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(53, 13);
             this.label32.TabIndex = 4;
             this.label32.Text = "Stat Type";
-            // 
+            //
             // groupBox8
-            // 
+            //
             this.groupBox8.Controls.Add(this.StatType2);
             this.groupBox8.Controls.Add(this.StatValue2);
             this.groupBox8.Controls.Add(this.label29);
@@ -2377,9 +2377,9 @@
             this.groupBox8.TabIndex = 47;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Stat 2";
-            // 
+            //
             // StatType2
-            // 
+            //
             this.StatType2.FormattingEnabled = true;
             this.StatType2.Items.AddRange(new object[] {
             "Mana",
@@ -2431,35 +2431,35 @@
             this.StatType2.Size = new System.Drawing.Size(330, 21);
             this.StatType2.TabIndex = 47;
             this.StatType2.Text = "Mana";
-            // 
+            //
             // StatValue2
-            // 
+            //
             this.StatValue2.Location = new System.Drawing.Point(79, 59);
             this.StatValue2.Name = "StatValue2";
             this.StatValue2.Size = new System.Drawing.Size(330, 20);
             this.StatValue2.TabIndex = 46;
             this.StatValue2.Text = "0";
-            // 
+            //
             // label29
-            // 
+            //
             this.label29.AutoSize = true;
             this.label29.Location = new System.Drawing.Point(6, 59);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(56, 13);
             this.label29.TabIndex = 5;
             this.label29.Text = "Stat Value";
-            // 
+            //
             // label30
-            // 
+            //
             this.label30.AutoSize = true;
             this.label30.Location = new System.Drawing.Point(6, 29);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(53, 13);
             this.label30.TabIndex = 4;
             this.label30.Text = "Stat Type";
-            // 
+            //
             // groupBox7
-            // 
+            //
             this.groupBox7.Controls.Add(this.StatType1);
             this.groupBox7.Controls.Add(this.StatValue1);
             this.groupBox7.Controls.Add(this.label28);
@@ -2470,9 +2470,9 @@
             this.groupBox7.TabIndex = 46;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Stat 1";
-            // 
+            //
             // StatType1
-            // 
+            //
             this.StatType1.FormattingEnabled = true;
             this.StatType1.Items.AddRange(new object[] {
             "Mana",
@@ -2524,17 +2524,17 @@
             this.StatType1.Size = new System.Drawing.Size(330, 21);
             this.StatType1.TabIndex = 47;
             this.StatType1.Text = "Mana";
-            // 
+            //
             // StatValue1
-            // 
+            //
             this.StatValue1.Location = new System.Drawing.Point(79, 59);
             this.StatValue1.Name = "StatValue1";
             this.StatValue1.Size = new System.Drawing.Size(330, 20);
             this.StatValue1.TabIndex = 46;
             this.StatValue1.Text = "0";
-            // 
+            //
             // label28
-            // 
+            //
             this.label28.AutoSize = true;
             this.label28.Location = new System.Drawing.Point(6, 59);
             this.label28.Name = "label28";
@@ -2542,9 +2542,9 @@
             this.label28.TabIndex = 5;
             this.label28.Text = "Stat Value";
             this.toolTip1.SetToolTip(this.label28, "The value to change the stat type to.");
-            // 
+            //
             // label27
-            // 
+            //
             this.label27.AutoSize = true;
             this.label27.Location = new System.Drawing.Point(6, 29);
             this.label27.Name = "label27";
@@ -2552,17 +2552,17 @@
             this.label27.TabIndex = 4;
             this.label27.Text = "Stat Type";
             this.toolTip1.SetToolTip(this.label27, "The type of stat to modify.");
-            // 
+            //
             // StatsCount
-            // 
+            //
             this.StatsCount.Location = new System.Drawing.Point(82, 7);
             this.StatsCount.Name = "StatsCount";
             this.StatsCount.Size = new System.Drawing.Size(330, 20);
             this.StatsCount.TabIndex = 45;
             this.StatsCount.Text = "0";
-            // 
+            //
             // label26
-            // 
+            //
             this.label26.AutoSize = true;
             this.label26.Location = new System.Drawing.Point(0, 7);
             this.label26.Name = "label26";
@@ -2570,9 +2570,9 @@
             this.label26.TabIndex = 0;
             this.label26.Text = "Stats Count";
             this.toolTip1.SetToolTip(this.label26, "The number of stats the item is using.");
-            // 
+            //
             // tbRequirement
-            // 
+            //
             this.tbRequirement.Controls.Add(this.RequiredReputationRank);
             this.tbRequirement.Controls.Add(this.RequiredCityRank);
             this.tbRequirement.Controls.Add(this.RequiredHonorRank);
@@ -2599,9 +2599,9 @@
             this.tbRequirement.TabIndex = 4;
             this.tbRequirement.Text = "Requirement";
             this.tbRequirement.UseVisualStyleBackColor = true;
-            // 
+            //
             // RequiredReputationRank
-            // 
+            //
             this.RequiredReputationRank.FormattingEnabled = true;
             this.RequiredReputationRank.Items.AddRange(new object[] {
             "Hated",
@@ -2617,65 +2617,65 @@
             this.RequiredReputationRank.Size = new System.Drawing.Size(371, 21);
             this.RequiredReputationRank.TabIndex = 20;
             this.RequiredReputationRank.Text = "Hated";
-            // 
+            //
             // RequiredCityRank
-            // 
+            //
             this.RequiredCityRank.Location = new System.Drawing.Point(152, 277);
             this.RequiredCityRank.Name = "RequiredCityRank";
             this.RequiredCityRank.Size = new System.Drawing.Size(371, 20);
             this.RequiredCityRank.TabIndex = 19;
             this.RequiredCityRank.Text = "0";
-            // 
+            //
             // RequiredHonorRank
-            // 
+            //
             this.RequiredHonorRank.Location = new System.Drawing.Point(152, 247);
             this.RequiredHonorRank.Name = "RequiredHonorRank";
             this.RequiredHonorRank.Size = new System.Drawing.Size(371, 20);
             this.RequiredHonorRank.TabIndex = 18;
             this.RequiredHonorRank.Text = "0";
-            // 
+            //
             // RequiredSpell
-            // 
+            //
             this.RequiredSpell.Location = new System.Drawing.Point(152, 217);
             this.RequiredSpell.Name = "RequiredSpell";
             this.RequiredSpell.Size = new System.Drawing.Size(371, 20);
             this.RequiredSpell.TabIndex = 17;
             this.RequiredSpell.Text = "0";
-            // 
+            //
             // RequiredSkillRank
-            // 
+            //
             this.RequiredSkillRank.Location = new System.Drawing.Point(152, 187);
             this.RequiredSkillRank.Name = "RequiredSkillRank";
             this.RequiredSkillRank.Size = new System.Drawing.Size(371, 20);
             this.RequiredSkillRank.TabIndex = 16;
             this.RequiredSkillRank.Text = "0";
-            // 
+            //
             // RequiredSkill
-            // 
+            //
             this.RequiredSkill.Location = new System.Drawing.Point(152, 157);
             this.RequiredSkill.Name = "RequiredSkill";
             this.RequiredSkill.Size = new System.Drawing.Size(371, 20);
             this.RequiredSkill.TabIndex = 15;
             this.RequiredSkill.Text = "0";
-            // 
+            //
             // RequiredLevel
-            // 
+            //
             this.RequiredLevel.Location = new System.Drawing.Point(152, 127);
             this.RequiredLevel.Name = "RequiredLevel";
             this.RequiredLevel.Size = new System.Drawing.Size(371, 20);
             this.RequiredLevel.TabIndex = 14;
             this.RequiredLevel.Text = "0";
-            // 
+            //
             // RequiredReputationFaction
-            // 
+            //
             this.RequiredReputationFaction.Location = new System.Drawing.Point(152, 307);
             this.RequiredReputationFaction.Name = "RequiredReputationFaction";
             this.RequiredReputationFaction.Size = new System.Drawing.Size(371, 20);
             this.RequiredReputationFaction.TabIndex = 13;
             this.RequiredReputationFaction.Text = "0";
-            // 
+            //
             // AllowableRace
-            // 
+            //
             this.AllowableRace.FormattingEnabled = true;
             this.AllowableRace.Items.AddRange(new object[] {
             "All",
@@ -2694,9 +2694,9 @@
             this.AllowableRace.Size = new System.Drawing.Size(371, 49);
             this.AllowableRace.TabIndex = 11;
             this.AllowableRace.SelectedIndexChanged += new System.EventHandler(this.AllowableRace_SelectedIndexChanged);
-            // 
+            //
             // AllowableClass
-            // 
+            //
             this.AllowableClass.FormattingEnabled = true;
             this.AllowableClass.Items.AddRange(new object[] {
             "All",
@@ -2715,9 +2715,9 @@
             this.AllowableClass.Size = new System.Drawing.Size(371, 49);
             this.AllowableClass.TabIndex = 10;
             this.AllowableClass.SelectedIndexChanged += new System.EventHandler(this.AllowableClass_SelectedIndexChanged);
-            // 
+            //
             // label20
-            // 
+            //
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(3, 307);
             this.label20.Name = "label20";
@@ -2726,9 +2726,9 @@
             this.label20.Text = "Required Reputation Faction";
             this.toolTip1.SetToolTip(this.label20, "The faction template ID  of the faction that the player has to have a certain ran" +
         "king with. If this value is 0, the faction of the seller of the item is used.");
-            // 
+            //
             // label21
-            // 
+            //
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(3, 337);
             this.label21.Name = "label21";
@@ -2736,9 +2736,9 @@
             this.label21.TabIndex = 8;
             this.label21.Text = "Required Reputation Rank";
             this.toolTip1.SetToolTip(this.label21, "The rank the player has to have with the faction.");
-            // 
+            //
             // label18
-            // 
+            //
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(3, 247);
             this.label18.Name = "label18";
@@ -2746,18 +2746,18 @@
             this.label18.TabIndex = 7;
             this.label18.Text = "Required Honor Rank";
             this.toolTip1.SetToolTip(this.label18, "The honor rank the player needs to have to use this item.");
-            // 
+            //
             // label19
-            // 
+            //
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(3, 277);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(99, 13);
             this.label19.TabIndex = 6;
             this.label19.Text = "Required City Rank";
-            // 
+            //
             // label16
-            // 
+            //
             this.label16.AutoSize = true;
             this.label16.Location = new System.Drawing.Point(3, 187);
             this.label16.Name = "label16";
@@ -2765,9 +2765,9 @@
             this.label16.TabIndex = 5;
             this.label16.Text = "Required Skill Rank";
             this.toolTip1.SetToolTip(this.label16, "The required skill rank the player needs to have to use this item.");
-            // 
+            //
             // label17
-            // 
+            //
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(3, 217);
             this.label17.Name = "label17";
@@ -2775,9 +2775,9 @@
             this.label17.TabIndex = 4;
             this.label17.Text = "Required Spell";
             this.toolTip1.SetToolTip(this.label17, "The required spell that the player needs to have to use this item.");
-            // 
+            //
             // label14
-            // 
+            //
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(3, 127);
             this.label14.Name = "label14";
@@ -2785,9 +2785,9 @@
             this.label14.TabIndex = 3;
             this.label14.Text = "Required Level";
             this.toolTip1.SetToolTip(this.label14, "The level that a player must be to equip the item.");
-            // 
+            //
             // label15
-            // 
+            //
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(3, 157);
             this.label15.Name = "label15";
@@ -2795,9 +2795,9 @@
             this.label15.TabIndex = 2;
             this.label15.Text = "Required Skill";
             this.toolTip1.SetToolTip(this.label15, "The skill required to use this item.");
-            // 
+            //
             // label13
-            // 
+            //
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(2, 67);
             this.label13.Name = "label13";
@@ -2805,9 +2805,9 @@
             this.label13.TabIndex = 1;
             this.label13.Text = "Allowable Race";
             this.toolTip1.SetToolTip(this.label13, "Bitmask controlling which races can use this item.");
-            // 
+            //
             // label12
-            // 
+            //
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(3, 7);
             this.label12.Name = "label12";
@@ -2815,9 +2815,9 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "Allowable Class";
             this.toolTip1.SetToolTip(this.label12, "Bitmask controlling which classes can use this item.");
-            // 
+            //
             // tbSpells
-            // 
+            //
             this.tbSpells.AutoScroll = true;
             this.tbSpells.Controls.Add(this.groupBox6);
             this.tbSpells.Controls.Add(this.groupBox4);
@@ -2830,9 +2830,9 @@
             this.tbSpells.TabIndex = 5;
             this.tbSpells.Text = "Spells";
             this.tbSpells.UseVisualStyleBackColor = true;
-            // 
+            //
             // groupBox6
-            // 
+            //
             this.groupBox6.Controls.Add(this.SpellTrigger5);
             this.groupBox6.Controls.Add(this.SpellCharges5);
             this.groupBox6.Controls.Add(this.SpellPpmRate5);
@@ -2853,9 +2853,9 @@
             this.groupBox6.TabIndex = 27;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Spell 5";
-            // 
+            //
             // SpellTrigger5
-            // 
+            //
             this.SpellTrigger5.FormattingEnabled = true;
             this.SpellTrigger5.Items.AddRange(new object[] {
             "Use",
@@ -2869,120 +2869,120 @@
             this.SpellTrigger5.Size = new System.Drawing.Size(330, 21);
             this.SpellTrigger5.TabIndex = 25;
             this.SpellTrigger5.Text = "Use";
-            // 
+            //
             // SpellCharges5
-            // 
+            //
             this.SpellCharges5.Location = new System.Drawing.Point(155, 80);
             this.SpellCharges5.Name = "SpellCharges5";
             this.SpellCharges5.Size = new System.Drawing.Size(330, 20);
             this.SpellCharges5.TabIndex = 24;
             this.SpellCharges5.Text = "0";
-            // 
+            //
             // SpellPpmRate5
-            // 
+            //
             this.SpellPpmRate5.Location = new System.Drawing.Point(155, 110);
             this.SpellPpmRate5.Name = "SpellPpmRate5";
             this.SpellPpmRate5.Size = new System.Drawing.Size(330, 20);
             this.SpellPpmRate5.TabIndex = 23;
             this.SpellPpmRate5.Text = "0";
-            // 
+            //
             // SpellCooldown5
-            // 
+            //
             this.SpellCooldown5.Location = new System.Drawing.Point(155, 140);
             this.SpellCooldown5.Name = "SpellCooldown5";
             this.SpellCooldown5.Size = new System.Drawing.Size(330, 20);
             this.SpellCooldown5.TabIndex = 22;
             this.SpellCooldown5.Text = "0";
-            // 
+            //
             // SpellCategory5
-            // 
+            //
             this.SpellCategory5.Location = new System.Drawing.Point(155, 170);
             this.SpellCategory5.Name = "SpellCategory5";
             this.SpellCategory5.Size = new System.Drawing.Size(330, 20);
             this.SpellCategory5.TabIndex = 21;
             this.SpellCategory5.Text = "0";
-            // 
+            //
             // SpellCategoryCooldown5
-            // 
+            //
             this.SpellCategoryCooldown5.Location = new System.Drawing.Point(155, 200);
             this.SpellCategoryCooldown5.Name = "SpellCategoryCooldown5";
             this.SpellCategoryCooldown5.Size = new System.Drawing.Size(330, 20);
             this.SpellCategoryCooldown5.TabIndex = 20;
             this.SpellCategoryCooldown5.Text = "0";
-            // 
+            //
             // SpellID5
-            // 
+            //
             this.SpellID5.Location = new System.Drawing.Point(155, 20);
             this.SpellID5.Name = "SpellID5";
             this.SpellID5.Size = new System.Drawing.Size(330, 20);
             this.SpellID5.TabIndex = 19;
             this.SpellID5.Text = "0";
-            // 
+            //
             // label100
-            // 
+            //
             this.label100.AutoSize = true;
             this.label100.Location = new System.Drawing.Point(6, 200);
             this.label100.Name = "label100";
             this.label100.Size = new System.Drawing.Size(125, 13);
             this.label100.TabIndex = 18;
             this.label100.Text = "Spell Category Cooldown";
-            // 
+            //
             // label101
-            // 
+            //
             this.label101.AutoSize = true;
             this.label101.Location = new System.Drawing.Point(6, 140);
             this.label101.Name = "label101";
             this.label101.Size = new System.Drawing.Size(80, 13);
             this.label101.TabIndex = 17;
             this.label101.Text = "Spell Cooldown";
-            // 
+            //
             // label102
-            // 
+            //
             this.label102.AutoSize = true;
             this.label102.Location = new System.Drawing.Point(6, 170);
             this.label102.Name = "label102";
             this.label102.Size = new System.Drawing.Size(75, 13);
             this.label102.TabIndex = 16;
             this.label102.Text = "Spell Category";
-            // 
+            //
             // label103
-            // 
+            //
             this.label103.AutoSize = true;
             this.label103.Location = new System.Drawing.Point(6, 80);
             this.label103.Name = "label103";
             this.label103.Size = new System.Drawing.Size(72, 13);
             this.label103.TabIndex = 15;
             this.label103.Text = "Spell Charges";
-            // 
+            //
             // label104
-            // 
+            //
             this.label104.AutoSize = true;
             this.label104.Location = new System.Drawing.Point(6, 110);
             this.label104.Name = "label104";
             this.label104.Size = new System.Drawing.Size(80, 13);
             this.label104.TabIndex = 14;
             this.label104.Text = "Spell Ppm Rate";
-            // 
+            //
             // label105
-            // 
+            //
             this.label105.AutoSize = true;
             this.label105.Location = new System.Drawing.Point(6, 50);
             this.label105.Name = "label105";
             this.label105.Size = new System.Drawing.Size(66, 13);
             this.label105.TabIndex = 13;
             this.label105.Text = "Spell Trigger";
-            // 
+            //
             // label106
-            // 
+            //
             this.label106.AutoSize = true;
             this.label106.Location = new System.Drawing.Point(6, 20);
             this.label106.Name = "label106";
             this.label106.Size = new System.Drawing.Size(42, 13);
             this.label106.TabIndex = 12;
             this.label106.Text = "Spell Id";
-            // 
+            //
             // groupBox4
-            // 
+            //
             this.groupBox4.Controls.Add(this.SpellTrigger4);
             this.groupBox4.Controls.Add(this.SpellCharges4);
             this.groupBox4.Controls.Add(this.SpellPpmRate4);
@@ -3003,9 +3003,9 @@
             this.groupBox4.TabIndex = 26;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Spell 4";
-            // 
+            //
             // SpellTrigger4
-            // 
+            //
             this.SpellTrigger4.FormattingEnabled = true;
             this.SpellTrigger4.Items.AddRange(new object[] {
             "Use",
@@ -3019,120 +3019,120 @@
             this.SpellTrigger4.Size = new System.Drawing.Size(330, 21);
             this.SpellTrigger4.TabIndex = 25;
             this.SpellTrigger4.Text = "Use";
-            // 
+            //
             // SpellCharges4
-            // 
+            //
             this.SpellCharges4.Location = new System.Drawing.Point(155, 80);
             this.SpellCharges4.Name = "SpellCharges4";
             this.SpellCharges4.Size = new System.Drawing.Size(330, 20);
             this.SpellCharges4.TabIndex = 24;
             this.SpellCharges4.Text = "0";
-            // 
+            //
             // SpellPpmRate4
-            // 
+            //
             this.SpellPpmRate4.Location = new System.Drawing.Point(155, 110);
             this.SpellPpmRate4.Name = "SpellPpmRate4";
             this.SpellPpmRate4.Size = new System.Drawing.Size(330, 20);
             this.SpellPpmRate4.TabIndex = 23;
             this.SpellPpmRate4.Text = "0";
-            // 
+            //
             // SpellCooldown4
-            // 
+            //
             this.SpellCooldown4.Location = new System.Drawing.Point(155, 140);
             this.SpellCooldown4.Name = "SpellCooldown4";
             this.SpellCooldown4.Size = new System.Drawing.Size(330, 20);
             this.SpellCooldown4.TabIndex = 22;
             this.SpellCooldown4.Text = "0";
-            // 
+            //
             // SpellCategory4
-            // 
+            //
             this.SpellCategory4.Location = new System.Drawing.Point(155, 170);
             this.SpellCategory4.Name = "SpellCategory4";
             this.SpellCategory4.Size = new System.Drawing.Size(330, 20);
             this.SpellCategory4.TabIndex = 21;
             this.SpellCategory4.Text = "0";
-            // 
+            //
             // SpellCategoryCooldown4
-            // 
+            //
             this.SpellCategoryCooldown4.Location = new System.Drawing.Point(155, 200);
             this.SpellCategoryCooldown4.Name = "SpellCategoryCooldown4";
             this.SpellCategoryCooldown4.Size = new System.Drawing.Size(330, 20);
             this.SpellCategoryCooldown4.TabIndex = 20;
             this.SpellCategoryCooldown4.Text = "0";
-            // 
+            //
             // SpellID4
-            // 
+            //
             this.SpellID4.Location = new System.Drawing.Point(155, 20);
             this.SpellID4.Name = "SpellID4";
             this.SpellID4.Size = new System.Drawing.Size(330, 20);
             this.SpellID4.TabIndex = 19;
             this.SpellID4.Text = "0";
-            // 
+            //
             // label88
-            // 
+            //
             this.label88.AutoSize = true;
             this.label88.Location = new System.Drawing.Point(6, 200);
             this.label88.Name = "label88";
             this.label88.Size = new System.Drawing.Size(125, 13);
             this.label88.TabIndex = 18;
             this.label88.Text = "Spell Category Cooldown";
-            // 
+            //
             // label89
-            // 
+            //
             this.label89.AutoSize = true;
             this.label89.Location = new System.Drawing.Point(6, 140);
             this.label89.Name = "label89";
             this.label89.Size = new System.Drawing.Size(80, 13);
             this.label89.TabIndex = 17;
             this.label89.Text = "Spell Cooldown";
-            // 
+            //
             // label90
-            // 
+            //
             this.label90.AutoSize = true;
             this.label90.Location = new System.Drawing.Point(6, 170);
             this.label90.Name = "label90";
             this.label90.Size = new System.Drawing.Size(75, 13);
             this.label90.TabIndex = 16;
             this.label90.Text = "Spell Category";
-            // 
+            //
             // label91
-            // 
+            //
             this.label91.AutoSize = true;
             this.label91.Location = new System.Drawing.Point(6, 80);
             this.label91.Name = "label91";
             this.label91.Size = new System.Drawing.Size(72, 13);
             this.label91.TabIndex = 15;
             this.label91.Text = "Spell Charges";
-            // 
+            //
             // label92
-            // 
+            //
             this.label92.AutoSize = true;
             this.label92.Location = new System.Drawing.Point(6, 110);
             this.label92.Name = "label92";
             this.label92.Size = new System.Drawing.Size(80, 13);
             this.label92.TabIndex = 14;
             this.label92.Text = "Spell Ppm Rate";
-            // 
+            //
             // label93
-            // 
+            //
             this.label93.AutoSize = true;
             this.label93.Location = new System.Drawing.Point(6, 50);
             this.label93.Name = "label93";
             this.label93.Size = new System.Drawing.Size(66, 13);
             this.label93.TabIndex = 13;
             this.label93.Text = "Spell Trigger";
-            // 
+            //
             // label94
-            // 
+            //
             this.label94.AutoSize = true;
             this.label94.Location = new System.Drawing.Point(6, 20);
             this.label94.Name = "label94";
             this.label94.Size = new System.Drawing.Size(42, 13);
             this.label94.TabIndex = 12;
             this.label94.Text = "Spell Id";
-            // 
+            //
             // groupBox3
-            // 
+            //
             this.groupBox3.Controls.Add(this.SpellTrigger3);
             this.groupBox3.Controls.Add(this.SpellCharges3);
             this.groupBox3.Controls.Add(this.SpellPpmRate3);
@@ -3153,9 +3153,9 @@
             this.groupBox3.TabIndex = 26;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Spell 3";
-            // 
+            //
             // SpellTrigger3
-            // 
+            //
             this.SpellTrigger3.FormattingEnabled = true;
             this.SpellTrigger3.Items.AddRange(new object[] {
             "Use",
@@ -3169,120 +3169,120 @@
             this.SpellTrigger3.Size = new System.Drawing.Size(330, 21);
             this.SpellTrigger3.TabIndex = 25;
             this.SpellTrigger3.Text = "Use";
-            // 
+            //
             // SpellCharges3
-            // 
+            //
             this.SpellCharges3.Location = new System.Drawing.Point(155, 80);
             this.SpellCharges3.Name = "SpellCharges3";
             this.SpellCharges3.Size = new System.Drawing.Size(330, 20);
             this.SpellCharges3.TabIndex = 24;
             this.SpellCharges3.Text = "0";
-            // 
+            //
             // SpellPpmRate3
-            // 
+            //
             this.SpellPpmRate3.Location = new System.Drawing.Point(155, 110);
             this.SpellPpmRate3.Name = "SpellPpmRate3";
             this.SpellPpmRate3.Size = new System.Drawing.Size(330, 20);
             this.SpellPpmRate3.TabIndex = 23;
             this.SpellPpmRate3.Text = "0";
-            // 
+            //
             // SpellCooldown3
-            // 
+            //
             this.SpellCooldown3.Location = new System.Drawing.Point(155, 140);
             this.SpellCooldown3.Name = "SpellCooldown3";
             this.SpellCooldown3.Size = new System.Drawing.Size(330, 20);
             this.SpellCooldown3.TabIndex = 22;
             this.SpellCooldown3.Text = "0";
-            // 
+            //
             // SpellCategory3
-            // 
+            //
             this.SpellCategory3.Location = new System.Drawing.Point(155, 170);
             this.SpellCategory3.Name = "SpellCategory3";
             this.SpellCategory3.Size = new System.Drawing.Size(330, 20);
             this.SpellCategory3.TabIndex = 21;
             this.SpellCategory3.Text = "0";
-            // 
+            //
             // SpellCategoryCooldown3
-            // 
+            //
             this.SpellCategoryCooldown3.Location = new System.Drawing.Point(155, 200);
             this.SpellCategoryCooldown3.Name = "SpellCategoryCooldown3";
             this.SpellCategoryCooldown3.Size = new System.Drawing.Size(330, 20);
             this.SpellCategoryCooldown3.TabIndex = 20;
             this.SpellCategoryCooldown3.Text = "0";
-            // 
+            //
             // SpellID3
-            // 
+            //
             this.SpellID3.Location = new System.Drawing.Point(155, 20);
             this.SpellID3.Name = "SpellID3";
             this.SpellID3.Size = new System.Drawing.Size(330, 20);
             this.SpellID3.TabIndex = 19;
             this.SpellID3.Text = "0";
-            // 
+            //
             // label81
-            // 
+            //
             this.label81.AutoSize = true;
             this.label81.Location = new System.Drawing.Point(6, 200);
             this.label81.Name = "label81";
             this.label81.Size = new System.Drawing.Size(125, 13);
             this.label81.TabIndex = 18;
             this.label81.Text = "Spell Category Cooldown";
-            // 
+            //
             // label82
-            // 
+            //
             this.label82.AutoSize = true;
             this.label82.Location = new System.Drawing.Point(6, 140);
             this.label82.Name = "label82";
             this.label82.Size = new System.Drawing.Size(80, 13);
             this.label82.TabIndex = 17;
             this.label82.Text = "Spell Cooldown";
-            // 
+            //
             // label83
-            // 
+            //
             this.label83.AutoSize = true;
             this.label83.Location = new System.Drawing.Point(6, 170);
             this.label83.Name = "label83";
             this.label83.Size = new System.Drawing.Size(75, 13);
             this.label83.TabIndex = 16;
             this.label83.Text = "Spell Category";
-            // 
+            //
             // label84
-            // 
+            //
             this.label84.AutoSize = true;
             this.label84.Location = new System.Drawing.Point(6, 80);
             this.label84.Name = "label84";
             this.label84.Size = new System.Drawing.Size(72, 13);
             this.label84.TabIndex = 15;
             this.label84.Text = "Spell Charges";
-            // 
+            //
             // label85
-            // 
+            //
             this.label85.AutoSize = true;
             this.label85.Location = new System.Drawing.Point(6, 110);
             this.label85.Name = "label85";
             this.label85.Size = new System.Drawing.Size(80, 13);
             this.label85.TabIndex = 14;
             this.label85.Text = "Spell Ppm Rate";
-            // 
+            //
             // label86
-            // 
+            //
             this.label86.AutoSize = true;
             this.label86.Location = new System.Drawing.Point(6, 50);
             this.label86.Name = "label86";
             this.label86.Size = new System.Drawing.Size(66, 13);
             this.label86.TabIndex = 13;
             this.label86.Text = "Spell Trigger";
-            // 
+            //
             // label87
-            // 
+            //
             this.label87.AutoSize = true;
             this.label87.Location = new System.Drawing.Point(6, 20);
             this.label87.Name = "label87";
             this.label87.Size = new System.Drawing.Size(42, 13);
             this.label87.TabIndex = 12;
             this.label87.Text = "Spell Id";
-            // 
+            //
             // groupBox2
-            // 
+            //
             this.groupBox2.Controls.Add(this.SpellTrigger2);
             this.groupBox2.Controls.Add(this.SpellCharges2);
             this.groupBox2.Controls.Add(this.SpellPpmRate2);
@@ -3303,9 +3303,9 @@
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Spell 2";
-            // 
+            //
             // SpellTrigger2
-            // 
+            //
             this.SpellTrigger2.FormattingEnabled = true;
             this.SpellTrigger2.Items.AddRange(new object[] {
             "Use",
@@ -3319,120 +3319,120 @@
             this.SpellTrigger2.Size = new System.Drawing.Size(330, 21);
             this.SpellTrigger2.TabIndex = 25;
             this.SpellTrigger2.Text = "Use";
-            // 
+            //
             // SpellCharges2
-            // 
+            //
             this.SpellCharges2.Location = new System.Drawing.Point(155, 80);
             this.SpellCharges2.Name = "SpellCharges2";
             this.SpellCharges2.Size = new System.Drawing.Size(330, 20);
             this.SpellCharges2.TabIndex = 24;
             this.SpellCharges2.Text = "0";
-            // 
+            //
             // SpellPpmRate2
-            // 
+            //
             this.SpellPpmRate2.Location = new System.Drawing.Point(155, 110);
             this.SpellPpmRate2.Name = "SpellPpmRate2";
             this.SpellPpmRate2.Size = new System.Drawing.Size(330, 20);
             this.SpellPpmRate2.TabIndex = 23;
             this.SpellPpmRate2.Text = "0";
-            // 
+            //
             // SpellCooldown2
-            // 
+            //
             this.SpellCooldown2.Location = new System.Drawing.Point(155, 140);
             this.SpellCooldown2.Name = "SpellCooldown2";
             this.SpellCooldown2.Size = new System.Drawing.Size(330, 20);
             this.SpellCooldown2.TabIndex = 22;
             this.SpellCooldown2.Text = "0";
-            // 
+            //
             // SpellCategory2
-            // 
+            //
             this.SpellCategory2.Location = new System.Drawing.Point(155, 170);
             this.SpellCategory2.Name = "SpellCategory2";
             this.SpellCategory2.Size = new System.Drawing.Size(330, 20);
             this.SpellCategory2.TabIndex = 21;
             this.SpellCategory2.Text = "0";
-            // 
+            //
             // SpellCategoryCooldown2
-            // 
+            //
             this.SpellCategoryCooldown2.Location = new System.Drawing.Point(155, 200);
             this.SpellCategoryCooldown2.Name = "SpellCategoryCooldown2";
             this.SpellCategoryCooldown2.Size = new System.Drawing.Size(330, 20);
             this.SpellCategoryCooldown2.TabIndex = 20;
             this.SpellCategoryCooldown2.Text = "0";
-            // 
+            //
             // SpellID2
-            // 
+            //
             this.SpellID2.Location = new System.Drawing.Point(155, 20);
             this.SpellID2.Name = "SpellID2";
             this.SpellID2.Size = new System.Drawing.Size(330, 20);
             this.SpellID2.TabIndex = 19;
             this.SpellID2.Text = "0";
-            // 
+            //
             // label74
-            // 
+            //
             this.label74.AutoSize = true;
             this.label74.Location = new System.Drawing.Point(6, 200);
             this.label74.Name = "label74";
             this.label74.Size = new System.Drawing.Size(125, 13);
             this.label74.TabIndex = 18;
             this.label74.Text = "Spell Category Cooldown";
-            // 
+            //
             // label75
-            // 
+            //
             this.label75.AutoSize = true;
             this.label75.Location = new System.Drawing.Point(6, 140);
             this.label75.Name = "label75";
             this.label75.Size = new System.Drawing.Size(80, 13);
             this.label75.TabIndex = 17;
             this.label75.Text = "Spell Cooldown";
-            // 
+            //
             // label76
-            // 
+            //
             this.label76.AutoSize = true;
             this.label76.Location = new System.Drawing.Point(6, 170);
             this.label76.Name = "label76";
             this.label76.Size = new System.Drawing.Size(75, 13);
             this.label76.TabIndex = 16;
             this.label76.Text = "Spell Category";
-            // 
+            //
             // label77
-            // 
+            //
             this.label77.AutoSize = true;
             this.label77.Location = new System.Drawing.Point(6, 80);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(72, 13);
             this.label77.TabIndex = 15;
             this.label77.Text = "Spell Charges";
-            // 
+            //
             // label78
-            // 
+            //
             this.label78.AutoSize = true;
             this.label78.Location = new System.Drawing.Point(6, 110);
             this.label78.Name = "label78";
             this.label78.Size = new System.Drawing.Size(80, 13);
             this.label78.TabIndex = 14;
             this.label78.Text = "Spell Ppm Rate";
-            // 
+            //
             // label79
-            // 
+            //
             this.label79.AutoSize = true;
             this.label79.Location = new System.Drawing.Point(6, 50);
             this.label79.Name = "label79";
             this.label79.Size = new System.Drawing.Size(66, 13);
             this.label79.TabIndex = 13;
             this.label79.Text = "Spell Trigger";
-            // 
+            //
             // label80
-            // 
+            //
             this.label80.AutoSize = true;
             this.label80.Location = new System.Drawing.Point(6, 20);
             this.label80.Name = "label80";
             this.label80.Size = new System.Drawing.Size(42, 13);
             this.label80.TabIndex = 12;
             this.label80.Text = "Spell Id";
-            // 
+            //
             // groupBox1
-            // 
+            //
             this.groupBox1.Controls.Add(this.SpellTrigger1);
             this.groupBox1.Controls.Add(this.SpellCharges1);
             this.groupBox1.Controls.Add(this.SpellPpmRate1);
@@ -3453,9 +3453,9 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Spell 1";
-            // 
+            //
             // SpellTrigger1
-            // 
+            //
             this.SpellTrigger1.FormattingEnabled = true;
             this.SpellTrigger1.Items.AddRange(new object[] {
             "Use",
@@ -3469,57 +3469,57 @@
             this.SpellTrigger1.Size = new System.Drawing.Size(330, 21);
             this.SpellTrigger1.TabIndex = 25;
             this.SpellTrigger1.Text = "Use";
-            // 
+            //
             // SpellCharges1
-            // 
+            //
             this.SpellCharges1.Location = new System.Drawing.Point(155, 80);
             this.SpellCharges1.Name = "SpellCharges1";
             this.SpellCharges1.Size = new System.Drawing.Size(330, 20);
             this.SpellCharges1.TabIndex = 24;
             this.SpellCharges1.Text = "0";
-            // 
+            //
             // SpellPpmRate1
-            // 
+            //
             this.SpellPpmRate1.Location = new System.Drawing.Point(155, 110);
             this.SpellPpmRate1.Name = "SpellPpmRate1";
             this.SpellPpmRate1.Size = new System.Drawing.Size(330, 20);
             this.SpellPpmRate1.TabIndex = 23;
             this.SpellPpmRate1.Text = "0";
-            // 
+            //
             // SpellCooldown1
-            // 
+            //
             this.SpellCooldown1.Location = new System.Drawing.Point(155, 140);
             this.SpellCooldown1.Name = "SpellCooldown1";
             this.SpellCooldown1.Size = new System.Drawing.Size(330, 20);
             this.SpellCooldown1.TabIndex = 22;
             this.SpellCooldown1.Text = "0";
-            // 
+            //
             // SpellCategory1
-            // 
+            //
             this.SpellCategory1.Location = new System.Drawing.Point(155, 170);
             this.SpellCategory1.Name = "SpellCategory1";
             this.SpellCategory1.Size = new System.Drawing.Size(330, 20);
             this.SpellCategory1.TabIndex = 21;
             this.SpellCategory1.Text = "0";
-            // 
+            //
             // SpellCategoryCooldown1
-            // 
+            //
             this.SpellCategoryCooldown1.Location = new System.Drawing.Point(155, 200);
             this.SpellCategoryCooldown1.Name = "SpellCategoryCooldown1";
             this.SpellCategoryCooldown1.Size = new System.Drawing.Size(330, 20);
             this.SpellCategoryCooldown1.TabIndex = 20;
             this.SpellCategoryCooldown1.Text = "0";
-            // 
+            //
             // SpellID1
-            // 
+            //
             this.SpellID1.Location = new System.Drawing.Point(155, 20);
             this.SpellID1.Name = "SpellID1";
             this.SpellID1.Size = new System.Drawing.Size(330, 20);
             this.SpellID1.TabIndex = 19;
             this.SpellID1.Text = "0";
-            // 
+            //
             // label73
-            // 
+            //
             this.label73.AutoSize = true;
             this.label73.Location = new System.Drawing.Point(6, 200);
             this.label73.Name = "label73";
@@ -3529,9 +3529,9 @@
             this.toolTip1.SetToolTip(this.label73, "The cooldown time in milliseconds that is applied to all other spells in the cate" +
         "gory that the triggered spell is also in. Use -1 to use the default spell cooldo" +
         "wn.");
-            // 
+            //
             // label71
-            // 
+            //
             this.label71.AutoSize = true;
             this.label71.Location = new System.Drawing.Point(6, 140);
             this.label71.Name = "label71";
@@ -3540,9 +3540,9 @@
             this.label71.Text = "Spell Cooldown";
             this.toolTip1.SetToolTip(this.label71, "The cooldown in milliseconds for the specific spell controlling how often the spe" +
         "ll can be used. Use -1 to use the default spell cooldown.");
-            // 
+            //
             // label72
-            // 
+            //
             this.label72.AutoSize = true;
             this.label72.Location = new System.Drawing.Point(6, 170);
             this.label72.Name = "label72";
@@ -3550,9 +3550,9 @@
             this.label72.TabIndex = 16;
             this.label72.Text = "Spell Category";
             this.toolTip1.SetToolTip(this.label72, "The category that the spell is in.");
-            // 
+            //
             // label69
-            // 
+            //
             this.label69.AutoSize = true;
             this.label69.Location = new System.Drawing.Point(6, 80);
             this.label69.Name = "label69";
@@ -3560,9 +3560,9 @@
             this.label69.TabIndex = 15;
             this.label69.Text = "Spell Charges";
             this.toolTip1.SetToolTip(this.label69, resources.GetString("label69.ToolTip"));
-            // 
+            //
             // label70
-            // 
+            //
             this.label70.AutoSize = true;
             this.label70.Location = new System.Drawing.Point(6, 110);
             this.label70.Name = "label70";
@@ -3571,9 +3571,9 @@
             this.label70.Text = "Spell Ppm Rate";
             this.toolTip1.SetToolTip(this.label70, "The proc per minute rate controlling how often the spell is triggered (if #spellt" +
         "rigger == 2).");
-            // 
+            //
             // label68
-            // 
+            //
             this.label68.AutoSize = true;
             this.label68.Location = new System.Drawing.Point(6, 50);
             this.label68.Name = "label68";
@@ -3581,9 +3581,9 @@
             this.label68.TabIndex = 13;
             this.label68.Text = "Spell Trigger";
             this.toolTip1.SetToolTip(this.label68, "The type of trigger for the spell.");
-            // 
+            //
             // label67
-            // 
+            //
             this.label67.AutoSize = true;
             this.label67.Location = new System.Drawing.Point(6, 20);
             this.label67.Name = "label67";
@@ -3591,9 +3591,9 @@
             this.label67.TabIndex = 12;
             this.label67.Text = "Spell Id";
             this.toolTip1.SetToolTip(this.label67, "The spell ID of the spell that the item can cast or trigger.");
-            // 
+            //
             // tbFlagsAndSockets
-            // 
+            //
             this.tbFlagsAndSockets.AutoScroll = true;
             this.tbFlagsAndSockets.Controls.Add(this.GemProperties);
             this.tbFlagsAndSockets.Controls.Add(this.SocketBonus);
@@ -3609,25 +3609,25 @@
             this.tbFlagsAndSockets.TabIndex = 6;
             this.tbFlagsAndSockets.Text = "Flags and Sockets";
             this.tbFlagsAndSockets.UseVisualStyleBackColor = true;
-            // 
+            //
             // GemProperties
-            // 
+            //
             this.GemProperties.Location = new System.Drawing.Point(92, 563);
             this.GemProperties.Name = "GemProperties";
             this.GemProperties.Size = new System.Drawing.Size(405, 20);
             this.GemProperties.TabIndex = 51;
             this.GemProperties.Text = "0";
-            // 
+            //
             // SocketBonus
-            // 
+            //
             this.SocketBonus.Location = new System.Drawing.Point(92, 533);
             this.SocketBonus.Name = "SocketBonus";
             this.SocketBonus.Size = new System.Drawing.Size(405, 20);
             this.SocketBonus.TabIndex = 50;
             this.SocketBonus.Text = "0";
-            // 
+            //
             // groupBox21
-            // 
+            //
             this.groupBox21.Controls.Add(this.SocketColor3);
             this.groupBox21.Controls.Add(this.SocketContent3);
             this.groupBox21.Controls.Add(this.label121);
@@ -3638,9 +3638,9 @@
             this.groupBox21.TabIndex = 49;
             this.groupBox21.TabStop = false;
             this.groupBox21.Text = "Socket 3";
-            // 
+            //
             // SocketColor3
-            // 
+            //
             this.SocketColor3.FormattingEnabled = true;
             this.SocketColor3.Items.AddRange(new object[] {
             "None",
@@ -3653,35 +3653,35 @@
             this.SocketColor3.Size = new System.Drawing.Size(330, 21);
             this.SocketColor3.TabIndex = 47;
             this.SocketColor3.Text = "None";
-            // 
+            //
             // SocketContent3
-            // 
+            //
             this.SocketContent3.Location = new System.Drawing.Point(92, 59);
             this.SocketContent3.Name = "SocketContent3";
             this.SocketContent3.Size = new System.Drawing.Size(330, 20);
             this.SocketContent3.TabIndex = 46;
             this.SocketContent3.Text = "0";
-            // 
+            //
             // label121
-            // 
+            //
             this.label121.AutoSize = true;
             this.label121.Location = new System.Drawing.Point(6, 59);
             this.label121.Name = "label121";
             this.label121.Size = new System.Drawing.Size(81, 13);
             this.label121.TabIndex = 5;
             this.label121.Text = "Socket Content";
-            // 
+            //
             // label122
-            // 
+            //
             this.label122.AutoSize = true;
             this.label122.Location = new System.Drawing.Point(6, 29);
             this.label122.Name = "label122";
             this.label122.Size = new System.Drawing.Size(68, 13);
             this.label122.TabIndex = 4;
             this.label122.Text = "Socket Color";
-            // 
+            //
             // groupBox20
-            // 
+            //
             this.groupBox20.Controls.Add(this.SocketColor2);
             this.groupBox20.Controls.Add(this.SocketContent2);
             this.groupBox20.Controls.Add(this.label119);
@@ -3692,9 +3692,9 @@
             this.groupBox20.TabIndex = 48;
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Socket 2";
-            // 
+            //
             // SocketColor2
-            // 
+            //
             this.SocketColor2.FormattingEnabled = true;
             this.SocketColor2.Items.AddRange(new object[] {
             "None",
@@ -3707,35 +3707,35 @@
             this.SocketColor2.Size = new System.Drawing.Size(330, 21);
             this.SocketColor2.TabIndex = 47;
             this.SocketColor2.Text = "None";
-            // 
+            //
             // SocketContent2
-            // 
+            //
             this.SocketContent2.Location = new System.Drawing.Point(92, 59);
             this.SocketContent2.Name = "SocketContent2";
             this.SocketContent2.Size = new System.Drawing.Size(330, 20);
             this.SocketContent2.TabIndex = 46;
             this.SocketContent2.Text = "0";
-            // 
+            //
             // label119
-            // 
+            //
             this.label119.AutoSize = true;
             this.label119.Location = new System.Drawing.Point(6, 59);
             this.label119.Name = "label119";
             this.label119.Size = new System.Drawing.Size(81, 13);
             this.label119.TabIndex = 5;
             this.label119.Text = "Socket Content";
-            // 
+            //
             // label120
-            // 
+            //
             this.label120.AutoSize = true;
             this.label120.Location = new System.Drawing.Point(6, 29);
             this.label120.Name = "label120";
             this.label120.Size = new System.Drawing.Size(68, 13);
             this.label120.TabIndex = 4;
             this.label120.Text = "Socket Color";
-            // 
+            //
             // groupBox19
-            // 
+            //
             this.groupBox19.Controls.Add(this.SocketColor1);
             this.groupBox19.Controls.Add(this.SocketContent1);
             this.groupBox19.Controls.Add(this.label136);
@@ -3746,9 +3746,9 @@
             this.groupBox19.TabIndex = 47;
             this.groupBox19.TabStop = false;
             this.groupBox19.Text = "Socket 1";
-            // 
+            //
             // SocketColor1
-            // 
+            //
             this.SocketColor1.FormattingEnabled = true;
             this.SocketColor1.Items.AddRange(new object[] {
             "None",
@@ -3761,17 +3761,17 @@
             this.SocketColor1.Size = new System.Drawing.Size(330, 21);
             this.SocketColor1.TabIndex = 47;
             this.SocketColor1.Text = "None";
-            // 
+            //
             // SocketContent1
-            // 
+            //
             this.SocketContent1.Location = new System.Drawing.Point(92, 59);
             this.SocketContent1.Name = "SocketContent1";
             this.SocketContent1.Size = new System.Drawing.Size(330, 20);
             this.SocketContent1.TabIndex = 46;
             this.SocketContent1.Text = "0";
-            // 
+            //
             // label136
-            // 
+            //
             this.label136.AutoSize = true;
             this.label136.Location = new System.Drawing.Point(6, 59);
             this.label136.Name = "label136";
@@ -3779,9 +3779,9 @@
             this.label136.TabIndex = 5;
             this.label136.Text = "Socket Content";
             this.toolTip1.SetToolTip(this.label136, "Amount of Gems of SocketColor.");
-            // 
+            //
             // label137
-            // 
+            //
             this.label137.AutoSize = true;
             this.label137.Location = new System.Drawing.Point(6, 29);
             this.label137.Name = "label137";
@@ -3789,9 +3789,9 @@
             this.label137.TabIndex = 4;
             this.label137.Text = "Socket Color";
             this.toolTip1.SetToolTip(this.label137, "The color of the socket that can be placed in this item.");
-            // 
+            //
             // groupBox18
-            // 
+            //
             this.groupBox18.Controls.Add(this.FlagsCustom);
             this.groupBox18.Controls.Add(this.label138);
             this.groupBox18.Controls.Add(this.FlagsExtra);
@@ -3804,9 +3804,9 @@
             this.groupBox18.TabIndex = 10;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "Flags";
-            // 
+            //
             // FlagsCustom
-            // 
+            //
             this.FlagsCustom.FormattingEnabled = true;
             this.FlagsCustom.Items.AddRange(new object[] {
             "DurationRealTime",
@@ -3816,18 +3816,18 @@
             this.FlagsCustom.Name = "FlagsCustom";
             this.FlagsCustom.Size = new System.Drawing.Size(409, 49);
             this.FlagsCustom.TabIndex = 5;
-            // 
+            //
             // label138
-            // 
+            //
             this.label138.AutoSize = true;
             this.label138.Location = new System.Drawing.Point(6, 134);
             this.label138.Name = "label138";
             this.label138.Size = new System.Drawing.Size(70, 13);
             this.label138.TabIndex = 4;
             this.label138.Text = "Flags Custom";
-            // 
+            //
             // FlagsExtra
-            // 
+            //
             this.FlagsExtra.FormattingEnabled = true;
             this.FlagsExtra.Items.AddRange(new object[] {
             "HordeOnly",
@@ -3838,9 +3838,9 @@
             this.FlagsExtra.Name = "FlagsExtra";
             this.FlagsExtra.Size = new System.Drawing.Size(409, 49);
             this.FlagsExtra.TabIndex = 3;
-            // 
+            //
             // Flags
-            // 
+            //
             this.Flags.FormattingEnabled = true;
             this.Flags.Items.AddRange(new object[] {
             "UNK1",
@@ -3879,9 +3879,9 @@
             this.Flags.Name = "Flags";
             this.Flags.Size = new System.Drawing.Size(409, 49);
             this.Flags.TabIndex = 2;
-            // 
+            //
             // label6
-            // 
+            //
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 19);
             this.label6.Name = "label6";
@@ -3889,9 +3889,9 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Flags";
             this.toolTip1.SetToolTip(this.label6, "Bitmask field that contains flags that the item has on it.");
-            // 
+            //
             // label7
-            // 
+            //
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 79);
             this.label7.Name = "label7";
@@ -3899,18 +3899,18 @@
             this.label7.TabIndex = 1;
             this.label7.Text = "Flags Extra";
             this.toolTip1.SetToolTip(this.label7, "Bitmask field that contains extra flags that the item has on it.");
-            // 
+            //
             // label125
-            // 
+            //
             this.label125.AutoSize = true;
             this.label125.Location = new System.Drawing.Point(0, 563);
             this.label125.Name = "label125";
             this.label125.Size = new System.Drawing.Size(79, 13);
             this.label125.TabIndex = 9;
             this.label125.Text = "Gem Properties";
-            // 
+            //
             // label126
-            // 
+            //
             this.label126.AutoSize = true;
             this.label126.Location = new System.Drawing.Point(0, 533);
             this.label126.Name = "label126";
@@ -3918,9 +3918,9 @@
             this.label126.TabIndex = 8;
             this.label126.Text = "Socket Bonus";
             this.toolTip1.SetToolTip(this.label126, "The bonus applied when all slot are filled.");
-            // 
+            //
             // tbOptional
-            // 
+            //
             this.tbOptional.AutoScroll = true;
             this.tbOptional.Controls.Add(this.SoundOverrideSubclass);
             this.tbOptional.Controls.Add(this.SoundOverrideSubcl);
@@ -3962,9 +3962,9 @@
             this.tbOptional.TabIndex = 8;
             this.tbOptional.Text = "Optional";
             this.tbOptional.UseVisualStyleBackColor = true;
-            // 
+            //
             // SoundOverrideSubcl
-            // 
+            //
             this.SoundOverrideSubcl.AutoSize = true;
             this.SoundOverrideSubcl.Location = new System.Drawing.Point(3, 487);
             this.SoundOverrideSubcl.Name = "SoundOverrideSubcl";
@@ -3973,9 +3973,9 @@
             this.SoundOverrideSubcl.Text = "Sound Override Sublcass";
             this.toolTip1.SetToolTip(this.SoundOverrideSubcl, "Weapons have special sounds on impact. This column is used to override these soun" +
         "ds by specifying another subclass.");
-            // 
+            //
             // FoodType
-            // 
+            //
             this.FoodType.FormattingEnabled = true;
             this.FoodType.Items.AddRange(new object[] {
             "None",
@@ -3992,9 +3992,9 @@
             this.FoodType.Size = new System.Drawing.Size(384, 21);
             this.FoodType.TabIndex = 35;
             this.FoodType.Text = "None";
-            // 
+            //
             // TotemCategory
-            // 
+            //
             this.TotemCategory.FormattingEnabled = true;
             this.TotemCategory.Items.AddRange(new object[] {
             "None",
@@ -4031,121 +4031,121 @@
             this.TotemCategory.Size = new System.Drawing.Size(384, 21);
             this.TotemCategory.TabIndex = 34;
             this.TotemCategory.Text = "None";
-            // 
+            //
             // HolidayId
-            // 
+            //
             this.HolidayId.Location = new System.Drawing.Point(114, 427);
             this.HolidayId.Name = "HolidayId";
             this.HolidayId.Size = new System.Drawing.Size(384, 20);
             this.HolidayId.TabIndex = 33;
             this.HolidayId.Text = "0";
-            // 
+            //
             // ItemLimitCategory
-            // 
+            //
             this.ItemLimitCategory.Location = new System.Drawing.Point(114, 397);
             this.ItemLimitCategory.Name = "ItemLimitCategory";
             this.ItemLimitCategory.Size = new System.Drawing.Size(384, 20);
             this.ItemLimitCategory.TabIndex = 32;
             this.ItemLimitCategory.Text = "0";
-            // 
+            //
             // Duration
-            // 
+            //
             this.Duration.Location = new System.Drawing.Point(114, 367);
             this.Duration.Name = "Duration";
             this.Duration.Size = new System.Drawing.Size(384, 20);
             this.Duration.TabIndex = 31;
             this.Duration.Text = "0";
-            // 
+            //
             // Map
-            // 
+            //
             this.Map.Location = new System.Drawing.Point(114, 307);
             this.Map.Name = "Map";
             this.Map.Size = new System.Drawing.Size(384, 20);
             this.Map.TabIndex = 30;
             this.Map.Text = "0";
-            // 
+            //
             // Area
-            // 
+            //
             this.Area.Location = new System.Drawing.Point(114, 277);
             this.Area.Name = "Area";
             this.Area.Size = new System.Drawing.Size(384, 20);
             this.Area.TabIndex = 29;
             this.Area.Text = "0";
-            // 
+            //
             // ItemSet
-            // 
+            //
             this.ItemSet.Location = new System.Drawing.Point(114, 247);
             this.ItemSet.Name = "ItemSet";
             this.ItemSet.Size = new System.Drawing.Size(384, 20);
             this.ItemSet.TabIndex = 28;
             this.ItemSet.Text = "0";
-            // 
+            //
             // RandomSuffix
-            // 
+            //
             this.RandomSuffix.Location = new System.Drawing.Point(114, 217);
             this.RandomSuffix.Name = "RandomSuffix";
             this.RandomSuffix.Size = new System.Drawing.Size(384, 20);
             this.RandomSuffix.TabIndex = 27;
             this.RandomSuffix.Text = "0";
-            // 
+            //
             // RandomProperty
-            // 
+            //
             this.RandomProperty.Location = new System.Drawing.Point(114, 187);
             this.RandomProperty.Name = "RandomProperty";
             this.RandomProperty.Size = new System.Drawing.Size(384, 20);
             this.RandomProperty.TabIndex = 26;
             this.RandomProperty.Text = "0";
-            // 
+            //
             // PageText
-            // 
+            //
             this.PageText.Location = new System.Drawing.Point(114, 7);
             this.PageText.Name = "PageText";
             this.PageText.Size = new System.Drawing.Size(384, 20);
             this.PageText.TabIndex = 25;
             this.PageText.Text = "0";
-            // 
+            //
             // LanguageId
-            // 
+            //
             this.LanguageId.Location = new System.Drawing.Point(114, 37);
             this.LanguageId.Name = "LanguageId";
             this.LanguageId.Size = new System.Drawing.Size(384, 20);
             this.LanguageId.TabIndex = 24;
             this.LanguageId.Text = "0";
-            // 
+            //
             // PageMaterial
-            // 
+            //
             this.PageMaterial.Location = new System.Drawing.Point(114, 67);
             this.PageMaterial.Name = "PageMaterial";
             this.PageMaterial.Size = new System.Drawing.Size(384, 20);
             this.PageMaterial.TabIndex = 23;
             this.PageMaterial.Text = "0";
-            // 
+            //
             // StartQuest
-            // 
+            //
             this.StartQuest.Location = new System.Drawing.Point(114, 97);
             this.StartQuest.Name = "StartQuest";
             this.StartQuest.Size = new System.Drawing.Size(384, 20);
             this.StartQuest.TabIndex = 22;
             this.StartQuest.Text = "0";
-            // 
+            //
             // LockId
-            // 
+            //
             this.LockId.Location = new System.Drawing.Point(114, 127);
             this.LockId.Name = "LockId";
             this.LockId.Size = new System.Drawing.Size(384, 20);
             this.LockId.TabIndex = 21;
             this.LockId.Text = "0";
-            // 
+            //
             // RangedModRange
-            // 
+            //
             this.RangedModRange.Location = new System.Drawing.Point(114, 157);
             this.RangedModRange.Name = "RangedModRange";
             this.RangedModRange.Size = new System.Drawing.Size(384, 20);
             this.RangedModRange.TabIndex = 20;
             this.RangedModRange.Text = "0";
-            // 
+            //
             // label123
-            // 
+            //
             this.label123.AutoSize = true;
             this.label123.Location = new System.Drawing.Point(3, 457);
             this.label123.Name = "label123";
@@ -4155,27 +4155,27 @@
             this.toolTip1.SetToolTip(this.label123, "If this item is a food type item, this field defines what type of food it is for " +
         "hunters who want to feed their pets. It controls in what diet this food item fal" +
         "ls in.");
-            // 
+            //
             // label130
-            // 
+            //
             this.label130.AutoSize = true;
             this.label130.Location = new System.Drawing.Point(3, 427);
             this.label130.Name = "label130";
             this.label130.Size = new System.Drawing.Size(54, 13);
             this.label130.TabIndex = 18;
             this.label130.Text = "Holiday Id";
-            // 
+            //
             // label129
-            // 
+            //
             this.label129.AutoSize = true;
             this.label129.Location = new System.Drawing.Point(3, 397);
             this.label129.Name = "label129";
             this.label129.Size = new System.Drawing.Size(96, 13);
             this.label129.TabIndex = 17;
             this.label129.Text = "Item Limit Category";
-            // 
+            //
             // label128
-            // 
+            //
             this.label128.AutoSize = true;
             this.label128.Location = new System.Drawing.Point(3, 367);
             this.label128.Name = "label128";
@@ -4183,18 +4183,18 @@
             this.label128.TabIndex = 16;
             this.label128.Text = "Duration";
             this.toolTip1.SetToolTip(this.label128, "The duration of the item in seconds ingame time.");
-            // 
+            //
             // label118
-            // 
+            //
             this.label118.AutoSize = true;
             this.label118.Location = new System.Drawing.Point(3, 337);
             this.label118.Name = "label118";
             this.label118.Size = new System.Drawing.Size(82, 13);
             this.label118.TabIndex = 15;
             this.label118.Text = "Totem Category";
-            // 
+            //
             // label116
-            // 
+            //
             this.label116.AutoSize = true;
             this.label116.Location = new System.Drawing.Point(3, 307);
             this.label116.Name = "label116";
@@ -4202,9 +4202,9 @@
             this.label116.TabIndex = 14;
             this.label116.Text = "Map";
             this.toolTip1.SetToolTip(this.label116, "The ID of the map in which this item can be used.");
-            // 
+            //
             // label115
-            // 
+            //
             this.label115.AutoSize = true;
             this.label115.Location = new System.Drawing.Point(3, 277);
             this.label115.Name = "label115";
@@ -4212,9 +4212,9 @@
             this.label115.TabIndex = 13;
             this.label115.Text = "Area";
             this.toolTip1.SetToolTip(this.label115, "The ID of the zone in which this item can be used.");
-            // 
+            //
             // label114
-            // 
+            //
             this.label114.AutoSize = true;
             this.label114.Location = new System.Drawing.Point(3, 247);
             this.label114.Name = "label114";
@@ -4222,9 +4222,9 @@
             this.label114.TabIndex = 12;
             this.label114.Text = "Item Set";
             this.toolTip1.SetToolTip(this.label114, "The ID of the item set that this item belongs to.");
-            // 
+            //
             // label113
-            // 
+            //
             this.label113.AutoSize = true;
             this.label113.Location = new System.Drawing.Point(3, 217);
             this.label113.Name = "label113";
@@ -4232,9 +4232,9 @@
             this.label113.TabIndex = 11;
             this.label113.Text = "Random Suffix";
             this.toolTip1.SetToolTip(this.label113, resources.GetString("label113.ToolTip"));
-            // 
+            //
             // label112
-            // 
+            //
             this.label112.AutoSize = true;
             this.label112.Location = new System.Drawing.Point(3, 187);
             this.label112.Name = "label112";
@@ -4242,9 +4242,9 @@
             this.label112.TabIndex = 10;
             this.label112.Text = "Random Property";
             this.toolTip1.SetToolTip(this.label112, resources.GetString("label112.ToolTip"));
-            // 
+            //
             // label111
-            // 
+            //
             this.label111.AutoSize = true;
             this.label111.Location = new System.Drawing.Point(3, 157);
             this.label111.Name = "label111";
@@ -4252,9 +4252,9 @@
             this.label111.TabIndex = 9;
             this.label111.Text = "Ranged Mod Range";
             this.toolTip1.SetToolTip(this.label111, "Range Modifier for bows/guns/crossbows.");
-            // 
+            //
             // label108
-            // 
+            //
             this.label108.AutoSize = true;
             this.label108.Location = new System.Drawing.Point(3, 127);
             this.label108.Name = "label108";
@@ -4263,9 +4263,9 @@
             this.label108.Text = "Lock Id";
             this.toolTip1.SetToolTip(this.label108, "The lock entry ID that this item (which serves as a key) is tied to. This field i" +
         "s used in key-door mechanics.");
-            // 
+            //
             // label107
-            // 
+            //
             this.label107.AutoSize = true;
             this.label107.Location = new System.Drawing.Point(3, 97);
             this.label107.Name = "label107";
@@ -4273,9 +4273,9 @@
             this.label107.TabIndex = 3;
             this.label107.Text = "Start Quest";
             this.toolTip1.SetToolTip(this.label107, "The ID of the quest that this item will start if right-clicked.");
-            // 
+            //
             // label99
-            // 
+            //
             this.label99.AutoSize = true;
             this.label99.Location = new System.Drawing.Point(3, 67);
             this.label99.Name = "label99";
@@ -4283,9 +4283,9 @@
             this.label99.TabIndex = 2;
             this.label99.Text = "Page Material";
             this.toolTip1.SetToolTip(this.label99, "The background texture that appears in the page text window.");
-            // 
+            //
             // label98
-            // 
+            //
             this.label98.AutoSize = true;
             this.label98.Location = new System.Drawing.Point(3, 37);
             this.label98.Name = "label98";
@@ -4293,9 +4293,9 @@
             this.label98.TabIndex = 1;
             this.label98.Text = "Language Id";
             this.toolTip1.SetToolTip(this.label98, "The language that the item text is written in.");
-            // 
+            //
             // label97
-            // 
+            //
             this.label97.AutoSize = true;
             this.label97.Location = new System.Drawing.Point(3, 7);
             this.label97.Name = "label97";
@@ -4305,25 +4305,25 @@
             this.toolTip1.SetToolTip(this.label97, "The ID referring to the text that the item will show (if it is a book or a letter" +
         ", etc). The item will have a magnifying glass cursor in the game and will show t" +
         "he text when right-clicked.");
-            // 
+            //
             // SoundOverrideSubclass
-            // 
+            //
             this.SoundOverrideSubclass.FormattingEnabled = true;
             this.SoundOverrideSubclass.Location = new System.Drawing.Point(137, 487);
             this.SoundOverrideSubclass.Name = "SoundOverrideSubclass";
             this.SoundOverrideSubclass.Size = new System.Drawing.Size(361, 21);
             this.SoundOverrideSubclass.TabIndex = 37;
-            // 
+            //
             // modelRenderControl1
-            // 
+            //
             this.modelRenderControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.modelRenderControl1.Location = new System.Drawing.Point(3, 3);
             this.modelRenderControl1.Name = "modelRenderControl1";
             this.modelRenderControl1.Size = new System.Drawing.Size(531, 392);
             this.modelRenderControl1.TabIndex = 25;
-            // 
+            //
             // ItemEditorControl
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tbcEditor);

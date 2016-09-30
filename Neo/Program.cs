@@ -15,12 +15,17 @@ namespace Neo
         {
             AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
 
-            var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? Directory.GetCurrentDirectory();
-            var profilesDir = Path.Combine(baseDir, "JitProfiles");
-            if (!Directory.Exists(profilesDir))
-                Directory.CreateDirectory(profilesDir);
+            string baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? Directory.GetCurrentDirectory();
 
-            var dbcdir = Path.Combine(baseDir, "DBC");
+	        /*
+			var profilesDir = Path.Combine(baseDir, "JitProfiles");
+	        if (!Directory.Exists(profilesDir))
+	        {
+		        Directory.CreateDirectory(profilesDir);
+	        }
+			*/
+
+            string dbcdir = Path.Combine(baseDir, "DBC");
 	        if (!Directory.Exists(dbcdir))
 	        {
 		        Directory.CreateDirectory(dbcdir);
@@ -30,15 +35,15 @@ namespace Neo
             Settings.KeyBindings.Initialize();
             XmlService.Initialize();
 
-            var window = new EditorWindow();
-            var context = new GxContext(window.DrawTarget);
-            context.InitContext();
+            //var window = new EditorWindow();
+            //var context = new GxContext(window.DrawTarget);
+            //context.InitContext();
 
             // TODO: move all shader initializations somehwere?
-            context.InitShaders();
+            //context.InitShaders();
 
-            WorldFrame.Instance.Initialize(window.DrawTarget, context);
-            WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
+            //WorldFrame.Instance.Initialize(window.DrawTarget, context);
+            //WorldFrame.Instance.OnResize((int) window.RenderSize.Width, (int) window.RenderSize.Height);
 
 	        /*
             var wnd = new MainWindow {elementHost1 = {Child = window}};
@@ -55,7 +60,7 @@ namespace Neo
             }
 			*/
 
-            WorldFrame.Instance.Shutdown();
+            //WorldFrame.Instance.Shutdown();
         }
     }
 }

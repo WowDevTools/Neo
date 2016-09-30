@@ -403,7 +403,7 @@ namespace Neo.Scene.Terrain
 
             BlendOld = new ShaderProgram(context);
             BlendOld.SetVertexShader(Resources.Shaders.TerrainVertex);
-            BlendOld.SetPixelShader(Resources.Shaders.TerrainPixel);
+	        BlendOld.SetPixelShader(Resources.Shaders.TerrainFragment);
 
             ColorSampler = new Sampler(context)
             {
