@@ -187,6 +187,8 @@ namespace WoWEditor6.IO.Files.Sky.Wotlk
             for (var i = 0; i < 18; ++i)
             {
                 var lib = Storage.DbcStorage.LightIntBand.GetRowById(baseIndex + i - 17);
+                if (lib == null) continue;
+
                 var numEntries = lib.GetInt32(1);
                 for (var j = 0; j < numEntries; ++j)
                 {
