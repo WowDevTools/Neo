@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using WoWEditor6.IO.Files.Terrain;
 using WoWEditor6.Scene;
 using WoWEditor6.Scene.Terrain;
+using WoWEditor6.Utils;
 
 namespace WoWEditor6.Editing
 {
@@ -44,7 +45,6 @@ namespace WoWEditor6.Editing
 
         private ChunkEditManager()
         {
-            WorldFrame.Instance.OnWorldClicked += OnChunkClicked;
         }
 
         public void Initialize()
@@ -91,14 +91,21 @@ namespace WoWEditor6.Editing
             SelectedAreaId = id;
         }
 
+        public void OnChange(TimeSpan diff)
+        {
+           WorldFrame.Instance.OnWorldClicked += OnChunkClicked;
+        }
+
         private void OnChunkClicked(IntersectionParams intersection, MouseEventArgs e)
         {
-            var chunk = intersection.ChunkHit;
+            var chunk = mHoveredChunk;
+            var keyState = new byte[256];
+            UnsafeNativeMethods.GetKeyboardState(keyState);
 
             switch (ChunkEditMode)
             {
                 case ChunkEditMode.AreaPaint:
-                    if (SelectedAreaId == 0 || e.Button != MouseButtons.Left)
+                    if (SelectedAreaId == 0 || !KeyHelper.IsKeyDown(keyState, Keys.LButton))
                         return;
 
                     MapArea parent;
@@ -111,7 +118,7 @@ namespace WoWEditor6.Editing
                     break;
 
                 case ChunkEditMode.AreaSelect:
-                    if (e.Button != MouseButtons.Left)
+                    if (!KeyHelper.IsKeyDown(keyState, Keys.LButton))
                         return;
 
                     SelectedAreaId = chunk.AreaId;

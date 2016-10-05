@@ -310,6 +310,7 @@ namespace WoWEditor6.Scene
 
                 EditManager.Instance.IsTerrainHovered = LastMouseIntersection.TerrainHit;
                 EditManager.Instance.MousePosition = LastMouseIntersection.TerrainPosition;
+
             }
         }
 

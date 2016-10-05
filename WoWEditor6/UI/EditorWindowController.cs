@@ -62,5 +62,10 @@ namespace WoWEditor6.UI
         {
             mWindow.OnUpdateCurrentAdt(x, y);
         }
+
+        public void OnUpdateChunkIndex(int x, int y)
+        {
+            mWindow.OnUpdateCurrentChunk(x, y);
+        }
     }
 }

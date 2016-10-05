@@ -174,6 +174,8 @@ namespace WoWEditor6.Editing
                 TerrainChangeManager.Instance.OnChange(diff);
             else if ((CurrentMode & EditMode.Texturing) != 0)
                 TextureChangeManager.Instance.OnChange(diff);
+            else if ((CurrentMode & EditMode.Chunk) != 0)
+                ChunkEditManager.Instance.OnChange(diff);
 
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);

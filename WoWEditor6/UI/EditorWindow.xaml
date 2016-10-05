@@ -175,6 +175,7 @@
                                 <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <StackPanel Orientation="Horizontal">
                                         <Label x:Name="CurrentAdtLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60" Content="ADT: 0/0"/>
+                                        <Label x:Name="CurrentChunkLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="60" Content="Chunk: 0/0"/>
                                         <Label x:Name="CurrentPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="200" Content="Position: 0/0/0"/>
                                         <Label x:Name="CurrentModelPositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Width="210" Content="Model Position: 0/0/0"/>
                                         <Label x:Name="CurrentNamePlatePositionLabel" FontSize="10" Padding="0" VerticalAlignment="Center" Content="NamePlate Position: 0/0/0"/>
