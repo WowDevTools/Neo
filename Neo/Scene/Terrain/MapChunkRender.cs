@@ -36,7 +36,7 @@ namespace Neo.Scene.Terrain
         ShowArea = 0x1,
         ShowLines = 0x2,
         HideArea = 0x4,
-        HideLines = 0x8,
+        HideLines = 0x8
     }
 
     class MapChunkRender : IDisposable

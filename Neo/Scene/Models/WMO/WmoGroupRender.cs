@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using Neo.Graphics;
 using Neo.Resources;
-using Warcraft.Core;
 using OpenTK;
 using SlimTK;
 
 namespace Neo.Scene.Models.WMO
 {
-    class WmoGroupRender : IDisposable
+    public class WmoGroupRender : IDisposable
     {
         class WmoRenderBatch
         {
@@ -218,19 +217,19 @@ namespace Neo.Scene.Models.WMO
 
             gNoBlendProgram = new ShaderProgram();
             gNoBlendProgram.SetVertexShader(Shaders.WmoVertex);
-	        gNoBlendProgram.SetPixelShader(Shaders.WmoFragment);
+	        gNoBlendProgram.SetFragmentShader(Shaders.WmoFragment);
 
             gBlendProgram = new ShaderProgram();
             gBlendProgram.SetVertexShader(Shaders.WmoVertex);
-            gBlendProgram.SetPixelShader(Shaders.WmoFragmentBlend);
+            gBlendProgram.SetFragmentShader(Shaders.WmoFragmentBlend);
 
             gIndoorNoBlendProgram = new ShaderProgram();
             gIndoorNoBlendProgram.SetVertexShader(Shaders.WmoVertex);
-            gIndoorNoBlendProgram.SetPixelShader(Shaders.WmoFragmentIndoor);
+            gIndoorNoBlendProgram.SetFragmentShader(Shaders.WmoFragmentIndoor);
 
             gIndoorBlendProgram = new ShaderProgram();
             gIndoorBlendProgram.SetVertexShader(Shaders.WmoVertex);
-            gIndoorBlendProgram.SetPixelShader(Shaders.WmoFragmentBlendIndoor);
+            gIndoorBlendProgram.SetFragmentShader(Shaders.WmoFragmentBlendIndoor);
 
             Mesh.Program = gNoBlendProgram;
 

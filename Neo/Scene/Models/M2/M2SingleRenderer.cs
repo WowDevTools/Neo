@@ -165,7 +165,7 @@ namespace Neo.Scene.Models.M2
                 // TODO: Since this isn't choosing among static programs anymore, cache a different way (comparison func?)
                 var ctx = WorldFrame.Instance.GraphicsContext;
                 gCustomProgram.SetVertexShader(ctx.M2Shaders.GetVertexShader_Single(pass.VertexShaderType));
-                gCustomProgram.SetPixelShader(ctx.M2Shaders.GetPixelShader(pass.PixelShaderType));
+                gCustomProgram.SetFragmentShader(ctx.M2Shaders.GetPixelShader(pass.PixelShaderType));
 
                 gMesh.Program = gCustomProgram;
                 gCustomProgram.Bind();
@@ -420,30 +420,30 @@ namespace Neo.Scene.Models.M2
             gMesh.AddElement("TEXCOORD", 1, 2);
 
             // all combinations are set in this one each time
-            gCustomProgram = new ShaderProgram(context);
+            gCustomProgram = new ShaderProgram();
             gCustomProgram.SetVertexShader(Resources.Shaders.M2VertexSingle_VS_Diffuse_T1);
-            gCustomProgram.SetPixelShader(Resources.Shaders.M2Fragment_PS_Combiners_Mod);
+            gCustomProgram.SetFragmentShader(Resources.Shaders.M2Fragment_PS_Combiners_Mod);
 
             gMesh.Program = gCustomProgram;
 
-            gNoBlendProgram = new ShaderProgram(context);
-            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentOld);
+            gNoBlendProgram = new ShaderProgram();
+            gNoBlendProgram.SetFragmentShader(Resources.Shaders.M2FragmentOld);
             gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
-            gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentBlendOld);
+            gBlendProgram = new ShaderProgram();
+            gBlendProgram.SetFragmentShader(Resources.Shaders.M2FragmentBlendOld);
             gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
-            gBlendTestProgram = new ShaderProgram(context);
-            gBlendTestProgram.SetPixelShader(Resources.Shaders.M2FragmentBlendAlphaOld);
+            gBlendTestProgram = new ShaderProgram();
+            gBlendTestProgram.SetFragmentShader(Resources.Shaders.M2FragmentBlendAlphaOld);
             gBlendTestProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
-            g2PassProgram = new ShaderProgram(context);
-            g2PassProgram.SetPixelShader(Resources.Shaders.M2Fragment2PassOld);
+            g2PassProgram = new ShaderProgram();
+            g2PassProgram.SetFragmentShader(Resources.Shaders.M2Fragment2PassOld);
             g2PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
-            g3PassProgram = new ShaderProgram(context);
-            g3PassProgram.SetPixelShader(Resources.Shaders.M2Fragment3PassOld);
+            g3PassProgram = new ShaderProgram();
+            g3PassProgram.SetFragmentShader(Resources.Shaders.M2Fragment3PassOld);
             g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexSingleOld);
 
             gPerDrawCallBuffer = new UniformBuffer();

@@ -8,7 +8,7 @@ using SlimTK;
 
 namespace Neo.Scene.Models.WMO
 {
-    class WmoRootRender : IDisposable
+    public class WmoRootRender : IDisposable
     {
         public WmoRoot Data { get; private set; }
 

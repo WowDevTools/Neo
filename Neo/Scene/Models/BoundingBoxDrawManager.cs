@@ -187,7 +187,7 @@ namespace Neo.Scene.Models
 
             var program = new ShaderProgram();
             program.SetVertexShader(Resources.Shaders.BoundingBoxVertex);
-	        program.SetPixelShader(Resources.Shaders.BoundingBoxFragment);
+	        program.SetFragmentShader(Resources.Shaders.BoundingBoxFragment);
 
             gMesh = new Mesh
             {

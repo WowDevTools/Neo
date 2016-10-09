@@ -160,7 +160,7 @@ namespace Neo.Scene.Terrain
 
 	        var program = new ShaderProgram();
             program.SetVertexShader(Shaders.MapLowVertex);
-            program.SetPixelShader(Shaders.MapLowFragment);
+            program.SetFragmentShader(Shaders.MapLowFragment);
             Mesh.Program = program;
             Mesh.InitLayout(program);
         }

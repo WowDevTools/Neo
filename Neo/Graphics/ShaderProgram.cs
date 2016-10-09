@@ -136,7 +136,7 @@ namespace Neo.Graphics
             mVertexShader = (VertexShader)mVertexShaderCache[code];
         }
 
-        public void SetPixelShader(byte[] code)
+        public void SetFragmentShader(byte[] code)
         {
             if (!mPixelShaderCache.ContainsKey(code))
             {
@@ -153,7 +153,7 @@ namespace Neo.Graphics
             mPixelShader = (PixelShader)mPixelShaderCache[code];
         }
 
-        public void SetPixelShader(PixelShader ps)
+        public void SetFragmentShader(PixelShader ps)
         {
             mPixelShader = ps;
         }

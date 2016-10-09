@@ -128,7 +128,7 @@ namespace Neo.Scene.Models.M2
                 // TODO: Since this isn't choosing among static programs anymore, cache a different way e.g. (comparison func)
                 var ctx = WorldFrame.Instance.GraphicsContext;
                 gCustomProgram.SetVertexShader(ctx.M2Shaders.GetVertexShader_Instanced(pass.VertexShaderType));
-                gCustomProgram.SetPixelShader(ctx.M2Shaders.GetPixelShader(pass.PixelShaderType));
+                gCustomProgram.SetFragmentShader(ctx.M2Shaders.GetPixelShader(pass.PixelShaderType));
 
                 gMesh.Program = gCustomProgram;
                 gCustomProgram.Bind();
@@ -307,18 +307,18 @@ namespace Neo.Scene.Models.M2
             // all combinations are set in this one each time
             gCustomProgram = new ShaderProgram();
             gCustomProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1);
-            gCustomProgram.SetPixelShader(Resources.Shaders.M2Fragment_PS_Combiners_Opaque);
+            gCustomProgram.SetFragmentShader(Resources.Shaders.M2Fragment_PS_Combiners_Opaque);
 
             gMesh.Program = gCustomProgram;
 
             // Old versions for temporary WOTLK compatibility.. can we figure out how to map these to the actual types??
             gNoBlendProgram = new ShaderProgram();
             gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
-            gNoBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentOld);
+            gNoBlendProgram.SetFragmentShader(Resources.Shaders.M2FragmentOld);
 
             gMaskBlendProgram = new ShaderProgram();
             gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
-            gMaskBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentBlendAlphaOld);
+            gMaskBlendProgram.SetFragmentShader(Resources.Shaders.M2FragmentBlendAlphaOld);
 
             gPerPassBuffer = new UniformBuffer();
             gPerPassBuffer.BufferData(new PerModelPassBufferContent()

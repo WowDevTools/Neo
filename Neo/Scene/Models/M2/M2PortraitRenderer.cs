@@ -215,9 +215,9 @@ namespace Neo.Scene.Models.M2
             Mesh.AddElement("TEXCOORD", 0, 2);
             Mesh.AddElement("TEXCOORD", 1, 2);
 
-            var program = new ShaderProgram(context);
+            var program = new ShaderProgram();
             program.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-            program.SetPixelShader(Resources.Shaders.M2FragmentPortrait);
+            program.SetFragmentShader(Resources.Shaders.M2FragmentPortrait);
 
             Mesh.Program = program;
 
@@ -297,21 +297,21 @@ namespace Neo.Scene.Models.M2
 
             gNoBlendProgram = program;
 
-            gBlendProgram = new ShaderProgram(context);
-            gBlendProgram.SetPixelShader(Resources.Shaders.M2FragmentPortraitBlend);
+            gBlendProgram = new ShaderProgram();
+            gBlendProgram.SetFragmentShader(Resources.Shaders.M2FragmentPortraitBlend);
             gBlendProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
 
-            gBlendMaskProgram = new ShaderProgram(context);
-            gBlendMaskProgram.SetPixelShader(Resources.Shaders.M2FragmentPortraitBlendAlpha);
+            gBlendMaskProgram = new ShaderProgram();
+            gBlendMaskProgram.SetFragmentShader(Resources.Shaders.M2FragmentPortraitBlendAlpha);
             gBlendMaskProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
 
-            g2PassProgram = new ShaderProgram(context);
+            g2PassProgram = new ShaderProgram();
             g2PassProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-            g2PassProgram.SetPixelShader(Resources.Shaders.M2FragmentPortrait2Pass);
+            g2PassProgram.SetFragmentShader(Resources.Shaders.M2FragmentPortrait2Pass);
 
-            g3PassProgram = new ShaderProgram(context);
+            g3PassProgram = new ShaderProgram();
             g3PassProgram.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-            g3PassProgram.SetPixelShader(Resources.Shaders.M2FragmentPortrait3Pass);
+            g3PassProgram.SetFragmentShader(Resources.Shaders.M2FragmentPortrait3Pass);
 
             gNoCullState = new RasterState
             {
