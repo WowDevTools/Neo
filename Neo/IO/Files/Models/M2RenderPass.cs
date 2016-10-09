@@ -22,6 +22,6 @@ namespace Neo.IO.Files.Models
         public M2VertexShaderType VertexShaderType { get; set; }
         public M2HullShaderType HullShaderType { get; set; }
         public M2DomainShaderType DomainShaderType { get; set; }
-        public M2PixelShaderType PixelShaderType { get; set; }
+        public M2FragmentShaderType PixelShaderType { get; set; }
     }
 }

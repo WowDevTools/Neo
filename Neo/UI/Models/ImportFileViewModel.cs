@@ -109,6 +109,7 @@ namespace Neo.UI.Models
 
         public unsafe void BrowseForFile()
         {
+	        // TODO: why
             var dlg = (IFileOpenDialog)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("{DC1C5A9C-E88A-4DDE-A5A1-60F82A20AEF7}")));
             var data = new IntPtr[4];
             data[0] = Marshal.StringToBSTR("Images (jpg, gif, png, bmp, exif, tiffs)");
@@ -119,7 +120,7 @@ namespace Neo.UI.Models
             fixed (IntPtr* filters = data)
                 dlg.SetFileTypes(2, new IntPtr(filters));
 
-            for (var i = 0; i < 4; ++i) 
+            for (var i = 0; i < 4; ++i)
                 Marshal.FreeBSTR(data[i]);
 
             if (dlg.Show(new WindowInteropHelper(mDialog).Handle) != 0)

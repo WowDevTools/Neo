@@ -9,6 +9,7 @@ using Neo.Scene;
 using Neo.Scene.Texture;
 using OpenTK;
 using SlimTK;
+using Warcraft.WDT.Chunks;
 
 namespace Neo.IO.Files.Terrain.Wotlk
 {
@@ -195,9 +196,9 @@ namespace Neo.IO.Files.Terrain.Wotlk
             if(hasMccv)
             {
                 var wdt = WorldFrame.Instance.MapManager.CurrentWdt;
-                if((wdt.Flags & 2) == 0)
+                if(!wdt.Header.Flags.HasFlag(WorldTableFlags.UsesVertexShading))
                 {
-                    wdt.Flags |= 2;
+                    wdt.Header.Flags |= WorldTableFlags.UsesVertexShading;
                     wdt.Save(WorldFrame.Instance.MapManager.Continent);
                 }
             }
