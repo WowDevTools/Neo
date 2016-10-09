@@ -8,6 +8,7 @@ using Neo.IO.Files.Texture;
 using Neo.Resources;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace Neo.Scene
 {
@@ -42,8 +43,6 @@ namespace Neo.Scene
         }
 
         private static Mesh gMesh;
-        private static Sampler gSampler;
-        private static Sampler gSampler2D;
         private static VertexBuffer gVertexBuffer;
 
         private static RasterState gRasterState;
@@ -89,6 +88,7 @@ namespace Neo.Scene
         private static System.Drawing.Graphics gGraphics;
 
         private Graphics.Texture mTexture;
+	    private Graphics.Texture mTexture2D;
 
         private bool mIsDirty = true;
         private bool mShouldDraw = false;
@@ -219,7 +219,6 @@ namespace Neo.Scene
                 gMesh.Program.Bind();
             }
 
-            gMesh.Program.SetPixelSampler(0, gSampler2D);
             gMesh.Program.SetPixelTexture(0, mTexture);
             gMesh.DrawNonIndexed();
         }
@@ -255,7 +254,6 @@ namespace Neo.Scene
                 gMesh.Program.Bind();
             }
 
-            gMesh.Program.SetPixelSampler(0, gSampler);
             gMesh.Program.SetPixelTexture(0, mTexture);
             gMesh.DrawNonIndexed();
         }
@@ -371,7 +369,7 @@ namespace Neo.Scene
         {
             gGraphics = System.Drawing.Graphics.FromImage(Bitmap);
 
-            gSampler = new Sampler(context)
+            gTexture = new Sampler(context)
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -379,7 +377,7 @@ namespace Neo.Scene
                 Filter = Filter.MinMagMipLinear
             };
 
-            gSampler2D = new Sampler(context)
+            gTexture2D = new Sampler(context)
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,

@@ -95,13 +95,43 @@ namespace Neo.Graphics
 	    /// </summary>
 	    public uint MipLevels;
 
-       /// <summary>
+	    public TextureWrapMode AddressU
+	    {
+		    get;
+		    set;
+	    } = TextureWrapMode.Repeat;
+
+	    public TextureWrapMode AddressV
+	    {
+		    get;
+		    set;
+	    } = TextureWrapMode.Repeat;
+
+	    public TextureWrapMode AddressW
+	    {
+		    get;
+		    set;
+	    }  = TextureWrapMode.Repeat;
+
+	    public TextureMinFilter MinFilter
+	    {
+		    get;
+		    set;
+	    } = TextureMinFilter.LinearMipmapLinear;
+
+	    public TextureMagFilter MagFilter
+	    {
+		    get;
+		    set;
+	    } = TextureMagFilter.Linear;
+
+	    /// <summary>
 		/// Initializes a new <see cref="Texture"/> object and uploads an image, using the default
 		/// texture as data.
 		/// </summary>
         public Texture()
         {
-			// TODO: Implement
+	        // TODO: Implement
         }
 
 	    /// <summary>
@@ -399,7 +429,7 @@ namespace Neo.Graphics
 
             gDefaultView = new ShaderResourceView(context.Device, gDefaultTexture, srvd);
 
-            DefaultTextures.Initialize(context);
+            DefaultTextures.Initialize();
         }
 
 	    private void Dispose(bool disposing)

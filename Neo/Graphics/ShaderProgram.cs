@@ -37,14 +37,16 @@ namespace Neo.Graphics
         {
         }
 
+		[Obsolete]
         public void SetVertexSampler(int slot, Sampler sampler)
         {
-            mContext.Context.VertexShader.SetSampler(slot, sampler.Native);
+            //mContext.Context.VertexShader.SetSampler(slot, sampler.Native);
         }
 
+		[Obsolete]
         public void SetPixelSampler(int slot, Sampler sampler)
         {
-            mContext.Context.PixelShader.SetSampler(slot, sampler.Native);
+            //mContext.Context.PixelShader.SetSampler(slot, sampler.Native);
         }
 
         public void SetVertexTexture(int slot, Texture texture)

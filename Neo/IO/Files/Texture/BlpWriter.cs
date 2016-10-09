@@ -9,7 +9,7 @@ namespace Neo.IO.Files.Texture
 {
 	public static class BlpWriter
     {
-        public unsafe static void Write(Stream output, Bitmap image, Format format, bool hasMipMap = true)
+        public static unsafe void Write(Stream output, Bitmap image, Format format, bool hasMipMap = true)
         {
             if (hasMipMap && (IsPowerOfTwo(image.Width) == false || IsPowerOfTwo(image.Height) == false))
                 throw new ArgumentException(
@@ -104,7 +104,7 @@ namespace Neo.IO.Files.Texture
             return data;
         }
 
-        private unsafe static Texture2D CreateTexture(Bitmap bmp, bool withMips)
+        private static unsafe Texture2D CreateTexture(Bitmap bmp, bool withMips)
         {
             Texture2D tex = null;
             var ctx = WorldFrame.Instance.GraphicsContext;
@@ -180,7 +180,7 @@ namespace Neo.IO.Files.Texture
             return tex;
         }
 
-        private unsafe static byte[] CompressLayer(byte[] layerData, int width, int height, Format format)
+        private static unsafe byte[] CompressLayer(byte[] layerData, int width, int height, Format format)
         {
             uint dstFormat;
             int blockSize;

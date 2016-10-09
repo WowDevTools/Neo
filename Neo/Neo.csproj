@@ -202,7 +202,6 @@
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\RasterState.cs" />
     <Compile Include="Graphics\RenderTarget.cs" />
-    <Compile Include="Graphics\Sampler.cs" />
     <Compile Include="Graphics\ShaderProgram.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Graphics\VertexBuffer.cs" />
@@ -972,6 +971,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Graphics" />
     <Folder Include="IO\Files\Terrain" />
     <Folder Include="Resources\Shaders" />
   </ItemGroup>

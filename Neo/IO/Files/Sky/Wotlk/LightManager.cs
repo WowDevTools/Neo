@@ -64,7 +64,8 @@ namespace Neo.IO.Files.Sky.Wotlk
             if (mIsTextureDirty)
             {
                 mIsTextureDirty = false;
-                mSkyTexture.UpdateMemory(1, 180, SharpDX.DXGI.Format.B8G8R8A8_UNorm, mSkyGraph, 4);
+	            // TODO: Recreate texture from bitmap
+	            // mSkyTexture.UpdateMemory(1, 180, SharpDX.DXGI.Format.B8G8R8A8_UNorm, mSkyGraph, 4);
             }
         }
 

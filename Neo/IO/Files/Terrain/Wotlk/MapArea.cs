@@ -199,7 +199,8 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 if(!wdt.Header.Flags.HasFlag(WorldTableFlags.UsesVertexShading))
                 {
                     wdt.Header.Flags |= WorldTableFlags.UsesVertexShading;
-                    wdt.Save(WorldFrame.Instance.MapManager.Continent);
+	                // TODO: Where and how?
+                    // wdt.Save(WorldFrame.Instance.MapManager.Continent);
                 }
             }
 
