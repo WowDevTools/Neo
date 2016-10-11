@@ -158,11 +158,7 @@ namespace Neo.Scene.Terrain
             Mesh.IndexBuffer.BufferData(indices);
 	        Mesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
 
-	        var program = new ShaderProgram();
-            program.SetVertexShader(Shaders.MapLowVertex);
-            program.SetFragmentShader(Shaders.MapLowFragment);
-            Mesh.Program = program;
-            Mesh.InitLayout(program);
+            Mesh.Program = ShaderCache.GetShaderProgram(NeoShader.MapLow);
         }
     }
 }

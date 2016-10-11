@@ -74,8 +74,10 @@ namespace Neo.Scene
             mFrustum.Update(mView, mProj);
             mViewProj = mView * mProj;
 
-            if (ViewChanged != null)
-                ViewChanged(this, mView);
+	        if (ViewChanged != null)
+	        {
+		        ViewChanged(this, mView);
+	        }
         }
 
         protected void OnProjectionChanged(ref Matrix4 matProj)
@@ -86,8 +88,10 @@ namespace Neo.Scene
             mFrustum.Update(mView, mProj);
             mViewProj = mView * mProj;
 
-            if (ProjectionChanged != null)
-                ProjectionChanged(this, mProj);
+	        if (ProjectionChanged != null)
+	        {
+		        ProjectionChanged(this, mProj);
+	        }
         }
 
         public void SetPosition(Vector3 position)
@@ -150,8 +154,10 @@ namespace Neo.Scene
             mUp = Vector3.TransformVector(mUp, matRot);
             mUp.Normalize();
 
-            if (mUp.Z < 0)
-                mUp.Z = 0;
+	        if (mUp.Z < 0)
+	        {
+		        mUp.Z = 0;
+	        }
 
             mForward = Vector3.Cross(mUp, mRight);
             mTarget = Position + mForward;

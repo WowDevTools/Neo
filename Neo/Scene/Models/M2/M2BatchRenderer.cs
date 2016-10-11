@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using Neo.Graphics;
+using Neo.IO;
 using Neo.IO.Files.Models;
+using Neo.Resources;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -10,7 +12,7 @@ using DataType = Neo.Graphics.DataType;
 
 namespace Neo.Scene.Models.M2
 {
-    class M2BatchRenderer : IDisposable
+    public sealed class M2BatchRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         struct PerInstanceBufferContent
@@ -95,7 +97,7 @@ namespace Neo.Scene.Models.M2
             gMesh.BeginDraw();
 
             // TODO: Get rid of this switch
-            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+            if (FileManager.Instance.Version == FileDataVersion.Lichking)
                 gMesh.InitLayout(gNoBlendProgram);
             else
                 gMesh.InitLayout(gCustomProgram);
@@ -171,18 +173,27 @@ namespace Neo.Scene.Models.M2
                 {
                     switch (Model.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
                     {
-                        case Graphics.SamplerFlagType.WrapBoth:
-                            gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
-                            break;
-                        case Graphics.SamplerFlagType.WrapU:
-                            gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
-                            break;
-                        case Graphics.SamplerFlagType.WrapV:
-                            gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
-                            break;
-                        case Graphics.SamplerFlagType.ClampBoth:
-                            gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
-                            break;
+                        case SamplerFlagType.WrapBoth:
+	                    {
+		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
+		                    break;
+	                    }
+                        case SamplerFlagType.WrapU:
+	                    {
+		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
+		                    break;
+
+	                    }
+                        case SamplerFlagType.WrapV:
+	                    {
+		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
+		                    break;
+	                    }
+                        case SamplerFlagType.ClampBoth:
+	                    {
+		                    gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
+		                    break;
+	                    }
                     }
 
                     gMesh.Program.SetFragmentTexture(i, pass.Textures[i]);
@@ -277,8 +288,8 @@ namespace Neo.Scene.Models.M2
         {
             gMesh = new Mesh
             {
-                Stride = IO.SizeCache<M2Vertex>.Size,
-                InstanceStride = IO.SizeCache<PerInstanceBufferContent>.Size,
+                Stride = SizeCache<M2Vertex>.Size,
+                InstanceStride = SizeCache<PerInstanceBufferContent>.Size,
                 DepthState = {
                     DepthEnabled = true,
                     DepthWriteEnabled = true
@@ -306,22 +317,22 @@ namespace Neo.Scene.Models.M2
 
             // all combinations are set in this one each time
             gCustomProgram = new ShaderProgram();
-            gCustomProgram.SetVertexShader(Resources.Shaders.M2VertexInstanced_VS_Diffuse_T1);
-            gCustomProgram.SetFragmentShader(Resources.Shaders.M2Fragment_PS_Combiners_Opaque);
+            gCustomProgram.SetVertexShader(Shaders.M2VertexInstanced_VS_Diffuse_T1);
+            gCustomProgram.SetFragmentShader(Shaders.M2Fragment_PS_Combiners_Opaque);
 
             gMesh.Program = gCustomProgram;
 
             // Old versions for temporary WOTLK compatibility.. can we figure out how to map these to the actual types??
             gNoBlendProgram = new ShaderProgram();
-            gNoBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
-            gNoBlendProgram.SetFragmentShader(Resources.Shaders.M2FragmentOld);
+            gNoBlendProgram.SetVertexShader(Shaders.M2VertexInstancedOld);
+            gNoBlendProgram.SetFragmentShader(Shaders.M2FragmentOld);
 
             gMaskBlendProgram = new ShaderProgram();
-            gMaskBlendProgram.SetVertexShader(Resources.Shaders.M2VertexInstancedOld);
-            gMaskBlendProgram.SetFragmentShader(Resources.Shaders.M2FragmentBlendAlphaOld);
+            gMaskBlendProgram.SetVertexShader(Shaders.M2VertexInstancedOld);
+            gMaskBlendProgram.SetFragmentShader(Shaders.M2FragmentBlendAlphaOld);
 
             gPerPassBuffer = new UniformBuffer();
-            gPerPassBuffer.BufferData(new PerModelPassBufferContent()
+            gPerPassBuffer.BufferData(new PerModelPassBufferContent
             {
                 uvAnimMatrix1 = Matrix4.Identity,
                 uvAnimMatrix2 = Matrix4.Identity,
@@ -330,7 +341,7 @@ namespace Neo.Scene.Models.M2
                 modelPassParams = Vector4.Zero
             });
 
-            gSamplerWrapU = new Sampler()
+            gSamplerWrapU = new Sampler
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,
@@ -339,7 +350,7 @@ namespace Neo.Scene.Models.M2
                 MaximumAnisotropy = 16
             };
 
-            gSamplerWrapV = new Sampler()
+            gSamplerWrapV = new Sampler
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -348,7 +359,7 @@ namespace Neo.Scene.Models.M2
                 MaximumAnisotropy = 16
             };
 
-            gSamplerWrapBoth = new Sampler()
+            gSamplerWrapBoth = new Sampler
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -357,7 +368,7 @@ namespace Neo.Scene.Models.M2
                 MaximumAnisotropy = 16
             };
 
-            gSamplerClampBoth = new Sampler()
+            gSamplerClampBoth = new Sampler
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,

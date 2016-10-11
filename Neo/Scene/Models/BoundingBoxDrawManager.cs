@@ -185,10 +185,6 @@ namespace Neo.Scene.Models
             gIndexBuffer = new IndexBuffer(DrawElementsType.UnsignedInt);
             gIndexBuffer.BufferData(indices);
 
-            var program = new ShaderProgram();
-            program.SetVertexShader(Resources.Shaders.BoundingBoxVertex);
-	        program.SetFragmentShader(Resources.Shaders.BoundingBoxFragment);
-
             gMesh = new Mesh
             {
                 IndexBuffer = gIndexBuffer,
@@ -201,8 +197,7 @@ namespace Neo.Scene.Models
             gMesh.AddElement("POSITION", 0, 3);
             gMesh.AddElement("TEXCOORD", 0, 3);
 
-            gMesh.Program = program;
-            gMesh.InitLayout(program);
+            gMesh.Program = ShaderCache.GetShaderProgram(NeoShader.BoundingBox);
         }
     }
 }

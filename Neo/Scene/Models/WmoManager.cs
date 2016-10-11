@@ -28,8 +28,10 @@ namespace Neo.Scene.Models
 
         public void Intersect(IntersectionParams parameters)
         {
-            if (mRenderer == null)
-                return;
+	        if (mRenderer == null)
+	        {
+		        return;
+	        }
 
             var globalRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
                 ref parameters.InverseProjection);
@@ -52,16 +54,18 @@ namespace Neo.Scene.Models
                 }
             }
 
-            if (wmoHit != null)
-            {
-                parameters.WmoHit = true;
-                parameters.WmoInstance = wmoHit;
-                parameters.WmoModel = wmoHit.ModelRoot;
-                parameters.WmoPosition = globalRay.Position + minDistance * globalRay.Direction;
-                parameters.WmoDistance = minDistance;
-            }
-            else
-                parameters.WmoHit = false;
+	        if (wmoHit != null)
+	        {
+		        parameters.WmoHit = true;
+		        parameters.WmoInstance = wmoHit;
+		        parameters.WmoModel = wmoHit.ModelRoot;
+		        parameters.WmoPosition = globalRay.Position + minDistance * globalRay.Direction;
+		        parameters.WmoDistance = minDistance;
+	        }
+	        else
+	        {
+		        parameters.WmoHit = false;
+	        }
         }
 
         private void PreloadModel(string model)
@@ -69,21 +73,27 @@ namespace Neo.Scene.Models
             var hash = model.ToUpperInvariant().GetHashCode();
             lock(mRenderer)
             {
-                if (mRenderer.ContainsKey(hash))
-                    return;
+	            if (mRenderer.ContainsKey(hash))
+	            {
+		            return;
+	            }
 
                 var root = IO.Files.Models.ModelFactory.Instance.CreateWmo();
 
-                if (root.Load(model) == false)
-                    Log.Warning("Unable to load WMO '" + model + "'. Further instances wont be loaded again");
+	            if (root.Load(model) == false)
+	            {
+		            Log.Warning("Unable to load WMO '" + model + "'. Further instances wont be loaded again");
+	            }
 
                 var renderer = new WmoRootRender();
                 renderer.OnAsyncLoad(root);
 
                 var batch = new WmoBatchRender(renderer);
 
-                lock (mAddLock)
-                    mRenderer.Add(hash, batch);
+	            lock (mAddLock)
+	            {
+		            mRenderer.Add(hash, batch);
+	            }
             }
         }
 
@@ -102,29 +112,42 @@ namespace Neo.Scene.Models
 
         public void RemoveInstance(int hash, int uuid,bool delete)
         {
-            if (mRenderer == null)
-                return;
+	        if (mRenderer == null)
+	        {
+		        return;
+	        }
 
             lock (mRenderer)
             {
                 WmoBatchRender batch;
-                if (!mRenderer.TryGetValue(hash, out batch))
-                    return;
+	            if (!mRenderer.TryGetValue(hash, out batch))
+	            {
+		            return;
+	            }
+
                 if (delete && batch.DeleteInstance(uuid))
                 {
-                    lock (mAddLock)
-                        mRenderer.Remove(hash);
+	                lock (mAddLock)
+	                {
+		                mRenderer.Remove(hash);
+	                }
 
-                    lock (mUnloadItems)
-                        mUnloadItems.Add(batch);
+	                lock (mUnloadItems)
+	                {
+		                mUnloadItems.Add(batch);
+	                }
                 }
                 else if (batch.RemoveInstance(uuid))
                 {
-                    lock (mAddLock)
-                        mRenderer.Remove(hash);
+	                lock (mAddLock)
+	                {
+		                mRenderer.Remove(hash);
+	                }
 
-                    lock (mUnloadItems)
-                        mUnloadItems.Add(batch);
+	                lock (mUnloadItems)
+	                {
+		                mUnloadItems.Add(batch);
+	                }
                 }
             }
         }
@@ -158,8 +181,10 @@ namespace Neo.Scene.Models
             WmoGroupRender.Mesh.Program.SetPixelSampler(0, WmoGroupRender.Sampler);
             lock(mAddLock)
             {
-                foreach (var pair in mRenderer)
-                    pair.Value.OnFrame();
+	            foreach (var pair in mRenderer)
+	            {
+		            pair.Value.OnFrame();
+	            }
             }
         }
 
@@ -177,11 +202,15 @@ namespace Neo.Scene.Models
                     }
                 }
 
-                if (element != null)
-                    element.Dispose();
+	            if (element != null)
+	            {
+		            element.Dispose();
+	            }
 
-                if (element == null)
-                    Thread.Sleep(200);
+	            if (element == null)
+	            {
+		            Thread.Sleep(200);
+	            }
             }
         }
     }

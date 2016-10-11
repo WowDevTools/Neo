@@ -7,7 +7,7 @@ using Neo.IO;
 
 namespace Neo.Editing
 {
-    class WdlGenerator
+    public sealed class WdlGenerator
     {
         class TerrainTileEntry
         {
@@ -132,7 +132,7 @@ namespace Neo.Editing
 
                 for (var i = 0; i < 64 * 64; ++i)
                 {
-                    progressCallback(string.Format("Processing {0}_{1}_{2}.adt...", continent, i % 64, i / 64), i / 4096.0f);
+                    progressCallback($"Processing {continent}_{i % 64}_{i / 64}.adt...", i / 4096.0f);
                     var existing = existingTiles[i];
                     var heights = GetMareEntry(continent, i % 64, i / 64);
                     if (heights == null)
@@ -214,7 +214,7 @@ namespace Neo.Editing
             }
 
             return ret;
-        } 
+        }
 
         private static short[] GetMareEntry(string continent, int ax, int ay)
         {
@@ -260,12 +260,12 @@ namespace Neo.Editing
                     {
                         var posx = j * stepSize;
                         var posy = i * stepSize;
-                        
-                        retValue[i * 17 + j] = (short) 
+
+                        retValue[i * 17 + j] = (short)
                             Math.Min(
                                 Math.Max(
-                                    Math.Round(GetLandHeight(heights, posx, posy)), 
-                                    short.MinValue), 
+                                    Math.Round(GetLandHeight(heights, posx, posy)),
+                                    short.MinValue),
                                 short.MaxValue);
                     }
                 }

@@ -11,7 +11,7 @@ using DataType = Neo.Graphics.DataType;
 
 namespace Neo.Scene.Models.M2
 {
-	public class M2PortraitRenderer : IDisposable
+	public sealed class M2PortraitRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         struct PerModelPassBufferContent
@@ -83,7 +83,7 @@ namespace Neo.Scene.Models.M2
             mAnimationMatrices = null;
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -215,11 +215,7 @@ namespace Neo.Scene.Models.M2
             Mesh.AddElement("TEXCOORD", 0, 2);
             Mesh.AddElement("TEXCOORD", 1, 2);
 
-            var program = new ShaderProgram();
-            program.SetVertexShader(Resources.Shaders.M2VertexPortrait);
-            program.SetFragmentShader(Resources.Shaders.M2FragmentPortrait);
-
-            Mesh.Program = program;
+            Mesh.Program = ShaderCache.GetShaderProgram(NeoShader.M2Portrait);
 
             Sampler = new Sampler
             {

@@ -1,16 +1,27 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Neo.Resources;
 using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {
-	public class ShaderCache : IDisposable
+	public sealed class ShaderCache : IDisposable
 	{
+		private static readonly ShaderCache Instance = new ShaderCache();
+
 		private readonly Dictionary<NeoShader, ShaderProgram> ShaderProgramCache = new Dictionary<NeoShader, ShaderProgram>();
 
-		public ShaderProgram GetShaderProgram(NeoShader neoShader)
+		private ShaderCache()
+		{
+
+		}
+
+		public static ShaderProgram GetShaderProgram(NeoShader neoShader)
+		{
+			return ShaderCache.Instance.InternalGetShaderProgram(neoShader);
+		}
+
+		private ShaderProgram InternalGetShaderProgram(NeoShader neoShader)
 		{
 			if (HasCachedShaderProgram(neoShader))
 			{

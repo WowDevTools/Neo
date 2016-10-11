@@ -45,19 +45,25 @@ namespace Neo.Scene.Texture
         public void Shutdown()
         {
             mIsRunning = false;
-            lock (mWorkItems)
-                mWorkItems.Clear();
+	        lock (mWorkItems)
+	        {
+		        mWorkItems.Clear();
+	        }
 
-            lock (mWorkEvent)
-                Monitor.PulseAll(mWorkEvent);
+	        lock (mWorkEvent)
+	        {
+		        Monitor.PulseAll(mWorkEvent);
+	        }
 
             mThreads.ForEach(t => t.Join());
         }
 
         public Graphics.Texture GetTexture(string path)
         {
-            if (string.IsNullOrEmpty(path))
-                return new Graphics.Texture();
+	        if (string.IsNullOrEmpty(path))
+	        {
+		        return new Graphics.Texture();
+	        }
 
             var hash = path.ToUpperInvariant().GetHashCode();
             TextureWorkItem workItem;
@@ -67,8 +73,10 @@ namespace Neo.Scene.Texture
                 WeakReference<Graphics.Texture> ret;
                 if(mCache.TryGetValue(hash, out ret))
                 {
-                    if (ret.TryGetTarget(out retTexture))
-                        return retTexture;
+	                if (ret.TryGetTarget(out retTexture))
+	                {
+		                return retTexture;
+	                }
 
                     mCache.Remove(hash);
                 }
@@ -81,8 +89,10 @@ namespace Neo.Scene.Texture
             lock (mWorkItems)
             {
                 mWorkItems.Add(workItem);
-                lock (mWorkEvent)
-                    Monitor.Pulse(mWorkEvent);
+	            lock (mWorkEvent)
+	            {
+		            Monitor.Pulse(mWorkEvent);
+	            }
             }
 
             return retTexture;
@@ -104,16 +114,22 @@ namespace Neo.Scene.Texture
 
                 if (workItem == null)
                 {
-                    lock (mWorkEvent)
-                        Monitor.Wait(mWorkEvent);
+	                lock (mWorkEvent)
+	                {
+		                Monitor.Wait(mWorkEvent);
+	                }
                 }
                 else
                 {
                     var loadInfo = TextureLoader.Load(workItem.FileName);
-                    if (loadInfo != null)
-                        WorldFrame.Instance.Dispatcher.BeginInvoke(() => workItem.Texture.LoadFromLoadInfo(loadInfo));
-                    else
-                        Log.Warning("Load failed: " + workItem.FileName);
+	                if (loadInfo != null)
+	                {
+		                WorldFrame.Instance.Dispatcher.BeginInvoke(() => workItem.Texture.LoadFromLoadInfo(loadInfo));
+	                }
+	                else
+	                {
+		                Log.Warning("Load failed: " + workItem.FileName);
+	                }
                 }
             }
         }

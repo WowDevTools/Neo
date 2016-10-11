@@ -41,7 +41,7 @@ namespace Neo.Scene.Terrain
 
         public void Initialize()
         {
-            SkySphere = new SkySphere(999.0f, 25, 25, WorldFrame.Instance.GraphicsContext);
+            SkySphere = new SkySphere(999.0f, 25, 25);
             mIsRunning = true;
             mLoadThread = new Thread(LoadProc);
             mLoadThread.Start();
@@ -130,8 +130,10 @@ namespace Neo.Scene.Terrain
         public void EnterWorld(Vector2 entryPoint, int mapId)
         {
             var row = Storage.DbcStorage.Map.GetRowById(mapId);
-            if (row == null)
-                return;
+	        if (row == null)
+	        {
+		        return;
+	        }
 
             var continent = row.GetString(Storage.MapFormatGuess.FieldMapName);
 
@@ -170,10 +172,15 @@ namespace Neo.Scene.Terrain
         {
             Interlocked.Increment(ref mLoadStepsDone);
             var pct = (float) mLoadStepsDone / mTotalLoadSteps;
-            if (IsInitialLoad)
-                EditorWindowController.Instance.LoadingScreen.UpdateProgress(pct);
+	        if (IsInitialLoad)
+	        {
+		        EditorWindowController.Instance.LoadingScreen.UpdateProgress(pct);
+	        }
 
-            if (mLoadStepsDone < mTotalLoadSteps || !IsInitialLoad) return;
+	        if (mLoadStepsDone < mTotalLoadSteps || !IsInitialLoad)
+	        {
+		        return;
+	        }
 
             IsInitialLoad = false;
             OnInitialLoadDone();
@@ -197,8 +204,10 @@ namespace Neo.Scene.Terrain
             var x = position.X;
             var y = position.Y;
 
-            if (FileManager.Instance.Version <= FileDataVersion.Warlords)
-                y = 64.0f * Metrics.TileSize - y;
+	        if (FileManager.Instance.Version <= FileDataVersion.Warlords)
+	        {
+		        y = 64.0f * Metrics.TileSize - y;
+	        }
 
             var tilex = (int)Math.Floor(x / Metrics.TileSize);
             var tiley = (int)Math.Floor(y / Metrics.TileSize);
@@ -219,21 +228,29 @@ namespace Neo.Scene.Terrain
 
             var index = tilex + tiley * 0xFF;
             MapAreaRender tile;
-            lock(mAreas)
-                mAreas.TryGetValue(index, out tile);
+	        lock (mAreas)
+	        {
+		        mAreas.TryGetValue(index, out tile);
+	        }
 
-            if (tile == null)
-                return false;
+	        if (tile == null)
+	        {
+		        return false;
+	        }
 
             var chunkx = (int) Math.Floor(x / Metrics.ChunkSize);
             var chunky = (int) Math.Floor(y / Metrics.ChunkSize);
 
-            if (chunkx < 0 || chunky < 0 || chunkx > 15 || chunky > 15)
-                return false;
+	        if (chunkx < 0 || chunky < 0 || chunkx > 15 || chunky > 15)
+	        {
+		        return false;
+	        }
 
             var chunk = tile.AreaFile.GetChunk(chunkx + chunky * 16);
-            if (chunk == null)
-                return false;
+	        if (chunk == null)
+	        {
+		        return false;
+	        }
 
             x -= chunkx * Metrics.ChunkSize;
             y -= chunky * Metrics.ChunkSize;
@@ -241,8 +258,10 @@ namespace Neo.Scene.Terrain
             var row = (int)(y / (Metrics.UnitSize * 0.5f) + 0.5f);
             var col = (int)((x - Metrics.UnitSize * 0.5f * (row % 2)) / Metrics.UnitSize + 0.5f);
 
-            if (row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))
-                return false;
+	        if (row < 0 || col < 0 || row > 16 || col > (((row % 2) != 0) ? 8 : 9))
+	        {
+		        return false;
+	        }
 
             z = chunk.Vertices[17 * (row / 2) + (((row % 2) != 0) ? 9 : 0) + col].Position.Z;
             return true;
@@ -262,23 +281,31 @@ namespace Neo.Scene.Terrain
             {
                 MapChunk chunk;
                 float distance;
-                if (!pair.Value.AreaFile.Intersect(ref ray, out chunk, out distance)) continue;
+	            if (!pair.Value.AreaFile.Intersect(ref ray, out chunk, out distance))
+	            {
+		            continue;
+	            }
 
                 hasHit = true;
-                if ((distance >= minDist)) continue;
+	            if (distance >= minDist)
+	            {
+		            continue;
+	            }
 
                 minDist = distance;
                 chunkHit = chunk;
             }
 
             parameters.TerrainHit = hasHit;
-            if (hasHit)
-            {
-                parameters.TerrainPosition = ray.Position + minDist * ray.Direction;
-                parameters.TerrainDistance = minDist;
-            }
-            else
-                parameters.TerrainPosition = new Vector3(float.MaxValue);
+	        if (hasHit)
+	        {
+		        parameters.TerrainPosition = ray.Position + minDist * ray.Direction;
+		        parameters.TerrainDistance = minDist;
+	        }
+	        else
+	        {
+		        parameters.TerrainPosition = new Vector3(float.MaxValue);
+	        }
 
             parameters.ChunkHit = chunkHit;
         }
@@ -301,11 +328,15 @@ namespace Neo.Scene.Terrain
                 {
                     for (var y = iy - MapRadius; y <= iy + MapRadius; ++y)
                     {
-                        if (x < 0 || y < 0 || x > 63 || y > 63)
-                            continue;
+	                    if (x < 0 || y < 0 || x > 63 || y > 63)
+	                    {
+		                    continue;
+	                    }
 
-                        if (FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, x, y)) == false)
-                            continue;
+	                    if (FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, x, y)) == false)
+	                    {
+		                    continue;
+	                    }
 
                         var tile = AdtFactory.Instance.CreateArea(Continent, x, y);
                         mDataToLoad.Add(tile);
@@ -325,8 +356,10 @@ namespace Neo.Scene.Terrain
                 SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint.X, mEntryPoint.Y, height));
 
                 var entryPoint = new Vector3(mEntryPoint.X, mEntryPoint.Y, height);
-                if (FileManager.Instance.Version > FileDataVersion.Mists)
-                    entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
+	            if (FileManager.Instance.Version > FileDataVersion.Mists)
+	            {
+		            entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
+	            }
 
                 SkyManager.Instance.AsyncUpdate();
                 EditorWindowController.Instance.OnEnterWorld();
@@ -359,14 +392,16 @@ namespace Neo.Scene.Terrain
                     }
                 }
 
-                if (loadTile != null)
-                {
-                    loadTile.AsyncLoad();
-                    lock (mLoadedData)
-                        mLoadedData.Add(loadTile);
-                }
-                else
-                    Thread.Sleep(30);
+	            if (loadTile != null)
+	            {
+		            loadTile.AsyncLoad();
+		            lock (mLoadedData)
+			            mLoadedData.Add(loadTile);
+	            }
+	            else
+	            {
+		            Thread.Sleep(30);
+	            }
             }
         }
 
@@ -389,8 +424,10 @@ namespace Neo.Scene.Terrain
                 }
             }
 
-            if (data == null)
-                return;
+	        if (data == null)
+	        {
+		        return;
+	        }
 
             var tile = new MapAreaRender(data.IndexX, data.IndexY);
             tile.AsyncLoaded(data);
@@ -401,8 +438,10 @@ namespace Neo.Scene.Terrain
         {
             while(mIsRunning)
             {
-                if (SkyManager.Instance != null)
-                    SkyManager.Instance.AsyncUpdate();
+	            if (SkyManager.Instance != null)
+	            {
+		            SkyManager.Instance.AsyncUpdate();
+	            }
 
                 Thread.Sleep(100);
             }
@@ -412,8 +451,10 @@ namespace Neo.Scene.Terrain
         {
             var cx = position.X;
             var cy = position.Y;
-            if (FileManager.Instance.Version < FileDataVersion.Lichking)
-                cy = 64.0f * Metrics.TileSize - cy;
+	        if (FileManager.Instance.Version < FileDataVersion.Lichking)
+	        {
+		        cy = 64.0f * Metrics.TileSize - cy;
+	        }
 
             var ix = (int) Math.Floor(cx / Metrics.TileSize);
             var iy = (int) Math.Floor(cy / Metrics.TileSize);
@@ -426,16 +467,20 @@ namespace Neo.Scene.Terrain
                 return (x > ix + 2 || x < ix - 2 || y > iy + 2 || y < iy - 2);
             });
 
-            if (countPref == mCurrentValidLinks.Count)
-                return;
+	        if (countPref == mCurrentValidLinks.Count)
+	        {
+		        return;
+	        }
 
             mCurrentValidLinks.Clear();
             for (var x = ix - MapRadius; x <= ix + MapRadius; ++x)
             {
                 for (var y = iy - MapRadius; y <= iy + MapRadius; ++y)
                 {
-                    if (x < 0 || y < 0 || x > 63 || y > 63)
-                        continue;
+	                if (x < 0 || y < 0 || x > 63 || y > 63)
+	                {
+		                continue;
+	                }
 
                     mCurrentValidLinks.Add(y * 64 + x);
                 }
@@ -482,15 +527,19 @@ namespace Neo.Scene.Terrain
 
             foreach(var link in mCurrentValidLinks)
             {
-                if (loadMask.Contains(link))
-                    continue;
+	            if (loadMask.Contains(link))
+	            {
+		            continue;
+	            }
 
                 var x = link % 64;
                 var y = link / 64;
 
                 var area = AdtFactory.Instance.CreateArea(Continent, x, y);
-                lock (mDataToLoad)
-                    mDataToLoad.Add(area);
+	            lock (mDataToLoad)
+	            {
+		            mDataToLoad.Add(area);
+	            }
             }
         }
 
@@ -500,8 +549,10 @@ namespace Neo.Scene.Terrain
             {
                 lock(mUnloadList)
                 {
-                    foreach (var tile in mUnloadList)
-                        tile.Dispose();
+	                foreach (var tile in mUnloadList)
+	                {
+		                tile.Dispose();
+	                }
 
                     mUnloadList.Clear();
                 }

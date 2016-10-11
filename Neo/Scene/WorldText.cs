@@ -4,11 +4,12 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using Neo.Graphics;
+using Neo.IO;
 using Neo.IO.Files.Texture;
-using Neo.Resources;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using Rectangle = System.Drawing.Rectangle;
+using FontCollection = Neo.UI.FontCollection;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Neo.Scene
 {
@@ -17,9 +18,9 @@ namespace Neo.Scene
         public enum TextDrawMode
         {
             TextDraw2D,
-            TextDraw2D_World,
+            TextDraw2DWorld,
             TextDraw3D,
-            TextDraw3D_NoDepthTest
+            TextDraw3DNoDepthTest
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -81,7 +82,7 @@ namespace Neo.Scene
         private float mWidth;
         private float mHeight;
 
-        private Font mFont = UI.FontCollection.GetFont("Friz Quadrata TT", 30);
+        private Font mFont = FontCollection.GetFont("Friz Quadrata TT", 30);
         private Brush mBrush = Brushes.AntiqueWhite;
 
         private static readonly Bitmap Bitmap = new Bitmap(1, 1);
@@ -91,8 +92,8 @@ namespace Neo.Scene
 	    private Graphics.Texture mTexture2D;
 
         private bool mIsDirty = true;
-        private bool mShouldDraw = false;
-        private bool mIsInitialized = false;
+        private bool mShouldDraw;
+        private bool mIsInitialized;
 
         public WorldText(Font font = null, Brush brush = null)
         {
@@ -153,23 +154,28 @@ namespace Neo.Scene
             if (!mShouldDraw)
                 return;
 
-            switch (DrawMode)
-            {
-                case TextDrawMode.TextDraw2D:
-                    DrawText2D(camera, false);
-                    break;
-
-                case TextDrawMode.TextDraw2D_World:
-                    DrawText2D(camera, true);
-                    break;
-
-                case TextDrawMode.TextDraw3D:
-                    DrawText3D(camera, false);
-                    break;
-
-                case TextDrawMode.TextDraw3D_NoDepthTest:
-                    DrawText3D(camera, true);
-                    break;
+	        switch (DrawMode)
+	        {
+		        case TextDrawMode.TextDraw2D:
+		        {
+			        DrawText2D(camera, false);
+			        break;
+		        }
+		        case TextDrawMode.TextDraw2DWorld:
+		        {
+			        DrawText2D(camera, true);
+			        break;
+		        }
+		        case TextDrawMode.TextDraw3D:
+	            {
+		            DrawText3D(camera, false);
+		            break;
+	            }
+                case TextDrawMode.TextDraw3DNoDepthTest:
+	            {
+		            DrawText3D(camera, true);
+		            break;
+	            }
             }
         }
 
@@ -190,8 +196,10 @@ namespace Neo.Scene
             if (world)
             {
                 center = WorldToScreenCoords(camera, center);
-                if (center.Z >= 1.0f)
-                    return;
+	            if (center.Z >= 1.0f)
+	            {
+		            return;
+	            }
             }
 
             var scale = Scaling;
@@ -211,7 +219,7 @@ namespace Neo.Scene
             gMesh.IndexCount = 4;
             gMesh.StartVertex = 0;
             gMesh.StartIndex = 0;
-            gMesh.Topology = BeginMode.TriangleStrip;
+            gMesh.Topology = PrimitiveType.TriangleStrip;
 
             if (gMesh.Program != gWorldTextShader2D)
             {
@@ -246,7 +254,7 @@ namespace Neo.Scene
             gMesh.IndexCount = 4;
             gMesh.StartVertex = 0;
             gMesh.StartIndex = 0;
-            gMesh.Topology = BeginMode.TriangleStrip;
+            gMesh.Topology = PrimitiveType.TriangleStrip;
 
             if (gMesh.Program != gWorldTextShader)
             {
@@ -302,7 +310,7 @@ namespace Neo.Scene
             }
 
             byte[] buffer;
-            using (var bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
+            using (var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb))
             {
                 using (var graphics = System.Drawing.Graphics.FromImage(bitmap))
                 {
@@ -368,7 +376,7 @@ namespace Neo.Scene
         {
             gGraphics = System.Drawing.Graphics.FromImage(Bitmap);
 
-            gTexture = new Sampler()
+            gTexture = new Sampler
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -376,7 +384,7 @@ namespace Neo.Scene
                 Filter = Filter.MinMagMipLinear
             };
 
-            gTexture2D = new Sampler()
+            gTexture2D = new Sampler
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -414,7 +422,7 @@ namespace Neo.Scene
 
             gMesh = new Mesh
             {
-                Stride = IO.SizeCache<WorldTextVertex>.Size
+                Stride = SizeCache<WorldTextVertex>.Size
             };
 
             gMesh.IndexBuffer.Dispose();
@@ -428,15 +436,10 @@ namespace Neo.Scene
             gMesh.AddElement("POSITION", 0, 3);
             gMesh.AddElement("TEXCOORD", 0, 2);
 
-            gWorldTextShader = new ShaderProgram();
-            gWorldTextShader.SetVertexShader(Shaders.WorldTextVertex);
-            gWorldTextShader.SetFragmentShader(Shaders.WorldTextFragment);
+	        gWorldTextShader = ShaderCache.GetShaderProgram(NeoShader.WorldText);
+	        gWorldTextShader2D = ShaderCache.GetShaderProgram(NeoShader.WorldText2D);
 
-            gWorldTextShader2D = new ShaderProgram();
-            gWorldTextShader2D.SetVertexShader(Shaders.WorldTextVertexOrtho);
-            gWorldTextShader2D.SetFragmentShader(Shaders.WorldTextFragment);
             gMesh.Program = gWorldTextShader;
-            gMesh.InitLayout(gWorldTextShader);
 
             gPerDrawCallBuffer = new UniformBuffer();
             gPerDrawCallBuffer.BufferData(new PerDrawCallBuffer

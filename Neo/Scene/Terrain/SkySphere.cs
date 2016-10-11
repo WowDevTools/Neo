@@ -20,7 +20,6 @@ namespace Neo.Scene.Terrain
         private SphereVertex[] mVertices;
         private readonly UniformBuffer mMatrixBuffer;
         private Graphics.Texture mSkyTexture;
-        private readonly Sampler mSampler;
         private readonly Mesh mMesh;
         private BoundingSphere mBoundingSphere;
         private readonly float mRadius;
@@ -31,7 +30,6 @@ namespace Neo.Scene.Terrain
         {
             mRadius = radius;
             mBoundingSphere = new BoundingSphere(Vector3.Zero, radius);
-            mSampler = new Sampler();
             mMesh = new Mesh();
             mMesh.AddElement("POSITION", 0, 3);
             mMesh.AddElement("TEXCOORD", 0, 2);
@@ -46,12 +44,7 @@ namespace Neo.Scene.Terrain
             mMatrixBuffer = new UniformBuffer();
             mMatrixBuffer.BufferData(Matrix4.Identity);
 
-            var program = new ShaderProgram();
-            program.SetVertexShader(Shaders.SkyVertex);
-            program.SetPixelShader(Shaders.SkyFragment);
-
-            mMesh.Program = program;
-            mMesh.InitLayout(program);
+            mMesh.Program = ShaderCache.GetShaderProgram(NeoShader.Sky);
         }
 
         public void Render()
@@ -61,7 +54,6 @@ namespace Neo.Scene.Terrain
 
             mMesh.Program.SetVertexUniformBuffer(1, mMatrixBuffer);
             mMesh.Program.SetFragmentTexture(0, mSkyTexture);
-            mMesh.Program.SetPixelSampler(0, mSampler);
             mMesh.BeginDraw();
             mMesh.Draw();
         }

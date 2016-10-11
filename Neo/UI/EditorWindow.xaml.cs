@@ -50,7 +50,7 @@ namespace Neo.UI
             {
                 Position = WorldFrame.Instance.ActiveCamera.Position,
                 Text = "This is a 2D text!",
-                DrawMode = WorldText.TextDrawMode.TextDraw2D_World
+                DrawMode = WorldText.TextDrawMode.TextDraw2DWorld
             };
 
             WorldFrame.Instance.WorldTextManager.AddText(worldText);

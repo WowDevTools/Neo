@@ -113,11 +113,15 @@ namespace Neo.Scene
                 var dx = curPos.X - mLastCursorPos.X;
                 var dy = curPos.Y - mLastCursorPos.Y;
 
-                if (dx != 0)
-                    cam.Yaw(dx * TurnFactor * (InvertX ? 1 : -1));
+	            if (dx != 0)
+	            {
+		            cam.Yaw(dx * TurnFactor * (InvertX ? 1 : -1));
+	            }
 
-                if (dy != 0)
-                    cam.Pitch(dy * TurnFactor * (InvertY ? 1 : -1));
+	            if (dy != 0)
+	            {
+		            cam.Pitch(dy * TurnFactor * (InvertY ? 1 : -1));
+	            }
             }
 
             if (positionChanged && PositionChanged != null)
