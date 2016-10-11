@@ -393,7 +393,8 @@ namespace Neo.Graphics
             NativeView = new ShaderResourceView(mContext.Device, mTexture, srvd);
         }
 
-        public static void InitDefaultTexture(GxContext context)
+	    // TODO: Rewrite & rework
+        public static void InitDefaultTexture()
         {
             var desc = new Texture2DDescription
             {

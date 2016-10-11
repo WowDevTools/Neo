@@ -238,13 +238,13 @@ namespace Neo.Scene.Terrain
             UpdateTextureAnimations();
 
             ChunkMesh.StartVertex = mData.StartVertex;
-            ChunkMesh.Program.SetPixelTexture(0, mAlphaTexture);
-            ChunkMesh.Program.SetPixelTexture(1, mHoleTexture);
-            ChunkMesh.Program.SetPixelTextures(2, mShaderTextures);
-            ChunkMesh.Program.SetPixelTextures(6, mShaderSpecularTextures);
-            ChunkMesh.Program.SetVertexConstantBuffer(1, mTexAnimBuffer);
+            ChunkMesh.Program.SetFragmentTexture(0, mAlphaTexture);
+            ChunkMesh.Program.SetFragmentTexture(1, mHoleTexture);
+            ChunkMesh.Program.SetFragmentTextures(2, mShaderTextures);
+            ChunkMesh.Program.SetFragmentTextures(6, mShaderSpecularTextures);
+            ChunkMesh.Program.SetVertexUniformBuffer(1, mTexAnimBuffer);
 
-            ChunkMesh.Program.SetPixelConstantBuffer(2, mScaleBuffer);
+            ChunkMesh.Program.SetFragmentUniformBuffer(2, mScaleBuffer);
 
             ChunkMesh.Draw();
         }
@@ -370,13 +370,13 @@ namespace Neo.Scene.Terrain
             mIsSyncLoaded = true;
         }
 
-        public static void Initialize(GxContext context)
+        public static void Initialize()
         {
             ChunkMesh = new Mesh();
-            InitMesh(context);
+            InitMesh();
         }
 
-        private static void InitMesh(GxContext context)
+        private static void InitMesh()
         {
             // all tiles will supply their own vertex buffer
             ChunkMesh.VertexBuffer.Dispose();
@@ -394,18 +394,18 @@ namespace Neo.Scene.Terrain
             ChunkMesh.DepthState.DepthEnabled = true;
             ChunkMesh.RasterizerState.BackfaceCullingEnabled = true;
 
-            BlendNew = new ShaderProgram(context);
+            BlendNew = new ShaderProgram();
             BlendNew.SetVertexShader(Resources.Shaders.TerrainVertex);
             BlendNew.SetPixelShader(Resources.Shaders.TerrainFragmentNew);
 
             ChunkMesh.Program = BlendNew;
             ChunkMesh.InitLayout(BlendNew);
 
-            BlendOld = new ShaderProgram(context);
+            BlendOld = new ShaderProgram();
             BlendOld.SetVertexShader(Resources.Shaders.TerrainVertex);
 	        BlendOld.SetPixelShader(Resources.Shaders.TerrainFragment);
 
-            ColorSampler = new Sampler(context)
+            ColorSampler = new Sampler()
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -413,7 +413,7 @@ namespace Neo.Scene.Terrain
                 Filter = SharpDX.Direct3D11.Filter.Anisotropic,
                 MaximumAnisotropy = 16,
             };
-            AlphaSampler = new Sampler(context)
+            AlphaSampler = new Sampler()
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,

@@ -27,11 +27,11 @@ namespace Neo.Scene.Terrain
 
         public BoundingSphere BoundingSphere { get { return mBoundingSphere; } }
 
-        public SkySphere(float radius, int rings, int sectors, GxContext context)
+        public SkySphere(float radius, int rings, int sectors)
         {
             mRadius = radius;
             mBoundingSphere = new BoundingSphere(Vector3.Zero, radius);
-            mSampler = new Sampler(context);
+            mSampler = new Sampler();
             mMesh = new Mesh();
             mMesh.AddElement("POSITION", 0, 3);
             mMesh.AddElement("TEXCOORD", 0, 2);
@@ -59,8 +59,8 @@ namespace Neo.Scene.Terrain
             if (mSkyTexture == null)
                 return;
 
-            mMesh.Program.SetVertexConstantBuffer(1, mMatrixBuffer);
-            mMesh.Program.SetPixelTexture(0, mSkyTexture);
+            mMesh.Program.SetVertexUniformBuffer(1, mMatrixBuffer);
+            mMesh.Program.SetFragmentTexture(0, mSkyTexture);
             mMesh.Program.SetPixelSampler(0, mSampler);
             mMesh.BeginDraw();
             mMesh.Draw();

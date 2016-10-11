@@ -104,8 +104,8 @@ namespace Neo.Scene.Models.M2
             gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(2, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(3, gSamplerWrapBoth);
-            gMesh.Program.SetVertexConstantBuffer(2, gPerPassBuffer);
-            gMesh.Program.SetPixelConstantBuffer(1, gPerPassBuffer);
+            gMesh.Program.SetVertexUniformBuffer(2, gPerPassBuffer);
+            gMesh.Program.SetFragmentUniformBuffer(1, gPerPassBuffer);
         }
 
         public void OnFrame(M2Renderer renderer)
@@ -117,7 +117,7 @@ namespace Neo.Scene.Models.M2
             gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
             gMesh.UpdateInstanceBuffer(mInstanceBuffer);
-            gMesh.Program.SetVertexConstantBuffer(1, renderer.AnimBuffer);
+            gMesh.Program.SetVertexUniformBuffer(1, renderer.AnimBuffer);
 
             foreach (var pass in Model.Passes)
             {
@@ -185,7 +185,7 @@ namespace Neo.Scene.Models.M2
                             break;
                     }
 
-                    gMesh.Program.SetPixelTexture(i, pass.Textures[i]);
+                    gMesh.Program.SetFragmentTexture(i, pass.Textures[i]);
                 }
 
                 gMesh.StartVertex = 0;
@@ -205,7 +205,7 @@ namespace Neo.Scene.Models.M2
             gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
             gMesh.UpdateInstanceBuffer(mInstanceBuffer);
-            gMesh.Program.SetVertexConstantBuffer(1, renderer.AnimBuffer);
+            gMesh.Program.SetVertexUniformBuffer(1, renderer.AnimBuffer);
 
             foreach (var pass in Model.Passes)
             {
@@ -242,7 +242,7 @@ namespace Neo.Scene.Models.M2
                 gMesh.StartVertex = 0;
                 gMesh.StartIndex = pass.StartIndex;
                 gMesh.IndexCount = pass.IndexCount;
-                gMesh.Program.SetPixelTexture(0, pass.Textures.First());
+                gMesh.Program.SetFragmentTexture(0, pass.Textures.First());
                 gMesh.Draw(mInstanceCount);
             }
         }
@@ -273,7 +273,7 @@ namespace Neo.Scene.Models.M2
             mInstanceBuffer = new VertexBuffer();
         }
 
-        public static void Initialize(GxContext context)
+        public static void Initialize()
         {
             gMesh = new Mesh
             {
@@ -330,7 +330,7 @@ namespace Neo.Scene.Models.M2
                 modelPassParams = Vector4.Zero
             });
 
-            gSamplerWrapU = new Sampler(context)
+            gSamplerWrapU = new Sampler()
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,
@@ -339,7 +339,7 @@ namespace Neo.Scene.Models.M2
                 MaximumAnisotropy = 16
             };
 
-            gSamplerWrapV = new Sampler(context)
+            gSamplerWrapV = new Sampler()
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -348,7 +348,7 @@ namespace Neo.Scene.Models.M2
                 MaximumAnisotropy = 16
             };
 
-            gSamplerWrapBoth = new Sampler(context)
+            gSamplerWrapBoth = new Sampler()
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -357,7 +357,7 @@ namespace Neo.Scene.Models.M2
                 MaximumAnisotropy = 16
             };
 
-            gSamplerClampBoth = new Sampler(context)
+            gSamplerClampBoth = new Sampler()
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Clamp,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Clamp,

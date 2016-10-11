@@ -133,7 +133,7 @@ namespace Neo.Scene
         public static void BeginDraw()
         {
             gMesh.BeginDraw();
-            gMesh.Program.SetVertexConstantBuffer(1, gPerDrawCallBuffer);
+            gMesh.Program.SetVertexUniformBuffer(1, gPerDrawCallBuffer);
         }
 
         public void OnFrame(Camera camera)
@@ -219,7 +219,7 @@ namespace Neo.Scene
                 gMesh.Program.Bind();
             }
 
-            gMesh.Program.SetPixelTexture(0, mTexture);
+            gMesh.Program.SetFragmentTexture(0, mTexture);
             gMesh.DrawNonIndexed();
         }
 
@@ -254,7 +254,7 @@ namespace Neo.Scene
                 gMesh.Program.Bind();
             }
 
-            gMesh.Program.SetPixelTexture(0, mTexture);
+            gMesh.Program.SetFragmentTexture(0, mTexture);
             gMesh.DrawNonIndexed();
         }
 
@@ -361,15 +361,14 @@ namespace Neo.Scene
 
         private void OnSyncLoad()
         {
-            var ctx = WorldFrame.Instance.GraphicsContext;
             mTexture = new Graphics.Texture();
         }
 
-        public static void Initialize(GxContext context)
+        public static void Initialize()
         {
             gGraphics = System.Drawing.Graphics.FromImage(Bitmap);
 
-            gTexture = new Sampler(context)
+            gTexture = new Sampler()
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -377,7 +376,7 @@ namespace Neo.Scene
                 Filter = Filter.MinMagMipLinear
             };
 
-            gTexture2D = new Sampler(context)
+            gTexture2D = new Sampler()
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,
@@ -431,11 +430,11 @@ namespace Neo.Scene
 
             gWorldTextShader = new ShaderProgram();
             gWorldTextShader.SetVertexShader(Shaders.WorldTextVertex);
-            gWorldTextShader.SetPixelShader(Shaders.WorldTextFragment);
+            gWorldTextShader.SetFragmentShader(Shaders.WorldTextFragment);
 
             gWorldTextShader2D = new ShaderProgram();
             gWorldTextShader2D.SetVertexShader(Shaders.WorldTextVertexOrtho);
-            gWorldTextShader2D.SetPixelShader(Shaders.WorldTextFragment);
+            gWorldTextShader2D.SetFragmentShader(Shaders.WorldTextFragment);
             gMesh.Program = gWorldTextShader;
             gMesh.InitLayout(gWorldTextShader);
 

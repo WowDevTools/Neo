@@ -106,9 +106,9 @@ namespace Neo.Scene.Models.M2
 		        mAnimBuffer.BufferData(mAnimationMatrices);
 	        }
 
-            Mesh.Program.SetVertexConstantBuffer(1, mAnimBuffer);
-            Mesh.Program.SetVertexConstantBuffer(2, mPerPassBuffer);
-            Mesh.Program.SetPixelConstantBuffer(0, mPerPassBuffer);
+            Mesh.Program.SetVertexUniformBuffer(1, mAnimBuffer);
+            Mesh.Program.SetVertexUniformBuffer(2, mPerPassBuffer);
+            Mesh.Program.SetFragmentUniformBuffer(0, mPerPassBuffer);
 
             foreach (var pass in Model.Passes)
             {
@@ -176,7 +176,7 @@ namespace Neo.Scene.Models.M2
                 Mesh.StartIndex = pass.StartIndex;
                 Mesh.IndexCount = pass.IndexCount;
                 for(var i = 0; i < pass.TextureIndices.Count; ++i)
-                    Mesh.Program.SetPixelTexture(i, Textures[pass.TextureIndices[i]].Texture);
+                    Mesh.Program.SetFragmentTexture(i, Textures[pass.TextureIndices[i]].Texture);
 
                 Mesh.Draw();
             }
@@ -197,7 +197,7 @@ namespace Neo.Scene.Models.M2
             gCullState.CullingWindingDirection = (FileManager.Instance.Version >= FileDataVersion.Lichking) ? FrontFaceDirection.Ccw : FrontFaceDirection.Cw;
         }
 
-        public static void Initialize(GxContext context)
+        public static void Initialize()
         {
             Mesh = new Mesh
             {
@@ -221,7 +221,7 @@ namespace Neo.Scene.Models.M2
 
             Mesh.Program = program;
 
-            Sampler = new Sampler(context)
+            Sampler = new Sampler
             {
                 AddressU = SharpDX.Direct3D11.TextureAddressMode.Wrap,
                 AddressV = SharpDX.Direct3D11.TextureAddressMode.Wrap,

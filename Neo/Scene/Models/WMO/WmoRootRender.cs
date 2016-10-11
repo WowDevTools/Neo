@@ -101,7 +101,7 @@ namespace Neo.Scene.Models.WMO
             var mesh = WmoGroupRender.Mesh;
             mesh.UpdateVertexBuffer(mVertexBuffer);
             mesh.UpdateIndexBuffer(mIndexBuffer);
-            mesh.Program.SetVertexConstantBuffer(1, WmoGroupRender.InstanceBuffer);
+            mesh.Program.SetVertexUniformBuffer(1, WmoGroupRender.InstanceBuffer);
 
             foreach (var instance in instances)
             {

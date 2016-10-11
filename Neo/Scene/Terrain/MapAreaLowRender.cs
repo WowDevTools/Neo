@@ -119,7 +119,7 @@ namespace Neo.Scene.Terrain
             mAsyncLoaded = true;
         }
 
-        public static void Initialize(GxContext context)
+        public static void Initialize()
         {
             Mesh = new Mesh
             {

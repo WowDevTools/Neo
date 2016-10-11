@@ -79,7 +79,6 @@ namespace Neo.Scene
         private RenderControl mWindow;
 
         public AppState State { get { return mState; } set { UpdateAppState(value); } }
-        public GxContext GraphicsContext { get; private set; }
         public GraphicsDispatcher Dispatcher { get; private set; }
 
         public IntersectionParams LastMouseIntersection { get; private set; }
@@ -139,11 +138,9 @@ namespace Neo.Scene
             }
         }
 
-        public void Initialize(RenderControl window, GxContext context)
+        public void Initialize(RenderControl window)
         {
-            GraphicsContext = context;
             mWindow = window;
-            context.Resize += (w, h) => OnResize((int) w, (int) h);
             mGlobalBuffer = new UniformBuffer();
             mGlobalBuffer = new UniformBuffer();
             mGlobalBufferStore = new GlobalParamsBuffer
@@ -164,13 +161,13 @@ namespace Neo.Scene
 
             Dispatcher = new GraphicsDispatcher();
             Dispatcher.AssignToThread();
-            MapChunkRender.Initialize(context);
-            MapAreaLowRender.Initialize(context);
-            WmoGroupRender.Initialize(context);
-            M2BatchRenderer.Initialize(context);
-            M2SingleRenderer.Initialize(context);
-            M2PortraitRenderer.Initialize(context);
-            WorldText.Initialize(context);
+            MapChunkRender.Initialize();
+            MapAreaLowRender.Initialize();
+            WmoGroupRender.Initialize();
+            M2BatchRenderer.Initialize();
+            M2SingleRenderer.Initialize();
+            M2PortraitRenderer.Initialize();
+            WorldText.Initialize();
             BoundingBoxDrawManager.Initialize();
             ChunkEditManager.Instance.Initialize();
 
@@ -236,8 +233,9 @@ namespace Neo.Scene
                 CheckUpdateGlobalBuffer();
             }
 
-            GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
-            GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
+	        // TODO: Figure out the purpose of this
+            //GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
+            //GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
 
             MapManager.OnFrame(ActiveCamera);
             WmoManager.OnFrame(ActiveCamera);
@@ -342,7 +340,8 @@ namespace Neo.Scene
             if (camera != ActiveCamera)
                 return;
 
-            var vp = GraphicsContext.Viewport;
+	        // TODO: Get these values someplace else
+            // var vp = GraphicsContext.Viewport;
             mGlobalBufferStore.matProj = matProj;
             mGlobalBufferStore.viewport = new Vector4(vp.Width, vp.Height, vp.MinDepth, vp.MaxDepth);
 

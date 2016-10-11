@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Neo.Graphics
 {
-    class GraphicsDispatcher
+    public class GraphicsDispatcher
     {
         private readonly List<Action> mFrames = new List<Action>();
         private int mAssignedThread;

@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using System;
+using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {
@@ -17,6 +18,38 @@ namespace Neo.Graphics
 	    public DrawElementsType IndexFormat { get; set; }
 
 	    /// <summary>
+	    /// The size of one index stored in this buffer.
+	    /// </summary>
+	    /// <exception cref="ArgumentOutOfRangeException">
+	    /// Throws if the <see cref="IndexFormat"/> is set to an invalid format.
+	    /// </exception>
+	    public int IndexFormatSize
+	    {
+		    get
+		    {
+			    switch (IndexFormat)
+			    {
+				    case DrawElementsType.UnsignedByte:
+				    {
+					    return 1;
+				    }
+				    case DrawElementsType.UnsignedShort:
+				    {
+					    return 2;
+				    }
+				    case DrawElementsType.UnsignedInt:
+				    {
+					    return 4;
+				    }
+				    default:
+				    {
+					    throw new ArgumentOutOfRangeException();
+				    }
+			    }
+		    }
+	    }
+
+	    /// <summary>
 		/// Initializes a new instance of the <see cref="IndexBuffer"/> class.
 		/// </summary>
 		/// <param name="indexFormat">The data type of the indices which will be stored in this buffer.</param>
@@ -24,6 +57,16 @@ namespace Neo.Graphics
             base(BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw)
 	    {
 		    IndexFormat = indexFormat;
+	    }
+
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="IndexBuffer"/> class.
+	    /// </summary>
+	    /// <param name="indexFormat">The data type of the indices which will be stored in this buffer.</param>
+	    public IndexBuffer() :
+		    base(BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw)
+	    {
+		    IndexFormat = DrawElementsType.UnsignedShort;
 	    }
     }
 }

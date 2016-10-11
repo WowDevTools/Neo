@@ -192,11 +192,12 @@
     <Compile Include="Editing\WdlGenerator.cs" />
     <Compile Include="Graphics\BlendState.cs" />
     <Compile Include="Graphics\Buffer.cs" />
+    <Compile Include="Graphics\ShaderCache.cs" />
+    <Compile Include="Graphics\NeoShader.cs" />
     <Compile Include="Graphics\UniformBuffer.cs" />
     <Compile Include="Graphics\DefaultTextures.cs" />
     <Compile Include="Graphics\DepthState.cs" />
     <Compile Include="Graphics\GraphicsDispatcher.cs" />
-    <Compile Include="Graphics\GxContext.cs" />
     <Compile Include="Graphics\IndexBuffer.cs" />
     <Compile Include="Graphics\InputLayoutCache.cs" />
     <Compile Include="Graphics\Mesh.cs" />

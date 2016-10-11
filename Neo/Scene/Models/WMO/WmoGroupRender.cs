@@ -173,10 +173,10 @@ namespace Neo.Scene.Models.WMO
                 Mesh.Program = newProgram;
                 Mesh.Program.Bind();
             }
-            Mesh.Program.SetPixelTextures(0, batch.Material.Textures);
+            Mesh.Program.SetFragmentTextures(0, batch.Material.Textures);
         }
 
-        public static void Initialize(GxContext context)
+        public static void Initialize()
         {
             gNoBlendState = new BlendState
             {
@@ -198,8 +198,7 @@ namespace Neo.Scene.Models.WMO
 	            BackfaceCullingEnabled = true
             };
 
-            Sampler = new Sampler(context);
-
+	        Sampler = new Sampler();
             InstanceBuffer = new UniformBuffer();
 	        // INVESTIGATE: Preallcation most likely not needed in OpenGL
             //InstanceBuffer.BufferData(Matrix4.Identity); // preallocate space so the underlying buffer wont change anymore

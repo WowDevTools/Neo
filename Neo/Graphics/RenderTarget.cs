@@ -5,7 +5,6 @@ namespace Neo.Graphics
 {
     class RenderTarget : IDisposable
     {
-        private GxContext mContext;
         private Texture2D mDepthTexture;
         private DepthStencilView mDepthView;
 
@@ -18,9 +17,8 @@ namespace Neo.Graphics
         private Color4 backgroundcolor = Color4.Black;
         private Func<System.Drawing.Color, Color4> ConvertColor = c => new Color4(c.R / 255f, c.G / 255f, c.B / 255f, 1);
 
-        public RenderTarget(GxContext context)
+        public RenderTarget()
         {
-            mContext = context;
             backgroundcolor = ConvertColor(Properties.Settings.Default.AssetRenderBackgroundColor);
 
             Properties.Settings.Default.SettingChanging += SettingsChanging;
@@ -75,7 +73,6 @@ namespace Neo.Graphics
                 Texture = null;
             }
 
-            mContext = null;
         }
 
         public virtual void Dispose()
@@ -86,26 +83,35 @@ namespace Neo.Graphics
 
         public void Clear()
         {
-            if (Native == null)
-                return;
+	        if (Native == null)
+	        {
+		        return;
+	        }
 
-            mContext.Context.ClearRenderTargetView(Native, backgroundcolor);
-            mContext.Context.ClearDepthStencilView(mDepthView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+	        // TODO: Figure out the purpose of this
+            //mContext.Context.ClearRenderTargetView(Native, backgroundcolor);
+            //mContext.Context.ClearDepthStencilView(mDepthView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
         }
 
         public void Apply()
         {
-            if (Native == null || mDepthView == null)
-                throw new InvalidOperationException("Cannot bind render target before its initialized");
+	        if (Native == null || mDepthView == null)
+	        {
+		        throw new InvalidOperationException("Cannot bind render target before its initialized");
+	        }
 
-            mOldRenderTarget = mContext.Context.OutputMerger.GetRenderTargets(1, out mOldDepthView)[0];
-            mContext.Context.OutputMerger.SetRenderTargets(mDepthView, Native);
+	        // TODO: Figure out the purpose of this
+	        //mOldRenderTarget = mContext.Context.OutputMerger.GetRenderTargets(1, out mOldDepthView)[0];
+            //mContext.Context.OutputMerger.SetRenderTargets(mDepthView, Native);
         }
 
         public void Remove()
         {
-            if (mOldDepthView != null && mOldRenderTarget != null)
-                mContext.Context.OutputMerger.SetRenderTargets(mOldDepthView, mOldRenderTarget);
+	        if (mOldDepthView != null && mOldRenderTarget != null)
+	        {
+		        // TODO: Figure out the purpose of this
+		        //mContext.Context.OutputMerger.SetRenderTargets(mOldDepthView, mOldRenderTarget);
+	        }
 
             if (mOldDepthView != null) mOldDepthView.Dispose();
             if (mOldRenderTarget != null) mOldRenderTarget.Dispose();
