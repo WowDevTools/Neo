@@ -45,6 +45,7 @@ namespace WoWEditor6.Editing
 
         private ChunkEditManager()
         {
+            WorldFrame.Instance.OnWorldClicked += OnChunkClicked;
         }
 
         public void Initialize()
@@ -61,6 +62,8 @@ namespace WoWEditor6.Editing
                 if (chunk.AreaId != mHoveredChunk?.AreaId)
                     HoveredAreaChange?.Invoke(chunk.AreaId);
                 mHoveredChunk = chunk;
+
+                OnChunkClicked(WorldFrame.Instance.LastMouseIntersection, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
             }
         }
 
@@ -93,7 +96,7 @@ namespace WoWEditor6.Editing
 
         public void OnChange(TimeSpan diff)
         {
-           WorldFrame.Instance.OnWorldClicked += OnChunkClicked;
+           
         }
 
         private void OnChunkClicked(IntersectionParams intersection, MouseEventArgs e)
