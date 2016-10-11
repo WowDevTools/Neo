@@ -5,22 +5,50 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Neo.Graphics
 {
+	/// <summary>
+	/// The ShaderCache class is responsible for creating and maintaining the shaders in Neo.
+	/// Whenever a shader is required, it is fetched from this class using <see cref="GetShaderProgram"/>.
+	///
+	/// This method checks the internal cache for the specified shader, creates it if neccesary, and returns
+	/// it to the user.
+	/// </summary>
 	public sealed class ShaderCache : IDisposable
 	{
+		/// <summary>
+		/// The singleton instance of the cache.
+		/// </summary>
 		private static readonly ShaderCache Instance = new ShaderCache();
 
+		/// <summary>
+		/// The internal cache of shader programs.
+		/// </summary>
 		private readonly Dictionary<NeoShader, ShaderProgram> ShaderProgramCache = new Dictionary<NeoShader, ShaderProgram>();
 
+		/// <summary>
+		/// Creates a new instance of the <see cref="ShaderCache"/> class. This constructor is not used beyond
+		/// initializing the singleton.
+		/// </summary>
 		private ShaderCache()
 		{
-
 		}
 
+		/// <summary>
+		/// Gets the specified shader program from the cache. If this is the first time the specified shader is
+		/// requested, it will be created.
+		/// </summary>
+		/// <param name="neoShader">The shader to fetch.</param>
+		/// <returns>The<see cref="ShaderProgram"/> for the specified shader.</returns>
 		public static ShaderProgram GetShaderProgram(NeoShader neoShader)
 		{
-			return ShaderCache.Instance.InternalGetShaderProgram(neoShader);
+			return Instance.InternalGetShaderProgram(neoShader);
 		}
 
+		/// <summary>
+		/// The internal implemenentation of <see cref="GetShaderProgram"/>. This checks the cache, creates the program
+		/// if neccesary, and returns the corrent <see cref="ShaderProgram"/>
+		/// </summary>
+		/// <param name="neoShader">The shader to fetch.</param>
+		/// <returns>The<see cref="ShaderProgram"/> for the specified shader.</returns>
 		private ShaderProgram InternalGetShaderProgram(NeoShader neoShader)
 		{
 			if (HasCachedShaderProgram(neoShader))
@@ -42,11 +70,23 @@ namespace Neo.Graphics
 			}
 		}
 
+		/// <summary>
+		/// Determines whether or not the specified shader already exists in the cache.
+		/// </summary>
+		/// <param name="neoShader">The shader to check.</param>
+		/// <returns><value>true</value> if it exists; otherwise <value>false</value>.</returns>
 		private bool HasCachedShaderProgram(NeoShader neoShader)
 		{
 			return this.ShaderProgramCache.ContainsKey(neoShader);
 		}
 
+		/// <summary>
+		/// Creates a cached <see cref="ShaderProgram"/> for the specified shader.
+		/// </summary>
+		/// <param name="neoShader">The shader to create.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if an unknown shader is passed to the function.
+		/// </exception>
 		private void CreateCachedShaderProgram(NeoShader neoShader)
 		{
 			int shaderProgramID = GL.CreateProgram();
@@ -142,7 +182,7 @@ namespace Neo.Graphics
 				return;
 			}
 
-			bool linkSuccess = LinkShader(shaderProgramID, vertexShaderID, fragmentShaderID);
+			bool linkSuccess = LinkProgram(shaderProgramID, vertexShaderID, fragmentShaderID);
 
 			// Standard cleanup that always happens
 			GL.DetachShader(shaderProgramID, vertexShaderID);
@@ -161,12 +201,21 @@ namespace Neo.Graphics
 			this.ShaderProgramCache.Add(neoShader, new ShaderProgram(shaderProgramID));
 		}
 
+		/// <summary>
+		/// Compiles the provided <paramref name="shaderSource"/> for the specified <paramref name="shaderID"/> of the
+		/// specified <paramref name="shaderType"/>. Should the shader fail to compile, relevant logging information
+		/// will be printed to the console.
+		/// </summary>
+		/// <param name="shaderID">The OpenGL ID of the shader to compile the code for.</param>
+		/// <param name="shaderSource">The GLSL shader source code.</param>
+		/// <param name="shaderType">The type of shader to compile.</param>
+		/// <returns><value>true</value> if the compilation was successful; otherwise, <value>false</value>.</returns>
 		private static bool CompileShaderSource(int shaderID, string shaderSource, ShaderType shaderType)
 		{
 			int result;
 			int compilationLogLength;
 
-			Console.WriteLine($"Compiling a \"{shaderType}\" shader...");
+			Console.WriteLine($@"Compiling a ""{shaderType}"" shader...");
 			GL.ShaderSource(shaderID, shaderSource);
 			GL.CompileShader(shaderID);
 
@@ -184,12 +233,21 @@ namespace Neo.Graphics
 			return result != 0;
 		}
 
-		private static bool LinkShader(int programID, int vertexShaderID, int fragmentShaderID)
+		/// <summary>
+		/// Links the OpenGL shader program specified by <paramref name="programID"/> with a vertex shader specified by
+		/// <paramref name="vertexShaderID"/> and a fragment shader specified by <paramref name="fragmentShaderID"/>.
+		/// Should the program fail to link with the shaders, relevant logging information will be printed to the console.
+		/// </summary>
+		/// <param name="programID">The OpenGL ID of the shader program to link with the shaders.</param>
+		/// <param name="vertexShaderID">The OpenGL ID of the vertex shader to link with the program.</param>
+		/// <param name="fragmentShaderID">The OpenGL ID of the fragment shader to link with the program.</param>
+		/// <returns><value>true</value> if linking was successful; otherwise, <value>false</value>.</returns>
+		private static bool LinkProgram(int programID, int vertexShaderID, int fragmentShaderID)
 		{
 			int result;
 			int linkingLogLength;
 
-			Console.WriteLine("Linking shader program...");
+			Console.WriteLine(@"Linking shader program...");
 			GL.AttachShader(programID, vertexShaderID);
 			GL.AttachShader(programID, fragmentShaderID);
 			GL.LinkProgram(programID);
@@ -208,11 +266,21 @@ namespace Neo.Graphics
 			return result != 0;
 		}
 
+		/// <summary>
+		/// Destructor for the <see cref="ShaderCache"/> class. Disposes of unmanaged data.
+		/// </summary>
 		~ShaderCache()
 		{
 			Dispose(false);
 		}
 
+		/// <summary>
+		/// Disposal function for the <see cref="ShaderCache"/> class. Deletes all cached shader programs
+		/// from graphics memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// Whether or not this function was called via the <see cref="IDisposable"/> interface definition.
+		/// </param>
 		private void Dispose(bool disposing)
 		{
 			foreach (ShaderProgram shader in this.ShaderProgramCache.Values)
@@ -221,6 +289,9 @@ namespace Neo.Graphics
 			}
 		}
 
+		/// <summary>
+		/// Disposal function for the <see cref="ShaderCache"/> class. Forwards the call to <see cref="Dispose(bool)"/>
+		/// </summary>
 		public void Dispose()
 		{
 			Dispose(true);

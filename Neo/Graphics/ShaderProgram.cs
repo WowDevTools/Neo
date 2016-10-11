@@ -67,7 +67,10 @@ namespace Neo.Graphics
 
         private void Dispose(bool disposing)
         {
-			GL.DeleteShader(this.ShaderProgramID);
+	        if (this.ShaderProgramID > -1)
+	        {
+		        GL.DeleteShader(this.ShaderProgramID);
+	        }
         }
 
         public void Dispose()

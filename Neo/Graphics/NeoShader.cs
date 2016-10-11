@@ -1,5 +1,8 @@
 ﻿namespace Neo.Graphics
 {
+	/// <summary>
+	/// An adressible enum of all available shaders in Neo.
+	/// </summary>
 	public enum NeoShader
 	{
 		BoundingBox,
