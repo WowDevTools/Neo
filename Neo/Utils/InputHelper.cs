@@ -2,7 +2,7 @@
 
 namespace Neo.Utils
 {
-    static class KeyHelper
+    static class InputHelper
     {
         public static bool AreKeysDown(params Key[] keys)
         {
@@ -22,5 +22,17 @@ namespace Neo.Utils
 
             return true;
         }
+
+	    public static bool IsKeyDown(Key key)
+	    {
+		    KeyboardState keyboardState = Keyboard.GetState();
+		    return keyboardState.IsKeyDown(key);
+	    }
+
+	    public static bool IsButtonDown(MouseButton button)
+	    {
+		    MouseState mouseState = Mouse.GetState();
+		    return mouseState.IsButtonDown(button);
+	    }
     }
 }

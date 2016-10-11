@@ -168,12 +168,18 @@ namespace Neo.Editing
                 return;
 
             mLastChange = DateTime.Now;
-            if ((CurrentMode & EditMode.Sculpting) != 0)
-                TerrainChangeManager.Instance.OnChange(diff);
+	        if ((CurrentMode & EditMode.Sculpting) != 0)
+	        {
+		        TerrainChangeManager.Instance.OnChange(diff);
+	        }
             else if ((CurrentMode & EditMode.Texturing) != 0)
-                TextureChangeManager.Instance.OnChange(diff);
+	        {
+		        TextureChangeManager.Instance.OnChange(diff);
+	        }
             else if ((CurrentMode & EditMode.Chunk) != 0)
-                ChunkEditManager.Instance.OnChange(diff);
+	        {
+		        ChunkEditManager.Instance.OnChange(diff);
+	        }
 
 
 	        KeyboardState keyboardState = Keyboard.GetState();
@@ -182,9 +188,9 @@ namespace Neo.Editing
 	        var tDown = keyboardState.IsKeyDown(Key.T);
 
 	        MouseState mouseState = Mouse.GetState();
-	        var LMBDown = mouseState.IsButtonDown(MouseButton.Left);
-	        var RMBDown = mouseState.IsButtonDown(MouseButton.Right);
-	        var MMBDown = mouseState.IsButtonDown(MouseButton.Middle);
+	        var leftDown = mouseState.IsButtonDown(MouseButton.Left);
+	        var rightDown = mouseState.IsButtonDown(MouseButton.Right);
+	        var middleDown = mouseState.IsButtonDown(MouseButton.Middle);
 
 	        Point curPos = InterfaceHelper.GetCursorPosition();
 	        var amount = -(mLastCursorPosition.X - curPos.X) / 32.0f;
@@ -246,7 +252,7 @@ namespace Neo.Editing
 
             if (curPos != mLastCursorPosition)
             {
-                if (altDown && RMBDown)
+                if (altDown && rightDown)
                 {
                     mInnerRadius += amount;
 
@@ -259,7 +265,7 @@ namespace Neo.Editing
                 }
 
 
-                if (altDown && LMBDown)
+                if (altDown && leftDown)
                 {
                     mInnerRadius += amount;
                     mOuterRadius += amount;
@@ -278,7 +284,7 @@ namespace Neo.Editing
 
                 }
 
-                if(spaceDown && LMBDown)
+                if(spaceDown && leftDown)
                 {
                     mIntensity += amount;
                     mAmount += amount;
@@ -302,7 +308,7 @@ namespace Neo.Editing
 
                 }
 
-                if(altDown && MMBDown)
+                if(altDown && middleDown)
                 {
                     mOpacity += amount;
 
@@ -316,7 +322,7 @@ namespace Neo.Editing
                     }
                 }
 
-                if(spaceDown && MMBDown)
+                if(spaceDown && middleDown)
                 {
                     mPenSensivity += amount / 32.0f;
 

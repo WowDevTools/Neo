@@ -68,7 +68,8 @@ namespace Neo.Editing
             {
 	            if (IsCopying)
 	            {
-		            ModelSpawnManager.Instance.OnTerrainClicked(WorldFrame.Instance.LastMouseIntersection, mouseState);
+		            // INVESTIGATE: Possible introduction of new bug (removed explicit passing of mouse state
+		            ModelSpawnManager.Instance.OnTerrainClicked(WorldFrame.Instance.LastMouseIntersection);
 	            }
             }
 
@@ -125,7 +126,7 @@ namespace Neo.Editing
             {
                 var curPosition = SelectedModel.GetPosition();
                 WorldFrame.Instance.MapManager.GetLandHeight(curPosition.X, curPosition.Y, out curPosition.Z);
-                var delta = curPosition - SelectedModel.GetPosition();
+	            var delta = curPosition - SelectedModel.GetPosition();
                 SelectedModel.SetPosition(delta);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }

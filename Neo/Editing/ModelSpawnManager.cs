@@ -122,16 +122,16 @@ namespace Neo.Editing
             }
         }
 
-        public void OnTerrainClicked(IntersectionParams parameters, MouseState state)
+        public void OnTerrainClicked(IntersectionParams parameters)
         {
 	        if (EditManager.Instance.CurrentMode == EditMode.Chunk)
 	        {
 		        return;
 	        }
 
-            if (!state.IsButtonDown(MouseButton.Left))
+            if (!InputHelper.IsButtonDown(MouseButton.Left))
             {
-                if (state.IsButtonDown(MouseButton.Left))
+                if (InputHelper.IsButtonDown(MouseButton.Left))
                 {
 	                KeyboardState keyboardState = Keyboard.GetState();
                     if (keyboardState.IsKeyDown(Key.ControlLeft))

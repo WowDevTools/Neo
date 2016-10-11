@@ -62,41 +62,41 @@ namespace Neo.Scene
 
             var camBind = KeyBindings.Instance.CameraKeys;
 
-            if (KeyHelper.AreKeysDown(camBind.Forward))
+            if (InputHelper.AreKeysDown(camBind.Forward))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveForward(diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(camBind.Backward))
+            if (InputHelper.AreKeysDown(camBind.Backward))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveForward(-diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(camBind.Right))
+            if (InputHelper.AreKeysDown(camBind.Right))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveRight(diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(camBind.Left))
+            if (InputHelper.AreKeysDown(camBind.Left))
             {
                 positionChanged = true;
                 updateTerrain = true;
                 cam.MoveRight(-diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(camBind.Up))
+            if (InputHelper.AreKeysDown(camBind.Up))
             {
                 positionChanged = true;
                 cam.MoveUp(diff * mSpeedFactor);
             }
 
-            if (KeyHelper.AreKeysDown(camBind.Down))
+            if (InputHelper.AreKeysDown(camBind.Down))
             {
                 positionChanged = true;
                 cam.MoveUp(-diff * mSpeedFactor);

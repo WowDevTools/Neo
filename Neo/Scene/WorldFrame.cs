@@ -83,7 +83,7 @@ namespace Neo.Scene
 
         public IntersectionParams LastMouseIntersection { get; private set; }
 
-        public event Action<IntersectionParams, MouseState> OnWorldClicked;
+        public event Action<IntersectionParams> OnWorldClicked;
 
         public bool HighlightModelsInBrush { get; set; }
 

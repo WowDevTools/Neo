@@ -62,7 +62,7 @@ namespace Neo.Editing
 	            }
                 mHoveredChunk = chunk;
 
-                OnChunkClicked(WorldFrame.Instance.LastMouseIntersection, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
+                OnChunkClicked(WorldFrame.Instance.LastMouseIntersection);
             }
         }
 
@@ -98,17 +98,14 @@ namespace Neo.Editing
 
         }
 
-        private void OnChunkClicked(IntersectionParams intersection, MouseEventArgs e)
+        private void OnChunkClicked(IntersectionParams intersection)
         {
             var chunk = mHoveredChunk;
-            var keyState = new byte[256];
-            UnsafeNativeMethods.GetKeyboardState(keyState);
-
             switch (ChunkEditMode)
             {
                 case ChunkEditMode.AreaPaint:
 				{
-					if (SelectedAreaId == 0 || !e.IsButtonDown(MouseButton.Left))
+					if (SelectedAreaId == 0 || !InputHelper.IsButtonDown(MouseButton.Left))
 					{
 						return;
 					}
@@ -124,7 +121,7 @@ namespace Neo.Editing
 	            }
 	            case ChunkEditMode.AreaSelect:
 				{
-					if (!e.IsButtonDown(MouseButton.Left))
+					if (!InputHelper.IsButtonDown(MouseButton.Left))
 					{
 						return;
 					}

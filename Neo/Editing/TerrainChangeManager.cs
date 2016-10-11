@@ -98,13 +98,13 @@ namespace Neo.Editing
                 return false;
             }
 
-	        if (!KeyHelper.AreKeysDown(bindings.InteractionKeys.Edit) &&
-	            !KeyHelper.AreKeysDown(bindings.InteractionKeys.EditInverse))
+	        if (!InputHelper.AreKeysDown(bindings.InteractionKeys.Edit) &&
+	            !InputHelper.AreKeysDown(bindings.InteractionKeys.EditInverse))
 	        {
 		        return false;
 	        }
 
-	        if (KeyHelper.AreKeysDown(bindings.InteractionKeys.EditInverse))
+	        if (InputHelper.AreKeysDown(bindings.InteractionKeys.EditInverse))
 	        {
 		        isInverted = true;
 	        }
