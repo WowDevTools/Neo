@@ -161,6 +161,11 @@ namespace Neo.UI
             CurrentAdtLabel.Content = "ADT: " + x + "/" + y;
         }
 
+        public void OnUpdateCurrentChunk(int x, int y)
+        {
+            CurrentChunkLabel.Content = "Chunk: " + x + "/" + y;
+        }
+
         public void OnUpdatePosition(Vector3 position)
         {
             CurrentPositionLabel.Content = "Position: " + position;

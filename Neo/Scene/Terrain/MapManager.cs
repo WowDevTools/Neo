@@ -113,6 +113,15 @@ namespace Neo.Scene.Terrain
             MapChunkRender.ChunkMesh.Program.SetPixelSampler(0, MapChunkRender.ColorSampler);
             MapChunkRender.ChunkMesh.Program.SetPixelSampler(1, MapChunkRender.AlphaSampler);
 
+            if (WorldFrame.Instance.LastMouseIntersection.ChunkHit != null)
+            {
+                EditorWindowController.Instance.OnUpdateChunkIndex(WorldFrame.Instance.LastMouseIntersection.ChunkHit.IndexX, WorldFrame.Instance.LastMouseIntersection.ChunkHit.IndexY);
+            }
+            else
+            {
+                EditorWindowController.Instance.OnUpdateChunkIndex(0, 0);
+            }
+
             // ReSharper disable once InconsistentlySynchronizedField
             foreach (var pair in mAreas)
                 pair.Value.OnFrame();
@@ -195,6 +204,7 @@ namespace Neo.Scene.Terrain
             var tiley = (int)Math.Floor(y / Metrics.TileSize);
 
             EditorWindowController.Instance.OnUpdateTileIndex(tilex, tiley);
+
         }
 
         public bool GetLandHeight(float x, float y, out float z)

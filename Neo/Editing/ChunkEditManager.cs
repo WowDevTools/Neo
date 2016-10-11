@@ -61,6 +61,8 @@ namespace Neo.Editing
 		            HoveredAreaChange?.Invoke(chunk.AreaId);
 	            }
                 mHoveredChunk = chunk;
+
+                OnChunkClicked(WorldFrame.Instance.LastMouseIntersection, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
             }
         }
 
@@ -91,9 +93,16 @@ namespace Neo.Editing
             SelectedAreaId = id;
         }
 
-        private void OnChunkClicked(IntersectionParams intersection, MouseState e)
+        public void OnChange(TimeSpan diff)
         {
-            var chunk = intersection.ChunkHit;
+
+        }
+
+        private void OnChunkClicked(IntersectionParams intersection, MouseEventArgs e)
+        {
+            var chunk = mHoveredChunk;
+            var keyState = new byte[256];
+            UnsafeNativeMethods.GetKeyboardState(keyState);
 
             switch (ChunkEditMode)
             {
