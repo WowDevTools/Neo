@@ -50,7 +50,11 @@
                             <TextBlock Grid.Row="3" Grid.ColumnSpan="3" x:Name="txtAreaName" Margin="0,5,0,0" Text="Current Area: Unknown"></TextBlock>
                         </Grid>
                     </TabItem>
-                    <TabItem x:Name="tabFlags" Header="Chunk Flags"></TabItem>
+                    <TabItem x:Name="tabFlags" Header="Chunk Flags">
+                        <Grid>
+                            <Label>Impass Flag Painting</Label>
+                        </Grid>
+                    </TabItem>
                     <TabItem x:Name="tabHoles" Header="Hole Editing"></TabItem>
                 </TabControl>
             </Grid>

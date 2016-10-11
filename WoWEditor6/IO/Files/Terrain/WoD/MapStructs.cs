@@ -6,7 +6,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
     [StructLayout(LayoutKind.Sequential)]
     struct Mcnk
     {
-        public int Flags;
+        public uint Flags;
         public readonly int IndexX;
         public readonly int IndexY;
         public readonly int NumLayers;

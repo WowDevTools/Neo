@@ -33,6 +33,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
 
         public bool HasMccv { get; private set; }
         public override int AreaId { get { return mHeader.AreaId; } set { mHeader.AreaId = value; } }
+        public override uint Flags { get { return mHeader.Flags; } set { mHeader.Flags = value; } }
 
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
         {

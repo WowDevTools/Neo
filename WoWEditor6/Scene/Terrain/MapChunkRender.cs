@@ -86,10 +86,10 @@ namespace WoWEditor6.Scene.Terrain
         {
             if(chunk == mData)
             {
-                mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId);
+                mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId, chunk.HasImpassFlag);
                 SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode);
                 mScaleBuffer.UpdateData(mTexParams);
-            }  
+            }
         }
 
         private void SetRenderMode(ChunkRenderFlags flags)
@@ -330,8 +330,8 @@ namespace WoWEditor6.Scene.Terrain
 
             mTexParams.TextureScales = new Vector4(mData.TextureScales);
             mTexParams.SpecularFactors = new Vector4(mData.SpecularFactors);
-            mTexParams.ChunkLine = new Vector4(0.0f, 0.7f, 0.0f, 0.0f);            
-            mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId);
+            mTexParams.ChunkLine = new Vector4(0.0f, 0.7f, 0.0f, 0.0f);
+            mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId, mData.HasImpassFlag);
 
             mTexAnimBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
             mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix.Identity;

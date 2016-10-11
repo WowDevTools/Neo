@@ -36,6 +36,11 @@ namespace WoWEditor6.Editing
         public int SelectedAreaId { get; private set; }
 
         private MapChunk mHoveredChunk;
+        private Color[] mBlockedColours = new[] //Colours prevented from being used in area painting
+        {
+            Color.White,
+            Color.Black
+        };
 
 
         static ChunkEditManager()
@@ -78,13 +83,20 @@ namespace WoWEditor6.Editing
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Vector4 GetAreaColour(int id)
+        public Vector4 GetAreaColour(int id, bool impass)
         {
             if (!AreaColours.ContainsKey(id))
             {
-                var colour = new Random().NextColor();
+                Color colour = new Random().NextColor();
+
+                while (Array.IndexOf(mBlockedColours, colour) >= 0) //Blocked colour check
+                    colour = new Random().NextColor();                    
+
                 AreaColours.Add(id, new Vector4(colour.R / 255f, colour.G / 255f, colour.B / 255f, 0f));
             }
+
+            if (impass)
+                return new Vector4(1, 1, 1, 0);
 
             return AreaColours[id];
         }
@@ -104,6 +116,7 @@ namespace WoWEditor6.Editing
             var chunk = mHoveredChunk;
             var keyState = new byte[256];
             UnsafeNativeMethods.GetKeyboardState(keyState);
+            MapArea parent;
 
             switch (ChunkEditMode)
             {
@@ -111,7 +124,6 @@ namespace WoWEditor6.Editing
                     if (SelectedAreaId == 0 || !KeyHelper.IsKeyDown(keyState, Keys.LButton))
                         return;
 
-                    MapArea parent;
                     if (chunk.Parent.TryGetTarget(out parent))
                     {
                         chunk.AreaId = SelectedAreaId;
@@ -121,6 +133,7 @@ namespace WoWEditor6.Editing
                     break;
 
                 case ChunkEditMode.AreaSelect:
+
                     if (!KeyHelper.IsKeyDown(keyState, Keys.LButton))
                         return;
 
@@ -132,6 +145,20 @@ namespace WoWEditor6.Editing
                     break;
 
                 case ChunkEditMode.Flags:
+
+                    if (!KeyHelper.IsKeyDown(keyState, Keys.LButton))
+                        return;
+
+                    if (chunk.Parent.TryGetTarget(out parent))
+                    {
+                        if (chunk.HasImpassFlag)
+                            chunk.Flags &= ~0x2u;
+                        else
+                            chunk.Flags |= 0x2;
+
+                        parent.SetChanged();
+                        ForceRenderUpdate?.Invoke(chunk);
+                    }
                     break;
             }
         }

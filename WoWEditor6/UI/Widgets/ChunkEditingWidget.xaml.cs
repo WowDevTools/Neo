@@ -123,6 +123,9 @@ namespace WoWEditor6.UI.Widgets
                 case "tabChunkPaint":
                     model.SetChunkEditState(rdoPaintChunk.IsChecked.Value ? ChunkEditMode.AreaPaint : ChunkEditMode.AreaSelect); //Enforce correct mode
                     break;
+                case "tabFlags":
+                    model.SetChunkEditState(ChunkEditMode.Flags);
+                    break;
             }
         }
     }

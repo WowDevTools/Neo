@@ -20,6 +20,8 @@ namespace WoWEditor6.IO.Files.Terrain
         public int IndexX { get; protected set; }
         public int IndexY { get; protected set; }
         public virtual int AreaId { get; set; }
+        public virtual uint Flags { get; set; }
+        public bool HasImpassFlag => (Flags & 0x2) == 0x2;
 
         public int StartVertex {get{return (IndexX + IndexY * 16) * 145;}}
 
