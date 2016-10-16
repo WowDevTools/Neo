@@ -21,6 +21,7 @@ namespace WoWEditor6.IO.Files.Terrain
         public int IndexY { get; protected set; }
         public virtual int AreaId { get; set; }
         public virtual uint Flags { get; set; }
+        public virtual Vector3 Position { get; }
         public bool HasImpassFlag => (Flags & 0x2) == 0x2;
 
         public int StartVertex {get{return (IndexX + IndexY * 16) * 145;}}
@@ -42,6 +43,9 @@ namespace WoWEditor6.IO.Files.Terrain
         public bool IsAlphaChanged { get; set; }
         public bool TexturesChanged { get; set; }
         public bool DoodadsChanged { get; set; }
+
+        protected const float TILESIZE = 533.33333f;
+        protected const float CHUNKSIZE = ((TILESIZE) / 16.0f);
 
         public Mcly[] Layers { get { return mLayers; } }
 
@@ -601,5 +605,9 @@ namespace WoWEditor6.IO.Files.Terrain
 
             return changed;
         }
+
+        public abstract void SetHole(IntersectionParams intersection, bool add);
+
+        public abstract void SetHoleBig(bool add);
     }
 }

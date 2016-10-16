@@ -24,7 +24,7 @@ namespace WoWEditor6.Editing
     {
         public static ChunkEditManager Instance { get; private set; }
 
-        public event Action<MapChunk> ForceRenderUpdate;
+        public event Action<MapChunk, bool> ForceRenderUpdate;
         public event Action<ChunkRenderFlags> OnChunkRenderModeChange;
         public event Action<int> SelectedAreaIdChange;
         public event Action<int> HoveredAreaChange;
@@ -32,6 +32,9 @@ namespace WoWEditor6.Editing
         public ChunkRenderFlags ChunkRenderMode;
         public ChunkEditMode ChunkEditMode { get; set; }
         public Dictionary<int, Vector4> AreaColours;
+
+        public bool SmallHole { get; set; } = true;
+        public bool AddHole { get; set; } = true;
 
         public int SelectedAreaId { get; private set; }
 
@@ -41,7 +44,6 @@ namespace WoWEditor6.Editing
             Color.White,
             Color.Black
         };
-
 
         static ChunkEditManager()
         {
@@ -68,7 +70,13 @@ namespace WoWEditor6.Editing
                     HoveredAreaChange?.Invoke(chunk.AreaId);
                 mHoveredChunk = chunk;
 
-                OnChunkClicked(WorldFrame.Instance.LastMouseIntersection, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
+                if (WorldFrame.Instance.RenderWindowContainsMouse())
+                    OnChunkClicked(WorldFrame.Instance.LastMouseIntersection, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
+            }
+            else if (chunk != null && SmallHole && ChunkEditMode == ChunkEditMode.Hole) //Small hole mode allow holding mouse down
+            {
+                if (WorldFrame.Instance.RenderWindowContainsMouse())
+                    OnChunkClicked(WorldFrame.Instance.LastMouseIntersection, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
             }
         }
 
@@ -90,7 +98,7 @@ namespace WoWEditor6.Editing
                 Color colour = new Random().NextColor();
 
                 while (Array.IndexOf(mBlockedColours, colour) >= 0) //Blocked colour check
-                    colour = new Random().NextColor();                    
+                    colour = new Random().NextColor();
 
                 AreaColours.Add(id, new Vector4(colour.R / 255f, colour.G / 255f, colour.B / 255f, 0f));
             }
@@ -108,7 +116,7 @@ namespace WoWEditor6.Editing
 
         public void OnChange(TimeSpan diff)
         {
-           
+
         }
 
         private void OnChunkClicked(IntersectionParams intersection, MouseEventArgs e)
@@ -128,7 +136,7 @@ namespace WoWEditor6.Editing
                     {
                         chunk.AreaId = SelectedAreaId;
                         parent.SetChanged();
-                        ForceRenderUpdate?.Invoke(chunk);
+                        ForceRenderUpdate?.Invoke(chunk, false);
                     }
                     break;
 
@@ -142,6 +150,21 @@ namespace WoWEditor6.Editing
                     break;
 
                 case ChunkEditMode.Hole:
+
+                    if (!KeyHelper.IsKeyDown(keyState, Keys.LButton))
+                        return;
+
+                    if (chunk.Parent.TryGetTarget(out parent))
+                    {
+                        if (SmallHole)
+                            chunk.SetHole(intersection, AddHole);
+                        else
+                            chunk.SetHoleBig(AddHole);
+
+                        parent.SetChanged();
+                        ForceRenderUpdate?.Invoke(chunk, true);
+                    }
+
                     break;
 
                 case ChunkEditMode.Flags:
@@ -157,7 +180,7 @@ namespace WoWEditor6.Editing
                             chunk.Flags |= 0x2;
 
                         parent.SetChanged();
-                        ForceRenderUpdate?.Invoke(chunk);
+                        ForceRenderUpdate?.Invoke(chunk, false);
                     }
                     break;
             }

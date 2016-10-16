@@ -82,13 +82,18 @@ namespace WoWEditor6.Scene.Terrain
             ChunkEditManager.Instance.ForceRenderUpdate += ForceRenderMode;
         }
 
-        private void ForceRenderMode(IO.Files.Terrain.MapChunk chunk)
+        private void ForceRenderMode(IO.Files.Terrain.MapChunk chunk, bool updateHoles)
         {
             if(chunk == mData)
             {
-                mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId, chunk.HasImpassFlag);
-                SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode);
-                mScaleBuffer.UpdateData(mTexParams);
+                if(updateHoles)
+                    mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
+                else
+                {
+                    mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId, chunk.HasImpassFlag);
+                    SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode);
+                    mScaleBuffer.UpdateData(mTexParams);
+                }
             }
         }
 

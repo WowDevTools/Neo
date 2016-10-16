@@ -243,7 +243,6 @@ namespace WoWEditor6.Scene
             M2Manager.OnFrame(ActiveCamera);
             WorldTextManager.OnFrame(ActiveCamera);
             BoundingBoxDrawManager.OnFrame();
-            ChunkEditManager.Instance.OnFrame();
         }
 
         public void OnMouseWheel(int delta)
@@ -311,6 +310,7 @@ namespace WoWEditor6.Scene
                 EditManager.Instance.IsTerrainHovered = LastMouseIntersection.TerrainHit;
                 EditManager.Instance.MousePosition = LastMouseIntersection.TerrainPosition;
 
+                ChunkEditManager.Instance.OnFrame();
             }
         }
 
@@ -364,6 +364,11 @@ namespace WoWEditor6.Scene
                     mGlobalBufferChanged = false;
                 }
             }
+        }
+
+        public bool RenderWindowContainsMouse()
+        {
+            return mWindow.ClientRectangle.Contains(mWindow.PointToClient(Cursor.Position));
         }
 
         private void OnRenderWindowMouseDown(object sender, MouseEventArgs mouseEventArgs)

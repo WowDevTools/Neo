@@ -159,16 +159,21 @@ namespace WoWEditor6.Graphics
                 }
                 else
                 {
-                    var region = new ResourceRegion
+                    //TODO: Nihlus plz fix da below monstrosity ty <3
+                    //Updating the subresource results in random chunks disappearing however re-creating the View works
+                    var desc = mTexture.Description;
+                    mTexture.Dispose();
+                    mTexture = new Texture2D(mContext.Device, desc, new[] { box });
+
+                    var srvd = new ShaderResourceViewDescription
                     {
-                        Back = 1,
-                        Bottom = height,
-                        Front = 0,
-                        Left = 0,
-                        Right = width,
-                        Top = 0
+                        Dimension = SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
+                        Format = format,
+                        Texture2D = new ShaderResourceViewDescription.Texture2DResource { MipLevels = 1, MostDetailedMip = 0 }
                     };
-                    mContext.Context.UpdateSubresource(mTexture, 0, region, box.DataPointer, width * 4, 0);
+
+                    NativeView.Dispose();
+                    NativeView = new ShaderResourceView(mContext.Device, mTexture, srvd);
                 }
             }
         }

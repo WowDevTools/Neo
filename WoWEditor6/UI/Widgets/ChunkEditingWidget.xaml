@@ -55,7 +55,32 @@
                             <Label>Impass Flag Painting</Label>
                         </Grid>
                     </TabItem>
-                    <TabItem x:Name="tabHoles" Header="Hole Editing"></TabItem>
+                    <TabItem x:Name="tabHoles" Header="Hole Editing">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.75*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Margin="5,5,0,0" VerticalAlignment="Center">Hole Mode:</Label>
+                            <RadioButton Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="rdoCreateHole" Margin="5,5,0,0" GroupName="HoleMake" Checked="rdoHoleParamsChecked" IsChecked="True">Create</RadioButton>
+                            <RadioButton Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="rdoFillHole" Margin="5,5,0,0" GroupName="HoleMake" Checked="rdoHoleParamsChecked">Fill</RadioButton>
+
+                            <Label Grid.Column="0" Grid.Row="1" Margin="5,5,0,0" VerticalAlignment="Center">Hole Size:</Label>
+                            <RadioButton Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="rdoSmallHole" Margin="5,5,0,0" GroupName="HoleSize" Checked="rdoHoleParamsChecked" IsChecked="True">Small</RadioButton>
+                            <RadioButton Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="rdoBigHole" Margin="5,5,0,0" GroupName="HoleSize" Checked="rdoHoleParamsChecked">Big</RadioButton>
+
+                        </Grid>
+                        
+                        
+                        
+
+                    </TabItem>
                 </TabControl>
             </Grid>
 

@@ -21,7 +21,7 @@ namespace WoWEditor6.IO.Files.Terrain.WoD
         public readonly int SizeShadow;
         public int AreaId;
         public readonly int NumMapObjRefs;
-        public readonly int Holes;
+        public int Holes;
         public readonly ulong Low1;
         public readonly ulong Low2;
         public readonly int PredTex;
