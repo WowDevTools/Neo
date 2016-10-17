@@ -26,7 +26,12 @@
                 <TextBlock TextWrapping="Wrap" Text="TextBlock"/>
             </MenuItem>
             <avalon:MenuItemEx Header="Edit" RenderTransformOrigin="-1.176,0.611"/>
-            <MenuItem Header="View&#xD;&#xA;View"/>
+            <MenuItem Header="View&#xD;&#xA;View">
+                <MenuItem x:Name="MenuItem_M2" Header="Show M2" HorizontalAlignment="Left" Width="180" Click="MenuItem_M2_Click" IsCheckable="True" IsChecked="True"/>
+                <MenuItem x:Name="MenuItem_Terrain" Header="Show Terrain" HorizontalAlignment="Left" Width="180" Click="MenuItem_Terrain_Click" IsCheckable="True" IsChecked="True"/>
+                <MenuItem x:Name="MenuItem_WMO" Header="Show WMO" HorizontalAlignment="Left" Width="180" Click="MenuItem_WMO_Click" IsCheckable="True" IsChecked="True"/>
+                <MenuItem x:Name="MenuItem_Wireframe" Header="Wireframe" HorizontalAlignment="Left" Width="180" Click="MenuItem_Wireframe_Click" IsCheckable="True"/>
+            </MenuItem>
             <MenuItem Header="Extras" RenderTransformOrigin="-1.533,0.6">
                 <MenuItem Header="Settings" HorizontalAlignment="Left" Width="140" Click="MenuItem_Settings_Click"/>
             </MenuItem>

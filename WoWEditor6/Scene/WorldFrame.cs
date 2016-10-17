@@ -86,6 +86,8 @@ namespace WoWEditor6.Scene
         public event Action<IntersectionParams, MouseEventArgs> OnWorldClicked;
 
         public bool HighlightModelsInBrush { get; set; }
+        public bool HideWMO { get; set; } = false;
+        public bool HideM2 { get; set; } = false;
 
         static WorldFrame()
         {
@@ -100,7 +102,7 @@ namespace WoWEditor6.Scene
             WorldTextManager = new WorldTextManager();
             BoundingBoxDrawManager = new BoundingBoxDrawManager();
             mState = AppState.Idle;
-            
+
             // set the settings on creation
             HighlightModelsInBrush = Properties.Settings.Default.HighlightModelsInBrush;
             //this.UpdateDrawBrushOnModels = Properties.Settings.Default.UpdateDrawBrushOnModels; // todo: notimplemented!
@@ -239,8 +241,13 @@ namespace WoWEditor6.Scene
             GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.Native);
 
             MapManager.OnFrame(ActiveCamera);
-            WmoManager.OnFrame(ActiveCamera);
-            M2Manager.OnFrame(ActiveCamera);
+
+            if (!HideWMO)
+                WmoManager.OnFrame(ActiveCamera);
+
+            if (!HideM2)
+                M2Manager.OnFrame(ActiveCamera);
+
             WorldTextManager.OnFrame(ActiveCamera);
             BoundingBoxDrawManager.OnFrame();
         }
@@ -409,7 +416,7 @@ namespace WoWEditor6.Scene
                         selected.CreateModelNameplate();
                         mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
                         ModelEditManager.Instance.SelectedModel = selected;
-                    } 
+                    }
                     else if (selected == null)
                     {
                         ModelEditManager.Instance.SelectedModel = null;
@@ -419,7 +426,7 @@ namespace WoWEditor6.Scene
                     {
                         mSelectedInstance = selected;
                         ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;
-                    }                    
+                    }
                 }
             }
 

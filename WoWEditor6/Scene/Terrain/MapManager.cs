@@ -33,6 +33,7 @@ namespace WoWEditor6.Scene.Terrain
         public bool HasNewBlend { get; private set; }
         public bool IsInitialLoad { get; private set; }
         public SkySphere SkySphere { get; private set; }
+        public bool HideTerrain { get; set; } = false;
 
         public void Initialize()
         {
@@ -104,22 +105,24 @@ namespace WoWEditor6.Scene.Terrain
                 mAreaLowManager.OnFrame();
             }
 
-            MapChunkRender.ChunkMesh.BeginDraw();
-            MapChunkRender.ChunkMesh.Program.SetPixelSampler(0, MapChunkRender.ColorSampler);
-            MapChunkRender.ChunkMesh.Program.SetPixelSampler(1, MapChunkRender.AlphaSampler);
-
-            if (WorldFrame.Instance.LastMouseIntersection.ChunkHit != null)
+            if(!HideTerrain)
             {
-                EditorWindowController.Instance.OnUpdateChunkIndex(WorldFrame.Instance.LastMouseIntersection.ChunkHit.IndexX, WorldFrame.Instance.LastMouseIntersection.ChunkHit.IndexY);
-            }
-            else
-            {
-                EditorWindowController.Instance.OnUpdateChunkIndex(0, 0);
-            }
+                MapChunkRender.ChunkMesh.BeginDraw();
+                MapChunkRender.ChunkMesh.Program.SetPixelSampler(0, MapChunkRender.ColorSampler);
+                MapChunkRender.ChunkMesh.Program.SetPixelSampler(1, MapChunkRender.AlphaSampler);
 
-            // ReSharper disable once InconsistentlySynchronizedField
-            foreach (var pair in mAreas)
-                pair.Value.OnFrame();
+                if (WorldFrame.Instance.LastMouseIntersection.ChunkHit != null)
+                {
+                    EditorWindowController.Instance.OnUpdateChunkIndex(WorldFrame.Instance.LastMouseIntersection.ChunkHit.IndexX, WorldFrame.Instance.LastMouseIntersection.ChunkHit.IndexY);
+                }
+                else
+                {
+                    EditorWindowController.Instance.OnUpdateChunkIndex(0, 0);
+                }
+                
+                foreach (var pair in mAreas)
+                    pair.Value.OnFrame();
+            }           
         }
 
         public void EnterWorld(Vector2 entryPoint, int mapId)
@@ -214,7 +217,7 @@ namespace WoWEditor6.Scene.Terrain
 
             if (chunkx < 0 || chunky < 0 || chunkx > 15 || chunky > 15)
                 return false;
-            
+
             var chunk = tile.AreaFile.GetChunk(chunkx + chunky * 16);
             if (chunk == null)
                 return false;
@@ -230,6 +233,12 @@ namespace WoWEditor6.Scene.Terrain
 
             z = chunk.Vertices[17 * (row / 2) + (((row % 2) != 0) ? 9 : 0) + col].Position.Z;
             return true;
+        }
+
+        public bool ToggleWireframe()
+        {
+            MapChunkRender.WireFrame = !MapChunkRender.WireFrame;
+            return MapChunkRender.WireFrame;
         }
 
         public void Intersect(IntersectionParams parameters)
@@ -373,7 +382,7 @@ namespace WoWEditor6.Scene.Terrain
                 }
             }
 
-            if (data == null) 
+            if (data == null)
                 return;
 
             var tile = new MapAreaRender(data.IndexX, data.IndexY);

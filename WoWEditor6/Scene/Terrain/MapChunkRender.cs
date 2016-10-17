@@ -71,6 +71,12 @@ namespace WoWEditor6.Scene.Terrain
 
         public static Mesh ChunkMesh { get; private set; }
 
+        public static bool WireFrame
+        {
+            get { return ChunkMesh.RasterizerState.Wireframe; }
+            set { ChunkMesh.RasterizerState.Wireframe = value; }
+        }
+
         public void UpdateBoundingBox()
         {
             mBoundingBox = mData.BoundingBox;
