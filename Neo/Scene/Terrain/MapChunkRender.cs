@@ -73,6 +73,12 @@ namespace Neo.Scene.Terrain
 
         public static Mesh ChunkMesh { get; private set; }
 
+        public static bool WireFrame
+        {
+            get { return ChunkMesh.RasterizerState.Wireframe; }
+            set { ChunkMesh.RasterizerState.Wireframe = value; }
+        }
+
         public void UpdateBoundingBox()
         {
             mBoundingBox = mData.BoundingBox;
@@ -84,13 +90,20 @@ namespace Neo.Scene.Terrain
             ChunkEditManager.Instance.ForceRenderUpdate += ForceRenderMode;
         }
 
-        private void ForceRenderMode(IO.Files.Terrain.MapChunk chunk)
+        private void ForceRenderMode(IO.Files.Terrain.MapChunk chunk, bool updateHoles)
         {
             if(chunk == mData)
             {
-                mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId);
-                SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode);
-                mScaleBuffer.BufferData(mTexParams);
+	            if (updateHoles)
+	            {
+		            mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
+	            }
+                else
+                {
+                    mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId, chunk.HasImpassFlag);
+                    SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode);
+                    mScaleBuffer.BufferData(mTexParams);
+                }
             }
         }
 
@@ -347,7 +360,7 @@ namespace Neo.Scene.Terrain
             mTexParams.TextureScales = new Vector4(mData.TextureScales);
             mTexParams.SpecularFactors = new Vector4(mData.SpecularFactors);
             mTexParams.ChunkLine = new Vector4(0.0f, 0.7f, 0.0f, 0.0f);
-            mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId);
+            mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId, mData.HasImpassFlag);
 
             mTexAnimBuffer = new UniformBuffer();
             mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix4.Identity;

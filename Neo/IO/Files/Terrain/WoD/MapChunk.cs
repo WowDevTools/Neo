@@ -35,8 +35,9 @@ namespace Neo.IO.Files.Terrain.WoD
 
         public bool HasMccv { get; private set; }
         public override int AreaId { get { return mHeader.AreaId; } set { mHeader.AreaId = value; } }
+        public override uint Flags { get { return mHeader.Flags; } set { mHeader.Flags = value; } }
 
-        public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo,  int indexX, int indexY, MapArea parent)
+        public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo, int indexX, int indexY, MapArea parent)
         {
             SpecularFactors = new float[4];
             mIsYInverted = true;
@@ -690,8 +691,10 @@ namespace Neo.IO.Files.Terrain.WoD
                     {
                         var baseIndex = i * 2 * 8 + j * 2;
                         var mask = (mHeader.Holes & (1 << (i * 4 + j))) != 0;
-                        HoleValues[baseIndex] = HoleValues[baseIndex + 1] =
-                                HoleValues[baseIndex + 8] = HoleValues[baseIndex + 9] = (byte)(mask ? 0x00 : 0xFF);
+                        HoleValues[baseIndex] =
+                        HoleValues[baseIndex + 1] =
+                        HoleValues[baseIndex + 8] =
+                        HoleValues[baseIndex + 9] = (byte)(mask ? 0x00 : 0xFF);
                     }
                 }
             }
@@ -952,6 +955,123 @@ namespace Neo.IO.Files.Terrain.WoD
             }
 
             return GetAlphaUncompressed(layer);
+        }
+
+        public override void SetHole(IntersectionParams intersection, bool add)
+        {
+            float holesize = CHUNKSIZE / 4.0f;
+            var min = BoundingBox.Minimum;
+            var intersect = new Vector2(intersection.TerrainPosition.X, intersection.TerrainPosition.Y);
+
+            bool use64bit = (mHeader.Flags & 0x10000) == 0x10000;
+            if (!use64bit)
+            {
+                for (int x = 0; x < 4; x++)
+                {
+                    for (int y = 0; y < 4; y++)
+                    {
+                        RectangleF bounds = new RectangleF
+                        (
+                            min.X + (x * holesize),
+                            min.Y + (y * holesize),
+                            holesize,
+                            holesize
+                        );
+
+                        if (bounds.Contains(intersect))
+                        {
+                            y = 3 - y; //Inverse
+                            var baseIndex = y * 2 * 8 + x * 2;
+                            int bit = (1 << (y * 4 + x));
+
+                            if (add)
+                                mHeader.Holes |= bit;
+                            else
+                                mHeader.Holes &= ~bit;
+
+                            HoleValues[baseIndex] =
+                            HoleValues[baseIndex + 1] =
+                            HoleValues[baseIndex + 8] =
+                            HoleValues[baseIndex + 9] = (byte)(add ? 0x00 : 0xFF);
+                            return;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                holesize = CHUNKSIZE / 8.0f;
+                var holeBytes = new byte[8];
+                Buffer.BlockCopy(BitConverter.GetBytes(mHeader.Mcvt), 0, holeBytes, 0, 4);
+                Buffer.BlockCopy(BitConverter.GetBytes(mHeader.Mcnr), 0, holeBytes, 4, 4);
+
+                for (var x = 0; x < 8; ++x)
+                {
+                    for (var y = 0; y < 8; ++y)
+                    {
+                        RectangleF bounds = new RectangleF
+                        (
+                            min.X + (x * holesize),
+                            min.Y + (y * holesize),
+                            holesize,
+                            holesize
+                        );
+
+                        if (bounds.Contains(intersect))
+                        {
+                            y = (7 - y); //Inverse
+                            byte bit = (byte)(1 << x);
+
+                            if (add)
+                                holeBytes[y] |= bit;
+                            else
+                                holeBytes[y] = (byte)(holeBytes[y] & ~bit);
+
+                            mHeader.Mcvt = BitConverter.ToInt32(holeBytes, 0);
+                            mHeader.Mcnr = BitConverter.ToInt32(holeBytes, 4);
+
+                            int h = y * 8 + x; 
+                            HoleValues[h] = (byte)(add ? 0x00 : 0xFF);
+                            return;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        public override void SetHoleBig(bool add)
+        {
+            bool use64bit = (mHeader.Flags & 0x10000) == 0x10000;
+            if (!use64bit)
+            {
+                mHeader.Holes = add ? int.MaxValue : 0; //Set all shown/hidden
+
+                for (int x = 0; x < 4; x++)
+                {
+                    for (int y = 0; y < 4; y++)
+                    {
+                        var baseIndex = y * 2 * 8 + x * 2;
+                        HoleValues[baseIndex] =
+                        HoleValues[baseIndex + 1] =
+                        HoleValues[baseIndex + 8] =
+                        HoleValues[baseIndex + 9] = (byte)(add ? 0x0 : 0xFF);
+                    }
+                }
+            }
+            else
+            {
+                mHeader.Mcvt = add ? int.MaxValue : 0; //Set all shown/hidden
+                mHeader.Mcnr = add ? int.MaxValue : 0; //Set all shown/hidden
+                for (var x = 0; x < 8; ++x)
+                {
+                    for (var y = 0; y < 8; ++y)
+                    {
+                        int h = y * 8 + x;
+                        HoleValues[h] = (byte)(add ? 0x00 : 0xFF);
+                    }
+                }
+            }
         }
 
         static MapChunk()

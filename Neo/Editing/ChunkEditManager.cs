@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Neo.IO.Files.Terrain;
 using Neo.Scene;
 using Neo.Scene.Terrain;
@@ -21,7 +22,7 @@ namespace Neo.Editing
     {
         public static ChunkEditManager Instance { get; private set; }
 
-        public event Action<MapChunk> ForceRenderUpdate;
+        public event Action<MapChunk, bool> ForceRenderUpdate;
         public event Action<ChunkRenderFlags> OnChunkRenderModeChange;
         public event Action<int> SelectedAreaIdChange;
         public event Action<int> HoveredAreaChange;
@@ -30,10 +31,17 @@ namespace Neo.Editing
         public ChunkEditMode ChunkEditMode { get; set; }
         public Dictionary<int, Vector4> AreaColours;
 
+        public bool SmallHole { get; set; } = true;
+        public bool AddHole { get; set; } = true;
+
         public int SelectedAreaId { get; private set; }
 
         private MapChunk mHoveredChunk;
-
+        private Color[] mBlockedColours = new[] //Colours prevented from being used in area painting
+        {
+            Color.White,
+            Color.Black
+        };
 
         static ChunkEditManager()
         {
@@ -62,7 +70,17 @@ namespace Neo.Editing
 	            }
                 mHoveredChunk = chunk;
 
-                OnChunkClicked(WorldFrame.Instance.LastMouseIntersection);
+	            if (WorldFrame.Instance.RenderWindowContainsMouse())
+	            {
+		            OnChunkClicked(WorldFrame.Instance.LastMouseIntersection);
+	            }
+            }
+            else if (chunk != null && SmallHole && ChunkEditMode == ChunkEditMode.Hole) //Small hole mode allow holding mouse down
+            {
+	            if (WorldFrame.Instance.RenderWindowContainsMouse())
+	            {
+		            OnChunkClicked(WorldFrame.Instance.LastMouseIntersection);
+	            }
             }
         }
 
@@ -77,13 +95,22 @@ namespace Neo.Editing
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Vector4 GetAreaColour(int id)
+        public Vector4 GetAreaColour(int id, bool impass)
         {
             if (!AreaColours.ContainsKey(id))
             {
-                var colour = new Random().NextColor();
+                Color colour = new Random().NextColor();
+
+	            while (Array.IndexOf(mBlockedColours, colour) >= 0) //Blocked colour check
+	            {
+		            colour = new Random().NextColor();
+	            }
+
                 AreaColours.Add(id, new Vector4(colour.R / 255f, colour.G / 255f, colour.B / 255f, 0f));
             }
+
+            if (impass)
+                return new Vector4(1, 1, 1, 0);
 
             return AreaColours[id];
         }
@@ -101,6 +128,7 @@ namespace Neo.Editing
         private void OnChunkClicked(IntersectionParams intersection)
         {
             var chunk = mHoveredChunk;
+	        MapArea parent;
             switch (ChunkEditMode)
             {
                 case ChunkEditMode.AreaPaint:
@@ -110,12 +138,11 @@ namespace Neo.Editing
 						return;
 					}
 
-                    MapArea parent;
                     if (chunk.Parent.TryGetTarget(out parent))
                     {
                         chunk.AreaId = SelectedAreaId;
                         parent.SetChanged();
-                        ForceRenderUpdate?.Invoke(chunk);
+                        ForceRenderUpdate?.Invoke(chunk, false);
                     }
                     break;
 	            }
@@ -130,12 +157,47 @@ namespace Neo.Editing
                     SelectedAreaIdChange?.Invoke(SelectedAreaId);
                     break;
 	            }
-	            case ChunkEditMode.Hole:
+                case ChunkEditMode.Hole:
 	            {
+		            if (!InputHelper.IsButtonDown(MouseButton.Left))
+		            {
+			            return;
+		            }
+
+		            if (chunk.Parent.TryGetTarget(out parent))
+		            {
+			            if (SmallHole)
+				            chunk.SetHole(intersection, AddHole);
+			            else
+				            chunk.SetHoleBig(AddHole);
+
+			            parent.SetChanged();
+			            ForceRenderUpdate?.Invoke(chunk, true);
+		            }
+
 		            break;
 	            }
                 case ChunkEditMode.Flags:
 	            {
+		            if (!InputHelper.IsButtonDown(MouseButton.Left))
+		            {
+			            return;
+		            }
+
+		            if (chunk.Parent.TryGetTarget(out parent))
+		            {
+			            if (chunk.HasImpassFlag)
+			            {
+				            chunk.Flags &= ~0x2u;
+			            }
+			            else
+			            {
+				            chunk.Flags |= 0x2;
+			            }
+
+			            parent.SetChanged();
+			            ForceRenderUpdate?.Invoke(chunk, false);
+		            }
 		            break;
 	            }
             }

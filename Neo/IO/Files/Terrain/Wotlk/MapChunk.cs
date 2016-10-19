@@ -24,6 +24,8 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         public bool HasMccv { get; private set; }
         public override int AreaId { get { return mHeader.AreaId; } set { mHeader.AreaId = value; } }
+        public override uint Flags { get { return mHeader.Flags; } set { mHeader.Flags = value; } }
+        public override Vector3 Position => mHeader.Position;
 
         public MapChunk(int indexX, int indexY, WeakReference<MapArea> parent)
         {
@@ -121,7 +123,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
         public void SaveChunk(BinaryWriter writer)
         {
             int unusedSize;
-            var basePos = (int) writer.BaseStream.Position;
+            var basePos = (int)writer.BaseStream.Position;
             writer.Write(0x4D434E4B);
             writer.Write(0);
             var header = mHeader;
@@ -138,7 +140,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             var alphaStream = SaveAlpha(ref header, out alphaChunkSize);
             SaveLayers(writer, basePos, ref header);
 
-            header.Mcrf = (int) writer.BaseStream.Position - basePos;
+            header.Mcrf = (int)writer.BaseStream.Position - basePos;
             var references = DoodadReferences.Concat(mWmoRefs).ToArray();
             writer.Write(0x4D435246);
             writer.Write(references.Length * 4);
@@ -162,7 +164,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             writer.BaseStream.Position = headerPos;
             writer.Write(header);
             writer.BaseStream.Position = headerPos - 4;
-            writer.Write((int) (endPos - startPos));
+            writer.Write((int)(endPos - startPos));
             writer.BaseStream.Position = endPos;
         }
 
@@ -196,7 +198,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
             LoadMcnr(reader);
 
-            if(mHeader.Mcrf > 0)
+            if (mHeader.Mcrf > 0)
             {
                 reader.BaseStream.Position = basePosition + mHeader.Mcrf;
                 signature = reader.ReadUInt32();
@@ -241,7 +243,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
             InitLayerData();
 
-            if(mHeader.SizeShadow > 8 && mHeader.Mcsh > 0)
+            if (mHeader.SizeShadow > 8 && mHeader.Mcsh > 0)
             {
                 reader.BaseStream.Position = basePosition + mHeader.Mcsh + 8;
                 var curPtr = 0;
@@ -259,7 +261,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 }
             }
 
-            if(mHeader.Mclv > 0)
+            if (mHeader.Mclv > 0)
             {
                 reader.BaseStream.Position = basePosition + mHeader.Mclv + 8;
                 var colors = reader.ReadArray<uint>(145);
@@ -527,7 +529,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
             reader.BaseStream.Position = offset;
             var sig = reader.ReadUInt32();
-            if(sig != signature)
+            if (sig != signature)
             {
                 Log.Warning(
                     string.Format(
@@ -537,7 +539,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             }
 
             var dataSize = reader.ReadInt32();
-            if(dataSize != size && size != 0)
+            if (dataSize != size && size != 0)
             {
                 Log.Warning(
                     string.Format(
@@ -549,7 +551,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             if (mSaveChunks.ContainsKey(signature))
                 return;
 
-            mSaveChunks.Add(signature, new DataChunk {Data = data, Signature = signature, Size = size});
+            mSaveChunks.Add(signature, new DataChunk { Data = data, Signature = signature, Size = size });
         }
 
         private void LoadGroundEffectLayers()
@@ -712,14 +714,16 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         private void LoadHoles()
         {
-            for(var i = 0; i < 4; ++i)
+            for (var i = 0; i < 4; ++i)
             {
-                for(var j = 0; j < 4; ++j)
+                for (var j = 0; j < 4; ++j)
                 {
                     var baseIndex = i * 2 * 8 + j * 2;
                     var mask = (mHeader.Holes & (1 << (i * 4 + j))) != 0;
-                    HoleValues[baseIndex] = HoleValues[baseIndex + 1] =
-                            HoleValues[baseIndex + 8] = HoleValues[baseIndex + 9] = (byte)(mask ? 0x00 : 0xFF);
+                    HoleValues[baseIndex] =
+                    HoleValues[baseIndex + 1] =
+                    HoleValues[baseIndex + 8] =
+                    HoleValues[baseIndex + 9] = (byte)(mask ? 0x00 : 0xFF);
                 }
             }
         }
@@ -802,7 +806,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         private void SaveHeights(BinaryWriter writer, int basePosition, ref Mcnk header)
         {
-            header.Mcvt = (int) writer.BaseStream.Position - basePosition;
+            header.Mcvt = (int)writer.BaseStream.Position - basePosition;
             var minPos = Vertices.Min(v => v.Position.Z);
             header.Position.Z = minPos;
             var heights = Vertices.Select(v => v.Position.Z - minPos);
@@ -852,13 +856,13 @@ namespace Neo.IO.Files.Terrain.Wotlk
         private void SaveLayers(BinaryWriter writer, int basePosition, ref Mcnk header)
         {
             header.NumLayers = mLayers.Length;
-            if(header.NumLayers == 0)
+            if (header.NumLayers == 0)
             {
                 header.Mcly = 0;
                 return;
             }
 
-            header.Mcly = (int) writer.BaseStream.Position - basePosition;
+            header.Mcly = (int)writer.BaseStream.Position - basePosition;
             writer.Write(0x4D434C59);
             writer.Write(mLayers.Length * SizeCache<Mcly>.Size);
             writer.WriteArray(mLayers);
@@ -870,7 +874,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             //writer.Write(0x4D43414C);
             //var sizePos = writer.BaseStream.Position;
             //writer.Write(0);
-            if(mLayers.Length == 0)
+            if (mLayers.Length == 0)
             {
                 header.SizeAlpha = 8;
                 chunkSize = 0;
@@ -883,7 +887,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             var curPos = 0;
             mLayers[0].Flags &= ~0x300u;
             mLayers[0].OfsMcal = 0;
-            for(var i = 1; i < mLayers.Length; ++i)
+            for (var i = 1; i < mLayers.Length; ++i)
             {
                 bool compressed;
                 var data = GetSavedAlphaForLayer(i, out compressed);
@@ -930,7 +934,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
             var cnk = mSaveChunks[signature];
             size = cnk.Size + (sizeWithHeader ? 8 : 0);
-            offset = (int) writer.BaseStream.Position - basePosition;
+            offset = (int)writer.BaseStream.Position - basePosition;
             writer.Write(signature);
             writer.Write(cnk.Size);
             writer.Write(cnk.Data);
@@ -975,7 +979,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             TextureNames[TextureNames.Count - 1] = textureName;
 
             MapArea parent;
-            if(mParent.TryGetTarget(out parent) == false)
+            if (mParent.TryGetTarget(out parent) == false)
                 throw new InvalidOperationException("Couldnt get parent of map chunk");
 
             var texId = parent.GetOrAddTexture(textureName);
@@ -1000,6 +1004,61 @@ namespace Neo.IO.Files.Terrain.Wotlk
             SpecularFactors[SpecularTextures.Count - 1] = parent.IsSpecularTextureLoaded(texId) ? 1 : 0;
             TexturesChanged = true;
             return mLayers.Length - 1;
+        }
+
+        public override void SetHole(IntersectionParams intersection, bool add)
+        {
+            float holesize = CHUNKSIZE / 4.0f;
+            var min = BoundingBox.Minimum;
+            var intersect = new Vector2(intersection.TerrainPosition.X, intersection.TerrainPosition.Y);
+
+            for (int x = 0; x < 4; x++)
+            {
+                for (int y = 0; y < 4; y++)
+                {
+                    RectangleF bounds = new RectangleF
+                    (
+                        min.X + (x * holesize),
+                        min.Y + (y * holesize),
+                        holesize,
+                        holesize
+                    );
+
+                    if (bounds.Contains(intersect))
+                    {
+                        var baseIndex = y * 2 * 8 + x * 2;
+                        int bit = (1 << (y * 4 + x));
+
+                        if (add)
+                            mHeader.Holes |= bit;
+                        else
+                            mHeader.Holes &= ~bit;
+
+                        HoleValues[baseIndex] =
+                        HoleValues[baseIndex + 1] =
+                        HoleValues[baseIndex + 8] =
+                        HoleValues[baseIndex + 9] = (byte)(add ? 0x00 : 0xFF);
+                        return;
+                    }
+                }
+            }
+        }
+
+        public override void SetHoleBig(bool add)
+        {
+            mHeader.Holes = add ? int.MaxValue : 0;
+
+            for (int x = 0; x < 4; x++)
+            {
+                for (int y = 0; y < 4; y++)
+                {
+                    var baseIndex = y * 2 * 8 + x * 2;
+                    HoleValues[baseIndex] =
+                    HoleValues[baseIndex + 1] =
+                    HoleValues[baseIndex + 8] =
+                    HoleValues[baseIndex + 9] = (byte)(add ? 0x0 : 0xFF);
+                }
+            }
         }
 
         static MapChunk()

@@ -86,6 +86,8 @@ namespace Neo.Scene
         public event Action<IntersectionParams> OnWorldClicked;
 
         public bool HighlightModelsInBrush { get; set; }
+        public bool HideWMO { get; set; } = false;
+        public bool HideM2 { get; set; } = false;
 
         static WorldFrame()
         {
@@ -238,11 +240,15 @@ namespace Neo.Scene
             //GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
 
             MapManager.OnFrame(ActiveCamera);
-            WmoManager.OnFrame(ActiveCamera);
-            M2Manager.OnFrame(ActiveCamera);
+
+            if (!HideWMO)
+                WmoManager.OnFrame(ActiveCamera);
+
+            if (!HideM2)
+                M2Manager.OnFrame(ActiveCamera);
+
             WorldTextManager.OnFrame(ActiveCamera);
             BoundingBoxDrawManager.OnFrame();
-            ChunkEditManager.Instance.OnFrame();
         }
 
         public void OnMouseWheel(int delta)
@@ -310,6 +316,7 @@ namespace Neo.Scene
                 EditManager.Instance.IsTerrainHovered = LastMouseIntersection.TerrainHit;
                 EditManager.Instance.MousePosition = LastMouseIntersection.TerrainPosition;
 
+                ChunkEditManager.Instance.OnFrame();
             }
         }
 
@@ -364,6 +371,11 @@ namespace Neo.Scene
                     mGlobalBufferChanged = false;
                 }
             }
+        }
+
+        public bool RenderWindowContainsMouse()
+        {
+            return mWindow.ClientRectangle.Contains(mWindow.PointToClient(Cursor.Position));
         }
 
         private void OnRenderWindowMouseDown(object sender, MouseEventArgs mouseEventArgs)

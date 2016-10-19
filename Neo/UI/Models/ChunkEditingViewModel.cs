@@ -63,5 +63,11 @@ namespace Neo.UI.Models
         {
             ChunkEditManager.Instance.SetSelectedAreaId(areaid);
         }
+
+        public void HandleHoleParamsChange(bool smallhole, bool addhole)
+        {
+            ChunkEditManager.Instance.AddHole = addhole;
+            ChunkEditManager.Instance.SmallHole = smallhole;
+        }
     }
 }

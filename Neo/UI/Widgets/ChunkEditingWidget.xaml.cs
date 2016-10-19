@@ -123,7 +123,23 @@ namespace Neo.UI.Widgets
                 case "tabChunkPaint":
                     model.SetChunkEditState(rdoPaintChunk.IsChecked.Value ? ChunkEditMode.AreaPaint : ChunkEditMode.AreaSelect); //Enforce correct mode
                     break;
+                case "tabFlags":
+                    model.SetChunkEditState(ChunkEditMode.Flags);
+                    break;
+                case "tabHoles":
+                    model.SetChunkEditState(ChunkEditMode.Hole);
+                    break;
             }
         }
+
+        private void rdoHoleParamsChecked(object sender, RoutedEventArgs e)
+        {
+            var model = DataContext as ChunkEditingViewModel;
+            if (model == null || rdoSmallHole == null || rdoCreateHole == null)
+                return;
+
+            model.HandleHoleParamsChange(rdoSmallHole.IsChecked.Value, rdoCreateHole.IsChecked.Value);
+        }
+
     }
 }

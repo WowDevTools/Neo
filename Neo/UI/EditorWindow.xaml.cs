@@ -589,5 +589,28 @@ namespace Neo.UI
             if (!AssetBrowserDocument.IsActive)
                 ThumbnailCache.Write(true);
         }
+
+        private void MenuItem_Wireframe_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem_Wireframe.IsChecked = WorldFrame.Instance.MapManager.ToggleWireframe();
+        }
+
+        private void MenuItem_Terrain_Click(object sender, RoutedEventArgs e)
+        {
+            WorldFrame.Instance.MapManager.HideTerrain = !WorldFrame.Instance.MapManager.HideTerrain;
+            MenuItem_Terrain.IsChecked = !WorldFrame.Instance.MapManager.HideTerrain;
+        }
+
+        private void MenuItem_M2_Click(object sender, RoutedEventArgs e)
+        {
+            WorldFrame.Instance.HideM2 = !WorldFrame.Instance.HideM2;
+            MenuItem_M2.IsChecked = !WorldFrame.Instance.HideM2;
+        }
+
+        private void MenuItem_WMO_Click(object sender, RoutedEventArgs e)
+        {
+            WorldFrame.Instance.HideWMO = !WorldFrame.Instance.HideWMO;
+            MenuItem_WMO.IsChecked = !WorldFrame.Instance.HideWMO;
+        }
     }
 }

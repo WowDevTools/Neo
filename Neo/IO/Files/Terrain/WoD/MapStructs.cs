@@ -6,7 +6,7 @@ namespace Neo.IO.Files.Terrain.WoD
     [StructLayout(LayoutKind.Sequential)]
     public struct Mcnk
     {
-        public int Flags;
+        public uint Flags;
         public readonly int IndexX;
         public readonly int IndexY;
         public readonly int NumLayers;
@@ -21,7 +21,7 @@ namespace Neo.IO.Files.Terrain.WoD
         public readonly int SizeShadow;
         public int AreaId;
         public readonly int NumMapObjRefs;
-        public readonly int Holes;
+        public int Holes;
         public readonly ulong Low1;
         public readonly ulong Low2;
         public readonly int PredTex;
