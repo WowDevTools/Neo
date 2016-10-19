@@ -776,6 +776,7 @@
     <Content Include="Resources\Shaders\BoundingBoxVertex.hlsl" />
     <Content Include="Resources\Shaders\GLSL\BoundingBoxFragment.glsl" />
     <Content Include="Resources\Shaders\GLSL\BoundingBoxVertex.glsl" />
+    <Content Include="Resources\Shaders\GLSL\M2Fragment.glsl" />
     <Content Include="Resources\Shaders\GLSL\MapLowFragment.glsl" />
     <Content Include="Resources\Shaders\GLSL\MapLowVertex.glsl" />
     <Content Include="Resources\Shaders\GLSL\TerrainFragment.glsl" />
