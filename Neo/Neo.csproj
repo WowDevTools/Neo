@@ -189,7 +189,6 @@
     <Compile Include="Editing\TabletManager.cs" />
     <Compile Include="Editing\TerrainChangeManager.cs" />
     <Compile Include="Editing\TextureChangeManager.cs" />
-    <Compile Include="Editing\WdlGenerator.cs" />
     <Compile Include="Graphics\BlendState.cs" />
     <Compile Include="Graphics\Buffer.cs" />
     <Compile Include="Graphics\ShaderCache.cs" />
@@ -786,6 +785,8 @@
     <Content Include="Resources\Shaders\GLSL\SkyVertex.glsl" />
     <Content Include="Resources\Shaders\GLSL\TexturedQuadFragment.glsl" />
     <Content Include="Resources\Shaders\GLSL\TexturedQuadVertex.glsl" />
+    <Content Include="Resources\Shaders\GLSL\WMOFragment.glsl" />
+    <Content Include="Resources\Shaders\GLSL\WMOVertex.glsl" />
     <Content Include="Resources\Shaders\GLSL\WorldTextFragment.glsl" />
     <Content Include="Resources\Shaders\GLSL\WorldTextVertex.glsl" />
     <Content Include="Resources\Shaders\GLSL\WorldTextVertexOrtho.glsl" />
@@ -973,6 +974,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Editing" />
     <Folder Include="Graphics" />
     <Folder Include="IO\Files\Terrain" />
     <Folder Include="Resources\Shaders" />

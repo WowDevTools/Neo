@@ -7,7 +7,6 @@ using Neo.Editing;
 using Neo.Scene;
 using OpenTK;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.IO.Files.Terrain.WoD
 {
@@ -1030,7 +1029,7 @@ namespace Neo.IO.Files.Terrain.WoD
                             mHeader.Mcvt = BitConverter.ToInt32(holeBytes, 0);
                             mHeader.Mcnr = BitConverter.ToInt32(holeBytes, 4);
 
-                            int h = y * 8 + x; 
+                            int h = y * 8 + x;
                             HoleValues[h] = (byte)(add ? 0x00 : 0xFF);
                             return;
                         }

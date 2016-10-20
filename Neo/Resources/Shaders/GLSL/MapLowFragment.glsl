@@ -28,7 +28,7 @@ in VertexData
 	float depth;
 };
 
-out vec4 color;
+out vec4 finalColour;
 
 void main()
 {
@@ -39,6 +39,6 @@ void main()
 	}
 	else
 	{
-		color = vec4(fogColour.xyz, 1);
+		finalColour = vec4(fogColour.xyz, 1);
 	}
 }

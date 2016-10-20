@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using OpenTK;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.WoD
 {

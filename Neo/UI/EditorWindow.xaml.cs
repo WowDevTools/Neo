@@ -514,6 +514,7 @@ namespace Neo.UI
                 }));
             };
 
+	        /*
             WdlGenerator.Generate(mapManager.Continent, progressCallback,
                 () => loadDialog.Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -521,6 +522,7 @@ namespace Neo.UI
                     loadDialog.ShouldClose = true;
                     loadDialog.Close();
                 })));
+			*/
 
             loadDialog.Owner = Window.GetWindow(this);
             loadDialog.ShowDialog();

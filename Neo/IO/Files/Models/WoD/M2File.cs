@@ -6,7 +6,6 @@ using System.Text;
 using Neo.Scene.Models.M2;
 using Neo.Storage;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.WoD
 {
@@ -333,7 +332,8 @@ namespace Neo.IO.Files.Models.WoD
             return Bones.Length;
         }
 
-        private static T[] ReadArrayOf<T>(BinaryReader reader, int offset, int count) where T : struct
+	    [Obsolete("Requires the use of memcpy", true)]
+	    private static T[] ReadArrayOf<T>(BinaryReader reader, int offset, int count) where T : struct
         {
             if (count == 0)
                 return new T[0];
