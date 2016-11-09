@@ -133,8 +133,6 @@ namespace WoWEditor6.UI.ViewModels
                     CreatureManager.Instance.LoadCreatures(dt);
                     dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM gameobject_template");
                     GameObjectManager.Instance.LoadGameObjects(dt);
-                    dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM item_template");
-                    ItemManager.Instance.LoadItem(dt);
 
                     ConnectionsModel.LoginIsEnabled = false;
                     ConnectionsModel.LoginContent = "Succesful!";

@@ -719,10 +719,9 @@ namespace WoWEditor6.UI.Dialog
             item.maxMoneyLoot = int.Parse(this.MaxMoneyLoot.Text);
             item.flagsCustom = (int)makeFlagOrBitmask(this.FlagsCustom, typeof(Storage.Database.WotLk.TrinityCore.itemFlagsCustom));
 
-            if (Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(item.EntryId) == null)
+           if (Storage.Database.MySqlConnector.Instance.QueryToDataTable("SELECT entry FROM item_template WHERE entry="+ item.EntryId + ";").Rows.Count == 0)
             {
                 Storage.Database.MySqlConnector.Instance.Query(item.GetInsertSqlQuery());
-                Storage.Database.WotLk.TrinityCore.ItemManager.Instance.addCreatedItem(item);
                 MessageBox.Show("Inserted");
             }
             else
@@ -736,14 +735,16 @@ namespace WoWEditor6.UI.Dialog
         {
             if (LoadEntry.Text != "")
             {
-                if (Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(Convert.ToInt32(LoadEntry.Text)) == null)
-                {
-                    MessageBox.Show("There is no item with this id.");
-                }
+                 if (Storage.Database.MySqlConnector.Instance.QueryToDataTable("SELECT entry FROM item_template WHERE entry="+ LoadEntry.Text + ";").Rows.Count == 0)
+                 {
+                     MessageBox.Show("There is no item with this id.");
+                 }
 
                 Storage.Database.WotLk.TrinityCore.Item itemLoaded = new Storage.Database.WotLk.TrinityCore.Item();
 
-                itemLoaded = Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(int.Parse(LoadEntry.Text));
+                var dt = Storage.Database.MySqlConnector.Instance.QueryToDataTable("SELECT * FROM item_template WHERE entry=" + LoadEntry.Text + ";");
+
+                itemLoaded = Storage.Database.WotLk.TrinityCore.Item.loadItem(dt);
 
                 if (itemLoaded != null)
                 {
