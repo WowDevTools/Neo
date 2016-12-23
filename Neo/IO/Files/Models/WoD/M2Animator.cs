@@ -6,7 +6,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models.WoD
 {
-    class M2Animator : IM2Animator
+	internal class M2Animator : IM2Animator
     {
         public Matrix4[] BoneMatrices { get; private set; }
         private M2AnimationBone[] mBones;

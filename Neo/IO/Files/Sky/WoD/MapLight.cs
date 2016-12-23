@@ -305,14 +305,14 @@ namespace Neo.IO.Files.Sky.WoD
                 (e1, e2) => (e1.timeValues < e2.timeValues) ? -1 : ((e1.timeValues > e2.timeValues) ? 1 : 0));
         }
 
-        static void ToRgb(uint value, ref Vector3 color)
+	    private static void ToRgb(uint value, ref Vector3 color)
         {
             color.X = ((value & 0x00FF0000) >> 16) / 255.0f;
             color.Y = ((value & 0x0000FF00) >> 8) / 255.0f;
             color.Z = ((value & 0x000000FF) >> 0) / 255.0f;
         }
 
-        Vector3 ToRgb(LightColor colorType, ref LightDataEntry e)
+	    private Vector3 ToRgb(LightColor colorType, ref LightDataEntry e)
         {
             var ret = new Vector3();
             switch(colorType)
@@ -368,7 +368,7 @@ namespace Neo.IO.Files.Sky.WoD
             return ret;
         }
 
-        float ToFloat(LightFloat type, ref LightDataEntry e)
+	    private float ToFloat(LightFloat type, ref LightDataEntry e)
         {
             switch(type)
             {

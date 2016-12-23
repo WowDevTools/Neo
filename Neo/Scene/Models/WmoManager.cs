@@ -6,7 +6,7 @@ using OpenTK;
 
 namespace Neo.Scene.Models
 {
-    class WmoManager
+	internal class WmoManager
     {
         private readonly Dictionary<int, WmoBatchRender> mRenderer = new Dictionary<int, WmoBatchRender>();
         private readonly object mAddLock = new object();

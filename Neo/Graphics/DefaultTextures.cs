@@ -1,7 +1,7 @@
 ﻿
 namespace Neo.Graphics
 {
-    static class DefaultTextures
+	internal static class DefaultTextures
     {
         public static Texture Color { get; private set; }
         public static Texture Specular { get; private set; }

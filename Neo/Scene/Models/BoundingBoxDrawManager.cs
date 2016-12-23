@@ -9,10 +9,10 @@ using Warcraft.Core;
 
 namespace Neo.Scene.Models
 {
-    class BoundingBoxInstance : IDisposable
+	internal class BoundingBoxInstance : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct BoundingVertex
+        private struct BoundingVertex
         {
             public Vector3 position;
             public Vector3 texCoord;
@@ -130,7 +130,7 @@ namespace Neo.Scene.Models
         }
     }
 
-    class BoundingBoxDrawManager
+	internal class BoundingBoxDrawManager
     {
         private static IndexBuffer gIndexBuffer;
         private static Mesh gMesh;

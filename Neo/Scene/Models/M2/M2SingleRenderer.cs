@@ -10,10 +10,10 @@ using DataType = Neo.Graphics.DataType;
 
 namespace Neo.Scene.Models.M2
 {
-    class M2SingleRenderer : IDisposable
+	internal class M2SingleRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct PerModelPassBuffer
+        private struct PerModelPassBuffer
         {
             public Matrix4 uvAnimMatrix1;
             public Matrix4 uvAnimMatrix2;
@@ -25,7 +25,7 @@ namespace Neo.Scene.Models.M2
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct PerDrawCallBuffer
+        private struct PerDrawCallBuffer
         {
             public Matrix4 instanceMat;
             public Color4 colorMod;

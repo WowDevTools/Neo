@@ -8,7 +8,7 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Neo.UI
 {
-    static class WpfImageSource
+	internal static class WpfImageSource
     {
         private static readonly BitmapSource ErrorBitmap;
 

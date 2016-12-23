@@ -5,7 +5,7 @@ using SlimTK;
 
 namespace Neo.Scene.Terrain
 {
-    class MapAreaRender : IDisposable
+	internal class MapAreaRender : IDisposable
     {
         private bool mAsyncLoaded;
         private bool mSyncLoaded;

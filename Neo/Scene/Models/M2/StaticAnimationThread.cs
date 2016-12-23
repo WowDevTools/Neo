@@ -4,7 +4,7 @@ using Neo.IO.Files.Models;
 
 namespace Neo.Scene.Models.M2
 {
-    class StaticAnimationThread
+	internal class StaticAnimationThread
     {
         public static StaticAnimationThread Instance { get; private set; }
 

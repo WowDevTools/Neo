@@ -3,7 +3,7 @@
 namespace Neo.Win32
 {
     [Flags]
-    enum Fos : uint
+    internal enum Fos : uint
     {
         FosOverwriteprompt = 0x00000002,
         FosStrictfiletypes = 0x00000004,

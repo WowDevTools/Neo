@@ -8,7 +8,7 @@ using Neo.UI.Widget;
 
 namespace Neo.UI.Models
 {
-    class IEditingViewModel
+	internal class IEditingViewModel
     {
         private readonly IEditingWidget mWidget;
 

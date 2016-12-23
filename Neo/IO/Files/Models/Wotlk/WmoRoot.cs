@@ -9,7 +9,7 @@ using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class WmoRoot : Models.WmoRoot
+	internal class WmoRoot : Models.WmoRoot
     {
         private Mohd mHeader;
         // ReSharper disable once CollectionNeverQueried.Local

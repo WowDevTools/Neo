@@ -38,7 +38,7 @@ using GLchan = System.Byte;
 
 namespace Neo.Utils
 {
-    unsafe static class LibTxc
+	internal unsafe static class LibTxc
     {
         private const int Alphacut = 127;
         private const GLboolean GlFalse = 0;

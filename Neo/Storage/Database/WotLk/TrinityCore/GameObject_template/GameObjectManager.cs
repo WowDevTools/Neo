@@ -6,7 +6,7 @@ using OpenTK;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
-    class GameObjectManager : Singleton<GameObjectManager>, IGameObjectManager
+	internal class GameObjectManager : Singleton<GameObjectManager>, IGameObjectManager
     {
         private readonly List<GameObject> mGameObjects = new List<GameObject>();
         private readonly List<SpawnedGameObject> mSpawnedGameObjects = new List<SpawnedGameObject>();

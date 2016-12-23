@@ -9,7 +9,7 @@ using SlimTK;
 
 namespace Neo.IO.Files.Models.WoD
 {
-    class M2File : Models.M2File
+	internal class M2File : Models.M2File
     {
         private string mModelName;
         private readonly string mFileName;

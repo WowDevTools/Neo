@@ -4,7 +4,7 @@ using OpenTK;
 namespace Neo.IO.Files.Models.Wotlk
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct M2Header
+    internal struct M2Header
     {
         public readonly int Magic;
         public readonly int Version;
@@ -77,7 +77,7 @@ namespace Neo.IO.Files.Models.Wotlk
     };
 
     [StructLayout(LayoutKind.Sequential)]
-    struct AnimationEntry
+    internal struct AnimationEntry
     {
         public readonly ushort animationID;
         public readonly ushort animationSubID;
@@ -96,7 +96,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct AnimationBlock
+    internal struct AnimationBlock
     {
         public readonly ushort interpolation;
         public readonly short globalSequence;
@@ -107,7 +107,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct ShortAnimationBlock
+    internal struct ShortAnimationBlock
     {
         public readonly int numTimeStamps;
         public readonly int ofsTimeStamps;
@@ -116,7 +116,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct M2Bone
+    internal struct M2Bone
     {
         public readonly int keyBoneId;
         public readonly uint flags;
@@ -130,7 +130,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct M2Texture
+    internal struct M2Texture
     {
         public readonly int type;
         public readonly uint flags;
@@ -139,7 +139,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct M2TexAnim
+    internal struct M2TexAnim
     {
         public readonly AnimationBlock translation;
         public readonly AnimationBlock rotation;
@@ -147,7 +147,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct M2Skin
+    internal struct M2Skin
     {
         public readonly uint id;
         public readonly int nIndices;
@@ -164,7 +164,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct M2SubMesh
+    internal struct M2SubMesh
     {
         public readonly ushort meshPartId;
         public readonly ushort unk1;
@@ -182,7 +182,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct M2TexUnit
+    internal struct M2TexUnit
     {
         public readonly ushort flags;
         public readonly short shaderId;
@@ -199,14 +199,14 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct M2ColorAnim
+    internal struct M2ColorAnim
     {
         public readonly AnimationBlock color;
         public readonly AnimationBlock alpha;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct M2Particle
+    internal struct M2Particle
     {
         private readonly int unk1;
         public readonly uint flags;

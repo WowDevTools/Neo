@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 namespace Neo.IO.CASC
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct FileKey
+    internal struct FileKey
     {
         public readonly byte v1, v2, v3, v4, v5, v6, v7, v8, v9;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct FileKeyMd5
+    internal struct FileKeyMd5
     {
         public readonly byte v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct IndexFileEntry
+    internal struct IndexFileEntry
     {
         public FileKey key;
         public readonly byte indexHigh;
@@ -31,20 +31,20 @@ namespace Neo.IO.CASC
         public readonly uint size;
     }
 
-    class IndexEntry
+	internal class IndexEntry
     {
         public uint Index;
         public uint Offset;
         public uint Size;
     }
 
-    class BlteChunk
+	internal class BlteChunk
     {
         public long SizeCompressed;
         public long SizeUncompressed;
     }
 
-    class EncodingEntry
+	internal class EncodingEntry
     {
 #pragma warning disable 414
         public long Size;
@@ -53,13 +53,13 @@ namespace Neo.IO.CASC
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct RootEntryFile
+    internal struct RootEntryFile
     {
         public FileKeyMd5 md5;
         public readonly ulong hash;
     }
 
-    class RootEntry
+	internal class RootEntry
     {
 #pragma warning disable 414
         internal Binary Md5;
@@ -67,7 +67,7 @@ namespace Neo.IO.CASC
 #pragma warning restore 414
     }
 
-    class FileManager : IFileProvider
+	internal class FileManager : IFileProvider
     {
         private string mDataDir;
         private readonly Dictionary<Binary, IndexEntry> mIndexData = new Dictionary<Binary, IndexEntry>();

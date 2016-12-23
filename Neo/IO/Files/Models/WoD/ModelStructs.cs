@@ -4,7 +4,7 @@ using OpenTK;
 namespace Neo.IO.Files.Models.WoD
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct CreatureDisplayInfoEntry
+    internal struct CreatureDisplayInfoEntry
     {
         public readonly uint Id;
         public readonly uint ModelId;
@@ -30,7 +30,7 @@ namespace Neo.IO.Files.Models.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct CreatureModelDataEntry
+    internal struct CreatureModelDataEntry
     {
         public readonly uint Id;
         public readonly int Flags;
@@ -65,7 +65,7 @@ namespace Neo.IO.Files.Models.WoD
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct FileDataIDEntry
+    internal struct FileDataIDEntry
     {
         public readonly uint ID;
         public readonly string FileName;

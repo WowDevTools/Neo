@@ -6,7 +6,7 @@ using OpenTK;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
-    class CreatureManager : Singleton<CreatureManager>, ICreatureManager
+	internal class CreatureManager : Singleton<CreatureManager>, ICreatureManager
     {
         private readonly List<Creature> mCreatures = new List<Creature>();
         private readonly List<SpawnedCreature> mSpawnedCreatures = new List<SpawnedCreature>();

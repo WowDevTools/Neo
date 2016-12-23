@@ -5,7 +5,7 @@ using Neo.IO.Files.Texture;
 
 namespace Neo.Scene.Texture
 {
-    class TextureWorkItem
+	internal class TextureWorkItem
     {
         public Graphics.Texture Texture { get; private set; }
         public string FileName { get; private set; }
@@ -17,7 +17,7 @@ namespace Neo.Scene.Texture
         }
     }
 
-    class TextureManager
+	internal class TextureManager
     {
         public static TextureManager Instance { get; private set; }
 

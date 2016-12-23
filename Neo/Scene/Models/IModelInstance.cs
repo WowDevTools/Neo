@@ -4,7 +4,7 @@ using SlimTK;
 
 namespace Neo.Scene.Models
 {
-    interface IModelInstance : IDisposable
+	internal interface IModelInstance : IDisposable
     {
 	    BoundingBox InstanceBoundingBox { get; }
         Vector3[] InstanceCorners { get; }

@@ -4,7 +4,7 @@ using SlimTK;
 
 namespace Neo.Graphics
 {
-    class ViewFrustum
+	internal class ViewFrustum
     {
         private static readonly float[] Clip = new float[16];
         private static readonly Vector3[] BoxCorners = new Vector3[8];

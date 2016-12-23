@@ -3,7 +3,7 @@ using OpenTK.Graphics;
 
 namespace Neo.Graphics
 {
-    class RenderTarget : IDisposable
+	internal class RenderTarget : IDisposable
     {
         private Texture2D mDepthTexture;
         private DepthStencilView mDepthView;

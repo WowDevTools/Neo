@@ -8,7 +8,7 @@ using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class WmoGroup : Models.WmoGroup
+	internal class WmoGroup : Models.WmoGroup
     {
         private WmoVertex[] mVertices;
         private List<ushort> mIndices = new List<ushort>();

@@ -9,8 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace Neo.UI.DbcEditors
-{   
-    struct labelStruct : IEnumerable
+{
+	internal struct labelStruct : IEnumerable
     {
         public string Text;
         //public string Tooltip;
@@ -26,9 +26,10 @@ namespace Neo.UI.DbcEditors
     [Designer(typeof(ChrRacesEditorControlDesigner))]
     public partial class ChrRacesEditorControl : UserControl
     {
-        int raceNbr = 0;
-        int startRaceNbr = 0;
-        labelStruct[] labelArray = { new labelStruct() { Text = "Activated (12 or 15 are Activated)", x = 7, y = 7 },
+	    private int raceNbr = 0;
+	    private int startRaceNbr = 0;
+
+	    private labelStruct[] labelArray = { new labelStruct() { Text = "Activated (12 or 15 are Activated)", x = 7, y = 7 },
                                      new labelStruct() { Text = "Faction", x = 7, y = 51 },
                                      new labelStruct() { Text = "Exploration", x = 7, y = 95 },
                                      new labelStruct() { Text = "Male Model", x = 7, y = 139 },

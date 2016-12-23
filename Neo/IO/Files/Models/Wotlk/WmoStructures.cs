@@ -4,7 +4,7 @@ using OpenTK;
 namespace Neo.IO.Files.Models.Wotlk
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct Mohd
+    internal struct Mohd
     {
         public readonly int nMaterials;
         public readonly int nGroups;
@@ -21,7 +21,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Momt
+    internal struct Momt
     {
         public readonly uint flags;
         public readonly int shader;
@@ -38,7 +38,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Mogi
+    internal struct Mogi
     {
         public readonly uint flags;
         public readonly Vector3 bboxMin;
@@ -47,7 +47,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Mopt
+    internal struct Mopt
     {
         public readonly short baseVertex;
         public readonly short numVertices;
@@ -56,7 +56,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Mopr
+    internal struct Mopr
     {
         public readonly short portalIndex;
         public readonly short wmoGroup;
@@ -65,7 +65,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Molt
+    internal struct Molt
     {
         public readonly byte lightType;
         public readonly byte type;
@@ -80,7 +80,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    unsafe struct Mods
+    internal unsafe struct Mods
     {
         public fixed byte name[20];
         public readonly int firstInstance;
@@ -89,7 +89,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Modd
+    internal struct Modd
     {
         public readonly int nameIndex;
         public readonly Vector3 position;
@@ -99,7 +99,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Mfog
+    internal struct Mfog
     {
         public readonly uint flags;
         public readonly Vector3 position;
@@ -113,7 +113,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    unsafe struct Mogp
+    internal unsafe struct Mogp
     {
         public readonly uint groupName;
         public readonly uint descGroupName;
@@ -132,7 +132,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    unsafe struct Moba
+    internal unsafe struct Moba
     {
         public fixed uint a[3];
         public readonly int firstFace;

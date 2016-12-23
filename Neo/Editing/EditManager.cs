@@ -8,7 +8,7 @@ using Point = System.Drawing.Point;
 
 namespace Neo.Editing
 {
-    class EditManager
+	internal class EditManager
     {
         public static EditManager Instance { get; private set; }
 

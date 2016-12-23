@@ -31,7 +31,7 @@ namespace Neo.UI.Components
 {
     public partial class ModelRenderControl : UserControl
     {
-        class AnimationIndexEntry
+	    private class AnimationIndexEntry
         {
             public int AnimationIndex { get; set; }
             public string Name { get; set; }
@@ -287,7 +287,7 @@ namespace Neo.UI.Components
             renderTimer.Start();
         }
 
-        void OnResize(object sender, EventArgs args)
+	    private void OnResize(object sender, EventArgs args)
         {
             var texDesc = new Texture2DDescription
             {
@@ -323,12 +323,12 @@ namespace Neo.UI.Components
             mCamera.SetAspect((float)ClientSize.Width / ClientSize.Height);
         }
 
-        void OnClick(object sender, MouseEventArgs args)
+	    private void OnClick(object sender, MouseEventArgs args)
         {
             Focus();
         }
 
-        void OnRenderTimerTick(object sender, EventArgs args)
+	    private void OnRenderTimerTick(object sender, EventArgs args)
         {
             mCamControl.Update(mCamera, false);
             if (WorldFrame.Instance.Dispatcher.InvokeRequired)
@@ -341,17 +341,17 @@ namespace Neo.UI.Components
             }
         }
 
-        void ViewChanged(Camera cam, Matrix4 matView)
+	    private void ViewChanged(Camera cam, Matrix4 matView)
         {
             mMatrixBuffer.BufferData(cam.ViewProjection);
         }
 
-        void ProjChanged(Camera cam, Matrix4 matProj)
+	    private void ProjChanged(Camera cam, Matrix4 matProj)
         {
             mMatrixBuffer.BufferData(cam.ViewProjection);
         }
 
-        unsafe void OnRenderModel()
+	    private unsafe void OnRenderModel()
         {
             if (mRenderer == null)
             {

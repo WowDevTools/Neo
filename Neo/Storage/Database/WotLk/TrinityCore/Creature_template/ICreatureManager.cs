@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
-    interface ICreatureManager
+	internal interface ICreatureManager
     {
         void LoadCreatures(DataTable pDataTable);
         void LoadSpawnedCreatures(DataTable pDataTable, int pMapId);

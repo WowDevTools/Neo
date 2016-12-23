@@ -5,7 +5,7 @@ using SlimTK;
 
 namespace Neo.Scene.Models.WMO
 {
-    class WmoBatchRender : IDisposable
+	internal class WmoBatchRender : IDisposable
     {
         private WmoRootRender mRoot;
         private Dictionary<int, WmoInstance> mInstances = new Dictionary<int, WmoInstance>();

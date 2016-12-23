@@ -5,7 +5,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Sky.WoD
 {
-    class LightManager : SkyManager
+	internal class LightManager : SkyManager
     {
         private readonly MapLightCollection mLightCollection = new MapLightCollection();
         private List<MapLight> mLights = new List<MapLight>();

@@ -13,7 +13,7 @@ using DataType = Neo.Graphics.DataType;
 namespace Neo.Scene.Terrain
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct TexAnimBuffer
+    internal struct TexAnimBuffer
     {
         public Matrix4 Layer0;
         public Matrix4 Layer1;
@@ -22,7 +22,7 @@ namespace Neo.Scene.Terrain
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct TexParamsBuffer
+    internal struct TexParamsBuffer
     {
         public Vector4 TextureScales;
         public Vector4 SpecularFactors;
@@ -39,7 +39,7 @@ namespace Neo.Scene.Terrain
         HideLines = 0x8
     }
 
-    class MapChunkRender : IDisposable
+	internal class MapChunkRender : IDisposable
     {
         public static Sampler ColorSampler { get; private set; }
         public static Sampler AlphaSampler { get; private set; }

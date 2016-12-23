@@ -13,7 +13,7 @@ using Brushes = System.Windows.Media.Brushes;
 
 namespace Neo.UI.Models
 {
-    enum ImportType
+	internal enum ImportType
     {
         Texture,
         Raw,

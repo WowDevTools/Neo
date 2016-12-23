@@ -17,7 +17,7 @@ using OpenTK;
 
 namespace Neo.UI
 {
-    class ThumbnailCapture : IDisposable
+	internal class ThumbnailCapture : IDisposable
     {
         private PerspectiveCamera mCamera;
         private UniformBuffer mMatrixBuffer;
@@ -99,7 +99,7 @@ namespace Neo.UI
             }
         }
 
-        void LoadModel()
+	    private void LoadModel()
         {
             string model;
             mModels.TryDequeue(out model);
@@ -130,7 +130,7 @@ namespace Neo.UI
             renderTimer.Start();
         }
 
-        void OnRenderTimerTick(object sender, EventArgs args)
+	    private void OnRenderTimerTick(object sender, EventArgs args)
         {
             if (WorldFrame.Instance.Dispatcher.InvokeRequired)
             {
@@ -142,7 +142,7 @@ namespace Neo.UI
             }
         }
 
-        unsafe void OnRenderModel()
+	    private unsafe void OnRenderModel()
         {
             if (mRenderer == null)
             {

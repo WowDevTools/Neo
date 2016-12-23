@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Sky.Wotlk
 {
-    class WorldLightEntry
+	internal class WorldLightEntry
     {
         private readonly IDataStorageRecord mLight;
         private readonly List<Vector3>[] mColorTables = new List<Vector3>[18];

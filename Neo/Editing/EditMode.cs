@@ -3,7 +3,7 @@
 namespace Neo.Editing
 {
     [Flags]
-    enum EditMode
+    internal enum EditMode
     {
         Sculpting = 1,
         Texturing = 2,

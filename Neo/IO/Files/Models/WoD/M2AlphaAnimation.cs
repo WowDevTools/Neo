@@ -2,7 +2,7 @@
 
 namespace Neo.IO.Files.Models.WoD
 {
-    class M2AlphaAnimation
+	internal class M2AlphaAnimation
     {
         private readonly M2InterpolateAlpha16AnimationBlock mAlpha;
 

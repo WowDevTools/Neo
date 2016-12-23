@@ -7,7 +7,7 @@ using Neo.UI.Widgets;
 
 namespace Neo.UI.Models
 {
-    class ShadingViewModel
+	internal class ShadingViewModel
     {
         private readonly ShadingWidget mWidget;
         private bool mIsValueChangedSurpressed;

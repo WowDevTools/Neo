@@ -8,10 +8,10 @@ using SlimTK;
 
 namespace Neo.Scene.Terrain
 {
-    class SkySphere
+	internal class SkySphere
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct SphereVertex
+        private struct SphereVertex
         {
             public Vector3 Position;
             public Vector2 TexCoord;

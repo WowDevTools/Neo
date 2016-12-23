@@ -9,7 +9,7 @@ using Neo.UI.Widgets;
 
 namespace Neo.UI.Models
 {
-    class ChunkEditingViewModel
+	internal class ChunkEditingViewModel
     {
         private readonly ChunkEditingWidget mWidget;
 

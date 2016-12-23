@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class M2SkinFile
+	internal class M2SkinFile
     {
         private readonly string mFileName;
         private M2Skin mSkin;

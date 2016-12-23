@@ -4,7 +4,7 @@ using SharpDX;
 
 namespace Neo.UI.Models
 {
-    class SculptingViewModel
+	internal class SculptingViewModel
     {
         private readonly TerrainSettingsWidget mWidget;
         private bool mIsValueChangedSurpressed;

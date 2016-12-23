@@ -81,11 +81,11 @@ namespace Neo.Scene.Models.M2
 
     public class M2ShadersClass
     {
-        readonly List<PixelShader> mPixelShaders = new List<PixelShader>();
-        readonly List<VertexShader> mVertexShaders_Instanced = new List<VertexShader>();
-        readonly List<VertexShader> mVertexShaders_Single = new List<VertexShader>();
+	    private readonly List<PixelShader> mPixelShaders = new List<PixelShader>();
+	    private readonly List<VertexShader> mVertexShaders_Instanced = new List<VertexShader>();
+	    private readonly List<VertexShader> mVertexShaders_Single = new List<VertexShader>();
 
-        struct M2ShaderEffect
+	    private struct M2ShaderEffect
         {
             public readonly M2FragmentShaderType PixelShader;
             public readonly M2VertexShaderType VertexShader;
@@ -106,7 +106,7 @@ namespace Neo.Scene.Models.M2
             }
         };
 
-        static readonly M2ShaderEffect[] M2ShaderEffects = {
+	    private static readonly M2ShaderEffect[] M2ShaderEffects = {
             new M2ShaderEffect(M2FragmentShaderType.PS_Combiners_Opaque_Mod2xNA_Alpha,            M2VertexShaderType.VS_Diffuse_T1_Env,           M2HullShaderType.HS_T1_T2,          M2DomainShaderType.DS_T1_T2,        0, 3),
             new M2ShaderEffect(M2FragmentShaderType.PS_Combiners_Opaque_AddAlpha,                 M2VertexShaderType.VS_Diffuse_T1_Env,           M2HullShaderType.HS_T1_T2,          M2DomainShaderType.DS_T1_T2,        0, 3),
             new M2ShaderEffect(M2FragmentShaderType.PS_Combiners_Opaque_AddAlpha_Alpha,           M2VertexShaderType.VS_Diffuse_T1_Env,           M2HullShaderType.HS_T1_T2,          M2DomainShaderType.DS_T1_T2,        0, 3),

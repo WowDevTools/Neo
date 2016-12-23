@@ -18,7 +18,7 @@ namespace Neo.Editing
         Flags
     }
 
-    class ChunkEditManager
+	internal class ChunkEditManager
     {
         public static ChunkEditManager Instance { get; private set; }
 

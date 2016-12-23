@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
-    interface IGameObjectManager
+	internal interface IGameObjectManager
     {
         void LoadGameObjects(DataTable pDataTable);
         void LoadSpawnedGameObjects(DataTable pDataTable, int pMapId);

@@ -22,7 +22,7 @@ namespace Neo.IO
             Instance = new FileManager();
         }
 
-        FileManager()
+	    private FileManager()
         {
             FileListing = new DefaultFileListing();
         }

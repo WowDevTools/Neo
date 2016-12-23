@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Neo.IO.CASC
 {
-    class DataStream : IDisposable
+	internal class DataStream : IDisposable
     {
         public FileStream Stream { get; private set; }
 

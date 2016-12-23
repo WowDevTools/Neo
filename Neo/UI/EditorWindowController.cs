@@ -5,7 +5,7 @@ using OpenTK;
 
 namespace Neo.UI
 {
-    class EditorWindowController
+	internal class EditorWindowController
     {
         public static EditorWindowController Instance { get; private set; }
 

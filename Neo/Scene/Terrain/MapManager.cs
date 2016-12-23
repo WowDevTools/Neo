@@ -15,7 +15,7 @@ using Warcraft.WDT.Chunks;
 
 namespace Neo.Scene.Terrain
 {
-    class MapManager
+	internal class MapManager
     {
         private const int MapRadius = 2;
 

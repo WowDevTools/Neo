@@ -5,7 +5,7 @@ using SharpDX.DXGI;
 
 namespace Neo.Utils
 {
-    static class DxtHelper
+	internal static class DxtHelper
     {
         public static byte[] Decompress(int width, int height, byte[] source, Format format)
         {

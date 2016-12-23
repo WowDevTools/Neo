@@ -1,7 +1,7 @@
 ﻿
 namespace Neo.IO.Files.Terrain
 {
-    static class Chunks
+	internal static class Chunks
     {
         public const uint Mver = 0x4D564552;
         public const uint Mhdr = 0x4D484452;

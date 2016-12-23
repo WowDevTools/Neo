@@ -2,7 +2,7 @@
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class M2AlphaAnimation
+	internal class M2AlphaAnimation
     {
         private readonly M2InterpolateAlpha16AnimationBlock mAlpha;
 

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Neo.Utils
 {
-    class TimeManager
+	internal class TimeManager
     {
         public static TimeManager Instance { get; private set; }
 

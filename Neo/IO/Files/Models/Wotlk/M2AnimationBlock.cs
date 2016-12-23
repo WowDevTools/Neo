@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class M2AnimationBlock<TSource, TDest, TInterpolator> where TInterpolator : IInterpolator<TSource, TDest>, new() where TSource : struct
+	internal class M2AnimationBlock<TSource, TDest, TInterpolator> where TInterpolator : IInterpolator<TSource, TDest>, new() where TSource : struct
     {
         private static readonly TInterpolator Interpolator = new TInterpolator();
 
@@ -195,7 +195,7 @@ namespace Neo.IO.Files.Models.Wotlk
         }
     }
 
-    class M2Vector2AnimationBlock : M2AnimationBlock<Vector2, Vector2, VectorInterpolator>
+	internal class M2Vector2AnimationBlock : M2AnimationBlock<Vector2, Vector2, VectorInterpolator>
     {
         public M2Vector2AnimationBlock(M2File file, AnimationBlock data, BinaryReader reader, Vector2 defaultValue = default(Vector2))
             : base(file, data, reader, defaultValue)
@@ -204,7 +204,7 @@ namespace Neo.IO.Files.Models.Wotlk
         }
     }
 
-    class M2Vector3AnimationBlock : M2AnimationBlock<Vector3, Vector3, VectorInterpolator>
+	internal class M2Vector3AnimationBlock : M2AnimationBlock<Vector3, Vector3, VectorInterpolator>
     {
         public M2Vector3AnimationBlock(M2File file, AnimationBlock data, BinaryReader reader, Vector3 defaultValue = default(Vector3))
             : base(file, data, reader, defaultValue)
@@ -213,7 +213,7 @@ namespace Neo.IO.Files.Models.Wotlk
         }
     }
 
-    class M2Vector4AnimationBlock : M2AnimationBlock<Vector4, Vector4, VectorInterpolator>
+	internal class M2Vector4AnimationBlock : M2AnimationBlock<Vector4, Vector4, VectorInterpolator>
     {
         public M2Vector4AnimationBlock(M2File file, AnimationBlock data, BinaryReader reader, Vector4 defaultValue = default(Vector4))
             : base(file, data, reader, defaultValue)
@@ -222,7 +222,7 @@ namespace Neo.IO.Files.Models.Wotlk
         }
     }
 
-    class M2QuaternionInterpolation : IInterpolator<Quaternion16, Quaternion>
+	internal class M2QuaternionInterpolation : IInterpolator<Quaternion16, Quaternion>
     {
         public Quaternion Interpolate(float fac, ref Quaternion16 v1, ref Quaternion16 v2)
         {
@@ -245,7 +245,7 @@ namespace Neo.IO.Files.Models.Wotlk
         }
     }
 
-    class M2Quaternion16AnimationBlock : M2AnimationBlock<Quaternion16, Quaternion, M2QuaternionInterpolation>
+	internal class M2Quaternion16AnimationBlock : M2AnimationBlock<Quaternion16, Quaternion, M2QuaternionInterpolation>
     {
         public M2Quaternion16AnimationBlock(M2File file, AnimationBlock data, BinaryReader reader, Quaternion defaultValue)
             : base(file, data, reader, defaultValue)
@@ -260,7 +260,7 @@ namespace Neo.IO.Files.Models.Wotlk
         }
     }
 
-    class M2InvQuaternion16AnimationBlock : M2AnimationBlock<InvQuaternion16, Quaternion, QuaternionInterpolator>
+	internal class M2InvQuaternion16AnimationBlock : M2AnimationBlock<InvQuaternion16, Quaternion, QuaternionInterpolator>
     {
         public M2InvQuaternion16AnimationBlock(M2File file, AnimationBlock data, BinaryReader reader, Quaternion defaultValue = default(Quaternion))
             : base(file, data, reader, defaultValue)
@@ -275,7 +275,7 @@ namespace Neo.IO.Files.Models.Wotlk
         }
     }
 
-    class M2NoInterpolateAlpha16AnimationBlock : M2AnimationBlock<short, float, NoInterpolateAlpha16>
+	internal class M2NoInterpolateAlpha16AnimationBlock : M2AnimationBlock<short, float, NoInterpolateAlpha16>
     {
         public M2NoInterpolateAlpha16AnimationBlock(M2File file, AnimationBlock data, BinaryReader reader, float defaultValue = default(float))
             : base(file, data, reader, defaultValue)
@@ -284,7 +284,7 @@ namespace Neo.IO.Files.Models.Wotlk
         }
     }
 
-    class M2InterpolateAlpha16AnimationBlock : M2AnimationBlock<short, float, InterpolateAlpha16>
+	internal class M2InterpolateAlpha16AnimationBlock : M2AnimationBlock<short, float, InterpolateAlpha16>
     {
         public M2InterpolateAlpha16AnimationBlock(M2File file, AnimationBlock data, BinaryReader reader, float defaultValue = default(float))
             : base(file, data, reader, defaultValue)

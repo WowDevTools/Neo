@@ -2,7 +2,7 @@
 
 namespace Neo.Editing
 {
-    class TabletManager
+	internal class TabletManager
     {
         /// <summary>
         /// A value between 0 and 40 dependent on how hard you are pressing the pen down

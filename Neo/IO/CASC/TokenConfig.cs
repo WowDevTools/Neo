@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Neo.IO.CASC
 {
-    class TokenConfig
+	internal class TokenConfig
     {
         private readonly Dictionary<string, IEnumerable<string>> mValues = new Dictionary<string, IEnumerable<string>>();
 

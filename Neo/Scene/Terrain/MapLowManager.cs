@@ -9,7 +9,7 @@ using Warcraft.WDL;
 
 namespace Neo.Scene.Terrain
 {
-    class MapLowManager
+	internal class MapLowManager
     {
         private WorldLOD mWdlFile;
 

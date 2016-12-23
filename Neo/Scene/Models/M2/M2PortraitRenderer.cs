@@ -14,7 +14,7 @@ namespace Neo.Scene.Models.M2
 	public sealed class M2PortraitRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct PerModelPassBufferContent
+        private struct PerModelPassBufferContent
         {
             public Matrix4 uvAnimMatrix1;
             public Matrix4 uvAnimMatrix2;

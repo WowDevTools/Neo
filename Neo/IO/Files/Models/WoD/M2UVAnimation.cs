@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models.WoD
 {
-    class M2UVAnimation
+	internal class M2UVAnimation
     {
         private readonly M2Vector3AnimationBlock mTranslation;
         private readonly M2InvQuaternion16AnimationBlock mRotation;

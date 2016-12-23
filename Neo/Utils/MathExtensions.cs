@@ -3,7 +3,7 @@ using SlimTK;
 
 namespace Neo.Utils
 {
-    static class MathExtensions
+	internal static class MathExtensions
     {
         public static BoundingBox Transform(this BoundingBox box, ref Matrix4 matrix)
         {

@@ -5,7 +5,7 @@ using System.Data;
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
-    class ItemManager : Singleton<ItemManager>, IItemManager
+	internal class ItemManager : Singleton<ItemManager>, IItemManager
     {
         private readonly List<Item> mItem = new List<Item>();
 

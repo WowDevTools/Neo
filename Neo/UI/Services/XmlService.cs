@@ -9,7 +9,7 @@ using Neo.Crypto;
 
 namespace Neo.UI.Services
 {
-    class XmlService
+	internal class XmlService
     {
         public static void Initialize()
         {

@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace Neo.Utils
 {
-    class Polygon
+	internal class Polygon
     {
         private Vector2[] mPoints = new Vector2[0];
 

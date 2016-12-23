@@ -5,7 +5,7 @@ using Neo.IO;
 
 namespace Neo.Storage
 {
-    static class MapFormatGuess
+	internal static class MapFormatGuess
     {  
         public static int FieldMapName { get; private set; }
         public static int FieldMapTitle { get; private set; }

@@ -15,7 +15,7 @@ namespace Neo.Win32
     }
 
     [ComImport, Guid("d57c7288-d4ad-4768-be02-9d969532d960"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    interface IFileOpenDialog
+    internal interface IFileOpenDialog
     {
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), PreserveSig]
         int Show([In] IntPtr parent);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Neo.UI.Themes
 {
-    class DarkTheme : Xceed.Wpf.AvalonDock.Themes.Theme
+	internal class DarkTheme : Xceed.Wpf.AvalonDock.Themes.Theme
     {
         public override Uri GetResourceUri()
         {

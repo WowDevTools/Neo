@@ -2,7 +2,7 @@
 
 namespace Neo.Scene
 {
-    class PerspectiveCamera : Camera
+	internal class PerspectiveCamera : Camera
     {
         private float mAspect = 1.0f;
         private float mFov = 55.0f;

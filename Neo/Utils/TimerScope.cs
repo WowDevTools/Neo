@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Neo.Utils
 {
-    class TimerScope : IDisposable
+	internal class TimerScope : IDisposable
     {
         private Stopwatch mWatch;
         private string mTask;

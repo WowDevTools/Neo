@@ -7,7 +7,7 @@ using Point = System.Drawing.Point;
 
 namespace Neo.Scene
 {
-    class CameraControl
+	internal class CameraControl
     {
         public delegate void PositionChangedHandler(Vector3 newPosition, bool updateTerrain);
 

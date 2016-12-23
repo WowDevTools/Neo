@@ -13,7 +13,7 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Neo.Scene
 {
-    class WorldText : IDisposable
+	internal class WorldText : IDisposable
     {
         public enum TextDrawMode
         {
@@ -24,13 +24,13 @@ namespace Neo.Scene
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct PerDrawCallBuffer
+        private struct PerDrawCallBuffer
         {
             public Matrix4 matTransform;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct WorldTextVertex
+        private struct WorldTextVertex
         {
             public WorldTextVertex(Vector3 pos, float u, float v)
             {

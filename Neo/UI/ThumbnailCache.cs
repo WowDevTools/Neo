@@ -8,7 +8,7 @@ using Neo.IO;
 
 namespace Neo.UI
 {
-    static class ThumbnailCache
+	internal static class ThumbnailCache
     {
         public static Action<string> ThumnailAdded;
 

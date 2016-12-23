@@ -271,7 +271,7 @@ namespace Neo.UI.Dialog
         *  List = comboBox with data.startnbr to data.endnbr
         *  Always = Always data.startnbr
         */
-        enum type
+	    private enum type
         {
             Text = 0,
             List = 1,
@@ -279,7 +279,7 @@ namespace Neo.UI.Dialog
         }
 
         //Data
-        struct data
+	    private struct data
         {
             public type type;
             public int startNbr;

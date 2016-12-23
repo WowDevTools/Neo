@@ -2,7 +2,7 @@
 
 namespace Neo.Utils
 {
-    static class InputHelper
+	internal static class InputHelper
     {
         public static bool AreKeysDown(params Key[] keys)
         {

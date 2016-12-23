@@ -9,7 +9,7 @@ namespace Neo.Scene.Models.WMO
 {
     public class WmoGroupRender : IDisposable
     {
-        class WmoRenderBatch
+	    private class WmoRenderBatch
         {
             public IO.Files.Models.WmoMaterial Material;
             public IO.Files.Models.WmoBatch Batch;

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Neo.Win32
 {
     [ComImport, Guid("B63EA76D-1F85-456F-A19C-48159EFA858B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    interface IShellItemArray
+    internal interface IShellItemArray
     {
         // Not supported: IBindCtx
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

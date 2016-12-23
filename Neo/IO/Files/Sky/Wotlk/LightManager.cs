@@ -5,7 +5,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Sky.Wotlk
 {
-    class LightManager : SkyManager
+	internal class LightManager : SkyManager
     {
         private readonly Dictionary<uint, MapSky> mSkies = new Dictionary<uint, MapSky>();
         private readonly Vector3[] mCurColors = new Vector3[18];

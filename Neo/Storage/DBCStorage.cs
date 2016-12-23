@@ -5,7 +5,7 @@ using Neo.IO.Files.Sky;
 
 namespace Neo.Storage
 {
-    static class DbcStorage
+	internal static class DbcStorage
     {
         public static IDataStorageFile Map { get; private set; }
         public static IDataStorageFile LoadingScreen { get; private set; }

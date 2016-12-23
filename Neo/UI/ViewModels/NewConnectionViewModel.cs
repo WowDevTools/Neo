@@ -6,7 +6,7 @@ using Prism.Mvvm;
 
 namespace Neo.UI.ViewModels
 {
-    class NewConnectionViewModel : BindableBase, IInteractionRequestAware
+	internal class NewConnectionViewModel : BindableBase, IInteractionRequestAware
     {
         private SaveAsNotification mNotification;
 

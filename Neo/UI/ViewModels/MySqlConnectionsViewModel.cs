@@ -8,7 +8,7 @@ using Neo.UI.Services;
 
 namespace Neo.UI.ViewModels
 {
-    class MySqlConnectionsViewModel : BindableBase
+	internal class MySqlConnectionsViewModel : BindableBase
     {
         public ICommand LoginCommand { get; private set; }
         public ICommand SaveConnectionCommand { get; private set; }

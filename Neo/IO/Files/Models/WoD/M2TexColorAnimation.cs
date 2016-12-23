@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models.WoD
 {
-    class M2TexColorAnimation
+	internal class M2TexColorAnimation
     {
         private readonly M2Vector3AnimationBlock mColor;
         private readonly M2NoInterpolateAlpha16AnimationBlock mAlpha;

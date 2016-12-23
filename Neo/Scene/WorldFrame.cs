@@ -15,10 +15,10 @@ using OpenTK.Input;
 
 namespace Neo.Scene
 {
-    class WorldFrame
+	internal class WorldFrame
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct GlobalParamsBuffer
+        private struct GlobalParamsBuffer
         {
             public Matrix4 matView;
             public Matrix4 matProj;

@@ -2,7 +2,7 @@
 
 namespace Neo.Scene
 {
-    class WorldTextManager
+	internal class WorldTextManager
     {
         private readonly List<WorldText> mWorldTexts = new List<WorldText>();
 

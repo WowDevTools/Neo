@@ -20,7 +20,7 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Neo.UI.Models
 {
-    class TexturingViewModel
+	internal class TexturingViewModel
     {
         private readonly TexturingWidget mWidget;
         private bool mIsValueChangedSurpressed;

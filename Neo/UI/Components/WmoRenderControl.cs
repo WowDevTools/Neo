@@ -111,7 +111,7 @@ namespace Neo.UI.Components
             renderTimer.Start();
         }
 
-        void OnResize(object sender, EventArgs args)
+	    private void OnResize(object sender, EventArgs args)
         {
             var texDesc = new Texture2DDescription
             {
@@ -146,12 +146,12 @@ namespace Neo.UI.Components
             mTarget.Resize(ClientSize.Width, ClientSize.Height, true);
         }
 
-        void OnClick(object sender, MouseEventArgs args)
+	    private void OnClick(object sender, MouseEventArgs args)
         {
             Focus();
         }
 
-        void OnRenderTimerTick(object sender, EventArgs args)
+	    private void OnRenderTimerTick(object sender, EventArgs args)
         {
             mCamControl.Update(mCamera, false);
             if (WorldFrame.Instance.Dispatcher.InvokeRequired)
@@ -164,17 +164,17 @@ namespace Neo.UI.Components
             }
         }
 
-        void ViewChanged(Camera cam, Matrix matView)
+	    private void ViewChanged(Camera cam, Matrix matView)
         {
             mMatrixBuffer.UpdateData(cam.ViewProjection);
         }
 
-        void ProjChanged(Camera cam, Matrix matProj)
+	    private void ProjChanged(Camera cam, Matrix matProj)
         {
             mMatrixBuffer.UpdateData(cam.ViewProjection);
         }
 
-        unsafe void OnRenderModel()
+	    private unsafe void OnRenderModel()
         {
             mTarget.Clear();
             mTarget.Apply();

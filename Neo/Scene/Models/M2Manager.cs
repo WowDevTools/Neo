@@ -7,7 +7,7 @@ using OpenTK;
 
 namespace Neo.Scene.Models
 {
-    class M2Manager
+	internal class M2Manager
     {
         private class InstanceSortComparer : IComparer<int>
         {

@@ -2,7 +2,7 @@
 
 namespace Neo.Editing
 {
-    class MapCreator
+	internal class MapCreator
     {
         private readonly string mInternalName;
 

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Neo.Storage.Database
 {
-    class MySqlConnector : Singleton<MySqlConnector>, IMySqlConnector
+	internal class MySqlConnector : Singleton<MySqlConnector>, IMySqlConnector
     {
 
         private readonly MySql.Data.MySqlClient.MySqlConnection mMySqlConn = new MySql.Data.MySqlClient.MySqlConnection();

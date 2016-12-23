@@ -7,7 +7,7 @@ using SlimTK;
 
 namespace Neo.IO.Files.Models.WoD
 {
-    class WmoGroup : Models.WmoGroup
+	internal class WmoGroup : Models.WmoGroup
     {
         private WmoVertex[] mVertices;
         private List<ushort> mIndices = new List<ushort>();

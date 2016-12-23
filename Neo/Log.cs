@@ -13,12 +13,12 @@ namespace Neo
         Debug
     }
 
-    interface ILogSink
+	internal interface ILogSink
     {
         void AddMessage(LogLevel logLevel, string title, string message);
     }
 
-    class ConsoleLogSink : ILogSink
+	internal class ConsoleLogSink : ILogSink
     {
         private static void SetLevelColor(LogLevel level)
         {
@@ -54,7 +54,7 @@ namespace Neo
         }
     }
 
-    class FileLogSink : ILogSink
+	internal class FileLogSink : ILogSink
     {
         public FileLogSink()
         {
@@ -75,7 +75,7 @@ namespace Neo
         }
     }
 
-    static class Log
+	internal static class Log
     {
         private static readonly List<ILogSink> Sinks = new List<ILogSink>();
         private const LogLevel LogLevel = Neo.LogLevel.Debug;

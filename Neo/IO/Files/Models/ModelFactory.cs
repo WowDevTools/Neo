@@ -2,7 +2,7 @@
 
 namespace Neo.IO.Files.Models
 {
-    class ModelFactory
+	internal class ModelFactory
     {
         public static ModelFactory Instance { get; private set; }
 

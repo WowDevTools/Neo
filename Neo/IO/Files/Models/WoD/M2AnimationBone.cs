@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models.WoD
 {
-    class M2AnimationBone
+	internal class M2AnimationBone
     {
         private readonly M2Bone mBone;
         private readonly Matrix4 mInvPivot;

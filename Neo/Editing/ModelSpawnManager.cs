@@ -15,7 +15,7 @@ using Point = System.Drawing.Point;
 
 namespace Neo.Editing
 {
-    class ModelSpawnManager
+	internal class ModelSpawnManager
     {
         public const int M2InstanceUuid = -1;
 

@@ -73,7 +73,7 @@ namespace Neo.IO.Files.Sky.WoD
         public readonly uint unk4;
         public readonly float fogEnd;
         public readonly float fogScaler;
-        readonly float unk5;
+	    private readonly float unk5;
         public readonly float fogDensity;
     }
 

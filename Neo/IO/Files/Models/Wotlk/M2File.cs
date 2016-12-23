@@ -11,7 +11,7 @@ using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class M2File : Models.M2File
+	internal class M2File : Models.M2File
     {
         private string mModelName;
         private readonly string mFileName;

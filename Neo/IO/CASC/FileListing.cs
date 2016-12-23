@@ -3,7 +3,7 @@ using System.IO.Compression;
 
 namespace Neo.IO.CASC
 {
-    class FileListing : IFileListing
+	internal class FileListing : IFileListing
     {
         public DirectoryEntry RootEntry { get; private set; }
 
