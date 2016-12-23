@@ -59,9 +59,11 @@ namespace Neo.IO.Files.Terrain.WoD
         public override void Save()
         {
             if (mWasChanged == false)
-                return;
+            {
+	            return;
+            }
 
-            var hasMccv = mChunks.Any(c => c != null && c.HasMccv);
+	        var hasMccv = mChunks.Any(c => c != null && c.HasMccv);
             if(hasMccv)
             {
 	            var wdt = WorldFrame.Instance.MapManager.CurrentWdt;
@@ -84,16 +86,20 @@ namespace Neo.IO.Files.Terrain.WoD
             foreach (var inst in DoodadInstances)
             {
                 if (inst == null || inst.RenderInstance == null)
-                    continue;
+                {
+	                continue;
+                }
 
-                var pos = mDoodadDefs[inst.MddfIndex].Position;
+	            var pos = mDoodadDefs[inst.MddfIndex].Position;
                 var oldPos = pos;
                 var invZ = 64.0f * Metrics.TileSize - pos.Z;
                 var dist = (new Vector2(pos.X, invZ) - center).Length;
                 if (dist > parameters.OuterRadius)
-                    continue;
+                {
+	                continue;
+                }
 
-                if (WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
+	            if (WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
                 {
                     mDoodadDefs[inst.MddfIndex].Position = pos;
                     inst.RenderInstance.SetPosition(new Vector3(0, 0, pos.Y - oldPos.Y));
@@ -106,7 +112,9 @@ namespace Neo.IO.Files.Terrain.WoD
             foreach (var chunk in mChunks)
             {
                 if (chunk != null)
-                    chunk.UpdateNormals();
+                {
+	                chunk.UpdateNormals();
+                }
             }
         }
 
@@ -115,10 +123,15 @@ namespace Neo.IO.Files.Terrain.WoD
             var changed = false;
             foreach (var chunk in mChunks)
             {
-                if (chunk == null) continue;
+                if (chunk == null)
+                {
+	                continue;
+                }
 
-                if (chunk.OnTextureTerrain(parameters))
-                    changed = true;
+	            if (chunk.OnTextureTerrain(parameters))
+	            {
+		            changed = true;
+	            }
             }
 
             return changed;
@@ -145,14 +158,18 @@ namespace Neo.IO.Files.Terrain.WoD
         public void UpdateVertices(MapChunk chunk)
         {
             if (chunk == null)
-                return;
+            {
+	            return;
+            }
 
-            var ix = chunk.IndexX;
+	        var ix = chunk.IndexX;
             var iy = chunk.IndexY;
 
             var index = (ix + iy * 16) * 145;
             for (var i = 0; i < 145; ++i)
-                FullVertices[i + index] = chunk.Vertices[i];
+            {
+	            this.FullVertices[i + index] = chunk.Vertices[i];
+            }
         }
 
         public override bool OnChangeTerrain(TerrainChangeParameters parameters)
@@ -160,16 +177,23 @@ namespace Neo.IO.Files.Terrain.WoD
             var changed = false;
             foreach (var chunk in mChunks)
             {
-                if (chunk == null) continue;
+                if (chunk == null)
+                {
+	                continue;
+                }
 
-                if (chunk.OnTerrainChange(parameters))
-                    changed = true;
+	            if (chunk.OnTerrainChange(parameters))
+	            {
+		            changed = true;
+	            }
             }
 
             if (changed)
-                mWasChanged = true;
+            {
+	            this.mWasChanged = true;
+            }
 
-            return changed;
+	        return changed;
         }
 
         public override bool Intersect(ref Ray ray, out Terrain.MapChunk chunk, out float distance)
@@ -179,20 +203,27 @@ namespace Neo.IO.Files.Terrain.WoD
 
             var mindistance = float.MaxValue;
             if (BoundingBox.Intersects(ref ray) == false)
-                return false;
+            {
+	            return false;
+            }
 
-            Terrain.MapChunk chunkHit = null;
+	        Terrain.MapChunk chunkHit = null;
             var hasHit = false;
             foreach(var cnk in mChunks)
             {
                 float dist;
                 if (cnk.Intersect(ref ray, out dist) == false)
-                    continue;
+                {
+	                continue;
+                }
 
-                hasHit = true;
-                if (dist >= mindistance) continue;
+	            hasHit = true;
+                if (dist >= mindistance)
+                {
+	                continue;
+                }
 
-                mindistance = dist;
+	            mindistance = dist;
                 chunkHit = cnk;
             }
 
@@ -204,17 +235,21 @@ namespace Neo.IO.Files.Terrain.WoD
         public float GetTextureScale(int index)
         {
             if (index >= mTextureScales.Count)
-                throw new IndexOutOfRangeException();
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return mTextureScales[index];
+	        return mTextureScales[index];
         }
 
         public override Terrain.MapChunk GetChunk(int index)
         {
             if (index >= mChunks.Count)
-                throw new IndexOutOfRangeException();
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return mChunks[index];
+	        return mChunks[index];
         }
 
         public override void AsyncLoad()
@@ -648,9 +683,12 @@ namespace Neo.IO.Files.Terrain.WoD
 
                 foreach (var chunk in mChunks)
                 {
-                    if (chunk == null) continue;
+                    if (chunk == null)
+                    {
+	                    continue;
+                    }
 
-                    chunk.WriteBaseChunks(writer);
+	                chunk.WriteBaseChunks(writer);
                 }
             }
         }
@@ -710,7 +748,9 @@ namespace Neo.IO.Files.Terrain.WoD
 
             var ptr = SizeCache<T>.GetUnsafePtr(ref values[0]);
             fixed (byte* bptr = chunk.Data)
-                UnsafeNativeMethods.CopyMemory(bptr, (byte*) ptr, totalSize);
+            {
+	            UnsafeNativeMethods.CopyMemory(bptr, (byte*) ptr, totalSize);
+            }
 
 	        if (mObjOrigChunks.ContainsKey(signature))
 	        {
@@ -732,7 +772,9 @@ namespace Neo.IO.Files.Terrain.WoD
 
             var ptr = SizeCache<T>.GetUnsafePtr(ref values[0]);
             fixed (byte* bptr = chunk.Data)
-                UnsafeNativeMethods.CopyMemory(bptr, (byte*)ptr, totalSize);
+            {
+	            UnsafeNativeMethods.CopyMemory(bptr, (byte*)ptr, totalSize);
+            }
 
 	        if (mTexOrigChunks.ContainsKey(signature))
 	        {

@@ -17,13 +17,17 @@ namespace Neo.IO.Files
         private void AssertValid(int offset, int size)
         {
             if (offset + size > mSize)
-                throw new IndexOutOfRangeException("Trying to read past the end of a dbc record");
+            {
+	            throw new IndexOutOfRangeException("Trying to read past the end of a dbc record");
+            }
         }
 
         private void AssertString<T>() where T : struct
         {
             if (typeof(T).GetFields().Any(x => x.FieldType == typeof(string)))
-                throw new TypeLoadException();
+            {
+	            throw new TypeLoadException();
+            }
         }
 
 
@@ -46,44 +50,46 @@ namespace Neo.IO.Files
             ValueType ret = new T();
 
             using (var ms = new MemoryStream(mData))
-            using (var br = new BinaryReader(ms))
             {
-                foreach (var field in typeof(T).GetFields())
-                {
-                    if (field.FieldType == typeof(string)) //StringTable
-                    {
-                        int strId = br.ReadInt32();
-                        string strVal = string.Empty;
-                        mStringTable.TryGetValue(strId, out strVal);
-                        field.SetValue(ret, strVal);
-                    }
-                    else if (field.FieldType == typeof(LocalisedString))
-                    {
-                        string[] strings = new string[16];
-                        for (int i = 0; i < 16; i++)
-                        {
-                            int strId = br.ReadInt32();
-                            string strVal = string.Empty;
-                            mStringTable.TryGetValue(strId, out strVal);
-                            strings[i] = strVal;
-                        }
-                        var loc = new LocalisedString(strings, br.ReadInt32());
-                        field.SetValue(ret, loc);
-                    }
-                    else
-                    {
-                        int sizeOf = Marshal.SizeOf(field.FieldType);
-                        byte[] bytes = br.ReadBytes(sizeOf);
-                        fixed (byte* dataPtr = bytes)
-                        {
-                            object val = Marshal.PtrToStructure(new IntPtr(dataPtr), field.FieldType);
-                            field.SetValue(ret, val);
-                        }
-                    }
-                }
+	            using (var br = new BinaryReader(ms))
+	            {
+		            foreach (var field in typeof(T).GetFields())
+		            {
+			            if (field.FieldType == typeof(string)) //StringTable
+			            {
+				            int strId = br.ReadInt32();
+				            string strVal = string.Empty;
+				            this.mStringTable.TryGetValue(strId, out strVal);
+				            field.SetValue(ret, strVal);
+			            }
+			            else if (field.FieldType == typeof(LocalisedString))
+			            {
+				            string[] strings = new string[16];
+				            for (int i = 0; i < 16; i++)
+				            {
+					            int strId = br.ReadInt32();
+					            string strVal = string.Empty;
+					            this.mStringTable.TryGetValue(strId, out strVal);
+					            strings[i] = strVal;
+				            }
+				            var loc = new LocalisedString(strings, br.ReadInt32());
+				            field.SetValue(ret, loc);
+			            }
+			            else
+			            {
+				            int sizeOf = Marshal.SizeOf(field.FieldType);
+				            byte[] bytes = br.ReadBytes(sizeOf);
+				            fixed (byte* dataPtr = bytes)
+				            {
+					            object val = Marshal.PtrToStructure(new IntPtr(dataPtr), field.FieldType);
+					            field.SetValue(ret, val);
+				            }
+			            }
+		            }
+	            }
             }
 
-            return (T)ret;
+	        return (T)ret;
         }
 
         /// <summary>
@@ -100,30 +106,38 @@ namespace Neo.IO.Files
             var ret = new T();
             var ptr = SizeCache<T>.GetUnsafePtr(ref ret);
             fixed (byte* data = mData)
-                UnsafeNativeMethods.CopyMemory((byte*)ptr, data, SizeCache<T>.Size);
+            {
+	            UnsafeNativeMethods.CopyMemory((byte*)ptr, data, SizeCache<T>.Size);
+            }
 
-            return ret;
+	        return ret;
         }
 
         public int GetInt32(int field)
         {
             AssertValid(field * 4, 4);
             fixed (byte* ptr = mData)
-                return *(int*)(ptr + field * 4);
+            {
+	            return *(int*)(ptr + field * 4);
+            }
         }
 
         public uint GetUint32(int field)
         {
             AssertValid(field * 4, 4);
             fixed (byte* ptr = mData)
-                return *(uint*)(ptr + field * 4);
+            {
+	            return *(uint*)(ptr + field * 4);
+            }
         }
 
         public float GetFloat(int field)
         {
             AssertValid(field * 4, 4);
             fixed (byte* ptr = mData)
-                return *(float*)(ptr + field * 4);
+            {
+	            return *(float*)(ptr + field * 4);
+            }
         }
 
         public string GetString(int field)
@@ -131,12 +145,16 @@ namespace Neo.IO.Files
             AssertValid(field * 4, 4);
             int offset;
             fixed (byte* ptr = mData)
-                offset = *(int*)(ptr + field * 4);
+            {
+	            offset = *(int*)(ptr + field * 4);
+            }
 
-            if (offset == 0)
-                return null;
+	        if (offset == 0)
+	        {
+		        return null;
+	        }
 
-            string str;
+	        string str;
             mStringTable.TryGetValue(offset, out str);
             return str;
         }
@@ -161,9 +179,11 @@ namespace Neo.IO.Files
         {
             Stream stream = FileManager.Instance.Provider.OpenFile(file);
             if (stream == null)
-                throw new FileNotFoundException(file);
+            {
+	            throw new FileNotFoundException(file);
+            }
 
-            Load(stream);
+	        Load(stream);
         }
 
         public void Load(Stream stream)
@@ -195,7 +215,9 @@ namespace Neo.IO.Files
             }
 
             for (var i = 0; i < NumRows; ++i)
-                mIdLookup.Add(GetRow(i).GetInt32(0), i);
+            {
+	            this.mIdLookup.Add(GetRow(i).GetInt32(0), i);
+            }
         }
 
         public void Save(string file)
@@ -222,7 +244,9 @@ namespace Neo.IO.Files
         public void BuildCache<T>() where T : struct
         {
             for (int i = 0; i < NumRows; i++)
-                mCache.Add(GetRow(i).Get<T>());
+            {
+	            this.mCache.Add(GetRow(i).Get<T>());
+            }
         }
 
         public void ClearCache()
@@ -247,19 +271,25 @@ namespace Neo.IO.Files
         {
             List<IDataStorageRecord> files = new List<IDataStorageRecord>();
             for (int i = 0; i < NumRows; i++)
-                files.Add(GetRow(i));
-            return files;
+            {
+	            files.Add(GetRow(i));
+            }
+	        return files;
         }
 
         public IList<T> GetAllRows<T>() where T : struct
         {
             if (mCache.Count > 0)
-                return mCache.Cast<T>().ToList();
+            {
+	            return this.mCache.Cast<T>().ToList();
+            }
 
-            List<T> files = new List<T>();
+	        List<T> files = new List<T>();
             for (int i = 0; i < NumRows; i++)
-                files.Add(GetRow(i).Get<T>());
-            return files;
+            {
+	            files.Add(GetRow(i).Get<T>());
+            }
+	        return files;
         }
 
 
@@ -267,12 +297,16 @@ namespace Neo.IO.Files
         {
             //TODO remove strings from string table
             if (!mIdLookup.ContainsValue(index))
-                return false;
+            {
+	            return false;
+            }
 
-            if (mCache.Count > 0)
-                mCache.RemoveAt(index);
+	        if (mCache.Count > 0)
+	        {
+		        this.mCache.RemoveAt(index);
+	        }
 
-            mReader.BaseStream.Position = 0;
+	        mReader.BaseStream.Position = 0;
             byte[] data = mReader.ReadBytes((int)mStream.Length);
 
             var ms = new MemoryStream();
@@ -303,11 +337,16 @@ namespace Neo.IO.Files
             foreach (var pair in mStringTable)
             {
                 if (pair.Value.Equals(value))
-                    return pair.Key;
+                {
+	                return pair.Key;
+                }
 
-                if (pair.Key <= maxIndex) continue;
+	            if (pair.Key <= maxIndex)
+	            {
+		            continue;
+	            }
 
-                maxIndex = pair.Key;
+	            maxIndex = pair.Key;
                 maxLen = pair.Value.Length;
             }
 
@@ -321,9 +360,11 @@ namespace Neo.IO.Files
             typeof(T).GetFields().First().SetValue(entry, mIdLookup.Keys.Max() + 1); //Set Id
 
             if (mCache.Count > 0)
-                mCache.Add(entry);
+            {
+	            this.mCache.Add(entry);
+            }
 
-            var newRecord = ParseRecord(entry);
+	        var newRecord = ParseRecord(entry);
             NumRows += 1;
             Update(newRecord.Item1, newRecord.Item2);
         }
@@ -336,9 +377,11 @@ namespace Neo.IO.Files
             var index = mIdLookup[id];
 
             if (mCache.Count > 0)
-                mCache[index] = entry;
+            {
+	            this.mCache[index] = entry;
+            }
 
-            mStream.Position = HEADER + index * mRecordSize;
+	        mStream.Position = HEADER + index * mRecordSize;
             mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length); //Overwrite existing data
 
             Update(new byte[0], newRecord.Item2);
@@ -360,52 +403,60 @@ namespace Neo.IO.Files
             List<string> newStrings = new List<string>();
 
             using (var ms = new MemoryStream(newRecord))
-            using (var bw = new BinaryWriter(ms))
             {
-                foreach (var field in type.GetFields())
-                {
-                    if (field.FieldType == typeof(string))
-                    {
-                        int stSize = mStringTable.Count;
-                        string strVal = Convert.ToString(field.GetValue(entry));
-                        int strID = AddString(strVal);
-                        bw.Write(strID);
+	            using (var bw = new BinaryWriter(ms))
+	            {
+		            foreach (var field in type.GetFields())
+		            {
+			            if (field.FieldType == typeof(string))
+			            {
+				            int stSize = this.mStringTable.Count;
+				            string strVal = Convert.ToString(field.GetValue(entry));
+				            int strID = AddString(strVal);
+				            bw.Write(strID);
 
-                        if (mStringTable.Count > stSize) //Append to our list of new strings
-                            newStrings.Add(strVal);
-                    }
-                    else if(field.FieldType == typeof(LocalisedString))
-                    {
-                        foreach(var locfield in typeof(LocalisedString).GetFields())
-                        {
-                            if (locfield.FieldType == typeof(string))
-                            {
-                                int stSize = mStringTable.Count;
-                                string strVal = Convert.ToString(locfield.GetValue(entry));
-                                int strID = AddString(strVal);
-                                bw.Write(strID);
+				            if (this.mStringTable.Count > stSize) //Append to our list of new strings
+				            {
+					            newStrings.Add(strVal);
+				            }
+			            }
+			            else if(field.FieldType == typeof(LocalisedString))
+			            {
+				            foreach(var locfield in typeof(LocalisedString).GetFields())
+				            {
+					            if (locfield.FieldType == typeof(string))
+					            {
+						            int stSize = this.mStringTable.Count;
+						            string strVal = Convert.ToString(locfield.GetValue(entry));
+						            int strID = AddString(strVal);
+						            bw.Write(strID);
 
-                                if (mStringTable.Count > stSize)
-                                    newStrings.Add(strVal);
-                            }
-                            else
-                                bw.Write(Convert.ToInt32(locfield.GetValue(entry)));
-                        }
-                    }
-                    else
-                    {
-                        int sizeOf = Marshal.SizeOf(field.FieldType);
-                        byte[] arr = new byte[sizeOf];
-                        IntPtr ptr = Marshal.AllocHGlobal(sizeOf);
-                        Marshal.StructureToPtr(field.GetValue(entry), ptr, true);
-                        Marshal.Copy(ptr, arr, 0, sizeOf);
-                        Marshal.FreeHGlobal(ptr);
-                        bw.Write(arr);
-                    }
-                }
+						            if (this.mStringTable.Count > stSize)
+						            {
+							            newStrings.Add(strVal);
+						            }
+					            }
+					            else
+					            {
+						            bw.Write(Convert.ToInt32(locfield.GetValue(entry)));
+					            }
+				            }
+			            }
+			            else
+			            {
+				            int sizeOf = Marshal.SizeOf(field.FieldType);
+				            byte[] arr = new byte[sizeOf];
+				            IntPtr ptr = Marshal.AllocHGlobal(sizeOf);
+				            Marshal.StructureToPtr(field.GetValue(entry), ptr, true);
+				            Marshal.Copy(ptr, arr, 0, sizeOf);
+				            Marshal.FreeHGlobal(ptr);
+				            bw.Write(arr);
+			            }
+		            }
+	            }
             }
 
-            return new Tuple<byte[], IEnumerable<string>>(newRecord, newStrings);
+	        return new Tuple<byte[], IEnumerable<string>>(newRecord, newStrings);
         }
 
         private void Update(byte[] newRecord, IEnumerable<string> newStrings)

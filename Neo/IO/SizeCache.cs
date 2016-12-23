@@ -101,15 +101,21 @@ namespace Neo.IO
                 var requires = field.GetCustomAttributes(typeof(MarshalAsAttribute), true).Length != 0;
 
                 if (requires)
-                    return true;
+                {
+	                return true;
+                }
 
-                if (t == typeof(IntPtr))
-                    continue;
+	            if (t == typeof(IntPtr))
+	            {
+		            continue;
+	            }
 
-                if (Type.GetTypeCode(t) == TypeCode.Object)
-                    requires |= GetRequiresMarshal(field.FieldType);
+	            if (Type.GetTypeCode(t) == TypeCode.Object)
+	            {
+		            requires |= GetRequiresMarshal(field.FieldType);
+	            }
 
-                return requires;
+	            return requires;
             }
             return false;
         }

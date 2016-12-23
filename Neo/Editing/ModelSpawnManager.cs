@@ -41,9 +41,11 @@ namespace Neo.Editing
         public void CopyClickedModel()
         {
             if (ClickedInstance == null)
-                return;
+            {
+	            return;
+            }
 
-            SelectModel(ClickedInstance.Model.FileName);
+	        SelectModel(ClickedInstance.Model.FileName);
         }
 
         public void SelectModel(string model)
@@ -58,9 +60,11 @@ namespace Neo.Editing
 
             if (WorldFrame.Instance.LastMouseIntersection != null &&
                 WorldFrame.Instance.LastMouseIntersection.TerrainHit)
-                position = WorldFrame.Instance.LastMouseIntersection.TerrainPosition;
+            {
+	            position = WorldFrame.Instance.LastMouseIntersection.TerrainPosition;
+            }
 
-            mSelectedModel = model;
+	        mSelectedModel = model;
             mHoveredInstance = WorldFrame.Instance.M2Manager.AddInstance(model, M2InstanceUuid, position, Vector3.Zero, Vector3.One);
 
             if (mHoveredInstance == null)
@@ -241,18 +245,26 @@ namespace Neo.Editing
                     if (testArea != null && testArea.AreaFile != null)
                     {
                         if (testArea.AreaFile.IsValid == false)
-                            continue;
+                        {
+	                        continue;
+                        }
 
-                        while (testArea.AreaFile.IsUuidAvailable(baseUuid) == false)
+	                    while (testArea.AreaFile.IsUuidAvailable(baseUuid) == false)
                         {
                             if ((baseUuid & 0xFFFFF) < 0xFFFFF)
-                                ++baseUuid;
+                            {
+	                            ++baseUuid;
+                            }
                             else
-                                return;
+                            {
+	                            return;
+                            }
                         }
                     }
                     else if (CheckUuidForFileArea(x, y, ref baseUuid) == false)
-                        return;
+                    {
+	                    return;
+                    }
                 }
             }
 
@@ -268,7 +280,9 @@ namespace Neo.Editing
                             mHoveredInstance.Scale);
                     }
                     else
-                        AddDoodadToFileArea(x, y, baseUuid, mHoveredInstance.BoundingBox);
+                    {
+	                    AddDoodadToFileArea(x, y, baseUuid, this.mHoveredInstance.BoundingBox);
+                    }
                 }
             }
 

@@ -24,15 +24,19 @@ namespace Neo.IO.MPQ
         {
             IntPtr handle;
             if (Imports.SFileOpenFileEx(mHandle, file, 0, out handle) == false)
-                return null;
+            {
+	            return null;
+            }
 
-            uint sizeHigh;
+	        uint sizeHigh;
             var sizeLow = Imports.SFileGetFileSize(handle, out sizeHigh);
             var totalSize = ((ulong)sizeHigh << 32) | sizeLow;
             if (totalSize > int.MaxValue)
-                return null;
+            {
+	            return null;
+            }
 
-            var buffer = new byte[(int) totalSize];
+	        var buffer = new byte[(int) totalSize];
             int numRead;
             if(Imports.SFileReadFile(handle, buffer, (int)totalSize, out numRead, IntPtr.Zero) == false || numRead != (int)totalSize)
             {

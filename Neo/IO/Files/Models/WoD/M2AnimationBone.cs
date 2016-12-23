@@ -55,9 +55,11 @@ namespace Neo.IO.Files.Models.WoD
             boneMatrix = mInvPivot * boneMatrix * mPivot;
 
             if (mBone.parentBone >= 0)
-                boneMatrix *= animator.GetBoneMatrix(time, mBone.parentBone, billboard);
+            {
+	            boneMatrix *= animator.GetBoneMatrix(time, this.mBone.parentBone, billboard);
+            }
 
-            matrix = boneMatrix;
+	        matrix = boneMatrix;
         }
     }
 }

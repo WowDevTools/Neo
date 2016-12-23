@@ -91,9 +91,11 @@ namespace Neo.IO.Files.Models.Wotlk
         public override WmoMaterial GetMaterial(int index)
         {
             if (index >= mMaterials.Count)
-                throw new IndexOutOfRangeException();
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return mMaterials[index];
+	        return mMaterials[index];
         }
 
         public override bool Load(string fileName)
@@ -104,9 +106,11 @@ namespace Neo.IO.Files.Models.Wotlk
             using (var file = FileManager.Instance.Provider.OpenFile(fileName))
             {
                 if (file == null)
-                    throw new ArgumentException("WMO not found: " + fileName);
+                {
+	                throw new ArgumentException("WMO not found: " + fileName);
+                }
 
-                var reader = new BinaryReader(file);
+	            var reader = new BinaryReader(file);
 
                 try
                 {
@@ -189,15 +193,35 @@ namespace Neo.IO.Files.Models.Wotlk
                     var gmin = group.MinPosition;
                     var gmax = group.MaxPosition;
 
-                    if (gmin.X < minPos.X) minPos.X = gmin.X;
-                    if (gmin.Y < minPos.Y) minPos.Y = gmin.Y;
-                    if (gmin.Z < minPos.Z) minPos.Z = gmin.Z;
-                    if (gmax.X > maxPos.X) maxPos.X = gmax.X;
-                    if (gmax.Y > maxPos.Y) maxPos.Y = gmax.Y;
-                    if (gmax.Z > maxPos.Z) maxPos.Z = gmax.Z;
+                    if (gmin.X < minPos.X)
+                    {
+	                    minPos.X = gmin.X;
+                    }
+	                if (gmin.Y < minPos.Y)
+	                {
+		                minPos.Y = gmin.Y;
+	                }
+	                if (gmin.Z < minPos.Z)
+	                {
+		                minPos.Z = gmin.Z;
+	                }
+	                if (gmax.X > maxPos.X)
+	                {
+		                maxPos.X = gmax.X;
+	                }
+	                if (gmax.Y > maxPos.Y)
+	                {
+		                maxPos.Y = gmax.Y;
+	                }
+	                if (gmax.Z > maxPos.Z)
+	                {
+		                maxPos.Z = gmax.Z;
+	                }
                 }
                 else
-                    return false;
+                {
+	                return false;
+                }
             }
 
 
@@ -258,7 +282,9 @@ namespace Neo.IO.Files.Models.Wotlk
                     curBytes.Clear();
                 }
                 else
-                    curBytes.Add(b);
+                {
+	                curBytes.Add(b);
+                }
             }
         }
     }

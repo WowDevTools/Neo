@@ -22,100 +22,128 @@ namespace Neo.UI.Dialogs
         {
             var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.Handle_BrowserSelectionChanged(AssetTreeView.SelectedItem as AssetBrowserDirectory);
+	        viewModel.Handle_BrowserSelectionChanged(AssetTreeView.SelectedItem as AssetBrowserDirectory);
         }
 
         private void HideUnknownFiles_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            var cb = sender as CheckBox;
+	        var cb = sender as CheckBox;
             if (cb == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.HideUnknownFiles = cb.IsChecked ?? false;
+	        viewModel.HideUnknownFiles = cb.IsChecked ?? false;
         }
 
         private void ShowTextures_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            var cb = sender as CheckBox;
+	        var cb = sender as CheckBox;
             if (cb == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.ShowTextures = cb.IsChecked ?? false;
+	        viewModel.ShowTextures = cb.IsChecked ?? false;
         }
 
         private void ShowModels_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            var cb = sender as CheckBox;
+	        var cb = sender as CheckBox;
             if (cb == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.ShowModels = cb.IsChecked ?? false;
+	        viewModel.ShowModels = cb.IsChecked ?? false;
         }
 
         private void SpecularTextures_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            var cb = sender as CheckBox;
+	        var cb = sender as CheckBox;
             if (cb == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.ShowSpecularTextures = cb.IsChecked ?? false;
+	        viewModel.ShowSpecularTextures = cb.IsChecked ?? false;
         }
 
         private void FileBox_ItemSelected(object sender, RoutedEventArgs e)
         {
             if (SelectedFilesListView.SelectedItem == null)
-                return;
+            {
+	            return;
+            }
 
-            var viewModel = DataContext as AssetBrowserViewModel;
+	        var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.Handle_FileClicked(SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement);
+	        viewModel.Handle_FileClicked(SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement);
         }
 
         private void ExportSelected_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.HandleExportSelectedFile();
+	        viewModel.HandleExportSelectedFile();
         }
 
         private void ExportFolder_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.HandleExportSelectedFolder();
+	        viewModel.HandleExportSelectedFolder();
         }
 
         private void ImportFile_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = DataContext as AssetBrowserViewModel;
             if (viewModel == null)
-                return;
+            {
+	            return;
+            }
 
-            viewModel.HandleImportFile();
+	        viewModel.HandleImportFile();
         }
     }
 }

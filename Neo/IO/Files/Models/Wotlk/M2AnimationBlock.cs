@@ -33,31 +33,43 @@ namespace Neo.IO.Files.Models.Wotlk
         public TDest GetValue(int timeline, uint time, uint length)
         {
             if (timeline >= mTimestamps.Length || timeline >= mValues.Length)
-                return mDefaultValue;
+            {
+	            return this.mDefaultValue;
+            }
 
-            var tl = mTimestamps[timeline];
+	        var tl = mTimestamps[timeline];
             var values = mValues[timeline];
 
             if (tl.Length == 0 || values.Length == 0)
-                return mDefaultValue;
+            {
+	            return this.mDefaultValue;
+            }
 
-            if (mHasGlobalSequence && mGlobalSequence > 0)
-                time %= mGlobalSequence;
-            else
+	        if (mHasGlobalSequence && mGlobalSequence > 0)
+	        {
+		        time %= this.mGlobalSequence;
+	        }
+	        else
             {
                 var ltime = tl[tl.Length - 1];
                 if (ltime != 0)
-                    time %= ltime;
+                {
+	                time %= ltime;
+                }
             }
 
             var maxIndex = Math.Min(tl.Length, values.Length);
             if (maxIndex == 1)
-                return Interpolator.Interpolate(ref values[0]);
+            {
+	            return Interpolator.Interpolate(ref values[0]);
+            }
 
-            if (time == tl[maxIndex - 1])
-                return Interpolator.Interpolate(ref values[maxIndex - 1]);
+	        if (time == tl[maxIndex - 1])
+	        {
+		        return Interpolator.Interpolate(ref values[maxIndex - 1]);
+	        }
 
-            if (time >= tl[maxIndex - 1])
+	        if (time >= tl[maxIndex - 1])
             {
                 var te = tl[0] + length;
                 var ts = tl[maxIndex - 1];
@@ -66,29 +78,39 @@ namespace Neo.IO.Files.Models.Wotlk
             }
 
             if (time <= tl[0])
-                return Interpolator.Interpolate(ref values[0]);
+            {
+	            return Interpolator.Interpolate(ref values[0]);
+            }
 
-            return InterpolateValue(time, timeline);
+	        return InterpolateValue(time, timeline);
         }
 
         public TDest GetValueDefaultLength(int timeline, uint timeFull)
         {
             if (timeline >= mTimestamps.Length || timeline >= mValues.Length)
-                return mDefaultValue;
+            {
+	            return this.mDefaultValue;
+            }
 
-            var tl = mTimestamps[timeline];
+	        var tl = mTimestamps[timeline];
             var values = mValues[timeline];
 
             if (tl.Length == 0 || values.Length == 0)
-                return mDefaultValue;
+            {
+	            return this.mDefaultValue;
+            }
 
-            if (mHasGlobalSequence && mGlobalSequence > 0)
-                timeFull %= mGlobalSequence;
-            else
+	        if (mHasGlobalSequence && mGlobalSequence > 0)
+	        {
+		        timeFull %= this.mGlobalSequence;
+	        }
+	        else
             {
                 var ltime = tl[tl.Length - 1];
                 if (ltime != 0)
-                    timeFull %= ltime;
+                {
+	                timeFull %= ltime;
+                }
             }
 
             return InterpolateValue(timeFull, timeline);
@@ -117,9 +139,11 @@ namespace Neo.IO.Files.Models.Wotlk
             }
 
             if (!found)
-                return Interpolator.Interpolate(ref values[istart]);
+            {
+	            return Interpolator.Interpolate(ref values[istart]);
+            }
 
-            var ts = tl[istart];
+	        var ts = tl[istart];
             var te = tl[iend];
 
             if (ts > te)
@@ -130,11 +154,15 @@ namespace Neo.IO.Files.Models.Wotlk
             }
 
             if (ts > time)
-                ts = time;
-            if (te < time)
-                te = time;
+            {
+	            ts = time;
+            }
+	        if (te < time)
+	        {
+		        te = time;
+	        }
 
-            var fac = (time - ts) / (float)(te - ts);
+	        var fac = (time - ts) / (float)(te - ts);
             return Interpolator.Interpolate(fac, ref values[istart], ref values[iend]);
         }
 

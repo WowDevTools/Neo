@@ -72,11 +72,15 @@ namespace Neo.UI.Models
         private IEnumerable<AssetBrowserFile> GetFiles()
         {
             if (!(mEntry is DirectoryEntry) && mFiles != null)
-                return mFiles;
+            {
+	            return this.mFiles;
+            }
 
-            if (mEntry is FileEntry)
-                mFiles = new AssetBrowserFile[0];
-            else
+	        if (mEntry is FileEntry)
+	        {
+		        this.mFiles = new AssetBrowserFile[0];
+	        }
+	        else
             {
                 mFiles = mEntry.Children.Values.OfType<FileEntry>()
                     .OrderBy(f => f.Name).Select(f => new AssetBrowserFile(mModel, f, this));
@@ -88,18 +92,24 @@ namespace Neo.UI.Models
         private IEnumerable<AssetBrowserDirectory> GetDirectories()
         {
             if(mDirectories != null)
-                return mDirectories;
-            
-            // TODO: AssetBrowserViewModel should offer filters
-            if (mEntry is FileEntry)
-                mDirectories = new AssetBrowserDirectory[0];
-            else
-                mDirectories = mEntry.Children.Values.OfType<DirectoryEntry>()
-                    .Where(d => d.Children.Count > 0)
-                    .OrderBy(d => d.Name)
-                    .Select(d => new AssetBrowserDirectory(mModel, d, this));
+            {
+	            return this.mDirectories;
+            }
 
-            return mDirectories;
+	        // TODO: AssetBrowserViewModel should offer filters
+            if (mEntry is FileEntry)
+            {
+	            this.mDirectories = new AssetBrowserDirectory[0];
+            }
+            else
+            {
+	            this.mDirectories = this.mEntry.Children.Values.OfType<DirectoryEntry>()
+		            .Where(d => d.Children.Count > 0)
+		            .OrderBy(d => d.Name)
+		            .Select(d => new AssetBrowserDirectory(this.mModel, d, this));
+            }
+
+	        return mDirectories;
         }
     }
 }

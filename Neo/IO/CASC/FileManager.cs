@@ -97,7 +97,9 @@ namespace Neo.IO.CASC
                 IO.FileManager.Instance.FileListing = new FileListing();
 
                 if (LoadComplete != null)
-                    LoadComplete();
+                {
+	                LoadComplete();
+                }
             });
         }
 
@@ -106,30 +108,40 @@ namespace Neo.IO.CASC
             using (var strm = IO.FileManager.Instance.GetExistingFile(path))
             {
                 if (strm != null)
-                    return true;
+                {
+	                return true;
+                }
             }
 
             var hash = mHashProvider.Compute(path);
             List<RootEntry> roots;
             if (mRootData.TryGetValue(hash, out roots) == false)
-                return false;
+            {
+	            return false;
+            }
 
-            foreach (var root in roots)
+	        foreach (var root in roots)
             {
                 EncodingEntry enc;
                 if (mEncodingData.TryGetValue(root.Md5, out enc) == false)
-                    continue;
+                {
+	                continue;
+                }
 
-                if (enc.Keys.Length == 0)
-                    continue;
+	            if (enc.Keys.Length == 0)
+	            {
+		            continue;
+	            }
 
-                IndexEntry indexKey;
+	            IndexEntry indexKey;
                 var found = enc.Keys.Any(key => mIndexData.TryGetValue(new Binary(key.ToArray().Take(9).ToArray()), out indexKey));
 
                 if (found == false)
-                    continue;
+                {
+	                continue;
+                }
 
-                return true;
+	            return true;
             }
 
             return false;
@@ -141,31 +153,41 @@ namespace Neo.IO.CASC
             {
                 var existing = IO.FileManager.Instance.GetExistingFile(path);
                 if (existing != null)
-                    return existing;
+                {
+	                return existing;
+                }
 
-                var hash = mHashProvider.Compute(path);
+	            var hash = mHashProvider.Compute(path);
                 List<RootEntry> roots;
                 if (mRootData.TryGetValue(hash, out roots) == false)
-                    return null;
+                {
+	                return null;
+                }
 
-                foreach (var root in roots)
+	            foreach (var root in roots)
                 {
                     EncodingEntry enc;
                     if (mEncodingData.TryGetValue(root.Md5, out enc) == false)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    if (enc.Keys.Length == 0)
-                        continue;
+	                if (enc.Keys.Length == 0)
+	                {
+		                continue;
+	                }
 
-                    IndexEntry indexKey = null;
+	                IndexEntry indexKey = null;
                     var found =
                         enc.Keys.Any(
                             key => mIndexData.TryGetValue(new Binary(key.ToArray().Take(9).ToArray()), out indexKey));
 
                     if (found == false)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var strm = GetDataStream(indexKey.Index);
+	                var strm = GetDataStream(indexKey.Index);
                     lock (strm)
                     {
                         using (var reader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
@@ -187,17 +209,24 @@ namespace Neo.IO.CASC
         private void InitConfigs()
         {
             using (var buildStrm = new StreamReader(File.OpenRead(Path.Combine(mDataDir, "..\\..\\.build.info"))))
-                mBuildInfo.Load(buildStrm);
+            {
+	            this.mBuildInfo.Load(buildStrm);
+            }
 
-            var buildKeys = mBuildInfo["Build Key"];
+	        var buildKeys = mBuildInfo["Build Key"];
             var buildKey = buildKeys.FirstOrDefault();
-            if (buildKey == default(string)) throw new InvalidOperationException(".build.info is missing a build key");
+            if (buildKey == default(string))
+            {
+	            throw new InvalidOperationException(".build.info is missing a build key");
+            }
 
-            Log.Debug(string.Format("Using build key {0}", buildKey));
+	        Log.Debug(string.Format("Using build key {0}", buildKey));
 
             var buildCfgPath = Path.Combine(mDataDir, "..\\..\\Data\\config", buildKey.Substring(0, 2), buildKey.Substring(2, 2), buildKey);
             using (var buildCfg = new StreamReader(File.OpenRead(buildCfgPath)))
-                mBuildConfig.Load(buildCfg);
+            {
+	            this.mBuildConfig.Load(buildCfg);
+            }
         }
 
         private void LoadIndexFile(string file)
@@ -224,9 +253,11 @@ namespace Neo.IO.CASC
                         });
 
                         if (mIndexData.ContainsKey(key))
-                            continue;
+                        {
+	                        continue;
+                        }
 
-                        var idxLowBe = block.indexLowBE;
+	                    var idxLowBe = block.indexLowBE;
                         var idxHigh = block.indexHigh;
                         var idxLow = idxLowBe >> 24;
                         idxLow |= ((idxLowBe >> 16) & 0xFF) << 8;
@@ -247,20 +278,27 @@ namespace Neo.IO.CASC
         private void LoadRootFile()
         {
             var encKeyStr = mBuildConfig["root"].FirstOrDefault();
-            if (encKeyStr == null) throw new InvalidOperationException("Build config is missing root key");
-            var encodingKey = encKeyStr.HexToBytes().ToArray();
+            if (encKeyStr == null)
+            {
+	            throw new InvalidOperationException("Build config is missing root key");
+            }
+	        var encodingKey = encKeyStr.HexToBytes().ToArray();
 
             Log.Debug(string.Format("Root file key is {0}", encKeyStr));
 
             EncodingEntry encEntry;
             if (mEncodingData.TryGetValue(new Binary(encodingKey), out encEntry) == false || encEntry.Keys.Length == 0)
-                throw new InvalidOperationException("Unable to find encoding value for root file");
+            {
+	            throw new InvalidOperationException("Unable to find encoding value for root file");
+            }
 
-            IndexEntry entry;
+	        IndexEntry entry;
             if (mIndexData.TryGetValue(new Binary(encEntry.Keys[0].ToArray().Take(9).ToArray()), out entry) == false)
-                throw new InvalidOperationException("Unable to locate root file in index table");
+            {
+	            throw new InvalidOperationException("Unable to locate root file in index table");
+            }
 
-            var strm = GetDataStream(entry.Index);
+	        var strm = GetDataStream(entry.Index);
             using (var fileReader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
             {
                 fileReader.BaseStream.Position = entry.Offset + 30;
@@ -286,9 +324,13 @@ namespace Neo.IO.CASC
                                     })
                                 };
                                 if (mRootData.ContainsKey(e.hash))
-                                    mRootData[e.hash].Add(rootEntry);
+                                {
+	                                this.mRootData[e.hash].Add(rootEntry);
+                                }
                                 else
-                                    mRootData.Add(e.hash, new List<RootEntry>(20) {rootEntry});
+                                {
+	                                this.mRootData.Add(e.hash, new List<RootEntry>(20) {rootEntry});
+                                }
                             }
                         }
                     }
@@ -303,15 +345,20 @@ namespace Neo.IO.CASC
         private void LoadEncodingFile()
         {
             var encodingKeyStr = mBuildConfig["encoding"].ElementAtOrDefault(1);
-            if (encodingKeyStr == null) throw new InvalidOperationException("Build config is missing encoding key");
+            if (encodingKeyStr == null)
+            {
+	            throw new InvalidOperationException("Build config is missing encoding key");
+            }
 
-            Log.Debug(string.Format("Encoding file key is {0}", encodingKeyStr));
+	        Log.Debug(string.Format("Encoding file key is {0}", encodingKeyStr));
 
             var encodingKey = new Binary(encodingKeyStr.HexToBytes().Take(9).ToArray());
             if (mIndexData.ContainsKey(encodingKey) == false)
-                throw new InvalidOperationException("Encoding file not found");
+            {
+	            throw new InvalidOperationException("Encoding file not found");
+            }
 
-            var entry = mIndexData[encodingKey];
+	        var entry = mIndexData[encodingKey];
             var strm = GetDataStream(entry.Index);
             using (var fileReader = new BinaryReader(strm.Stream, Encoding.UTF8, true))
             {
@@ -377,9 +424,11 @@ namespace Neo.IO.CASC
             {
                 DataStream ret;
                 if (mDataStreams.TryGetValue(index, out ret))
-                    return ret;
+                {
+	                return ret;
+                }
 
-                var path = Path.Combine(mDataDir, "data." + index.ToString("D3"));
+	            var path = Path.Combine(mDataDir, "data." + index.ToString("D3"));
                 ret = new DataStream(path);
                 mDataStreams.Add(index, ret);
                 return ret;
@@ -389,9 +438,11 @@ namespace Neo.IO.CASC
         private static MemoryStream BlteGetData(BinaryReader reader, long size, long uncompressedSize)
         {
             if (reader.ReadUInt32() != 0x45544C42)
-                throw new InvalidOperationException("Invalid file in archive. Invalid BLTE header");
+            {
+	            throw new InvalidOperationException("Invalid file in archive. Invalid BLTE header");
+            }
 
-            var sizeFrameHeader = reader.ReadUInt32Be();
+	        var sizeFrameHeader = reader.ReadUInt32Be();
             uint numChunks;
             var totalSize = 0L;
             if (sizeFrameHeader == 0)
@@ -402,16 +453,20 @@ namespace Neo.IO.CASC
             else
             {
                 if (reader.ReadByte() != 0x0F)
-                    throw new InvalidOperationException("Unknown error in BLTE: unk1 != 0x0F. This is not good im told.");
+                {
+	                throw new InvalidOperationException("Unknown error in BLTE: unk1 != 0x0F. This is not good im told.");
+                }
 
-                var sizes = reader.ReadBytes(3);
+	            var sizes = reader.ReadBytes(3);
                 numChunks = (uint)((sizes[0] << 16) | (sizes[1] >> 8) | sizes[2]);
             }
 
             if (numChunks == 0)
-                return new MemoryStream();
+            {
+	            return new MemoryStream();
+            }
 
-            var chunks = new BlteChunk[numChunks];
+	        var chunks = new BlteChunk[numChunks];
             for (var i = 0; i < numChunks; ++i)
             {
                 var chunk = new BlteChunk();
@@ -478,7 +533,9 @@ namespace Neo.IO.CASC
                                         var read = strm.Read(data, idx, (int) numRemain);
                                         numRemain -= read;
                                         if (read == 0)
-                                            break;
+                                        {
+	                                        break;
+                                        }
                                     }
                                 }
                             }
@@ -493,9 +550,11 @@ namespace Neo.IO.CASC
         private static MemoryStream BlteGetData(BinaryReader reader, long size)
         {
             if (reader.ReadUInt32() != 0x45544C42)
-                throw new InvalidOperationException("Invalid file in archive. Invalid BLTE header");
+            {
+	            throw new InvalidOperationException("Invalid file in archive. Invalid BLTE header");
+            }
 
-            var sizeFrameHeader = reader.ReadUInt32Be();
+	        var sizeFrameHeader = reader.ReadUInt32Be();
             uint numChunks;
             var totalSize = 0L;
             if(sizeFrameHeader == 0)
@@ -506,16 +565,20 @@ namespace Neo.IO.CASC
             else
             {
                 if (reader.ReadByte() != 0x0F)
-                    throw new InvalidOperationException("Unknown error in BLTE: unk1 != 0x0F. This is not good im told.");
+                {
+	                throw new InvalidOperationException("Unknown error in BLTE: unk1 != 0x0F. This is not good im told.");
+                }
 
-                var sizes = reader.ReadBytes(3);
+	            var sizes = reader.ReadBytes(3);
                 numChunks = (uint) ((sizes[0] << 16) | (sizes[1] >> 8) | sizes[2]);
             }
 
             if (numChunks == 0)
-                return new MemoryStream();
+            {
+	            return new MemoryStream();
+            }
 
-            var chunks = new BlteChunk[numChunks];
+	        var chunks = new BlteChunk[numChunks];
             for(var i = 0; i < numChunks; ++i)
             {
                 var chunk = new BlteChunk();

@@ -72,9 +72,11 @@ namespace Neo.UI.Components
             var file = ModelFactory.Instance.CreateM2(model);
             file.DisplayOptions.TextureVariation = variation;
             if (file.Load() == false)
-                return;
+            {
+	            return;
+            }
 
-            mRenderer = new M2Renderer(file);
+	        mRenderer = new M2Renderer(file);
             SetModelCameraParameters(file);
         }
 
@@ -82,38 +84,54 @@ namespace Neo.UI.Components
         {
             var displayInfo = DbcStorage.CreatureDisplayInfo.GetRowById(entry);
             if (displayInfo == null)
-                return;
+            {
+	            return;
+            }
 
-            var modelId = displayInfo.GetInt32(1);
+	        var modelId = displayInfo.GetInt32(1);
             var modelData = DbcStorage.CreatureModelData.GetRowById(modelId);
             if (modelData == null)
-                return;
+            {
+	            return;
+            }
 
-            var modelPath = string.Empty;
+	        var modelPath = string.Empty;
             if (FileManager.Instance.Version <= FileDataVersion.Warlords)
             {
                 var fileDataId = modelData.GetInt32(2);
                 var modelPathEntry = DbcStorage.FileData.GetRowById(fileDataId);
                 if (modelPathEntry != null)
-                    modelPath = Path.Combine(modelPathEntry.GetString(2), modelPathEntry.GetString(1));
+                {
+	                modelPath = Path.Combine(modelPathEntry.GetString(2), modelPathEntry.GetString(1));
+                }
             }
             else
-                modelPath = modelData.GetString(2);
+            {
+	            modelPath = modelData.GetString(2);
+            }
 
-            if (string.IsNullOrEmpty(modelPath))
-                return;
+	        if (string.IsNullOrEmpty(modelPath))
+	        {
+		        return;
+	        }
 
-            if (modelPath.ToUpperInvariant().EndsWith(".MDX"))
-                modelPath = Path.ChangeExtension(modelPath, ".m2");
+	        if (modelPath.ToUpperInvariant().EndsWith(".MDX"))
+	        {
+		        modelPath = Path.ChangeExtension(modelPath, ".m2");
+	        }
 
-            if (FileManager.Instance.Provider.Exists(modelPath) == false)
-                return;
+	        if (FileManager.Instance.Provider.Exists(modelPath) == false)
+	        {
+		        return;
+	        }
 
-            var file = ModelFactory.Instance.CreateM2(modelPath);
+	        var file = ModelFactory.Instance.CreateM2(modelPath);
             try
             {
                 if (file.Load() == false)
-                    return;
+                {
+	                return;
+                }
             }
             catch (Exception)
             {
@@ -157,12 +175,16 @@ namespace Neo.UI.Components
                     foreach (int anim in values)
                     {
                         if (anim >= file.AnimationLookup.Length)
-                            continue;
+                        {
+	                        continue;
+                        }
 
-                        if (file.AnimationLookup[anim] < 0)
-                            continue;
+	                    if (file.AnimationLookup[anim] < 0)
+	                    {
+		                    continue;
+	                    }
 
-                        comboBox1.Items.Add(new AnimationIndexEntry
+	                    comboBox1.Items.Add(new AnimationIndexEntry
                         {
                             AnimationIndex = anim,
                             Name = Enum.GetName(typeof(AnimationType), anim)
@@ -174,9 +196,11 @@ namespace Neo.UI.Components
                     foreach (int anim in values)
                     {
                         if (Array.IndexOf(file.AnimationIds, (ushort)anim) == -1)
-                            continue;
+                        {
+	                        continue;
+                        }
 
-                        comboBox1.Items.Add(new AnimationIndexEntry
+	                    comboBox1.Items.Add(new AnimationIndexEntry
                         {
                             AnimationIndex = anim,
                             Name = Enum.GetName(typeof(AnimationType), anim)
@@ -208,8 +232,11 @@ namespace Neo.UI.Components
 
         private string GetSkinName(string root, IDataStorageRecord displayInfo, int index)
         {
-            if (displayInfo == null) throw new ArgumentNullException("displayInfo");
-            var skinString = displayInfo.GetString(6 + index);
+            if (displayInfo == null)
+            {
+	            throw new ArgumentNullException("displayInfo");
+            }
+	        var skinString = displayInfo.GetString(6 + index);
             return string.IsNullOrEmpty(skinString)
                 ? "default_texture"
                 : string.Format("{0}\\{1}.blp", root, skinString);
@@ -228,12 +255,16 @@ namespace Neo.UI.Components
         {
             base.OnLoad(e);
             if (Site != null && Site.DesignMode)
-                return;
+            {
+	            return;
+            }
 
-            if (WorldFrame.Instance == null || WorldFrame.Instance.GraphicsContext == null)
-                return;
+	        if (WorldFrame.Instance == null || WorldFrame.Instance.GraphicsContext == null)
+	        {
+		        return;
+	        }
 
-            mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
+	        mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
             mMatrixBuffer = new UniformBuffer(WorldFrame.Instance.GraphicsContext);
 
             mCamera = new PerspectiveCamera();
@@ -273,13 +304,18 @@ namespace Neo.UI.Components
             };
 
             if (mResolveTexture != null)
-                mResolveTexture.Dispose();
+            {
+	            this.mResolveTexture.Dispose();
+            }
 
-            mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            if (mMapTexture != null) mMapTexture.Dispose();
+            if (mMapTexture != null)
+            {
+	            this.mMapTexture.Dispose();
+            }
 
-            texDesc.CpuAccessFlags = CpuAccessFlags.Read;
+	        texDesc.CpuAccessFlags = CpuAccessFlags.Read;
             texDesc.Usage = ResourceUsage.Staging;
             mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
@@ -296,9 +332,13 @@ namespace Neo.UI.Components
         {
             mCamControl.Update(mCamera, false);
             if (WorldFrame.Instance.Dispatcher.InvokeRequired)
-                WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
+            {
+	            WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
+            }
             else
-                OnRenderModel();
+            {
+	            OnRenderModel();
+            }
         }
 
         void ViewChanged(Camera cam, Matrix4 matView)
@@ -314,9 +354,11 @@ namespace Neo.UI.Components
         unsafe void OnRenderModel()
         {
             if (mRenderer == null)
-                return;
+            {
+	            return;
+            }
 
-            mTarget.Clear();
+	        mTarget.Clear();
             mTarget.Apply();
 
             var ctx = WorldFrame.Instance.GraphicsContext;
@@ -346,9 +388,11 @@ namespace Neo.UI.Components
 
             bmp.UnlockBits(bmpd);
             if (mPaintBitmap != null)
-                mPaintBitmap.Dispose();
+            {
+	            this.mPaintBitmap.Dispose();
+            }
 
-            mPaintBitmap = bmp;
+	        mPaintBitmap = bmp;
             ctx.Context.UnmapSubresource(mMapTexture, 0);
             Invalidate();
         }
@@ -371,21 +415,27 @@ namespace Neo.UI.Components
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (mRenderer == null)
-                return;
+            {
+	            return;
+            }
 
-            var item = comboBox1.SelectedItem as AnimationIndexEntry;
+	        var item = comboBox1.SelectedItem as AnimationIndexEntry;
             if (item == null)
-                return;
+            {
+	            return;
+            }
 
-            mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)item.AnimationIndex);
+	        mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)item.AnimationIndex);
         }
 
         private void comboBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
-                return;
+            {
+	            return;
+            }
 
-            e.Handled = true;
+	        e.Handled = true;
         }
 
         private void nudVariation_ValueChanged(object sender, EventArgs e)

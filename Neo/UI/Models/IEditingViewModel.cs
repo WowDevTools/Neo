@@ -17,9 +17,11 @@ namespace Neo.UI.Models
         public IEditingViewModel(IEditingWidget widget)
         {
             if (EditorWindowController.Instance != null)
-                EditorWindowController.Instance.IEditingModel = this;
+            {
+	            EditorWindowController.Instance.IEditingModel = this;
+            }
 
-            mWidget = widget;
+	        mWidget = widget;
         }
 
         public void SwitchWidgets(int widget)

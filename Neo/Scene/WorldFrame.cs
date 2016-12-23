@@ -59,9 +59,11 @@ namespace Neo.Scene
             set
             {
                 if (mMainCamera.LeftHanded != value)
-                    CamControl.InvertX = !CamControl.InvertX;
+                {
+	                this.CamControl.InvertX = !this.CamControl.InvertX;
+                }
 
-                mMainCamera.LeftHanded = value;
+	            mMainCamera.LeftHanded = value;
                 mMainCamera.Update();
             }
         }
@@ -111,9 +113,11 @@ namespace Neo.Scene
         public void ClearSelection()
         {
             if (mSelectedBoundingBox != null)
-                BoundingBoxDrawManager.RemoveDrawableBox(mSelectedBoundingBox);
+            {
+	            this.BoundingBoxDrawManager.RemoveDrawableBox(this.mSelectedBoundingBox);
+            }
 
-            ModelEditManager.Instance.SelectedModel = null;
+	        ModelEditManager.Instance.SelectedModel = null;
         }
 
         public void UpdateBrush(float innerRadius, float outerRadius)
@@ -126,9 +130,11 @@ namespace Neo.Scene
         public void OnResize(int width, int height)
         {
             if (width == 0 || height == 0)
-                return;
+            {
+	            return;
+            }
 
-            mMainCamera.SetAspect((float) width / height);
+	        mMainCamera.SetAspect((float) width / height);
         }
 
         public void UpdatePosition(Vector3 position)
@@ -196,9 +202,11 @@ namespace Neo.Scene
             CamControl.PositionChanged += MapManager.UpdatePosition;
 
             if (!LeftHandedCamera)
-                CamControl.InvertY = false;
+            {
+	            this.CamControl.InvertY = false;
+            }
 
-            window.MouseDown += OnRenderWindowMouseDown;
+	        window.MouseDown += OnRenderWindowMouseDown;
         }
 
         public void OnEnterWorld(Vector3 position)
@@ -242,12 +250,16 @@ namespace Neo.Scene
             MapManager.OnFrame(ActiveCamera);
 
             if (!HideWMO)
-                WmoManager.OnFrame(ActiveCamera);
+            {
+	            this.WmoManager.OnFrame(this.ActiveCamera);
+            }
 
-            if (!HideM2)
-                M2Manager.OnFrame(ActiveCamera);
+	        if (!HideM2)
+	        {
+		        this.M2Manager.OnFrame(this.ActiveCamera);
+	        }
 
-            WorldTextManager.OnFrame(ActiveCamera);
+	        WorldTextManager.OnFrame(ActiveCamera);
             BoundingBoxDrawManager.OnFrame();
         }
 
@@ -288,7 +300,9 @@ namespace Neo.Scene
         public void UpdateSelectedBoundingBox()
         {
             if(mSelectedBoundingBox != null && mSelectedInstance != null)
-                mSelectedBoundingBox.UpdateBoundingBox(mSelectedInstance.InstanceCorners);
+            {
+	            this.mSelectedBoundingBox.UpdateBoundingBox(this.mSelectedInstance.InstanceCorners);
+            }
         }
 
         private void UpdateBrushTime(TimeSpan frameTime)
@@ -333,9 +347,11 @@ namespace Neo.Scene
         private void ViewChanged(Camera camera, Matrix4 matView)
         {
             if (camera != ActiveCamera)
-                return;
+            {
+	            return;
+            }
 
-            mGlobalBufferStore.matView = matView;
+	        mGlobalBufferStore.matView = matView;
             mGlobalBufferChanged = true;
 
             M2Manager.ViewChanged();
@@ -346,7 +362,9 @@ namespace Neo.Scene
         private void ProjectionChanged(Camera camera, Matrix4 matProj)
         {
             if (camera != ActiveCamera)
-                return;
+            {
+	            return;
+            }
 
 	        // TODO: Get these values someplace else
             // var vp = GraphicsContext.Viewport;
@@ -355,9 +373,11 @@ namespace Neo.Scene
 
             var perspectiveCamera = camera as PerspectiveCamera;
             if (perspectiveCamera != null)
-                mGlobalBufferStore.fogParams.Z = perspectiveCamera.FarClip;
+            {
+	            this.mGlobalBufferStore.fogParams.Z = perspectiveCamera.FarClip;
+            }
 
-            mGlobalBufferChanged = true;
+	        mGlobalBufferChanged = true;
             M2Manager.ViewChanged();
         }
 
@@ -392,21 +412,29 @@ namespace Neo.Scene
             {
                 IModelInstance selected = null;
                 if (intersection.M2Hit)
-                    selected = intersection.M2Instance;
+                {
+	                selected = intersection.M2Instance;
+                }
                 else if (intersection.WmoHit)
-                    selected = intersection.WmoInstance;
+                {
+	                selected = intersection.WmoInstance;
+                }
 
-                if (selected != mSelectedInstance)
+	            if (selected != mSelectedInstance)
                 {
                     if(mSelectedBoundingBox != null)
-                        BoundingBoxDrawManager.RemoveDrawableBox(mSelectedBoundingBox);
+                    {
+	                    this.BoundingBoxDrawManager.RemoveDrawableBox(this.mSelectedBoundingBox);
+                    }
 
-                    mSelectedBoundingBox = null;
+	                mSelectedBoundingBox = null;
 
                     if (mSelectedInstance != null)
-                        mSelectedInstance.DestroyModelNameplate();
+                    {
+	                    this.mSelectedInstance.DestroyModelNameplate();
+                    }
 
-                    if (ModelEditManager.Instance.IsCopying && selected != ModelEditManager.Instance.SelectedModel)
+	                if (ModelEditManager.Instance.IsCopying && selected != ModelEditManager.Instance.SelectedModel)
                     {
                         selected = ModelEditManager.Instance.SelectedModel;
                         mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);

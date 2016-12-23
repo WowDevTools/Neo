@@ -101,33 +101,44 @@ namespace Neo.IO.Files.Models
                     Vector3.Dot(ref e1, ref p, out det);
 
                     if (Math.Abs(det) < 1e-4)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var invDet = 1.0f / det;
+	                var invDet = 1.0f / det;
                     Vector3.Subtract(ref orig, ref Vertices[i0].position, out T);
                     float u;
                     Vector3.Dot(ref T, ref p, out u);
                     u *= invDet;
 
                     if (u < 0 || u > 1)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    Vector3.Cross(ref T, ref e1, out q);
+	                Vector3.Cross(ref T, ref e1, out q);
                     float v;
                     Vector3.Dot(ref dir, ref q, out v);
                     v *= invDet;
                     if (v < 0 || (u + v) > 1)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    float t;
+	                float t;
                     Vector3.Dot(ref e2, ref q, out t);
                     t *= invDet;
 
-                    if (t < 1e-4) continue;
+                    if (t < 1e-4)
+                    {
+	                    continue;
+                    }
 
-                    hasHit = true;
+	                hasHit = true;
                     if (t < distance)
-                        distance = t;
+                    {
+	                    distance = t;
+                    }
                 }
             }
 

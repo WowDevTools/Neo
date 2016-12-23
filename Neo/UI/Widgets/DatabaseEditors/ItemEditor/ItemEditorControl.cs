@@ -31,7 +31,10 @@ namespace Neo.UI.Dialog
 
                 var ctl = (this.Control as ItemEditorControl).TabControl as TabControl;
                 EnableDesignMode(ctl, "TabControl");
-                foreach (TabPage page in ctl.TabPages) EnableDesignMode(page, page.Name);
+                foreach (TabPage page in ctl.TabPages)
+                {
+	                EnableDesignMode(page, page.Name);
+                }
             }
         }
 
@@ -382,9 +385,11 @@ namespace Neo.UI.Dialog
         private long makeFlagOrBitmask(CheckedListBox list, Type e)
         {
             if (!e.IsEnum)
-                return 0;
+            {
+	            return 0;
+            }
 
-            long myFlags = 0x0;
+	        long myFlags = 0x0;
 
             foreach (Object item in list.CheckedItems)
             {
@@ -394,7 +399,9 @@ namespace Neo.UI.Dialog
             if(list == this.AllowableClass || list == this.AllowableRace)
             {
                 if (myFlags == 0)
-                    myFlags = -1;
+                {
+	                myFlags = -1;
+                }
             }
 
             return myFlags;
@@ -403,9 +410,11 @@ namespace Neo.UI.Dialog
         private void checkFlagOrBitmask(CheckedListBox list, Type e, long value)
         {
             if (!e.IsEnum)
-                return;
+            {
+	            return;
+            }
 
-            foreach (int i in list.CheckedIndices)
+	        foreach (int i in list.CheckedIndices)
             {
                 list.SetItemCheckState(i, CheckState.Unchecked);
             }

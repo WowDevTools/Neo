@@ -42,10 +42,14 @@ namespace Neo.IO.CASC
                     else
                     {
                         if (tokens.Length != valuesOrdered.Count)
-                            throw new IOException("Invalid format of Config file");
+                        {
+	                        throw new IOException("Invalid format of Config file");
+                        }
 
-                        for (var i = 0; i < tokens.Length; ++i)
-                            valuesOrdered[i].Add(tokens[i]);
+	                    for (var i = 0; i < tokens.Length; ++i)
+	                    {
+		                    valuesOrdered[i].Add(tokens[i]);
+	                    }
                     }
                 }
             }

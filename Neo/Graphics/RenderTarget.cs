@@ -32,7 +32,9 @@ namespace Neo.Graphics
         private void SettingsChanging(object sender, System.Configuration.SettingChangingEventArgs e)
         {
             if (e.SettingName == "AssetRenderBackgroundColor")
-                backgroundcolor = ConvertColor((System.Drawing.Color)e.NewValue);
+            {
+	            this.backgroundcolor = this.ConvertColor((System.Drawing.Color)e.NewValue);
+            }
         }
 
         private void Dispose(bool disposing)
@@ -113,20 +115,30 @@ namespace Neo.Graphics
 		        //mContext.Context.OutputMerger.SetRenderTargets(mOldDepthView, mOldRenderTarget);
 	        }
 
-            if (mOldDepthView != null) mOldDepthView.Dispose();
-            if (mOldRenderTarget != null) mOldRenderTarget.Dispose();
+            if (mOldDepthView != null)
+            {
+	            this.mOldDepthView.Dispose();
+            }
+	        if (mOldRenderTarget != null)
+	        {
+		        this.mOldRenderTarget.Dispose();
+	        }
         }
 
         // ReSharper disable once FunctionComplexityOverflow
         public void Resize(int width, int height, bool bgra)
         {
             if (Texture != null)
-                Texture.Dispose();
+            {
+	            this.Texture.Dispose();
+            }
 
-            if (Native != null)
-                Native.Dispose();
+	        if (Native != null)
+	        {
+		        this.Native.Dispose();
+	        }
 
-            var texDesc = new Texture2DDescription
+	        var texDesc = new Texture2DDescription
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.RenderTarget,
@@ -153,12 +165,16 @@ namespace Neo.Graphics
             Native = new RenderTargetView(mContext.Device, Texture, rtvd);
 
             if (mDepthTexture != null)
-                mDepthTexture.Dispose();
+            {
+	            this.mDepthTexture.Dispose();
+            }
 
-            if (mDepthView != null)
-                mDepthView.Dispose();
+	        if (mDepthView != null)
+	        {
+		        this.mDepthView.Dispose();
+	        }
 
-            texDesc = new Texture2DDescription
+	        texDesc = new Texture2DDescription
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.DepthStencil,

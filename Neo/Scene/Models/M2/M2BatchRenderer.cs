@@ -76,7 +76,9 @@ namespace Neo.Scene.Models.M2
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
                     if (ib != null)
-                        ib.Dispose();
+                    {
+	                    ib.Dispose();
+                    }
                 });
 
                 mInstanceBuffer = null;
@@ -86,7 +88,7 @@ namespace Neo.Scene.Models.M2
             mActiveInstances = null;
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -98,11 +100,15 @@ namespace Neo.Scene.Models.M2
 
             // TODO: Get rid of this switch
             if (FileManager.Instance.Version == FileDataVersion.Lichking)
-                gMesh.InitLayout(gNoBlendProgram);
+            {
+	            gMesh.InitLayout(gNoBlendProgram);
+            }
             else
-                gMesh.InitLayout(gCustomProgram);
+            {
+	            gMesh.InitLayout(gCustomProgram);
+            }
 
-            gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
+	        gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(2, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(3, gSamplerWrapBoth);
@@ -114,9 +120,11 @@ namespace Neo.Scene.Models.M2
         {
             UpdateVisibleInstances(renderer);
             if (mInstanceCount == 0)
-                return;
+            {
+	            return;
+            }
 
-            gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
+	        gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
             gMesh.UpdateInstanceBuffer(mInstanceBuffer);
             gMesh.Program.SetVertexUniformBuffer(1, renderer.AnimBuffer);
@@ -125,9 +133,11 @@ namespace Neo.Scene.Models.M2
             {
                 // This renderer is only for opaque pass
                 if (pass.BlendMode != 0 && pass.BlendMode != 1)
-                    continue;
+                {
+	                continue;
+                }
 
-                // TODO: Since this isn't choosing among static programs anymore, cache a different way e.g. (comparison func)
+	            // TODO: Since this isn't choosing among static programs anymore, cache a different way e.g. (comparison func)
                 var ctx = WorldFrame.Instance.GraphicsContext;
                 gCustomProgram.SetVertexShader(ctx.M2Shaders.GetVertexShader_Instanced(pass.VertexShaderType));
                 gCustomProgram.SetFragmentShader(ctx.M2Shaders.GetPixelShader(pass.PixelShaderType));
@@ -146,19 +156,30 @@ namespace Neo.Scene.Models.M2
                 // These are per texture
                 var alphaValues = new float[] { 1, 1, 1, 1 };
                 for (var i = 0; i < pass.OpCount; ++i)
-                    alphaValues[i] = renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex + i);
+                {
+	                alphaValues[i] = renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex + i);
+                }
 
-                var uvAnimMatrix1 = Matrix4.Identity;
+	            var uvAnimMatrix1 = Matrix4.Identity;
                 var uvAnimMatrix2 = Matrix4.Identity;
                 var uvAnimMatrix3 = Matrix4.Identity;
                 var uvAnimMatrix4 = Matrix4.Identity;
 
                 renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 0, out uvAnimMatrix1);
-                if (pass.OpCount >= 2) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
-                if (pass.OpCount >= 3) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
-                if (pass.OpCount >= 4) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
+                if (pass.OpCount >= 2)
+                {
+	                renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
+                }
+	            if (pass.OpCount >= 3)
+	            {
+		            renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
+	            }
+	            if (pass.OpCount >= 4)
+	            {
+		            renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
+	            }
 
-                gPerPassBuffer.BufferData(new PerModelPassBufferContent
+	            gPerPassBuffer.BufferData(new PerModelPassBufferContent
                 {
                     uvAnimMatrix1 = uvAnimMatrix1,
                     uvAnimMatrix2 = uvAnimMatrix2,
@@ -211,9 +232,11 @@ namespace Neo.Scene.Models.M2
         {
             UpdateVisibleInstances(renderer);
             if (mInstanceCount == 0)
-                return;
+            {
+	            return;
+            }
 
-            gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
+	        gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
             gMesh.UpdateInstanceBuffer(mInstanceBuffer);
             gMesh.Program.SetVertexUniformBuffer(1, renderer.AnimBuffer);
@@ -222,9 +245,11 @@ namespace Neo.Scene.Models.M2
             {
                 // This renderer is only for opaque pass
                 if (pass.BlendMode != 0 && pass.BlendMode != 1)
-                    continue;
+                {
+	                continue;
+                }
 
-                var program = pass.BlendMode == 0 ? gNoBlendProgram : gMaskBlendProgram;
+	            var program = pass.BlendMode == 0 ? gNoBlendProgram : gMaskBlendProgram;
                 if (program != gMesh.Program)
                 {
                     gMesh.Program = program;
@@ -263,9 +288,11 @@ namespace Neo.Scene.Models.M2
             lock (renderer.VisibleInstances)
             {
                 if (mActiveInstances.Length < renderer.VisibleInstances.Count)
-                    mActiveInstances = new PerInstanceBufferContent[renderer.VisibleInstances.Count];
+                {
+	                this.mActiveInstances = new PerInstanceBufferContent[renderer.VisibleInstances.Count];
+                }
 
-                for (var i = 0; i < renderer.VisibleInstances.Count; ++i)
+	            for (var i = 0; i < renderer.VisibleInstances.Count; ++i)
                 {
                     mActiveInstances[i].matInstance = renderer.VisibleInstances[i].InstanceMatrix;
                     mActiveInstances[i].colorMod = renderer.VisibleInstances[i].HighlightColor;
@@ -273,7 +300,9 @@ namespace Neo.Scene.Models.M2
 
                 mInstanceCount = renderer.VisibleInstances.Count;
                 if (mInstanceCount == 0)
-                    return;
+                {
+	                return;
+                }
             }
 
             mInstanceBuffer.BufferData(mActiveInstances);

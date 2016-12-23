@@ -199,11 +199,20 @@ namespace Neo.Scene.Models.M2
                 var uvAnimMatrix4 = Matrix4.Identity;
 
                 animator.GetUvAnimMatrix(pass.TexAnimIndex + 0, out uvAnimMatrix1);
-                if (pass.OpCount >= 2) animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
-                if (pass.OpCount >= 3) animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
-                if (pass.OpCount >= 4) animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
+                if (pass.OpCount >= 2)
+                {
+	                animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
+                }
+	            if (pass.OpCount >= 3)
+	            {
+		            animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
+	            }
+	            if (pass.OpCount >= 4)
+	            {
+		            animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
+	            }
 
-                gPerPassBuffer.BufferData(new PerModelPassBuffer
+	            gPerPassBuffer.BufferData(new PerModelPassBuffer
                 {
                     uvAnimMatrix1 = uvAnimMatrix1,
                     uvAnimMatrix2 = uvAnimMatrix2,

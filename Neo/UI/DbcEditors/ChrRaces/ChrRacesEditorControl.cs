@@ -79,20 +79,30 @@ namespace Neo.UI.DbcEditors
             {
                 ++raceNbr;
                 if (entry.RaceNameNeutral.String != "0")
-                    lbMenu.Items.Add(entry.RaceNameNeutral.String);
+                {
+	                this.lbMenu.Items.Add(entry.RaceNameNeutral.String);
+                }
                 else
-                    lbMenu.Items.Add("" + raceNbr);
+                {
+	                this.lbMenu.Items.Add("" + this.raceNbr);
+                }
 
-                TabPage page = new TabPage();
+	            TabPage page = new TabPage();
                 if (entry.RaceNameNeutral.String != "0")
-                    page.Name = "" + entry.RaceId;
+                {
+	                page.Name = "" + entry.RaceId;
+                }
                 else
-                    page.Name = "" + raceNbr;
-                tbcEditor.TabPages.Add(page);
+                {
+	                page.Name = "" + this.raceNbr;
+                }
+	            tbcEditor.TabPages.Add(page);
                 FillTab(page,(int)entry.RaceId);
 
                 if (entry.RaceId > startRaceNbr)
-                    startRaceNbr = (int)entry.RaceId;
+                {
+	                this.startRaceNbr = (int)entry.RaceId;
+                }
             }
 
             lbMenu.Size = new Size(150, (raceNbr*14 > 342) ? 342 : raceNbr * 14);
@@ -157,10 +167,14 @@ namespace Neo.UI.DbcEditors
                 {
                     ComboBox box = new ComboBox();
                     if (raceId > 0)
-                        box.Text = raceInformation[i];
+                    {
+	                    box.Text = raceInformation[i];
+                    }
                     else
-                        box.Text = "0";
-                    box.Size = new Size(121,21);
+                    {
+	                    box.Text = "0";
+                    }
+	                box.Size = new Size(121,21);
                     box.Location = new Point(7, 23);
                     page.Controls.Add(box);
                 }
@@ -170,10 +184,14 @@ namespace Neo.UI.DbcEditors
                     {
                         TextBox box = new TextBox();
                         if (raceId > 0)
-                            box.Text = raceInformation[i];
+                        {
+	                        box.Text = raceInformation[i];
+                        }
                         else
-                            box.Text = "0";
-                        box.Size = new Size(121, 21);
+                        {
+	                        box.Text = "0";
+                        }
+	                    box.Size = new Size(121, 21);
                         box.Location = new Point(7, 23+(i*44));
                         page.Controls.Add(box);
                     }
@@ -181,12 +199,18 @@ namespace Neo.UI.DbcEditors
                     {
                         TextBox box = new TextBox();
                         if (raceId > 0)
-                            box.Text = raceInformation[i];
+                        {
+	                        box.Text = raceInformation[i];
+                        }
                         else
-                            box.Text = "0";
-                        if (i == 13)
-                            box.KeyDown += new KeyEventHandler(tb_KeyDown);
-                        box.Size = new Size(121, 21);
+                        {
+	                        box.Text = "0";
+                        }
+	                    if (i == 13)
+	                    {
+		                    box.KeyDown += new KeyEventHandler(tb_KeyDown);
+	                    }
+	                    box.Size = new Size(121, 21);
                         box.Location = new Point(270, 23 + ((i-10) * 44));
                         page.Controls.Add(box);
                     }
@@ -349,7 +373,9 @@ namespace Neo.UI.DbcEditors
                 foreach (var entry in DbcStores.ChrRaces.Records)
                 {
                     if (entry.RaceId == uint.Parse(page.Name.ToString()))
-                        lbMenu.Items.Add("" + entry.RaceNameNeutral);
+                    {
+	                    this.lbMenu.Items.Add("" + entry.RaceNameNeutral);
+                    }
                 }
             }
         }
@@ -389,7 +415,9 @@ namespace Neo.UI.DbcEditors
                 foreach (var entry in DbcStores.ChrRaces.Records)
                 {
                     if (entry.RaceId == uint.Parse(page.Name.ToString()))
-                        lbMenu.Items.Add("" + entry.RaceNameNeutral);
+                    {
+	                    this.lbMenu.Items.Add("" + entry.RaceNameNeutral);
+                    }
                 }
             }
         }
@@ -403,7 +431,10 @@ namespace Neo.UI.DbcEditors
 
             var ctl = (this.Control as ChrRacesEditorControl).TabControl as TabControl;
             EnableDesignMode(ctl, "TabControl");
-            foreach (TabPage page in ctl.TabPages) EnableDesignMode(page, page.Name);
+            foreach (TabPage page in ctl.TabPages)
+            {
+	            EnableDesignMode(page, page.Name);
+            }
         }
     }
 }

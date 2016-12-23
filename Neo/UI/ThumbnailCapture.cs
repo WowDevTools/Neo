@@ -39,9 +39,11 @@ namespace Neo.UI
             ImgHeight = Height;
 
             if (WorldFrame.Instance == null || WorldFrame.Instance.GraphicsContext == null)
-                return;
+            {
+	            return;
+            }
 
-            mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
+	        mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
 	        mMatrixBuffer = new UniformBuffer();
 
             mCamera = new PerspectiveCamera();
@@ -69,13 +71,18 @@ namespace Neo.UI
             };
 
             if (mResolveTexture != null)
-                mResolveTexture.Dispose();
+            {
+	            this.mResolveTexture.Dispose();
+            }
 
-            mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            if (mMapTexture != null) mMapTexture.Dispose();
+            if (mMapTexture != null)
+            {
+	            this.mMapTexture.Dispose();
+            }
 
-            texDesc.CpuAccessFlags = CpuAccessFlags.Read;
+	        texDesc.CpuAccessFlags = CpuAccessFlags.Read;
             texDesc.Usage = ResourceUsage.Staging;
             mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
@@ -87,7 +94,9 @@ namespace Neo.UI
         {
             mModels.Enqueue(model); //Add to list
             if (!renderTimer.Enabled) //Check if it is ready to go
-                LoadModel();
+            {
+	            LoadModel();
+            }
         }
 
         void LoadModel()
@@ -99,9 +108,13 @@ namespace Neo.UI
             if (file.Load() == false)
             {
                 if (mModels.Count > 0)
-                    LoadModel();
+                {
+	                LoadModel();
+                }
                 else
-                    return;
+                {
+	                return;
+                }
             }
 
             mRenderer = new M2Renderer(file);
@@ -120,17 +133,23 @@ namespace Neo.UI
         void OnRenderTimerTick(object sender, EventArgs args)
         {
             if (WorldFrame.Instance.Dispatcher.InvokeRequired)
-                WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
+            {
+	            WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
+            }
             else
-                OnRenderModel();
+            {
+	            OnRenderModel();
+            }
         }
 
         unsafe void OnRenderModel()
         {
             if (mRenderer == null)
-                return;
+            {
+	            return;
+            }
 
-            mTarget.Clear();
+	        mTarget.Clear();
             mTarget.Apply();
 
             var ctx = WorldFrame.Instance.GraphicsContext;
@@ -175,7 +194,9 @@ namespace Neo.UI
 
                 ThumbnailCache.Cache(mRenderer.Model.FileName, thumbnail);
                 if (mModels.Count > 0) //More models so render next
-                    LoadModel();
+                {
+	                LoadModel();
+                }
             }
         }
 

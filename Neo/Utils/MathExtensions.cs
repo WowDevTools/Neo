@@ -26,21 +26,33 @@ namespace Neo.Utils
         public static void TakeMin(ref Vector3 v , ref Vector3 other)
         {
             if (v.X > other.X)
-                v.X = other.X;
-            if (v.Y > other.Y)
-                v.Y = other.Y;
-            if (v.Z > other.Z)
-                v.Z = other.Z;
+            {
+	            v.X = other.X;
+            }
+	        if (v.Y > other.Y)
+	        {
+		        v.Y = other.Y;
+	        }
+	        if (v.Z > other.Z)
+	        {
+		        v.Z = other.Z;
+	        }
         }
 
         public static void TakeMax(ref Vector3 v, ref Vector3 other)
         {
             if (v.X < other.X)
-                v.X = other.X;
-            if (v.Y < other.Y)
-                v.Y = other.Y;
-            if (v.Z < other.Z)
-                v.Z = other.Z;
+            {
+	            v.X = other.X;
+            }
+	        if (v.Y < other.Y)
+	        {
+		        v.Y = other.Y;
+	        }
+	        if (v.Z < other.Z)
+	        {
+		        v.Z = other.Z;
+	        }
         }
     }
 }

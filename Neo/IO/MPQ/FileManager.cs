@@ -41,16 +41,20 @@ namespace Neo.IO.MPQ
             {
                 var baseArchives = GetAllArchives(Path.Combine(dataPath, "Data"));
                 if (GetLocale(Path.Combine(dataPath, "Data")))
-                    baseArchives = baseArchives.Union(GetAllArchives(Path.Combine(dataPath, "Data", mLocale.ToString())));
+                {
+	                baseArchives = baseArchives.Union(GetAllArchives(Path.Combine(dataPath, "Data", this.mLocale.ToString())));
+                }
 
-                var archives = baseArchives.ToList();
+	            var archives = baseArchives.ToList();
                 archives.Sort(Compare);
                 Archives = archives;
 
                 IO.FileManager.Instance.FileListing = new FileListing(this);
 
                 if (LoadComplete != null)
-                    LoadComplete();
+                {
+	                LoadComplete();
+                }
             });
         }
 
@@ -65,8 +69,9 @@ namespace Neo.IO.MPQ
             using (var strm = IO.FileManager.Instance.GetExistingFile(path))
             {
                 if (strm != null)
-                    return true;
-
+                {
+	                return true;
+                }
             }
 
             return Archives.Any(archive => archive.Contains(path));
@@ -78,15 +83,21 @@ namespace Neo.IO.MPQ
             var name2 = (Path.GetFileName(a2.Name) ?? "").ToLowerInvariant();
 
             if (name1.Length == 0 && name2.Length != 0)
-                return 1;
+            {
+	            return 1;
+            }
 
-            if (name1.Length != 0 && name2.Length == 0)
-                return -1;
+	        if (name1.Length != 0 && name2.Length == 0)
+	        {
+		        return -1;
+	        }
 
-            if (name1.Length == 0)
-                return 0;
+	        if (name1.Length == 0)
+	        {
+		        return 0;
+	        }
 
-            var isLocale1 = name1.IndexOf("locale", StringComparison.Ordinal) >= 0 ||
+	        var isLocale1 = name1.IndexOf("locale", StringComparison.Ordinal) >= 0 ||
                             name1.IndexOf("speech", StringComparison.Ordinal) >= 0 ||
                             name1.IndexOf("base", StringComparison.Ordinal) >= 0;
 
@@ -95,51 +106,73 @@ namespace Neo.IO.MPQ
                             name2.IndexOf("base", StringComparison.Ordinal) >= 0;
 
             if (isLocale1 == false && isLocale2)
-                return -1;
-            if (isLocale2 == false && isLocale1)
-                return 1;
+            {
+	            return -1;
+            }
+	        if (isLocale2 == false && isLocale1)
+	        {
+		        return 1;
+	        }
 
-            if(isLocale1)
+	        if(isLocale1)
             {
                 if (name1.Contains("expansion") && name2.Contains("locale"))
-                    return -1;
-                if (name2.Contains("expansion") && name1.Contains("locale"))
-                    return 1;
+                {
+	                return -1;
+                }
+	            if (name2.Contains("expansion") && name1.Contains("locale"))
+	            {
+		            return 1;
+	            }
             }
 
             var isPatch1 = name1.Contains("patch");
             var isPatch2 = name2.Contains("patch");
 
             if (isPatch1 == false && isPatch2)
-                return 1;
-            if (isPatch2 == false && isPatch1)
-                return -1;
+            {
+	            return 1;
+            }
+	        if (isPatch2 == false && isPatch1)
+	        {
+		        return -1;
+	        }
 
-            if (isPatch1 == false)
-                return -string.Compare(name1, name2, StringComparison.Ordinal);
+	        if (isPatch1 == false)
+	        {
+		        return -string.Compare(name1, name2, StringComparison.Ordinal);
+	        }
 
-            var i1 = name1.IndexOf("patch", StringComparison.Ordinal);
+	        var i1 = name1.IndexOf("patch", StringComparison.Ordinal);
             var i2 = name2.IndexOf("patch", StringComparison.Ordinal);
 
             var patchNum1 = name1.Substring(i1 + 6);
             var patchNum2 = name2.Substring(i2 + 6);
             // no number -> for example patch.MPQ
             if (name1[i1 + 5] == '.' || patchNum1.Length == 0)
-                patchNum1 = "0.MPQ";
+            {
+	            patchNum1 = "0.MPQ";
+            }
 
-            if (name2[i2 + 5] == '.' || patchNum2.Length == 0)
-                patchNum2 = "0.MPQ";
+	        if (name2[i2 + 5] == '.' || patchNum2.Length == 0)
+	        {
+		        patchNum2 = "0.MPQ";
+	        }
 
-            var isLocalePatch1 = char.IsDigit(patchNum1[0]) == false;
+	        var isLocalePatch1 = char.IsDigit(patchNum1[0]) == false;
             var isLocalePatch2 = char.IsDigit(patchNum2[0]) == false;
 
             if (isLocalePatch1 && !isLocalePatch2)
-                return 1;
+            {
+	            return 1;
+            }
 
-            if (isLocalePatch2 && !isLocalePatch1)
-                return -1;
+	        if (isLocalePatch2 && !isLocalePatch1)
+	        {
+		        return -1;
+	        }
 
-            if (isLocalePatch1)
+	        if (isLocalePatch1)
             {
                 var extIndex1 = patchNum1.LastIndexOf('.');
                 var extIndex2 = patchNum2.LastIndexOf('.');
@@ -148,9 +181,13 @@ namespace Neo.IO.MPQ
                 var hasNum2 = extIndex2 >= 1 && char.IsDigit(patchNum2[extIndex2 - 1]);
 
                 if (hasNum1 && !hasNum2)
-                    return -1;
-                if (hasNum2 && !hasNum1)
-                    return 1;
+                {
+	                return -1;
+                }
+	            if (hasNum2 && !hasNum1)
+	            {
+		            return 1;
+	            }
             }
 
             return -string.Compare(patchNum1, patchNum2, StringComparison.OrdinalIgnoreCase);
@@ -164,9 +201,11 @@ namespace Neo.IO.MPQ
             {
                 var dir = Path.Combine(dataPath, value.ToString());
                 if (!Directory.Exists(dir))
-                    continue;
+                {
+	                continue;
+                }
 
-                mLocale = (Locale) value;
+	            mLocale = (Locale) value;
                 return true;
             }
 

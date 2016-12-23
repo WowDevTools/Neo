@@ -40,7 +40,9 @@ namespace Neo.UI.Components
         private void OnClosing(object sender, CancelEventArgs e)
         {
             if (!ShouldClose)
-                e.Cancel = true;
+            {
+	            e.Cancel = true;
+            }
         }
     }
 }

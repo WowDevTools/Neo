@@ -31,27 +31,33 @@ namespace Neo.UI.Dialogs
         {
             var model = DataContext as ImportFileViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.BrowseForFile();
+	        model.BrowseForFile();
         }
 
         private void ImportTexture_Button(object sender, RoutedEventArgs e)
         {
             var model = DataContext as ImportFileViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleFileImport();
+	        model.HandleFileImport();
         }
 
         private void Handle_TargetSelectedButton(object sender, RoutedEventArgs e)
         {
             var model = DataContext as ImportFileViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleFileImportSettings();
+	        model.HandleFileImportSettings();
         }
     }
 }

@@ -14,9 +14,11 @@ namespace Neo.Editing
         public bool CreateNew(string mapName)
         {
             if (Exists())
-                return false;
+            {
+	            return false;
+            }
 
-            return false;
+	        return false;
         }
 
         private bool Exists()
@@ -26,7 +28,9 @@ namespace Neo.Editing
                 var row = DbcStorage.Map.GetRow(i);
                 var internalName = row.GetString(MapFormatGuess.FieldMapName);
                 if (internalName.ToLowerInvariant().Equals(mInternalName.ToLowerInvariant()))
-                    return true;
+                {
+	                return true;
+                }
             }
 
             return false;

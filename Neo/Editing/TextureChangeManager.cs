@@ -55,9 +55,11 @@ namespace Neo.Editing
         {
             bool inverted;
             if (CheckRequirements(out inverted) == false)
-                return;
+            {
+	            return;
+            }
 
-            var curPos = EditManager.Instance.MousePosition;
+	        var curPos = EditManager.Instance.MousePosition;
             var innerRadius = EditManager.Instance.InnerRadius;
             var outerRadius = EditManager.Instance.OuterRadius;
 
@@ -141,9 +143,11 @@ namespace Neo.Editing
             isInverted = false;
 
             if (EditManager.Instance.IsTerrainHovered == false)
-                return false;
+            {
+	            return false;
+            }
 
-            var bindings = Settings.KeyBindings.Instance;
+	        var bindings = Settings.KeyBindings.Instance;
 
 	        MouseState mouseState = Mouse.GetState();
 	        if (!mouseState.IsButtonDown(MouseButton.Left))

@@ -12,10 +12,12 @@ namespace Neo.IO.Files.Texture
         public static unsafe void Write(Stream output, Bitmap image, Format format, bool hasMipMap = true)
         {
             if (hasMipMap && (IsPowerOfTwo(image.Width) == false || IsPowerOfTwo(image.Height) == false))
-                throw new ArgumentException(
-                    "Cannot save texture with Mipmaps when one of the dimensions is not a power of two");
+            {
+	            throw new ArgumentException(
+		            "Cannot save texture with Mipmaps when one of the dimensions is not a power of two");
+            }
 
-            switch (format)
+	        switch (format)
             {
                 case Format.BC1_UNorm:
                 case Format.BC2_UNorm:
@@ -95,7 +97,9 @@ namespace Neo.IO.Files.Texture
                 fixed (byte* ptr = data)
                 {
                     for(var i = 0; i < height; ++i)
-                    UnsafeNativeMethods.CopyMemory(ptr + i * width * 4, ((byte*) box.DataPointer.ToPointer()) + i * box.RowPitch, width * 4);
+                    {
+	                    UnsafeNativeMethods.CopyMemory(ptr + i * width * 4, ((byte*) box.DataPointer.ToPointer()) + i * box.RowPitch, width * 4);
+                    }
                 }
                 ctx.Context.UnmapSubresource(texture, layer);
                 eventObj.Set();
@@ -115,9 +119,11 @@ namespace Neo.IO.Files.Texture
                 PixelFormat.Format32bppArgb);
 
             fixed (byte* ptr = colors)
-                UnsafeNativeMethods.CopyMemory(ptr, (byte*) bmpd.Scan0.ToPointer(), colors.Length);
+            {
+	            UnsafeNativeMethods.CopyMemory(ptr, (byte*) bmpd.Scan0.ToPointer(), colors.Length);
+            }
 
-            var totalMips = 1;
+	        var totalMips = 1;
             if (withMips)
             {
                 var l2H = (int)Math.Log(bmp.Height, 2);
@@ -141,9 +147,12 @@ namespace Neo.IO.Files.Texture
                     Usage = ResourceUsage.Default
                 };
 
-                if(withMips) texDesc.BindFlags |= BindFlags.RenderTarget;
+                if(withMips)
+                {
+	                texDesc.BindFlags |= BindFlags.RenderTarget;
+                }
 
-                var gputex = new Texture2D(ctx.Device, texDesc);
+	            var gputex = new Texture2D(ctx.Device, texDesc);
                 ctx.Context.UpdateSubresource(colors, gputex, 0, 4 * bmp.Width);
 
                 if (withMips)
@@ -170,9 +179,11 @@ namespace Neo.IO.Files.Texture
 
                 tex = new Texture2D(ctx.Device, texDesc);
                 for(var i = 0; i < totalMips; ++i)
-                    ctx.Context.CopySubresourceRegion(gputex, i, null, tex, i);
+                {
+	                ctx.Context.CopySubresourceRegion(gputex, i, null, tex, i);
+                }
 
-                gputex.Dispose();
+	            gputex.Dispose();
 
                 eventObj.Set();
             }, eventObj);
@@ -235,7 +246,9 @@ namespace Neo.IO.Files.Texture
                 optionalWaitHandle.WaitOne();
             }
             else
-                action();
+            {
+	            action();
+            }
         }
     }
 }

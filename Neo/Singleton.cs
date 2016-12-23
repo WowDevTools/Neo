@@ -8,8 +8,11 @@ namespace Neo
         {
             get
             {
-                if (gInstance != null) return gInstance;
-                gInstance = new T();
+                if (gInstance != null)
+                {
+	                return gInstance;
+                }
+	            gInstance = new T();
                 return gInstance;
             }
         }

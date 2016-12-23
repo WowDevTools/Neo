@@ -25,9 +25,11 @@ namespace Neo.IO.Files.Models.Wotlk
             using (var strm = FileManager.Instance.Provider.OpenFile(mFileName))
             {
                 if (strm == null)
-                    return false;
+                {
+	                return false;
+                }
 
-                var reader = new BinaryReader(strm);
+	            var reader = new BinaryReader(strm);
                 mSkin = reader.Read<M2Skin>();
                 var indexLookup = ReadArrayOf<ushort>(reader, mSkin.ofsIndices, mSkin.nIndices);
                 var triangles = ReadArrayOf<ushort>(reader, mSkin.ofsTriangles, mSkin.nTriangles);
@@ -42,9 +44,11 @@ namespace Neo.IO.Files.Models.Wotlk
         private static T[] ReadArrayOf<T>(BinaryReader reader, int offset, int count) where T : struct
         {
             if (count == 0)
-                return new T[0];
+            {
+	            return new T[0];
+            }
 
-            reader.BaseStream.Position = offset;
+	        reader.BaseStream.Position = offset;
             return reader.ReadArray<T>(count);
         }
     }

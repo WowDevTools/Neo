@@ -55,15 +55,19 @@ namespace Neo.Dbc
                                 String value = null;
 
                                 if (currentRoot == null)
-                                    currentRoot = "ROOT";
+                                {
+	                                currentRoot = "ROOT";
+                                }
 
-                                sectionPair.Section = currentRoot;
+	                            sectionPair.Section = currentRoot;
                                 sectionPair.Key = keyPair[0];
 
                                 if (keyPair.Length > 1)
-                                    value = keyPair[1];
+                                {
+	                                value = keyPair[1];
+                                }
 
-                                _keyPairs.Add(sectionPair, value);
+	                            _keyPairs.Add(sectionPair, value);
                             }
                         }
 
@@ -78,12 +82,15 @@ namespace Neo.Dbc
                 finally
                 {
                     if (iniFile != null)
-                        iniFile.Close();
+                    {
+	                    iniFile.Close();
+                    }
                 }
             }
             else
-                throw new FileNotFoundException("Unable to locate " + iniPath);
-
+            {
+	            throw new FileNotFoundException("Unable to locate " + iniPath);
+            }
         }
 
         /// <summary>
@@ -111,7 +118,9 @@ namespace Neo.Dbc
             foreach (SectionPair pair in _keyPairs.Keys)
             {
                 if (pair.Section == sectionName.ToUpper())
-                    tmpArray.Add(pair.Key);
+                {
+	                tmpArray.Add(pair.Key);
+                }
             }
 
             return (String[])tmpArray.ToArray(typeof(String));
@@ -130,9 +139,11 @@ namespace Neo.Dbc
             sectionPair.Key = settingName.ToUpper();
 
             if (_keyPairs.ContainsKey(sectionPair))
-                _keyPairs.Remove(sectionPair);
+            {
+	            this._keyPairs.Remove(sectionPair);
+            }
 
-            _keyPairs.Add(sectionPair, settingValue);
+	        _keyPairs.Add(sectionPair, settingValue);
         }
 
         /// <summary>
@@ -157,7 +168,9 @@ namespace Neo.Dbc
             sectionPair.Key = settingName.ToUpper();
 
             if (_keyPairs.ContainsKey(sectionPair))
-                _keyPairs.Remove(sectionPair);
+            {
+	            this._keyPairs.Remove(sectionPair);
+            }
         }
 
         /// <summary>
@@ -173,7 +186,9 @@ namespace Neo.Dbc
             foreach (SectionPair sectionPair in _keyPairs.Keys)
             {
                 if (!sections.Contains(sectionPair.Section))
-                    sections.Add(sectionPair.Section);
+                {
+	                sections.Add(sectionPair.Section);
+                }
             }
 
             foreach (String section in sections)
@@ -187,9 +202,11 @@ namespace Neo.Dbc
                         tmpValue = (String)_keyPairs[sectionPair];
 
                         if (tmpValue != null)
-                            tmpValue = "=" + tmpValue;
+                        {
+	                        tmpValue = "=" + tmpValue;
+                        }
 
-                        strToSave += (sectionPair.Key + tmpValue + "\r\n");
+	                    strToSave += (sectionPair.Key + tmpValue + "\r\n");
                     }
                 }
 

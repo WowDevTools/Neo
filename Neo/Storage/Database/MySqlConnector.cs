@@ -22,9 +22,11 @@ namespace Neo.Storage.Database
         public void OpenConnection()
         {
             if (string.IsNullOrEmpty(MySqlServer) || string.IsNullOrEmpty(MySqlUser) || string.IsNullOrEmpty(MySqlDatabase))
-                throw new ArgumentException();
+            {
+	            throw new ArgumentException();
+            }
 
-            if (mMySqlConn.State != ConnectionState.Open)
+	        if (mMySqlConn.State != ConnectionState.Open)
             {
                 mMySqlConn.ConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", MySqlServer, MySqlUser, MySqlPassword, MySqlDatabase);
 
@@ -43,15 +45,19 @@ namespace Neo.Storage.Database
             }
 
             if (mMySqlConn.State != ConnectionState.Open)
-                throw new TimeoutException("Can't connect to the server.");
+            {
+	            throw new TimeoutException("Can't connect to the server.");
+            }
         }
 
         public void Configuration(string pMySqlServer, string pMySqlUser, string pMySqlPassword, string pMySqlDatabase)
         {
             if (string.IsNullOrEmpty(pMySqlServer) || string.IsNullOrEmpty(pMySqlUser) || string.IsNullOrEmpty(pMySqlDatabase))
-                throw new ArgumentException();
+            {
+	            throw new ArgumentException();
+            }
 
-            MySqlServer = pMySqlServer;
+	        MySqlServer = pMySqlServer;
             MySqlUser = pMySqlUser;
             MySqlPassword = pMySqlPassword;
             MySqlDatabase = pMySqlDatabase;
@@ -60,14 +66,18 @@ namespace Neo.Storage.Database
         public bool CheckConnection()
         {
             if (mMySqlConn.State == ConnectionState.Open)
-                return true;
-            return false;
+            {
+	            return true;
+            }
+	        return false;
         }
 
         public void CloseConnection()
         {
             if (mMySqlConn.State == ConnectionState.Open)
-                mMySqlConn.Close();
+            {
+	            this.mMySqlConn.Close();
+            }
         }
 
         public DataTable QueryToDataTable(string pQuery)

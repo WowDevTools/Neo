@@ -73,22 +73,28 @@ namespace Neo.Scene.Models.WMO
         {
             distance = float.MaxValue;
             if (globalRay.Intersects(ref BoundingBox) == false)
-                return false;
+            {
+	            return false;
+            }
 
-            WmoRootRender renderer;
+	        WmoRootRender renderer;
             if (mRenderer.TryGetTarget(out renderer) == false)
-                return false;
+            {
+	            return false;
+            }
 
-            var instRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
+	        var instRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
                 ref parameters.InverseProjection, ref mInverseInstanceMatrix);
 
             var hasHit = false;
             for (var i = 0; i < GroupBoxes.Length; ++i)
             {
                 if (globalRay.Intersects(ref GroupBoxes[i]) == false)
-                    continue;
+                {
+	                continue;
+                }
 
-                float dist;
+	            float dist;
                 if (renderer.Groups[i].Intersects(parameters, ref instRay, out dist) && dist < distance)
                 {
                     distance = dist;
@@ -121,9 +127,11 @@ namespace Neo.Scene.Models.WMO
         public void CreateModelNameplate()
         {
             if (mWorldModelName != null)
-                return;
+            {
+	            return;
+            }
 
-            mWorldModelName = new WorldText
+	        mWorldModelName = new WorldText
             {
                 Text = System.IO.Path.GetFileName(ModelRoot.FileName),
                 Scaling = 1.0f,
@@ -217,9 +225,11 @@ namespace Neo.Scene.Models.WMO
         public void DestroyModelNameplate()
         {
             if (mWorldModelName == null)
-                return;
+            {
+	            return;
+            }
 
-            WorldFrame.Instance.WorldTextManager.RemoveText(mWorldModelName);
+	        WorldFrame.Instance.WorldTextManager.RemoveText(mWorldModelName);
             mWorldModelName.Dispose();
             mWorldModelName = null;
         }
@@ -227,14 +237,18 @@ namespace Neo.Scene.Models.WMO
         private void UpdateModelNameplate()
         {
             if (mWorldModelName == null)
-                return;
+            {
+	            return;
+            }
 
-            Vector3 diff = BoundingBox.Maximum - BoundingBox.Minimum;
+	        Vector3 diff = BoundingBox.Maximum - BoundingBox.Minimum;
             mWorldModelName.Scaling = diff.Length / 60.0f;
             if (mWorldModelName.Scaling < 0.3f)
-                mWorldModelName.Scaling = 0.3f;
+            {
+	            this.mWorldModelName.Scaling = 0.3f;
+            }
 
-            var position = BoundingBox.Minimum + (diff * 0.5f);
+	        var position = BoundingBox.Minimum + (diff * 0.5f);
             position.Z = 1.5f + BoundingBox.Minimum.Z + (diff.Z * 1.08f);
             mWorldModelName.Position = position;
         }
@@ -242,9 +256,11 @@ namespace Neo.Scene.Models.WMO
         public Vector3 GetNamePlatePosition()
         {
             if (mWorldModelName == null)
-                return new Vector3(0.0f,0.0f,0.0f);
+            {
+	            return new Vector3(0.0f,0.0f,0.0f);
+            }
 
-            return mWorldModelName.Position;
+	        return mWorldModelName.Position;
         }
 
         public void Remove()

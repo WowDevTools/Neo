@@ -73,9 +73,11 @@ namespace Neo.Editing
                 logContext.Options |= (uint)ECTXOptionValues.CXO_SYSTEM;
 
                 if (logContext == null)
-                    return null;
+                {
+	                return null;
+                }
 
-                // Modify the digitizing region.
+	            // Modify the digitizing region.
                 logContext.Name = "WintabDN Event Data Context";
 
                 // output in a 10000 x 10000 grid
@@ -118,9 +120,11 @@ namespace Neo.Editing
         private void HandlePenMessage(Object sender_I, MessageReceivedEventArgs eventArgs_I)
         {
             if (m_wtData == null)
-                return;
+            {
+	            return;
+            }
 
-            try
+	        try
             {
                 uint pktID = (uint)eventArgs_I.Message.WParam;
                 WintabPacket pkt = m_wtData.GetDataPacket(pktID);

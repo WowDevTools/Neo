@@ -59,9 +59,11 @@ namespace Neo
         public FileLogSink()
         {
             if (Directory.Exists("Logs") == false)
-                Directory.CreateDirectory("Logs");
+            {
+	            Directory.CreateDirectory("Logs");
+            }
 
-            File.Create($"Log{Path.DirectorySeparatorChar}Log.txt").Close();
+	        File.Create($"Log{Path.DirectorySeparatorChar}Log.txt").Close();
         }
 
         public void AddMessage(LogLevel level, string title, string message)
@@ -92,25 +94,33 @@ namespace Neo
         private static void AddMessage(LogLevel level, string title, string message)
         {
             if ((int) level > (int) LogLevel)
-                return;
+            {
+	            return;
+            }
 
-            lock(Sinks)
+	        lock(Sinks)
             {
                 foreach (var sink in Sinks)
-                    sink.AddMessage(level, title, message);
+                {
+	                sink.AddMessage(level, title, message);
+                }
             }
         }
 
         public static void AddSink(ILogSink sink)
         {
             lock (Sinks)
-                Sinks.Add(sink);
+            {
+	            Sinks.Add(sink);
+            }
         }
 
         public static void RemoveSink(ILogSink sink)
         {
             lock (Sinks)
-                Sinks.Remove(sink);
+            {
+	            Sinks.Remove(sink);
+            }
         }
 
         public static void Debug(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)

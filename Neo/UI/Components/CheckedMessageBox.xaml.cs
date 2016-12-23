@@ -47,16 +47,20 @@ namespace Neo.UI.Components
             box.YesButton.Click += (sender, args) =>
             {
                 if(box.ToggleBox.IsChecked ?? false)
-                    SetMessageBoxToValue(tag, title, true);
-                box.mResult = true;
+                {
+	                SetMessageBoxToValue(tag, title, true);
+                }
+	            box.mResult = true;
                 box.Close();
             };
 
             box.NoButton.Click += (sender, args) =>
             {
                 if (box.ToggleBox.IsChecked ?? false)
-                    SetMessageBoxToValue(tag, title, false);
-                box.mResult = false;
+                {
+	                SetMessageBoxToValue(tag, title, false);
+                }
+	            box.mResult = false;
                 box.Close();
             };
 
@@ -72,9 +76,12 @@ namespace Neo.UI.Components
                 Registry.CurrentUser.CreateSubKey("Software\\Neo\\MessageBoxes\\States",
                     RegistryKeyPermissionCheck.ReadWriteSubTree);
 
-            if (regKey == null) return;
+            if (regKey == null)
+            {
+	            return;
+            }
 
-            regKey.SetValue("State_" + tag, result ? "true" : "false");
+	        regKey.SetValue("State_" + tag, result ? "true" : "false");
             regKey.SetValue("Desc_" + tag, title);
         }
     }

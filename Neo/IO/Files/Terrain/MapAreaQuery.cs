@@ -32,9 +32,11 @@ namespace Neo.IO.Files.Terrain
         public void AddResult(uint key, DataChunk chunk)
         {
             if (mResults.ContainsKey(key))
-                return;
+            {
+	            return;
+            }
 
-            mResults.Add(key, chunk);
+	        mResults.Add(key, chunk);
         }
     }
 }

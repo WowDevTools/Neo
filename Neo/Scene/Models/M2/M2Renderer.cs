@@ -42,8 +42,10 @@ namespace Neo.Scene.Models.M2
                 mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
                 Animator = ModelFactory.Instance.CreateAnimator(model);
                 if (Animator.SetAnimation(AnimationType.Stand) == false)
-                    Animator.SetAnimationByIndex(0);
-                StaticAnimationThread.Instance.AddAnimator(Animator);
+                {
+	                this.Animator.SetAnimationByIndex(0);
+                }
+	            StaticAnimationThread.Instance.AddAnimator(Animator);
             }
 
             mBatchRenderer = new M2BatchRenderer(model);
@@ -56,7 +58,9 @@ namespace Neo.Scene.Models.M2
             if (mIsSyncLoaded == false)
             {
                 if (!BeginSyncLoad())
-                    return;
+                {
+	                return;
+                }
             }
 
 	        if (mSkipRendering || Model.NeedsPerInstanceAnimation)
@@ -96,9 +100,11 @@ namespace Neo.Scene.Models.M2
             }
 
             if (mSkipRendering)
-                return;
+            {
+	            return;
+            }
 
-            // TODO: We *really* need to get rid of this!
+	        // TODO: We *really* need to get rid of this!
 	        if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
 	        {
 		        mSingleRenderer.OnFrame_Old(this, instance);
@@ -296,9 +302,11 @@ namespace Neo.Scene.Models.M2
                 lock (mFullInstances)
                 {
                     foreach (var inst in mFullInstances.Values)
-                        inst.Dispose();
+                    {
+	                    inst.Dispose();
+                    }
 
-                    mFullInstances.Clear();
+	                mFullInstances.Clear();
                     mFullInstances = null;
                 }
             }

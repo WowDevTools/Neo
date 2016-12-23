@@ -176,9 +176,11 @@ namespace Neo.Scene.Models.M2
                 Mesh.StartIndex = pass.StartIndex;
                 Mesh.IndexCount = pass.IndexCount;
                 for(var i = 0; i < pass.TextureIndices.Count; ++i)
-                    Mesh.Program.SetFragmentTexture(i, Textures[pass.TextureIndices[i]].Texture);
+                {
+	                Mesh.Program.SetFragmentTexture(i, this.Textures[pass.TextureIndices[i]].Texture);
+                }
 
-                Mesh.Draw();
+	            Mesh.Draw();
             }
         }
 

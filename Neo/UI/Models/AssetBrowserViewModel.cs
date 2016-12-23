@@ -49,7 +49,9 @@ namespace Neo.UI.Models
             EditorWindowController.Instance.AssetBrowserModel = this;
 
             if (ThumbnailCache.ThumnailAdded == null)
-                ThumbnailCache.ThumnailAdded += UpdateThumbnail;
+            {
+	            ThumbnailCache.ThumnailAdded += UpdateThumbnail;
+            }
         }
 
         public void HandleImportFile()
@@ -62,9 +64,11 @@ namespace Neo.UI.Models
         {
             var selected = mBrowser.SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement;
             if (selected == null)
-                return;
+            {
+	            return;
+            }
 
-            mBrowser.ExportFolderLink.IsEnabled = false;
+	        mBrowser.ExportFolderLink.IsEnabled = false;
             mBrowser.ExportOneFileLink.IsEnabled = false;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Hidden;
@@ -84,9 +88,11 @@ namespace Neo.UI.Models
         {
             var selected = mBrowser.AssetTreeView.SelectedItem as AssetBrowserDirectory;
             if (selected == null)
-                return;
+            {
+	            return;
+            }
 
-            mBrowser.ExportFolderLink.IsEnabled = false;
+	        mBrowser.ExportFolderLink.IsEnabled = false;
             mBrowser.ExportOneFileLink.IsEnabled = false;
             mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
             mBrowser.SelectedFilesListView.Visibility = Visibility.Hidden;
@@ -94,7 +100,9 @@ namespace Neo.UI.Models
             await Task.Factory.StartNew(() =>
             {
                 foreach (var child in selected.Files)
-                    FileManager.Instance.ExportFile(child.FullPath);
+                {
+	                FileManager.Instance.ExportFile(child.FullPath);
+                }
             });
 
             mBrowser.ExportFolderLink.IsEnabled = true;
@@ -143,9 +151,11 @@ namespace Neo.UI.Models
             mCurrentDirectory = newItem;
 
             if (newItem == null)
-                return;
+            {
+	            return;
+            }
 
-            mCurrentDirectory = newItem;
+	        mCurrentDirectory = newItem;
             UpdateItems(true);
         }
 
@@ -239,7 +249,9 @@ namespace Neo.UI.Models
                 );
 
                 foreach (var elem in toRemove)
-                    mCurFiles.Remove(elem);
+                {
+	                this.mCurFiles.Remove(elem);
+                }
             }
         }
 
@@ -260,27 +272,39 @@ namespace Neo.UI.Models
 
                 var ext = f.View.FileEntry.Extension.ToLowerInvariant();
                 if (ext.Contains("blp") && mShowTextures == false)
-                    return false;
+                {
+	                return false;
+                }
 
-                if (ext.Contains("m2") && mShowModels == false)
-                    return false;
+	            if (ext.Contains("m2") && mShowModels == false)
+	            {
+		            return false;
+	            }
 
-                if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp") && mShowSpecularTextures == false)
-                    return false;
+	            if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp") && mShowSpecularTextures == false)
+	            {
+		            return false;
+	            }
 
-                if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp") && mShowSpecularTextures == false)
-                    return false;
+	            if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp") && mShowSpecularTextures == false)
+	            {
+		            return false;
+	            }
 
-                if (!known.Contains(ext.TrimStart('.')) && mHideUnknown)
-                    return false;
+	            if (!known.Contains(ext.TrimStart('.')) && mHideUnknown)
+	            {
+		            return false;
+	            }
 
-                return true;
+	            return true;
             }).ToList();
 
             if (directoryChanged == false && mCurFiles.Count() == elements.Count())
-                return;
+            {
+	            return;
+            }
 
-            mFullElements = files;
+	        mFullElements = files;
 
             mCurFiles.Clear();
             foreach(var elem in elements)
@@ -288,8 +312,12 @@ namespace Neo.UI.Models
                 mCurFiles.Add(elem);
 
                 if (elem.View.FileEntry.Extension.Contains("m2"))
-                    if (!ThumbnailCache.IsCached(elem.View.FileEntry.FullPath))
-                        mThumbCapture.AddModel(elem.View.FileEntry.FullPath);
+                {
+	                if (!ThumbnailCache.IsCached(elem.View.FileEntry.FullPath))
+	                {
+		                this.mThumbCapture.AddModel(elem.View.FileEntry.FullPath);
+	                }
+                }
             }
         }
 
@@ -317,7 +345,10 @@ namespace Neo.UI.Models
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if (handler != null)
+            {
+	            handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

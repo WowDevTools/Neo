@@ -17,13 +17,17 @@ namespace Neo.IO.Files.Models
         {
             var wodModel = file as WoD.M2File;
             if (wodModel != null)
-                return new WoD.M2Animator(wodModel);
+            {
+	            return new WoD.M2Animator(wodModel);
+            }
 
-            var wotlkModel = file as Wotlk.M2File;
+	        var wotlkModel = file as Wotlk.M2File;
             if (wotlkModel != null)
-                return new Wotlk.M2Animator(wotlkModel);
+            {
+	            return new Wotlk.M2Animator(wotlkModel);
+            }
 
-            throw new NotImplementedException("Version not yet implemented for m2 animations");
+	        throw new NotImplementedException("Version not yet implemented for m2 animations");
         }
 
         public M2File CreateM2(string file)

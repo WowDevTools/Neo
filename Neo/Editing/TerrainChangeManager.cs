@@ -65,9 +65,11 @@ namespace Neo.Editing
         {
             bool inverted;
             if (CheckRequirements(out inverted) == false)
-                return;
+            {
+	            return;
+            }
 
-            var parameters = new TerrainChangeParameters() {
+	        var parameters = new TerrainChangeParameters() {
                 Algorithm = ChangeAlgorithm,
                 Center = EditManager.Instance.MousePosition,
                 InnerRadius = EditManager.Instance.InnerRadius,
@@ -88,9 +90,11 @@ namespace Neo.Editing
         {
             isInverted = false;
             if (EditManager.Instance.IsTerrainHovered == false)
-                return false;
+            {
+	            return false;
+            }
 
-            var bindings = Settings.KeyBindings.Instance;
+	        var bindings = Settings.KeyBindings.Instance;
 
 	        MouseState mouseState = Mouse.GetState();
             if (!mouseState.IsButtonDown(MouseButton.Left))

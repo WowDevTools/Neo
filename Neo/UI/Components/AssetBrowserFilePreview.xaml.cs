@@ -28,11 +28,17 @@ namespace Neo.UI.Components
         public void ReloadImage()
         {
             if (FileEntry.Extension == ".blp")
-                LoadImage(FileEntry);
+            {
+	            LoadImage(this.FileEntry);
+            }
             else if (FileEntry.Extension == ".m2")
-                PreviewImage.Source = WpfImageSource.FromGdiImage(ThumbnailCache.TryGetThumbnail(FileEntry.FullPath, Images.Page_Icon_48));
+            {
+	            this.PreviewImage.Source = WpfImageSource.FromGdiImage(ThumbnailCache.TryGetThumbnail(this.FileEntry.FullPath, Images.Page_Icon_48));
+            }
             else
-                PreviewImage.Source = PageImageSource;
+            {
+	            this.PreviewImage.Source = PageImageSource;
+            }
         }
 
         private void LoadImage(AssetBrowserFile file)

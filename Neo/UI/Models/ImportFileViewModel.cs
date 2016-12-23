@@ -50,15 +50,19 @@ namespace Neo.UI.Models
                 using (var img = Image.FromFile(sourceName) as Bitmap)
                 {
                     if (img == null)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    using (var output = FileManager.Instance.GetOutputStream(targetName))
+	                using (var output = FileManager.Instance.GetOutputStream(targetName))
                     {
                         var texType = mDialog.TextureTypeBox.SelectedIndex;
                         var format = Format.BC1_UNorm;
                         var hasMips = true;
                         if (texType == 1)
-                            format = Format.BC3_UNorm;
+                        {
+	                        format = Format.BC3_UNorm;
+                        }
                         else if (texType == 2)
                         {
                             format = Format.BC2_UNorm;
@@ -118,20 +122,28 @@ namespace Neo.UI.Models
             data[3] = Marshal.StringToBSTR("*.*");
 
             fixed (IntPtr* filters = data)
-                dlg.SetFileTypes(2, new IntPtr(filters));
+            {
+	            dlg.SetFileTypes(2, new IntPtr(filters));
+            }
 
-            for (var i = 0; i < 4; ++i)
-                Marshal.FreeBSTR(data[i]);
+	        for (var i = 0; i < 4; ++i)
+	        {
+		        Marshal.FreeBSTR(data[i]);
+	        }
 
-            if (dlg.Show(new WindowInteropHelper(mDialog).Handle) != 0)
-                return;
+	        if (dlg.Show(new WindowInteropHelper(mDialog).Handle) != 0)
+	        {
+		        return;
+	        }
 
-            IShellItem item;
+	        IShellItem item;
             dlg.GetResult(out item);
             if (item == null)
-                return;
+            {
+	            return;
+            }
 
-            var ptrOut = IntPtr.Zero;
+	        var ptrOut = IntPtr.Zero;
             try
             {
                 item.GetDisplayName(Sigdn.Filesyspath, out ptrOut);
@@ -145,7 +157,9 @@ namespace Neo.UI.Models
             finally
             {
                 if (ptrOut != IntPtr.Zero)
-                    Marshal.FreeCoTaskMem(ptrOut);
+                {
+	                Marshal.FreeCoTaskMem(ptrOut);
+                }
             }
 
             mDialog.TargetNamePanel.Visibility = Visibility.Visible;
@@ -158,9 +172,11 @@ namespace Neo.UI.Models
             var file = mDialog.PathTextBox.Text;
             var extension = Path.GetExtension(file);
             if(string.IsNullOrEmpty(extension))
-                return ImportType.NotSupported;
+            {
+	            return ImportType.NotSupported;
+            }
 
-            extension = extension.ToLowerInvariant();
+	        extension = extension.ToLowerInvariant();
 
             var imageExtensions = new[]
             {

@@ -78,12 +78,16 @@ namespace Neo.Scene.Models.WMO
         public void OnFrame()
         {
             if (mLoaded == false)
-                return;
+            {
+	            return;
+            }
 
-            if (Data.DisableRendering)
-                return;
+	        if (Data.DisableRendering)
+	        {
+		        return;
+	        }
 
-            Mesh.StartVertex = BaseVertex;
+	        Mesh.StartVertex = BaseVertex;
 
             foreach(var batch in mBatches)
             {
@@ -124,33 +128,44 @@ namespace Neo.Scene.Models.WMO
                     Vector3.Dot(ref e1, ref p, out det);
 
                     if (Math.Abs(det) < 1e-4)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var invDet = 1.0f / det;
+	                var invDet = 1.0f / det;
                     Vector3.Subtract(ref orig, ref Data.Vertices[i0].Position, out T);
                     float u;
                     Vector3.Dot(ref T, ref p, out u);
                     u *= invDet;
 
                     if (u < 0 || u > 1)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    Vector3.Cross(ref T, ref e1, out q);
+	                Vector3.Cross(ref T, ref e1, out q);
                     float v;
                     Vector3.Dot(ref dir, ref q, out v);
                     v *= invDet;
                     if (v < 0 || (u + v) > 1)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    float t;
+	                float t;
                     Vector3.Dot(ref e2, ref q, out t);
                     t *= invDet;
 
-                    if (t < 1e-4) continue;
+                    if (t < 1e-4)
+                    {
+	                    continue;
+                    }
 
-                    hasHit = true;
+	                hasHit = true;
                     if (t < distance)
-                        distance = t;
+                    {
+	                    distance = t;
+                    }
                 }
             }
 
@@ -164,11 +179,15 @@ namespace Neo.Scene.Models.WMO
             Mesh.UpdateBlendState((batch.Batch.BlendMode != 0) ? gAlphaBlendState : gNoBlendState);
             ShaderProgram newProgram;
             if(Data.IsIndoor)
-                newProgram = (batch.Batch.BlendMode != 0) ? gIndoorBlendProgram : gIndoorNoBlendProgram;
+            {
+	            newProgram = (batch.Batch.BlendMode != 0) ? gIndoorBlendProgram : gIndoorNoBlendProgram;
+            }
             else
-                newProgram = (batch.Batch.BlendMode != 0) ? gBlendProgram : gNoBlendProgram;
+            {
+	            newProgram = (batch.Batch.BlendMode != 0) ? gBlendProgram : gNoBlendProgram;
+            }
 
-            if(newProgram != Mesh.Program)
+	        if(newProgram != Mesh.Program)
             {
                 Mesh.Program = newProgram;
                 Mesh.Program.Bind();

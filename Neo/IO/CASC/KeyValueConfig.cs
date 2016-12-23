@@ -26,13 +26,17 @@ namespace Neo.IO.CASC
                 {
                     line = line.Trim();
                     if (line.StartsWith("#"))
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var tokens = line.Split('=');
+	                var tokens = line.Split('=');
                     if (tokens.Length != 2)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var values = tokens[1].Trim().Split(' ').Where(s => string.IsNullOrEmpty(s) == false);
+	                var values = tokens[1].Trim().Split(' ').Where(s => string.IsNullOrEmpty(s) == false);
                     mValues[tokens[0].Trim().ToUpperInvariant()] = values;
                 }
             }

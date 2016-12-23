@@ -40,7 +40,9 @@ namespace Neo.IO.Files.Sky.WoD
         {
             mLights = mLightCollection.GetLightsForMap(mapId);
             if (mLightCollection.HasZoneLights(mapId))
-                mZoneLights = mLightCollection.GetZoneLightsForMap(mapId);
+            {
+	            this.mZoneLights = this.mLightCollection.GetZoneLightsForMap(mapId);
+            }
             else
             {
                 mZoneLights = new List<ZoneLight>();
@@ -53,15 +55,21 @@ namespace Neo.IO.Files.Sky.WoD
             mLights.Sort((l1, l2) =>
             {
                 if (l1.IsGlobal && l2.IsGlobal)
-                    return 0;
+                {
+	                return 0;
+                }
 
-                if (l1.IsGlobal)
-                    return -1;
+	            if (l1.IsGlobal)
+	            {
+		            return -1;
+	            }
 
-                if (l2.IsGlobal)
-                    return 1;
+	            if (l2.IsGlobal)
+	            {
+		            return 1;
+	            }
 
-                return (l1.OuterRadius < l2.OuterRadius) ? -1 : 1;
+	            return (l1.OuterRadius < l2.OuterRadius) ? -1 : 1;
             });
         }
 
@@ -73,9 +81,11 @@ namespace Neo.IO.Files.Sky.WoD
 
                 var globalLights = new List<int>();
                 for (var i = 0; i < mWeights.Length; ++i)
-                    mWeights[i] = 0.0f;
+                {
+	                this.mWeights[i] = 0.0f;
+                }
 
-                for(var index = mLights.Count - 1; index >= 0; --index)
+	            for(var index = mLights.Count - 1; index >= 0; --index)
                 {
                     var light = mLights[index];
                     if(light.IsGlobal)
@@ -97,17 +107,23 @@ namespace Neo.IO.Files.Sky.WoD
                     {
                         mWeights[index] = 1.0f;
                         for (var j = index + 1; j < mWeights.Length; ++j)
-                            mWeights[j] = 0.0f;
+                        {
+	                        this.mWeights[j] = 0.0f;
+                        }
                     }
                     else if (diff <= outer)
                     {
                         var sat = (diff - inner) / (outer - inner);
                         mWeights[index] = 1.0f - sat;
                         for (var j = index + 1; j < mWeights.Length; ++j)
-                            mWeights[j] *= sat;
+                        {
+	                        this.mWeights[j] *= sat;
+                        }
                     }
                     else
-                        mWeights[index] = 0.0f;
+                    {
+	                    this.mWeights[index] = 0.0f;
+                    }
                 }
 
                 var totalW = mWeights.Sum();
@@ -118,23 +134,31 @@ namespace Neo.IO.Files.Sky.WoD
                 {
                     var zl = mZoneLights[i];
                     if (zl.GetDistance(ref mLastPosition2D) < 50.0f)
-                        partialLights.Add(i);
+                    {
+	                    partialLights.Add(i);
+                    }
                     else if (zl.IsInside(ref mLastPosition2D))
                     {
                         fullLight = i;
                         hasFullLight = true;
                     }
                     else
-                        mZoneWeights[i] = 0.0f;
+                    {
+	                    this.mZoneWeights[i] = 0.0f;
+                    }
                 }
 
                 if (hasFullLight)
-                    mZoneWeights[fullLight] = 1.0f;
+                {
+	                this.mZoneWeights[fullLight] = 1.0f;
+                }
 
-                for(var i = 0; i < mZoneLights.Count; ++i)
+	            for(var i = 0; i < mZoneLights.Count; ++i)
                 {
                     if (hasFullLight == false || (i != fullLight))
-                        mZoneWeights[i] = 0.0f;
+                    {
+	                    this.mZoneWeights[i] = 0.0f;
+                    }
                 }
 
                 foreach(var i in partialLights)
@@ -142,16 +166,26 @@ namespace Neo.IO.Files.Sky.WoD
                     var zl = mZoneLights[i];
                     var dist = zl.GetDistance(ref mLastPosition2D);
                     var inner = zl.IsInside(ref mLastPosition2D);
-                    if (inner) dist = 50 - dist;
-                    else dist += 50.0f;
+                    if (inner)
+                    {
+	                    dist = 50 - dist;
+                    }
+                    else
+                    {
+	                    dist += 50.0f;
+                    }
 
-                    var sat = dist / 100.0f;
+	                var sat = dist / 100.0f;
                     mZoneWeights[i] = 1.0f - sat;
                     for (var j = 0; j < i; ++j)
-                        mZoneWeights[j] *= sat;
+                    {
+	                    this.mZoneWeights[j] *= sat;
+                    }
 
-                    if (hasFullLight && fullLight > i)
-                        mZoneWeights[fullLight] *= sat;
+	                if (hasFullLight && fullLight > i)
+	                {
+		                this.mZoneWeights[fullLight] *= sat;
+	                }
                 }
 
                 var fac = 1.0f - totalW;
@@ -166,11 +200,15 @@ namespace Neo.IO.Files.Sky.WoD
                 {
                     var perGlobalW = remain / globalLights.Count;
                     foreach (var gl in globalLights)
-                        mWeights[gl] = perGlobalW;
+                    {
+	                    this.mWeights[gl] = perGlobalW;
+                    }
                 }
 
                 if (mZoneLights.Count > 0 && mWeights.Length == 0 && partialLights.Count == 0 && hasFullLight == false)
-                    mZoneWeights[0] = 1.0f;
+                {
+	                this.mZoneWeights[0] = 1.0f;
+                }
             }
 
             LoadColors();
@@ -186,9 +224,11 @@ namespace Neo.IO.Files.Sky.WoD
         public override void SyncUpdate()
         {
             if (mLights.Count == 0)
-                return;
+            {
+	            return;
+            }
 
-            if(mIsTextureDirty)
+	        if(mIsTextureDirty)
             {
 	            mIsTextureDirty = false;
 	            // TODO: Recreate texture from bitmap
@@ -196,9 +236,11 @@ namespace Neo.IO.Files.Sky.WoD
             }
 
             if (mIsDirty == false)
-                return;
+            {
+	            return;
+            }
 
-            lock(mColorLock)
+	        lock(mColorLock)
             {
                 mIsDirty = false;
             }
@@ -209,23 +251,31 @@ namespace Neo.IO.Files.Sky.WoD
             var time = Utils.TimeManager.Instance.GetTime();
             var ms = (int) (time.TotalMilliseconds * Properties.Settings.Default.DayNightScaling / 10.0f);
             if (Properties.Settings.Default.UseDayNightCycle == false)
-                ms = Properties.Settings.Default.DefaultDayTime;
+            {
+	            ms = Properties.Settings.Default.DefaultDayTime;
+            }
 
-            for (var i = 0; i < mColorValuesTemp.Length; ++i)
-                mColorValuesTemp[i] = new Vector3(1, 1, 1);
+	        for (var i = 0; i < mColorValuesTemp.Length; ++i)
+	        {
+		        this.mColorValuesTemp[i] = new Vector3(1, 1, 1);
+	        }
 
-            for (var i = 0; i < mFloatValuesTemp.Length; ++i)
-                mFloatValuesTemp[i] = 1.0f;
+	        for (var i = 0; i < mFloatValuesTemp.Length; ++i)
+	        {
+		        this.mFloatValuesTemp[i] = 1.0f;
+	        }
 
-            var curColors = new Vector3[(int) LightColor.MaxLightType];
+	        var curColors = new Vector3[(int) LightColor.MaxLightType];
             var curFloats = new float[(int) LightFloat.MaxLightFloat];
 
             for(var j = 0; j < mLights.Count && j < mWeights.Length; ++j)
             {
                 if (mWeights[j] <= 1e-5)
-                    continue;
+                {
+	                continue;
+                }
 
-                mLights[j].GetAllColorsForTime(ms, curColors);
+	            mLights[j].GetAllColorsForTime(ms, curColors);
                 mLights[j].GetAllFloatsForTime(ms, curFloats);
 
                 for (var i = 0; i < curColors.Length; ++i)
@@ -244,9 +294,11 @@ namespace Neo.IO.Files.Sky.WoD
             for (var j = 0; j < mZoneLights.Count && j < mZoneWeights.Length; ++j)
             {
                 if (mZoneWeights[j] <= 1e-5)
-                    continue;
+                {
+	                continue;
+                }
 
-                mZoneLights[j].Light.GetAllColorsForTime(ms, curColors);
+	            mZoneLights[j].Light.GetAllColorsForTime(ms, curColors);
                 mZoneLights[j].Light.GetAllFloatsForTime(ms, curFloats);
 
                 for (var i = 0; i < curColors.Length; ++i)
@@ -263,11 +315,15 @@ namespace Neo.IO.Files.Sky.WoD
             }
 
             for (var i = 0; i < mColorValuesTemp.Length; ++i)
-                mColorValuesTemp[i] -= new Vector3(1, 1, 1);
-            for (var i = 0; i < mFloatValuesTemp.Length; ++i)
-                mFloatValuesTemp[i] -= 1.0f;
+            {
+	            this.mColorValuesTemp[i] -= new Vector3(1, 1, 1);
+            }
+	        for (var i = 0; i < mFloatValuesTemp.Length; ++i)
+	        {
+		        this.mFloatValuesTemp[i] -= 1.0f;
+	        }
 
-            if(mWeights.Length == 0 && mZoneWeights.Length == 0)
+	        if(mWeights.Length == 0 && mZoneWeights.Length == 0)
             {
                 mColorValuesTemp[(int) LightColor.Top] = new Vector3(0.25f, 0.5f, 1.0f);
                 mColorValuesTemp[(uint) LightColor.Middle] = new Vector3(0.25f, 0.5f, 1.0f);
@@ -308,9 +364,11 @@ namespace Neo.IO.Files.Sky.WoD
             var fog = mColorValues[(int) LightColor.Fog];
 
             for (var i = 0; i < 80; ++i)
-                mSkyGraph[i] = ToRgbx(ref fog);
+            {
+	            this.mSkyGraph[i] = ToRgbx(ref fog);
+            }
 
-            for (var i = 80; i < 90; ++i)
+	        for (var i = 80; i < 90; ++i)
             {
                 var sat = (i - 80) / 10.0f;
                 var clr = fog + (horizon - fog) * sat;

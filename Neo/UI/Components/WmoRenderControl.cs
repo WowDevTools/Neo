@@ -53,9 +53,11 @@ namespace Neo.UI.Components
         {
             var root = ModelFactory.Instance.CreateWmo();
             if (root.Load(model) == false)
-                return;
+            {
+	            return;
+            }
 
-            var file = new WmoRootRender();
+	        var file = new WmoRootRender();
             file.OnAsyncLoad(root);
             mRender = new WmoBatchRender(file);
             mRender.AddInstance(1, Vector3.Zero, Vector3.Zero);
@@ -77,12 +79,16 @@ namespace Neo.UI.Components
         {
             base.OnLoad(e);
             if (Site != null && Site.DesignMode)
-                return;
+            {
+	            return;
+            }
 
-            if (WorldFrame.Instance == null || WorldFrame.Instance.GraphicsContext == null)
-                return;
+	        if (WorldFrame.Instance == null || WorldFrame.Instance.GraphicsContext == null)
+	        {
+		        return;
+	        }
 
-            mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
+	        mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
             mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
 
             mCamera = new PerspectiveCamera();
@@ -122,13 +128,18 @@ namespace Neo.UI.Components
             };
 
             if (mResolveTexture != null)
-                mResolveTexture.Dispose();
+            {
+	            this.mResolveTexture.Dispose();
+            }
 
-            mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            if (mMapTexture != null) mMapTexture.Dispose();
+            if (mMapTexture != null)
+            {
+	            this.mMapTexture.Dispose();
+            }
 
-            texDesc.CpuAccessFlags = CpuAccessFlags.Read;
+	        texDesc.CpuAccessFlags = CpuAccessFlags.Read;
             texDesc.Usage = ResourceUsage.Staging;
             mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
@@ -144,9 +155,13 @@ namespace Neo.UI.Components
         {
             mCamControl.Update(mCamera, false);
             if (WorldFrame.Instance.Dispatcher.InvokeRequired)
-                WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
+            {
+	            WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
+            }
             else
-                OnRenderModel();
+            {
+	            OnRenderModel();
+            }
         }
 
         void ViewChanged(Camera cam, Matrix matView)
@@ -193,9 +208,11 @@ namespace Neo.UI.Components
 
             bmp.UnlockBits(bmpd);
             if (mPaintBitmap != null)
-                mPaintBitmap.Dispose();
+            {
+	            this.mPaintBitmap.Dispose();
+            }
 
-            mPaintBitmap = bmp;
+	        mPaintBitmap = bmp;
             ctx.Context.UnmapSubresource(mMapTexture, 0);
             Invalidate();
         }

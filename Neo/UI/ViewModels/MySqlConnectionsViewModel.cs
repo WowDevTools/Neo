@@ -97,8 +97,11 @@ namespace Neo.UI.ViewModels
             SaveAsRequest.Raise(notification,
                 returned =>
                 {
-                    if (returned == null || !returned.Confirmed || returned.SaveAs == null) return;
-                    SaveAs = returned.SaveAs;
+                    if (returned == null || !returned.Confirmed || returned.SaveAs == null)
+                    {
+	                    return;
+                    }
+	                SaveAs = returned.SaveAs;
                     if (ConnectionsModel.Connections.Contains(SaveAs))
                     {
                         RaiseErrorNotification("A connection with the same name already exists.");
@@ -177,8 +180,11 @@ namespace Neo.UI.ViewModels
         {
             var xml = new XmlService();
 
-            if (ConnectionsModel.SelectedItem == null) return;
-            XmlService.DeleteConnection(ConnectionsModel.SelectedItem);
+            if (ConnectionsModel.SelectedItem == null)
+            {
+	            return;
+            }
+	        XmlService.DeleteConnection(ConnectionsModel.SelectedItem);
             ConnectionsModel.Connections.Remove(ConnectionsModel.SelectedItem);
         }
 
@@ -194,8 +200,11 @@ namespace Neo.UI.ViewModels
         private void SelectionChanged()
         {
             var xml = new XmlService();
-            if (ConnectionsModel.SelectedItem == null || ConnectionsModel.SaveIsEnabled) return;
-            var list = XmlService.ReadConnection(ConnectionsModel.SelectedItem);
+            if (ConnectionsModel.SelectedItem == null || ConnectionsModel.SaveIsEnabled)
+            {
+	            return;
+            }
+	        var list = XmlService.ReadConnection(ConnectionsModel.SelectedItem);
 
             ConnectionsModel.Address = list[0];
             ConnectionsModel.Username = list[1];

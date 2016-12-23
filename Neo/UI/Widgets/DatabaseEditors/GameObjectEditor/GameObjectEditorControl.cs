@@ -54,54 +54,102 @@ namespace Neo.UI.Dialog
             checkFlagOrBitmask(Flags, typeof(Storage.Database.WotLk.TrinityCore.Flags), gameObject.Flags);
             GameObjectSize.Text = gameObject.Size.ToString();
             if(tbData.Controls.ContainsKey("Data0"))
-                tbData.Controls.Find("Data0", false)[0].Text = gameObject.Data0.ToString();
-            if (tbData.Controls.ContainsKey("Data1"))
-                tbData.Controls.Find("Data1", false)[0].Text = gameObject.Data1.ToString();
-            if (tbData.Controls.ContainsKey("Data2"))
-                tbData.Controls.Find("Data2", false)[0].Text = gameObject.Data2.ToString();
-            if (tbData.Controls.ContainsKey("Data3"))
-                tbData.Controls.Find("Data3", false)[0].Text = gameObject.Data3.ToString();
-            if (tbData.Controls.ContainsKey("Data4"))
-                tbData.Controls.Find("Data4", false)[0].Text = gameObject.Data4.ToString();
-            if (tbData.Controls.ContainsKey("Data5"))
-                tbData.Controls.Find("Data5", false)[0].Text = gameObject.Data5.ToString();
-            if (tbData.Controls.ContainsKey("Data6"))
-                tbData.Controls.Find("Data6", false)[0].Text = gameObject.Data6.ToString();
-            if (tbData.Controls.ContainsKey("Data7"))
-                tbData.Controls.Find("Data7", false)[0].Text = gameObject.Data7.ToString();
-            if (tbData.Controls.ContainsKey("Data8"))
-                tbData.Controls.Find("Data8", false)[0].Text = gameObject.Data8.ToString();
-            if (tbData.Controls.ContainsKey("Data9"))
-                tbData.Controls.Find("Data9", false)[0].Text = gameObject.Data9.ToString();
-            if (tbData.Controls.ContainsKey("Data10"))
-                tbData.Controls.Find("Data10", false)[0].Text = gameObject.Data10.ToString();
-            if (tbData.Controls.ContainsKey("Data11"))
-                tbData.Controls.Find("Data11", false)[0].Text = gameObject.Data11.ToString();
-            if (tbData2.Controls.ContainsKey("Data12"))
-                tbData2.Controls.Find("Data12", false)[0].Text = gameObject.Data12.ToString();
-            if (tbData2.Controls.ContainsKey("Data13"))
-                tbData2.Controls.Find("Data13", false)[0].Text = gameObject.Data13.ToString();
-            if (tbData2.Controls.ContainsKey("Data14"))
-                tbData2.Controls.Find("Data14", false)[0].Text = gameObject.Data14.ToString();
-            if (tbData2.Controls.ContainsKey("Data15"))
-                tbData2.Controls.Find("Data15", false)[0].Text = gameObject.Data15.ToString();
-            if (tbData2.Controls.ContainsKey("Data16"))
-                tbData2.Controls.Find("Data16", false)[0].Text = gameObject.Data16.ToString();
-            if (tbData2.Controls.ContainsKey("Data17"))
-                tbData2.Controls.Find("Data17", false)[0].Text = gameObject.Data17.ToString();
-            if (tbData2.Controls.ContainsKey("Data18"))
-                tbData2.Controls.Find("Data18", false)[0].Text = gameObject.Data18.ToString();
-            if (tbData2.Controls.ContainsKey("Data19"))
-                tbData2.Controls.Find("Data19", false)[0].Text = gameObject.Data19.ToString();
-            if (tbData2.Controls.ContainsKey("Data20"))
-                tbData2.Controls.Find("Data20", false)[0].Text = gameObject.Data20.ToString();
-            if (tbData2.Controls.ContainsKey("Data21"))
-                tbData2.Controls.Find("Data21", false)[0].Text = gameObject.Data21.ToString();
-            if (tbData2.Controls.ContainsKey("Data22"))
-                tbData2.Controls.Find("Data22", false)[0].Text = gameObject.Data22.ToString();
-            if (tbData2.Controls.ContainsKey("Data23"))
-                tbData2.Controls.Find("Data23", false)[0].Text = gameObject.Data23.ToString();
-            AiName.Text = gameObject.AiName;
+            {
+	            this.tbData.Controls.Find("Data0", false)[0].Text = gameObject.Data0.ToString();
+            }
+	        if (tbData.Controls.ContainsKey("Data1"))
+	        {
+		        this.tbData.Controls.Find("Data1", false)[0].Text = gameObject.Data1.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data2"))
+	        {
+		        this.tbData.Controls.Find("Data2", false)[0].Text = gameObject.Data2.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data3"))
+	        {
+		        this.tbData.Controls.Find("Data3", false)[0].Text = gameObject.Data3.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data4"))
+	        {
+		        this.tbData.Controls.Find("Data4", false)[0].Text = gameObject.Data4.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data5"))
+	        {
+		        this.tbData.Controls.Find("Data5", false)[0].Text = gameObject.Data5.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data6"))
+	        {
+		        this.tbData.Controls.Find("Data6", false)[0].Text = gameObject.Data6.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data7"))
+	        {
+		        this.tbData.Controls.Find("Data7", false)[0].Text = gameObject.Data7.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data8"))
+	        {
+		        this.tbData.Controls.Find("Data8", false)[0].Text = gameObject.Data8.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data9"))
+	        {
+		        this.tbData.Controls.Find("Data9", false)[0].Text = gameObject.Data9.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data10"))
+	        {
+		        this.tbData.Controls.Find("Data10", false)[0].Text = gameObject.Data10.ToString();
+	        }
+	        if (tbData.Controls.ContainsKey("Data11"))
+	        {
+		        this.tbData.Controls.Find("Data11", false)[0].Text = gameObject.Data11.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data12"))
+	        {
+		        this.tbData2.Controls.Find("Data12", false)[0].Text = gameObject.Data12.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data13"))
+	        {
+		        this.tbData2.Controls.Find("Data13", false)[0].Text = gameObject.Data13.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data14"))
+	        {
+		        this.tbData2.Controls.Find("Data14", false)[0].Text = gameObject.Data14.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data15"))
+	        {
+		        this.tbData2.Controls.Find("Data15", false)[0].Text = gameObject.Data15.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data16"))
+	        {
+		        this.tbData2.Controls.Find("Data16", false)[0].Text = gameObject.Data16.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data17"))
+	        {
+		        this.tbData2.Controls.Find("Data17", false)[0].Text = gameObject.Data17.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data18"))
+	        {
+		        this.tbData2.Controls.Find("Data18", false)[0].Text = gameObject.Data18.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data19"))
+	        {
+		        this.tbData2.Controls.Find("Data19", false)[0].Text = gameObject.Data19.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data20"))
+	        {
+		        this.tbData2.Controls.Find("Data20", false)[0].Text = gameObject.Data20.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data21"))
+	        {
+		        this.tbData2.Controls.Find("Data21", false)[0].Text = gameObject.Data21.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data22"))
+	        {
+		        this.tbData2.Controls.Find("Data22", false)[0].Text = gameObject.Data22.ToString();
+	        }
+	        if (tbData2.Controls.ContainsKey("Data23"))
+	        {
+		        this.tbData2.Controls.Find("Data23", false)[0].Text = gameObject.Data23.ToString();
+	        }
+	        AiName.Text = gameObject.AiName;
             ScriptName.Text = gameObject.ScriptName;
             VerifiedBuild.Text = gameObject.VerifiedBuild.ToString();
         }
@@ -110,9 +158,11 @@ namespace Neo.UI.Dialog
         private uint makeFlagOrBitmask(CheckedListBox list, Type e)
         {
             if (!e.IsEnum)
-                return 0;
+            {
+	            return 0;
+            }
 
-            uint myFlags = 0x0;
+	        uint myFlags = 0x0;
 
             foreach (Object item in list.CheckedItems)
             {
@@ -125,9 +175,11 @@ namespace Neo.UI.Dialog
         private void checkFlagOrBitmask(CheckedListBox list, Type e, uint value)
         {
             if (!e.IsEnum)
-                return;
+            {
+	            return;
+            }
 
-            foreach (int i in list.CheckedIndices)
+	        foreach (int i in list.CheckedIndices)
             {
                 list.SetItemCheckState(i, CheckState.Unchecked);
             }
@@ -243,9 +295,13 @@ namespace Neo.UI.Dialog
             for(int i = 0; i< nbData;i++)
             {
                 if (i < 12)
-                    tbData.Controls.RemoveByKey("Data" + i);
+                {
+	                this.tbData.Controls.RemoveByKey("Data" + i);
+                }
                 else
-                    tbData2.Controls.RemoveByKey("Data" + i);
+                {
+	                this.tbData2.Controls.RemoveByKey("Data" + i);
+                }
             }
 
             nbData = 0;
@@ -720,7 +776,10 @@ namespace Neo.UI.Dialog
 
             var ctl = (this.Control as GameObjectEditorControl).TabControl as TabControl;
             EnableDesignMode(ctl, "TabControl");
-            foreach (TabPage page in ctl.TabPages) EnableDesignMode(page, page.Name);
+            foreach (TabPage page in ctl.TabPages)
+            {
+	            EnableDesignMode(page, page.Name);
+            }
         }
     }
 }

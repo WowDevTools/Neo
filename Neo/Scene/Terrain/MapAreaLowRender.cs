@@ -44,7 +44,9 @@ namespace Neo.Scene.Terrain
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
                     if (vertexBuffer != null)
-                        vertexBuffer.Dispose();
+                    {
+	                    vertexBuffer.Dispose();
+                    }
                 });
 
                 mVertexBuffer = null;
@@ -62,10 +64,14 @@ namespace Neo.Scene.Terrain
         public void OnFrame()
         {
             if (mAsyncLoaded == false)
-                return;
+            {
+	            return;
+            }
 
-            if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
-                return;
+	        if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
+	        {
+		        return;
+	        }
 
 	        // Investigate: Possible performance issue
             if(mSyncLoaded == false)
@@ -98,20 +104,42 @@ namespace Neo.Scene.Terrain
                     var v = new Vector3(x * StepX, y * StepY, height);
                     v.X += IndexX * Metrics.TileSize;
                     if (inner)
-                        v.X += 0.5f * StepX;
+                    {
+	                    v.X += 0.5f * StepX;
+                    }
 
-                    v.Y += IndexY * Metrics.TileSize;
+	                v.Y += IndexY * Metrics.TileSize;
                     if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
-                        v.Y = 64.0f * Metrics.TileSize - v.Y;
+                    {
+	                    v.Y = 64.0f * Metrics.TileSize - v.Y;
+                    }
 
-                    if (v.X < posMin.X) posMin.X = v.X;
-                    if (v.X > posMax.X) posMax.X = v.X;
-                    if (v.Y < posMin.Y) posMin.Y = v.Y;
-                    if (v.Y > posMax.Y) posMax.Y = v.Y;
-                    if (v.Z < posMin.Z) posMin.Z = v.Z;
-                    if (v.Z > posMax.Z) posMax.Z = v.Z;
+	                if (v.X < posMin.X)
+	                {
+		                posMin.X = v.X;
+	                }
+	                if (v.X > posMax.X)
+	                {
+		                posMax.X = v.X;
+	                }
+	                if (v.Y < posMin.Y)
+	                {
+		                posMin.Y = v.Y;
+	                }
+	                if (v.Y > posMax.Y)
+	                {
+		                posMax.Y = v.Y;
+	                }
+	                if (v.Z < posMin.Z)
+	                {
+		                posMin.Z = v.Z;
+	                }
+	                if (v.Z > posMax.Z)
+	                {
+		                posMax.Z = v.Z;
+	                }
 
-                    mVertexData[counter++] = v;
+	                mVertexData[counter++] = v;
                 }
             }
 

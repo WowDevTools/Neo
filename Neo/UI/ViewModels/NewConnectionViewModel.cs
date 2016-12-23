@@ -31,8 +31,11 @@ namespace Neo.UI.ViewModels
             }
             set
             {
-                if (!(value is SaveAsNotification)) return;
-                mNotification = (SaveAsNotification) value;
+                if (!(value is SaveAsNotification))
+                {
+	                return;
+                }
+	            mNotification = (SaveAsNotification) value;
                 OnPropertyChanged(() => Notification);
             }
         }

@@ -108,9 +108,11 @@ namespace Neo.Scene.Models.M2
             value = float.MaxValue;
 
             if (globalRay.Intersects(ref mBoundingBox) == false)
-                return false;
+            {
+	            return false;
+            }
 
-            var instRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
+	        var instRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
                 ref parameters.InverseProjection, ref mInverseMatrix);
             return mModel.Intersect(ref instRay, out value);
         }
@@ -216,9 +218,11 @@ namespace Neo.Scene.Models.M2
         public void CreateModelNameplate()
         {
             if (mWorldModelName != null)
-                return;
+            {
+	            return;
+            }
 
-            mWorldModelName = new WorldText
+	        mWorldModelName = new WorldText
             {
                 Text = mModel.ModelName,
                 Scaling = 1.0f,
@@ -232,9 +236,11 @@ namespace Neo.Scene.Models.M2
         public void DestroyModelNameplate()
         {
             if (mWorldModelName == null)
-                return;
+            {
+	            return;
+            }
 
-            WorldFrame.Instance.WorldTextManager.RemoveText(mWorldModelName);
+	        WorldFrame.Instance.WorldTextManager.RemoveText(mWorldModelName);
             mWorldModelName.Dispose();
             mWorldModelName = null;
         }
@@ -242,14 +248,18 @@ namespace Neo.Scene.Models.M2
         private void UpdateModelNameplate()
         {
             if (mWorldModelName == null)
-                return;
+            {
+	            return;
+            }
 
-            Vector3 diff = mBoundingBox.Minimum - mBoundingBox.Maximum;
+	        Vector3 diff = mBoundingBox.Minimum - mBoundingBox.Maximum;
             mWorldModelName.Scaling = diff.Length / 60.0f;
             if (mWorldModelName.Scaling < 0.3f)
-                mWorldModelName.Scaling = 0.3f;
+            {
+	            this.mWorldModelName.Scaling = 0.3f;
+            }
 
-            Vector3 position = mBoundingBox.Minimum + (diff * 0.5f);
+	        Vector3 position = mBoundingBox.Minimum + (diff * 0.5f);
             position.Z = 1.5f + mBoundingBox.Minimum.Z + (diff.Z * 1.08f);
             mWorldModelName.Position = position;
         }
@@ -279,9 +289,11 @@ namespace Neo.Scene.Models.M2
 
             var fac = (float)(timeMs / 500.0);
             if (fac > 1.0f)
-                fac = 1.0f;
+            {
+	            fac = 1.0f;
+            }
 
-            if (distance < radiusSquared)
+	        if (distance < radiusSquared)
             {
                 if (!mIsHighlighted)
                 {
@@ -305,9 +317,11 @@ namespace Neo.Scene.Models.M2
             }
 
             if (!mHighlightFinished)
-                UpdateHighlightColor(dst * fac + src * (1.0f - fac));
+            {
+	            UpdateHighlightColor(dst * fac + src * (1.0f - fac));
+            }
 
-            mHighlightFinished = (fac >= 1.0f);
+	        mHighlightFinished = (fac >= 1.0f);
         }
 
         public void UpdateDepth()
@@ -319,9 +333,11 @@ namespace Neo.Scene.Models.M2
         public Vector3 GetNamePlatePosition()
         {
             if (mWorldModelName == null)
-                return new Vector3(0.0f, 0.0f, 0.0f);
+            {
+	            return new Vector3(0.0f, 0.0f, 0.0f);
+            }
 
-            return mWorldModelName.Position;
+	        return mWorldModelName.Position;
         }
 
         public void Remove()

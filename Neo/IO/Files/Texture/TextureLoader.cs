@@ -47,12 +47,16 @@ namespace Neo.IO.Files.Texture
         {
             var loadInfo = LoadFirstLayer(file);
             if (loadInfo == null)
-                return null;
+            {
+	            return null;
+            }
 
-            if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
-                return loadInfo;
+	        if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
+	        {
+		        return loadInfo;
+	        }
 
-            loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
+	        loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
             loadInfo.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
 
             return loadInfo;
@@ -62,12 +66,16 @@ namespace Neo.IO.Files.Texture
         {
             var loadInfo = LoadFirstLayer(file);
             if (loadInfo == null)
-                return null;
+            {
+	            return null;
+            }
 
-            if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
-                return loadInfo;
+	        if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
+	        {
+		        return loadInfo;
+	        }
 
-            loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
+	        loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
             loadInfo.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
 
             return loadInfo;
@@ -76,15 +84,19 @@ namespace Neo.IO.Files.Texture
         public static TextureLoadInfo LoadToBestMatchingImage(string file, int targetWidth, int targetHeight)
         {
             using (var strm = FileManager.Instance.Provider.OpenFile(file))
-                return strm == null ? null : LoadToBestMatchingImage(strm, targetWidth, targetHeight);
+            {
+	            return strm == null ? null : LoadToBestMatchingImage(strm, targetWidth, targetHeight);
+            }
         }
 
         public static unsafe TextureLoadInfo LoadToBestMatchingImage(Stream file, int targetWidth, int targetHeight)
         {
             if (file == null)
-                return null;
+            {
+	            return null;
+            }
 
-            var reader = new BinaryReader(file);
+	        var reader = new BinaryReader(file);
             var header = reader.Read<BlpHeader>();
 
             var layer = 0;
@@ -99,10 +111,14 @@ namespace Neo.IO.Files.Texture
                     var lh = Math.Max(header.Height >> (layer + 1), 1);
 
                     if (w == h && lw == lh && lw == w && w == 1)
-                        break;
+                    {
+	                    break;
+                    }
 
-                    if (w >= targetWidth && lw <= targetWidth && h >= targetHeight && lh <= targetHeight)
-                        break;
+	                if (w >= targetWidth && lw <= targetWidth && h >= targetHeight && lh <= targetHeight)
+	                {
+		                break;
+	                }
                 }
             }
 
@@ -111,22 +127,28 @@ namespace Neo.IO.Files.Texture
                 for (; layer > 0; --layer)
                 {
                     if (header.Sizes[layer] != 0 && header.Offsets[layer] != 0)
-                        break;
+                    {
+	                    break;
+                    }
                 }
             }
 
             file.Position = 0;
             var loadInfo = LoadLayer(file, layer);
             if (loadInfo == null)
-                return null;
+            {
+	            return null;
+            }
 
-            loadInfo.Width = Math.Max(loadInfo.Width >> layer, 1);
+	        loadInfo.Width = Math.Max(loadInfo.Width >> layer, 1);
             loadInfo.Height = Math.Max(loadInfo.Height >> layer, 1);
 
             if (loadInfo.Format == SharpDX.DXGI.Format.R8G8B8A8_UNorm)
-                return loadInfo;
+            {
+	            return loadInfo;
+            }
 
-            loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
+	        loadInfo.Layers[0] = DxtHelper.Decompress(loadInfo.Width, loadInfo.Height, loadInfo.Layers[0], loadInfo.Format);
             loadInfo.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
 
             return loadInfo;
@@ -135,14 +157,18 @@ namespace Neo.IO.Files.Texture
         public static TextureLoadInfo LoadHeaderOnly(string file)
         {
             if (string.IsNullOrEmpty(file))
-                return null;
+            {
+	            return null;
+            }
 
-            using (var strm = FileManager.Instance.Provider.OpenFile(file))
+	        using (var strm = FileManager.Instance.Provider.OpenFile(file))
             {
                 if (strm == null)
-                    return null;
+                {
+	                return null;
+                }
 
-                var reader = new BinaryReader(strm);
+	            var reader = new BinaryReader(strm);
                 var header = reader.Read<BlpHeader>();
                 var loadInfo = ParseHeader(ref header);
                 return loadInfo;
@@ -152,18 +178,24 @@ namespace Neo.IO.Files.Texture
         public static TextureLoadInfo LoadFirstLayer(string file)
         {
             if (string.IsNullOrEmpty(file))
-                return null;
+            {
+	            return null;
+            }
 
-            using (var strm = FileManager.Instance.Provider.OpenFile(file))
-                return LoadFirstLayer(strm);
+	        using (var strm = FileManager.Instance.Provider.OpenFile(file))
+	        {
+		        return LoadFirstLayer(strm);
+	        }
         }
 
         public static TextureLoadInfo LoadFirstLayer(Stream strm)
         {
             if (strm == null)
-                return null;
+            {
+	            return null;
+            }
 
-            var reader = new BinaryReader(strm);
+	        var reader = new BinaryReader(strm);
             var header = reader.Read<BlpHeader>();
             var loadInfo = ParseHeader(ref header);
             var palette = new uint[0];
@@ -175,23 +207,31 @@ namespace Neo.IO.Files.Texture
         public static TextureLoadInfo LoadLayer(string file, int layer)
         {
             if (string.IsNullOrEmpty(file))
-                return null;
+            {
+	            return null;
+            }
 
-            using (var strm = FileManager.Instance.Provider.OpenFile(file))
-                return LoadLayer(strm, layer);
+	        using (var strm = FileManager.Instance.Provider.OpenFile(file))
+	        {
+		        return LoadLayer(strm, layer);
+	        }
         }
 
         public static unsafe TextureLoadInfo LoadLayer(Stream strm, int layer)
         {
             if (strm == null || layer >= 16)
-                return null;
+            {
+	            return null;
+            }
 
-            var reader = new BinaryReader(strm);
+	        var reader = new BinaryReader(strm);
             var header = reader.Read<BlpHeader>();
             if (header.Sizes[layer] == 0 || header.Offsets[layer] == 0)
-                return null;
+            {
+	            return null;
+            }
 
-            var loadInfo = ParseHeader(ref header);
+	        var loadInfo = ParseHeader(ref header);
             var palette = new uint[0];
             ParseLayer(layer, ref palette, reader, header, loadInfo);
             return loadInfo;
@@ -200,35 +240,45 @@ namespace Neo.IO.Files.Texture
         public static TextureLoadInfo Load(string file)
         {
             if (string.IsNullOrEmpty(file))
-                return null;
+            {
+	            return null;
+            }
 
-            using (var strm = FileManager.Instance.Provider.OpenFile(file))
+	        using (var strm = FileManager.Instance.Provider.OpenFile(file))
             {
                 if (strm == null)
-                    return null;
+                {
+	                return null;
+                }
 
-                var reader = new BinaryReader(strm);
+	            var reader = new BinaryReader(strm);
                 var header = reader.Read<BlpHeader>();
                 var loadInfo = ParseHeader(ref header);
                 var palette = new uint[0];
                 for (var i = 0; i < 16; ++i)
-                    ParseLayer(i, ref palette, reader, header, loadInfo);
+                {
+	                ParseLayer(i, ref palette, reader, header, loadInfo);
+                }
 
-                return loadInfo;
+	            return loadInfo;
             }
         }
 
         private static unsafe void ParseLayer(int layer, ref uint[] palette, BinaryReader reader, BlpHeader header, TextureLoadInfo loadInfo)
         {
             if (header.Sizes[layer] == 0)
-                return;
+            {
+	            return;
+            }
 
-            var w = Math.Max(1, header.Width >> layer);
+	        var w = Math.Max(1, header.Width >> layer);
 
             reader.BaseStream.Position = header.Offsets[layer];
             loadInfo.Layers.Add(reader.ReadBytes(header.Sizes[layer]));
             if (loadInfo.Format != SharpDX.DXGI.Format.R8G8B8A8_UNorm)
-                loadInfo.RowPitchs.Add(((w + 3) / 4) * loadInfo.BlockSize);
+            {
+	            loadInfo.RowPitchs.Add(((w + 3) / 4) * loadInfo.BlockSize);
+            }
             else
             {
                 ParseUncompressedLayer(layer, ref palette, reader, ref header, loadInfo);
@@ -239,9 +289,11 @@ namespace Neo.IO.Files.Texture
         private static void ParseUncompressedLayer(int layer, ref uint[] palette, BinaryReader baseReader, ref BlpHeader header, TextureLoadInfo loadInfo)
         {
             if (header.Compression == 3)
-                return;
+            {
+	            return;
+            }
 
-            if (palette.Length == 0)
+	        if (palette.Length == 0)
             {
                 baseReader.BaseStream.Position = SizeCache<BlpHeader>.Size;
                 palette = baseReader.ReadArray<uint>(256);
@@ -253,11 +305,15 @@ namespace Neo.IO.Files.Texture
             var colors = new byte[w * h * 4];
 
             if (header.AlphaDepth == 8)
-                DecompPaletteFastPath(ref palette, ref indices, ref colors);
+            {
+	            DecompPaletteFastPath(ref palette, ref indices, ref colors);
+            }
             else
-                DecompPaletteA8R8G8B8(header.AlphaDepth, ref palette, ref indices, ref colors);
+            {
+	            DecompPaletteA8R8G8B8(header.AlphaDepth, ref palette, ref indices, ref colors);
+            }
 
-            loadInfo.Layers[layer] = colors;
+	        loadInfo.Layers[layer] = colors;
         }
 
         private static unsafe void DecompPaletteFastPath(ref uint[] palette, ref byte[] indices, ref byte[] colorBuffer)
@@ -389,9 +445,11 @@ namespace Neo.IO.Files.Texture
                 }
             }
             else
-                ret.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
+            {
+	            ret.Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm;
+            }
 
-            return ret;
+	        return ret;
         }
     }
 }

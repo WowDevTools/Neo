@@ -23,7 +23,9 @@ namespace Neo.Scene
             lock (mWorldTexts)
             {
                 foreach (var text in mWorldTexts)
-                    text.OnFrame(camera);
+                {
+	                text.OnFrame(camera);
+                }
             }
         }
 
@@ -48,9 +50,11 @@ namespace Neo.Scene
             lock (mWorldTexts)
             {
                 foreach (var text in mWorldTexts)
-                    text.Dispose();
+                {
+	                text.Dispose();
+                }
 
-                mWorldTexts.Clear();
+	            mWorldTexts.Clear();
             }
         }
     }

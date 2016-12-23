@@ -43,12 +43,16 @@ namespace Neo.IO.Files.Terrain
             {
                 var layer = chunk.GroundEffectLayer[i];
                 if (layer < 0 || layer >= 4)
-                    continue;
+                {
+	                continue;
+                }
 
-                if (hasDoodadsList[layer] == false)
-                    continue;
+	            if (hasDoodadsList[layer] == false)
+	            {
+		            continue;
+	            }
 
-                var texRow = groundEffects[layer];
+	            var texRow = groundEffects[layer];
 
                 var ix = i / 64;
                 var iy = i % 64;
@@ -58,17 +62,21 @@ namespace Neo.IO.Files.Terrain
         private string[] GetDoodads(int effect, IDataStorageRecord textureRow)
         {
             if (GroundEffectCache.ContainsKey(effect))
-                return GroundEffectCache[effect];
+            {
+	            return GroundEffectCache[effect];
+            }
 
 
-            var ret = new string[4];
+	        var ret = new string[4];
             for (var i = 0; i < 4; ++i)
             {
                 var doodadRef = textureRow.GetInt32(1 + i);
                 if (doodadRef < 0)
-                    continue;
+                {
+	                continue;
+                }
 
-                ret[i] = GetDoodadString(doodadRef);
+	            ret[i] = GetDoodadString(doodadRef);
             }
 
             GroundEffectCache.Add(effect, ret);
@@ -79,16 +87,22 @@ namespace Neo.IO.Files.Terrain
         {
             var row = Storage.DbcStorage.GroundEffectDoodad.GetRowById(id);
             if (row == null)
-                return null;
+            {
+	            return null;
+            }
 
-            if (FileManager.Instance.Version > FileDataVersion.Warlords)
-                return row.GetString(1);
+	        if (FileManager.Instance.Version > FileDataVersion.Warlords)
+	        {
+		        return row.GetString(1);
+	        }
 
-            var fileRef = row.GetInt32(1);
+	        var fileRef = row.GetInt32(1);
             if (fileRef <= 0)
-                return null;
+            {
+	            return null;
+            }
 
-            var fileRow = Storage.DbcStorage.FileData.GetRowById(fileRef);
+	        var fileRow = Storage.DbcStorage.FileData.GetRowById(fileRef);
             return Path.Combine(fileRow.GetString(2), fileRow.GetString(1));
         }
     }

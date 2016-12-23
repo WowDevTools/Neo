@@ -110,9 +110,11 @@ namespace Neo.Editing
             }
 
             if (impass)
-                return new Vector4(1, 1, 1, 0);
+            {
+	            return new Vector4(1, 1, 1, 0);
+            }
 
-            return AreaColours[id];
+	        return AreaColours[id];
         }
 
         public void SetSelectedAreaId(int id)
@@ -167,9 +169,13 @@ namespace Neo.Editing
 		            if (chunk.Parent.TryGetTarget(out parent))
 		            {
 			            if (SmallHole)
-				            chunk.SetHole(intersection, AddHole);
+			            {
+				            chunk.SetHole(intersection, this.AddHole);
+			            }
 			            else
-				            chunk.SetHoleBig(AddHole);
+			            {
+				            chunk.SetHoleBig(this.AddHole);
+			            }
 
 			            parent.SetChanged();
 			            ForceRenderUpdate?.Invoke(chunk, true);

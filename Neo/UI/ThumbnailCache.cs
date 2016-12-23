@@ -19,49 +19,69 @@ namespace Neo.UI
 
         public static void Read()
         {
-            if (!File.Exists(mFilename)) return;
-
-            using (FileStream fs = File.OpenRead(mFilename))
-            using (BinaryReader reader = new BinaryReader(fs))
+            if (!File.Exists(mFilename))
             {
-                Func<int, bool> AssertSize = i => reader.BaseStream.Position + i <= reader.BaseStream.Length; //Data overflow check
-
-                while (reader.BaseStream.Position != reader.BaseStream.Length)
-                {
-                    string key = reader.ReadCString(); //Filename
-
-                    if (!AssertSize(4)) return;
-                    int size = reader.ReadInt32(); //Image byte size
-
-                    if (!AssertSize(size) || size == 0) return;
-                    mCache.Add(key, BytesToImage(reader.ReadBytes(size)));
-                }
+	            return;
             }
+
+	        using (FileStream fs = File.OpenRead(mFilename))
+	        {
+		        using (BinaryReader reader = new BinaryReader(fs))
+		        {
+			        Func<int, bool> AssertSize = i => reader.BaseStream.Position + i <= reader.BaseStream.Length; //Data overflow check
+
+			        while (reader.BaseStream.Position != reader.BaseStream.Length)
+			        {
+				        string key = reader.ReadCString(); //Filename
+
+				        if (!AssertSize(4))
+				        {
+					        return;
+				        }
+				        int size = reader.ReadInt32(); //Image byte size
+
+				        if (!AssertSize(size) || size == 0)
+				        {
+					        return;
+				        }
+				        mCache.Add(key, BytesToImage(reader.ReadBytes(size)));
+			        }
+		        }
+	        }
         }
 
         public static void Write(bool clear = false)
         {
-            if (mCache.Count == 0) return;
-
-            if (!Directory.Exists("Cache"))
-                Directory.CreateDirectory("Cache");
-
-            using (FileStream fs = File.OpenWrite(mFilename))
-            using (BinaryWriter writer = new BinaryWriter(fs))
+            if (mCache.Count == 0)
             {
-                foreach (var kvp in mCache)
-                {
-                    writer.Write(Encoding.UTF8.GetBytes(kvp.Key)); //Filename CString
-                    writer.Write((byte)0);
-
-                    var img = ImageToBytes(kvp.Value);
-                    writer.Write(img.Length); //Image byte length
-                    writer.Write(img); //Image bytes
-                }
+	            return;
             }
 
-            if (clear)
-                mCache.Clear();
+	        if (!Directory.Exists("Cache"))
+	        {
+		        Directory.CreateDirectory("Cache");
+	        }
+
+	        using (FileStream fs = File.OpenWrite(mFilename))
+	        {
+		        using (BinaryWriter writer = new BinaryWriter(fs))
+		        {
+			        foreach (var kvp in mCache)
+			        {
+				        writer.Write(Encoding.UTF8.GetBytes(kvp.Key)); //Filename CString
+				        writer.Write((byte)0);
+
+				        var img = ImageToBytes(kvp.Value);
+				        writer.Write(img.Length); //Image byte length
+				        writer.Write(img); //Image bytes
+			        }
+		        }
+	        }
+
+	        if (clear)
+	        {
+		        mCache.Clear();
+	        }
         }
 
         public static void Reload()
@@ -87,9 +107,11 @@ namespace Neo.UI
         public static Bitmap TryGetThumbnail(string filename, Bitmap defaultImage)
         {
             if (IsCached(filename))
-                return mCache[filename];
+            {
+	            return mCache[filename];
+            }
 
-            return defaultImage;
+	        return defaultImage;
         }
 
 
@@ -116,9 +138,12 @@ namespace Neo.UI
             Bitmap bmp = new Bitmap(MaxWidth, MaxHeight);
             var graph = System.Drawing.Graphics.FromImage(bmp);
             float scale = Math.Min((float)MaxWidth / image.Width, (float)MaxHeight / image.Height);
-            if (scale > 1) scale = 1; //Only downsize
+            if (scale > 1)
+            {
+	            scale = 1; //Only downsize
+            }
 
-            var scaleWidth = (int)(image.Width * scale);
+	        var scaleWidth = (int)(image.Width * scale);
             var scaleHeight = (int)(image.Height * scale);
             var brush = new SolidBrush(Properties.Settings.Default.AssetRenderBackgroundColor);
 

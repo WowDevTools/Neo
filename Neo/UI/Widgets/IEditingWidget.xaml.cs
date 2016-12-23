@@ -17,9 +17,11 @@ namespace Neo.UI.Widget
         {
             var model = DataContext as IEditingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.SwitchWidgets(widget);
+	        model.SwitchWidgets(widget);
         }
     }
 }

@@ -32,7 +32,10 @@ namespace Neo.UI.DbcEditors.Exemple
 
             var ctl = (this.Control as ExempleEditorControl).TabControl as TabControl;
             EnableDesignMode(ctl, "TabControl");
-            foreach (TabPage page in ctl.TabPages) EnableDesignMode(page, page.Name);
+            foreach (TabPage page in ctl.TabPages)
+            {
+	            EnableDesignMode(page, page.Name);
+            }
         }
     }
 }

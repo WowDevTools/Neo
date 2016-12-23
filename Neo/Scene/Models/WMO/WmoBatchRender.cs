@@ -24,9 +24,11 @@ namespace Neo.Scene.Models.WMO
             instance = null;
 
             if (mInstances == null)
-                return false;
+            {
+	            return false;
+            }
 
-            lock (mInstances)
+	        lock (mInstances)
             {
                 foreach (var inst in mInstances.Values)
                 {
@@ -58,9 +60,11 @@ namespace Neo.Scene.Models.WMO
             if (mInstances != null)
             {
                 foreach (var inst in mInstances.Values)
-                    inst.Dispose();
+                {
+	                inst.Dispose();
+                }
 
-                mInstances.Clear();
+	            mInstances.Clear();
                 mInstances = null;
             }
 
@@ -80,15 +84,19 @@ namespace Neo.Scene.Models.WMO
         public bool RemoveInstance(int uuid)
         {
             if (mInstances == null)
-                return false;
+            {
+	            return false;
+            }
 
-            lock (mInstances)
+	        lock (mInstances)
             {
                 WmoInstance instance;
                 if (mInstances.TryGetValue(uuid, out instance) == false || instance == null)
-                    return false;
+                {
+	                return false;
+                }
 
-                --instance.ReferenceCount;
+	            --instance.ReferenceCount;
                 if (instance.ReferenceCount > 0)
                 {
                     ++instance.ReferenceCount;
@@ -105,15 +113,19 @@ namespace Neo.Scene.Models.WMO
         public bool DeleteInstance(int uuid)
         {
             if (mInstances == null)
-                return false;
+            {
+	            return false;
+            }
 
-            lock (mInstances)
+	        lock (mInstances)
             {
                 WmoInstance instance;
                 if (mInstances.TryGetValue(uuid, out instance) == false || mInstances == null)
-                    return false;
+                {
+	                return false;
+                }
 
-                mInstances.Remove(uuid);
+	            mInstances.Remove(uuid);
                 instance.Dispose();
                 mInstancesChanged = true;
 
@@ -124,12 +136,16 @@ namespace Neo.Scene.Models.WMO
         public void OnFrame()
         {
             if (mInstancesChanged)
-                UpdateVisibility();
+            {
+	            UpdateVisibility();
+            }
 
-            if (mActiveInstances.Count == 0)
-                return;
+	        if (mActiveInstances.Count == 0)
+	        {
+		        return;
+	        }
 
-            mRoot.OnFrame(mActiveInstances);
+	        mRoot.OnFrame(mActiveInstances);
         }
 
         public void AddInstance(int uuid, Vector3 position, Vector3 rotation)
@@ -160,9 +176,11 @@ namespace Neo.Scene.Models.WMO
             lock (mInstances)
             {
                 if (mInstances.Count == 0)
-                    return;
+                {
+	                return;
+                }
 
-                mActiveInstances.Clear();
+	            mActiveInstances.Clear();
                 mActiveInstances.AddRange(mInstances.Values);
             }
         }

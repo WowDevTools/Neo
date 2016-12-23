@@ -14,9 +14,11 @@ namespace Neo.UI.Models
         public SculptingViewModel(TerrainSettingsWidget widget)
         {
             if (EditorWindowController.Instance != null)
-                EditorWindowController.Instance.TerrainManager = this;
+            {
+	            EditorWindowController.Instance.TerrainManager = this;
+            }
 
-            mWidget = widget;
+	        mWidget = widget;
         }
 
         #region HandleSliders
@@ -88,49 +90,61 @@ namespace Neo.UI.Models
         public void HandleInnerRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.InnerRadiusSlider.Value = newRadius;
+	        mWidget.InnerRadiusSlider.Value = newRadius;
         }
 
         public void HandleOuterRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.OuterRadiusSlider.Value = newRadius;
+	        mWidget.OuterRadiusSlider.Value = newRadius;
         }
 
         public void HandleIntensityChanged(float newAmount)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.IntensitySlider.Value = newAmount;
+	        mWidget.IntensitySlider.Value = newAmount;
         }
 
         public void HandlePenSensivityChanged(float newSensivity)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.Tablet_SensivitySlider.Value = newSensivity;
+	        mWidget.Tablet_SensivitySlider.Value = newSensivity;
         }
 
         public void HandleTabletControlChanged(bool newIsTabletOn)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.TabletControlBox.IsChecked = newIsTabletOn;
+	        mWidget.TabletControlBox.IsChecked = newIsTabletOn;
         }
 
         public void HandleTypeChanged(Editing.TerrainChangeType value)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            switch(value)
+	        switch(value)
             {
                 case Editing.TerrainChangeType.Blur:
                     mWidget.BlurRadio.IsChecked = true;
@@ -150,9 +164,11 @@ namespace Neo.UI.Models
         public void HandleAlgorithmChanged(Editing.TerrainAlgorithm value)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            switch (value)
+	        switch (value)
             {
                 case Editing.TerrainAlgorithm.Flat:
                     mWidget.FlatRadio.IsChecked = true;
@@ -172,9 +188,11 @@ namespace Neo.UI.Models
         public void HandleAlignToGroundChanged(bool value)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.AlignModelsBox.IsChecked = value;
+	        mWidget.AlignModelsBox.IsChecked = value;
         }
         #endregion
 

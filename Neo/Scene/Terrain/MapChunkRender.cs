@@ -110,9 +110,11 @@ namespace Neo.Scene.Terrain
         private void SetRenderMode(ChunkRenderFlags flags)
         {
             if (mScaleBuffer == null)
-                return;
+            {
+	            return;
+            }
 
-            if (flags.HasFlag(ChunkRenderFlags.ShowLines) || flags.HasFlag(ChunkRenderFlags.HideLines))
+	        if (flags.HasFlag(ChunkRenderFlags.ShowLines) || flags.HasFlag(ChunkRenderFlags.HideLines))
             {
                 mTexParams.ChunkLine.W = (flags.HasFlag(ChunkRenderFlags.HideLines) ? 0f : 1f);
                 mScaleBuffer.BufferData(mTexParams);
@@ -140,13 +142,21 @@ namespace Neo.Scene.Terrain
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
                 if (holeTex != null)
-                    holeTex.Dispose();
-                if (alphaTex != null)
-                    alphaTex.Dispose();
-                if (constBuffer != null)
-                    constBuffer.Dispose();
-                if (tanim != null)
-                    tanim.Dispose();
+                {
+	                holeTex.Dispose();
+                }
+	            if (alphaTex != null)
+	            {
+		            alphaTex.Dispose();
+	            }
+	            if (constBuffer != null)
+	            {
+		            constBuffer.Dispose();
+	            }
+	            if (tanim != null)
+	            {
+		            tanim.Dispose();
+	            }
             });
 
             lock (this)
@@ -186,7 +196,9 @@ namespace Neo.Scene.Terrain
                 {
                     mReferences = new M2Instance[mData.DoodadReferences.Length];
                     for (var i = 0; i < mReferences.Length; ++i)
-                        mReferences[i] = parent.AreaFile.DoodadInstances[mData.DoodadReferences[i]];
+                    {
+	                    this.mReferences[i] = parent.AreaFile.DoodadInstances[this.mData.DoodadReferences[i]];
+                    }
                 }
 
                 mData.DoodadsChanged = false;
@@ -194,34 +206,46 @@ namespace Neo.Scene.Terrain
             }
 
             if (mReferences.Length == 0)
-                return;
+            {
+	            return;
+            }
 
-            if (WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))
-                WorldFrame.Instance.M2Manager.PushMapReferences(mReferences);
+	        if (WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))
+	        {
+		        WorldFrame.Instance.M2Manager.PushMapReferences(this.mReferences);
+	        }
         }
 
         public void OnFrame()
         {
             if (mIsAsyncLoaded == false)
-                return;
+            {
+	            return;
+            }
 
-            if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
+	        if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
             {
                 if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mBoundingBox) == false)
                 {
                     if (M2Manager.IsViewDirty == false)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mModelBox) == false)
-                        return;
+	                if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mModelBox) == false)
+	                {
+		                return;
+	                }
                 }
 
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
                 {
                     if (M2Manager.IsViewDirty == false)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    PushDoodadReferences();
+	                PushDoodadReferences();
                     return;
                 }
             }
@@ -229,13 +253,17 @@ namespace Neo.Scene.Terrain
             if (mIsSyncLoaded == false)
             {
                 if (!BeginSyncLoad())
-                    return;
+                {
+	                return;
+                }
             }
 
             if (M2Manager.IsViewDirty)
-                PushDoodadReferences();
+            {
+	            PushDoodadReferences();
+            }
 
-            if (mData.IsAlphaChanged)
+	        if (mData.IsAlphaChanged)
             {
                 mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
                 mData.IsAlphaChanged = false;
@@ -281,11 +309,17 @@ namespace Neo.Scene.Terrain
 
                     var rotation = 0.0f;
                     if ((mData.Layers[i].Flags & 1) != 0)
-                        rotation += (float)Math.PI / 4.0f;
-                    if ((mData.Layers[i].Flags & 2) != 0)
-                        rotation += (float)Math.PI / 2.0f;
-                    if((mData.Layers[i].Flags & 4) != 0)
-                        rotation += (float)Math.PI;
+                    {
+	                    rotation += (float)Math.PI / 4.0f;
+                    }
+	                if ((mData.Layers[i].Flags & 2) != 0)
+	                {
+		                rotation += (float)Math.PI / 2.0f;
+	                }
+	                if((mData.Layers[i].Flags & 4) != 0)
+	                {
+		                rotation += (float)Math.PI;
+	                }
 
 	                var quat = Quaternion.FromAxisAngle(Vector3.UnitZ, rotation);
                     var dir = Vector2.Transform(new Vector2(0, 1), quat);

@@ -56,9 +56,11 @@ namespace Neo.Storage
             catch (Exception)
             {
                 if (FileManager.Instance.Version < FileDataVersion.Warlords)
-                    throw;
+                {
+	                throw;
+                }
 
-                CreatureDisplayInfo = new DB2File();
+	            CreatureDisplayInfo = new DB2File();
                 CreatureDisplayInfo.Load(@"DBFilesClient\CreatureDisplayInfo.db2");
             }
 
@@ -66,18 +68,22 @@ namespace Neo.Storage
             CreatureModelData.Load(@"DBFilesClient\CreatureModelData.dbc");
 
             if (FileManager.Instance.Version <= FileDataVersion.Mists)
-                InitLightsMop();
+            {
+	            InitLightsMop();
+            }
 
-            if(FileManager.Instance.Version == FileDataVersion.Lichking)
+	        if(FileManager.Instance.Version == FileDataVersion.Lichking)
             {
                 LightIntBand.Load(@"DBFilesClient\LightIntBand.dbc");
                 LightFloatBand.Load(@"DBFilesClient\LightFloatBand.dbc");
             }
 
             if(FileManager.Instance.Version <= FileDataVersion.Warlords)
-                FileData.Load(@"DBFilesClient\FileData.dbc");
+            {
+	            FileData.Load(@"DBFilesClient\FileData.dbc");
+            }
 
-            GroundEffectDoodad.Load(@"DBFilesClient\GroundEffectDoodad.dbc");
+	        GroundEffectDoodad.Load(@"DBFilesClient\GroundEffectDoodad.dbc");
             GroundEffectTexture.Load(@"DBFilesClient\GroundEffectTexture.dbc");
             AreaTable.Load(@"DBFilesClient\AreaTable.dbc");
 

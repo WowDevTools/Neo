@@ -26,7 +26,9 @@ namespace Neo.Scene.Models
                 {
                     int compare = renderB.Depth.CompareTo(renderA.Depth);
                     if (compare != 0)
-                        return compare;
+                    {
+	                    return compare;
+                    }
                 }
                 return first.CompareTo(second);
             }
@@ -66,9 +68,11 @@ namespace Neo.Scene.Models
         public void Intersect(IntersectionParams parameters)
         {
             if (mVisibleInstances == null || mNonBatchedInstances == null || mSortedInstances == null)
-                return;
+            {
+	            return;
+            }
 
-            var globalRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
+	        var globalRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
                 ref parameters.InverseProjection);
 
             var minDistance = float.MaxValue;
@@ -79,9 +83,11 @@ namespace Neo.Scene.Models
                 foreach (var pair in mVisibleInstances)
                 {
                     if (pair.Value.Uuid == Editing.ModelSpawnManager.M2InstanceUuid)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    float dist;
+	                float dist;
                     if (pair.Value.Intersects(parameters, ref globalRay, out dist) && dist < minDistance)
                     {
                         minDistance = dist;
@@ -141,16 +147,22 @@ namespace Neo.Scene.Models
                 M2BatchRenderer.BeginDraw();
                 // First draw all the instance batches
                 foreach (var renderer in mRenderer.Values)
-                    renderer.RenderBatch();
+                {
+	                renderer.RenderBatch();
+                }
 
-                M2SingleRenderer.BeginDraw();
+	            M2SingleRenderer.BeginDraw();
                 // Now draw those objects that need per instance animation
                 foreach (var instance in mNonBatchedInstances.Values)
-                    instance.Renderer.RenderSingleInstance(instance);
+                {
+	                instance.Renderer.RenderSingleInstance(instance);
+                }
 
-                // Then draw those that have alpha blending and need ordering
+	            // Then draw those that have alpha blending and need ordering
                 foreach (var instance in mSortedInstances.Values)
-                    instance.Renderer.RenderSingleInstance(instance);
+                {
+	                instance.Renderer.RenderSingleInstance(instance);
+                }
             }
 
             IsViewDirty = false;
@@ -161,15 +173,19 @@ namespace Neo.Scene.Models
             foreach (var instance in instances)
             {
                 if (instance == null || instance.RenderInstance == null || instance.RenderInstance.IsUpdated)
-                    continue;
+                {
+	                continue;
+                }
 
-                lock (mAddLock)
+	            lock (mAddLock)
                 {
                     M2Renderer renderer;
                     if (!mRenderer.TryGetValue(instance.Hash, out renderer))
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    renderer.PushMapReference(instance);
+	                renderer.PushMapReference(instance);
                     mVisibleInstances.Add(instance.Uuid, instance.RenderInstance);
 
                     var model = renderer.Model;
@@ -192,7 +208,9 @@ namespace Neo.Scene.Models
             lock (mAddLock)
             {
                 foreach (var instance in mVisibleInstances.Values)
-                    instance.UpdateBrushHighlighting(brushPosition, radius);
+                {
+	                instance.UpdateBrushHighlighting(brushPosition, radius);
+                }
             }
         }
 
@@ -206,7 +224,9 @@ namespace Neo.Scene.Models
                 mVisibleInstances.Clear();
 
                 foreach (var renderer in mRenderer.Values)
-                    renderer.ViewChanged();
+                {
+	                renderer.ViewChanged();
+                }
             }
         }
 
@@ -227,9 +247,11 @@ namespace Neo.Scene.Models
         {
             if (mRenderer == null || mAddLock == null || mSortedInstances == null || mNonBatchedInstances == null ||
                 mVisibleInstances == null)
-                return;
+            {
+	            return;
+            }
 
-            lock (mRenderer)
+	        lock (mRenderer)
             {
                 lock (mAddLock)
                 {
@@ -240,15 +262,21 @@ namespace Neo.Scene.Models
 
                 M2Renderer renderer;
                 if (!mRenderer.TryGetValue(hash, out renderer))
-                    return;
+                {
+	                return;
+                }
 
-                if (renderer.RemoveInstance(uuid))
+	            if (renderer.RemoveInstance(uuid))
                 {
                     lock (mAddLock)
-                        mRenderer.Remove(hash);
+                    {
+	                    this.mRenderer.Remove(hash);
+                    }
 
-                    lock (mUnloadList)
-                        mUnloadList.Add(renderer);
+	                lock (mUnloadList)
+	                {
+		                this.mUnloadList.Add(renderer);
+	                }
                 }
             }
         }
@@ -260,17 +288,23 @@ namespace Neo.Scene.Models
             {
                 M2Renderer renderer;
                 if (mRenderer.TryGetValue(hash, out renderer))
-                    return renderer.AddInstance(uuid, position, rotation, scaling);
+                {
+	                return renderer.AddInstance(uuid, position, rotation, scaling);
+                }
 
-                var file = LoadModel(model);
+	            var file = LoadModel(model);
                 if (file == null)
-                    return null;
+                {
+	                return null;
+                }
 
-                var render = new M2Renderer(file);
+	            var render = new M2Renderer(file);
                 lock (mAddLock)
-                    mRenderer.Add(hash, render);
+                {
+	                this.mRenderer.Add(hash, render);
+                }
 
-                return render.AddInstance(uuid, position, rotation, scaling);
+	            return render.AddInstance(uuid, position, rotation, scaling);
             }
         }
 
@@ -289,10 +323,14 @@ namespace Neo.Scene.Models
                 }
 
                 if (element != null)
-                    element.Dispose();
+                {
+	                element.Dispose();
+                }
 
-                if (element == null)
-                    Thread.Sleep(200);
+	            if (element == null)
+	            {
+		            Thread.Sleep(200);
+	            }
             }
         }
 

@@ -44,7 +44,10 @@ namespace Neo.Scene
 
         public void ForceUpdate(Vector3 position)
         {
-            if (PositionChanged != null) PositionChanged.Invoke(position, true);
+            if (PositionChanged != null)
+            {
+	            PositionChanged.Invoke(position, true);
+            }
         }
 
         public void Update(Camera cam, bool stateOnly)
@@ -125,9 +128,11 @@ namespace Neo.Scene
             }
 
             if (positionChanged && PositionChanged != null)
-                PositionChanged(cam.Position, updateTerrain);
+            {
+	            PositionChanged(cam.Position, updateTerrain);
+            }
 
-            mLastUpdate = DateTime.Now;
+	        mLastUpdate = DateTime.Now;
             mLastCursorPos = InterfaceHelper.GetCursorPosition();
         }
 

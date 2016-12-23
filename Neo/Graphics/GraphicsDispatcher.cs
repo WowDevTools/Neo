@@ -27,9 +27,11 @@ namespace Neo.Graphics
                 lock(mFrames)
                 {
                     if (mFrames.Count == 0)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    curFrame = mFrames[0];
+	                curFrame = mFrames[0];
                     mFrames.RemoveAt(0);
                 }
 
@@ -41,14 +43,18 @@ namespace Neo.Graphics
         public object BeginInvoke(Action frame)
         {
             lock (mFrames)
-                mFrames.Add(frame);
-            return frame;
+            {
+	            this.mFrames.Add(frame);
+            }
+	        return frame;
         }
 
         public void Remove(object token)
         {
             lock (mFrames)
-                mFrames.Remove((Action)token);
+            {
+	            this.mFrames.Remove((Action)token);
+            }
         }
     }
 }

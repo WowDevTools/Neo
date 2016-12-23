@@ -319,7 +319,10 @@ namespace Neo.Scene.Models.M2
             if (vertexShaderType < mVertexShaders_Instanced.Count)
             {
                 var vs = mVertexShaders_Instanced[vertexShaderType];
-                if (vs != null) return vs;
+                if (vs != null)
+                {
+	                return vs;
+                }
             }
 
             return mVertexShaders_Instanced[(int)M2VertexShaderType.VS_Diffuse_T1];
@@ -331,7 +334,10 @@ namespace Neo.Scene.Models.M2
             if (vertexShaderType < mVertexShaders_Single.Count)
             {
                 var vs = mVertexShaders_Single[vertexShaderType];
-                if (vs != null) return vs;
+                if (vs != null)
+                {
+	                return vs;
+                }
             }
 
             return mVertexShaders_Single[(int)M2VertexShaderType.VS_Diffuse_T1];
@@ -343,7 +349,10 @@ namespace Neo.Scene.Models.M2
             if (pixelShaderType < mPixelShaders.Count)
             {
                 var ps = mPixelShaders[pixelShaderType];
-                if (ps != null) return ps;
+                if (ps != null)
+                {
+	                return ps;
+                }
             }
 
             return mPixelShaders[(int)M2FragmentShaderType.PS_Combiners_Opaque];

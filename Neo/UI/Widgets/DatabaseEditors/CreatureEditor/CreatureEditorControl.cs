@@ -238,9 +238,11 @@ namespace Neo.UI.Dialogs
         private uint makeFlagOrBitmask(CheckedListBox list, Type e)
         {
             if (!e.IsEnum)
-                return 0;
+            {
+	            return 0;
+            }
 
-            uint myFlags = 0x0;
+	        uint myFlags = 0x0;
 
             foreach (Object item in list.CheckedItems)
             {
@@ -253,9 +255,11 @@ namespace Neo.UI.Dialogs
         private void checkFlagOrBitmask(CheckedListBox list, Type e, uint value)
         {
             if (!e.IsEnum)
-                return;
+            {
+	            return;
+            }
 
-            foreach (int i in list.CheckedIndices)
+	        foreach (int i in list.CheckedIndices)
             {
                 list.SetItemCheckState(i, CheckState.Unchecked);
             }
@@ -304,7 +308,10 @@ namespace Neo.UI.Dialogs
 
             var ctl = (this.Control as CreatureEditorControl).TabControl as TabControl;
             EnableDesignMode(ctl, "TabControl");
-            foreach (TabPage page in ctl.TabPages) EnableDesignMode(page, page.Name);
+            foreach (TabPage page in ctl.TabPages)
+            {
+	            EnableDesignMode(page, page.Name);
+            }
         }
     }
 }

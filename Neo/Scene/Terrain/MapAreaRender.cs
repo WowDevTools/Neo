@@ -30,44 +30,59 @@ namespace Neo.Scene.Terrain
         public void OnTextureChange(Editing.TextureChangeParameters parameters)
         {
             if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
-                return;
+            {
+	            return;
+            }
 
-            AreaFile.OnTextureTerrain(parameters);
+	        AreaFile.OnTextureTerrain(parameters);
         }
 
         public void OnTerrainChange(Editing.TerrainChangeParameters parameters)
         {
             if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
-                return;
+            {
+	            return;
+            }
 
-            mIsDirty = AreaFile.OnChangeTerrain(parameters);
+	        mIsDirty = AreaFile.OnChangeTerrain(parameters);
             if (!mIsDirty)
-                return;
+            {
+	            return;
+            }
 
-            mBoundingBox = AreaFile.BoundingBox;
+	        mBoundingBox = AreaFile.BoundingBox;
             foreach (var chunk in mChunks)
             {
-                if (chunk == null) continue;
+                if (chunk == null)
+                {
+	                continue;
+                }
 
-                chunk.UpdateBoundingBox();
+	            chunk.UpdateBoundingBox();
             }
         }
 
         public void OnUpdateModelPositions(Editing.TerrainChangeParameters parameters)
         {
             if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
-                return;
+            {
+	            return;
+            }
 
-            AreaFile.OnUpdateModelPositions(parameters);
+	        AreaFile.OnUpdateModelPositions(parameters);
         }
 
         public void OnFrame()
         {
             if (mAsyncLoaded == false)
-                return;
+            {
+	            return;
+            }
 
-            if (AreaFile.IsValid == false)
-                return;
+	        if (AreaFile.IsValid == false)
+	        {
+		        return;
+	        }
 
 	        // INVESTIGATE: Possible performance issue
 	        if(mSyncLoaded == false)
@@ -83,12 +98,16 @@ namespace Neo.Scene.Terrain
                 {
                     // step 1: reject the area if we dont have to update m2 models if its not in the sky sphere
                     if (!M2Manager.IsViewDirty || WorldFrame.Instance.State != AppState.World)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    // step 2: if models are supposed to be updated and the model box is not contained in the sky sphere
+	                // step 2: if models are supposed to be updated and the model box is not contained in the sky sphere
                     // it has to be rejected as well as there is no way it could ever contribute
                     if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mModelBox) == false)
-                        return;
+                    {
+	                    return;
+                    }
                 }
 
                 if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
@@ -124,16 +143,20 @@ namespace Neo.Scene.Terrain
             MapChunkRender.ChunkMesh.UpdateVertexBuffer(mVertexBuffer);
 
             foreach (var chunk in mChunks)
-                chunk.OnFrame();
+            {
+	            chunk.OnFrame();
+            }
         }
 
         public void AsyncLoaded(IO.Files.Terrain.MapArea area)
         {
             AreaFile = area;
             if (AreaFile.IsValid == false)
-                return;
+            {
+	            return;
+            }
 
-            for(var i = 0; i < 256; ++i)
+	        for(var i = 0; i < 256; ++i)
             {
                 var chunk = new MapChunkRender();
                 chunk.OnAsyncLoad(area.GetChunk(i), this);
@@ -157,9 +180,11 @@ namespace Neo.Scene.Terrain
                 for (var i = 0; i < 256; ++i)
                 {
                     if (mChunks[i] == null)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    mChunks[i].Dispose();
+	                mChunks[i].Dispose();
                     mChunks[i] = null;
                 }
 
@@ -180,7 +205,9 @@ namespace Neo.Scene.Terrain
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
                     if (vertexBuffer != null)
-                        vertexBuffer.Dispose();
+                    {
+	                    vertexBuffer.Dispose();
+                    }
                 });
 
                 mVertexBuffer = null;

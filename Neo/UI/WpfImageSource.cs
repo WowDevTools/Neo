@@ -15,7 +15,9 @@ namespace Neo.UI
         public unsafe static BitmapSource FromBgra(int width, int height, uint[] colors)
         {
             fixed (uint* ptr = colors)
-                return BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, new IntPtr(ptr), colors.Length * 4, width * 4);
+            {
+	            return BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, new IntPtr(ptr), colors.Length * 4, width * 4);
+            }
         }
 
         public static BitmapSource FromBgra(int width, int height, byte[] colors)

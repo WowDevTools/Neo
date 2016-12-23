@@ -50,9 +50,11 @@ namespace Neo.Scene.Terrain
         public void Render()
         {
             if (mSkyTexture == null)
-                return;
+            {
+	            return;
+            }
 
-            mMesh.Program.SetVertexUniformBuffer(1, mMatrixBuffer);
+	        mMesh.Program.SetVertexUniformBuffer(1, mMatrixBuffer);
             mMesh.Program.SetFragmentTexture(0, mSkyTexture);
             mMesh.BeginDraw();
             mMesh.Draw();

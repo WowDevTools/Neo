@@ -38,16 +38,22 @@ namespace Neo.UI.Components
         {
             var g = (sender as Grid);
             if (g == null)
-                return;
+            {
+	            return;
+            }
 
-            var height = g.RowDefinitions[1].ActualHeight;
+	        var height = g.RowDefinitions[1].ActualHeight;
             var width = g.ColumnDefinitions[1].ActualWidth;
             if (height < width)
-                width = height;
+            {
+	            width = height;
+            }
             else if (width < height)
-                height = width;
+            {
+	            height = width;
+            }
 
-            WdlPreviewImage.Width = width;
+	        WdlPreviewImage.Width = width;
             WdlPreviewImage.Height = height;
         }
 
@@ -94,9 +100,11 @@ namespace Neo.UI.Components
         {
             var mapRow = DbcStorage.Map.GetRowById(mSelectedMap);
             if (mapRow == null)
-                return;
+            {
+	            return;
+            }
 
-            var widescreen = false;
+	        var widescreen = false;
             var loadScreenPath = "Interface\\Glues\\loading.blp";
             var loadEntry = mapRow.GetInt32(MapFormatGuess.FieldMapLoadingScreen);
             if (loadEntry != 0)
@@ -123,10 +131,16 @@ namespace Neo.UI.Components
                 }
             }
 
-            if (string.IsNullOrEmpty(loadScreenPath)) return;
-            var wnd = DataContext as EditorWindow;
-            if (wnd == null) return;
-            Visibility = Visibility.Collapsed;
+            if (string.IsNullOrEmpty(loadScreenPath))
+            {
+	            return;
+            }
+	        var wnd = DataContext as EditorWindow;
+            if (wnd == null)
+            {
+	            return;
+            }
+	        Visibility = Visibility.Collapsed;
             wnd.LoadingScreenView.Visibility = Visibility.Visible;
             wnd.LoadingScreenView.OnLoadStarted(mSelectedMap, loadScreenPath, widescreen, new Vector2(x, y));
         }
@@ -136,7 +150,9 @@ namespace Neo.UI.Components
             var colors = new uint[17*64*17*64];
             var record = DbcStorage.Map.GetRowById(mapId);
             if (record == null)
-                return colors;
+            {
+	            return colors;
+            }
 
 	        WorldLOD wdlFile;
             var mapName = record.GetString(MapFormatGuess.FieldMapName);
@@ -156,9 +172,11 @@ namespace Neo.UI.Components
                 for (var j = 0; j < 64; ++j)
                 {
                     if (wdlFile.HasEntry(j, i) == false)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var entry = wdlFile.GetEntry(j, i);
+	                var entry = wdlFile.GetEntry(j, i);
                     LoadEntry(entry, colors, ref i, ref j);
                 }
             }
@@ -222,9 +240,11 @@ namespace Neo.UI.Components
                     }
 
                     if (k == 0 || l == 0)
-                        r = g = b = 0;
+                    {
+	                    r = g = b = 0;
+                    }
 
-                    textureData[(i * 17 + k) * (64 * 17) + j * 17 + l] = 0xFF000000 | (r << 16) | (g << 8) | (b << 0);
+	                textureData[(i * 17 + k) * (64 * 17) + j * 17 + l] = 0xFF000000 | (r << 16) | (g << 8) | (b << 0);
                 }
             }
         }

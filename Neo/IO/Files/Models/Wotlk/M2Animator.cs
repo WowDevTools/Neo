@@ -50,9 +50,11 @@ namespace Neo.IO.Files.Models.Wotlk
         public bool SetAnimation(uint animation)
         {
             if (mAnimations.Length == 0 && mAnimationLookup.Length == 0)
-                return false;
+            {
+	            return false;
+            }
 
-            if (Array.IndexOf(mAnimationLookup, (short)animation) >= 0)
+	        if (Array.IndexOf(mAnimationLookup, (short)animation) >= 0)
             {
                 mAnimationId = mAnimationLookup[animation];
                 mAnimation = mAnimations[mAnimationId];
@@ -98,18 +100,23 @@ namespace Neo.IO.Files.Models.Wotlk
         public void Update(BillboardParameters billboard)
         {
             if (mHasAnimation == false)
-                return;
+            {
+	            return;
+            }
 
-            var now = Environment.TickCount;
+	        var now = Environment.TickCount;
 
             var time = (uint)(now - mBoneStart);
             if (time >= mAnimation.length && ((mAnimation.flags & 0x20) == 0 || mAnimation.nextAnimation >= 0))
             {
                 if (mIsFinished)
                 {
-                    if (mAnimation.nextAnimation < 0 || mAnimation.nextAnimation >= mAnimations.Length) return;
+                    if (mAnimation.nextAnimation < 0 || mAnimation.nextAnimation >= mAnimations.Length)
+                    {
+	                    return;
+                    }
 
-                    mIsFinished = false;
+	                mIsFinished = false;
                     mBoneStart = now;
                     mAnimationId = mAnimation.nextAnimation;
                     mAnimation = mAnimations[mAnimationId];
@@ -122,20 +129,26 @@ namespace Neo.IO.Files.Models.Wotlk
             else
             {
                 if (mAnimation.length > 0)
-                    time %= mAnimation.length;
+                {
+	                time %= this.mAnimation.length;
+                }
             }
 
             for (var i = 0; i < mBoneCalculated.Length; ++i)
-                mBoneCalculated[i] = false;
+            {
+	            this.mBoneCalculated[i] = false;
+            }
 
-            lock (mBones)
+	        lock (mBones)
             {
                 for (var i = 0; i < mBones.Length; ++i)
                 {
                     if (mBoneCalculated[i])
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    mBones[i].UpdateMatrix(time, mAnimationId, out BoneMatrices[i], this, billboard);
+	                mBones[i].UpdateMatrix(time, mAnimationId, out BoneMatrices[i], this, billboard);
                     mBoneCalculated[i] = true;
                 }
             }
@@ -144,21 +157,27 @@ namespace Neo.IO.Files.Models.Wotlk
             lock (mUvAnimations)
             {
                 for (var i = 0; i < mUvAnimations.Length; ++i)
-                    mUvAnimations[i].UpdateMatrix(0, time, out UvMatrices[i]);
+                {
+	                this.mUvAnimations[i].UpdateMatrix(0, time, out this.UvMatrices[i]);
+                }
             }
 
             time = (uint)(now - mTexColorStart);
             lock (mTexColorAnimations)
             {
                 for (var i = 0; i < mTexColorAnimations.Length; ++i)
-                    mTexColorAnimations[i].UpdateValue(0, time, out Colors[i]);
+                {
+	                this.mTexColorAnimations[i].UpdateValue(0, time, out this.Colors[i]);
+                }
             }
 
             time = (uint)(now - mAlphaStart);
             lock (mAlphaAnimations)
             {
                 for (var i = 0; i < mAlphaAnimations.Length; ++i)
-                    mAlphaAnimations[i].UpdateValue(0, time, out Transparencies[i]);
+                {
+	                this.mAlphaAnimations[i].UpdateValue(0, time, out this.Transparencies[i]);
+                }
             }
 
             mIsDirty = true;
@@ -169,9 +188,11 @@ namespace Neo.IO.Files.Models.Wotlk
             lock (mTexColorAnimations)
             {
                 if (texAnim < Colors.Length && texAnim >= 0)
-                    return Colors[texAnim];
+                {
+	                return this.Colors[texAnim];
+                }
 
-                return Vector4.One;
+	            return Vector4.One;
             }
         }
 
@@ -180,9 +201,11 @@ namespace Neo.IO.Files.Models.Wotlk
             lock (mAlphaAnimations)
             {
                 if (alphaAnim >= 0 && alphaAnim < Transparencies.Length)
-                    return Transparencies[alphaAnim];
+                {
+	                return this.Transparencies[alphaAnim];
+                }
 
-                return 1.0f;
+	            return 1.0f;
             }
         }
 
@@ -204,14 +227,18 @@ namespace Neo.IO.Files.Models.Wotlk
         public bool GetBones(Matrix4[] bones)
         {
             if (mIsDirty == false)
-                return false;
+            {
+	            return false;
+            }
 
-            lock (mBones)
+	        lock (mBones)
             {
                 for (var i = 0; i < Math.Min(bones.Length, BoneMatrices.Length); ++i)
-                    bones[i] = BoneMatrices[i];
+                {
+	                bones[i] = this.BoneMatrices[i];
+                }
 
-                mIsDirty = false;
+	            mIsDirty = false;
                 return true;
             }
         }
@@ -227,12 +254,16 @@ namespace Neo.IO.Files.Models.Wotlk
             lock (mBones)
             {
                 if (bone < 0 || bone >= mBones.Length)
-                    return Matrix4.Identity;
+                {
+	                return Matrix4.Identity;
+                }
 
-                if (mBoneCalculated[bone])
-                    return BoneMatrices[bone];
+	            if (mBoneCalculated[bone])
+	            {
+		            return this.BoneMatrices[bone];
+	            }
 
-                mBones[bone].UpdateMatrix(time, mAnimationId, out BoneMatrices[bone], this, billboard);
+	            mBones[bone].UpdateMatrix(time, mAnimationId, out BoneMatrices[bone], this, billboard);
                 mBoneCalculated[bone] = true;
                 return BoneMatrices[bone];
             }
@@ -253,7 +284,9 @@ namespace Neo.IO.Files.Models.Wotlk
             BoneMatrices = new Matrix4[bones.Length];
             mBoneStart = Environment.TickCount;
             for (var i = 0; i < bones.Length; ++i)
-                BoneMatrices[i] = Matrix4.Identity;
+            {
+	            this.BoneMatrices[i] = Matrix4.Identity;
+            }
         }
 
         private void SetUvData(M2UVAnimation[] animations)

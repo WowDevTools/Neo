@@ -26,15 +26,23 @@ namespace Neo.Graphics
                 {
                     Plane.DotCoordinate(ref mPlanes[i], ref BoxCorners[k], out distance);
                     if (distance < 0)
-                        ++nOut;
+                    {
+	                    ++nOut;
+                    }
                     else
-                        ++nIn;
+                    {
+	                    ++nIn;
+                    }
                 }
 
                 if (nIn == 0)
-                    return ContainmentType.Disjoint;
-                if (nOut != 0)
-                    result = ContainmentType.Intersects;
+                {
+	                return ContainmentType.Disjoint;
+                }
+	            if (nOut != 0)
+	            {
+		            result = ContainmentType.Intersects;
+	            }
             }
 
             return result;
@@ -48,10 +56,14 @@ namespace Neo.Graphics
             {
                 Plane.DotNormal(ref mPlanes[i], ref sphere.Center, out distance);
                 if (distance < sphere.Radius)
-                    return ContainmentType.Disjoint;
+                {
+	                return ContainmentType.Disjoint;
+                }
 
-                if (Math.Abs(distance) < sphere.Radius)
-                    return ContainmentType.Intersects;
+	            if (Math.Abs(distance) < sphere.Radius)
+	            {
+		            return ContainmentType.Intersects;
+	            }
             }
 
             return ContainmentType.Contains;
@@ -130,7 +142,9 @@ namespace Neo.Graphics
                 Clip[15] + Clip[14]);
 
             for (var i = 0; i < 6; ++i)
-                mPlanes[i].Normalize();
+            {
+	            this.mPlanes[i].Normalize();
+            }
         }
     }
 }

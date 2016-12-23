@@ -32,7 +32,9 @@ namespace Neo.UI
                         try
                         {
                             fixed (byte* ptr = fileBuffer)
-                                gCollection.AddMemoryFont((IntPtr) ptr, fileBuffer.Length);
+                            {
+	                            gCollection.AddMemoryFont((IntPtr) ptr, fileBuffer.Length);
+                            }
                         }
                         catch (Exception)
                         {
@@ -42,7 +44,9 @@ namespace Neo.UI
                 }
 
                 foreach (var font in gCollection.Families)
-                    Log.Debug("Loaded font: " + font.Name);
+                {
+	                Log.Debug("Loaded font: " + font.Name);
+                }
             };
         }
 
@@ -57,19 +61,25 @@ namespace Neo.UI
                 {
                     Font curFont;
                     if (!fontRef.TryGetTarget(out curFont))
-                        return true;
+                    {
+	                    return true;
+                    }
 
-                    if (curFont.Name.ToUpperInvariant() == upperName &&
+	                if (curFont.Name.ToUpperInvariant() == upperName &&
                         curFont.Size == size && curFont.Style == style)
-                        font = curFont;
+	                {
+		                font = curFont;
+	                }
 
-                    return false;
+	                return false;
                 });
 
                 if (font != null)
-                    return font;
+                {
+	                return font;
+                }
 
-                var family = gCollection.Families.FirstOrDefault(
+	            var family = gCollection.Families.FirstOrDefault(
                     f => f.Name.ToUpperInvariant() == upperName);
 
                 font = (family != null)

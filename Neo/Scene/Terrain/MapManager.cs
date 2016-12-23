@@ -56,38 +56,50 @@ namespace Neo.Scene.Terrain
         {
             var index = iy * 0xFF + ix;
             lock (mAreas)
-                return mAreas.ContainsKey(index) ? mAreas[index] : null;
+            {
+	            return this.mAreas.ContainsKey(index) ? this.mAreas[index] : null;
+            }
         }
 
         public MapAreaRender GetAreaByPosition(Vector3 position)
         {
             lock(mAreas)
-                return mAreas.Values.FirstOrDefault(x => x.AreaFile.BoundingBox.Contains(position) == ContainmentType.Contains);
+            {
+	            return this.mAreas.Values.FirstOrDefault(x => x.AreaFile.BoundingBox.Contains(position) == ContainmentType.Contains);
+            }
         }
 
         public void OnEditTerrain(Editing.TerrainChangeParameters parameters)
         {
             // ReSharper disable once InconsistentlySynchronizedField
             foreach (var pair in mAreas)
-                pair.Value.OnTerrainChange(parameters);
+            {
+	            pair.Value.OnTerrainChange(parameters);
+            }
 
-            if(parameters.AlignModels)
+	        if(parameters.AlignModels)
             {
                 foreach (var pair in mAreas)
-                    pair.Value.OnUpdateModelPositions(parameters);
+                {
+	                pair.Value.OnUpdateModelPositions(parameters);
+                }
             }
         }
 
         public void OnTextureTerrain(Editing.TextureChangeParameters parameters)
         {
             foreach (var pair in mAreas)
-                pair.Value.OnTextureChange(parameters);
+            {
+	            pair.Value.OnTextureChange(parameters);
+            }
         }
 
         public void OnSaveAllFiles()
         {
             foreach (var pair in mAreas)
-                pair.Value.AreaFile.Save();
+            {
+	            pair.Value.AreaFile.Save();
+            }
         }
 
         public void Shutdown()
@@ -407,7 +419,9 @@ namespace Neo.Scene.Terrain
 	            {
 		            loadTile.AsyncLoad();
 		            lock (mLoadedData)
-			            mLoadedData.Add(loadTile);
+		            {
+			            this.mLoadedData.Add(loadTile);
+		            }
 	            }
 	            else
 	            {

@@ -30,9 +30,11 @@ namespace Neo.UI
             var text = DisplayIdBox.Text;
             int displayId;
             if (int.TryParse(text, out displayId) == false)
-                return;
+            {
+	            return;
+            }
 
-            ModelControl.SetCreatureDisplayEntry(displayId);
+	        ModelControl.SetCreatureDisplayEntry(displayId);
         }
     }
 }

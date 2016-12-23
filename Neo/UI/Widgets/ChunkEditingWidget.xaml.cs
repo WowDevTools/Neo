@@ -32,26 +32,34 @@ namespace Neo.UI.Widgets
             lstArea.Items.Clear();
 
             foreach (var at in Storage.DbcStorage.AreaTable.GetAllRows<IO.Files.Terrain.Wotlk.AreaTable>())
-                lstArea.Items.Add(new KeyValuePair<int, string>(at.Id, at.Areaname_Lang.Locale));
+            {
+	            this.lstArea.Items.Add(new KeyValuePair<int, string>(at.Id, at.Areaname_Lang.Locale));
+            }
 
-            lstArea.DisplayMemberPath = "Value";
+	        lstArea.DisplayMemberPath = "Value";
             lstArea.SelectedValuePath = "Key";
             lstArea.Items.SortDescriptions.Add(new System.ComponentModel.SortDescription("Value", System.ComponentModel.ListSortDirection.Ascending));
         }
 
         private void OnSelectedAreaId(int areaid)
         {
-            if (lstArea.Items.Count == 0) return;
+            if (lstArea.Items.Count == 0)
+            {
+	            return;
+            }
 
-            lstArea.SelectedValue = areaid;
+	        lstArea.SelectedValue = areaid;
             lstArea.ScrollIntoView(lstArea.SelectedItem);
         }
 
         private void OnHoveredAreaChange(int areaid)
         {
-            if (lstArea.Items.Count == 0) return;
+            if (lstArea.Items.Count == 0)
+            {
+	            return;
+            }
 
-            var area = lstArea.Items.Cast<KeyValuePair<int, string>>().FirstOrDefault(x => x.Key == areaid);
+	        var area = lstArea.Items.Cast<KeyValuePair<int, string>>().FirstOrDefault(x => x.Key == areaid);
             txtAreaName.Text =  $"Current Area: {(area.Key > 0 ? area.Value : "Unknown")}";
         }
 
@@ -60,30 +68,38 @@ namespace Neo.UI.Widgets
         {
             var model = DataContext as ChunkEditingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleChunkLinesChange(((CheckBox)e.Source).IsChecked.Value);
+	        model.HandleChunkLinesChange(((CheckBox)e.Source).IsChecked.Value);
         }
 
         private void chkAreaColour_Change(object sender, RoutedEventArgs e)
         {
             var model = DataContext as ChunkEditingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleAreaColourChange(((CheckBox)e.Source).IsChecked.Value);
+	        model.HandleAreaColourChange(((CheckBox)e.Source).IsChecked.Value);
         }
 
         private void lstArea_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lstArea.SelectedItem == null)
-                return;
+            {
+	            return;
+            }
 
-            var model = DataContext as ChunkEditingViewModel;
+	        var model = DataContext as ChunkEditingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleAreaSelectionChange(((KeyValuePair<int, string>)lstArea.SelectedItem).Key);
+	        model.HandleAreaSelectionChange(((KeyValuePair<int, string>)lstArea.SelectedItem).Key);
         }
 
         private void txtSearchArea_TextChanged(object sender, TextChangedEventArgs e)
@@ -99,26 +115,36 @@ namespace Neo.UI.Widgets
         {
             var model = DataContext as ChunkEditingViewModel;
             if (model == null || !(e.Source as RadioButton).IsChecked.Value)
-                return;
+            {
+	            return;
+            }
 
-            var rdo = sender as RadioButton;
+	        var rdo = sender as RadioButton;
             if (rdo.Name == "rdoPaintChunk")
-                model.SetChunkEditState(ChunkEditMode.AreaPaint);
+            {
+	            model.SetChunkEditState(ChunkEditMode.AreaPaint);
+            }
             else
-                model.SetChunkEditState(ChunkEditMode.AreaSelect);
+            {
+	            model.SetChunkEditState(ChunkEditMode.AreaSelect);
+            }
         }
 
         private void tabChunkMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var model = DataContext as ChunkEditingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            var tabControl = e.Source as TabControl;
+	        var tabControl = e.Source as TabControl;
             if (tabControl == null)
-                return;
+            {
+	            return;
+            }
 
-            switch ((tabControl.SelectedItem as TabItem).Name)
+	        switch ((tabControl.SelectedItem as TabItem).Name)
             {
                 case "tabChunkPaint":
                     model.SetChunkEditState(rdoPaintChunk.IsChecked.Value ? ChunkEditMode.AreaPaint : ChunkEditMode.AreaSelect); //Enforce correct mode
@@ -136,9 +162,11 @@ namespace Neo.UI.Widgets
         {
             var model = DataContext as ChunkEditingViewModel;
             if (model == null || rdoSmallHole == null || rdoCreateHole == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleHoleParamsChange(rdoSmallHole.IsChecked.Value, rdoCreateHole.IsChecked.Value);
+	        model.HandleHoleParamsChange(rdoSmallHole.IsChecked.Value, rdoCreateHole.IsChecked.Value);
         }
 
     }

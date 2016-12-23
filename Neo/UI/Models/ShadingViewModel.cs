@@ -17,9 +17,11 @@ namespace Neo.UI.Models
         public ShadingViewModel(ShadingWidget widget)
         {
             if (EditorWindowController.Instance != null)
-                EditorWindowController.Instance.ShadingModel = this;
+            {
+	            EditorWindowController.Instance.ShadingModel = this;
+            }
 
-            mWidget = widget;
+	        mWidget = widget;
         }
 
         #region HandleSliders
@@ -91,49 +93,61 @@ namespace Neo.UI.Models
         public void HandleInnerRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.InnerRadiusSlider.Value = newRadius;
+	        mWidget.InnerRadiusSlider.Value = newRadius;
         }
 
         public void HandleOuterRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.OuterRadiusSlider.Value = newRadius;
+	        mWidget.OuterRadiusSlider.Value = newRadius;
         }
 
         public void HandleIntensityChanged(float newAmount)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.IntensitySlider.Value = newAmount;
+	        mWidget.IntensitySlider.Value = newAmount;
         }
 
         public void HandlePenSensivityChanged(float newSensivity)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.Tablet_SensivitySlider.Value = newSensivity;
+	        mWidget.Tablet_SensivitySlider.Value = newSensivity;
         }
 
         public void HandleTabletControlChanged(bool newIsTabletOn)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.TabletControlBox.IsChecked = newIsTabletOn;
+	        mWidget.TabletControlBox.IsChecked = newIsTabletOn;
         }
 
         public void HandleShadingMultiplierChanged(Vector3 value)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.RedBox.Text = value.X.ToString();
+	        mWidget.RedBox.Text = value.X.ToString();
             mWidget.GreenBox.Text = value.Y.ToString();
             mWidget.BlueBox.Text = value.Z.ToString();
         }

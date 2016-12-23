@@ -27,9 +27,11 @@ namespace Neo.Utils
             {
                 mWatch.Stop();
                 if (mWatch.ElapsedMilliseconds >= mDelay)
-                    Log.Debug(string.Format("Task {0} finished in {1} milliseconds", mTask, mWatch.ElapsedMilliseconds));
+                {
+	                Log.Debug(string.Format("Task {0} finished in {1} milliseconds", this.mTask, this.mWatch.ElapsedMilliseconds));
+                }
 
-                mWatch = null;
+	            mWatch = null;
                 mTask = null;
             }
         }

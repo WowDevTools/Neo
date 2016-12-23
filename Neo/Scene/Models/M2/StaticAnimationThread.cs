@@ -33,13 +33,17 @@ namespace Neo.Scene.Models.M2
         public void AddAnimator(IM2Animator animator)
         {
             lock (mAnimators)
-                mAnimators.Add(animator);
+            {
+	            this.mAnimators.Add(animator);
+            }
         }
 
         public void RemoveAnimator(IM2Animator animator)
         {
             lock (mAnimators)
-                mAnimators.Remove(animator);
+            {
+	            this.mAnimators.Remove(animator);
+            }
         }
 
         private void AnimationProc()
@@ -49,7 +53,9 @@ namespace Neo.Scene.Models.M2
                 lock(mAnimators)
                 {
                     foreach (var animator in mAnimators)
-                        animator.Update(null);
+                    {
+	                    animator.Update(null);
+                    }
                 }
 
                 Thread.Sleep(20);

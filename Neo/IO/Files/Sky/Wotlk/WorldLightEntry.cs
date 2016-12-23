@@ -73,22 +73,30 @@ namespace Neo.IO.Files.Sky.Wotlk
             }
 
             if (idx < 0 || idx >= 2)
-                return 0.0f;
+            {
+	            return 0.0f;
+            }
 
-            var timeValues = mFloatTimes[idx];
+	        var timeValues = mFloatTimes[idx];
             var colorValues = mFloatTables[idx];
             if (timeValues.Count == 0)
-                return 0.0f;
+            {
+	            return 0.0f;
+            }
 
-            time %= 2880;
+	        time %= 2880;
 
             if (timeValues[0] > time)
-                time = timeValues[0];
+            {
+	            time = timeValues[0];
+            }
 
-            if (timeValues.Count == 1)
-                return colorValues[0];
+	        if (timeValues.Count == 1)
+	        {
+		        return colorValues[0];
+	        }
 
-            var v1 = 0.0f;
+	        var v1 = 0.0f;
             var v2 = 0.0f;
 
             uint t1 = 0;
@@ -119,9 +127,11 @@ namespace Neo.IO.Files.Sky.Wotlk
 
             var diff = t2 - t1;
             if (diff == 0)
-                return v1;
+            {
+	            return v1;
+            }
 
-            var sat = (time - t1) / (float)diff;
+	        var sat = (time - t1) / (float)diff;
             return (1 - sat) * v1 + sat * v2;
         }
 
@@ -131,20 +141,28 @@ namespace Neo.IO.Files.Sky.Wotlk
             time %= 2880;
 
             if (idx < 0 || idx >= 18)
-                return Vector3.Zero;
+            {
+	            return Vector3.Zero;
+            }
 
-            var timeValues = mTimeTables[idx];
+	        var timeValues = mTimeTables[idx];
             var colorValues = mColorTables[idx];
             if (timeValues.Count == 0)
-                return Vector3.Zero;
+            {
+	            return Vector3.Zero;
+            }
 
-            if (timeValues[0] > time)
-                time = timeValues[0];
+	        if (timeValues[0] > time)
+	        {
+		        time = timeValues[0];
+	        }
 
-            if (timeValues.Count == 1)
-                return colorValues[0];
+	        if (timeValues.Count == 1)
+	        {
+		        return colorValues[0];
+	        }
 
-            var v1 = Vector3.Zero;
+	        var v1 = Vector3.Zero;
             var v2 = Vector3.Zero;
 
             uint t1 = 0;
@@ -175,9 +193,11 @@ namespace Neo.IO.Files.Sky.Wotlk
 
             var diff = t2 - t1;
             if (diff == 0)
-                return v1;
+            {
+	            return v1;
+            }
 
-            var sat = (time - t1) / (float)diff;
+	        var sat = (time - t1) / (float)diff;
             return (1 - sat) * v1 + sat * v2;
         }
 
@@ -187,9 +207,12 @@ namespace Neo.IO.Files.Sky.Wotlk
             for (var i = 0; i < 18; ++i)
             {
                 var lib = Storage.DbcStorage.LightIntBand.GetRowById(baseIndex + i - 17);
-                if (lib == null) continue;
+                if (lib == null)
+                {
+	                continue;
+                }
 
-                var numEntries = lib.GetInt32(1);
+	            var numEntries = lib.GetInt32(1);
                 for (var j = 0; j < numEntries; ++j)
                 {
                     mColorTables[i].Add(ToVector(lib.GetUint32(18 + j)));

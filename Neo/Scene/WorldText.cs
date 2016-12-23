@@ -98,12 +98,16 @@ namespace Neo.Scene
         public WorldText(Font font = null, Brush brush = null)
         {
             if (font != null)
-                mFont = font;
+            {
+	            this.mFont = font;
+            }
 
-            if (brush != null)
-                mBrush = brush;
+	        if (brush != null)
+	        {
+		        this.mBrush = brush;
+	        }
 
-            Scaling = 1.0f;
+	        Scaling = 1.0f;
             DrawMode = TextDrawMode.TextDraw3D;
         }
 
@@ -152,7 +156,9 @@ namespace Neo.Scene
             }
 
             if (!mShouldDraw)
-                return;
+            {
+	            return;
+            }
 
 	        switch (DrawMode)
 	        {
@@ -239,9 +245,11 @@ namespace Neo.Scene
             var up = camera.Up * mHeight * 0.5f;
 
             if (camera.LeftHanded)
-                right = -right;
+            {
+	            right = -right;
+            }
 
-            gVertexBuffer.BufferData(new[]
+	        gVertexBuffer.BufferData(new[]
             {
                 new WorldTextVertex(center - (right + up) * scale, 0.0f, 0.0f),
                 new WorldTextVertex(center + (right - up) * scale, 1.0f, 0.0f),
@@ -269,27 +277,33 @@ namespace Neo.Scene
         private void UpdateText(string text)
         {
             if (text.Equals(mText))
-                return;
+            {
+	            return;
+            }
 
-            mText = text;
+	        mText = text;
             mIsDirty = true;
         }
 
         private void UpdateFont(Font font)
         {
             if (font.Equals(mFont))
-                return;
+            {
+	            return;
+            }
 
-            mFont = font;
+	        mFont = font;
             mIsDirty = true;
         }
 
         private void UpdateBrush(Brush brush)
         {
             if (brush.Equals(mBrush))
-                return;
+            {
+	            return;
+            }
 
-            mBrush = brush;
+	        mBrush = brush;
             mIsDirty = true;
         }
 

@@ -70,9 +70,11 @@ namespace Neo.Scene.Terrain
             var cy = position.Y;
 
             if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
-                cy = 64.0f * Metrics.TileSize - cy;
+            {
+	            cy = 64.0f * Metrics.TileSize - cy;
+            }
 
-            var ix = (int)Math.Floor(cx / Metrics.TileSize);
+	        var ix = (int)Math.Floor(cx / Metrics.TileSize);
             var iy = (int)Math.Floor(cy / Metrics.TileSize);
 
             var oldCount = mCurrentValidLinks.Count;
@@ -84,17 +86,21 @@ namespace Neo.Scene.Terrain
             });
 
             if (oldCount == mCurrentValidLinks.Count && oldCount != 0)
-                return;
+            {
+	            return;
+            }
 
-            mCurrentValidLinks.Clear();
+	        mCurrentValidLinks.Clear();
             for (var x = ix - 4; x <= ix + 4; ++x)
             {
                 for (var y = iy - 4; y <= iy + 4; ++y)
                 {
                     if (x < 0 || y < 0 || x > 63 || y > 63)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    mCurrentValidLinks.Add(y * 0xFF + x);
+	                mCurrentValidLinks.Add(y * 0xFF + x);
                 }
             }
 
@@ -135,7 +141,9 @@ namespace Neo.Scene.Terrain
 
                 var provider = new MapAreaLowRender(x, y);
                 lock (mDataToLoad)
-                    mDataToLoad.Add(provider);
+                {
+	                this.mDataToLoad.Add(provider);
+                }
             }
         }
 
@@ -149,16 +157,20 @@ namespace Neo.Scene.Terrain
                 {
                     var index = data.IndexX + data.IndexY * 0xFF;
                     if (mCurrentValidLinks.Contains(index) == false)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    mAreas.Add(data);
+	                mAreas.Add(data);
                 }
 
                 mLoadedData.Clear();
             }
 
             foreach (var area in mAreas)
-                area.OnFrame();
+            {
+	            area.OnFrame();
+            }
         }
 
         private void LoadProc()
@@ -183,7 +195,9 @@ namespace Neo.Scene.Terrain
 
                 item.InitFromHeightData(mWdlFile.GetEntry(item.IndexX, item.IndexY));
                 lock (mLoadedData)
-                    mLoadedData.Add(item);
+                {
+	                this.mLoadedData.Add(item);
+                }
             }
         }
 
@@ -194,9 +208,11 @@ namespace Neo.Scene.Terrain
                 lock (mUnloadAreas)
                 {
                     foreach (var area in mUnloadAreas)
-                        area.Dispose();
+                    {
+	                    area.Dispose();
+                    }
 
-                    mUnloadAreas.Clear();
+	                mUnloadAreas.Clear();
                 }
 
                 Thread.Sleep(1000);

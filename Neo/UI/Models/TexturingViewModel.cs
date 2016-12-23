@@ -35,13 +35,17 @@ namespace Neo.UI.Models
         public TexturingViewModel(TexturingWidget widget)
         {
             if (EditorWindowController.Instance != null)
-                EditorWindowController.Instance.TexturingModel = this;
+            {
+	            EditorWindowController.Instance.TexturingModel = this;
+            }
 
-            mWidget = widget;
+	        mWidget = widget;
             if (WorldFrame.Instance != null)
-                WorldFrame.Instance.OnWorldClicked += OnWorldClick;
+            {
+	            WorldFrame.Instance.OnWorldClicked += OnWorldClick;
+            }
 
-            FileManager.Instance.LoadComplete += OnFilesLoaded;
+	        FileManager.Instance.LoadComplete += OnFilesLoaded;
         }
 
         private void SetSelectedTileTextures(Control panel, IEnumerable<string> textures)
@@ -207,124 +211,156 @@ namespace Neo.UI.Models
         public void HandleInnerRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.InnerRadiusSlider.Value = newRadius;
+	        mWidget.InnerRadiusSlider.Value = newRadius;
         }
 
         public void HandleOuterRadiusChanged(float newRadius)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.OuterRadiusSlider.Value = newRadius;
+	        mWidget.OuterRadiusSlider.Value = newRadius;
         }
 
         public void HandleAmoutChanged(float newAmount)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.AmountSlider.Value = newAmount;
+	        mWidget.AmountSlider.Value = newAmount;
         }
 
         public void HandleOpacityChanged(float newOpacity)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.GradientSlider.Value = newOpacity;
+	        mWidget.GradientSlider.Value = newOpacity;
         }
 
         public void HandlePenSensivityChanged(float newSensivity)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.Tablet_SensivitySlider.Value = newSensivity;
+	        mWidget.Tablet_SensivitySlider.Value = newSensivity;
         }
 
         public void HandleTabletControlChanged(bool newIsTabletChanged)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.TabletControlBox.IsChecked = newIsTabletChanged;
+	        mWidget.TabletControlBox.IsChecked = newIsTabletChanged;
         }
 
         public void HandleSprayModeChanged(bool newIsSprayOn)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.SprayModeBox.IsChecked = newIsSprayOn;
+	        mWidget.SprayModeBox.IsChecked = newIsSprayOn;
         }
 
         public void HandleTabletChangeRadiusChanged(bool newIsTablet_RChanged)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.TabletControlBox_Radius.IsChecked = newIsTablet_RChanged;
+	        mWidget.TabletControlBox_Radius.IsChecked = newIsTablet_RChanged;
         }
 
         public void HandleTabletChangeInnerRadiusChanged(bool newIsTablet_IRChanged)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.TabletControlBox_InnerRadius.IsChecked = newIsTablet_IRChanged;
+	        mWidget.TabletControlBox_InnerRadius.IsChecked = newIsTablet_IRChanged;
         }
 
         public void HandleTabletControlPressureChanged(bool newIsTablet_PChanged)
         {
             if(mIsValueChangedSurpressed)
-                return;
-            mWidget.PressureControlBox.IsChecked = newIsTablet_PChanged;
+            {
+	            return;
+            }
+	        mWidget.PressureControlBox.IsChecked = newIsTablet_PChanged;
         }
 
         public void HandleAllowedAmplitudeChanged(float newAmplitude )
         {
             if (mIsValueChangedSurpressed)
-                return;
-            mWidget.Tablet_RadiusSlider.Value = newAmplitude;
+            {
+	            return;
+            }
+	        mWidget.Tablet_RadiusSlider.Value = newAmplitude;
         }
 
         public void HandleAllowedInnerAmplitudeChanged(float newInnerAmplitude)
         {
             if (mIsValueChangedSurpressed)
-                return;
-            mWidget.Tablet_InnerRadiusSlider.Value = newInnerAmplitude;
+            {
+	            return;
+            }
+	        mWidget.Tablet_InnerRadiusSlider.Value = newInnerAmplitude;
         }
 
         public void HandleParticleSizeChanged(float newSprayParticleSize)
         {
             if (mIsValueChangedSurpressed)
-                return;
-            mWidget.Spray_ParticleSizeSlider.Value = newSprayParticleSize;
+            {
+	            return;
+            }
+	        mWidget.Spray_ParticleSizeSlider.Value = newSprayParticleSize;
         }
 
         public void HandleParticleAmountChanged(float newSprayParticleAmount)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.Spray_ParticleAmountSlider.Value = newSprayParticleAmount;
+	        mWidget.Spray_ParticleAmountSlider.Value = newSprayParticleAmount;
         }
 
         public void HandleParticleHardnessChanged(float newSprayParticleHardness)
         {
             if (mIsValueChangedSurpressed)
-                return;
+            {
+	            return;
+            }
 
-            mWidget.Spray_ParticleHardnessSlider.Value = newSprayParticleHardness;
+	        mWidget.Spray_ParticleHardnessSlider.Value = newSprayParticleHardness;
         }
 
         public void HandleSpraySolidInnerRadiusChanged(bool newIsSpraySolidInnerRadius)
         {
             if (mIsValueChangedSurpressed)
-                return;
-            mWidget.SpraySolidInnerRadiusBox.IsChecked = newIsSpraySolidInnerRadius;
+            {
+	            return;
+            }
+	        mWidget.SpraySolidInnerRadiusBox.IsChecked = newIsSpraySolidInnerRadius;
         }
 
         public void SwitchToTexturing()
@@ -336,9 +372,11 @@ namespace Neo.UI.Models
         {
             var query = mWidget.TextureQueryBox.Text.ToLowerInvariant();
             if (string.IsNullOrEmpty(query) || query.Length < 4)
-                return;
+            {
+	            return;
+            }
 
-            var selectedFilters = (from CheckBox cb in mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string)cb.Content).ToLowerInvariant()).ToList();
+	        var selectedFilters = (from CheckBox cb in mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string)cb.Content).ToLowerInvariant()).ToList();
 
             mWidget.SearchResultLayout.Controls.Clear();
             var newValues =
@@ -377,9 +415,11 @@ namespace Neo.UI.Models
         public async void SearchForTexture(string query)
         {
             if (string.IsNullOrEmpty(query) || query.Length < 4)
-                return;
+            {
+	            return;
+            }
 
-            var selectedFilters = (from CheckBox cb in mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string) cb.Content).ToLowerInvariant()).ToList();
+	        var selectedFilters = (from CheckBox cb in mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string) cb.Content).ToLowerInvariant()).ToList();
 
             mWidget.SearchResultLayout.Controls.Clear();
             query = query.ToLowerInvariant();
@@ -420,9 +460,11 @@ namespace Neo.UI.Models
         {
             var curTexture = mWidget.TexturePreviewImage.Tag as string;
             if (string.IsNullOrEmpty(curTexture))
-                return;
+            {
+	            return;
+            }
 
-            curTexture = curTexture.ToLowerInvariant();
+	        curTexture = curTexture.ToLowerInvariant();
             var index = mFavoriteTextures.IndexOf(curTexture);
             if (index < 0)
             {
@@ -471,16 +513,20 @@ namespace Neo.UI.Models
             {
                 var loadInfo = TextureLoader.LoadToArgbImage(name);
                 if (loadInfo == null)
-                    return null;
+                {
+	                return null;
+                }
 
-                var bmp = new Bitmap(loadInfo.Width, loadInfo.Height, PixelFormat.Format32bppArgb);
+	            var bmp = new Bitmap(loadInfo.Width, loadInfo.Height, PixelFormat.Format32bppArgb);
                 var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly,
                     PixelFormat.Format32bppArgb);
 
                 fixed (byte* ptr = loadInfo.Layers[0])
-                    UnsafeNativeMethods.CopyMemory((byte*) bmpd.Scan0, ptr, bmp.Width * bmp.Height * 4);
+                {
+	                UnsafeNativeMethods.CopyMemory((byte*) bmpd.Scan0, ptr, bmp.Width * bmp.Height * 4);
+                }
 
-                bmp.UnlockBits(bmpd);
+	            bmp.UnlockBits(bmpd);
                 return bmp;
             });
         }
@@ -516,9 +562,11 @@ namespace Neo.UI.Models
                 };
 
                 if (pb.Image == null)
-                    pnl.Visible = false;
+                {
+	                pnl.Visible = false;
+                }
 
-                pnl.Controls.Add(pb);
+	            pnl.Controls.Add(pb);
 
                 SetEventHandlers(pb);
 
@@ -541,9 +589,11 @@ namespace Neo.UI.Models
             foreach (string tex in textures)
             {
                 if (mFavoriteTextures.Contains(tex.ToLowerInvariant()))
-                    continue;
+                {
+	                continue;
+                }
 
-                mFavoriteTextures.Add(tex.ToLowerInvariant());
+	            mFavoriteTextures.Add(tex.ToLowerInvariant());
 
                 var pnl = new Panel
                 {
@@ -565,9 +615,11 @@ namespace Neo.UI.Models
                 pnl.Controls.Add(pb);
 
                 if (pb.Image == null)
-                    pnl.Visible = false;
+                {
+	                pnl.Visible = false;
+                }
 
-                SetEventHandlers(pb);
+	            SetEventHandlers(pb);
                 mWidget.FavoriteWrapPanel.Controls.Add(pnl);
             }
         }
@@ -580,27 +632,33 @@ namespace Neo.UI.Models
             mWidget.Dispatcher.BeginInvoke(new Action(() =>
             {
                 foreach (var tex in Properties.Settings.Default.RecentTextures)
-                    AddRecentTexture(tex, true);
+                {
+	                AddRecentTexture(tex, true);
+                }
 
-                InitRecentTextures(Properties.Settings.Default.FavoriteTextures);
+	            InitRecentTextures(Properties.Settings.Default.FavoriteTextures);
             }));
         }
 
         private void HandleTilesetDirectory(DirectoryEntry dir, string curDir)
         {
             if (dir == null)
-                return;
+            {
+	            return;
+            }
 
-            foreach (var child in dir.Children)
+	        foreach (var child in dir.Children)
             {
                 var entry = child.Value as FileEntry;
                 if (entry != null)
                 {
                     var name = entry.Name.ToLowerInvariant();
                     if (name.Contains("_s.blp") || name.Contains("_h.blp") || !name.Contains(".blp"))
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    mTilesets.Add((curDir + "\\" + entry.Name).ToLowerInvariant());
+	                mTilesets.Add((curDir + "\\" + entry.Name).ToLowerInvariant());
                 }
                 else
                 {

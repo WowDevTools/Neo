@@ -64,9 +64,10 @@ namespace Neo.IO.Files.Models.Wotlk
                                 mHeader = reader.Read<Mogp>();
                                 IsIndoor = (mHeader.flags & 0x2000) != 0 && (mHeader.flags & 8) == 0;
                                 if (!LoadGroupChunks(reader, size - SizeCache<Mogp>.Size))
-                                    return false;
-
-                                readChunks = false;
+                                {
+	                                return false;
+                                }
+	                            readChunks = false;
                                 break;
                         }
 
@@ -90,7 +91,9 @@ namespace Neo.IO.Files.Models.Wotlk
                 Name = root.GetGroupNameByOffset(mHeader.groupName);
 
                 if (Name == "antiportal")
-                    DisableRendering = true;
+                {
+	                this.DisableRendering = true;
+                }
             }
 
             return true;
@@ -146,8 +149,10 @@ namespace Neo.IO.Files.Models.Wotlk
 
                     case 0x4D4F4241:
                         if (!LoadBatches(reader, chunkSize))
-                            return false;
-                        hasBatches = true;
+                        {
+	                        return false;
+                        }
+	                    hasBatches = true;
                         break;
                 }
 
@@ -158,7 +163,9 @@ namespace Neo.IO.Files.Models.Wotlk
             {
                 mTexCoords = new Vector2[mPositions.Length];
                 for (var i = 0; i < mTexCoords.Length; ++i)
-                    mTexCoords[i] = new Vector2(0, 0);
+                {
+	                this.mTexCoords[i] = new Vector2(0, 0);
+                }
             }
 
             if (mPositions.Length == 0 || mPositions.Length != mNormals.Length || mNormals.Length != mTexCoords.Length)
@@ -171,9 +178,11 @@ namespace Neo.IO.Files.Models.Wotlk
             }
 
             if (CombineVertexData() == false)
-                return false;
+            {
+	            return false;
+            }
 
-            mNormals = null;
+	        mNormals = null;
             mTexCoords = null;
             mColors = null;
 
@@ -196,9 +205,11 @@ namespace Neo.IO.Files.Models.Wotlk
         private void LoadTexCoords(BinaryReader reader, int size)
         {
             if (mTexCoordsLoaded && mTexCoords.Length > 0)
-                return;
+            {
+	            return;
+            }
 
-            mTexCoordsLoaded = true;
+	        mTexCoordsLoaded = true;
 
             var numTexCoords = size / SizeCache<Vector2>.Size;
             mTexCoords = reader.ReadArray<Vector2>(numTexCoords);
@@ -209,7 +220,9 @@ namespace Neo.IO.Files.Models.Wotlk
             var numNormals = size / SizeCache<Vector3>.Size;
             mNormals = reader.ReadArray<Vector3>(numNormals);
             for (var i = 0; i < mNormals.Length; ++i)
-                mNormals[i] = new Vector3(mNormals[i].X, -mNormals[i].Y, mNormals[i].Z);
+            {
+	            this.mNormals[i] = new Vector3(this.mNormals[i].X, -this.mNormals[i].Y, this.mNormals[i].Z);
+            }
         }
 
         private void LoadVertices(BinaryReader reader, int size)
@@ -217,7 +230,9 @@ namespace Neo.IO.Files.Models.Wotlk
             var numVertices = size / SizeCache<Vector3>.Size;
             mPositions = reader.ReadArray<Vector3>(numVertices);
             for(var i = 0; i < mPositions.Length; ++i)
-                mPositions[i] = new Vector3(mPositions[i].X, -mPositions[i].Y, mPositions[i].Z);
+            {
+	            this.mPositions[i] = new Vector3(this.mPositions[i].X, -this.mPositions[i].Y, this.mPositions[i].Z);
+            }
         }
 
         private bool CombineVertexData()
@@ -234,7 +249,9 @@ namespace Neo.IO.Files.Models.Wotlk
             {
                 mColors = new uint[mPositions.Length];
                 for (var i = 0; i < mPositions.Length; ++i)
-                    mColors[i] = IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
+                {
+	                this.mColors[i] = this.IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
+                }
             }
 
             if (mColors.Length < mVertices.Length)
@@ -242,10 +259,14 @@ namespace Neo.IO.Files.Models.Wotlk
                 var colors = mColors;
                 mColors = new uint[mVertices.Length];
                 if (colors.Length > 0)
-                    Buffer.BlockCopy(colors, 0, mColors, 0, colors.Length * 4);
+                {
+	                Buffer.BlockCopy(colors, 0, this.mColors, 0, colors.Length * 4);
+                }
 
-                for (var i = colors.Length; i < mColors.Length; ++i)
-                    mColors[i] = IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
+	            for (var i = colors.Length; i < mColors.Length; ++i)
+	            {
+		            this.mColors[i] = this.IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
+	            }
             }
 
             var parentAmbient = parent.AmbientColor;
@@ -278,12 +299,30 @@ namespace Neo.IO.Files.Models.Wotlk
                     Color = clr
                 };
 
-                if (v.X < minPos.X) minPos.X = v.X;
-                if (v.Y < minPos.Y) minPos.Y = v.Y;
-                if (v.Z < minPos.Z) minPos.Z = v.Z;
-                if (v.X > maxPos.X) maxPos.X = v.X;
-                if (v.Y > maxPos.Y) maxPos.Y = v.Y;
-                if (v.Z > maxPos.Z) maxPos.Z = v.Z;
+                if (v.X < minPos.X)
+                {
+	                minPos.X = v.X;
+                }
+	            if (v.Y < minPos.Y)
+	            {
+		            minPos.Y = v.Y;
+	            }
+	            if (v.Z < minPos.Z)
+	            {
+		            minPos.Z = v.Z;
+	            }
+	            if (v.X > maxPos.X)
+	            {
+		            maxPos.X = v.X;
+	            }
+	            if (v.Y > maxPos.Y)
+	            {
+		            maxPos.Y = v.Y;
+	            }
+	            if (v.Z > maxPos.Z)
+	            {
+		            maxPos.Z = v.Z;
+	            }
             }
 
             BoundingBox = new BoundingBox(minPos, maxPos);

@@ -50,15 +50,19 @@ namespace Neo.IO.Files.Terrain
         public int GetFreeM2Uuid()
         {
             if (DoodadInstances.Count >= (1 << 20) - 1)
-                return -1;
+            {
+	            return -1;
+            }
 
-            var upper = IndexY * 64 + IndexX;
+	        var upper = IndexY * 64 + IndexX;
             var lower = DoodadInstances.Count + 1;
             while (DoodadInstances.Any(i => i.Uuid == ((upper << 20) | lower)))
             {
                 ++lower;
                 if (lower >= (1 << 20) - 1)
-                    return -1;
+                {
+	                return -1;
+                }
             }
 
             return (upper << 20) | lower;
@@ -74,9 +78,11 @@ namespace Neo.IO.Files.Terrain
             if (DoodadInstances != null)
             {
                 foreach (var instance in DoodadInstances)
-                    WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+                {
+	                WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+                }
 
-                DoodadInstances.Clear();
+	            DoodadInstances.Clear();
                 DoodadInstances = null;
             }
 
@@ -119,43 +125,55 @@ namespace Neo.IO.Files.Terrain
             for (var i = 0; i < TextureNames.Count; ++i)
             {
                 if (string.Equals(TextureNames[i], textureName, StringComparison.InvariantCultureIgnoreCase))
-                    return i;
+                {
+	                return i;
+                }
             }
 
             TextureNames.Add(textureName);
 
             var specTex = Path.ChangeExtension(textureName, null) + "_s.blp";
             if (FileManager.Instance.Provider.Exists(specTex) == false)
-                mSpecularTextures.Add(DefaultTextures.Specular);
+            {
+	            this.mSpecularTextures.Add(DefaultTextures.Specular);
+            }
             else
-                mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+            {
+	            this.mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+            }
 
-            mTextures.Add(TextureManager.Instance.GetTexture(textureName));
+	        mTextures.Add(TextureManager.Instance.GetTexture(textureName));
             return TextureNames.Count - 1;
         }
 
         public string GetTextureName(int index)
         {
             if (index >= TextureNames.Count)
-                throw new IndexOutOfRangeException();
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return TextureNames[index];
+	        return TextureNames[index];
         }
 
         public Graphics.Texture GetTexture(int index)
         {
             if (index >= mTextures.Count)
-                throw new IndexOutOfRangeException();
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return mTextures[index];
+	        return mTextures[index];
         }
 
         public Graphics.Texture GetSpecularTexture(int index)
         {
             if(index >= mSpecularTextures.Count)
-                    throw new IndexOutOfRangeException();
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return mSpecularTextures[index];
+	        return mSpecularTextures[index];
         }
 
         protected void LoadSpecularTextures()
@@ -165,9 +183,13 @@ namespace Neo.IO.Files.Terrain
             {
                 var specTex = Path.ChangeExtension(tex, null) + "_s.blp";
                 if (FileManager.Instance.Provider.Exists(specTex) == false)
-                    mSpecularTextures.Add(DefaultTextures.Specular);
+                {
+	                this.mSpecularTextures.Add(DefaultTextures.Specular);
+                }
                 else
-                    mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+                {
+	                this.mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+                }
             }
         }
 

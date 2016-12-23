@@ -38,9 +38,11 @@ namespace Neo.UI
         {
             if (WorldFrame.Instance.State == AppState.FileSystemInit ||
                 WorldFrame.Instance.State == AppState.Splash)
-                return;
+            {
+	            return;
+            }
 
-            var mrt = new ModelRenderTest();
+	        var mrt = new ModelRenderTest();
             mrt.Show();
         }
 
@@ -180,9 +182,11 @@ namespace Neo.UI
         public void AddMessage(LogLevel logLevel, string title, string message)
         {
             if (Dispatcher.HasShutdownFinished || Dispatcher.HasShutdownStarted)
-                return;
+            {
+	            return;
+            }
 
-            Dispatcher.BeginInvoke(new Action(() =>
+	        Dispatcher.BeginInvoke(new Action(() =>
             {
                 var pr = new Paragraph { Margin = new Thickness(0, 0, 0, 0) };
                 var titleRun = new Run(title);
@@ -210,21 +214,32 @@ namespace Neo.UI
                 LogDocument.Blocks.Add(pr);
                 var scroller = LogDocument.Parent as FlowDocumentScrollViewer;
                 if (scroller == null)
-                    return;
+                {
+	                return;
+                }
 
-                if (VisualTreeHelper.GetChildrenCount(scroller) == 0)
-                    return;
+	            if (VisualTreeHelper.GetChildrenCount(scroller) == 0)
+	            {
+		            return;
+	            }
 
-                var child = VisualTreeHelper.GetChild(scroller, 0);
+	            var child = VisualTreeHelper.GetChild(scroller, 0);
                 if (child == null)
-                    return;
+                {
+	                return;
+                }
 
-                var border = VisualTreeHelper.GetChild(child, 0) as Decorator;
+	            var border = VisualTreeHelper.GetChild(child, 0) as Decorator;
                 if (border == null)
-                    return;
+                {
+	                return;
+                }
 
-                var scrollView = border.Child as ScrollViewer;
-                if (scrollView != null) scrollView.ScrollToBottom();
+	            var scrollView = border.Child as ScrollViewer;
+                if (scrollView != null)
+                {
+	                scrollView.ScrollToBottom();
+                }
             }));
         }
 
@@ -244,14 +259,18 @@ namespace Neo.UI
             wnd.Invoke(new Action(() => result = fd.Show(/*new WindowInteropHelper(this).Handle))*/IntPtr.Zero)));
 
             if (result != 0)
-                return;
+            {
+	            return;
+            }
 
-            IShellItem item;
+	        IShellItem item;
             fd.GetResult(out item);
             if (item == null)
-                return;
+            {
+	            return;
+            }
 
-            var ptrOut = IntPtr.Zero;
+	        var ptrOut = IntPtr.Zero;
             try
             {
                 item.GetDisplayName(Sigdn.Filesyspath, out ptrOut);
@@ -265,16 +284,20 @@ namespace Neo.UI
             finally
             {
                 if (ptrOut != IntPtr.Zero)
-                    Marshal.FreeCoTaskMem(ptrOut);
+                {
+	                Marshal.FreeCoTaskMem(ptrOut);
+                }
             }
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(PathTextBox.Text))
-                return;
+            {
+	            return;
+            }
 
-            Properties.Settings.Default.DataPath = PathTextBox.Text;
+	        Properties.Settings.Default.DataPath = PathTextBox.Text;
             Properties.Settings.Default.Save();
 
             SplashDocument.Visibility = Visibility.Collapsed;
@@ -305,9 +328,11 @@ namespace Neo.UI
                 var row = Storage.DbcStorage.Map.GetRow(i);
                 var title = row.GetString(Storage.MapFormatGuess.FieldMapTitle);
                 if (string.IsNullOrEmpty(filter) == false && title.ToLowerInvariant().Contains(filter.ToLowerInvariant()) == false)
-                    continue;
+                {
+	                continue;
+                }
 
-                var panel = new StackPanel
+	            var panel = new StackPanel
                 {
                     Orientation = Orientation.Vertical,
                     Width = 120,
@@ -334,9 +359,11 @@ namespace Neo.UI
                 {
                     var down = panel.Tag as Boolean?;
                     if (down ?? true)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    panel.Background = new SolidColorBrush(Color.FromRgb(120, 120, 120));
+	                panel.Background = new SolidColorBrush(Color.FromRgb(120, 120, 120));
 
                 };
 
@@ -344,8 +371,10 @@ namespace Neo.UI
                 {
                     var down = panel.Tag as Boolean?;
                     if (down ?? true)
-                        return;
-                    panel.Background = new SolidColorBrush(Color.FromRgb(80, 80, 80));
+                    {
+	                    return;
+                    }
+	                panel.Background = new SolidColorBrush(Color.FromRgb(80, 80, 80));
                 };
 
                 panel.MouseDown += (sender, args) =>
@@ -362,13 +391,17 @@ namespace Neo.UI
                         EntrySelectView.MapSelected(row.GetInt32(0));
                         var scroll = MapTileGrid.Parent as ScrollViewer;
                         if (scroll == null)
-                            return;
+                        {
+	                        return;
+                        }
 
-                        var g = scroll.Parent as Grid;
+	                    var g = scroll.Parent as Grid;
                         if (g != null)
-                            g.Visibility = Visibility.Collapsed;
+                        {
+	                        g.Visibility = Visibility.Collapsed;
+                        }
 
-                        EntrySelectView.Visibility = Visibility.Visible;
+	                    EntrySelectView.Visibility = Visibility.Visible;
                     }
 
                     panel.Background =
@@ -381,17 +414,23 @@ namespace Neo.UI
             }
 
             if (MapSortTypeCheckBox.IsChecked ?? false)
-                children.Sort((e1, e2) => String.Compare(((TextBlock)e1.Children[0]).Text, ((TextBlock)e2.Children[0]).Text, StringComparison.Ordinal));
+            {
+	            children.Sort((e1, e2) => String.Compare(((TextBlock)e1.Children[0]).Text, ((TextBlock)e2.Children[0]).Text, StringComparison.Ordinal));
+            }
 
-            children.ForEach(c => MapTileGrid.Children.Add(c));
+	        children.ForEach(c => MapTileGrid.Children.Add(c));
 
             var scroller = MapTileGrid.Parent as ScrollViewer;
             if (scroller == null)
-                return;
+            {
+	            return;
+            }
 
-            var grid = scroller.Parent as Grid;
+	        var grid = scroller.Parent as Grid;
             if (grid != null)
-                grid.Visibility = Visibility.Visible;
+            {
+	            grid.Visibility = Visibility.Visible;
+            }
         }
 
         private void RegistryButton_Click(object sender, RoutedEventArgs e)
@@ -399,9 +438,11 @@ namespace Neo.UI
             var result = LoadFromKey(Registry.CurrentUser) ?? LoadFromKey(Registry.LocalMachine);
 
             if (result == null)
-                return;
+            {
+	            return;
+            }
 
-            PathTextBox.Text = result;
+	        PathTextBox.Text = result;
         }
 
         private static string LoadFromKey(RegistryKey baseKey)
@@ -414,8 +455,10 @@ namespace Neo.UI
             {
                 var wowKey = baseKey.OpenSubKey(rootKey);
                 if (wowKey == null)
-                    return null;
-                return wowKey.GetValue("InstallPath") as string;
+                {
+	                return null;
+                }
+	            return wowKey.GetValue("InstallPath") as string;
             }
             catch (Exception)
             {
@@ -427,30 +470,40 @@ namespace Neo.UI
         {
             var element = (sender as Grid);
             if (element == null)
-                return;
+            {
+	            return;
+            }
 
-            var parent = element.Parent as Grid;
+	        var parent = element.Parent as Grid;
             if (parent == null)
-                return;
+            {
+	            return;
+            }
 
-            element.Height = parent.ActualHeight;
+	        element.Height = parent.ActualHeight;
         }
 
         private void WelcomePanel_Resize(object sender, SizeChangedEventArgs e) // Causes a crash on idling on 1920x1080 and (?) some other screen resoulutions. Some element resizes to negative value.
         {
             var element = sender as Grid;
             if (element == null)
-                return;
+            {
+	            return;
+            }
 
-            var scroller = MapTileGrid.Parent as ScrollViewer;
+	        var scroller = MapTileGrid.Parent as ScrollViewer;
             if (scroller == null)
-                return;
+            {
+	            return;
+            }
 
-            var grid = scroller.Parent as Grid;
+	        var grid = scroller.Parent as Grid;
             if (grid == null)
-                return;
+            {
+	            return;
+            }
 
-            grid.Height = element.ActualHeight;
+	        grid.Height = element.ActualHeight;
             grid.RowDefinitions[1].Height = new GridLength(Math.Max(0, element.ActualHeight - grid.RowDefinitions[0].Height.Value));
         }
 
@@ -537,8 +590,9 @@ namespace Neo.UI
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
-                EditorWindowController.Instance.IEditingModel.SwitchWidgets(1);
-
+            {
+	            EditorWindowController.Instance.IEditingModel.SwitchWidgets(1);
+            }
         }
 
         private void TexturingClick(object sender, RoutedEventArgs e)
@@ -549,8 +603,9 @@ namespace Neo.UI
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
-                EditorWindowController.Instance.IEditingModel.SwitchWidgets(3);
-
+            {
+	            EditorWindowController.Instance.IEditingModel.SwitchWidgets(3);
+            }
         }
 
         private void ShadingClick(object sender, RoutedEventArgs e)
@@ -561,7 +616,9 @@ namespace Neo.UI
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
-                EditorWindowController.Instance.IEditingModel.SwitchWidgets(4);
+            {
+	            EditorWindowController.Instance.IEditingModel.SwitchWidgets(4);
+            }
         }
 
         private void ModelSpawningClick(object sender, RoutedEventArgs e)
@@ -572,7 +629,9 @@ namespace Neo.UI
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
-                EditorWindowController.Instance.IEditingModel.SwitchWidgets(5);
+            {
+	            EditorWindowController.Instance.IEditingModel.SwitchWidgets(5);
+            }
         }
 
         private void ChunkEditingClick(object sender, RoutedEventArgs e)
@@ -583,13 +642,17 @@ namespace Neo.UI
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
-                EditorWindowController.Instance.IEditingModel.SwitchWidgets(6);
+            {
+	            EditorWindowController.Instance.IEditingModel.SwitchWidgets(6);
+            }
         }
 
         private void AssetBrowserDocument_IsActiveChanged(object sender, EventArgs e)
         {
             if (!AssetBrowserDocument.IsActive)
-                ThumbnailCache.Write(true);
+            {
+	            ThumbnailCache.Write(true);
+            }
         }
 
         private void MenuItem_Wireframe_Click(object sender, RoutedEventArgs e)

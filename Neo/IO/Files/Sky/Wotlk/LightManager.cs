@@ -26,18 +26,24 @@ namespace Neo.IO.Files.Sky.Wotlk
         public override void AsyncUpdate()
         {
             if (mActiveSky == null)
-                return;
+            {
+	            return;
+            }
 
-            var time = Utils.TimeManager.Instance.GetTime();
+	        var time = Utils.TimeManager.Instance.GetTime();
             var ms = (uint)(time.TotalMilliseconds * Properties.Settings.Default.DayNightScaling / 10.0f);
             if (Properties.Settings.Default.UseDayNightCycle == false)
-                ms = (uint)Properties.Settings.Default.DefaultDayTime;
+            {
+	            ms = (uint)Properties.Settings.Default.DefaultDayTime;
+            }
 
-            mActiveSky.Update(mLastPosition, ms);
+	        mActiveSky.Update(mLastPosition, ms);
             for (var i = 0; i < 18; ++i)
-                mCurColors[i] = mActiveSky.GetColor((LightColor)i);
+            {
+	            this.mCurColors[i] = this.mActiveSky.GetColor((LightColor)i);
+            }
 
-            mCurFloats[0] = mActiveSky.GetFloat(LightFloat.FogEnd);
+	        mCurFloats[0] = mActiveSky.GetFloat(LightFloat.FogEnd);
             mCurFloats[1] = mActiveSky.GetFloat(LightFloat.FogScale);
 
             var fogStart = mCurFloats[1] * mCurFloats[0];
@@ -59,9 +65,11 @@ namespace Neo.IO.Files.Sky.Wotlk
         public override void SyncUpdate()
         {
             if (mActiveSky == null)
-                return;
+            {
+	            return;
+            }
 
-            if (mIsTextureDirty)
+	        if (mIsTextureDirty)
             {
                 mIsTextureDirty = false;
 	            // TODO: Recreate texture from bitmap
@@ -91,9 +99,11 @@ namespace Neo.IO.Files.Sky.Wotlk
             var fog = mCurColors[(int)LightColor.Fog];
 
             for (var i = 0; i < 80; ++i)
-                mSkyGraph[i] = ToRgbx(ref fog);
+            {
+	            this.mSkyGraph[i] = ToRgbx(ref fog);
+            }
 
-            for (var i = 80; i < 90; ++i)
+	        for (var i = 80; i < 90; ++i)
             {
                 var sat = (i - 80) / 10.0f;
                 var clr = fog + (horizon - fog) * sat;

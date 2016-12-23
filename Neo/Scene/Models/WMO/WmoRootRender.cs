@@ -43,9 +43,13 @@ namespace Neo.Scene.Models.WMO
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
                 if (vb != null)
-                    vb.Dispose();
-                if (ib != null)
-                    ib.Dispose();
+                {
+	                vb.Dispose();
+                }
+	            if (ib != null)
+	            {
+		            ib.Dispose();
+	            }
             });
 
             mVertexBuffer = null;
@@ -54,9 +58,11 @@ namespace Neo.Scene.Models.WMO
             if (Groups != null)
             {
                 foreach (var group in Groups)
-                    group.Dispose();
+                {
+	                @group.Dispose();
+                }
 
-                Groups.Clear();
+	            Groups.Clear();
                 Groups = null;
             }
 
@@ -95,7 +101,9 @@ namespace Neo.Scene.Models.WMO
             if (mIsSyncLoaded == false)
             {
                 if (!BeginSyncLoad())
-                    return;
+                {
+	                return;
+                }
             }
 
             var mesh = WmoGroupRender.Mesh;

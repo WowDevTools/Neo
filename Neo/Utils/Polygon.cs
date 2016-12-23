@@ -16,8 +16,10 @@ namespace Neo.Utils
             if(Math.Abs(va.Y - vb.Y) < 1e-5 && Math.Abs(va.Y - vc.Y) < 1e-5)
             {
                 if ((vb.X <= va.X && va.X <= vc.X) || (vc.X <= va.X && va.X <= vb.X))
-                    return 0;
-                return 1;
+                {
+	                return 0;
+                }
+	            return 1;
             }
 
             if(vb.Y > c.Y)
@@ -28,15 +30,21 @@ namespace Neo.Utils
             }
 
             if (Math.Abs(va.Y - vb.Y) < 1e-5 && Math.Abs(va.X - vb.X) < 1e-5)
-                return 0;
+            {
+	            return 0;
+            }
 
-            if (va.Y <= vb.Y || va.Y > vc.Y)
-                return 1;
+	        if (va.Y <= vb.Y || va.Y > vc.Y)
+	        {
+		        return 1;
+	        }
 
-            var d = (vb.X - va.X) * (vc.Y - va.Y) - (vb.Y - va.Y) * (vc.X - va.X);
+	        var d = (vb.X - va.X) * (vc.Y - va.Y) - (vb.Y - va.Y) * (vc.X - va.X);
             if (d > 1e-5)
-                return -1;
-            return (d < -1e-5) ? (sbyte)1 : (sbyte)0;
+            {
+	            return -1;
+            }
+	        return (d < -1e-5) ? (sbyte)1 : (sbyte)0;
         }
 
         public void SetCoeffs(Vector2[] points)
@@ -52,32 +60,42 @@ namespace Neo.Utils
         public bool IsInside(ref Vector2 point)
         {
             if (mPoints.Length == 0)
-                return false;
+            {
+	            return false;
+            }
 
-            var t = -1;
+	        var t = -1;
             for(var i = 0; i < mPoints.Length - 1; ++i)
-                t *= CrossTest(ref point, ref mPoints[i], ref mPoints[i + 1]);
+            {
+	            t *= CrossTest(ref point, ref this.mPoints[i], ref this.mPoints[i + 1]);
+            }
 
-            return t >= 0;
+	        return t >= 0;
         }
 
         public float Distance(ref Vector2 point)
         {
             if (mPoints.Length == 0)
-                return float.MaxValue;
+            {
+	            return float.MaxValue;
+            }
 
-            var dist = float.MaxValue;
+	        var dist = float.MaxValue;
             for(var i = 0; i < mPoints.Length - 1; ++i)
             {
                 var p1 = mPoints[i];
                 var p2 = mPoints[i + 1];
                 if ((point - p1).LengthSquared < 1e-5)
-                    return 0.0f;
+                {
+	                return 0.0f;
+                }
 
-                if ((point - p2).LengthSquared < 1e-5)
-                    return 0.0f;
+	            if ((point - p2).LengthSquared < 1e-5)
+	            {
+		            return 0.0f;
+	            }
 
-                var l2 = (p2 - p1).LengthSquared;
+	            var l2 = (p2 - p1).LengthSquared;
                 if(l2 < 1e-5)
                 {
                     dist = Math.Min(dist, (point - p1).Length);
@@ -86,9 +104,13 @@ namespace Neo.Utils
 
                 var t = Vector2.Dot(point - p1, p2 - p1) / l2;
                 if (t < 0)
-                    dist = Math.Min(dist, (point - p1).Length);
+                {
+	                dist = Math.Min(dist, (point - p1).Length);
+                }
                 else if (t > 1.0f)
-                    dist = Math.Min(dist, (point - p2).Length);
+                {
+	                dist = Math.Min(dist, (point - p2).Length);
+                }
                 else
                 {
                     var proj = p1 + (p2 - p1) * t;

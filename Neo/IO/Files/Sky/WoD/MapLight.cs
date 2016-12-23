@@ -30,12 +30,16 @@ namespace Neo.IO.Files.Sky.WoD
         public bool GetColorForTime(int time, LightColor colorType, ref Vector3 color)
         {
             if (mDataEntries.Count == 0)
-                return false;
+            {
+	            return false;
+            }
 
-            if (mEntryArray.Length != mDataEntries.Count)
-                mEntryArray = mDataEntries.ToArray();
+	        if (mEntryArray.Length != mDataEntries.Count)
+	        {
+		        this.mEntryArray = this.mDataEntries.ToArray();
+	        }
 
-            if (mEntryArray.Length == 1)
+	        if (mEntryArray.Length == 1)
             {
                 color = ToRgb(colorType, ref mEntryArray[0]);
                 return true;
@@ -68,9 +72,12 @@ namespace Neo.IO.Files.Sky.WoD
                     break;
                 }
 
-                if (mEntryArray[i].timeValues > time || mEntryArray[i + 1].timeValues <= time) continue;
+                if (mEntryArray[i].timeValues > time || mEntryArray[i + 1].timeValues <= time)
+                {
+	                continue;
+                }
 
-                eIndex1 = i;
+	            eIndex1 = i;
                 eIndex2 = i + 1;
                 hasLight = true;
                 t1 = mEntryArray[eIndex1].timeValues;
@@ -79,9 +86,11 @@ namespace Neo.IO.Files.Sky.WoD
             }
 
             if (hasLight == false)
-                return false;
+            {
+	            return false;
+            }
 
-            if (t1 >= t2)
+	        if (t1 >= t2)
             {
                 color = ToRgb(colorType, ref mEntryArray[eIndex1]);
                 return true;
@@ -99,26 +108,34 @@ namespace Neo.IO.Files.Sky.WoD
         public bool GetAllColorsForTime(int time, Vector3[] colors)
         {
             if (mDataEntries.Count == 0)
-                return false;
+            {
+	            return false;
+            }
 
-            if (mEntryArray.Length != mDataEntries.Count)
-                mEntryArray = mDataEntries.ToArray();
+	        if (mEntryArray.Length != mDataEntries.Count)
+	        {
+		        this.mEntryArray = this.mDataEntries.ToArray();
+	        }
 
-            if (mEntryArray.Length == 1)
+	        if (mEntryArray.Length == 1)
             {
                 for (var i = 0; i < (int)LightColor.MaxLightType; ++i)
-                    colors[i] = ToRgb((LightColor)i, ref mEntryArray[0]);
+                {
+	                colors[i] = ToRgb((LightColor)i, ref this.mEntryArray[0]);
+                }
 
-                return true;
+	            return true;
             }
 
             var maxTime = mEntryArray[mEntryArray.Length - 1].timeValues;
             if (maxTime == 0 || mEntryArray[0].timeValues > time)
             {
                 for (var i = 0; i < (int)LightColor.MaxLightType; ++i)
-                    colors[i] = ToRgb((LightColor)i, ref mEntryArray[0]);
+                {
+	                colors[i] = ToRgb((LightColor)i, ref this.mEntryArray[0]);
+                }
 
-                return true;
+	            return true;
             }
 
             time %= 2880;
@@ -141,9 +158,12 @@ namespace Neo.IO.Files.Sky.WoD
                     break;
                 }
 
-                if (mEntryArray[i].timeValues > time || mEntryArray[i + 1].timeValues <= time) continue;
+                if (mEntryArray[i].timeValues > time || mEntryArray[i + 1].timeValues <= time)
+                {
+	                continue;
+                }
 
-                eIndex1 = i;
+	            eIndex1 = i;
                 eIndex2 = i + 1;
                 hasLight = true;
                 t1 = mEntryArray[eIndex1].timeValues;
@@ -152,14 +172,18 @@ namespace Neo.IO.Files.Sky.WoD
             }
 
             if (hasLight == false)
-                return false;
+            {
+	            return false;
+            }
 
-            if (t1 >= t2)
+	        if (t1 >= t2)
             {
                 for (var i = 0; i < (int)LightColor.MaxLightType; ++i)
-                    colors[i] = ToRgb((LightColor)i, ref mEntryArray[eIndex1]);
+                {
+	                colors[i] = ToRgb((LightColor)i, ref this.mEntryArray[eIndex1]);
+                }
 
-                return true;
+	            return true;
             }
 
             var diff = t2 - t1;
@@ -178,26 +202,34 @@ namespace Neo.IO.Files.Sky.WoD
         public bool GetAllFloatsForTime(int time, float[] floats)
         {
             if (mDataEntries.Count == 0)
-                return false;
+            {
+	            return false;
+            }
 
-            if (mEntryArray.Length != mDataEntries.Count)
-                mEntryArray = mDataEntries.ToArray();
+	        if (mEntryArray.Length != mDataEntries.Count)
+	        {
+		        this.mEntryArray = this.mDataEntries.ToArray();
+	        }
 
-            if(mEntryArray.Length == 1)
+	        if(mEntryArray.Length == 1)
             {
                 for (var i = 0; i < (int) LightFloat.MaxLightFloat; ++i)
-                    floats[i] = ToFloat((LightFloat) i, ref mEntryArray[0]);
+                {
+	                floats[i] = ToFloat((LightFloat) i, ref this.mEntryArray[0]);
+                }
 
-                return true;
+	            return true;
             }
 
             var maxTime = mEntryArray[mEntryArray.Length - 1].timeValues;
             if(maxTime == 0 || mEntryArray[0].timeValues > time)
             {
                 for (var i = 0; i < (int)LightFloat.MaxLightFloat; ++i)
-                    floats[i] = ToFloat((LightFloat)i, ref mEntryArray[0]);
+                {
+	                floats[i] = ToFloat((LightFloat)i, ref this.mEntryArray[0]);
+                }
 
-                return true;
+	            return true;
             }
 
             time %= 2880;
@@ -220,9 +252,12 @@ namespace Neo.IO.Files.Sky.WoD
                     break;
                 }
 
-                if (mEntryArray[i].timeValues > time || mEntryArray[i + 1].timeValues <= time) continue;
+                if (mEntryArray[i].timeValues > time || mEntryArray[i + 1].timeValues <= time)
+                {
+	                continue;
+                }
 
-                eIndex1 = i;
+	            eIndex1 = i;
                 eIndex2 = i + 1;
                 hasLight = true;
                 t1 = mEntryArray[eIndex1].timeValues;
@@ -231,14 +266,18 @@ namespace Neo.IO.Files.Sky.WoD
             }
 
             if (hasLight == false)
-                return false;
+            {
+	            return false;
+            }
 
-            if(t1 >= t2)
+	        if(t1 >= t2)
             {
                 for (var i = 0; i < (int) LightFloat.MaxLightFloat; ++i)
-                    floats[i] = ToFloat((LightFloat) i, ref mEntryArray[eIndex1]);
+                {
+	                floats[i] = ToFloat((LightFloat) i, ref this.mEntryArray[eIndex1]);
+                }
 
-                return true;
+	            return true;
             }
 
             var diff = t2 - t1;

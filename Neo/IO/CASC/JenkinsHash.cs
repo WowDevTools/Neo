@@ -18,9 +18,11 @@ namespace Neo.IO.CASC
             a = b = c = 0xdeadbeef + (uint)length;
 
             if ((data.Length % 12) != 0)
-                Array.Resize(ref data, data.Length + (12 - (data.Length % 12)));
+            {
+	            Array.Resize(ref data, data.Length + (12 - (data.Length % 12)));
+            }
 
-            var k = 0;
+	        var k = 0;
 
             while (length > 12)
             {

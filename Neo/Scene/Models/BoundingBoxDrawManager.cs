@@ -35,8 +35,10 @@ namespace Neo.Scene.Models
         public void Dispose()
         {
             if (mVertexBuffer != null)
-                mVertexBuffer.Dispose();
-            mVertexBuffer = null;
+            {
+	            this.mVertexBuffer.Dispose();
+            }
+	        mVertexBuffer = null;
         }
 
         public void OnFrame(Mesh mesh)

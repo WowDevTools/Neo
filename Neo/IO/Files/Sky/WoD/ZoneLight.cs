@@ -20,9 +20,11 @@ namespace Neo.IO.Files.Sky.WoD
         public void CreatePolygon()
         {
             if (mPoints.Count > 0)
-                mPoints.Sort((p1, p2) => p1.Counter.CompareTo(p2.Counter));
+            {
+	            this.mPoints.Sort((p1, p2) => p1.Counter.CompareTo(p2.Counter));
+            }
 
-            var polyPoints = mPoints.Select(p =>
+	        var polyPoints = mPoints.Select(p =>
             {
                 var x = Metrics.MapMidPoint - p.Z;
                 var y = Metrics.MapMidPoint - p.X;
