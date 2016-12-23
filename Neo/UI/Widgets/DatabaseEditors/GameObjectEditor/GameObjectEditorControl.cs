@@ -33,7 +33,7 @@ namespace Neo.UI.Dialog
             if (!string.IsNullOrEmpty(pModelId))
             {
                 int displayId;
-                if (Int32.TryParse(pModelId, out displayId))
+                if (int.TryParse(pModelId, out displayId))
                 {
                     MessageBox.Show("" + displayId);
                 }
@@ -164,7 +164,7 @@ namespace Neo.UI.Dialog
 
 	        uint myFlags = 0x0;
 
-            foreach (Object item in list.CheckedItems)
+            foreach (object item in list.CheckedItems)
             {
                 myFlags += Convert.ToUInt32(Enum.Parse(e, item.ToString()));
             }

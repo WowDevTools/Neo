@@ -117,7 +117,7 @@ namespace Neo.Editing
             }
         }
 
-        private void HandlePenMessage(Object sender_I, MessageReceivedEventArgs eventArgs_I)
+        private void HandlePenMessage(object sender_I, MessageReceivedEventArgs eventArgs_I)
         {
             if (m_wtData == null)
             {

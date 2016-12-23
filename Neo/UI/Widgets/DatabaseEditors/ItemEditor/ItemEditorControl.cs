@@ -391,7 +391,7 @@ namespace Neo.UI.Dialog
 
 	        long myFlags = 0x0;
 
-            foreach (Object item in list.CheckedItems)
+            foreach (object item in list.CheckedItems)
             {
                 myFlags += Convert.ToInt64(Enum.Parse(e, item.ToString()));
             }

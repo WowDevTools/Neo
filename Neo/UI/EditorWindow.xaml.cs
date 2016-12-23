@@ -357,7 +357,7 @@ namespace Neo.UI
 
                 panel.MouseEnter += (sender, args) =>
                 {
-                    var down = panel.Tag as Boolean?;
+                    var down = panel.Tag as bool?;
                     if (down ?? true)
                     {
 	                    return;
@@ -369,7 +369,7 @@ namespace Neo.UI
 
                 panel.MouseLeave += (sender, args) =>
                 {
-                    var down = panel.Tag as Boolean?;
+                    var down = panel.Tag as bool?;
                     if (down ?? true)
                     {
 	                    return;
@@ -386,7 +386,7 @@ namespace Neo.UI
 
                 panel.MouseUp += (sender, args) =>
                 {
-                    if ((panel.Tag as Boolean?) ?? false)
+                    if ((panel.Tag as bool?) ?? false)
                     {
                         EntrySelectView.MapSelected(row.GetInt32(0));
                         var scroll = MapTileGrid.Parent as ScrollViewer;
@@ -415,7 +415,7 @@ namespace Neo.UI
 
             if (MapSortTypeCheckBox.IsChecked ?? false)
             {
-	            children.Sort((e1, e2) => String.Compare(((TextBlock)e1.Children[0]).Text, ((TextBlock)e2.Children[0]).Text, StringComparison.Ordinal));
+	            children.Sort((e1, e2) => string.Compare(((TextBlock)e1.Children[0]).Text, ((TextBlock)e2.Children[0]).Text, StringComparison.Ordinal));
             }
 
 	        children.ForEach(c => MapTileGrid.Children.Add(c));

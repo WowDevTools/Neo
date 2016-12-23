@@ -8,24 +8,24 @@ namespace Neo.Dbc
     public class IniParser
     {
         private Hashtable _keyPairs = new Hashtable();
-        private String _iniFilePath;
+        private string _iniFilePath;
 
         private struct SectionPair
         {
-            public String Section;
-            public String Key;
+            public string Section;
+            public string Key;
         }
 
         /// <summary>
         /// Opens the INI file at the given path and enumerates the values in the IniParser.
         /// </summary>
         /// <param name="iniPath">Full path to INI file.</param>
-        public IniParser(String iniPath)
+        public IniParser(string iniPath)
         {
             TextReader iniFile = null;
-            String strLine = null;
-            String currentRoot = null;
-            String[] keyPair = null;
+            string strLine = null;
+            string currentRoot = null;
+            string[] keyPair = null;
 
             _iniFilePath = iniPath;
 
@@ -52,7 +52,7 @@ namespace Neo.Dbc
                                 keyPair = strLine.Split(new char[] { '=' }, 2);
 
                                 SectionPair sectionPair;
-                                String value = null;
+                                string value = null;
 
                                 if (currentRoot == null)
                                 {
@@ -98,20 +98,20 @@ namespace Neo.Dbc
         /// </summary>
         /// <param name="sectionName">Section name.</param>
         /// <param name="settingName">Key name.</param>
-        public String GetSetting(String sectionName, String settingName)
+        public string GetSetting(string sectionName, string settingName)
         {
             SectionPair sectionPair;
             sectionPair.Section = sectionName.ToUpper();
             sectionPair.Key = settingName.ToUpper();
 
-            return (String)_keyPairs[sectionPair];
+            return (string)_keyPairs[sectionPair];
         }
 
         /// <summary>
         /// Enumerates all lines for given section.
         /// </summary>
         /// <param name="sectionName">Section to enum.</param>
-        public String[] EnumSection(String sectionName)
+        public string[] EnumSection(string sectionName)
         {
             ArrayList tmpArray = new ArrayList();
 
@@ -123,7 +123,7 @@ namespace Neo.Dbc
                 }
             }
 
-            return (String[])tmpArray.ToArray(typeof(String));
+            return (string[])tmpArray.ToArray(typeof(string));
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Neo.Dbc
         /// <param name="sectionName">Section to add under.</param>
         /// <param name="settingName">Key name to add.</param>
         /// <param name="settingValue">Value of key.</param>
-        public void AddSetting(String sectionName, String settingName, String settingValue)
+        public void AddSetting(string sectionName, string settingName, string settingValue)
         {
             SectionPair sectionPair;
             sectionPair.Section = sectionName.ToUpper();
@@ -151,7 +151,7 @@ namespace Neo.Dbc
         /// </summary>
         /// <param name="sectionName">Section to add under.</param>
         /// <param name="settingName">Key name to add.</param>
-        public void AddSetting(String sectionName, String settingName)
+        public void AddSetting(string sectionName, string settingName)
         {
             AddSetting(sectionName, settingName, null);
         }
@@ -161,7 +161,7 @@ namespace Neo.Dbc
         /// </summary>
         /// <param name="sectionName">Section to add under.</param>
         /// <param name="settingName">Key name to add.</param>
-        public void DeleteSetting(String sectionName, String settingName)
+        public void DeleteSetting(string sectionName, string settingName)
         {
             SectionPair sectionPair;
             sectionPair.Section = sectionName.ToUpper();
@@ -177,11 +177,11 @@ namespace Neo.Dbc
         /// Save settings to new file.
         /// </summary>
         /// <param name="newFilePath">New file path.</param>
-        public void SaveSettings(String newFilePath)
+        public void SaveSettings(string newFilePath)
         {
             ArrayList sections = new ArrayList();
-            String tmpValue = "";
-            String strToSave = "";
+            string tmpValue = "";
+            string strToSave = "";
 
             foreach (SectionPair sectionPair in _keyPairs.Keys)
             {
@@ -191,7 +191,7 @@ namespace Neo.Dbc
                 }
             }
 
-            foreach (String section in sections)
+            foreach (string section in sections)
             {
                 strToSave += ("[" + section + "]\r\n");
 
@@ -199,7 +199,7 @@ namespace Neo.Dbc
                 {
                     if (sectionPair.Section == section)
                     {
-                        tmpValue = (String)_keyPairs[sectionPair];
+                        tmpValue = (string)_keyPairs[sectionPair];
 
                         if (tmpValue != null)
                         {
