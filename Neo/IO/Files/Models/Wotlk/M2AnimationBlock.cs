@@ -20,32 +20,32 @@ namespace Neo.IO.Files.Models.Wotlk
         {
             if (data.globalSequence >= 0 && data.globalSequence < file.GlobalSequences.Length)
             {
-                mGlobalSequence = file.GlobalSequences[data.globalSequence];
-                mHasGlobalSequence = true;
+	            this.mGlobalSequence = file.GlobalSequences[data.globalSequence];
+	            this.mHasGlobalSequence = true;
             }
 
-            mDefaultValue = defaultValue;
-            mFileBlock = data;
+	        this.mDefaultValue = defaultValue;
+	        this.mFileBlock = data;
 
             Load(reader);
         }
 
         public TDest GetValue(int timeline, uint time, uint length)
         {
-            if (timeline >= mTimestamps.Length || timeline >= mValues.Length)
+            if (timeline >= this.mTimestamps.Length || timeline >= this.mValues.Length)
             {
 	            return this.mDefaultValue;
             }
 
-	        var tl = mTimestamps[timeline];
-            var values = mValues[timeline];
+	        var tl = this.mTimestamps[timeline];
+            var values = this.mValues[timeline];
 
             if (tl.Length == 0 || values.Length == 0)
             {
 	            return this.mDefaultValue;
             }
 
-	        if (mHasGlobalSequence && mGlobalSequence > 0)
+	        if (this.mHasGlobalSequence && this.mGlobalSequence > 0)
 	        {
 		        time %= this.mGlobalSequence;
 	        }
@@ -87,20 +87,20 @@ namespace Neo.IO.Files.Models.Wotlk
 
         public TDest GetValueDefaultLength(int timeline, uint timeFull)
         {
-            if (timeline >= mTimestamps.Length || timeline >= mValues.Length)
+            if (timeline >= this.mTimestamps.Length || timeline >= this.mValues.Length)
             {
 	            return this.mDefaultValue;
             }
 
-	        var tl = mTimestamps[timeline];
-            var values = mValues[timeline];
+	        var tl = this.mTimestamps[timeline];
+            var values = this.mValues[timeline];
 
             if (tl.Length == 0 || values.Length == 0)
             {
 	            return this.mDefaultValue;
             }
 
-	        if (mHasGlobalSequence && mGlobalSequence > 0)
+	        if (this.mHasGlobalSequence && this.mGlobalSequence > 0)
 	        {
 		        timeFull %= this.mGlobalSequence;
 	        }
@@ -118,8 +118,8 @@ namespace Neo.IO.Files.Models.Wotlk
 
         private TDest InterpolateValue(uint time, int timeline)
         {
-            var tl = mTimestamps[timeline];
-            var values = mValues[timeline];
+            var tl = this.mTimestamps[timeline];
+            var values = this.mValues[timeline];
 
             var maxIndex = Math.Min(tl.Length, values.Length);
 
@@ -168,29 +168,29 @@ namespace Neo.IO.Files.Models.Wotlk
 
         private void Load(BinaryReader reader)
         {
-            mTimestamps = new uint[mFileBlock.numTimeStamps][];
-            mValues = new TSource[mFileBlock.numValues][];
+	        this.mTimestamps = new uint[this.mFileBlock.numTimeStamps][];
+	        this.mValues = new TSource[this.mFileBlock.numValues][];
 
-            reader.BaseStream.Position = mFileBlock.ofsTimeStamps;
-            var timeStampEntries = reader.ReadArray<ulong>(mFileBlock.numTimeStamps);
+            reader.BaseStream.Position = this.mFileBlock.ofsTimeStamps;
+            var timeStampEntries = reader.ReadArray<ulong>(this.mFileBlock.numTimeStamps);
 
-            for (var i = 0; i < mFileBlock.numTimeStamps; ++i)
+            for (var i = 0; i < this.mFileBlock.numTimeStamps; ++i)
             {
                 var count = timeStampEntries[i] & 0xFFFFFFFF;
                 var offset = (uint)(timeStampEntries[i] >> 32);
                 reader.BaseStream.Position = offset;
-                mTimestamps[i] = reader.ReadArray<uint>((int)count);
+	            this.mTimestamps[i] = reader.ReadArray<uint>((int)count);
             }
 
-            reader.BaseStream.Position = mFileBlock.ofsValues;
-            var valueEntries = reader.ReadArray<ulong>(mFileBlock.numValues);
+            reader.BaseStream.Position = this.mFileBlock.ofsValues;
+            var valueEntries = reader.ReadArray<ulong>(this.mFileBlock.numValues);
 
-            for (var i = 0; i < mFileBlock.numValues; ++i)
+            for (var i = 0; i < this.mFileBlock.numValues; ++i)
             {
                 var count = valueEntries[i] & 0xFFFFFFFF;
                 var offset = (uint)(valueEntries[i] >> 32);
                 reader.BaseStream.Position = offset;
-                mValues[i] = reader.ReadArray<TSource>((int)count);
+	            this.mValues[i] = reader.ReadArray<TSource>((int)count);
             }
         }
     }

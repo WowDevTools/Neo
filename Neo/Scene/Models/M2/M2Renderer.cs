@@ -30,32 +30,32 @@ namespace Neo.Scene.Models.M2
         private object mSyncLoadToken;
 
         public IM2Animator Animator { get; private set; }
-        public M2PortraitRenderer PortraitRenderer { get { return mPortraitRenderer; } }
+        public M2PortraitRenderer PortraitRenderer { get { return this.mPortraitRenderer; } }
 
         public M2Renderer(M2File model)
         {
-            Model = model;
-            VisibleInstances = new List<M2RenderInstance>();
+	        this.Model = model;
+	        this.VisibleInstances = new List<M2RenderInstance>();
 
             if (!model.NeedsPerInstanceAnimation)
             {
-                mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
-                Animator = ModelFactory.Instance.CreateAnimator(model);
-                if (Animator.SetAnimation(AnimationType.Stand) == false)
+	            this.mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
+	            this.Animator = ModelFactory.Instance.CreateAnimator(model);
+                if (this.Animator.SetAnimation(AnimationType.Stand) == false)
                 {
 	                this.Animator.SetAnimationByIndex(0);
                 }
-	            StaticAnimationThread.Instance.AddAnimator(Animator);
+	            StaticAnimationThread.Instance.AddAnimator(this.Animator);
             }
 
-            mBatchRenderer = new M2BatchRenderer(model);
-            mSingleRenderer = new M2SingleRenderer(model);
-            mPortraitRenderer = new M2PortraitRenderer(model);
+	        this.mBatchRenderer = new M2BatchRenderer(model);
+	        this.mSingleRenderer = new M2SingleRenderer(model);
+	        this.mPortraitRenderer = new M2PortraitRenderer(model);
         }
 
         public void RenderBatch()
         {
-            if (mIsSyncLoaded == false)
+            if (this.mIsSyncLoaded == false)
             {
                 if (!BeginSyncLoad())
                 {
@@ -63,17 +63,17 @@ namespace Neo.Scene.Models.M2
                 }
             }
 
-	        if (mSkipRendering || Model.NeedsPerInstanceAnimation)
+	        if (this.mSkipRendering || this.Model.NeedsPerInstanceAnimation)
 	        {
 		        return;
 	        }
 
-	        if (Animator.GetBones(mAnimationMatrices))
+	        if (this.Animator.GetBones(this.mAnimationMatrices))
 	        {
-		        AnimBuffer.BufferData(mAnimationMatrices);
+		        this.AnimBuffer.BufferData(this.mAnimationMatrices);
 	        }
 
-	        if (!Model.HasOpaquePass)
+	        if (!this.Model.HasOpaquePass)
 	        {
 		        return;
 	        }
@@ -81,17 +81,17 @@ namespace Neo.Scene.Models.M2
             // TODO: We *really* need to get rid of this!
 	        if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
 	        {
-		        mBatchRenderer.OnFrame_Old(this);
+		        this.mBatchRenderer.OnFrame_Old(this);
 	        }
 	        else
 	        {
-		        mBatchRenderer.OnFrame(this);
+		        this.mBatchRenderer.OnFrame(this);
 	        }
         }
 
         public void RenderSingleInstance(M2RenderInstance instance)
         {
-            if (mIsSyncLoaded == false)
+            if (this.mIsSyncLoaded == false)
             {
 	            if (!BeginSyncLoad())
 	            {
@@ -99,7 +99,7 @@ namespace Neo.Scene.Models.M2
 	            }
             }
 
-            if (mSkipRendering)
+            if (this.mSkipRendering)
             {
 	            return;
             }
@@ -107,17 +107,17 @@ namespace Neo.Scene.Models.M2
 	        // TODO: We *really* need to get rid of this!
 	        if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
 	        {
-		        mSingleRenderer.OnFrame_Old(this, instance);
+		        this.mSingleRenderer.OnFrame_Old(this, instance);
 	        }
 	        else
 	        {
-		        mSingleRenderer.OnFrame(this, instance);
+		        this.mSingleRenderer.OnFrame(this, instance);
 	        }
         }
 
         public void RenderPortrait()
         {
-            if (mIsSyncLoaded == false)
+            if (this.mIsSyncLoaded == false)
             {
 	            if (!BeginSyncLoad())
 	            {
@@ -125,9 +125,9 @@ namespace Neo.Scene.Models.M2
 	            }
             }
 
-            if (!mSkipRendering)
+            if (!this.mSkipRendering)
             {
-                mPortraitRenderer.OnFrame(this);
+	            this.mPortraitRenderer.OnFrame(this);
                 //M2RenderInstance instance = new M2RenderInstance( 0, new Vector3( 0.0f, 0.0f, 0.0f ), new Vector3( 0.0f, 0.0f, 0.0f ), new Vector3( 0.0f, 0.0f, 0.0f ), this );
 
                 //mSingleRenderer.OnFrame(this, instance );
@@ -136,15 +136,15 @@ namespace Neo.Scene.Models.M2
 
         public bool RemoveInstance(int uuid)
         {
-	        if (mFullInstances == null || VisibleInstances == null)
+	        if (this.mFullInstances == null || this.VisibleInstances == null)
 	        {
 		        return false;
 	        }
 
-            lock (mFullInstances)
+            lock (this.mFullInstances)
             {
                 M2RenderInstance inst;
-	            if (mFullInstances.TryGetValue(uuid, out inst) == false)
+	            if (this.mFullInstances.TryGetValue(uuid, out inst) == false)
 	            {
 		            return false;
 	            }
@@ -156,40 +156,40 @@ namespace Neo.Scene.Models.M2
                     return false;
                 }
 
-                mFullInstances.Remove(uuid);
+	            this.mFullInstances.Remove(uuid);
                 inst.Dispose();
             }
 
-	        lock (VisibleInstances)
+	        lock (this.VisibleInstances)
 	        {
-		        VisibleInstances.RemoveAll(inst => inst.Uuid == uuid);
+		        this.VisibleInstances.RemoveAll(inst => inst.Uuid == uuid);
 	        }
 
-            return mFullInstances.Count == 0;
+            return this.mFullInstances.Count == 0;
         }
 
         public M2RenderInstance AddInstance(int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
         {
             M2RenderInstance inst;
             // ReSharper disable once InconsistentlySynchronizedField
-            if (mFullInstances.TryGetValue(uuid, out inst))
+            if (this.mFullInstances.TryGetValue(uuid, out inst))
             {
                 ++inst.NumReferences;
                 return inst;
             }
 
             var instance = new M2RenderInstance(uuid, position, rotation, scaling, this);
-            lock (mFullInstances)
+            lock (this.mFullInstances)
             {
-                mFullInstances.Add(uuid, instance);
+	            this.mFullInstances.Add(uuid, instance);
 	            if (!instance.IsVisible(WorldFrame.Instance.ActiveCamera))
 	            {
 		            return instance;
 	            }
 
-	            lock (VisibleInstances)
+	            lock (this.VisibleInstances)
 	            {
-		            VisibleInstances.Add(instance);
+		            this.VisibleInstances.Add(instance);
 	            }
                 return instance;
             }
@@ -198,28 +198,28 @@ namespace Neo.Scene.Models.M2
         public void PushMapReference(M2Instance instance)
         {
             var renderInstance = instance.RenderInstance;
-	        if (Model.HasBlendPass)
+	        if (this.Model.HasBlendPass)
 	        {
 		        renderInstance.UpdateDepth();
 	        }
 
             renderInstance.IsUpdated = true;
-	        lock (VisibleInstances)
+	        lock (this.VisibleInstances)
 	        {
-		        VisibleInstances.Add(renderInstance);
+		        this.VisibleInstances.Add(renderInstance);
 	        }
         }
 
         public void ViewChanged()
         {
-	        lock (VisibleInstances)
+	        lock (this.VisibleInstances)
 	        {
-		        VisibleInstances.Clear();
+		        this.VisibleInstances.Clear();
 	        }
 
-            lock (mFullInstances)
+            lock (this.mFullInstances)
             {
-	            foreach (var pair in mFullInstances)
+	            foreach (var pair in this.mFullInstances)
 	            {
 		            pair.Value.IsUpdated = false;
 	            }
@@ -228,7 +228,7 @@ namespace Neo.Scene.Models.M2
 
         private bool BeginSyncLoad()
         {
-	        if (mSyncLoadToken != null)
+	        if (this.mSyncLoadToken != null)
 	        {
 		        return false;
 	        }
@@ -239,36 +239,36 @@ namespace Neo.Scene.Models.M2
                 return true;
             }
 
-            mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
+	        this.mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
             return false;
         }
 
         private void SyncLoad()
         {
-            mIsSyncLoaded = true;
-            mSyncLoadToken = null;
+	        this.mIsSyncLoaded = true;
+	        this.mSyncLoadToken = null;
 
-            if (Model.Vertices.Length == 0 || Model.Indices.Length == 0 || Model.Passes.Count == 0)
+            if (this.Model.Vertices.Length == 0 || this.Model.Indices.Length == 0 || this.Model.Passes.Count == 0)
             {
-                mSkipRendering = true;
+	            this.mSkipRendering = true;
                 return;
             }
 
-            VertexBuffer = new VertexBuffer();
-            IndexBuffer = new IndexBuffer(DrawElementsType.UnsignedShort);
+	        this.VertexBuffer = new VertexBuffer();
+	        this.IndexBuffer = new IndexBuffer(DrawElementsType.UnsignedShort);
 
-            VertexBuffer.BufferData(Model.Vertices);
-            IndexBuffer.BufferData(Model.Indices);
+	        this.VertexBuffer.BufferData(this.Model.Vertices);
+	        this.IndexBuffer.BufferData(this.Model.Indices);
 
-            if (Animator != null)
+            if (this.Animator != null)
             {
-                AnimBuffer = new UniformBuffer();
-                AnimBuffer.BufferData(mAnimationMatrices);
+	            this.AnimBuffer = new UniformBuffer();
+	            this.AnimBuffer.BufferData(this.mAnimationMatrices);
             }
 
-            mBatchRenderer.OnSyncLoad();
-            mSingleRenderer.OnSyncLoad();
-            mPortraitRenderer.OnSyncLoad();
+	        this.mBatchRenderer.OnSyncLoad();
+	        this.mSingleRenderer.OnSyncLoad();
+	        this.mPortraitRenderer.OnSyncLoad();
         }
 
         ~M2Renderer()
@@ -278,42 +278,42 @@ namespace Neo.Scene.Models.M2
 
         private void Dispose(bool disposing)
         {
-            mSkipRendering = true;
-            if (mBatchRenderer != null)
+	        this.mSkipRendering = true;
+            if (this.mBatchRenderer != null)
             {
-                mBatchRenderer.Dispose();
-                mBatchRenderer = null;
+	            this.mBatchRenderer.Dispose();
+	            this.mBatchRenderer = null;
             }
 
-            if (mSingleRenderer != null)
+            if (this.mSingleRenderer != null)
             {
-                mSingleRenderer.Dispose();
-                mSingleRenderer = null;
+	            this.mSingleRenderer.Dispose();
+	            this.mSingleRenderer = null;
             }
 
-            if (mPortraitRenderer != null)
+            if (this.mPortraitRenderer != null)
             {
-                mPortraitRenderer.Dispose();
-                mPortraitRenderer = null;
+	            this.mPortraitRenderer.Dispose();
+	            this.mPortraitRenderer = null;
             }
 
-            if (mFullInstances != null)
+            if (this.mFullInstances != null)
             {
-                lock (mFullInstances)
+                lock (this.mFullInstances)
                 {
-                    foreach (var inst in mFullInstances.Values)
+                    foreach (var inst in this.mFullInstances.Values)
                     {
 	                    inst.Dispose();
                     }
 
-	                mFullInstances.Clear();
-                    mFullInstances = null;
+	                this.mFullInstances.Clear();
+	                this.mFullInstances = null;
                 }
             }
 
-            var vb = VertexBuffer;
-            var ib = IndexBuffer;
-            var ab = AnimBuffer;
+            var vb = this.VertexBuffer;
+            var ib = this.IndexBuffer;
+            var ab = this.AnimBuffer;
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
@@ -331,24 +331,24 @@ namespace Neo.Scene.Models.M2
 	            }
             });
 
-            VertexBuffer = null;
-            IndexBuffer = null;
-            AnimBuffer = null;
+	        this.VertexBuffer = null;
+	        this.IndexBuffer = null;
+	        this.AnimBuffer = null;
 
-            if (Animator != null)
+            if (this.Animator != null)
             {
-                StaticAnimationThread.Instance.RemoveAnimator(Animator);
-                Animator = null;
+                StaticAnimationThread.Instance.RemoveAnimator(this.Animator);
+	            this.Animator = null;
             }
 
             // Sync load can be called even after the object has been disposed.
-            if (mSyncLoadToken != null)
+            if (this.mSyncLoadToken != null)
             {
-                WorldFrame.Instance.Dispatcher.Remove(mSyncLoadToken);
-                mSyncLoadToken = null;
+                WorldFrame.Instance.Dispatcher.Remove(this.mSyncLoadToken);
+	            this.mSyncLoadToken = null;
             }
 
-            mAnimationMatrices = null;
+	        this.mAnimationMatrices = null;
         }
 
         public virtual void Dispose()

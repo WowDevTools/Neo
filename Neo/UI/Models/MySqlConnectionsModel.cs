@@ -13,95 +13,95 @@ namespace Neo.UI.Models
 
         public string Visibility
         {
-            get { return mVisibility; }
-            set { SetProperty(ref mVisibility, value); }
+            get { return this.mVisibility; }
+            set { SetProperty(ref this.mVisibility, value); }
         }
 
         private string mSaveAs;
 
         public string SaveAs
         {
-            get { return mSaveAs; }
-            set { SetProperty(ref mSaveAs, value); }
+            get { return this.mSaveAs; }
+            set { SetProperty(ref this.mSaveAs, value); }
         }
 
         private bool mSaveIsEnabled;
 
         public bool SaveIsEnabled
         {
-            get { return mSaveIsEnabled; }
-            set { SetProperty(ref mSaveIsEnabled, value); }
+            get { return this.mSaveIsEnabled; }
+            set { SetProperty(ref this.mSaveIsEnabled, value); }
         }
 
         private bool mNewIsEnabled;
 
         public bool NewIsEnabled
         {
-            get { return mNewIsEnabled; }
-            set { SetProperty(ref mNewIsEnabled, value); }
+            get { return this.mNewIsEnabled; }
+            set { SetProperty(ref this.mNewIsEnabled, value); }
         }
 
         private bool mDeleteIsEnabled;
 
         public bool DeleteIsEnabled
         {
-            get { return mDeleteIsEnabled; }
-            set { SetProperty(ref mDeleteIsEnabled, value); }
+            get { return this.mDeleteIsEnabled; }
+            set { SetProperty(ref this.mDeleteIsEnabled, value); }
         }
 
         private string mAddress;
 
         public string Address
         {
-            get { return mAddress; }
-            set { SetProperty(ref mAddress, value); }
+            get { return this.mAddress; }
+            set { SetProperty(ref this.mAddress, value); }
         }
         private string mUsername;
 
         public string Username
         {
-            get { return mUsername; }
-            set { SetProperty(ref mUsername, value); }
+            get { return this.mUsername; }
+            set { SetProperty(ref this.mUsername, value); }
         }
 
         private string mPassword;
 
         public string Password
         {
-            get { return mPassword; }
-            set { SetProperty(ref mPassword, value); }
+            get { return this.mPassword; }
+            set { SetProperty(ref this.mPassword, value); }
         }
 
         private string mDatabase;
 
         public string Database
         {
-            get { return mDatabase; }
-            set { SetProperty(ref mDatabase, value); }
+            get { return this.mDatabase; }
+            set { SetProperty(ref this.mDatabase, value); }
         }
 
         private bool mLoginIsEnabled;
 
         public bool LoginIsEnabled
         {
-            get { return mLoginIsEnabled; }
-            set { SetProperty(ref mLoginIsEnabled, value); }
+            get { return this.mLoginIsEnabled; }
+            set { SetProperty(ref this.mLoginIsEnabled, value); }
         }
 
         private string mLoginContent;
 
         public string LoginContent
         {
-            get { return mLoginContent; }
-            set { SetProperty(ref mLoginContent, value); }
+            get { return this.mLoginContent; }
+            set { SetProperty(ref this.mLoginContent, value); }
         }
 
         private string mSelectedItem;
 
         public string SelectedItem
         {
-            get { return mSelectedItem; }
-            set { SetProperty(ref mSelectedItem, value); }
+            get { return this.mSelectedItem; }
+            set { SetProperty(ref this.mSelectedItem, value); }
         }
     }
 }

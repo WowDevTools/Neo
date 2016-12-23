@@ -11,18 +11,18 @@ namespace Neo.IO.Files.Sky.WoD
         public List<MapLight> GetLightsForMap(int mapid)
         {
             List<MapLight> ret;
-            return mLights.TryGetValue(mapid, out ret) ? ret : new List<MapLight>();
+            return this.mLights.TryGetValue(mapid, out ret) ? ret : new List<MapLight>();
         }
 
         public List<ZoneLight> GetZoneLightsForMap(int mapid)
         {
             List<ZoneLight> ret;
-            return mZoneLights.TryGetValue(mapid, out ret) ? ret : new List<ZoneLight>();
+            return this.mZoneLights.TryGetValue(mapid, out ret) ? ret : new List<ZoneLight>();
         }
 
         public bool HasZoneLights(int mapid)
         {
-            return mZoneLights.ContainsKey(mapid);
+            return this.mZoneLights.ContainsKey(mapid);
         }
 
         // ReSharper disable once FunctionComplexityOverflow
@@ -66,7 +66,7 @@ namespace Neo.IO.Files.Sky.WoD
                 }
 
 	            List<MapLight> lightList;
-                if (mLights.TryGetValue(light.MapId, out lightList))
+                if (this.mLights.TryGetValue(light.MapId, out lightList))
                 {
 	                lightList.Add(l);
                 }
@@ -86,13 +86,13 @@ namespace Neo.IO.Files.Sky.WoD
                 light.SetDbcZoneLight(ref zl);
                 var le = Storage.DbcStorage.Light.GetRowById(zl.RefLight).Get<LightEntry>(0);
 
-                var dq = mLights[le.MapId];
+                var dq = this.mLights[le.MapId];
                 dq.RemoveAll(m => m.LightId == le.Id);
 
                 var lp = lightMap[le.Id];
                 light.Light = lp;
                 List<ZoneLight> zlList;
-                if (mZoneLights.TryGetValue(zl.MapId, out zlList))
+                if (this.mZoneLights.TryGetValue(zl.MapId, out zlList))
                 {
 	                zlList.Add(light);
                 }
@@ -140,12 +140,12 @@ namespace Neo.IO.Files.Sky.WoD
             for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)
             {
                 var mapid = Storage.DbcStorage.Map.GetRow(i).GetInt32(0);
-                if (mLights.ContainsKey(mapid) || mZoneLights.ContainsKey(mapid))
+                if (this.mLights.ContainsKey(mapid) || this.mZoneLights.ContainsKey(mapid))
                 {
 	                continue;
                 }
 
-	            mLights.Add(mapid, new List<MapLight> { globalMapLight });
+	            this.mLights.Add(mapid, new List<MapLight> { globalMapLight });
             }
 
         }

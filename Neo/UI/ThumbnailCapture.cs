@@ -35,26 +35,26 @@ namespace Neo.UI
 
         public ThumbnailCapture(int Width, int Height)
         {
-            ImgWidth = Width;
-            ImgHeight = Height;
+	        this.ImgWidth = Width;
+	        this.ImgHeight = Height;
 
             if (WorldFrame.Instance == null || WorldFrame.Instance.GraphicsContext == null)
             {
 	            return;
             }
 
-	        mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
-	        mMatrixBuffer = new UniformBuffer();
+	        this.mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
+	        this.mMatrixBuffer = new UniformBuffer();
 
-            mCamera = new PerspectiveCamera();
-            mCamera.ViewChanged += delegate { mMatrixBuffer.BufferData(mCamera.ViewProjection); };
-            mCamera.ProjectionChanged += delegate { mMatrixBuffer.BufferData(mCamera.ViewProjection); };
-            mCamera.SetClip(0.2f, 1000.0f);
-            mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
+	        this.mCamera = new PerspectiveCamera();
+	        this.mCamera.ViewChanged += delegate { this.mMatrixBuffer.BufferData(this.mCamera.ViewProjection); };
+	        this.mCamera.ProjectionChanged += delegate { this.mMatrixBuffer.BufferData(this.mCamera.ViewProjection); };
+	        this.mCamera.SetClip(0.2f, 1000.0f);
+	        this.mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
 
-            renderTimer = new Timer();
-            renderTimer.Interval = 10;
-            renderTimer.Tick += OnRenderTimerTick;
+	        this.renderTimer = new Timer();
+	        this.renderTimer.Interval = 10;
+	        this.renderTimer.Tick += OnRenderTimerTick;
 
             var texDesc = new Texture2DDescription
             {
@@ -62,38 +62,38 @@ namespace Neo.UI
                 BindFlags = BindFlags.None,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = Format.B8G8R8A8_UNorm,
-                Height = ImgWidth,
-                Width = ImgWidth,
+                Height = this.ImgWidth,
+                Width = this.ImgWidth,
                 Usage = ResourceUsage.Default,
                 SampleDescription = new SampleDescription(1, 0),
                 OptionFlags = ResourceOptionFlags.None,
                 MipLevels = 1
             };
 
-            if (mResolveTexture != null)
+            if (this.mResolveTexture != null)
             {
 	            this.mResolveTexture.Dispose();
             }
 
-	        mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        this.mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            if (mMapTexture != null)
+            if (this.mMapTexture != null)
             {
 	            this.mMapTexture.Dispose();
             }
 
 	        texDesc.CpuAccessFlags = CpuAccessFlags.Read;
             texDesc.Usage = ResourceUsage.Staging;
-            mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        this.mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            mTarget.Resize(ImgWidth, ImgHeight, true);
-            mCamera.SetAspect((float)ImgWidth / ImgHeight);
+	        this.mTarget.Resize(this.ImgWidth, this.ImgHeight, true);
+	        this.mCamera.SetAspect((float) this.ImgWidth / this.ImgHeight);
         }
 
         public void AddModel(string model)
         {
-            mModels.Enqueue(model); //Add to list
-            if (!renderTimer.Enabled) //Check if it is ready to go
+	        this.mModels.Enqueue(model); //Add to list
+            if (!this.renderTimer.Enabled) //Check if it is ready to go
             {
 	            LoadModel();
             }
@@ -102,12 +102,12 @@ namespace Neo.UI
 	    private void LoadModel()
         {
             string model;
-            mModels.TryDequeue(out model);
+	        this.mModels.TryDequeue(out model);
 
             var file = ModelFactory.Instance.CreateM2(model);
             if (file.Load() == false)
             {
-                if (mModels.Count > 0)
+                if (this.mModels.Count > 0)
                 {
 	                LoadModel();
                 }
@@ -117,17 +117,17 @@ namespace Neo.UI
                 }
             }
 
-            mRenderer = new M2Renderer(file);
+	        this.mRenderer = new M2Renderer(file);
             var bboxMin = file.BoundingBox.Minimum.Z;
             var bboxMax = file.BoundingBox.Maximum.Z;
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                mCamera.SetParameters(new Vector3(file.BoundingRadius * 1.5f, 0, bboxMin + (bboxMax - bboxMin) / 2),
+	            this.mCamera.SetParameters(new Vector3(file.BoundingRadius * 1.5f, 0, bboxMin + (bboxMax - bboxMin) / 2),
                     new Vector3(0, 0, bboxMin + (bboxMax - bboxMin) / 2), Vector3.UnitZ, Vector3.UnitY);
             });
 
-            mThumbnailCaptureFrame = CAPTURE_FRAME;
-            renderTimer.Start();
+	        this.mThumbnailCaptureFrame = CAPTURE_FRAME;
+	        this.renderTimer.Start();
         }
 
 	    private void OnRenderTimerTick(object sender, EventArgs args)
@@ -144,29 +144,29 @@ namespace Neo.UI
 
 	    private unsafe void OnRenderModel()
         {
-            if (mRenderer == null)
+            if (this.mRenderer == null)
             {
 	            return;
             }
 
-	        mTarget.Clear();
-            mTarget.Apply();
+	        this.mTarget.Clear();
+	        this.mTarget.Apply();
 
             var ctx = WorldFrame.Instance.GraphicsContext;
             var vp = ctx.Viewport;
-            ctx.Context.Rasterizer.SetViewport(new Viewport(0, 0, ImgWidth, ImgHeight, 0.0f, 1.0f));
+            ctx.Context.Rasterizer.SetViewport(new Viewport(0, 0, this.ImgWidth, this.ImgHeight, 0.0f, 1.0f));
 
-            ctx.Context.VertexShader.SetConstantBuffer(0, mMatrixBuffer.Native);
-            mRenderer.RenderPortrait();
+            ctx.Context.VertexShader.SetConstantBuffer(0, this.mMatrixBuffer.Native);
+	        this.mRenderer.RenderPortrait();
 
-            mTarget.Remove();
+	        this.mTarget.Remove();
             ctx.Context.Rasterizer.SetViewport(vp);
 
-            ctx.Context.ResolveSubresource(mTarget.Texture, 0, mResolveTexture, 0, Format.B8G8R8A8_UNorm);
-            ctx.Context.CopyResource(mResolveTexture, mMapTexture);
+            ctx.Context.ResolveSubresource(this.mTarget.Texture, 0, this.mResolveTexture, 0, Format.B8G8R8A8_UNorm);
+            ctx.Context.CopyResource(this.mResolveTexture, this.mMapTexture);
 
-            var box = ctx.Context.MapSubresource(mMapTexture, 0, MapMode.Read, MapFlags.None);
-            var bmp = new Bitmap(ImgWidth, ImgHeight, PixelFormat.Format32bppArgb);
+            var box = ctx.Context.MapSubresource(this.mMapTexture, 0, MapMode.Read, MapFlags.None);
+            var bmp = new Bitmap(this.ImgWidth, this.ImgHeight, PixelFormat.Format32bppArgb);
             var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly,
                 PixelFormat.Format32bppArgb);
             byte* ptrDst = (byte*)bmpd.Scan0.ToPointer();
@@ -178,22 +178,22 @@ namespace Neo.UI
             }
 
             bmp.UnlockBits(bmpd);
-            ctx.Context.UnmapSubresource(mMapTexture, 0);
+            ctx.Context.UnmapSubresource(this.mMapTexture, 0);
 
             //Cache thumbnail
-            if (mThumbnailCaptureFrame > 0 && --mThumbnailCaptureFrame == 0)
+            if (this.mThumbnailCaptureFrame > 0 && --this.mThumbnailCaptureFrame == 0)
             {
-                renderTimer.Stop();
+	            this.renderTimer.Stop();
 
-                Bitmap thumbnail = new Bitmap(ImgWidth, ImgHeight);
+                Bitmap thumbnail = new Bitmap(this.ImgWidth, this.ImgHeight);
                 using (var g = System.Drawing.Graphics.FromImage(thumbnail))
                 {
                     g.Clear(Color.Black);
                     g.DrawImage(bmp, new PointF(0, 0));
                 }
 
-                ThumbnailCache.Cache(mRenderer.Model.FileName, thumbnail);
-                if (mModels.Count > 0) //More models so render next
+                ThumbnailCache.Cache(this.mRenderer.Model.FileName, thumbnail);
+                if (this.mModels.Count > 0) //More models so render next
                 {
 	                LoadModel();
                 }
@@ -202,7 +202,7 @@ namespace Neo.UI
 
         public void Dispose()
         {
-            ((IDisposable)renderTimer).Dispose();
+            ((IDisposable) this.renderTimer).Dispose();
         }
     }
 }

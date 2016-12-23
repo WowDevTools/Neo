@@ -49,23 +49,23 @@ namespace Neo.Utils
 
         public void SetCoeffs(Vector2[] points)
         {
-            mPoints = points.Length > 0 ? points.Concat(new[] {points[0]}).ToArray() : new Vector2[0];
+	        this.mPoints = points.Length > 0 ? points.Concat(new[] {points[0]}).ToArray() : new Vector2[0];
         }
 
         public void AddPoint(ref Vector2 point)
         {
-            mPoints = mPoints.Concat(new[] {point}).ToArray();
+	        this.mPoints = this.mPoints.Concat(new[] {point}).ToArray();
         }
 
         public bool IsInside(ref Vector2 point)
         {
-            if (mPoints.Length == 0)
+            if (this.mPoints.Length == 0)
             {
 	            return false;
             }
 
 	        var t = -1;
-            for(var i = 0; i < mPoints.Length - 1; ++i)
+            for(var i = 0; i < this.mPoints.Length - 1; ++i)
             {
 	            t *= CrossTest(ref point, ref this.mPoints[i], ref this.mPoints[i + 1]);
             }
@@ -75,16 +75,16 @@ namespace Neo.Utils
 
         public float Distance(ref Vector2 point)
         {
-            if (mPoints.Length == 0)
+            if (this.mPoints.Length == 0)
             {
 	            return float.MaxValue;
             }
 
 	        var dist = float.MaxValue;
-            for(var i = 0; i < mPoints.Length - 1; ++i)
+            for(var i = 0; i < this.mPoints.Length - 1; ++i)
             {
-                var p1 = mPoints[i];
-                var p2 = mPoints[i + 1];
+                var p1 = this.mPoints[i];
+                var p2 = this.mPoints[i + 1];
                 if ((point - p1).LengthSquared < 1e-5)
                 {
 	                return 0.0f;

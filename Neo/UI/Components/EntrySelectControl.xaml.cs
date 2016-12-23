@@ -25,13 +25,13 @@ namespace Neo.UI.Components
             var group = new TransformGroup();
             group.Children.Add(new ScaleTransform());
             group.Children.Add(new TranslateTransform());
-            WdlPreviewImage.RenderTransform = group;
+	        this.WdlPreviewImage.RenderTransform = group;
         }
 
         public void MapSelected(int mapId)
         {
-            WdlPreviewImage.Source = WpfImageSource.FromBgra(17*64, 17*64, GetWdlColors(mapId));
-            mSelectedMap = mapId;
+	        this.WdlPreviewImage.Source = WpfImageSource.FromBgra(17*64, 17*64, GetWdlColors(mapId));
+	        this.mSelectedMap = mapId;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -53,37 +53,37 @@ namespace Neo.UI.Components
 	            height = width;
             }
 
-	        WdlPreviewImage.Width = width;
-            WdlPreviewImage.Height = height;
+	        this.WdlPreviewImage.Width = width;
+	        this.WdlPreviewImage.Height = height;
         }
 
         private void WdlPreview_MouseMove(object sender, MouseEventArgs e)
         {
-            var pos = e.GetPosition(WdlPreviewImage);
-            var facx = pos.X / WdlPreviewImage.ActualWidth;
-            var facy = pos.Y / WdlPreviewImage.ActualHeight;
+            var pos = e.GetPosition(this.WdlPreviewImage);
+            var facx = pos.X / this.WdlPreviewImage.ActualWidth;
+            var facy = pos.Y / this.WdlPreviewImage.ActualHeight;
 
             var adtx = (int) (facx * 64);
             var adty = (int) (facy * 64);
 
-            AdtPreviewLabel.Text = string.Format("ADT: {0}/{1}", adtx, adty);
+	        this.AdtPreviewLabel.Text = string.Format("ADT: {0}/{1}", adtx, adty);
         }
 
         private void WdlPreview_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            mIsClicked = true;
-            WdlPreviewImage.CaptureMouse();
+	        this.mIsClicked = true;
+	        this.WdlPreviewImage.CaptureMouse();
         }
 
         private void WdlPreview_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var position = e.GetPosition(WdlPreviewImage);
+            var position = e.GetPosition(this.WdlPreviewImage);
 
-            if (position.X > 0 && position.Y > 0 && position.X < WdlPreviewImage.ActualWidth &&
-                position.Y < WdlPreviewImage.ActualHeight && mIsClicked)
+            if (position.X > 0 && position.Y > 0 && position.X < this.WdlPreviewImage.ActualWidth &&
+                position.Y < this.WdlPreviewImage.ActualHeight && this.mIsClicked)
             {
-                var facx = position.X / WdlPreviewImage.ActualWidth;
-                var facy = position.Y / WdlPreviewImage.ActualHeight;
+                var facx = position.X / this.WdlPreviewImage.ActualWidth;
+                var facy = position.Y / this.WdlPreviewImage.ActualHeight;
 
                 var entryx = facx * 64 * Metrics.TileSize;
                 var entryy = facy * 64 * Metrics.TileSize;
@@ -92,13 +92,13 @@ namespace Neo.UI.Components
             }
 
 
-            mIsClicked = false;
-            WdlPreviewImage.ReleaseMouseCapture();
+	        this.mIsClicked = false;
+	        this.WdlPreviewImage.ReleaseMouseCapture();
         }
 
         private void OnEnterWorld(float x, float y)
         {
-            var mapRow = DbcStorage.Map.GetRowById(mSelectedMap);
+            var mapRow = DbcStorage.Map.GetRowById(this.mSelectedMap);
             if (mapRow == null)
             {
 	            return;
@@ -142,7 +142,7 @@ namespace Neo.UI.Components
             }
 	        Visibility = Visibility.Collapsed;
             wnd.LoadingScreenView.Visibility = Visibility.Visible;
-            wnd.LoadingScreenView.OnLoadStarted(mSelectedMap, loadScreenPath, widescreen, new Vector2(x, y));
+            wnd.LoadingScreenView.OnLoadStarted(this.mSelectedMap, loadScreenPath, widescreen, new Vector2(x, y));
         }
 
         private static uint[] GetWdlColors(int mapId)

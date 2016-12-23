@@ -18,14 +18,14 @@ namespace Neo.UI.Dialog
         public ItemEditorControl()
         {
             InitializeComponent();
-            tbcEditor.Appearance = TabAppearance.FlatButtons;
-            tbcEditor.ItemSize = new Size(0, 1);
-            tbcEditor.SizeMode = TabSizeMode.Fixed;
+	        this.tbcEditor.Appearance = TabAppearance.FlatButtons;
+	        this.tbcEditor.ItemSize = new Size(0, 1);
+	        this.tbcEditor.SizeMode = TabSizeMode.Fixed;
         }
 
         internal class ItemEditorControlDesigner : ControlDesigner
         {
-            public override void Initialize(System.ComponentModel.IComponent component)
+            public override void Initialize(IComponent component)
             {
                 base.Initialize(component);
 
@@ -46,7 +46,7 @@ namespace Neo.UI.Dialog
 
         private void lbMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tbcEditor.SelectedIndex = lbMenu.SelectedIndex;
+	        this.tbcEditor.SelectedIndex = this.lbMenu.SelectedIndex;
         }
 
         private void AllowableClass_SelectedIndexChanged(object sender, EventArgs e)
@@ -743,16 +743,16 @@ namespace Neo.UI.Dialog
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            if (LoadEntry.Text != "")
+            if (this.LoadEntry.Text != "")
             {
-                if (Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(Convert.ToInt32(LoadEntry.Text)) == null)
+                if (Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(Convert.ToInt32(this.LoadEntry.Text)) == null)
                 {
                     MessageBox.Show("There is no item with this id.");
                 }
 
                 Storage.Database.WotLk.TrinityCore.Item itemLoaded = new Storage.Database.WotLk.TrinityCore.Item();
 
-                itemLoaded = Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(int.Parse(LoadEntry.Text));
+                itemLoaded = Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(int.Parse(this.LoadEntry.Text));
 
                 if (itemLoaded != null)
                 {

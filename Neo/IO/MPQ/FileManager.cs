@@ -32,7 +32,7 @@ namespace Neo.IO.MPQ
 
         public FileManager()
         {
-            Archives = new List<Archive>();
+	        this.Archives = new List<Archive>();
         }
 
         public async void InitFromPath(string dataPath)
@@ -47,7 +47,7 @@ namespace Neo.IO.MPQ
 
 	            var archives = baseArchives.ToList();
                 archives.Sort(Compare);
-                Archives = archives;
+	            this.Archives = archives;
 
                 IO.FileManager.Instance.FileListing = new FileListing(this);
 
@@ -61,7 +61,7 @@ namespace Neo.IO.MPQ
         public Stream OpenFile(string path)
         {
             var existing = IO.FileManager.Instance.GetExistingFile(path);
-            return existing ?? Archives.Select(archive => archive.Open(path)).FirstOrDefault(ret => ret != null);
+            return existing ?? this.Archives.Select(archive => archive.Open(path)).FirstOrDefault(ret => ret != null);
         }
 
         public bool Exists(string path)
@@ -74,7 +74,7 @@ namespace Neo.IO.MPQ
                 }
             }
 
-            return Archives.Any(archive => archive.Contains(path));
+            return this.Archives.Any(archive => archive.Contains(path));
         }
 
         private static int Compare(Archive a1, Archive a2)
@@ -205,7 +205,7 @@ namespace Neo.IO.MPQ
 	                continue;
                 }
 
-	            mLocale = (Locale) value;
+	            this.mLocale = (Locale) value;
                 return true;
             }
 

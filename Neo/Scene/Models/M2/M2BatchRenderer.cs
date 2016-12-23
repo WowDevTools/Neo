@@ -60,7 +60,7 @@ namespace Neo.Scene.Models.M2
 
         public M2BatchRenderer(M2File model)
         {
-            Model = model;
+	        this.Model = model;
         }
 
         ~M2BatchRenderer()
@@ -70,9 +70,9 @@ namespace Neo.Scene.Models.M2
 
         private void Dispose(bool disposing)
         {
-            if (mInstanceBuffer != null)
+            if (this.mInstanceBuffer != null)
             {
-                var ib = mInstanceBuffer;
+                var ib = this.mInstanceBuffer;
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
                     if (ib != null)
@@ -81,11 +81,11 @@ namespace Neo.Scene.Models.M2
                     }
                 });
 
-                mInstanceBuffer = null;
+	            this.mInstanceBuffer = null;
             }
 
-            Model = null;
-            mActiveInstances = null;
+	        this.Model = null;
+	        this.mActiveInstances = null;
         }
 
         public void Dispose()
@@ -119,17 +119,17 @@ namespace Neo.Scene.Models.M2
         public void OnFrame(M2Renderer renderer)
         {
             UpdateVisibleInstances(renderer);
-            if (mInstanceCount == 0)
+            if (this.mInstanceCount == 0)
             {
 	            return;
             }
 
 	        gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
-            gMesh.UpdateInstanceBuffer(mInstanceBuffer);
+            gMesh.UpdateInstanceBuffer(this.mInstanceBuffer);
             gMesh.Program.SetVertexUniformBuffer(1, renderer.AnimBuffer);
 
-            foreach (var pass in Model.Passes)
+            foreach (var pass in this.Model.Passes)
             {
                 // This renderer is only for opaque pass
                 if (pass.BlendMode != 0 && pass.BlendMode != 1)
@@ -192,7 +192,7 @@ namespace Neo.Scene.Models.M2
 
                 for (var i = 0; i < pass.OpCount && i < 4; ++i)
                 {
-                    switch (Model.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
+                    switch (this.Model.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
                     {
                         case SamplerFlagType.WrapBoth:
 	                    {
@@ -223,7 +223,7 @@ namespace Neo.Scene.Models.M2
                 gMesh.StartVertex = 0;
                 gMesh.StartIndex = pass.StartIndex;
                 gMesh.IndexCount = pass.IndexCount;
-                gMesh.Draw(mInstanceCount);
+                gMesh.Draw(this.mInstanceCount);
             }
         }
 
@@ -231,17 +231,17 @@ namespace Neo.Scene.Models.M2
         public void OnFrame_Old(M2Renderer renderer)
         {
             UpdateVisibleInstances(renderer);
-            if (mInstanceCount == 0)
+            if (this.mInstanceCount == 0)
             {
 	            return;
             }
 
 	        gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
-            gMesh.UpdateInstanceBuffer(mInstanceBuffer);
+            gMesh.UpdateInstanceBuffer(this.mInstanceBuffer);
             gMesh.Program.SetVertexUniformBuffer(1, renderer.AnimBuffer);
 
-            foreach (var pass in Model.Passes)
+            foreach (var pass in this.Model.Passes)
             {
                 // This renderer is only for opaque pass
                 if (pass.BlendMode != 0 && pass.BlendMode != 1)
@@ -279,7 +279,7 @@ namespace Neo.Scene.Models.M2
                 gMesh.StartIndex = pass.StartIndex;
                 gMesh.IndexCount = pass.IndexCount;
                 gMesh.Program.SetFragmentTexture(0, pass.Textures.First());
-                gMesh.Draw(mInstanceCount);
+                gMesh.Draw(this.mInstanceCount);
             }
         }
 
@@ -287,30 +287,30 @@ namespace Neo.Scene.Models.M2
         {
             lock (renderer.VisibleInstances)
             {
-                if (mActiveInstances.Length < renderer.VisibleInstances.Count)
+                if (this.mActiveInstances.Length < renderer.VisibleInstances.Count)
                 {
 	                this.mActiveInstances = new PerInstanceBufferContent[renderer.VisibleInstances.Count];
                 }
 
 	            for (var i = 0; i < renderer.VisibleInstances.Count; ++i)
                 {
-                    mActiveInstances[i].matInstance = renderer.VisibleInstances[i].InstanceMatrix;
-                    mActiveInstances[i].colorMod = renderer.VisibleInstances[i].HighlightColor;
+	                this.mActiveInstances[i].matInstance = renderer.VisibleInstances[i].InstanceMatrix;
+	                this.mActiveInstances[i].colorMod = renderer.VisibleInstances[i].HighlightColor;
                 }
 
-                mInstanceCount = renderer.VisibleInstances.Count;
-                if (mInstanceCount == 0)
+	            this.mInstanceCount = renderer.VisibleInstances.Count;
+                if (this.mInstanceCount == 0)
                 {
 	                return;
                 }
             }
 
-            mInstanceBuffer.BufferData(mActiveInstances);
+	        this.mInstanceBuffer.BufferData(this.mActiveInstances);
         }
 
         public void OnSyncLoad()
         {
-            mInstanceBuffer = new VertexBuffer();
+	        this.mInstanceBuffer = new VertexBuffer();
         }
 
         public static void Initialize()

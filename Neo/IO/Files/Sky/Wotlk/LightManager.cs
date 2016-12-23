@@ -20,12 +20,12 @@ namespace Neo.IO.Files.Sky.Wotlk
 
         public override void OnEnterWorld(int mapId)
         {
-            mSkies.TryGetValue((uint)mapId, out mActiveSky);
+	        this.mSkies.TryGetValue((uint)mapId, out this.mActiveSky);
         }
 
         public override void AsyncUpdate()
         {
-            if (mActiveSky == null)
+            if (this.mActiveSky == null)
             {
 	            return;
             }
@@ -37,41 +37,41 @@ namespace Neo.IO.Files.Sky.Wotlk
 	            ms = (uint)Properties.Settings.Default.DefaultDayTime;
             }
 
-	        mActiveSky.Update(mLastPosition, ms);
+	        this.mActiveSky.Update(this.mLastPosition, ms);
             for (var i = 0; i < 18; ++i)
             {
 	            this.mCurColors[i] = this.mActiveSky.GetColor((LightColor)i);
             }
 
-	        mCurFloats[0] = mActiveSky.GetFloat(LightFloat.FogEnd);
-            mCurFloats[1] = mActiveSky.GetFloat(LightFloat.FogScale);
+	        this.mCurFloats[0] = this.mActiveSky.GetFloat(LightFloat.FogEnd);
+	        this.mCurFloats[1] = this.mActiveSky.GetFloat(LightFloat.FogScale);
 
-            var fogStart = mCurFloats[1] * mCurFloats[0];
+            var fogStart = this.mCurFloats[1] * this.mCurFloats[0];
             fogStart /= 72.0f;
             fogStart = Math.Max(fogStart, 0);
 
-            WorldFrame.Instance.UpdateFogParams(mCurColors[(int)LightColor.Fog], fogStart);
-            WorldFrame.Instance.UpdateMapAmbient(mCurColors[(int)LightColor.Ambient]);
-            WorldFrame.Instance.UpdateMapDiffuse(mCurColors[(int)LightColor.Diffuse]);
+            WorldFrame.Instance.UpdateFogParams(this.mCurColors[(int)LightColor.Fog], fogStart);
+            WorldFrame.Instance.UpdateMapAmbient(this.mCurColors[(int)LightColor.Ambient]);
+            WorldFrame.Instance.UpdateMapDiffuse(this.mCurColors[(int)LightColor.Diffuse]);
 
             UpdateSkyTexture();
         }
 
         public override void UpdatePosition(Vector3 position)
         {
-            mLastPosition = position;
+	        this.mLastPosition = position;
         }
 
         public override void SyncUpdate()
         {
-            if (mActiveSky == null)
+            if (this.mActiveSky == null)
             {
 	            return;
             }
 
-	        if (mIsTextureDirty)
+	        if (this.mIsTextureDirty)
             {
-                mIsTextureDirty = false;
+	            this.mIsTextureDirty = false;
 	            // TODO: Recreate texture from bitmap
 	            // mSkyTexture.UpdateMemory(1, 180, SharpDX.DXGI.Format.B8G8R8A8_UNorm, mSkyGraph, 4);
             }
@@ -79,24 +79,24 @@ namespace Neo.IO.Files.Sky.Wotlk
 
         public override void Initialize()
         {
-            mSkyTexture = new Graphics.Texture();
-            WorldFrame.Instance.MapManager.SkySphere.UpdateSkyTexture(mSkyTexture);
+	        this.mSkyTexture = new Graphics.Texture();
+            WorldFrame.Instance.MapManager.SkySphere.UpdateSkyTexture(this.mSkyTexture);
 
             for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)
             {
                 var id = Storage.DbcStorage.Map.GetRow(i).GetUint32(0);
-                mSkies.Add(id, new MapSky(id));
+	            this.mSkies.Add(id, new MapSky(id));
             }
         }
 
         private void UpdateSkyTexture()
         {
-            var top = mCurColors[(int)LightColor.Top];
-            var middle = mCurColors[(int)LightColor.Middle];
-            var middleLower = mCurColors[(int)LightColor.MiddleLower];
-            var lower = mCurColors[(int)LightColor.Lower];
-            var horizon = mCurColors[(int)LightColor.Horizon];
-            var fog = mCurColors[(int)LightColor.Fog];
+            var top = this.mCurColors[(int)LightColor.Top];
+            var middle = this.mCurColors[(int)LightColor.Middle];
+            var middleLower = this.mCurColors[(int)LightColor.MiddleLower];
+            var lower = this.mCurColors[(int)LightColor.Lower];
+            var horizon = this.mCurColors[(int)LightColor.Horizon];
+            var fog = this.mCurColors[(int)LightColor.Fog];
 
             for (var i = 0; i < 80; ++i)
             {
@@ -107,38 +107,38 @@ namespace Neo.IO.Files.Sky.Wotlk
             {
                 var sat = (i - 80) / 10.0f;
                 var clr = fog + (horizon - fog) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
             for (var i = 90; i < 95; ++i)
             {
                 var sat = (i - 90) / 5.0f;
                 var clr = horizon + (lower - horizon) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
             for (var i = 95; i < 105; ++i)
             {
                 var sat = (i - 95) / 10.0f;
                 var clr = lower + (middleLower - lower) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
             for (var i = 105; i < 120; ++i)
             {
                 var sat = (i - 105) / 15.0f;
                 var clr = middleLower + (middle - middleLower) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
             for (var i = 120; i < 180; ++i)
             {
                 var sat = (i - 120) / 60.0f;
                 var clr = middle + (top - middle) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
-            mIsTextureDirty = true;
+	        this.mIsTextureDirty = true;
         }
 
         private static uint ToRgbx(ref Vector3 value)

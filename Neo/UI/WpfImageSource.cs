@@ -51,9 +51,9 @@ namespace Neo.UI
             var bmp = new Bitmap(200, 200, PixelFormat.Format32bppArgb);
             var g = System.Drawing.Graphics.FromImage(bmp);
             var font = new Font("Segoe UI", 26);
-            g.Clear(System.Drawing.Color.Black);
+            g.Clear(Color.Black);
             var len = g.MeasureString("Invalid image", font);
-            g.DrawString("Invalid Image", font, System.Drawing.Brushes.Red, new PointF(100 - len.Width / 2.0f, 100 - len.Height / 2.0f));
+            g.DrawString("Invalid Image", font, Brushes.Red, new PointF(100 - len.Width / 2.0f, 100 - len.Height / 2.0f));
             font.Dispose();
             g.Flush();
             g.Dispose();

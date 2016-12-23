@@ -20,9 +20,9 @@ namespace Neo.Scene
         {
             WorldText.BeginDraw();
 
-            lock (mWorldTexts)
+            lock (this.mWorldTexts)
             {
-                foreach (var text in mWorldTexts)
+                foreach (var text in this.mWorldTexts)
                 {
 	                text.OnFrame(camera);
                 }
@@ -31,30 +31,30 @@ namespace Neo.Scene
 
         public void AddText(WorldText text)
         {
-            lock (mWorldTexts)
+            lock (this.mWorldTexts)
             {
-                mWorldTexts.Add(text);
+	            this.mWorldTexts.Add(text);
             }
         }
 
         public void RemoveText(WorldText text)
         {
-            lock (mWorldTexts)
+            lock (this.mWorldTexts)
             {
-                mWorldTexts.Remove(text);
+	            this.mWorldTexts.Remove(text);
             }
         }
 
         private void DisposeAll()
         {
-            lock (mWorldTexts)
+            lock (this.mWorldTexts)
             {
-                foreach (var text in mWorldTexts)
+                foreach (var text in this.mWorldTexts)
                 {
 	                text.Dispose();
                 }
 
-	            mWorldTexts.Clear();
+	            this.mWorldTexts.Clear();
             }
         }
     }

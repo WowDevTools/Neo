@@ -20,13 +20,13 @@ namespace Neo.IO.Files.Sky.Wotlk
 
         public WorldLightEntry(IDataStorageRecord lightEntry)
         {
-            mLight = lightEntry;
+	        this.mLight = lightEntry;
 
-            var px = mLight.GetFloat(2);
-            var py = mLight.GetFloat(3);
-            var pz = mLight.GetFloat(4);
-            var ir = mLight.GetFloat(5);
-            var or = mLight.GetFloat(6);
+            var px = this.mLight.GetFloat(2);
+            var py = this.mLight.GetFloat(3);
+            var pz = this.mLight.GetFloat(4);
+            var ir = this.mLight.GetFloat(5);
+            var or = this.mLight.GetFloat(6);
 
             px /= 36.0f;
             py /= 36.0f;
@@ -34,22 +34,22 @@ namespace Neo.IO.Files.Sky.Wotlk
             ir /= 36.0f;
             or /= 36.0f;
 
-            IsGlobal = Math.Abs(px) < 1e-3 && Math.Abs(py) < 1e-3 && Math.Abs(pz) < 1e-3;
-            InnerRadius = ir;
-            OuterRadius = or;
+	        this.IsGlobal = Math.Abs(px) < 1e-3 && Math.Abs(py) < 1e-3 && Math.Abs(pz) < 1e-3;
+	        this.InnerRadius = ir;
+	        this.OuterRadius = or;
 
-            Position = new Vector3(px, pz, py);
+	        this.Position = new Vector3(px, pz, py);
 
             for (var i = 0; i < 18; ++i)
             {
-                mColorTables[i] = new List<Vector3>();
-                mTimeTables[i] = new List<uint>();
+	            this.mColorTables[i] = new List<Vector3>();
+	            this.mTimeTables[i] = new List<uint>();
             }
 
             for (var i = 0; i < 2; ++i)
             {
-                mFloatTables[i] = new List<float>();
-                mFloatTimes[i] = new List<uint>();
+	            this.mFloatTables[i] = new List<float>();
+	            this.mFloatTimes[i] = new List<uint>();
             }
 
             InitTables();
@@ -77,8 +77,8 @@ namespace Neo.IO.Files.Sky.Wotlk
 	            return 0.0f;
             }
 
-	        var timeValues = mFloatTimes[idx];
-            var colorValues = mFloatTables[idx];
+	        var timeValues = this.mFloatTimes[idx];
+            var colorValues = this.mFloatTables[idx];
             if (timeValues.Count == 0)
             {
 	            return 0.0f;
@@ -145,8 +145,8 @@ namespace Neo.IO.Files.Sky.Wotlk
 	            return Vector3.Zero;
             }
 
-	        var timeValues = mTimeTables[idx];
-            var colorValues = mColorTables[idx];
+	        var timeValues = this.mTimeTables[idx];
+            var colorValues = this.mColorTables[idx];
             if (timeValues.Count == 0)
             {
 	            return Vector3.Zero;
@@ -203,7 +203,7 @@ namespace Neo.IO.Files.Sky.Wotlk
 
         private void InitTables()
         {
-            var baseIndex = mLight.GetInt32(7) * 18;
+            var baseIndex = this.mLight.GetInt32(7) * 18;
             for (var i = 0; i < 18; ++i)
             {
                 var lib = Storage.DbcStorage.LightIntBand.GetRowById(baseIndex + i - 17);
@@ -215,20 +215,20 @@ namespace Neo.IO.Files.Sky.Wotlk
 	            var numEntries = lib.GetInt32(1);
                 for (var j = 0; j < numEntries; ++j)
                 {
-                    mColorTables[i].Add(ToVector(lib.GetUint32(18 + j)));
-                    mTimeTables[i].Add(lib.GetUint32(2 + j));
+	                this.mColorTables[i].Add(ToVector(lib.GetUint32(18 + j)));
+	                this.mTimeTables[i].Add(lib.GetUint32(2 + j));
                 }
             }
 
-            baseIndex = mLight.GetInt32(7) * 6;
+            baseIndex = this.mLight.GetInt32(7) * 6;
             for (var i = 0; i < 2; ++i)
             {
                 var lfb = Storage.DbcStorage.LightFloatBand.GetRowById(baseIndex + i - 5);
                 var numEntries = lfb.GetInt32(1);
                 for (var j = 0; j < numEntries; ++j)
                 {
-                    mFloatTables[i].Add(lfb.GetFloat(18 + j));
-                    mFloatTimes[i].Add(lfb.GetUint32(2 + j));
+	                this.mFloatTables[i].Add(lfb.GetFloat(18 + j));
+	                this.mFloatTimes[i].Add(lfb.GetUint32(2 + j));
                 }
             }
         }

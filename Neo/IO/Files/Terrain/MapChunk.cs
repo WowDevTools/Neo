@@ -23,9 +23,9 @@ namespace Neo.IO.Files.Terrain
         public virtual int AreaId { get; set; }
         public virtual uint Flags { get; set; }
         public virtual Vector3 Position { get; }
-        public bool HasImpassFlag => (Flags & 0x2) == 0x2;
+        public bool HasImpassFlag => (this.Flags & 0x2) == 0x2;
 
-        public int StartVertex {get{return (IndexX + IndexY * 16) * 145;}}
+        public int StartVertex {get{return (this.IndexX + this.IndexY * 16) * 145;}}
 
         public AdtVertex[] Vertices { get; private set; }
         public uint[] AlphaValues { get; private set; }
@@ -48,23 +48,23 @@ namespace Neo.IO.Files.Terrain
         protected const float TILESIZE = 533.33333f;
         protected const float CHUNKSIZE = ((TILESIZE) / 16.0f);
 
-        public Mcly[] Layers { get { return mLayers; } }
+        public Mcly[] Layers { get { return this.mLayers; } }
 
         public WeakReference<MapArea> Parent { get; protected set; }
 
         protected MapChunk()
         {
-            HoleValues = new byte[64];
+	        this.HoleValues = new byte[64];
             for (var i = 0; i < 64; ++i)
             {
 	            this.HoleValues[i] = 0xFF;
             }
 
-	        GroundEffectLayer = new int[64];
+	        this.GroundEffectLayer = new int[64];
 
-            Vertices = new AdtVertex[145];
-            AlphaValues = new uint[4096];
-            DoodadReferences = new int[0];
+	        this.Vertices = new AdtVertex[145];
+	        this.AlphaValues = new uint[4096];
+	        this.DoodadReferences = new int[0];
         }
 
         ~MapChunk()
@@ -74,18 +74,18 @@ namespace Neo.IO.Files.Terrain
 
         protected virtual void Dispose(bool disposing)
         {
-            if (Textures != null)
+            if (this.Textures != null)
             {
-                Textures.Clear();
-                Textures = null;
+	            this.Textures.Clear();
+	            this.Textures = null;
             }
 
-            Vertices = null;
-            AlphaValues = null;
-            HoleValues = null;
-            TextureScales = null;
-            DoodadReferences = null;
-            Parent = null;
+	        this.Vertices = null;
+	        this.AlphaValues = null;
+	        this.HoleValues = null;
+	        this.TextureScales = null;
+	        this.DoodadReferences = null;
+	        this.Parent = null;
         }
 
         public virtual void Dispose()
@@ -96,7 +96,7 @@ namespace Neo.IO.Files.Terrain
 
         public virtual bool OnTerrainChange(TerrainChangeParameters parameters)
         {
-            var diffVec = new Vector2(mMidPoint.X, mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
+            var diffVec = new Vector2(this.mMidPoint.X, this.mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
             var dsquare = Vector2.Dot(diffVec, diffVec);
 
             var maxRadius = parameters.OuterRadius + Metrics.ChunkRadius;
@@ -109,7 +109,7 @@ namespace Neo.IO.Files.Terrain
 	        // always update the normals if we are closer than ChunkRadius to the modified area
             // since nearby changes might affect the normals of this chunk even if the positions
             // them self didn't change
-            mUpdateNormals = true;
+	        this.mUpdateNormals = true;
 
             var changed = false;
             switch (parameters.Method)
@@ -136,15 +136,15 @@ namespace Neo.IO.Files.Terrain
 
         public virtual void UpdateNormals()
         {
-            if (mUpdateNormals == false)
+            if (this.mUpdateNormals == false)
             {
 	            return;
             }
 
-	        mUpdateNormals = false;
+	        this.mUpdateNormals = false;
             for (var i = 0; i < 145; ++i)
             {
-                var p1 = Vertices[i].Position;
+                var p1 = this.Vertices[i].Position;
                 var p2 = p1;
                 var p3 = p2;
                 var p4 = p3;
@@ -195,7 +195,7 @@ namespace Neo.IO.Files.Terrain
                 n.Y = ((sbyte) (n.Y * 127)) / 127.0f;
                 n.Z = ((sbyte) (n.Z * 127)) / 127.0f;
 
-                Vertices[i].Normal = n;
+	            this.Vertices[i].Normal = n;
             }
         }
 
@@ -215,7 +215,7 @@ namespace Neo.IO.Files.Terrain
 
             for(var i = 0; i < 145; ++i)
             {
-                var p = Vertices[i].Position;
+                var p = this.Vertices[i].Position;
                 var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length;
                 if (dist > radius)
                 {
@@ -282,16 +282,16 @@ namespace Neo.IO.Files.Terrain
                         break;
                 }
 
-                if (p.Z < mMinHeight)
+                if (p.Z < this.mMinHeight)
                 {
 	                this.mMinHeight = p.Z;
                 }
-	            if (p.Z > mMaxHeight)
+	            if (p.Z > this.mMaxHeight)
 	            {
 		            this.mMaxHeight = p.Z;
 	            }
 
-	            Vertices[i].Position = p;
+	            this.Vertices[i].Position = p;
             }
 
             return changed;
@@ -311,7 +311,7 @@ namespace Neo.IO.Files.Terrain
 
             for (var i = 0; i < 145; ++i)
             {
-                var p = Vertices[i].Position;
+                var p = this.Vertices[i].Position;
                 var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length;
                 if (dist > radius)
                 {
@@ -349,16 +349,16 @@ namespace Neo.IO.Files.Terrain
                         }
                 }
 
-                if (p.Z < mMinHeight)
+                if (p.Z < this.mMinHeight)
                 {
 	                this.mMinHeight = p.Z;
                 }
-	            if (p.Z > mMaxHeight)
+	            if (p.Z > this.mMaxHeight)
 	            {
 		            this.mMaxHeight = p.Z;
 	            }
 
-	            Vertices[i].Position = p;
+	            this.Vertices[i].Position = p;
             }
 
             return changed;
@@ -372,7 +372,7 @@ namespace Neo.IO.Files.Terrain
 
             for(var i = 0; i < 145; ++i)
             {
-                var p = Vertices[i].Position;
+                var p = this.Vertices[i].Position;
                 var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length;
                 if (dist > radius)
                 {
@@ -402,16 +402,16 @@ namespace Neo.IO.Files.Terrain
                         break;
                 }
 
-                if (p.Z < mMinHeight)
+                if (p.Z < this.mMinHeight)
                 {
 	                this.mMinHeight = p.Z;
                 }
-	            if (p.Z > mMaxHeight)
+	            if (p.Z > this.mMaxHeight)
 	            {
 		            this.mMaxHeight = p.Z;
 	            }
 
-	            Vertices[i].Position = p;
+	            this.Vertices[i].Position = p;
             }
 
             return changed;
@@ -423,11 +423,11 @@ namespace Neo.IO.Files.Terrain
 
             // step 1: find ranges of identical values
             var ranges = new List<Tuple<int, int>>();
-            var lastValue = (byte)((AlphaValues[baseIndex] >> (layer * 8)) & 0xFF);
+            var lastValue = (byte)((this.AlphaValues[baseIndex] >> (layer * 8)) & 0xFF);
             var curRangeStart = 0;
             for (var i = 1; i < 64; ++i)
             {
-                var cur = (byte)((AlphaValues[i + baseIndex] >> (layer * 8)) & 0xFF);
+                var cur = (byte)((this.AlphaValues[i + baseIndex] >> (layer * 8)) & 0xFF);
                 if (cur == lastValue)
                 {
 	                continue;
@@ -449,7 +449,7 @@ namespace Neo.IO.Files.Terrain
                 var range = ranges.Count > 0 ? ranges[0] : null;
                 if (range != null && range.Item1 == read)
                 {
-                    var value = (byte)((AlphaValues[read + baseIndex] >> (layer * 8)) & 0xFF);
+                    var value = (byte)((this.AlphaValues[read + baseIndex] >> (layer * 8)) & 0xFF);
                     var repeatCount = range.Item2 - range.Item1;
                     while (repeatCount >= 0x7F)
                     {
@@ -533,8 +533,8 @@ namespace Neo.IO.Files.Terrain
                 var ret = new byte[2048];
                 for (var i = 0; i < 2048; ++i)
                 {
-                    var a1 = (byte)((AlphaValues[i * 2] >> (layer * 8)) & 0xFF);
-                    var a2 = (byte)((AlphaValues[i * 2 + 1] >> (layer * 8)) & 0xFF);
+                    var a1 = (byte)((this.AlphaValues[i * 2] >> (layer * 8)) & 0xFF);
+                    var a2 = (byte)((this.AlphaValues[i * 2 + 1] >> (layer * 8)) & 0xFF);
 
                     var v1 = (uint)((a1 / 255.0f) * 15.0f);
                     var v2 = (uint)((a2 / 255.0f) * 15.0f);
@@ -547,7 +547,7 @@ namespace Neo.IO.Files.Terrain
 
         private int FindTextureLayer(string texture)
         {
-            var texNames = TextureNames.ToArray();
+            var texNames = this.TextureNames.ToArray();
             for (var i = 0; i < texNames.Length; ++i)
             {
                 if (string.Equals(texture, texNames[i], StringComparison.InvariantCultureIgnoreCase))
@@ -566,7 +566,7 @@ namespace Neo.IO.Files.Terrain
 
         public bool OnTextureTerrain(TextureChangeParameters parameters)
         {
-            var diffVec = new Vector2(mMidPoint.X, mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
+            var diffVec = new Vector2(this.mMidPoint.X, this.mMidPoint.Y) - new Vector2(parameters.Center.X, parameters.Center.Y);
             var dsquare = Vector2.Dot(diffVec, diffVec);
 
             var maxRadius = parameters.OuterRadius + Metrics.ChunkRadius;
@@ -577,8 +577,8 @@ namespace Neo.IO.Files.Terrain
             }
 
 	        var layer = -1;
-            var minPos = BoundingBox.Minimum;
-            var maxPos = BoundingBox.Maximum;
+            var minPos = this.BoundingBox.Minimum;
+            var maxPos = this.BoundingBox.Maximum;
             var changed = false;
             var inverted = parameters.IsInverted;
 
@@ -588,7 +588,7 @@ namespace Neo.IO.Files.Terrain
                 {
                     var xpos = minPos.X + j * Metrics.ChunkSize / 64.0f;
                     var ypos = minPos.Y + i * Metrics.ChunkSize / 64.0f;
-                    if (mIsYInverted)
+                    if (this.mIsYInverted)
                     {
 	                    ypos = maxPos.Y - i * Metrics.ChunkSize / 64.0f;
                     }
@@ -637,13 +637,13 @@ namespace Neo.IO.Files.Terrain
                     {
                         if (layer > 0)
                         {
-                            float cur = (AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
+                            float cur = (this.AlphaValues[i * 64 + j] >> (layer * 8)) & 0xFF;
                             var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * parameters.TargetValue, 0), 255);
-                            AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
-                            AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
+	                        this.AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * layer));
+	                        this.AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * layer));
                         }
 
-                        var nLayers = mLayers.Length - 2; // baseLayer and current layer
+                        var nLayers = this.mLayers.Length - 2; // baseLayer and current layer
                         if (nLayers > 0)
                         {
                             /*for (var k = layer + 1; k < mLayers.Length; ++k)
@@ -657,17 +657,17 @@ namespace Neo.IO.Files.Terrain
                             }*/
 
                             var tarInverse = (1 - parameters.TargetValue) / nLayers;
-                            for (var k = 1; k < mLayers.Length; ++k)
+                            for (var k = 1; k < this.mLayers.Length; ++k)
                             {
                                 if (k == layer)
                                 {
 	                                continue;
                                 }
 
-	                            float cur = (AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
+	                            float cur = (this.AlphaValues[i * 64 + j] >> (k * 8)) & 0xFF;
                                 var newVal = Math.Min(Math.Max((1 - pressure) * cur + pressure * tarInverse, 0), 255);
-                                AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * k));
-                                AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * k));
+	                            this.AlphaValues[i * 64 + j] &= ~(uint)(0xFF << (8 * k));
+	                            this.AlphaValues[i * 64 + j] |= (((uint)newVal) << (8 * k));
                             }
                         }
                     }

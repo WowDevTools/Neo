@@ -54,11 +54,11 @@ namespace Neo.Editing
 
         public TerrainChangeManager()
         {
-            ChangeType = TerrainChangeType.Elevate;
-            ChangeAlgorithm = TerrainAlgorithm.Linear;
-            ShadingMultiplier = Vector3.One;
-            Amount = 15.0f;
-            AlignModelsToGround = false;
+	        this.ChangeType = TerrainChangeType.Elevate;
+	        this.ChangeAlgorithm = TerrainAlgorithm.Linear;
+	        this.ShadingMultiplier = Vector3.One;
+	        this.Amount = 15.0f;
+	        this.AlignModelsToGround = false;
         }
 
         public void OnChange(TimeSpan diff)
@@ -70,17 +70,17 @@ namespace Neo.Editing
             }
 
 	        var parameters = new TerrainChangeParameters() {
-                Algorithm = ChangeAlgorithm,
+                Algorithm = this.ChangeAlgorithm,
                 Center = EditManager.Instance.MousePosition,
                 InnerRadius = EditManager.Instance.InnerRadius,
                 OuterRadius = EditManager.Instance.OuterRadius,
                 Method = EditManager.Instance.ChangeType,
                 TimeDiff = diff,
-                Shading = ShadingMultiplier,
+                Shading = this.ShadingMultiplier,
                 // if tablet is connected override the amount set in thee menus
-                Amount = Amount,
+                Amount = this.Amount,
                 Inverted = inverted,
-                AlignModels = AlignModelsToGround
+                AlignModels = this.AlignModelsToGround
             };
 
             WorldFrame.Instance.MapManager.OnEditTerrain(parameters);

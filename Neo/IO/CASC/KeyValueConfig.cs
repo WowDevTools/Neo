@@ -13,7 +13,7 @@ namespace Neo.IO.CASC
             get
             {
                 IEnumerable<string> ret;
-                return mValues.TryGetValue(key.ToUpperInvariant(), out ret) ? ret : new string[0];
+                return this.mValues.TryGetValue(key.ToUpperInvariant(), out ret) ? ret : new string[0];
             }
         }
 
@@ -37,7 +37,7 @@ namespace Neo.IO.CASC
                     }
 
 	                var values = tokens[1].Trim().Split(' ').Where(s => string.IsNullOrEmpty(s) == false);
-                    mValues[tokens[0].Trim().ToUpperInvariant()] = values;
+	                this.mValues[tokens[0].Trim().ToUpperInvariant()] = values;
                 }
             }
             catch (IOException)

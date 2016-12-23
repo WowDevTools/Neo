@@ -13,8 +13,8 @@ namespace Neo.Scene
 
         public PerspectiveCamera()
         {
-            NearClip = 0.2f;
-            FarClip = 2000.0f;
+	        this.NearClip = 0.2f;
+	        this.FarClip = 2000.0f;
             UpdateProjection();
         }
 
@@ -26,38 +26,38 @@ namespace Neo.Scene
 
         private void UpdateProjection()
         {
-	        var matProjection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(mFov), mAspect, NearClip, FarClip);
+	        var matProjection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(this.mFov), this.mAspect, this.NearClip, this.FarClip);
             OnProjectionChanged(ref matProjection);
         }
 
         public void SetFarClip(float clip)
         {
-            FarClip = clip;
+	        this.FarClip = clip;
             UpdateProjection();
         }
 
         public void SetNearClip(float clip)
         {
-            NearClip = clip;
+	        this.NearClip = clip;
             UpdateProjection();
         }
 
         public void SetClip(float near, float far)
         {
-            NearClip = near;
-            FarClip = far;
+	        this.NearClip = near;
+	        this.FarClip = far;
             UpdateProjection();
         }
 
         public void SetAspect(float aspect)
         {
-            mAspect = aspect;
+	        this.mAspect = aspect;
             UpdateProjection();
         }
 
         public void SetFieldOfView(float fov)
         {
-            mFov = fov;
+	        this.mFov = fov;
             UpdateProjection();
         }
     }

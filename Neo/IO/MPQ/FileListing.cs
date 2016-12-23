@@ -9,7 +9,7 @@ namespace Neo.IO.MPQ
 
         public FileListing(FileManager fileMgr)
         {
-            RootEntry = new DirectoryEntry {Name = "Files"};
+	        this.RootEntry = new DirectoryEntry {Name = "Files"};
             Init(fileMgr);
         }
 
@@ -47,7 +47,7 @@ namespace Neo.IO.MPQ
 
 	        var dir = Path.GetDirectoryName(file) ?? "";
             var paths = dir.Split(new[] {'\\'}, StringSplitOptions.RemoveEmptyEntries);
-            var curDir = RootEntry;
+            var curDir = this.RootEntry;
             foreach (var path in paths)
             {
                 if (curDir.Children.ContainsKey(path.ToLowerInvariant()))

@@ -9,6 +9,7 @@ namespace Neo.IO
     {
         public DirectoryEntry RootEntry { get; private set; }
 
-        public DefaultFileListing() { RootEntry = new DirectoryEntry(); }
+        public DefaultFileListing() {
+	        this.RootEntry = new DirectoryEntry(); }
     }
 }

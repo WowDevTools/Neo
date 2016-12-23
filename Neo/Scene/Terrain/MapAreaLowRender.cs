@@ -27,8 +27,8 @@ namespace Neo.Scene.Terrain
 
         public MapAreaLowRender(int indexX, int indexY)
         {
-            IndexX = indexX;
-            IndexY = indexY;
+	        this.IndexX = indexX;
+	        this.IndexY = indexY;
         }
 
         ~MapAreaLowRender()
@@ -38,9 +38,9 @@ namespace Neo.Scene.Terrain
 
         private void Dispose(bool disposing)
         {
-            if (mVertexBuffer != null)
+            if (this.mVertexBuffer != null)
             {
-                var vertexBuffer = mVertexBuffer;
+                var vertexBuffer = this.mVertexBuffer;
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
                     if (vertexBuffer != null)
@@ -49,10 +49,10 @@ namespace Neo.Scene.Terrain
                     }
                 });
 
-                mVertexBuffer = null;
+	            this.mVertexBuffer = null;
             }
 
-            mVertexData = null;
+	        this.mVertexData = null;
         }
 
         public virtual void Dispose()
@@ -63,31 +63,31 @@ namespace Neo.Scene.Terrain
 
         public void OnFrame()
         {
-            if (mAsyncLoaded == false)
+            if (this.mAsyncLoaded == false)
             {
 	            return;
             }
 
-	        if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
+	        if (WorldFrame.Instance.ActiveCamera.Contains(ref this.mBoundingBox) == false)
 	        {
 		        return;
 	        }
 
 	        // Investigate: Possible performance issue
-            if(mSyncLoaded == false)
+            if(this.mSyncLoaded == false)
             {
-                mVertexBuffer = new VertexBuffer();
-                mVertexBuffer.BufferData(mVertexData);
-                mSyncLoaded = true;
+	            this.mVertexBuffer = new VertexBuffer();
+	            this.mVertexBuffer.BufferData(this.mVertexData);
+	            this.mSyncLoaded = true;
             }
 
-            Mesh.UpdateVertexBuffer(mVertexBuffer);
+            Mesh.UpdateVertexBuffer(this.mVertexBuffer);
             Mesh.Draw();
         }
 
         public unsafe void InitFromHeightData(WorldLODMapArea entry)
         {
-            mVertexData = new Vector3[17 * 17 + 16 * 16];
+	        this.mVertexData = new Vector3[17 * 17 + 16 * 16];
 
             var counter = 0;
 
@@ -102,13 +102,13 @@ namespace Neo.Scene.Terrain
                     float height = inner ? entry.LowResVertices[(y / 2) * 16 + x] : entry.HighResVertices[(y / 2) * 17 + x];
 
                     var v = new Vector3(x * StepX, y * StepY, height);
-                    v.X += IndexX * Metrics.TileSize;
+                    v.X += this.IndexX * Metrics.TileSize;
                     if (inner)
                     {
 	                    v.X += 0.5f * StepX;
                     }
 
-	                v.Y += IndexY * Metrics.TileSize;
+	                v.Y += this.IndexY * Metrics.TileSize;
                     if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
                     {
 	                    v.Y = 64.0f * Metrics.TileSize - v.Y;
@@ -139,12 +139,12 @@ namespace Neo.Scene.Terrain
 		                posMax.Z = v.Z;
 	                }
 
-	                mVertexData[counter++] = v;
+	                this.mVertexData[counter++] = v;
                 }
             }
 
-            mBoundingBox = new BoundingBox(posMin, posMax);
-            mAsyncLoaded = true;
+	        this.mBoundingBox = new BoundingBox(posMin, posMax);
+	        this.mAsyncLoaded = true;
         }
 
         public static void Initialize()

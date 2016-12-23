@@ -16,7 +16,7 @@ namespace Neo.IO.Files
         // ReSharper disable UnusedParameter.Local
         private void AssertValid(int offset, int size)
         {
-            if (offset + size > mSize)
+            if (offset + size > this.mSize)
             {
 	            throw new IndexOutOfRangeException("Trying to read past the end of a dbc record");
             }
@@ -33,11 +33,11 @@ namespace Neo.IO.Files
 
         public DB2Record(int size, int offset, BinaryReader reader, Dictionary<int, string> stringTable)
         {
-            mSize = size;
-            mData = new byte[size];
+	        this.mSize = size;
+	        this.mData = new byte[size];
             reader.BaseStream.Position = offset;
-            reader.BaseStream.Read(mData, 0, mSize);
-            mStringTable = stringTable;
+            reader.BaseStream.Read(this.mData, 0, this.mSize);
+	        this.mStringTable = stringTable;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Neo.IO.Files
         {
             ValueType ret = new T();
 
-            using (var ms = new MemoryStream(mData))
+            using (var ms = new MemoryStream(this.mData))
             {
 	            using (var br = new BinaryReader(ms))
 	            {
@@ -92,7 +92,7 @@ namespace Neo.IO.Files
 
             var ret = new T();
             var ptr = SizeCache<T>.GetUnsafePtr(ref ret);
-            fixed (byte* data = mData)
+            fixed (byte* data = this.mData)
             {
 	            UnsafeNativeMethods.CopyMemory((byte*)ptr, data, SizeCache<T>.Size);
             }
@@ -103,7 +103,7 @@ namespace Neo.IO.Files
         public int GetInt32(int field)
         {
             AssertValid(field * 4, 4);
-            fixed (byte* ptr = mData)
+            fixed (byte* ptr = this.mData)
             {
 	            return *(int*)(ptr + field * 4);
             }
@@ -112,7 +112,7 @@ namespace Neo.IO.Files
         public uint GetUint32(int field)
         {
             AssertValid(field * 4, 4);
-            fixed (byte* ptr = mData)
+            fixed (byte* ptr = this.mData)
             {
 	            return *(uint*)(ptr + field * 4);
             }
@@ -121,7 +121,7 @@ namespace Neo.IO.Files
         public float GetFloat(int field)
         {
             AssertValid(field * 4, 4);
-            fixed (byte* ptr = mData)
+            fixed (byte* ptr = this.mData)
             {
 	            return *(float*)(ptr + field * 4);
             }
@@ -131,7 +131,7 @@ namespace Neo.IO.Files
         {
             AssertValid(field * 4, 4);
             int offset;
-            fixed (byte* ptr = mData)
+            fixed (byte* ptr = this.mData)
             {
 	            offset = *(int*)(ptr + field * 4);
             }
@@ -142,7 +142,7 @@ namespace Neo.IO.Files
 	        }
 
 	        string str;
-            mStringTable.TryGetValue(offset, out str);
+	        this.mStringTable.TryGetValue(offset, out str);
             return str;
         }
 
@@ -184,24 +184,24 @@ namespace Neo.IO.Files
 
         public void Load(Stream stream)
         {
-            mStream = stream;
-            mReader = new BinaryReader(mStream);
-            mReader.BaseStream.Position = 0;
-            mReader.ReadInt32(); // signature
-            NumRows = mReader.ReadInt32();
-            NumFields = mReader.ReadInt32();
-            mRecordSize = mReader.ReadInt32();
-            mStringTableSize = mReader.ReadInt32();
-            mTableHash = mReader.ReadInt32();
-            mBuild = mReader.ReadInt32();
-            mLastWritten = mReader.ReadInt32();
-            mMinId = mReader.ReadInt32();
-            mMaxId = mReader.ReadInt32();
-            mLocal = mReader.ReadInt32();
-            mCopyTableSize = mReader.ReadInt32();
+	        this.mStream = stream;
+	        this.mReader = new BinaryReader(this.mStream);
+	        this.mReader.BaseStream.Position = 0;
+	        this.mReader.ReadInt32(); // signature
+	        this.NumRows = this.mReader.ReadInt32();
+	        this.NumFields = this.mReader.ReadInt32();
+	        this.mRecordSize = this.mReader.ReadInt32();
+	        this.mStringTableSize = this.mReader.ReadInt32();
+	        this.mTableHash = this.mReader.ReadInt32();
+	        this.mBuild = this.mReader.ReadInt32();
+	        this.mLastWritten = this.mReader.ReadInt32();
+	        this.mMinId = this.mReader.ReadInt32();
+	        this.mMaxId = this.mReader.ReadInt32();
+	        this.mLocal = this.mReader.ReadInt32();
+	        this.mCopyTableSize = this.mReader.ReadInt32();
 
-            mStream.Position = NumRows * mRecordSize + 20;
-            var strBytes = mReader.ReadBytes(mStringTableSize);
+	        this.mStream.Position = this.NumRows * this.mRecordSize + 20;
+            var strBytes = this.mReader.ReadBytes(this.mStringTableSize);
             var curOffset = 0;
             var curBytes = new List<byte>();
             for (var i = 0; i < strBytes.Length; ++i)
@@ -212,12 +212,12 @@ namespace Neo.IO.Files
                     continue;
                 }
 
-                mStringTable.Add(curOffset, Encoding.UTF8.GetString(curBytes.ToArray()));
+	            this.mStringTable.Add(curOffset, Encoding.UTF8.GetString(curBytes.ToArray()));
                 curBytes.Clear();
                 curOffset = i + 1;
             }
 
-            for (var i = 0; i < NumRows; ++i)
+            for (var i = 0; i < this.NumRows; ++i)
             {
 	            this.mIdLookup.Add(GetRow(i).GetInt32(0), i);
             }
@@ -227,18 +227,18 @@ namespace Neo.IO.Files
         {
             using (var fs = new FileStream(file, FileMode.Create))
             {
-                mReader.BaseStream.Position = 0;
-                byte[] data = mReader.ReadBytes((int)mStream.Length);
+	            this.mReader.BaseStream.Position = 0;
+                byte[] data = this.mReader.ReadBytes((int) this.mStream.Length);
                 fs.Write(data, 0, data.Length);
             }
         }
 
         public void ReLoad(Stream stream)
         {
-            mStream.Dispose();
-            mReader.Dispose();
-            mStringTable.Clear();
-            mIdLookup.Clear();
+	        this.mStream.Dispose();
+	        this.mReader.Dispose();
+	        this.mStringTable.Clear();
+	        this.mIdLookup.Clear();
 
             Load(stream);
         }
@@ -246,19 +246,19 @@ namespace Neo.IO.Files
 
         public IDataStorageRecord GetRow(int index)
         {
-            return new DB2Record(mRecordSize, HEADER + index * mRecordSize, mReader, mStringTable);
+            return new DB2Record(this.mRecordSize, HEADER + index * this.mRecordSize, this.mReader, this.mStringTable);
         }
 
         public IDataStorageRecord GetRowById(int id)
         {
             int index;
-            return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
+            return this.mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
         }
 
         public IList<IDataStorageRecord> GetAllRows()
         {
             List<IDataStorageRecord> files = new List<IDataStorageRecord>();
-            for (int i = 0; i < NumRows; i++)
+            for (int i = 0; i < this.NumRows; i++)
             {
 	            files.Add(GetRow(i));
             }
@@ -267,13 +267,13 @@ namespace Neo.IO.Files
 
         public IList<T> GetAllRows<T>() where T : struct
         {
-            if (mCache.Count > 0)
+            if (this.mCache.Count > 0)
             {
 	            return this.mCache.Cast<T>().ToList();
             }
 
 	        List<T> files = new List<T>();
-            for (int i = 0; i < NumRows; i++)
+            for (int i = 0; i < this.NumRows; i++)
             {
 	            files.Add(GetRow(i).Get<T>());
             }
@@ -283,7 +283,7 @@ namespace Neo.IO.Files
 
         public void BuildCache<T>() where T : struct
         {
-            for (int i = 0; i < NumRows; i++)
+            for (int i = 0; i < this.NumRows; i++)
             {
 	            this.mCache.Add(GetRow(i).Get<T>());
             }
@@ -291,44 +291,44 @@ namespace Neo.IO.Files
 
         public void ClearCache()
         {
-            mCache.Clear();
-            mCache.TrimExcess();
+	        this.mCache.Clear();
+	        this.mCache.TrimExcess();
         }
 
 
         public bool DeleteRow(int index)
         {
             //TODO remove strings from string table
-            if (!mIdLookup.ContainsValue(index))
+            if (!this.mIdLookup.ContainsValue(index))
             {
 	            return false;
             }
 
-	        if (mCache.Count > 0)
+	        if (this.mCache.Count > 0)
 	        {
 		        this.mCache.RemoveAt(index);
 	        }
 
-	        var idLookup = mIdLookup.First(x => x.Value == index);
-            var maxId = mIdLookup.Last().Key;
+	        var idLookup = this.mIdLookup.First(x => x.Value == index);
+            var maxId = this.mIdLookup.Last().Key;
 
-            mReader.BaseStream.Position = 0;
-            byte[] data = mReader.ReadBytes((int)mStream.Length);
+	        this.mReader.BaseStream.Position = 0;
+            byte[] data = this.mReader.ReadBytes((int) this.mStream.Length);
 
             var ms = new MemoryStream();
-            int start = HEADER + index * mRecordSize;
-            int end = data.Length - start - mRecordSize;
+            int start = HEADER + index * this.mRecordSize;
+            int end = data.Length - start - this.mRecordSize;
             ms.Write(data, 0, start); //Header + rows before data
-            ms.Write(data, start + mRecordSize, end); //Skip row being removed's bytes
+            ms.Write(data, start + this.mRecordSize, end); //Skip row being removed's bytes
 
             ms.Position = 4;
-            ms.Write(BitConverter.GetBytes(NumRows - 1), 0, 4); //Update the record count
+            ms.Write(BitConverter.GetBytes(this.NumRows - 1), 0, 4); //Update the record count
 
             if (idLookup.Key == maxId)
             {
-                mIdLookup.Remove(maxId);
+	            this.mIdLookup.Remove(maxId);
                 ms.Position = 0x24;
-                ms.Write(BitConverter.GetBytes(mIdLookup.Keys.Max()), 0, 4); //Update max id
+                ms.Write(BitConverter.GetBytes(this.mIdLookup.Keys.Max()), 0, 4); //Update max id
             }
 
             ReLoad(ms);
@@ -338,7 +338,7 @@ namespace Neo.IO.Files
         public bool DeleteRowById(int id)
         {
             int index;
-            return mIdLookup.TryGetValue(id, out index) ? DeleteRow(index) : false;
+            return this.mIdLookup.TryGetValue(id, out index) ? DeleteRow(index) : false;
         }
 
 
@@ -347,7 +347,7 @@ namespace Neo.IO.Files
             var maxIndex = 0;
             var maxLen = 0;
 
-            foreach (var pair in mStringTable)
+            foreach (var pair in this.mStringTable)
             {
                 if (pair.Value.Equals(value))
                 {
@@ -364,21 +364,21 @@ namespace Neo.IO.Files
             }
 
             maxIndex += maxLen + 1;
-            mStringTable.Add(maxIndex, value);
+	        this.mStringTable.Add(maxIndex, value);
             return maxIndex;
         }
 
         public void AddRow<T>(T entry)
         {
-            typeof(T).GetFields().First().SetValue(entry, mIdLookup.Keys.Max() + 1); //Set Id
+            typeof(T).GetFields().First().SetValue(entry, this.mIdLookup.Keys.Max() + 1); //Set Id
 
-            if (mCache.Count > 0)
+            if (this.mCache.Count > 0)
             {
 	            this.mCache.Add(entry);
             }
 
 	        var newRecord = ParseRecord(entry);
-            NumRows += 1;
+	        this.NumRows += 1;
             Update(newRecord.Item1, newRecord.Item2);
         }
 
@@ -387,15 +387,15 @@ namespace Neo.IO.Files
         {
             var newRecord = ParseRecord(entry, true);
             var id = BitConverter.ToInt32(newRecord.Item1.Take(4).ToArray(), 0);
-            var index = mIdLookup[id];
+            var index = this.mIdLookup[id];
 
-            if (mCache.Count > 0)
+            if (this.mCache.Count > 0)
             {
 	            this.mCache[index] = entry;
             }
 
-	        mStream.Position = HEADER + index * mRecordSize;
-            mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length); //Overwrite existing data
+	        this.mStream.Position = HEADER + index * this.mRecordSize;
+	        this.mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length); //Overwrite existing data
 
             Update(new byte[0], newRecord.Item2);
         }
@@ -412,7 +412,7 @@ namespace Neo.IO.Files
         {
             Type type = entry.GetType();
 
-            byte[] newRecord = new byte[mRecordSize];
+            byte[] newRecord = new byte[this.mRecordSize];
             List<string> newStrings = new List<string>();
 
             using (var ms = new MemoryStream(newRecord))
@@ -452,9 +452,9 @@ namespace Neo.IO.Files
 
         private void Update(byte[] newRecord, IEnumerable<string> newStrings)
         {
-            mReader.BaseStream.Position = 0;
-            byte[] curdata = mReader.ReadBytes((int)mStream.Length - mStringTableSize);
-            byte[] stringtable = mReader.ReadBytes(mStringTableSize);
+	        this.mReader.BaseStream.Position = 0;
+            byte[] curdata = this.mReader.ReadBytes((int) this.mStream.Length - this.mStringTableSize);
+            byte[] stringtable = this.mReader.ReadBytes(this.mStringTableSize);
 
             var ms = new MemoryStream();
             var bw = new BinaryWriter(ms, Encoding.UTF8);
@@ -468,15 +468,15 @@ namespace Neo.IO.Files
                 byte[] sd = Encoding.UTF8.GetBytes(s);
                 bw.Write(sd);
                 bw.Write((byte)0);
-                mStringTableSize += (sd.Length + 1);
+	            this.mStringTableSize += (sd.Length + 1);
             }
 
             bw.BaseStream.Position = 4;
-            bw.Write(NumRows + 1); //Number of rows
+            bw.Write(this.NumRows + 1); //Number of rows
             bw.BaseStream.Position = 0x10;
-            bw.Write(mStringTable.Count); //StringTable size
+            bw.Write(this.mStringTable.Count); //StringTable size
             bw.BaseStream.Position = 0x20;
-            bw.Write(mIdLookup.Keys.Max() + 1); //MaxId
+            bw.Write(this.mIdLookup.Keys.Max() + 1); //MaxId
             bw.BaseStream.Position = 0;
             bw.Flush();
 
@@ -491,28 +491,28 @@ namespace Neo.IO.Files
 
         private void Dispose(bool disposing)
         {
-            if (mStream != null)
+            if (this.mStream != null)
             {
-                mStream.Dispose();
-                mStream = null;
+	            this.mStream.Dispose();
+	            this.mStream = null;
             }
 
-            if (mReader != null)
+            if (this.mReader != null)
             {
-                mReader.Dispose();
-                mReader = null;
+	            this.mReader.Dispose();
+	            this.mReader = null;
             }
 
-            if (mStringTable != null)
+            if (this.mStringTable != null)
             {
-                mStringTable.Clear();
-                mStringTable = null;
+	            this.mStringTable.Clear();
+	            this.mStringTable = null;
             }
 
-            if (mIdLookup != null)
+            if (this.mIdLookup != null)
             {
-                mIdLookup.Clear();
-                mIdLookup = null;
+	            this.mIdLookup.Clear();
+	            this.mIdLookup = null;
             }
         }
 

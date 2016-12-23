@@ -7,16 +7,16 @@ namespace Neo.IO.Files.Sky.WoD
     {
         public LightEntryData(LightEntry e)
         {
-            Id = e.Id;
-            MapId = e.MapId;
-            Position = e.Position;
-            InnerRadius = e.InnerRadius;
-            OuterRadius = e.OuterRadius;
-            RefParams = e.RefParams;
-            Water = e.Water;
-            Sunset = e.Sunset;
-            Other = e.Other;
-            Death = e.Death;
+	        this.Id = e.Id;
+	        this.MapId = e.MapId;
+	        this.Position = e.Position;
+	        this.InnerRadius = e.InnerRadius;
+	        this.OuterRadius = e.OuterRadius;
+	        this.RefParams = e.RefParams;
+	        this.Water = e.Water;
+	        this.Sunset = e.Sunset;
+	        this.Other = e.Other;
+	        this.Death = e.Death;
         }
 
         public readonly int Id;

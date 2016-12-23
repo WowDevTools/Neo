@@ -18,15 +18,15 @@ namespace Neo.UI.DbcEditors.Exemple
         public ExempleEditorControl()
         {
             InitializeComponent();
-            tbcEditor.Appearance = TabAppearance.FlatButtons;
-            tbcEditor.ItemSize = new Size(0, 1);
-            tbcEditor.SizeMode = TabSizeMode.Fixed;
+	        this.tbcEditor.Appearance = TabAppearance.FlatButtons;
+	        this.tbcEditor.ItemSize = new Size(0, 1);
+	        this.tbcEditor.SizeMode = TabSizeMode.Fixed;
         }
     }
 
     internal class ExempleEditorControlDesigner : ControlDesigner
     {
-        public override void Initialize(System.ComponentModel.IComponent component)
+        public override void Initialize(IComponent component)
         {
             base.Initialize(component);
 

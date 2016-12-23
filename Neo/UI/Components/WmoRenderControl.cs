@@ -59,19 +59,19 @@ namespace Neo.UI.Components
 
 	        var file = new WmoRootRender();
             file.OnAsyncLoad(root);
-            mRender = new WmoBatchRender(file);
-            mRender.AddInstance(1, Vector3.Zero, Vector3.Zero);
+	        this.mRender = new WmoBatchRender(file);
+	        this.mRender.AddInstance(1, Vector3.Zero, Vector3.Zero);
 
-            mCamera.SetParameters(file.BoundingBox.Maximum, Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
+	        this.mCamera.SetParameters(file.BoundingBox.Maximum, Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
         }
 
 
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Black);
-            if (mPaintBitmap != null)
+            if (this.mPaintBitmap != null)
             {
-                e.Graphics.DrawImage(mPaintBitmap, new PointF(0, 0));
+                e.Graphics.DrawImage(this.mPaintBitmap, new PointF(0, 0));
             }
         }
 
@@ -88,15 +88,15 @@ namespace Neo.UI.Components
 		        return;
 	        }
 
-	        mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
-            mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
+	        this.mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
+	        this.mMatrixBuffer = new ConstantBuffer(WorldFrame.Instance.GraphicsContext);
 
-            mCamera = new PerspectiveCamera();
-            mCamera.ViewChanged += ViewChanged;
-            mCamera.ProjectionChanged += ProjChanged;
-            mCamera.SetClip(0.2f, 1000.0f);
-            mCamera.SetParameters(Vector3.Zero, Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
-            mCamControl = new CameraControl(this)
+	        this.mCamera = new PerspectiveCamera();
+	        this.mCamera.ViewChanged += ViewChanged;
+	        this.mCamera.ProjectionChanged += ProjChanged;
+	        this.mCamera.SetClip(0.2f, 1000.0f);
+	        this.mCamera.SetParameters(Vector3.Zero, Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
+	        this.mCamControl = new CameraControl(this)
             {
                 TurnFactor = 0.1f,
                 SpeedFactor = 20.0f
@@ -104,11 +104,11 @@ namespace Neo.UI.Components
 
             MouseDown += OnClick;
             Resize += OnResize;
-            renderTimer.Tick += OnRenderTimerTick;
+	        this.renderTimer.Tick += OnRenderTimerTick;
 
             OnResize(this, null);
 
-            renderTimer.Start();
+	        this.renderTimer.Start();
         }
 
 	    private void OnResize(object sender, EventArgs args)
@@ -127,23 +127,23 @@ namespace Neo.UI.Components
                 MipLevels = 1
             };
 
-            if (mResolveTexture != null)
+            if (this.mResolveTexture != null)
             {
 	            this.mResolveTexture.Dispose();
             }
 
-	        mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        this.mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            if (mMapTexture != null)
+            if (this.mMapTexture != null)
             {
 	            this.mMapTexture.Dispose();
             }
 
 	        texDesc.CpuAccessFlags = CpuAccessFlags.Read;
             texDesc.Usage = ResourceUsage.Staging;
-            mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        this.mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            mTarget.Resize(ClientSize.Width, ClientSize.Height, true);
+	        this.mTarget.Resize(ClientSize.Width, ClientSize.Height, true);
         }
 
 	    private void OnClick(object sender, MouseEventArgs args)
@@ -153,7 +153,7 @@ namespace Neo.UI.Components
 
 	    private void OnRenderTimerTick(object sender, EventArgs args)
         {
-            mCamControl.Update(mCamera, false);
+	        this.mCamControl.Update(this.mCamera, false);
             if (WorldFrame.Instance.Dispatcher.InvokeRequired)
             {
 	            WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
@@ -166,35 +166,35 @@ namespace Neo.UI.Components
 
 	    private void ViewChanged(Camera cam, Matrix matView)
         {
-            mMatrixBuffer.UpdateData(cam.ViewProjection);
+	        this.mMatrixBuffer.UpdateData(cam.ViewProjection);
         }
 
 	    private void ProjChanged(Camera cam, Matrix matProj)
         {
-            mMatrixBuffer.UpdateData(cam.ViewProjection);
+	        this.mMatrixBuffer.UpdateData(cam.ViewProjection);
         }
 
 	    private unsafe void OnRenderModel()
         {
-            mTarget.Clear();
-            mTarget.Apply();
+	        this.mTarget.Clear();
+	        this.mTarget.Apply();
 
             var ctx = WorldFrame.Instance.GraphicsContext;
             var vp = ctx.Viewport;
             ctx.Context.Rasterizer.SetViewport(new Viewport(0, 0, ClientSize.Width, ClientSize.Height, 0.0f, 1.0f));
-            ctx.Context.VertexShader.SetConstantBuffer(0, mMatrixBuffer.Native);
+            ctx.Context.VertexShader.SetConstantBuffer(0, this.mMatrixBuffer.Native);
 
             WmoGroupRender.Mesh.BeginDraw();
             WmoGroupRender.Mesh.Program.SetPixelSampler(0, WmoGroupRender.Sampler);
-            mRender.OnFrame();
+	        this.mRender.OnFrame();
 
-            mTarget.Remove();
+	        this.mTarget.Remove();
             ctx.Context.Rasterizer.SetViewport(vp);
 
-            ctx.Context.ResolveSubresource(mTarget.Texture, 0, mResolveTexture, 0, Format.B8G8R8A8_UNorm);
-            ctx.Context.CopyResource(mResolveTexture, mMapTexture);
+            ctx.Context.ResolveSubresource(this.mTarget.Texture, 0, this.mResolveTexture, 0, Format.B8G8R8A8_UNorm);
+            ctx.Context.CopyResource(this.mResolveTexture, this.mMapTexture);
 
-            var box = ctx.Context.MapSubresource(mMapTexture, 0, MapMode.Read, MapFlags.None);
+            var box = ctx.Context.MapSubresource(this.mMapTexture, 0, MapMode.Read, MapFlags.None);
             var bmp = new Bitmap(ClientSize.Width, ClientSize.Height, PixelFormat.Format32bppArgb);
             var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly,
                 PixelFormat.Format32bppArgb);
@@ -207,13 +207,13 @@ namespace Neo.UI.Components
             }
 
             bmp.UnlockBits(bmpd);
-            if (mPaintBitmap != null)
+            if (this.mPaintBitmap != null)
             {
 	            this.mPaintBitmap.Dispose();
             }
 
-	        mPaintBitmap = bmp;
-            ctx.Context.UnmapSubresource(mMapTexture, 0);
+	        this.mPaintBitmap = bmp;
+            ctx.Context.UnmapSubresource(this.mMapTexture, 0);
             Invalidate();
         }
     }

@@ -38,73 +38,62 @@ namespace Neo.Graphics
 
 	    public Mesh()
         {
-            VertexBuffer = new VertexBuffer();
-            IndexBuffer = new IndexBuffer();
+	        this.VertexBuffer = new VertexBuffer();
+	        this.IndexBuffer = new IndexBuffer();
 
-            DepthState = new DepthState();
-	        RasterizerState = new RasterState();
-            BlendState = new BlendState();
+	        this.DepthState = new DepthState();
+	        this.RasterizerState = new RasterState();
+	        this.BlendState = new BlendState();
         }
 
         public void BeginDraw()
         {
-	        if (VertexBuffer != null)
+	        if (this.VertexBuffer != null)
 	        {
-		        VertexBuffer.Bind();
+		        this.VertexBuffer.Bind();
 	        }
 
-	        if (IndexBuffer != null)
+	        if (this.IndexBuffer != null)
 	        {
-		        IndexBuffer.Bind();
+		        this.IndexBuffer.Bind();
 	        }
 
-	        if (DepthState != null)
+	        if (this.DepthState != null)
 	        {
-		        DepthState.Activate();
+		        this.DepthState.Activate();
 	        }
 
-	        if (BlendState != null)
+	        if (this.BlendState != null)
 	        {
-		        BlendState.Activate();
+		        this.BlendState.Activate();
 	        }
 
-            Program.Bind();
+	        this.Program.Bind();
         }
 
         public void Draw()
         {
-	        GL.DrawElementsInstanced(
-		        Topology,
-		        IndexCount,
-		        IndexBuffer.IndexFormat,
-		        new IntPtr(StartIndex * IndexBuffer.IndexFormatSize),
+	        GL.DrawElementsInstanced(this.Topology, this.IndexCount, this.IndexBuffer.IndexFormat,
+		        new IntPtr(this.StartIndex * this.IndexBuffer.IndexFormatSize),
 		        1);
         }
 
         public void Draw(int numInstances)
         {
-	        GL.DrawElementsInstanced(
-		        Topology,
-		        IndexCount,
-		        IndexBuffer.IndexFormat,
-		        new IntPtr(StartIndex * IndexBuffer.IndexFormatSize),
+	        GL.DrawElementsInstanced(this.Topology, this.IndexCount, this.IndexBuffer.IndexFormat,
+		        new IntPtr(this.StartIndex * this.IndexBuffer.IndexFormatSize),
 		        numInstances);
         }
 
         public void DrawNonIndexed()
         {
-	        GL.DrawRangeElements(
-		        Topology,
-		        StartIndex,
-		        StartIndex + IndexCount,
-		        IndexCount,
-		        IndexBuffer.IndexFormat,
-		        new IntPtr(StartIndex * IndexBuffer.IndexFormatSize));
+	        GL.DrawRangeElements(this.Topology, this.StartIndex, this.StartIndex + this.IndexCount, this.IndexCount, this.IndexBuffer.IndexFormat,
+		        new IntPtr(this.StartIndex * this.IndexBuffer.IndexFormatSize));
         }
 
         public void UpdateInstanceBuffer(VertexBuffer buffer)
         {
-	        if (InstanceStride == 0 || buffer == null)
+	        if (this.InstanceStride == 0 || buffer == null)
 	        {
 		        return;
 	        }
@@ -127,20 +116,21 @@ namespace Neo.Graphics
 
         public void UpdateBlendState(BlendState state)
         {
-            BlendState = state;
+	        this.BlendState = state;
         }
 
         public void UpdateRasterizerState(RasterState state)
         {
-            RasterizerState = state;
+	        this.RasterizerState = state;
         }
 
         public void UpdateDepthState(DepthState state)
         {
-            DepthState = state;
+	        this.DepthState = state;
         }
 
-        public void AddElement(VertexElement element) { mElements.Add(element); }
+        public void AddElement(VertexElement element) {
+	        this.mElements.Add(element); }
 
         public void AddElement(string semantic, int index, int components, DataType type = DataType.Float, bool normalized = false, int slot = 0, bool instanceData = false)
         {

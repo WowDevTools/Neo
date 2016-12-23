@@ -26,24 +26,24 @@ namespace Neo.UI.Models
 
         public ImportFileViewModel()
         {
-            mDialog = new ImportFileDialog(this);
+	        this.mDialog = new ImportFileDialog(this);
         }
 
         public void ShowModal()
         {
-            mDialog.ShowDialog();
+	        this.mDialog.ShowDialog();
         }
 
         public void Show()
         {
-            mDialog.Show();
+	        this.mDialog.Show();
         }
 
         public void HandleFileImport()
         {
             var importType = IsFileSupported();
-            var sourceName = mDialog.PathTextBox.Text;
-            var targetName = mDialog.TargetNameBox.Text;
+            var sourceName = this.mDialog.PathTextBox.Text;
+            var targetName = this.mDialog.TargetNameBox.Text;
 
             if (importType == ImportType.Texture)
             {
@@ -56,7 +56,7 @@ namespace Neo.UI.Models
 
 	                using (var output = FileManager.Instance.GetOutputStream(targetName))
                     {
-                        var texType = mDialog.TextureTypeBox.SelectedIndex;
+                        var texType = this.mDialog.TextureTypeBox.SelectedIndex;
                         var format = Format.BC1_UNorm;
                         var hasMips = true;
                         if (texType == 1)
@@ -84,7 +84,7 @@ namespace Neo.UI.Models
                 }
             }
 
-            mDialog.Close();
+	        this.mDialog.Close();
         }
 
         public void HandleFileImportSettings()
@@ -93,22 +93,22 @@ namespace Neo.UI.Models
             switch (importType)
             {
                 case ImportType.NotSupported:
-                    mDialog.PathErrorLabel.Text = "Sorry, this file cannot be imported";
-                    mDialog.PathErrorLabel.Foreground = Brushes.Red;
+	                this.mDialog.PathErrorLabel.Text = "Sorry, this file cannot be imported";
+	                this.mDialog.PathErrorLabel.Foreground = Brushes.Red;
                     return;
 
                 case ImportType.Raw:
-                    mDialog.PathErrorLabel.Text = "Info: File will be imported raw, no conversion";
-                    mDialog.PathErrorLabel.Foreground = Brushes.Coral;
+	                this.mDialog.PathErrorLabel.Text = "Info: File will be imported raw, no conversion";
+	                this.mDialog.PathErrorLabel.Foreground = Brushes.Coral;
                     break;
 
                 case ImportType.Texture:
-                    mDialog.Height = 300;
-                    mDialog.TextureSettingsPanel.Visibility = Visibility.Visible;
+	                this.mDialog.Height = 300;
+	                this.mDialog.TextureSettingsPanel.Visibility = Visibility.Visible;
                     break;
             }
 
-            mDialog.PathErrorLabel.Text = "";
+	        this.mDialog.PathErrorLabel.Text = "";
         }
 
         public unsafe void BrowseForFile()
@@ -131,7 +131,7 @@ namespace Neo.UI.Models
 		        Marshal.FreeBSTR(data[i]);
 	        }
 
-	        if (dlg.Show(new WindowInteropHelper(mDialog).Handle) != 0)
+	        if (dlg.Show(new WindowInteropHelper(this.mDialog).Handle) != 0)
 	        {
 		        return;
 	        }
@@ -147,12 +147,12 @@ namespace Neo.UI.Models
             try
             {
                 item.GetDisplayName(Sigdn.Filesyspath, out ptrOut);
-                mDialog.PathTextBox.Text = Marshal.PtrToStringUni(ptrOut);
+	            this.mDialog.PathTextBox.Text = Marshal.PtrToStringUni(ptrOut);
             }
             catch (Exception)
             {
                 item.GetDisplayName(Sigdn.Normaldisplay, out ptrOut);
-                mDialog.PathTextBox.Text = Marshal.PtrToStringUni(ptrOut);
+	            this.mDialog.PathTextBox.Text = Marshal.PtrToStringUni(ptrOut);
             }
             finally
             {
@@ -162,14 +162,14 @@ namespace Neo.UI.Models
                 }
             }
 
-            mDialog.TargetNamePanel.Visibility = Visibility.Visible;
-            mDialog.TargetNameBox.Text = Path.GetFileName(mDialog.PathTextBox.Text) ?? "";
-            mDialog.Height = 200;
+	        this.mDialog.TargetNamePanel.Visibility = Visibility.Visible;
+	        this.mDialog.TargetNameBox.Text = Path.GetFileName(this.mDialog.PathTextBox.Text) ?? "";
+	        this.mDialog.Height = 200;
         }
 
         private ImportType IsFileSupported()
         {
-            var file = mDialog.PathTextBox.Text;
+            var file = this.mDialog.PathTextBox.Text;
             var extension = Path.GetExtension(file);
             if(string.IsNullOrEmpty(extension))
             {

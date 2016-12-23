@@ -13,11 +13,11 @@ namespace Neo.UI.Models
     {
         private readonly ChunkEditingWidget mWidget;
 
-        public ChunkEditingWidget Widget { get { return mWidget; } }
+        public ChunkEditingWidget Widget { get { return this.mWidget; } }
 
         public ChunkEditingViewModel(ChunkEditingWidget widget)
         {
-            mWidget = widget;
+	        this.mWidget = widget;
         }
 
         public void SetChunkEditState(ChunkEditMode mode)

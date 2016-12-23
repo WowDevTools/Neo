@@ -66,38 +66,38 @@ namespace Neo.IO.Files
         private FieldInfo _localefield;
         public string Locale
         {
-            get { return _localefield.GetValue(this).ToString(); }
-            set { _localefield.SetValue(this, value); }
+            get { return this._localefield.GetValue(this).ToString(); }
+            set { this._localefield.SetValue(this, value); }
         }
 
         public LocalisedString(string[] strings, int mask)
         {
             this.mask = mask;
-            enUS = strings[0];
-            enGB = strings[1];
-            koKR = strings[2];
-            frFR = strings[3];
-            deDE = strings[4];
-            enCN = strings[5];
-            zhCN = strings[6];
-            enTW = strings[7];
-            zhTW = strings[8];
-            esES = strings[9];
-            esMX = strings[10];
-            ruRU = strings[11];
-            ptPT = strings[12];
-            ptBR = strings[13];
-            itIT = strings[14];
-            unKnown = strings[15];
+	        this.enUS = strings[0];
+	        this.enGB = strings[1];
+	        this.koKR = strings[2];
+	        this.frFR = strings[3];
+	        this.deDE = strings[4];
+	        this.enCN = strings[5];
+	        this.zhCN = strings[6];
+	        this.enTW = strings[7];
+	        this.zhTW = strings[8];
+	        this.esES = strings[9];
+	        this.esMX = strings[10];
+	        this.ruRU = strings[11];
+	        this.ptPT = strings[12];
+	        this.ptBR = strings[13];
+	        this.itIT = strings[14];
+	        this.unKnown = strings[15];
 
             //First non-empty string is locale
             int _iLoc = Enumerable.Range(0, strings.Length).FirstOrDefault(x => !string.IsNullOrEmpty(strings[x]));
-            _localefield = typeof(LocalisedString).GetFields()[_iLoc];
+	        this._localefield = typeof(LocalisedString).GetFields()[_iLoc];
         }
 
         public override string ToString()
         {
-            return Locale;
+            return this.Locale;
         }
     }
 }

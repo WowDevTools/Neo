@@ -24,38 +24,38 @@ namespace Neo.Scene
 
         public bool LeftHanded { get; set; }
 
-        public Matrix4 View { get { return mView; } }
-        public Matrix4 Projection { get { return mProj; } }
-        public Matrix4 ViewProjection { get { return mViewProj; } }
+        public Matrix4 View { get { return this.mView; } }
+        public Matrix4 Projection { get { return this.mProj; } }
+        public Matrix4 ViewProjection { get { return this.mViewProj; } }
 
-        public Matrix4 ViewInverse { get { return mViewInverse; } }
-        public Matrix4 ProjectionInverse { get { return mProjInverse; } }
+        public Matrix4 ViewInverse { get { return this.mViewInverse; } }
+        public Matrix4 ProjectionInverse { get { return this.mProjInverse; } }
 
         public Vector3 Position { get; private set; }
 
-        public Vector3 Up { get { return mUp; } }
-        public Vector3 Right { get { return mRight; } }
-        public Vector3 Forward { get { return mForward; } }
+        public Vector3 Up { get { return this.mUp; } }
+        public Vector3 Right { get { return this.mRight; } }
+        public Vector3 Forward { get { return this.mForward; } }
 
         protected Camera()
         {
-            mUp = Vector3.UnitZ;
-            Position = new Vector3();
-            mTarget = Vector3.UnitX;
-            mRight = -Vector3.UnitY;
-            mForward = Vector3.UnitX;
+	        this.mUp = Vector3.UnitZ;
+	        this.Position = new Vector3();
+	        this.mTarget = Vector3.UnitX;
+	        this.mRight = -Vector3.UnitY;
+	        this.mForward = Vector3.UnitX;
 
             UpdateView();
         }
 
         public bool Contains(ref BoundingBox box)
         {
-            return mFrustum.Contains(ref box) != ContainmentType.Disjoint;
+            return this.mFrustum.Contains(ref box) != ContainmentType.Disjoint;
         }
 
         public bool Contains(ref BoundingSphere sphere)
         {
-            return mFrustum.Contains(ref sphere) != ContainmentType.Disjoint;
+            return this.mFrustum.Contains(ref sphere) != ContainmentType.Disjoint;
         }
 
         public virtual void Update()
@@ -65,61 +65,61 @@ namespace Neo.Scene
 
         private void UpdateView()
         {
-            mForward = mTarget - Position;
-            mForward.Normalize();
+	        this.mForward = this.mTarget - this.Position;
+	        this.mForward.Normalize();
 
-	        mView = Matrix4.LookAt(Position, mTarget, mUp);
-            Matrix4.Invert(ref mView, out mViewInverse);
+	        this.mView = Matrix4.LookAt(this.Position, this.mTarget, this.mUp);
+            Matrix4.Invert(ref this.mView, out this.mViewInverse);
 
-            mFrustum.Update(mView, mProj);
-            mViewProj = mView * mProj;
+	        this.mFrustum.Update(this.mView, this.mProj);
+	        this.mViewProj = this.mView * this.mProj;
 
 	        if (ViewChanged != null)
 	        {
-		        ViewChanged(this, mView);
+		        ViewChanged(this, this.mView);
 	        }
         }
 
         protected void OnProjectionChanged(ref Matrix4 matProj)
         {
-            mProj = matProj;
-            Matrix4.Invert(ref mProj, out mProjInverse);
+	        this.mProj = matProj;
+            Matrix4.Invert(ref this.mProj, out this.mProjInverse);
 
-            mFrustum.Update(mView, mProj);
-            mViewProj = mView * mProj;
+	        this.mFrustum.Update(this.mView, this.mProj);
+	        this.mViewProj = this.mView * this.mProj;
 
 	        if (ProjectionChanged != null)
 	        {
-		        ProjectionChanged(this, mProj);
+		        ProjectionChanged(this, this.mProj);
 	        }
         }
 
         public void SetPosition(Vector3 position)
         {
-            Position = position;
+	        this.Position = position;
             UpdateView();
         }
 
         public void SetTarget(Vector3 target)
         {
-            mTarget = target;
+	        this.mTarget = target;
             UpdateView();
         }
 
         public void SetParameters(Vector3 eye, Vector3 target, Vector3 up, Vector3 right)
         {
-            mTarget = target;
-            Position = eye;
-            mUp = up;
-            mRight = right;
+	        this.mTarget = target;
+	        this.Position = eye;
+	        this.mUp = up;
+	        this.mRight = right;
 
             UpdateView();
         }
 
         public void Move(Vector3 amount)
         {
-            Position += amount;
-            mTarget += amount;
+	        this.Position += amount;
+	        this.mTarget += amount;
             UpdateView();
         }
 
@@ -135,32 +135,32 @@ namespace Neo.Scene
 
         public void MoveForward(float amount)
         {
-            Move(mForward * amount);
+            Move(this.mForward * amount);
         }
 
         public void MoveRight(float amount)
         {
-            Move(mRight * amount * (LeftHanded ? -1 : 1));
+            Move(this.mRight * amount * (this.LeftHanded ? -1 : 1));
         }
 
         public void MoveLeft(float amount)
         {
-            Move(mRight * -amount * (LeftHanded ? -1 : 1));
+            Move(this.mRight * -amount * (this.LeftHanded ? -1 : 1));
         }
 
         public void Pitch(float angle)
         {
-            var matRot = Matrix4.CreateFromAxisAngle(mRight, MathHelper.DegreesToRadians(angle));
-            mUp = Vector3.TransformVector(mUp, matRot);
-            mUp.Normalize();
+            var matRot = Matrix4.CreateFromAxisAngle(this.mRight, MathHelper.DegreesToRadians(angle));
+	        this.mUp = Vector3.TransformVector(this.mUp, matRot);
+	        this.mUp.Normalize();
 
-	        if (mUp.Z < 0)
+	        if (this.mUp.Z < 0)
 	        {
-		        mUp.Z = 0;
+		        this.mUp.Z = 0;
 	        }
 
-            mForward = Vector3.Cross(mUp, mRight);
-            mTarget = Position + mForward;
+	        this.mForward = Vector3.Cross(this.mUp, this.mRight);
+	        this.mTarget = this.Position + this.mForward;
 
             UpdateView();
         }
@@ -168,27 +168,27 @@ namespace Neo.Scene
         public void Yaw(float angle)
         {
             var matRot = Matrix4.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.DegreesToRadians(angle));
-            mForward = Vector3.TransformVector(mForward, matRot);
-            mForward.Normalize();
+	        this.mForward = Vector3.TransformVector(this.mForward, matRot);
+	        this.mForward.Normalize();
 
-            mTarget = Position + mForward;
-            mUp = Vector3.TransformVector(mUp, matRot);
-            mUp.Normalize();
+	        this.mTarget = this.Position + this.mForward;
+	        this.mUp = Vector3.TransformVector(this.mUp, matRot);
+	        this.mUp.Normalize();
 
-            mRight = Vector3.TransformVector(mRight, matRot);
-            mRight.Normalize();
+	        this.mRight = Vector3.TransformVector(this.mRight, matRot);
+	        this.mRight.Normalize();
 
             UpdateView();
         }
 
         public void Roll(float angle)
         {
-            var matRot = Matrix4.CreateFromAxisAngle(mForward, MathHelper.DegreesToRadians(angle));
-            mUp = Vector3.TransformVector(mUp, matRot);
-            mUp.Normalize();
+            var matRot = Matrix4.CreateFromAxisAngle(this.mForward, MathHelper.DegreesToRadians(angle));
+	        this.mUp = Vector3.TransformVector(this.mUp, matRot);
+	        this.mUp.Normalize();
 
-            mRight = Vector3.TransformVector(mRight, matRot);
-            mRight.Normalize();
+	        this.mRight = Vector3.TransformVector(this.mRight, matRot);
+	        this.mRight.Normalize();
 
             UpdateView();
         }

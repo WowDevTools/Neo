@@ -44,11 +44,11 @@ namespace Neo.Editing
 
         private TextureChangeManager()
         {
-            FalloffMode = TextureFalloffMode.Linear;
-            Amount = 0.0f;
-            TargetValue = 255.0f;
-            SelectedTexture = "TILESET\\GENERIC\\black.blp";
-            r = new Random();
+	        this.FalloffMode = TextureFalloffMode.Linear;
+	        this.Amount = 0.0f;
+	        this.TargetValue = 255.0f;
+	        this.SelectedTexture = "TILESET\\GENERIC\\black.blp";
+	        this.r = new Random();
         }
 
         public void OnChange(TimeSpan diff)
@@ -73,10 +73,10 @@ namespace Neo.Editing
                         Center = curPos,
                         InnerRadius = innerRadius * (innerRadius / outerRadius),
                         OuterRadius = innerRadius,
-                        Texture = SelectedTexture,
-                        Amount = Amount / 40,
-                        FalloffMode = FalloffMode,
-                        TargetValue = TargetValue,
+                        Texture = this.SelectedTexture,
+                        Amount = this.Amount / 40,
+                        FalloffMode = this.FalloffMode,
+                        TargetValue = this.TargetValue,
                         IsInverted = inverted
                     };
 
@@ -89,24 +89,24 @@ namespace Neo.Editing
 
 	            double minValue = sprayParticleSize / 4.0d;
 	            double maxValue = sprayParticleSize / 3.0f;
-	            var inc = (float)r.NextDouble() * (maxValue - minValue) + minValue;
+	            var inc = (float) this.r.NextDouble() * (maxValue - minValue) + minValue;
 
                 for (double py = curPos.Y - outerRadius; py < curPos.Y + outerRadius; py += inc)
                 {
                     for (double px = curPos.X - outerRadius; px < curPos.X + outerRadius; px += inc)
                     {
                         if ((Math.Sqrt(Math.Pow(py - curPos.Y, 2) + Math.Pow(px - curPos.X, 2)) <= outerRadius) &&
-                            (r.Next(0, 110) < EditManager.Instance.SprayParticleAmount))
+                            (this.r.Next(0, 110) < EditManager.Instance.SprayParticleAmount))
                         {
                             var parameters = new TextureChangeParameters
                             {
                                 Center = new Vector3((float)px, (float)py, EditManager.Instance.MousePosition.Z),
                                 InnerRadius = sprayParticleSize / 20.0f,
                                 OuterRadius = sprayParticleSize / 20.0f,
-                                Texture = SelectedTexture,
-                                Amount = Amount / 20,
-                                FalloffMode = FalloffMode,
-                                TargetValue = TargetValue,
+                                Texture = this.SelectedTexture,
+                                Amount = this.Amount / 20,
+                                FalloffMode = this.FalloffMode,
+                                TargetValue = this.TargetValue,
                                 IsInverted = inverted
                             };
 
@@ -125,12 +125,12 @@ namespace Neo.Editing
                     Center = curPos,
                     InnerRadius = innerRadius,
                     OuterRadius = outerRadius,
-                    Texture = SelectedTexture,
+                    Texture = this.SelectedTexture,
                     //Amount = 4 + Amount,
                     // if tablet is connected override the amount set in thee menus
-                    Amount = Amount / 40,
-                    FalloffMode = FalloffMode,
-                    TargetValue = TargetValue,
+                    Amount = this.Amount / 40,
+                    FalloffMode = this.FalloffMode,
+                    TargetValue = this.TargetValue,
                     IsInverted = inverted
                 };
 

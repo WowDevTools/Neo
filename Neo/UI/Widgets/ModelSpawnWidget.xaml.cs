@@ -16,7 +16,7 @@ namespace Neo.UI.Widgets
 
         private void PlaceModel_Click(object sender, RoutedEventArgs e)
         {
-            Editing.ModelSpawnManager.Instance.SelectModel(ModelNameBox.Text);
+            Editing.ModelSpawnManager.Instance.SelectModel(this.ModelNameBox.Text);
         }
 
         private void CopyModelButtonClick(object sender, RoutedEventArgs e)

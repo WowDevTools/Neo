@@ -29,38 +29,38 @@ namespace Neo.UI.Widgets
 
         private void LoadAreaListBox()
         {
-            lstArea.Items.Clear();
+	        this.lstArea.Items.Clear();
 
             foreach (var at in Storage.DbcStorage.AreaTable.GetAllRows<IO.Files.Terrain.Wotlk.AreaTable>())
             {
 	            this.lstArea.Items.Add(new KeyValuePair<int, string>(at.Id, at.Areaname_Lang.Locale));
             }
 
-	        lstArea.DisplayMemberPath = "Value";
-            lstArea.SelectedValuePath = "Key";
-            lstArea.Items.SortDescriptions.Add(new System.ComponentModel.SortDescription("Value", System.ComponentModel.ListSortDirection.Ascending));
+	        this.lstArea.DisplayMemberPath = "Value";
+	        this.lstArea.SelectedValuePath = "Key";
+	        this.lstArea.Items.SortDescriptions.Add(new System.ComponentModel.SortDescription("Value", System.ComponentModel.ListSortDirection.Ascending));
         }
 
         private void OnSelectedAreaId(int areaid)
         {
-            if (lstArea.Items.Count == 0)
+            if (this.lstArea.Items.Count == 0)
             {
 	            return;
             }
 
-	        lstArea.SelectedValue = areaid;
-            lstArea.ScrollIntoView(lstArea.SelectedItem);
+	        this.lstArea.SelectedValue = areaid;
+	        this.lstArea.ScrollIntoView(this.lstArea.SelectedItem);
         }
 
         private void OnHoveredAreaChange(int areaid)
         {
-            if (lstArea.Items.Count == 0)
+            if (this.lstArea.Items.Count == 0)
             {
 	            return;
             }
 
-	        var area = lstArea.Items.Cast<KeyValuePair<int, string>>().FirstOrDefault(x => x.Key == areaid);
-            txtAreaName.Text =  $"Current Area: {(area.Key > 0 ? area.Value : "Unknown")}";
+	        var area = this.lstArea.Items.Cast<KeyValuePair<int, string>>().FirstOrDefault(x => x.Key == areaid);
+	        this.txtAreaName.Text =  $"Current Area: {(area.Key > 0 ? area.Value : "Unknown")}";
         }
 
 
@@ -88,7 +88,7 @@ namespace Neo.UI.Widgets
 
         private void lstArea_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lstArea.SelectedItem == null)
+            if (this.lstArea.SelectedItem == null)
             {
 	            return;
             }
@@ -99,15 +99,15 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleAreaSelectionChange(((KeyValuePair<int, string>)lstArea.SelectedItem).Key);
+	        model.HandleAreaSelectionChange(((KeyValuePair<int, string>) this.lstArea.SelectedItem).Key);
         }
 
         private void txtSearchArea_TextChanged(object sender, TextChangedEventArgs e)
         {
             //Filter the area listbox
-            lstArea.Items.Filter = new Predicate<object>((item) =>
+	        this.lstArea.Items.Filter = new Predicate<object>((item) =>
             {
-                return ((KeyValuePair<int, string>)item).Value.IndexOf(txtSearchArea.Text, StringComparison.CurrentCultureIgnoreCase) >= 0;
+                return ((KeyValuePair<int, string>)item).Value.IndexOf(this.txtSearchArea.Text, StringComparison.CurrentCultureIgnoreCase) >= 0;
             });
         }
 
@@ -147,7 +147,7 @@ namespace Neo.UI.Widgets
 	        switch ((tabControl.SelectedItem as TabItem).Name)
             {
                 case "tabChunkPaint":
-                    model.SetChunkEditState(rdoPaintChunk.IsChecked.Value ? ChunkEditMode.AreaPaint : ChunkEditMode.AreaSelect); //Enforce correct mode
+                    model.SetChunkEditState(this.rdoPaintChunk.IsChecked.Value ? ChunkEditMode.AreaPaint : ChunkEditMode.AreaSelect); //Enforce correct mode
                     break;
                 case "tabFlags":
                     model.SetChunkEditState(ChunkEditMode.Flags);
@@ -161,12 +161,12 @@ namespace Neo.UI.Widgets
         private void rdoHoleParamsChecked(object sender, RoutedEventArgs e)
         {
             var model = DataContext as ChunkEditingViewModel;
-            if (model == null || rdoSmallHole == null || rdoCreateHole == null)
+            if (model == null || this.rdoSmallHole == null || this.rdoCreateHole == null)
             {
 	            return;
             }
 
-	        model.HandleHoleParamsChange(rdoSmallHole.IsChecked.Value, rdoCreateHole.IsChecked.Value);
+	        model.HandleHoleParamsChange(this.rdoSmallHole.IsChecked.Value, this.rdoCreateHole.IsChecked.Value);
         }
 
     }

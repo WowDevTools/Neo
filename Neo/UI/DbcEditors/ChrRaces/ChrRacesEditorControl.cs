@@ -59,9 +59,9 @@ namespace Neo.UI.DbcEditors
         public ChrRacesEditorControl()
         {
             InitializeComponent();
-            tbcEditor.Appearance = TabAppearance.FlatButtons;
-            tbcEditor.ItemSize = new Size(0, 1);
-            tbcEditor.SizeMode = TabSizeMode.Fixed;
+	        this.tbcEditor.Appearance = TabAppearance.FlatButtons;
+	        this.tbcEditor.ItemSize = new Size(0, 1);
+	        this.tbcEditor.SizeMode = TabSizeMode.Fixed;
         }
 
         private void ChrRacesEditorControl_Load(object sender, EventArgs e)
@@ -78,7 +78,7 @@ namespace Neo.UI.DbcEditors
             //We're creating every tab => one races
             foreach (var entry in DbcStores.ChrRaces.Records)
             {
-                ++raceNbr;
+                ++this.raceNbr;
                 if (entry.RaceNameNeutral.String != "0")
                 {
 	                this.lbMenu.Items.Add(entry.RaceNameNeutral.String);
@@ -97,17 +97,17 @@ namespace Neo.UI.DbcEditors
                 {
 	                page.Name = "" + this.raceNbr;
                 }
-	            tbcEditor.TabPages.Add(page);
+	            this.tbcEditor.TabPages.Add(page);
                 FillTab(page,(int)entry.RaceId);
 
-                if (entry.RaceId > startRaceNbr)
+                if (entry.RaceId > this.startRaceNbr)
                 {
 	                this.startRaceNbr = (int)entry.RaceId;
                 }
             }
 
-            lbMenu.Size = new Size(150, (raceNbr*14 > 342) ? 342 : raceNbr * 14);
-            lbMenu.SelectedIndex = 0;
+	        this.lbMenu.Size = new Size(150, (this.raceNbr*14 > 342) ? 342 : this.raceNbr * 14);
+	        this.lbMenu.SelectedIndex = 0;
 
         }
 
@@ -118,7 +118,7 @@ namespace Neo.UI.DbcEditors
                 TextBox textBox = sender as TextBox;
                 if (textBox != null)
                 {
-                    lbMenu.Items[lbMenu.SelectedIndex] = textBox.Text;
+	                this.lbMenu.Items[this.lbMenu.SelectedIndex] = textBox.Text;
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace Neo.UI.DbcEditors
             }
 
             //Create and place every label
-            foreach (labelStruct item in labelArray)
+            foreach (labelStruct item in this.labelArray)
             {
                 Label label = new Label();
                 label.Text = item.Text;
@@ -222,44 +222,44 @@ namespace Neo.UI.DbcEditors
 
         private void lbMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tbcEditor.SelectedIndex = lbMenu.SelectedIndex;
+	        this.tbcEditor.SelectedIndex = this.lbMenu.SelectedIndex;
         }
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            ++raceNbr;
-            lbMenu.Items.Add("New race "+ raceNbr);
+            ++this.raceNbr;
+	        this.lbMenu.Items.Add("New race "+ this.raceNbr);
             TabPage page = new TabPage();
-            page.Name = "" + raceNbr;
-            tbcEditor.TabPages.Add(page);
+            page.Name = "" + this.raceNbr;
+	        this.tbcEditor.TabPages.Add(page);
             FillTab(page, -1);
             ChrRacesEntry race = new ChrRacesEntry();
-            race.RaceId = (uint)raceNbr;
-            race.RaceNameNeutral = "New race " + raceNbr;
+            race.RaceId = (uint) this.raceNbr;
+            race.RaceNameNeutral = "New race " + this.raceNbr;
             //Add an empty race for the up/down button
-            DbcStores.ChrRaces.AddEntry((uint)raceNbr, race);
-            lbMenu.Size = new Size(150, (raceNbr*14 > 342) ? 342 : raceNbr* 14);
+            DbcStores.ChrRaces.AddEntry((uint) this.raceNbr, race);
+	        this.lbMenu.Size = new Size(150, (this.raceNbr*14 > 342) ? 342 : this.raceNbr* 14);
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
         {
-            if (lbMenu.SelectedIndex < 21)
+            if (this.lbMenu.SelectedIndex < 21)
             {
                 MessageBox.Show("Please do not remove blizzard races to avoid problems");
                 return;
             }
-            --raceNbr;
-            tbcEditor.TabPages.RemoveAt(lbMenu.SelectedIndex);
-            lbMenu.Items.Remove(lbMenu.SelectedItem);
+            --this.raceNbr;
+	        this.tbcEditor.TabPages.RemoveAt(this.lbMenu.SelectedIndex);
+	        this.lbMenu.Items.Remove(this.lbMenu.SelectedItem);
 
-            lbMenu.Size = new Size(150, (raceNbr * 14 > 342) ? 342 : raceNbr * 14);
+	        this.lbMenu.Size = new Size(150, (this.raceNbr * 14 > 342) ? 342 : this.raceNbr * 14);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             DbcStores.ChrRaces.ClearDbc();
             //Loop trough each tabs
-            foreach (TabPage tab in tbcEditor.TabPages)
+            foreach (TabPage tab in this.tbcEditor.TabPages)
             {
                 var race = new ChrRacesEntry();
                 int inputFieldscount = 0;
@@ -337,7 +337,7 @@ namespace Neo.UI.DbcEditors
                     }
                 }
 
-                race.RaceId = (uint)tbcEditor.TabPages.IndexOf(tab)+1;
+                race.RaceId = (uint) this.tbcEditor.TabPages.IndexOf(tab)+1;
                 DbcStores.ChrRaces.AddEntry(race.RaceId, race);
             }
             //Everything is ok, save
@@ -346,15 +346,15 @@ namespace Neo.UI.DbcEditors
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(lbMenu.SelectedIndex <= 21)
+            if(this.lbMenu.SelectedIndex <= 21)
             {
                 MessageBox.Show("Please do not move blizzard races to avoid problems");
                 return;
             }
             int count = 0;
-            int index = tbcEditor.SelectedIndex;
-            TabPage[] pages = new TabPage[tbcEditor.TabPages.Count];
-            foreach(TabPage page in tbcEditor.TabPages)
+            int index = this.tbcEditor.SelectedIndex;
+            TabPage[] pages = new TabPage[this.tbcEditor.TabPages.Count];
+            foreach(TabPage page in this.tbcEditor.TabPages)
             {
                 pages[count] = page;
                 ++count;
@@ -364,12 +364,12 @@ namespace Neo.UI.DbcEditors
             pages[index] = pages[index - 1];
             pages[index - 1] = temp;
 
-            tbcEditor.TabPages.Clear();
-            lbMenu.Items.Clear();
+	        this.tbcEditor.TabPages.Clear();
+	        this.lbMenu.Items.Clear();
 
             foreach (TabPage page in pages)
             {
-                tbcEditor.TabPages.Add(page);
+	            this.tbcEditor.TabPages.Add(page);
 
                 foreach (var entry in DbcStores.ChrRaces.Records)
                 {
@@ -383,15 +383,15 @@ namespace Neo.UI.DbcEditors
 
         private void DownButton_Click(object sender, EventArgs e)
         {
-            if (lbMenu.SelectedIndex < 21)
+            if (this.lbMenu.SelectedIndex < 21)
             {
                 MessageBox.Show("Please do not move blizzard races to avoid problems");
                 return;
             }
             int count = 0;
-            int index = tbcEditor.SelectedIndex;
-            TabPage[] pages = new TabPage[tbcEditor.TabPages.Count];
-            foreach (TabPage page in tbcEditor.TabPages)
+            int index = this.tbcEditor.SelectedIndex;
+            TabPage[] pages = new TabPage[this.tbcEditor.TabPages.Count];
+            foreach (TabPage page in this.tbcEditor.TabPages)
             {
                 pages[count] = page;
                 ++count;
@@ -406,12 +406,12 @@ namespace Neo.UI.DbcEditors
             pages[index] = pages[index + 1];
             pages[index + 1] = temp;
 
-            tbcEditor.TabPages.Clear();
-            lbMenu.Items.Clear();
+	        this.tbcEditor.TabPages.Clear();
+	        this.lbMenu.Items.Clear();
 
             foreach (TabPage page in pages)
             {
-                tbcEditor.TabPages.Add(page);
+	            this.tbcEditor.TabPages.Add(page);
 
                 foreach (var entry in DbcStores.ChrRaces.Records)
                 {
@@ -426,7 +426,7 @@ namespace Neo.UI.DbcEditors
 
     internal class ChrRacesEditorControlDesigner : ControlDesigner
     {
-        public override void Initialize(System.ComponentModel.IComponent component)
+        public override void Initialize(IComponent component)
         {
             base.Initialize(component);
 

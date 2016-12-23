@@ -11,7 +11,7 @@ namespace Neo.UI
 
         private readonly EditorWindow mWindow;
 
-        public LoadingScreenControl LoadingScreen { get { return mWindow.LoadingScreenView; } }
+        public LoadingScreenControl LoadingScreen { get { return this.mWindow.LoadingScreenView; } }
         public TexturingViewModel TexturingModel { get; set; }
         public SculptingViewModel TerrainManager { get; set; }
         public IEditingViewModel IEditingModel { get; set; }
@@ -19,51 +19,51 @@ namespace Neo.UI
         public AssetBrowserViewModel AssetBrowserModel { get; set; }
         public ObjectSpawnModel SpawnModel { get; set; }
 
-        public Dispatcher WindowDispatcher { get { return mWindow.Dispatcher; } }
+        public Dispatcher WindowDispatcher { get { return this.mWindow.Dispatcher; } }
 
         public EditorWindowController(EditorWindow window)
         {
             Instance = this;
-            mWindow = window;
+	        this.mWindow = window;
         }
 
         public void ShowMapOverview()
         {
-            mWindow.SplashDocument.Visibility = Visibility.Collapsed;
-            mWindow.LoadingDocument.Visibility = Visibility.Collapsed;
-            mWindow.EntrySelectView.Visibility = Visibility.Collapsed;
-            mWindow.LoadingScreenView.Visibility = Visibility.Collapsed;
-            mWindow.MapOverviewGrid.Visibility = Visibility.Visible;
+	        this.mWindow.SplashDocument.Visibility = Visibility.Collapsed;
+	        this.mWindow.LoadingDocument.Visibility = Visibility.Collapsed;
+	        this.mWindow.EntrySelectView.Visibility = Visibility.Collapsed;
+	        this.mWindow.LoadingScreenView.Visibility = Visibility.Collapsed;
+	        this.mWindow.MapOverviewGrid.Visibility = Visibility.Visible;
         }
 
         public void ShowAssetBrowser()
         {
-            mWindow.AssetBrowserDocument.IsSelected = true;
+	        this.mWindow.AssetBrowserDocument.IsSelected = true;
         }
 
         public void OnEnterWorld()
         {
-            mWindow.WelcomeDocument.Close();
+	        this.mWindow.WelcomeDocument.Close();
         }
 
         public void OnUpdatePosition(Vector3 position)
         {
-            mWindow.OnUpdatePosition(position);
+	        this.mWindow.OnUpdatePosition(position);
         }
 
         public void OnUpdate(Vector3 modelPosition, Vector3 namePlatePosition)
         {
-            mWindow.OnUpdate(modelPosition, namePlatePosition);
+	        this.mWindow.OnUpdate(modelPosition, namePlatePosition);
         }
 
         public void OnUpdateTileIndex(int x, int y)
         {
-            mWindow.OnUpdateCurrentAdt(x, y);
+	        this.mWindow.OnUpdateCurrentAdt(x, y);
         }
 
         public void OnUpdateChunkIndex(int x, int y)
         {
-            mWindow.OnUpdateCurrentChunk(x, y);
+	        this.mWindow.OnUpdateCurrentChunk(x, y);
         }
     }
 }

@@ -27,14 +27,14 @@ namespace Neo.UI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var text = DisplayIdBox.Text;
+            var text = this.DisplayIdBox.Text;
             int displayId;
             if (int.TryParse(text, out displayId) == false)
             {
 	            return;
             }
 
-	        ModelControl.SetCreatureDisplayEntry(displayId);
+	        this.ModelControl.SetCreatureDisplayEntry(displayId);
         }
     }
 }

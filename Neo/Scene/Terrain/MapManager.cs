@@ -42,20 +42,20 @@ namespace Neo.Scene.Terrain
 
         public void Initialize()
         {
-            SkySphere = new SkySphere(999.0f, 25, 25);
-            mIsRunning = true;
-            mLoadThread = new Thread(LoadProc);
-            mLoadThread.Start();
-            mLightUpdateThread = new Thread(LightUpdateProc);
-            mLightUpdateThread.Start();
-            mUnloadThread = new Thread(UnloadProc);
-            mUnloadThread.Start();
+	        this.SkySphere = new SkySphere(999.0f, 25, 25);
+	        this.mIsRunning = true;
+	        this.mLoadThread = new Thread(LoadProc);
+	        this.mLoadThread.Start();
+	        this.mLightUpdateThread = new Thread(LightUpdateProc);
+	        this.mLightUpdateThread.Start();
+	        this.mUnloadThread = new Thread(UnloadProc);
+	        this.mUnloadThread.Start();
         }
 
         public MapAreaRender GetAreaByIndex(int ix, int iy)
         {
             var index = iy * 0xFF + ix;
-            lock (mAreas)
+            lock (this.mAreas)
             {
 	            return this.mAreas.ContainsKey(index) ? this.mAreas[index] : null;
             }
@@ -63,7 +63,7 @@ namespace Neo.Scene.Terrain
 
         public MapAreaRender GetAreaByPosition(Vector3 position)
         {
-            lock(mAreas)
+            lock(this.mAreas)
             {
 	            return this.mAreas.Values.FirstOrDefault(x => x.AreaFile.BoundingBox.Contains(position) == ContainmentType.Contains);
             }
@@ -72,14 +72,14 @@ namespace Neo.Scene.Terrain
         public void OnEditTerrain(Editing.TerrainChangeParameters parameters)
         {
             // ReSharper disable once InconsistentlySynchronizedField
-            foreach (var pair in mAreas)
+            foreach (var pair in this.mAreas)
             {
 	            pair.Value.OnTerrainChange(parameters);
             }
 
 	        if(parameters.AlignModels)
             {
-                foreach (var pair in mAreas)
+                foreach (var pair in this.mAreas)
                 {
 	                pair.Value.OnUpdateModelPositions(parameters);
                 }
@@ -88,7 +88,7 @@ namespace Neo.Scene.Terrain
 
         public void OnTextureTerrain(Editing.TextureChangeParameters parameters)
         {
-            foreach (var pair in mAreas)
+            foreach (var pair in this.mAreas)
             {
 	            pair.Value.OnTextureChange(parameters);
             }
@@ -96,7 +96,7 @@ namespace Neo.Scene.Terrain
 
         public void OnSaveAllFiles()
         {
-            foreach (var pair in mAreas)
+            foreach (var pair in this.mAreas)
             {
 	            pair.Value.AreaFile.Save();
             }
@@ -104,11 +104,11 @@ namespace Neo.Scene.Terrain
 
         public void Shutdown()
         {
-            mIsRunning = false;
-            mLoadThread.Join();
-            mLightUpdateThread.Join();
-            mUnloadThread.Join();
-            mAreaLowManager.Shutdown();
+	        this.mIsRunning = false;
+	        this.mLoadThread.Join();
+	        this.mLightUpdateThread.Join();
+	        this.mUnloadThread.Join();
+	        this.mAreaLowManager.Shutdown();
         }
 
         public void OnFrame(Camera camera)
@@ -118,11 +118,11 @@ namespace Neo.Scene.Terrain
             if (WorldFrame.Instance.State == AppState.World)
             {
                 SkyManager.Instance.SyncUpdate();
-                SkySphere.Render();
-                mAreaLowManager.OnFrame();
+	            this.SkySphere.Render();
+	            this.mAreaLowManager.OnFrame();
             }
 
-            if(!HideTerrain)
+            if(!this.HideTerrain)
             {
                 MapChunkRender.ChunkMesh.BeginDraw();
                 MapChunkRender.ChunkMesh.Program.SetPixelSampler(0, MapChunkRender.ColorSampler);
@@ -137,7 +137,7 @@ namespace Neo.Scene.Terrain
                     EditorWindowController.Instance.OnUpdateChunkIndex(0, 0);
                 }
 
-	            foreach (var pair in mAreas)
+	            foreach (var pair in this.mAreas)
 	            {
 		            pair.Value.OnFrame();
 	            }
@@ -157,8 +157,8 @@ namespace Neo.Scene.Terrain
             MapChunkRender.InitIndices();
             WorldFrame.Instance.LeftHandedCamera = FileManager.Instance.Version > FileDataVersion.Cataclysm;
 
-            mEntryPoint = entryPoint;
-            Continent = continent;
+	        this.mEntryPoint = entryPoint;
+	        this.Continent = continent;
             WorldFrame.Instance.State = AppState.LoadingScreen;
 
 	        var wdtPath = string.Format(@"World\Maps\{0}\{0}.wdt", continent);
@@ -169,50 +169,49 @@ namespace Neo.Scene.Terrain
 			        strm.CopyTo(wdtFileStream);
 		        }
 
-		        CurrentWdt = new WorldTable(wdtFileStream.ToArray());
+		        this.CurrentWdt = new WorldTable(wdtFileStream.ToArray());
 	        }
 
 	        // PORT: Possible introduction of bug (bitwise flag comparison to HasFlag)
-	        HasNewBlend = CurrentWdt.Header.Flags.HasFlag(WorldTableFlags.UsesEnvironmentMapping) ||
-	                       CurrentWdt.Header.Flags.HasFlag(WorldTableFlags.UsesHardAlphaFalloff);
+	        this.HasNewBlend = this.CurrentWdt.Header.Flags.HasFlag(WorldTableFlags.UsesEnvironmentMapping) || this.CurrentWdt.Header.Flags.HasFlag(WorldTableFlags.UsesHardAlphaFalloff);
 
-            MapChunkRender.ChunkMesh.Program = HasNewBlend ? MapChunkRender.BlendNew : MapChunkRender.BlendOld;
+            MapChunkRender.ChunkMesh.Program = this.HasNewBlend ? MapChunkRender.BlendNew : MapChunkRender.BlendOld;
 
-            IsInitialLoad = true;
+	        this.IsInitialLoad = true;
 
             SkyManager.Instance.OnEnterWorld(mapId);
-            mAreaLowManager.OnEnterWorld(Continent, ref entryPoint);
+	        this.mAreaLowManager.OnEnterWorld(this.Continent, ref entryPoint);
             LoadInitial();
         }
 
         public void OnLoadProgress()
         {
-            Interlocked.Increment(ref mLoadStepsDone);
-            var pct = (float) mLoadStepsDone / mTotalLoadSteps;
-	        if (IsInitialLoad)
+            Interlocked.Increment(ref this.mLoadStepsDone);
+            var pct = (float) this.mLoadStepsDone / this.mTotalLoadSteps;
+	        if (this.IsInitialLoad)
 	        {
 		        EditorWindowController.Instance.LoadingScreen.UpdateProgress(pct);
 	        }
 
-	        if (mLoadStepsDone < mTotalLoadSteps || !IsInitialLoad)
+	        if (this.mLoadStepsDone < this.mTotalLoadSteps || !this.IsInitialLoad)
 	        {
 		        return;
 	        }
 
-            IsInitialLoad = false;
+	        this.IsInitialLoad = false;
             OnInitialLoadDone();
         }
 
         public void UpdatePosition(Vector3 position, bool updateTerrain)
         {
             WorldFrame.Instance.UpdatePosition(position);
-            SkySphere.UpdatePosition(position);
+	        this.SkySphere.UpdatePosition(position);
 
             if(updateTerrain)
             {
                 SkyManager.Instance.UpdatePosition(position);
                 var pos2D = new Vector2(position.X, position.Y);
-                mAreaLowManager.UpdatePosition(ref pos2D);
+	            this.mAreaLowManager.UpdatePosition(ref pos2D);
                 UpdateVisibility(ref position);
             }
 
@@ -245,9 +244,9 @@ namespace Neo.Scene.Terrain
 
             var index = tilex + tiley * 0xFF;
             MapAreaRender tile;
-	        lock (mAreas)
+	        lock (this.mAreas)
 	        {
-		        mAreas.TryGetValue(index, out tile);
+		        this.mAreas.TryGetValue(index, out tile);
 	        }
 
 	        if (tile == null)
@@ -300,7 +299,7 @@ namespace Neo.Scene.Terrain
             MapChunk chunkHit = null;
 
             // ReSharper disable once InconsistentlySynchronizedField
-            foreach(var pair in mAreas)
+            foreach(var pair in this.mAreas)
             {
                 MapChunk chunk;
                 float distance;
@@ -335,17 +334,17 @@ namespace Neo.Scene.Terrain
 
         private void LoadInitial()
         {
-            var ix = (int) Math.Floor(mEntryPoint.X / Metrics.TileSize);
-            var iy = (int) Math.Floor((64.0f * Metrics.TileSize - mEntryPoint.Y) / Metrics.TileSize);
+            var ix = (int) Math.Floor(this.mEntryPoint.X / Metrics.TileSize);
+            var iy = (int) Math.Floor((64.0f * Metrics.TileSize - this.mEntryPoint.Y) / Metrics.TileSize);
 
-            mTotalLoadSteps = 0;
-            mLoadStepsDone = 0;
+	        this.mTotalLoadSteps = 0;
+	        this.mLoadStepsDone = 0;
 
-            lock(mDataToLoad)
+            lock(this.mDataToLoad)
             {
-                mDataToLoad.Clear();
-                mLoadedData.Clear();
-                mAreas.Clear();
+	            this.mDataToLoad.Clear();
+	            this.mLoadedData.Clear();
+	            this.mAreas.Clear();
 
                 for (var x = ix - MapRadius; x <= ix + MapRadius; ++x)
                 {
@@ -356,15 +355,15 @@ namespace Neo.Scene.Terrain
 		                    continue;
 	                    }
 
-	                    if (FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, x, y)) == false)
+	                    if (FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", this.Continent, x, y)) == false)
 	                    {
 		                    continue;
 	                    }
 
-                        var tile = AdtFactory.Instance.CreateArea(Continent, x, y);
-                        mDataToLoad.Add(tile);
-                        mTotalLoadSteps += 2 * 256;
-                        mCurrentValidLinks.Add(x + y * 64);
+                        var tile = AdtFactory.Instance.CreateArea(this.Continent, x, y);
+	                    this.mDataToLoad.Add(tile);
+	                    this.mTotalLoadSteps += 2 * 256;
+	                    this.mCurrentValidLinks.Add(x + y * 64);
                     }
                 }
             }
@@ -373,15 +372,15 @@ namespace Neo.Scene.Terrain
         private void OnInitialLoadDone()
         {
             float height;
-            if (GetLandHeight(mEntryPoint.X, 64.0f * Metrics.TileSize - mEntryPoint.Y, out height))
+            if (GetLandHeight(this.mEntryPoint.X, 64.0f * Metrics.TileSize - this.mEntryPoint.Y, out height))
             {
                 height += 50.0f;
-                SkyManager.Instance.UpdatePosition(new Vector3(mEntryPoint.X, mEntryPoint.Y, height));
+                SkyManager.Instance.UpdatePosition(new Vector3(this.mEntryPoint.X, this.mEntryPoint.Y, height));
 
-                var entryPoint = new Vector3(mEntryPoint.X, mEntryPoint.Y, height);
+                var entryPoint = new Vector3(this.mEntryPoint.X, this.mEntryPoint.Y, height);
 	            if (FileManager.Instance.Version > FileDataVersion.Mists)
 	            {
-		            entryPoint.Y = 64.0f * Metrics.TileSize - mEntryPoint.Y;
+		            entryPoint.Y = 64.0f * Metrics.TileSize - this.mEntryPoint.Y;
 	            }
 
                 SkyManager.Instance.AsyncUpdate();
@@ -390,7 +389,7 @@ namespace Neo.Scene.Terrain
                 WorldFrame.Instance.Dispatcher.BeginInvoke(
                     () =>
                     {
-                        SkySphere.UpdatePosition(new Vector3(mEntryPoint.X, mEntryPoint.Y, height));
+	                    this.SkySphere.UpdatePosition(new Vector3(this.mEntryPoint.X, this.mEntryPoint.Y, height));
                         SkyManager.Instance.SyncUpdate();
                         WorldFrame.Instance.CamControl.ForceUpdate(WorldFrame.Instance.ActiveCamera.Position);
                         WorldFrame.Instance.M2Manager.ViewChanged();
@@ -403,22 +402,22 @@ namespace Neo.Scene.Terrain
 
         private void LoadProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
                 MapArea loadTile = null;
-                lock(mDataToLoad)
+                lock(this.mDataToLoad)
                 {
-                    if (mDataToLoad.Count > 0)
+                    if (this.mDataToLoad.Count > 0)
                     {
-                        loadTile = mDataToLoad[0];
-                        mDataToLoad.RemoveAt(0);
+                        loadTile = this.mDataToLoad[0];
+	                    this.mDataToLoad.RemoveAt(0);
                     }
                 }
 
 	            if (loadTile != null)
 	            {
 		            loadTile.AsyncLoad();
-		            lock (mLoadedData)
+		            lock (this.mLoadedData)
 		            {
 			            this.mLoadedData.Add(loadTile);
 		            }
@@ -434,14 +433,14 @@ namespace Neo.Scene.Terrain
         {
             MapArea data = null;
             var index = 0;
-            lock(mLoadedData)
+            lock(this.mLoadedData)
             {
-                if (mLoadedData.Count > 0)
+                if (this.mLoadedData.Count > 0)
                 {
-                    data = mLoadedData[0];
-                    mLoadedData.RemoveAt(0);
+                    data = this.mLoadedData[0];
+	                this.mLoadedData.RemoveAt(0);
                     index = data.IndexX + data.IndexY * 0xFF;
-                    if (mAreas.ContainsKey(index))
+                    if (this.mAreas.ContainsKey(index))
                     {
                         data.Dispose();
                         return;
@@ -456,12 +455,12 @@ namespace Neo.Scene.Terrain
 
             var tile = new MapAreaRender(data.IndexX, data.IndexY);
             tile.AsyncLoaded(data);
-            mAreas.Add(index, tile);
+	        this.mAreas.Add(index, tile);
         }
 
         private void LightUpdateProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
 	            if (SkyManager.Instance != null)
 	            {
@@ -484,20 +483,20 @@ namespace Neo.Scene.Terrain
             var ix = (int) Math.Floor(cx / Metrics.TileSize);
             var iy = (int) Math.Floor(cy / Metrics.TileSize);
 
-            var countPref = mCurrentValidLinks.Count;
-            mCurrentValidLinks.RemoveAll(index =>
+            var countPref = this.mCurrentValidLinks.Count;
+	        this.mCurrentValidLinks.RemoveAll(index =>
             {
                 var x = index % 64;
                 var y = index / 64;
                 return (x > ix + 2 || x < ix - 2 || y > iy + 2 || y < iy - 2);
             });
 
-	        if (countPref == mCurrentValidLinks.Count)
+	        if (countPref == this.mCurrentValidLinks.Count)
 	        {
 		        return;
 	        }
 
-            mCurrentValidLinks.Clear();
+	        this.mCurrentValidLinks.Clear();
             for (var x = ix - MapRadius; x <= ix + MapRadius; ++x)
             {
                 for (var y = iy - MapRadius; y <= iy + MapRadius; ++y)
@@ -507,14 +506,14 @@ namespace Neo.Scene.Terrain
 		                continue;
 	                }
 
-                    mCurrentValidLinks.Add(y * 64 + x);
+	                this.mCurrentValidLinks.Add(y * 64 + x);
                 }
             }
 
             var loadMask = new List<int>();
             var invalidList = new List<MapAreaRender>();
             // ReSharper disable once InconsistentlySynchronizedField
-            foreach(var pair in mAreas)
+            foreach(var pair in this.mAreas)
             {
                 var tile = pair.Value;
                 var index = tile.IndexX + tile.IndexY * 64;
@@ -529,28 +528,28 @@ namespace Neo.Scene.Terrain
                 loadMask.Add(index);
             }
 
-            lock(mUnloadList)
+            lock(this.mUnloadList)
             {
                 foreach(var tile in invalidList)
                 {
-                    mUnloadList.Add(tile);
-                    mAreas.Remove(tile.IndexX + tile.IndexY * 0xFF);
+	                this.mUnloadList.Add(tile);
+	                this.mAreas.Remove(tile.IndexX + tile.IndexY * 0xFF);
                 }
             }
 
             invalidList.Clear();
 
-            lock(mDataToLoad)
+            lock(this.mDataToLoad)
             {
-                loadMask.AddRange(mDataToLoad.Select(tile => tile.IndexX + tile.IndexY * 64));
+                loadMask.AddRange(this.mDataToLoad.Select(tile => tile.IndexX + tile.IndexY * 64));
             }
 
-            lock(mLoadedData)
+            lock(this.mLoadedData)
             {
-                loadMask.AddRange(mLoadedData.Select(tile => tile.IndexX + tile.IndexY * 64));
+                loadMask.AddRange(this.mLoadedData.Select(tile => tile.IndexX + tile.IndexY * 64));
             }
 
-            foreach(var link in mCurrentValidLinks)
+            foreach(var link in this.mCurrentValidLinks)
             {
 	            if (loadMask.Contains(link))
 	            {
@@ -560,26 +559,26 @@ namespace Neo.Scene.Terrain
                 var x = link % 64;
                 var y = link / 64;
 
-                var area = AdtFactory.Instance.CreateArea(Continent, x, y);
-	            lock (mDataToLoad)
+                var area = AdtFactory.Instance.CreateArea(this.Continent, x, y);
+	            lock (this.mDataToLoad)
 	            {
-		            mDataToLoad.Add(area);
+		            this.mDataToLoad.Add(area);
 	            }
             }
         }
 
         private void UnloadProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
-                lock(mUnloadList)
+                lock(this.mUnloadList)
                 {
-	                foreach (var tile in mUnloadList)
+	                foreach (var tile in this.mUnloadList)
 	                {
 		                tile.Dispose();
 	                }
 
-                    mUnloadList.Clear();
+	                this.mUnloadList.Clear();
                 }
                 Thread.Sleep(500);
             }

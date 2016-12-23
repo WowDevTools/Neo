@@ -24,17 +24,17 @@ namespace Neo.UI.ViewModels
 
         public MySqlConnectionsViewModel()
         {
-            LoginCommand = new DelegateCommand(Login);
-            SaveConnectionCommand = new DelegateCommand(SaveConnection);
-            NewConnectionCommand = new DelegateCommand(NewConnection);
-            DeleteConnectionCommand = new DelegateCommand(DeleteConnection);
-            SelectionChangedCommand = new DelegateCommand(SelectionChanged);
-            CancelCommand = new DelegateCommand(CancelNewConnection);
+	        this.LoginCommand = new DelegateCommand(Login);
+	        this.SaveConnectionCommand = new DelegateCommand(SaveConnection);
+	        this.NewConnectionCommand = new DelegateCommand(NewConnection);
+	        this.DeleteConnectionCommand = new DelegateCommand(DeleteConnection);
+	        this.SelectionChangedCommand = new DelegateCommand(SelectionChanged);
+	        this.CancelCommand = new DelegateCommand(CancelNewConnection);
 
-            NotificationRequest = new InteractionRequest<INotification>();
-            SaveAsRequest = new InteractionRequest<SaveAsNotification>();
+	        this.NotificationRequest = new InteractionRequest<INotification>();
+	        this.SaveAsRequest = new InteractionRequest<SaveAsNotification>();
 
-            ConnectionsModel = new MySqlConnectionsModel
+	        this.ConnectionsModel = new MySqlConnectionsModel
             {
                 LoginContent = "Login",
                 LoginIsEnabled = true,
@@ -51,20 +51,20 @@ namespace Neo.UI.ViewModels
 
         public MySqlConnectionsModel ConnectionsModel
         {
-            get { return mConnections; }
-            set { SetProperty(ref mConnections, value); }
+            get { return this.mConnections; }
+            set { SetProperty(ref this.mConnections, value); }
         }
 
         private List<string> GetConnection()
         {
             return new List<string>
             {
-                ConnectionsModel.Address,
-                ConnectionsModel.Username,
-                ConnectionsModel.Password,
-                ConnectionsModel.Database,
-                SaveAs,
-                ConnectionsModel.Default.ToString()
+	            this.ConnectionsModel.Address,
+	            this.ConnectionsModel.Username,
+	            this.ConnectionsModel.Password,
+	            this.ConnectionsModel.Database,
+	            this.SaveAs,
+	            this.ConnectionsModel.Default.ToString()
             };
         }
 
@@ -74,18 +74,18 @@ namespace Neo.UI.ViewModels
 
             foreach (var connection in XmlService.GetIdAttributes())
             {
-                ConnectionsModel.Connections.Add(connection);
+	            this.ConnectionsModel.Connections.Add(connection);
             }
         }
 
         private bool IsNull()
         {
-            return ConnectionsModel.Address == null || ConnectionsModel.Username == null || ConnectionsModel.Password == null || ConnectionsModel.Database == null;
+            return this.ConnectionsModel.Address == null || this.ConnectionsModel.Username == null || this.ConnectionsModel.Password == null || this.ConnectionsModel.Database == null;
         }
 
         private void RaiseErrorNotification(string errorMsg, string titleMsg = "Error")
         {
-            NotificationRequest.Raise(
+	        this.NotificationRequest.Raise(
                 new Notification { Content = errorMsg, Title = titleMsg }
                 );
         }
@@ -94,24 +94,24 @@ namespace Neo.UI.ViewModels
         {
             var notification = new SaveAsNotification {Title = "New Connection"};
 
-            SaveAsRequest.Raise(notification,
+	        this.SaveAsRequest.Raise(notification,
                 returned =>
                 {
                     if (returned == null || !returned.Confirmed || returned.SaveAs == null)
                     {
 	                    return;
                     }
-	                SaveAs = returned.SaveAs;
-                    if (ConnectionsModel.Connections.Contains(SaveAs))
+	                this.SaveAs = returned.SaveAs;
+                    if (this.ConnectionsModel.Connections.Contains(this.SaveAs))
                     {
                         RaiseErrorNotification("A connection with the same name already exists.");
                         return;
                     }
-                    ConnectionsModel.Connections.Add(SaveAs);
-                    ConnectionsModel.DeleteIsEnabled = false;
-                    ConnectionsModel.SaveIsEnabled = true;
-                    ConnectionsModel.NewIsEnabled = false;
-                    ConnectionsModel.Visibility = "Visible";
+	                this.ConnectionsModel.Connections.Add(this.SaveAs);
+	                this.ConnectionsModel.DeleteIsEnabled = false;
+	                this.ConnectionsModel.SaveIsEnabled = true;
+	                this.ConnectionsModel.NewIsEnabled = false;
+	                this.ConnectionsModel.Visibility = "Visible";
                 });
         }
 
@@ -125,8 +125,7 @@ namespace Neo.UI.ViewModels
             {
                 try
                 {
-                    MySqlConnector.Instance.Configuration(ConnectionsModel.Address, ConnectionsModel.Username,
-                        ConnectionsModel.Password, ConnectionsModel.Database);
+                    MySqlConnector.Instance.Configuration(this.ConnectionsModel.Address, this.ConnectionsModel.Username, this.ConnectionsModel.Password, this.ConnectionsModel.Database);
                     MySqlConnector.Instance.OpenConnection();
                     var dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM creature_template");
                     CreatureManager.Instance.LoadCreatures(dt);
@@ -135,8 +134,8 @@ namespace Neo.UI.ViewModels
                     dt = MySqlConnector.Instance.QueryToDataTable("SELECT * FROM item_template");
                     ItemManager.Instance.LoadItem(dt);
 
-                    ConnectionsModel.LoginIsEnabled = false;
-                    ConnectionsModel.LoginContent = "Succesful!";
+	                this.ConnectionsModel.LoginIsEnabled = false;
+	                this.ConnectionsModel.LoginContent = "Succesful!";
                 }
                 catch (System.Exception)
                 {
@@ -170,46 +169,46 @@ namespace Neo.UI.ViewModels
             var xml = new XmlService();
             XmlService.SaveConnection(GetConnection());
 
-            ConnectionsModel.SaveIsEnabled = false;
-            ConnectionsModel.DeleteIsEnabled = true;
-            ConnectionsModel.NewIsEnabled = true;
-            ConnectionsModel.Visibility = "Hidden";
+	        this.ConnectionsModel.SaveIsEnabled = false;
+	        this.ConnectionsModel.DeleteIsEnabled = true;
+	        this.ConnectionsModel.NewIsEnabled = true;
+	        this.ConnectionsModel.Visibility = "Hidden";
         }
 
         private void DeleteConnection()
         {
             var xml = new XmlService();
 
-            if (ConnectionsModel.SelectedItem == null)
+            if (this.ConnectionsModel.SelectedItem == null)
             {
 	            return;
             }
-	        XmlService.DeleteConnection(ConnectionsModel.SelectedItem);
-            ConnectionsModel.Connections.Remove(ConnectionsModel.SelectedItem);
+	        XmlService.DeleteConnection(this.ConnectionsModel.SelectedItem);
+	        this.ConnectionsModel.Connections.Remove(this.ConnectionsModel.SelectedItem);
         }
 
         private void CancelNewConnection()
         {
-            ConnectionsModel.Connections.Remove(SaveAs);
-            ConnectionsModel.NewIsEnabled = true;
-            ConnectionsModel.SaveIsEnabled = false;
-            ConnectionsModel.DeleteIsEnabled = true;
-            ConnectionsModel.Visibility = "Hidden";
+	        this.ConnectionsModel.Connections.Remove(this.SaveAs);
+	        this.ConnectionsModel.NewIsEnabled = true;
+	        this.ConnectionsModel.SaveIsEnabled = false;
+	        this.ConnectionsModel.DeleteIsEnabled = true;
+	        this.ConnectionsModel.Visibility = "Hidden";
         }
 
         private void SelectionChanged()
         {
             var xml = new XmlService();
-            if (ConnectionsModel.SelectedItem == null || ConnectionsModel.SaveIsEnabled)
+            if (this.ConnectionsModel.SelectedItem == null || this.ConnectionsModel.SaveIsEnabled)
             {
 	            return;
             }
-	        var list = XmlService.ReadConnection(ConnectionsModel.SelectedItem);
+	        var list = XmlService.ReadConnection(this.ConnectionsModel.SelectedItem);
 
-            ConnectionsModel.Address = list[0];
-            ConnectionsModel.Username = list[1];
-            ConnectionsModel.Password = list[2];
-            ConnectionsModel.Database = list[3];
+	        this.ConnectionsModel.Address = list[0];
+	        this.ConnectionsModel.Username = list[1];
+	        this.ConnectionsModel.Password = list[2];
+	        this.ConnectionsModel.Database = list[3];
         }
     }
 }

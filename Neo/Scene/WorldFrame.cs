@@ -55,16 +55,16 @@ namespace Neo.Scene
 
         public bool LeftHandedCamera
         {
-            get { return mMainCamera.LeftHanded; }
+            get { return this.mMainCamera.LeftHanded; }
             set
             {
-                if (mMainCamera.LeftHanded != value)
+                if (this.mMainCamera.LeftHanded != value)
                 {
 	                this.CamControl.InvertX = !this.CamControl.InvertX;
                 }
 
-	            mMainCamera.LeftHanded = value;
-                mMainCamera.Update();
+	            this.mMainCamera.LeftHanded = value;
+	            this.mMainCamera.Update();
             }
         }
 
@@ -80,7 +80,7 @@ namespace Neo.Scene
         private Point mLastCursorPosition;
         private RenderControl mWindow;
 
-        public AppState State { get { return mState; } set { UpdateAppState(value); } }
+        public AppState State { get { return this.mState; } set { UpdateAppState(value); } }
         public GraphicsDispatcher Dispatcher { get; private set; }
 
         public IntersectionParams LastMouseIntersection { get; private set; }
@@ -98,21 +98,21 @@ namespace Neo.Scene
 
         private WorldFrame()
         {
-            MapManager = new MapManager();
-            WmoManager = new WmoManager();
-            M2Manager = new M2Manager();
-            WorldTextManager = new WorldTextManager();
-            BoundingBoxDrawManager = new BoundingBoxDrawManager();
-            mState = AppState.Idle;
+	        this.MapManager = new MapManager();
+	        this.WmoManager = new WmoManager();
+	        this.M2Manager = new M2Manager();
+	        this.WorldTextManager = new WorldTextManager();
+	        this.BoundingBoxDrawManager = new BoundingBoxDrawManager();
+	        this.mState = AppState.Idle;
 
             // set the settings on creation
-            HighlightModelsInBrush = Properties.Settings.Default.HighlightModelsInBrush;
+	        this.HighlightModelsInBrush = Properties.Settings.Default.HighlightModelsInBrush;
             //this.UpdateDrawBrushOnModels = Properties.Settings.Default.UpdateDrawBrushOnModels; // todo: notimplemented!
         }
 
         public void ClearSelection()
         {
-            if (mSelectedBoundingBox != null)
+            if (this.mSelectedBoundingBox != null)
             {
 	            this.BoundingBoxDrawManager.RemoveDrawableBox(this.mSelectedBoundingBox);
             }
@@ -122,9 +122,9 @@ namespace Neo.Scene
 
         public void UpdateBrush(float innerRadius, float outerRadius)
         {
-            mGlobalBufferStore.brushParams.X = innerRadius;
-            mGlobalBufferStore.brushParams.Y = outerRadius;
-            mGlobalBufferChanged = true;
+	        this.mGlobalBufferStore.brushParams.X = innerRadius;
+	        this.mGlobalBufferStore.brushParams.Y = outerRadius;
+	        this.mGlobalBufferChanged = true;
         }
 
         public void OnResize(int width, int height)
@@ -134,24 +134,24 @@ namespace Neo.Scene
 	            return;
             }
 
-	        mMainCamera.SetAspect((float) width / height);
+	        this.mMainCamera.SetAspect((float) width / height);
         }
 
         public void UpdatePosition(Vector3 position)
         {
-            lock (mGlobalBuffer)
+            lock (this.mGlobalBuffer)
             {
-                mGlobalBufferStore.eyePosition = new Vector4(position, 1.0f);
-                mGlobalBufferChanged = true;
+	            this.mGlobalBufferStore.eyePosition = new Vector4(position, 1.0f);
+	            this.mGlobalBufferChanged = true;
             }
         }
 
         public void Initialize(RenderControl window)
         {
-            mWindow = window;
-            mGlobalBuffer = new UniformBuffer();
-            mGlobalBuffer = new UniformBuffer();
-            mGlobalBufferStore = new GlobalParamsBuffer
+	        this.mWindow = window;
+	        this.mGlobalBuffer = new UniformBuffer();
+	        this.mGlobalBuffer = new UniformBuffer();
+	        this.mGlobalBufferStore = new GlobalParamsBuffer
             {
                 matView = Matrix4.Identity,
                 matProj = Matrix4.Identity,
@@ -159,16 +159,16 @@ namespace Neo.Scene
                 ambientLight = new Vector4(0.5f, 0.5f, 0.5f, 1.0f),
                 diffuseLight = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
                 fogColor = new Vector4(0.25f, 0.5f, 1.0f, 1.0f),
-                fogParams = new Vector4(500.0f, 900.0f, mMainCamera.FarClip, 0.0f),
+                fogParams = new Vector4(500.0f, 900.0f, this.mMainCamera.FarClip, 0.0f),
                 mousePosition = new Vector4(float.MaxValue),
                 eyePosition = Vector4.Zero,
                 brushParams = new Vector4(45.0f, 55.0f, 0.0f, 0.0f)
             };
 
-            mGlobalBuffer.BufferData(mGlobalBufferStore);
+	        this.mGlobalBuffer.BufferData(this.mGlobalBufferStore);
 
-            Dispatcher = new GraphicsDispatcher();
-            Dispatcher.AssignToThread();
+	        this.Dispatcher = new GraphicsDispatcher();
+	        this.Dispatcher.AssignToThread();
             MapChunkRender.Initialize();
             MapAreaLowRender.Initialize();
             WmoGroupRender.Initialize();
@@ -181,27 +181,27 @@ namespace Neo.Scene
 
             StaticAnimationThread.Instance.Initialize();
 
-            WmoManager.Initialize();
-            M2Manager.Initialize();
-            WorldTextManager.Initialize();
+	        this.WmoManager.Initialize();
+	        this.M2Manager.Initialize();
+	        this.WorldTextManager.Initialize();
 
-            SetActiveCamera(mMainCamera);
+            SetActiveCamera(this.mMainCamera);
             TextureManager.Instance.Initialize();
 
-            MapManager.Initialize();
+	        this.MapManager.Initialize();
 
-            mMainCamera.ViewChanged += ViewChanged;
-            mMainCamera.ProjectionChanged += ProjectionChanged;
+	        this.mMainCamera.ViewChanged += ViewChanged;
+	        this.mMainCamera.ProjectionChanged += ProjectionChanged;
 
-            OnResize(mWindow.Width, mWindow.Height);
+            OnResize(this.mWindow.Width, this.mWindow.Height);
 
-            ViewChanged(mMainCamera, mMainCamera.View);
-            ProjectionChanged(mMainCamera, mMainCamera.Projection);
+            ViewChanged(this.mMainCamera, this.mMainCamera.View);
+            ProjectionChanged(this.mMainCamera, this.mMainCamera.Projection);
 
-            CamControl = new CameraControl(window);
-            CamControl.PositionChanged += MapManager.UpdatePosition;
+	        this.CamControl = new CameraControl(window);
+	        this.CamControl.PositionChanged += this.MapManager.UpdatePosition;
 
-            if (!LeftHandedCamera)
+            if (!this.LeftHandedCamera)
             {
 	            this.CamControl.InvertY = false;
             }
@@ -211,32 +211,32 @@ namespace Neo.Scene
 
         public void OnEnterWorld(Vector3 position)
         {
-            State = AppState.World;
+	        this.State = AppState.World;
             TimeManager.Instance.Reset();
-            mMainCamera.SetParameters(position, position + Vector3.UnitX, Vector3.UnitZ, -Vector3.UnitY);
+	        this.mMainCamera.SetParameters(position, position + Vector3.UnitX, Vector3.UnitZ, -Vector3.UnitY);
             UpdatePosition(position);
         }
 
         public void Shutdown()
         {
             TextureManager.Instance.Shutdown();
-            MapManager.Shutdown();
-            WmoManager.Shutdown();
+	        this.MapManager.Shutdown();
+	        this.WmoManager.Shutdown();
             StaticAnimationThread.Instance.Shutdown();
-            M2Manager.Shutdown();
-            WorldTextManager.Shutdown();
+	        this.M2Manager.Shutdown();
+	        this.WorldTextManager.Shutdown();
         }
 
         public void OnFrame()
         {
-            Dispatcher.ProcessFrame();
+	        this.Dispatcher.ProcessFrame();
 
-            CamControl.Update(ActiveCamera, State != AppState.World);
+	        this.CamControl.Update(this.ActiveCamera, this.State != AppState.World);
 
             EditManager.Instance.UpdateChanges();
 
             // do not move before mCamControl.Update to have the latest view/projection
-            if (State == AppState.World)
+            if (this.State == AppState.World)
             {
                 UpdateCursorPosition();
                 UpdateBrushTime(TimeManager.Instance.GetTime());
@@ -247,59 +247,59 @@ namespace Neo.Scene
             //GraphicsContext.Context.VertexShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
             //GraphicsContext.Context.PixelShader.SetConstantBuffer(0, mGlobalBuffer.BufferID);
 
-            MapManager.OnFrame(ActiveCamera);
+	        this.MapManager.OnFrame(this.ActiveCamera);
 
-            if (!HideWMO)
+            if (!this.HideWMO)
             {
 	            this.WmoManager.OnFrame(this.ActiveCamera);
             }
 
-	        if (!HideM2)
+	        if (!this.HideM2)
 	        {
 		        this.M2Manager.OnFrame(this.ActiveCamera);
 	        }
 
-	        WorldTextManager.OnFrame(ActiveCamera);
-            BoundingBoxDrawManager.OnFrame();
+	        this.WorldTextManager.OnFrame(this.ActiveCamera);
+	        this.BoundingBoxDrawManager.OnFrame();
         }
 
         public void OnMouseWheel(int delta)
         {
-            CamControl.HandleMouseWheel(delta);
+	        this.CamControl.HandleMouseWheel(delta);
         }
 
         public void UpdateMapAmbient(Vector3 ambient)
         {
-            lock (mGlobalBuffer)
+            lock (this.mGlobalBuffer)
             {
-                mGlobalBufferStore.ambientLight = new Vector4(ambient, 1.0f);
-                mGlobalBufferChanged = true;
+	            this.mGlobalBufferStore.ambientLight = new Vector4(ambient, 1.0f);
+	            this.mGlobalBufferChanged = true;
             }
         }
 
         public void UpdateMapDiffuse(Vector3 diffuse)
         {
-            lock (mGlobalBuffer)
+            lock (this.mGlobalBuffer)
             {
-                mGlobalBufferStore.diffuseLight = new Vector4(diffuse, 1.0f);
-                mGlobalBufferChanged = true;
+	            this.mGlobalBufferStore.diffuseLight = new Vector4(diffuse, 1.0f);
+	            this.mGlobalBufferChanged = true;
             }
         }
 
         public void UpdateFogParams(Vector3 fogColor, float fogStart)
         {
             fogStart = Math.Min(fogStart, 899.0f);
-            lock (mGlobalBuffer)
+            lock (this.mGlobalBuffer)
             {
-                mGlobalBufferStore.fogColor = new Vector4(fogColor, 1.0f);
-                mGlobalBufferStore.fogParams = new Vector4(fogStart, 900.0f, mMainCamera.FarClip, 0.0f);
-                mGlobalBufferChanged = true;
+	            this.mGlobalBufferStore.fogColor = new Vector4(fogColor, 1.0f);
+	            this.mGlobalBufferStore.fogParams = new Vector4(fogStart, 900.0f, this.mMainCamera.FarClip, 0.0f);
+	            this.mGlobalBufferChanged = true;
             }
         }
 
         public void UpdateSelectedBoundingBox()
         {
-            if(mSelectedBoundingBox != null && mSelectedInstance != null)
+            if(this.mSelectedBoundingBox != null && this.mSelectedInstance != null)
             {
 	            this.mSelectedBoundingBox.UpdateBoundingBox(this.mSelectedInstance.InstanceCorners);
             }
@@ -308,27 +308,27 @@ namespace Neo.Scene
         private void UpdateBrushTime(TimeSpan frameTime)
         {
             var timeSecs = frameTime.TotalMilliseconds / 1000.0;
-            mGlobalBufferStore.brushParams.Z = (float)timeSecs;
-            mGlobalBufferChanged = true;
+	        this.mGlobalBufferStore.brushParams.Z = (float)timeSecs;
+	        this.mGlobalBufferChanged = true;
         }
 
         private void UpdateCursorPosition(bool forced = false)
         {
-            var pos = mWindow.PointToClient(InterfaceHelper.GetCursorPosition());
-            if (LastMouseIntersection == null || pos.X != mLastCursorPosition.X || pos.Y != mLastCursorPosition.Y || forced)
+            var pos = this.mWindow.PointToClient(InterfaceHelper.GetCursorPosition());
+            if (this.LastMouseIntersection == null || pos.X != this.mLastCursorPosition.X || pos.Y != this.mLastCursorPosition.Y || forced)
             {
-                mLastCursorPosition = new Point(pos.X, pos.Y);
-                LastMouseIntersection = new IntersectionParams(ActiveCamera.ViewInverse, ActiveCamera.ProjectionInverse,
-                    new Vector2(mLastCursorPosition.X, mLastCursorPosition.Y));
+	            this.mLastCursorPosition = new Point(pos.X, pos.Y);
+	            this.LastMouseIntersection = new IntersectionParams(this.ActiveCamera.ViewInverse, this.ActiveCamera.ProjectionInverse,
+                    new Vector2(this.mLastCursorPosition.X, this.mLastCursorPosition.Y));
 
-                MapManager.Intersect(LastMouseIntersection);
+	            this.MapManager.Intersect(this.LastMouseIntersection);
 
-                EditManager.Instance.MousePosition = LastMouseIntersection.TerrainPosition;
-                mGlobalBufferStore.mousePosition = new Vector4(LastMouseIntersection.TerrainPosition, 0.0f);
-                mGlobalBufferChanged = true;
+                EditManager.Instance.MousePosition = this.LastMouseIntersection.TerrainPosition;
+	            this.mGlobalBufferStore.mousePosition = new Vector4(this.LastMouseIntersection.TerrainPosition, 0.0f);
+	            this.mGlobalBufferChanged = true;
 
-                EditManager.Instance.IsTerrainHovered = LastMouseIntersection.TerrainHit;
-                EditManager.Instance.MousePosition = LastMouseIntersection.TerrainPosition;
+                EditManager.Instance.IsTerrainHovered = this.LastMouseIntersection.TerrainHit;
+                EditManager.Instance.MousePosition = this.LastMouseIntersection.TerrainPosition;
 
                 ChunkEditManager.Instance.OnFrame();
             }
@@ -336,40 +336,40 @@ namespace Neo.Scene
 
         private void UpdateAppState(AppState newState)
         {
-            mState = newState;
+	        this.mState = newState;
         }
 
         private void SetActiveCamera(Camera camera)
         {
-            ActiveCamera = camera;
+	        this.ActiveCamera = camera;
         }
 
         private void ViewChanged(Camera camera, Matrix4 matView)
         {
-            if (camera != ActiveCamera)
+            if (camera != this.ActiveCamera)
             {
 	            return;
             }
 
-	        mGlobalBufferStore.matView = matView;
-            mGlobalBufferChanged = true;
+	        this.mGlobalBufferStore.matView = matView;
+	        this.mGlobalBufferChanged = true;
 
-            M2Manager.ViewChanged();
+	        this.M2Manager.ViewChanged();
 
             UpdateCursorPosition(true);
         }
 
         private void ProjectionChanged(Camera camera, Matrix4 matProj)
         {
-            if (camera != ActiveCamera)
+            if (camera != this.ActiveCamera)
             {
 	            return;
             }
 
 	        // TODO: Get these values someplace else
             // var vp = GraphicsContext.Viewport;
-            mGlobalBufferStore.matProj = matProj;
-            mGlobalBufferStore.viewport = new Vector4(vp.Width, vp.Height, vp.MinDepth, vp.MaxDepth);
+	        this.mGlobalBufferStore.matProj = matProj;
+	        this.mGlobalBufferStore.viewport = new Vector4(vp.Width, vp.Height, vp.MinDepth, vp.MaxDepth);
 
             var perspectiveCamera = camera as PerspectiveCamera;
             if (perspectiveCamera != null)
@@ -377,36 +377,36 @@ namespace Neo.Scene
 	            this.mGlobalBufferStore.fogParams.Z = perspectiveCamera.FarClip;
             }
 
-	        mGlobalBufferChanged = true;
-            M2Manager.ViewChanged();
+	        this.mGlobalBufferChanged = true;
+	        this.M2Manager.ViewChanged();
         }
 
         private void CheckUpdateGlobalBuffer()
         {
-            if (mGlobalBufferChanged)
+            if (this.mGlobalBufferChanged)
             {
-                lock (mGlobalBuffer)
+                lock (this.mGlobalBuffer)
                 {
-                    mGlobalBuffer.BufferData(mGlobalBufferStore);
-                    mGlobalBufferChanged = false;
+	                this.mGlobalBuffer.BufferData(this.mGlobalBufferStore);
+	                this.mGlobalBufferChanged = false;
                 }
             }
         }
 
         public bool RenderWindowContainsMouse()
         {
-            return mWindow.ClientRectangle.Contains(mWindow.PointToClient(Cursor.Position));
+            return this.mWindow.ClientRectangle.Contains(this.mWindow.PointToClient(Cursor.Position));
         }
 
         private void OnRenderWindowMouseDown(object sender, MouseEventArgs mouseEventArgs)
         {
-            var pos = mWindow.PointToClient(InterfaceHelper.GetCursorPosition());
-            var intersection = new IntersectionParams(ActiveCamera.ViewInverse, ActiveCamera.ProjectionInverse,
+            var pos = this.mWindow.PointToClient(InterfaceHelper.GetCursorPosition());
+            var intersection = new IntersectionParams(this.ActiveCamera.ViewInverse, this.ActiveCamera.ProjectionInverse,
                 new Vector2(pos.X, pos.Y));
 
-            MapManager.Intersect(intersection);
-            M2Manager.Intersect(intersection);
-            WmoManager.Intersect(intersection);
+	        this.MapManager.Intersect(intersection);
+	        this.M2Manager.Intersect(intersection);
+	        this.WmoManager.Intersect(intersection);
 
             if (mouseEventArgs.Button == MouseButtons.Left)
             {
@@ -420,16 +420,16 @@ namespace Neo.Scene
 	                selected = intersection.WmoInstance;
                 }
 
-	            if (selected != mSelectedInstance)
+	            if (selected != this.mSelectedInstance)
                 {
-                    if(mSelectedBoundingBox != null)
+                    if(this.mSelectedBoundingBox != null)
                     {
 	                    this.BoundingBoxDrawManager.RemoveDrawableBox(this.mSelectedBoundingBox);
                     }
 
-	                mSelectedBoundingBox = null;
+	                this.mSelectedBoundingBox = null;
 
-                    if (mSelectedInstance != null)
+                    if (this.mSelectedInstance != null)
                     {
 	                    this.mSelectedInstance.DestroyModelNameplate();
                     }
@@ -437,12 +437,12 @@ namespace Neo.Scene
 	                if (ModelEditManager.Instance.IsCopying && selected != ModelEditManager.Instance.SelectedModel)
                     {
                         selected = ModelEditManager.Instance.SelectedModel;
-                        mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
+	                    this.mSelectedBoundingBox = this.BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
                     }
                     else if (selected != null && selected.IsSpecial == false)
                     {
                         selected.CreateModelNameplate();
-                        mSelectedBoundingBox = BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
+	                    this.mSelectedBoundingBox = this.BoundingBoxDrawManager.AddDrawableBox(selected.InstanceCorners);
                         ModelEditManager.Instance.SelectedModel = selected;
                     }
                     else if (selected == null)
@@ -452,7 +452,7 @@ namespace Neo.Scene
 
                     if(EditManager.Instance.CurrentMode != EditMode.Chunk)
                     {
-                        mSelectedInstance = selected;
+	                    this.mSelectedInstance = selected;
                         ModelSpawnManager.Instance.ClickedInstance = selected as M2RenderInstance;
                     }
                 }

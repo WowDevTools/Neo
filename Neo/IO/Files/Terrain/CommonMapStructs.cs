@@ -57,8 +57,8 @@ namespace Neo.IO.Files.Terrain
 
         public LoadedModel(string file, int uuid)
         {
-            FileName = file;
-            Uuid = uuid;
+	        this.FileName = file;
+	        this.Uuid = uuid;
         }
     }
 }

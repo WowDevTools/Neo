@@ -36,16 +36,16 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         public MapArea(string continent, int ix, int iy)
         {
-            Continent = continent;
-            IndexX = ix;
-            IndexY = iy;
+	        this.Continent = continent;
+	        this.IndexX = ix;
+	        this.IndexY = iy;
         }
 
         public override void AddDoodadInstance(int uuid, string modelName, BoundingBox box, Vector3 position, Vector3 rotation, float scale)
         {
             var mmidValue = 0;
             var nameFound = false;
-            foreach (var s in mDoodadNames)
+            foreach (var s in this.mDoodadNames)
             {
                 if (string.Equals(s, modelName, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -59,18 +59,18 @@ namespace Neo.IO.Files.Terrain.Wotlk
             int mmidIndex;
             if (nameFound == false)
             {
-                mmidValue = mDoodadNames.Sum(s => s.Length + 1);
-                mmidIndex = mDoodadNameIds.Length;
-                Array.Resize(ref mDoodadNameIds, mDoodadNameIds.Length + 1);
-                mDoodadNameIds[mDoodadNameIds.Length - 1] = mmidValue;
-                mDoodadNames.Add(modelName);
+                mmidValue = this.mDoodadNames.Sum(s => s.Length + 1);
+                mmidIndex = this.mDoodadNameIds.Length;
+                Array.Resize(ref this.mDoodadNameIds, this.mDoodadNameIds.Length + 1);
+	            this.mDoodadNameIds[this.mDoodadNameIds.Length - 1] = mmidValue;
+	            this.mDoodadNames.Add(modelName);
             }
             else
             {
                 mmidIndex = -1;
-                for (var i = 0; i < mDoodadNameIds.Length; ++i)
+                for (var i = 0; i < this.mDoodadNameIds.Length; ++i)
                 {
-                    if (mDoodadNameIds[i] == mmidValue)
+                    if (this.mDoodadNameIds[i] == mmidValue)
                     {
                         mmidIndex = i;
                         break;
@@ -79,15 +79,15 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
                 if (mmidIndex < 0)
                 {
-                    mmidIndex = mDoodadNameIds.Length;
-                    Array.Resize(ref mDoodadNameIds, mDoodadNameIds.Length + 1);
-                    mDoodadNameIds[mDoodadNameIds.Length - 1] = mmidValue;
+                    mmidIndex = this.mDoodadNameIds.Length;
+                    Array.Resize(ref this.mDoodadNameIds, this.mDoodadNameIds.Length + 1);
+	                this.mDoodadNameIds[this.mDoodadNameIds.Length - 1] = mmidValue;
                 }
             }
 
-            var mcrfValue = mDoodadDefs.Length;
-            Array.Resize(ref mDoodadDefs, mDoodadDefs.Length + 1);
-            mDoodadDefs[mDoodadDefs.Length - 1] = new Mddf
+            var mcrfValue = this.mDoodadDefs.Length;
+            Array.Resize(ref this.mDoodadDefs, this.mDoodadDefs.Length + 1);
+	        this.mDoodadDefs[this.mDoodadDefs.Length - 1] = new Mddf
             {
                 Position = new Vector3(position.X, position.Z, position.Y),
                 Mmid = mmidIndex,
@@ -100,16 +100,16 @@ namespace Neo.IO.Files.Terrain.Wotlk
             var instance = WorldFrame.Instance.M2Manager.AddInstance(modelName, uuid, position, rotation,
                 new Vector3(scale));
 
-            DoodadInstances.Add(new M2Instance
+	        this.DoodadInstances.Add(new M2Instance
             {
                 Hash = modelName.ToUpperInvariant().GetHashCode(),
                 Uuid = uuid,
                 BoundingBox = (instance != null ? instance.BoundingBox : new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MinValue))),
                 RenderInstance = instance,
-                MddfIndex = mDoodadDefs.Length - 1
+                MddfIndex = this.mDoodadDefs.Length - 1
             });
 
-            foreach (var chunk in mChunks)
+            foreach (var chunk in this.mChunks)
             {
 	            if (chunk.BoundingBox.Contains(position) == ContainmentType.Contains)
 	            {
@@ -117,20 +117,20 @@ namespace Neo.IO.Files.Terrain.Wotlk
 	            }
             }
 
-	        mWasChanged = true;
+	        this.mWasChanged = true;
         }
 
         public override void OnUpdateModelPositions(TerrainChangeParameters parameters)
         {
             var center = new Vector2(parameters.Center.X, parameters.Center.Y);
-            foreach(var inst in DoodadInstances)
+            foreach(var inst in this.DoodadInstances)
             {
                 if (inst == null || inst.RenderInstance == null)
                 {
 	                continue;
                 }
 
-	            var pos = mDoodadDefs[inst.MddfIndex].Position;
+	            var pos = this.mDoodadDefs[inst.MddfIndex].Position;
                 var old_pos = pos;
                 var dist = (new Vector2(pos.X, pos.Z) - center).Length;
                 if (dist > parameters.OuterRadius)
@@ -140,7 +140,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
 	            if(WorldFrame.Instance.MapManager.GetLandHeight(pos.X, pos.Z, out pos.Y))
                 {
-                    mDoodadDefs[inst.MddfIndex].Position = pos;
+	                this.mDoodadDefs[inst.MddfIndex].Position = pos;
                     inst.RenderInstance.SetPosition(new Vector3(0, 0, pos.Y - old_pos.Y));
                 }
             }
@@ -151,8 +151,8 @@ namespace Neo.IO.Files.Terrain.Wotlk
             var minPos = chunkBox.Minimum;
             var maxPos = chunkBox.Maximum;
 
-            var omin = BoundingBox.Minimum;
-            var omax = BoundingBox.Maximum;
+            var omin = this.BoundingBox.Minimum;
+            var omax = this.BoundingBox.Maximum;
 
             omin.X = Math.Min(omin.X, minPos.X);
             omin.Y = Math.Min(omin.Y, minPos.Y);
@@ -161,7 +161,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             omax.Y = Math.Max(omax.Y, maxPos.Y);
             omax.Z = Math.Max(omax.Z, maxPos.Z);
 
-            BoundingBox = new BoundingBox(omin, omax);
+	        this.BoundingBox = new BoundingBox(omin, omax);
         }
 
         public void UpdateModelBox(BoundingBox chunkBox)
@@ -169,8 +169,8 @@ namespace Neo.IO.Files.Terrain.Wotlk
             var minPos = chunkBox.Minimum;
             var maxPos = chunkBox.Maximum;
 
-            var omin = ModelBox.Minimum;
-            var omax = ModelBox.Maximum;
+            var omin = this.ModelBox.Minimum;
+            var omax = this.ModelBox.Maximum;
 
             omin.X = Math.Min(omin.X, minPos.X);
             omin.Y = Math.Min(omin.Y, minPos.Y);
@@ -179,7 +179,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             omax.Y = Math.Max(omax.Y, maxPos.Y);
             omax.Z = Math.Max(omax.Z, maxPos.Z);
 
-            ModelBox = new BoundingBox(omin, omax);
+	        this.ModelBox = new BoundingBox(omin, omax);
         }
 
         public void UpdateVertices(MapChunk chunk)
@@ -201,12 +201,12 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         public override void Save()
         {
-            if (mWasChanged == false)
+            if (this.mWasChanged == false)
             {
 	            return;
             }
 
-	        var hasMccv = mChunks.Any(c => c != null && c.HasMccv);
+	        var hasMccv = this.mChunks.Any(c => c != null && c.HasMccv);
             if(hasMccv)
             {
                 var wdt = WorldFrame.Instance.MapManager.CurrentWdt;
@@ -218,7 +218,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 }
             }
 
-            using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, IndexX, IndexY)))
+            using (var strm = FileManager.Instance.GetOutputStream(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", this.Continent, this.IndexX, this.IndexY)))
             {
                 var writer = new BinaryWriter(strm);
                 writer.Write(0x4D564552); // MVER
@@ -228,10 +228,10 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 writer.Write(SizeCache<Mhdr>.Size);
 
                 var headerStart = writer.BaseStream.Position;
-                writer.Write(mHeader);
-                var header = mHeader;
+                writer.Write(this.mHeader);
+                var header = this.mHeader;
 
-                var chunkInfos = mChunkOffsets.ToArray();
+                var chunkInfos = this.mChunkOffsets.ToArray();
                 writer.Write(0x4D43494E);
                 writer.Write(256 * SizeCache<Mcin>.Size);
                 var mcinStart = writer.BaseStream.Position;
@@ -242,7 +242,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 header.ofsMtex = (int) (writer.BaseStream.Position - 20);
                 writer.Write(0x4D544558);
                 var textureData = new List<byte>();
-                writer.Write(TextureNames.Sum(t =>
+                writer.Write(this.TextureNames.Sum(t =>
                 {
                     var data = Encoding.ASCII.GetBytes(t);
                     textureData.AddRange(data);
@@ -254,7 +254,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 header.ofsMmdx = (int) (writer.BaseStream.Position - 20);
                 var m2NameData = new List<byte>();
                 writer.Write(0x4D4D4458);
-                writer.Write(mDoodadNames.Sum(t =>
+                writer.Write(this.mDoodadNames.Sum(t =>
                 {
                     var data = Encoding.ASCII.GetBytes(t);
                     m2NameData.AddRange(data);
@@ -265,18 +265,18 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
                 header.ofsMmid = (int) (writer.BaseStream.Position - 20);
                 writer.Write(0x4D4D4944);
-                writer.Write(mDoodadNameIds.Length * 4);
-                writer.WriteArray(mDoodadNameIds);
+                writer.Write(this.mDoodadNameIds.Length * 4);
+                writer.WriteArray(this.mDoodadNameIds);
 
                 SaveChunk(0x4D574D4F, writer, out header.ofsMwmo);
                 SaveChunk(0x4D574944, writer, out header.ofsMwid);
 
-                if (mDoodadDefs != null && mDoodadDefs.Length > 0)
+                if (this.mDoodadDefs != null && this.mDoodadDefs.Length > 0)
                 {
                     header.ofsMddf = (int)(writer.BaseStream.Position - 20);
                     writer.Write(0x4D444446);
-                    writer.Write(mDoodadDefs.Length * SizeCache<Mddf>.Size);
-                    writer.WriteArray(mDoodadDefs);
+                    writer.Write(this.mDoodadDefs.Length * SizeCache<Mddf>.Size);
+                    writer.WriteArray(this.mDoodadDefs);
                 }
                 else
                 {
@@ -286,10 +286,10 @@ namespace Neo.IO.Files.Terrain.Wotlk
 	            SaveChunk(0x4D4F4446, writer, out header.ofsModf);
                 SaveChunk(0x4D48324F, writer, out header.ofsMh2o);
 
-                for (var i = 0; i < mChunks.Count; ++i)
+                for (var i = 0; i < this.mChunks.Count; ++i)
                 {
                     var startPos = writer.BaseStream.Position;
-                    mChunks[i].SaveChunk(writer);
+	                this.mChunks[i].SaveChunk(writer);
                     var endPos = writer.BaseStream.Position;
                     chunkInfos[i].OfsMcnk = (int)startPos;
                     chunkInfos[i].SizeMcnk = (int)(endPos - startPos);
@@ -307,11 +307,11 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         public override void AsyncLoad()
         {
-            using (var file = FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", Continent, IndexX, IndexY)))
+            using (var file = FileManager.Instance.Provider.OpenFile(string.Format(@"World\Maps\{0}\{0}_{1}_{2}.adt", this.Continent, this.IndexX, this.IndexY)))
             {
                 if (file == null)
                 {
-                    IsValid = false;
+	                this.IsValid = false;
                     return;
                 }
 
@@ -327,12 +327,12 @@ namespace Neo.IO.Files.Terrain.Wotlk
                     }
 
 	                var bytes = reader.ReadBytes(size);
-                    if (mSaveChunks.ContainsKey(signature))
+                    if (this.mSaveChunks.ContainsKey(signature))
                     {
 	                    continue;
                     }
 
-	                mSaveChunks.Add(signature, new DataChunk {Data = bytes, Signature = signature, Size = size});
+	                this.mSaveChunks.Add(signature, new DataChunk {Data = bytes, Signature = signature, Size = size});
                 }
 
                 reader.BaseStream.Position = 0;
@@ -342,7 +342,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 }
 
 	            reader.ReadInt32();
-                mHeader = reader.Read<Mhdr>();
+	            this.mHeader = reader.Read<Mhdr>();
                 InitChunkInfos(reader);
                 InitTextures(reader);
                 InitM2Models(reader);
@@ -353,12 +353,12 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         public override Terrain.MapChunk GetChunk(int index)
         {
-            if (index >= mChunks.Count)
+            if (index >= this.mChunks.Count)
             {
 	            throw new IndexOutOfRangeException();
             }
 
-	        return mChunks[index];
+	        return this.mChunks[index];
         }
 
         public override bool Intersect(ref Ray ray, out Terrain.MapChunk chunk, out float distance)
@@ -367,14 +367,14 @@ namespace Neo.IO.Files.Terrain.Wotlk
             chunk = null;
 
             var mindistance = float.MaxValue;
-            if (BoundingBox.Intersects(ref ray) == false)
+            if (this.BoundingBox.Intersects(ref ray) == false)
             {
 	            return false;
             }
 
 	        Terrain.MapChunk chunkHit = null;
             var hasHit = false;
-            foreach (var cnk in mChunks)
+            foreach (var cnk in this.mChunks)
             {
                 float dist;
                 if (cnk.Intersect(ref ray, out dist) == false)
@@ -400,7 +400,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
         public override bool OnChangeTerrain(TerrainChangeParameters parameters)
         {
             var changed = false;
-            foreach (var chunk in mChunks)
+            foreach (var chunk in this.mChunks)
             {
                 if (chunk == null)
                 {
@@ -423,7 +423,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         public override void UpdateNormals()
         {
-            foreach (var chunk in mChunks)
+            foreach (var chunk in this.mChunks)
             {
                 if (chunk == null)
                 {
@@ -437,7 +437,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
         public override bool OnTextureTerrain(TextureChangeParameters parameters)
         {
             var changed = false;
-            foreach (var chunk in mChunks)
+            foreach (var chunk in this.mChunks)
             {
                 if (chunk == null)
                 {
@@ -463,7 +463,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             if (SeekChunk(reader, 0x4D43494E))
             {
                 reader.ReadInt32();
-                mChunkOffsets = reader.ReadArray<Mcin>(256);
+	            this.mChunkOffsets = reader.ReadArray<Mcin>(256);
             }
 
             reader.BaseStream.Position = 0;
@@ -474,13 +474,13 @@ namespace Neo.IO.Files.Terrain.Wotlk
 	                throw new InvalidOperationException("Area is missing chunks");
                 }
 
-	            mChunkInfos.Add(new ChunkInfo
+	            this.mChunkInfos.Add(new ChunkInfo
                 {
                     Offset = (int)(reader.BaseStream.Position),
                     Size = reader.ReadInt32()
                 });
 
-                reader.ReadBytes(mChunkInfos.Last().Size);
+                reader.ReadBytes(this.mChunkInfos.Last().Size);
             }
         }
 
@@ -494,11 +494,11 @@ namespace Neo.IO.Files.Terrain.Wotlk
 	        var size = reader.ReadInt32();
             var bytes = reader.ReadBytes(size);
             var fullString = Encoding.ASCII.GetString(bytes);
-            TextureNames.AddRange(fullString.Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries));
-            for (var i = 0; i < TextureNames.Count; ++i)
+	        this.TextureNames.AddRange(fullString.Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries));
+            for (var i = 0; i < this.TextureNames.Count; ++i)
             {
-                mTextures.Add(TextureManager.Instance.GetTexture(TextureNames[i]));
-                TextureNames[i] = TextureNames[i].ToLowerInvariant();
+	            this.mTextures.Add(TextureManager.Instance.GetTexture(this.TextureNames[i]));
+	            this.TextureNames[i] = this.TextureNames[i].ToLowerInvariant();
             }
 
             LoadSpecularTextures();
@@ -515,7 +515,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             for (var i = 0; i < 256; ++i)
             {
                 var chunk = new MapChunk(i % 16, i / 16, new WeakReference<MapArea>(this));
-                if (chunk.AsyncLoad(reader, mChunkInfos[i]) == false)
+                if (chunk.AsyncLoad(reader, this.mChunkInfos[i]) == false)
                 {
 	                throw new InvalidOperationException("Unable to load chunk");
                 }
@@ -574,12 +574,12 @@ namespace Neo.IO.Files.Terrain.Wotlk
 		            modelMax.Z = bbmax.Z;
 	            }
 
-	            mChunks.Add(chunk);
-                Array.Copy(chunk.Vertices, 0, FullVertices, i * 145, 145);
+	            this.mChunks.Add(chunk);
+                Array.Copy(chunk.Vertices, 0, this.FullVertices, i * 145, 145);
             }
 
-            BoundingBox = new BoundingBox(minPos, maxPos);
-            ModelBox = new BoundingBox(modelMin, modelMax);
+	        this.BoundingBox = new BoundingBox(minPos, maxPos);
+	        this.ModelBox = new BoundingBox(modelMin, modelMax);
         }
 
         private void InitM2Models(BinaryReader reader)
@@ -593,7 +593,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             var bytes = reader.ReadBytes(size);
             var fullString = Encoding.ASCII.GetString(bytes);
             var modelNames = fullString.Split('\0');
-            mDoodadNames.AddRange(modelNames.ToList());
+	        this.mDoodadNames.AddRange(modelNames.ToList());
             var modelNameLookup = new Dictionary<int, string>();
             var curOffset = 0;
             foreach (var name in modelNames)
@@ -608,7 +608,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
             }
 
 	        size = reader.ReadInt32();
-            mDoodadNameIds = reader.ReadArray<int>(size / 4);
+	        this.mDoodadNameIds = reader.ReadArray<int>(size / 4);
 
             if (SeekChunk(reader, 0x4D444446) == false)
             {
@@ -616,18 +616,18 @@ namespace Neo.IO.Files.Terrain.Wotlk
             }
 
 	        size = reader.ReadInt32();
-            mDoodadDefs = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
+	        this.mDoodadDefs = reader.ReadArray<Mddf>(size / SizeCache<Mddf>.Size);
 
             var index = -1;
-            foreach (var entry in mDoodadDefs)
+            foreach (var entry in this.mDoodadDefs)
             {
                 ++index;
-                if (entry.Mmid >= mDoodadNameIds.Length)
+                if (entry.Mmid >= this.mDoodadNameIds.Length)
                 {
 	                continue;
                 }
 
-	            var nameId = mDoodadNameIds[entry.Mmid];
+	            var nameId = this.mDoodadNameIds[entry.Mmid];
                 string modelName;
                 if (modelNameLookup.TryGetValue(nameId, out modelName) == false)
                 {
@@ -641,7 +641,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 var instance = WorldFrame.Instance.M2Manager.AddInstance(modelName, entry.UniqueId, position, rotation,
                     new Vector3(scale));
 
-                DoodadInstances.Add(new M2Instance
+	            this.DoodadInstances.Add(new M2Instance
                 {
                     Hash = modelName.ToUpperInvariant().GetHashCode(),
                     Uuid = entry.UniqueId,
@@ -718,13 +718,13 @@ namespace Neo.IO.Files.Terrain.Wotlk
                 var rotation = new Vector3(entry.Rotation.Z, -entry.Rotation.X, 90 - entry.Rotation.Y);
 
                 WorldFrame.Instance.WmoManager.AddInstance(modelName, entry.UniqueId, position, rotation);
-                mWmoInstances.Add(new LoadedModel(modelName, entry.UniqueId));
+	            this.mWmoInstances.Add(new LoadedModel(modelName, entry.UniqueId));
             }
         }
 
         private void SaveChunk(uint signature, BinaryWriter writer, out int offsetField)
         {
-            if(mSaveChunks.ContainsKey(signature) == false)
+            if(this.mSaveChunks.ContainsKey(signature) == false)
             {
                 offsetField = 0;
                 return;
@@ -732,7 +732,7 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
             offsetField = (int)writer.BaseStream.Position - (12 + 8); // MVER signature + size + version = 12 bytes, MHDR signature + size = 8 bytes
 
-            var chunk = mSaveChunks[signature];
+            var chunk = this.mSaveChunks[signature];
             writer.Write(signature);
             writer.Write(chunk.Size);
             writer.Write(chunk.Data);
@@ -767,49 +767,49 @@ namespace Neo.IO.Files.Terrain.Wotlk
 
         protected override void Dispose(bool disposing)
         {
-            if (mChunks != null)
+            if (this.mChunks != null)
             {
-                foreach (var chunk in mChunks)
+                foreach (var chunk in this.mChunks)
                 {
 	                chunk.Dispose();
                 }
 
-	            mChunks.Clear();
-                mChunks = null;
+	            this.mChunks.Clear();
+	            this.mChunks = null;
             }
 
-            if (mWmoInstances != null)
+            if (this.mWmoInstances != null)
             {
-                foreach (var instance in mWmoInstances)
+                foreach (var instance in this.mWmoInstances)
                 {
 	                WorldFrame.Instance.WmoManager.RemoveInstance(instance.FileName, instance.Uuid,false);
                 }
 
-	            mWmoInstances.Clear();
-                mWmoInstances = null;
+	            this.mWmoInstances.Clear();
+	            this.mWmoInstances = null;
             }
 
-            if (mChunkInfos != null)
+            if (this.mChunkInfos != null)
             {
-                mChunkInfos.Clear();
-                mChunkInfos = null;
+	            this.mChunkInfos.Clear();
+	            this.mChunkInfos = null;
             }
 
-            if (mSaveChunks != null)
+            if (this.mSaveChunks != null)
             {
-                mSaveChunks.Clear();
-                mSaveChunks = null;
+	            this.mSaveChunks.Clear();
+	            this.mSaveChunks = null;
             }
 
-            mChunkOffsets = null;
-            mDoodadDefs = null;
+	        this.mChunkOffsets = null;
+	        this.mDoodadDefs = null;
 
             base.Dispose(disposing);
         }
 
         public override void SetChanged()
         {
-            mWasChanged = true;
+	        this.mWasChanged = true;
         }
     }
 }

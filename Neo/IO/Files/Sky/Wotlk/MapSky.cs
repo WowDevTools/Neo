@@ -21,7 +21,7 @@ namespace Neo.IO.Files.Sky.Wotlk
                 }
             }
 
-            if (mLights.Count == 0 && Storage.DbcStorage.Light.NumRows > 0)
+            if (this.mLights.Count == 0 && Storage.DbcStorage.Light.NumRows > 0)
             {
 	            this.mLights.Add(new WorldLightEntry(Storage.DbcStorage.Light.GetRow(0)));
             }
@@ -37,18 +37,18 @@ namespace Neo.IO.Files.Sky.Wotlk
 	            return Vector3.Zero;
             }
 
-	        return mColors[idx];
+	        return this.mColors[idx];
         }
 
         public float GetFloat(LightFloat flt)
         {
             var idx = (flt == LightFloat.FogEnd) ? 0 : (flt == LightFloat.FogScale ? 1 : -1);
-            return idx < 0 ? 0.0f : mFloats[idx];
+            return idx < 0 ? 0.0f : this.mFloats[idx];
         }
 
         public void Update(Vector3 position, uint time)
         {
-            var weights = new float[mLights.Count];
+            var weights = new float[this.mLights.Count];
             CalculateWeights(position, weights);
 
             for (var i = 0; i < 18; ++i)
@@ -61,7 +61,7 @@ namespace Neo.IO.Files.Sky.Wotlk
 		        this.mFloats[i] = 0.0f;
 	        }
 
-	        for (var j = 0; j < mLights.Count; ++j)
+	        for (var j = 0; j < this.mLights.Count; ++j)
             {
                 if (weights[j] >= 1e-3)
                 {
@@ -88,7 +88,7 @@ namespace Neo.IO.Files.Sky.Wotlk
             var globals = new List<int>();
             for (var i = w.Length - 1; i >= 0; --i)
             {
-                var le = mLights[i];
+                var le = this.mLights[i];
                 if (le.IsGlobal)
                 {
                     globals.Add(i);
@@ -134,7 +134,7 @@ namespace Neo.IO.Files.Sky.Wotlk
 
         private void SortLights()
         {
-            mLights.Sort((l1, l2) =>
+	        this.mLights.Sort((l1, l2) =>
             {
                 if (l1.IsGlobal && l2.IsGlobal)
                 {

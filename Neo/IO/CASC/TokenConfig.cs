@@ -13,7 +13,7 @@ namespace Neo.IO.CASC
             get
             {
                 IEnumerable<string> ret;
-                return mValues.TryGetValue(key.ToUpperInvariant(), out ret) ? ret : new string[0];
+                return this.mValues.TryGetValue(key.ToUpperInvariant(), out ret) ? ret : new string[0];
             }
         }
 
@@ -35,7 +35,7 @@ namespace Neo.IO.CASC
                         {
                             var subTokens = token.Split('!');
                             var elems = new List<string>();
-                            mValues.Add(subTokens.First().ToUpperInvariant(), elems);
+	                        this.mValues.Add(subTokens.First().ToUpperInvariant(), elems);
                             valuesOrdered.Add(elems);
                         }
                     }

@@ -27,7 +27,7 @@ namespace Neo.Dbc
             string currentRoot = null;
             string[] keyPair = null;
 
-            _iniFilePath = iniPath;
+	        this._iniFilePath = iniPath;
 
             if (File.Exists(iniPath))
             {
@@ -67,7 +67,7 @@ namespace Neo.Dbc
 	                                value = keyPair[1];
                                 }
 
-	                            _keyPairs.Add(sectionPair, value);
+	                            this._keyPairs.Add(sectionPair, value);
                             }
                         }
 
@@ -104,7 +104,7 @@ namespace Neo.Dbc
             sectionPair.Section = sectionName.ToUpper();
             sectionPair.Key = settingName.ToUpper();
 
-            return (string)_keyPairs[sectionPair];
+            return (string) this._keyPairs[sectionPair];
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Neo.Dbc
         {
             ArrayList tmpArray = new ArrayList();
 
-            foreach (SectionPair pair in _keyPairs.Keys)
+            foreach (SectionPair pair in this._keyPairs.Keys)
             {
                 if (pair.Section == sectionName.ToUpper())
                 {
@@ -138,12 +138,12 @@ namespace Neo.Dbc
             sectionPair.Section = sectionName.ToUpper();
             sectionPair.Key = settingName.ToUpper();
 
-            if (_keyPairs.ContainsKey(sectionPair))
+            if (this._keyPairs.ContainsKey(sectionPair))
             {
 	            this._keyPairs.Remove(sectionPair);
             }
 
-	        _keyPairs.Add(sectionPair, settingValue);
+	        this._keyPairs.Add(sectionPair, settingValue);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Neo.Dbc
             sectionPair.Section = sectionName.ToUpper();
             sectionPair.Key = settingName.ToUpper();
 
-            if (_keyPairs.ContainsKey(sectionPair))
+            if (this._keyPairs.ContainsKey(sectionPair))
             {
 	            this._keyPairs.Remove(sectionPair);
             }
@@ -183,7 +183,7 @@ namespace Neo.Dbc
             string tmpValue = "";
             string strToSave = "";
 
-            foreach (SectionPair sectionPair in _keyPairs.Keys)
+            foreach (SectionPair sectionPair in this._keyPairs.Keys)
             {
                 if (!sections.Contains(sectionPair.Section))
                 {
@@ -195,11 +195,11 @@ namespace Neo.Dbc
             {
                 strToSave += ("[" + section + "]\r\n");
 
-                foreach (SectionPair sectionPair in _keyPairs.Keys)
+                foreach (SectionPair sectionPair in this._keyPairs.Keys)
                 {
                     if (sectionPair.Section == section)
                     {
-                        tmpValue = (string)_keyPairs[sectionPair];
+                        tmpValue = (string) this._keyPairs[sectionPair];
 
                         if (tmpValue != null)
                         {
@@ -230,7 +230,7 @@ namespace Neo.Dbc
         /// </summary>
         public void SaveSettings()
         {
-            SaveSettings(_iniFilePath);
+            SaveSettings(this._iniFilePath);
         }
     }
 }

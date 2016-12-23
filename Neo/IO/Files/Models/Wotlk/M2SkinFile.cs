@@ -14,15 +14,15 @@ namespace Neo.IO.Files.Models.Wotlk
 
         public M2SkinFile(string rootPath, string modelName, int index)
         {
-            Indices = new ushort[0];
-            TexUnits = new M2TexUnit[0];
-            SubMeshes = new M2SubMesh[0];
-            mFileName = string.Format("{0}\\{1}{2:D2}.skin", rootPath, modelName, index);
+	        this.Indices = new ushort[0];
+	        this.TexUnits = new M2TexUnit[0];
+	        this.SubMeshes = new M2SubMesh[0];
+	        this.mFileName = string.Format("{0}\\{1}{2:D2}.skin", rootPath, modelName, index);
         }
 
         public bool Load()
         {
-            using (var strm = FileManager.Instance.Provider.OpenFile(mFileName))
+            using (var strm = FileManager.Instance.Provider.OpenFile(this.mFileName))
             {
                 if (strm == null)
                 {
@@ -30,13 +30,13 @@ namespace Neo.IO.Files.Models.Wotlk
                 }
 
 	            var reader = new BinaryReader(strm);
-                mSkin = reader.Read<M2Skin>();
-                var indexLookup = ReadArrayOf<ushort>(reader, mSkin.ofsIndices, mSkin.nIndices);
-                var triangles = ReadArrayOf<ushort>(reader, mSkin.ofsTriangles, mSkin.nTriangles);
+	            this.mSkin = reader.Read<M2Skin>();
+                var indexLookup = ReadArrayOf<ushort>(reader, this.mSkin.ofsIndices, this.mSkin.nIndices);
+                var triangles = ReadArrayOf<ushort>(reader, this.mSkin.ofsTriangles, this.mSkin.nTriangles);
 
-                Indices = triangles.Select(t => indexLookup[t]).ToArray();
-                SubMeshes = ReadArrayOf<M2SubMesh>(reader, mSkin.ofsSubmeshes, mSkin.nSubmeshes);
-                TexUnits = ReadArrayOf<M2TexUnit>(reader, mSkin.ofsTexUnits, mSkin.nTexUnits);
+	            this.Indices = triangles.Select(t => indexLookup[t]).ToArray();
+	            this.SubMeshes = ReadArrayOf<M2SubMesh>(reader, this.mSkin.ofsSubmeshes, this.mSkin.nSubmeshes);
+	            this.TexUnits = ReadArrayOf<M2TexUnit>(reader, this.mSkin.ofsTexUnits, this.mSkin.nTexUnits);
                 return true;
             }
         }

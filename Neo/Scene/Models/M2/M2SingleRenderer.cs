@@ -63,15 +63,15 @@ namespace Neo.Scene.Models.M2
 
         public M2SingleRenderer(M2File model)
         {
-            mModel = model;
+	        this.mModel = model;
             if (model.NeedsPerInstanceAnimation)
             {
-                mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
-                mAnimator = ModelFactory.Instance.CreateAnimator(model);
+	            this.mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
+	            this.mAnimator = ModelFactory.Instance.CreateAnimator(model);
 
-	            if (mAnimator.SetAnimation(AnimationType.Stand) == false)
+	            if (this.mAnimator.SetAnimation(AnimationType.Stand) == false)
 	            {
-		            mAnimator.SetAnimationByIndex(0);
+		            this.mAnimator.SetAnimationByIndex(0);
 	            }
             }
         }
@@ -83,9 +83,9 @@ namespace Neo.Scene.Models.M2
 
         private void Dispose(bool disposing)
         {
-            if (mAnimBuffer != null)
+            if (this.mAnimBuffer != null)
             {
-                var ab = mAnimBuffer;
+                var ab = this.mAnimBuffer;
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
 	                if (ab != null)
@@ -94,12 +94,12 @@ namespace Neo.Scene.Models.M2
 	                }
                 });
 
-                mAnimBuffer = null;
+	            this.mAnimBuffer = null;
             }
 
-            mModel = null;
-            mAnimator = null;
-            mAnimationMatrices = null;
+	        this.mModel = null;
+	        this.mAnimator = null;
+	        this.mAnimationMatrices = null;
         }
 
         public virtual void Dispose()
@@ -133,8 +133,8 @@ namespace Neo.Scene.Models.M2
 
         public void OnFrame(M2Renderer renderer, M2RenderInstance instance)
         {
-            var animator = mAnimator ?? renderer.Animator;
-	        if (mAnimator != null)
+            var animator = this.mAnimator ?? renderer.Animator;
+	        if (this.mAnimator != null)
 	        {
 		        UpdateAnimations(instance);
 	        }
@@ -148,11 +148,11 @@ namespace Neo.Scene.Models.M2
                 colorMod = instance.HighlightColor
             });
 
-            gMesh.Program.SetVertexUniformBuffer(1, mAnimBuffer ?? renderer.AnimBuffer);
+            gMesh.Program.SetVertexUniformBuffer(1, this.mAnimBuffer ?? renderer.AnimBuffer);
 
-            foreach (var pass in mModel.Passes)
+            foreach (var pass in this.mModel.Passes)
             {
-                if (!mModel.NeedsPerInstanceAnimation)
+                if (!this.mModel.NeedsPerInstanceAnimation)
                 {
                     // Prevent double rendering since this model pass
                     // was already processed by the batch renderer
@@ -225,24 +225,24 @@ namespace Neo.Scene.Models.M2
 
                 for (var i = 0; i < pass.OpCount && i < 4; ++i)
                 {
-                    switch (mModel.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
+                    switch (this.mModel.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
                     {
-                        case Graphics.SamplerFlagType.WrapBoth:
+                        case SamplerFlagType.WrapBoth:
 	                    {
 		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapBoth);
 		                    break;
 	                    }
-                        case Graphics.SamplerFlagType.WrapU:
+                        case SamplerFlagType.WrapU:
 	                    {
 		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapU);
 		                    break;
 	                    }
-                        case Graphics.SamplerFlagType.WrapV:
+                        case SamplerFlagType.WrapV:
 	                    {
 		                    gMesh.Program.SetPixelSampler(i, gSamplerWrapV);
 		                    break;
 	                    }
-                        case Graphics.SamplerFlagType.ClampBoth:
+                        case SamplerFlagType.ClampBoth:
 	                    {
 		                    gMesh.Program.SetPixelSampler(i, gSamplerClampBoth);
 		                    break;
@@ -262,8 +262,8 @@ namespace Neo.Scene.Models.M2
         // TODO: Get rid of this
         public void OnFrame_Old(M2Renderer renderer, M2RenderInstance instance)
         {
-            var animator = mAnimator ?? renderer.Animator;
-	        if (mAnimator != null)
+            var animator = this.mAnimator ?? renderer.Animator;
+	        if (this.mAnimator != null)
 	        {
 		        UpdateAnimations(instance);
 	        }
@@ -277,11 +277,11 @@ namespace Neo.Scene.Models.M2
                 colorMod = instance.HighlightColor
             });
 
-            gMesh.Program.SetVertexUniformBuffer(1, mAnimBuffer ?? renderer.AnimBuffer);
+            gMesh.Program.SetVertexUniformBuffer(1, this.mAnimBuffer ?? renderer.AnimBuffer);
 
-            foreach (var pass in mModel.Passes)
+            foreach (var pass in this.mModel.Passes)
             {
-                if (!mModel.NeedsPerInstanceAnimation)
+                if (!this.mModel.NeedsPerInstanceAnimation)
                 {
                     // Prevent double rendering since this model pass
                     // was already processed by the batch renderer
@@ -372,7 +372,7 @@ namespace Neo.Scene.Models.M2
         private void UpdateAnimations(M2RenderInstance instance)
         {
             var camera = WorldFrame.Instance.ActiveCamera;
-            mAnimator.Update(new BillboardParameters
+	        this.mAnimator.Update(new BillboardParameters
             {
                 Forward = camera.Forward,
                 Right = camera.Right,
@@ -380,18 +380,18 @@ namespace Neo.Scene.Models.M2
                 InverseRotation = instance.InverseRotation
             });
 
-	        if (mAnimator.GetBones(mAnimationMatrices))
+	        if (this.mAnimator.GetBones(this.mAnimationMatrices))
 	        {
-		        mAnimBuffer.BufferData(mAnimationMatrices);
+		        this.mAnimBuffer.BufferData(this.mAnimationMatrices);
 	        }
         }
 
         public void OnSyncLoad()
         {
-            if (mAnimator != null)
+            if (this.mAnimator != null)
             {
-                mAnimBuffer = new UniformBuffer();
-                mAnimBuffer.BufferData(mAnimationMatrices);
+	            this.mAnimBuffer = new UniformBuffer();
+	            this.mAnimBuffer.BufferData(this.mAnimationMatrices);
             }
         }
 

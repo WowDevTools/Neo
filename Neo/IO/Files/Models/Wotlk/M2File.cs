@@ -31,57 +31,57 @@ namespace Neo.IO.Files.Models.Wotlk
         public uint[] GlobalSequences { get; private set; }
         public AnimationEntry[] Animations { get; private set; }
 
-        public override string ModelName { get { return mModelName; } }
+        public override string ModelName { get { return this.mModelName; } }
 
         public M2File(string fileName) : base(fileName)
         {
-            Bones = new M2AnimationBone[0];
-            UvAnimations = new M2UVAnimation[0];
-            ColorAnimations = new M2TexColorAnimation[0];
-            Transparencies = new M2AlphaAnimation[0];
-            GlobalSequences = new uint[0];
-            Animations = new AnimationEntry[0];
-            AnimationLookup = new short[0];
-            mModelName = string.Empty;
-            mFileName = fileName;
-            mDirectoryParts = Path.GetDirectoryName(fileName).Split(Path.DirectorySeparatorChar);
+	        this.Bones = new M2AnimationBone[0];
+	        this.UvAnimations = new M2UVAnimation[0];
+	        this.ColorAnimations = new M2TexColorAnimation[0];
+	        this.Transparencies = new M2AlphaAnimation[0];
+	        this.GlobalSequences = new uint[0];
+	        this.Animations = new AnimationEntry[0];
+	        this.AnimationLookup = new short[0];
+	        this.mModelName = string.Empty;
+	        this.mFileName = fileName;
+	        this.mDirectoryParts = Path.GetDirectoryName(fileName).Split(Path.DirectorySeparatorChar);
         }
 
         public override bool Load()
         {
-            using (var strm = FileManager.Instance.Provider.OpenFile(mFileName))
+            using (var strm = FileManager.Instance.Provider.OpenFile(this.mFileName))
             {
                 var reader = new BinaryReader(strm);
-                mHeader = reader.Read<M2Header>();
+	            this.mHeader = reader.Read<M2Header>();
 
-                BoundingRadius = mHeader.VertexRadius;
+	            this.BoundingRadius = this.mHeader.VertexRadius;
 
-                if ((mHeader.GlobalFlags & 0x08) != 0)
+                if ((this.mHeader.GlobalFlags & 0x08) != 0)
                 {
-                    mRemapBlend = true;
+	                this.mRemapBlend = true;
                     var nBlendMaps = reader.Read<int>();
                     var ofsBlendMaps = reader.Read<int>();
                     strm.Position = ofsBlendMaps;
-                    mBlendMap = reader.ReadArray<ushort>(nBlendMaps);
+	                this.mBlendMap = reader.ReadArray<ushort>(nBlendMaps);
                 }
 
-                strm.Position = mHeader.OfsName;
-                if (mHeader.LenName > 0)
+                strm.Position = this.mHeader.OfsName;
+                if (this.mHeader.LenName > 0)
                 {
 	                this.mModelName = Encoding.ASCII.GetString(reader.ReadBytes(this.mHeader.LenName - 1));
                 }
 
-	            GlobalSequences = ReadArrayOf<uint>(reader, mHeader.OfsGlobalSequences, mHeader.NGlobalSequences);
-                Vertices = ReadArrayOf<M2Vertex>(reader, mHeader.OfsVertices, mHeader.NVertices);
+	            this.GlobalSequences = ReadArrayOf<uint>(reader, this.mHeader.OfsGlobalSequences, this.mHeader.NGlobalSequences);
+	            this.Vertices = ReadArrayOf<M2Vertex>(reader, this.mHeader.OfsVertices, this.mHeader.NVertices);
 
                 var minPos = new Vector3(float.MaxValue);
                 var maxPos = new Vector3(float.MinValue);
-                for (var i = 0; i < Vertices.Length; ++i)
+                for (var i = 0; i < this.Vertices.Length; ++i)
                 {
-                    var p = Vertices[i].position;
+                    var p = this.Vertices[i].position;
                     p = new Vector3(p.X, -p.Y, p.Z);
-                    Vertices[i].position = p;
-                    Vertices[i].normal = new Vector3(Vertices[i].normal.X, -Vertices[i].normal.Y, Vertices[i].normal.Z);
+	                this.Vertices[i].position = p;
+	                this.Vertices[i].normal = new Vector3(this.Vertices[i].normal.X, -this.Vertices[i].normal.Y, this.Vertices[i].normal.Z);
                     if (p.X < minPos.X)
                     {
 	                    minPos.X = p.X;
@@ -108,20 +108,20 @@ namespace Neo.IO.Files.Models.Wotlk
 	                }
                 }
 
-                BoundingBox = new BoundingBox(minPos, maxPos);
+	            this.BoundingBox = new BoundingBox(minPos, maxPos);
 
                 LoadCreatureVariations();
 
-                var textures = ReadArrayOf<M2Texture>(reader, mHeader.OfsTextures, mHeader.NTextures);
-                mTextures = new Graphics.Texture[textures.Length];
-                TextureInfos = new TextureInfo[textures.Length];
+                var textures = ReadArrayOf<M2Texture>(reader, this.mHeader.OfsTextures, this.mHeader.NTextures);
+	            this.mTextures = new Graphics.Texture[textures.Length];
+	            this.TextureInfos = new TextureInfo[textures.Length];
                 for (var i = 0; i < textures.Length; ++i)
                 {
                     var tex = textures[i];
                     if (tex.type == 0 && tex.lenName > 0)
                     {
                         var texName = Encoding.ASCII.GetString(ReadArrayOf<byte>(reader, tex.ofsName, tex.lenName - 1)).Trim();
-                        mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(texName);
+	                    this.mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture(texName);
                     }
                     else
                     {
@@ -143,7 +143,7 @@ namespace Neo.IO.Files.Models.Wotlk
                             //    break;
 
                             case TextureType.MonsterSkin1:
-                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                if (this.DisplayOptions.TextureVariationFiles.Count > this.DisplayOptions.TextureVariation)
                                 {
 	                                if (!string.IsNullOrEmpty(this.DisplayOptions.TextureVariationFiles[this.DisplayOptions.TextureVariation].Item1))
 	                                {
@@ -152,7 +152,7 @@ namespace Neo.IO.Files.Models.Wotlk
                                 }
 	                            break;
                             case TextureType.MonsterSkin2:
-                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                if (this.DisplayOptions.TextureVariationFiles.Count > this.DisplayOptions.TextureVariation)
                                 {
 	                                if (!string.IsNullOrEmpty(this.DisplayOptions.TextureVariationFiles[this.DisplayOptions.TextureVariation].Item2))
 	                                {
@@ -161,7 +161,7 @@ namespace Neo.IO.Files.Models.Wotlk
                                 }
 	                            break;
                             case TextureType.MonsterSkin3:
-                                if (DisplayOptions.TextureVariationFiles.Count > DisplayOptions.TextureVariation)
+                                if (this.DisplayOptions.TextureVariationFiles.Count > this.DisplayOptions.TextureVariation)
                                 {
 	                                if (!string.IsNullOrEmpty(this.DisplayOptions.TextureVariationFiles[this.DisplayOptions.TextureVariation].Item3))
 	                                {
@@ -170,7 +170,7 @@ namespace Neo.IO.Files.Models.Wotlk
                                 }
 	                            break;
                             default:
-                                mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
+	                            this.mTextures[i] = Scene.Texture.TextureManager.Instance.GetTexture("default_texture");
                                 break;
                         }
                     }
@@ -194,9 +194,9 @@ namespace Neo.IO.Files.Models.Wotlk
 	                    samplerFlags = Graphics.SamplerFlagType.ClampBoth;
                     }
 
-	                TextureInfos[i] = new TextureInfo
+	                this.TextureInfos[i] = new TextureInfo
                     {
-                        Texture = mTextures[i],
+                        Texture = this.mTextures[i],
                         TextureType = (TextureType)tex.type,
                         SamplerFlags = samplerFlags
                     };
@@ -221,27 +221,27 @@ namespace Neo.IO.Files.Models.Wotlk
 	            {
 		            f += ".blp"; //Append filetype
 	            }
-	            return Path.Combine(Path.GetDirectoryName(mFileName), f); //Add full directory location
+	            return Path.Combine(Path.GetDirectoryName(this.mFileName), f); //Add full directory location
             };
 
-            DisplayOptions.TextureVariationFiles = new List<Tuple<string, string, string>>();
+	        this.DisplayOptions.TextureVariationFiles = new List<Tuple<string, string, string>>();
             HashSet<Tuple<string, string, string>> variations = new HashSet<Tuple<string, string, string>>(); //Unique combinations only
 
             //First check creatures/characters
-            if (mDirectoryParts.Length > 0 && mDirectoryParts[0].ToLower() != "character" && mDirectoryParts[0].ToLower() != "creature")
+            if (this.mDirectoryParts.Length > 0 && this.mDirectoryParts[0].ToLower() != "character" && this.mDirectoryParts[0].ToLower() != "creature")
             {
 	            return;
             }
 
 	        //Second check MDX exists
-            string mdx = Path.ChangeExtension(mFileName, ".mdx").ToLower();
+            string mdx = Path.ChangeExtension(this.mFileName, ".mdx").ToLower();
 	        if (DbcStorage.CreatureModelData.GetAllRows<CreatureModelDataEntry>().All(x => x.ModelPath.ToLower() != mdx))
 	        {
 		        return;
 	        }
 
-	        var modelDisplay = from cmd in Storage.DbcStorage.CreatureModelData.GetAllRows<Wotlk.CreatureModelDataEntry>()
-                               join cdi in Storage.DbcStorage.CreatureDisplayInfo.GetAllRows<Wotlk.CreatureDisplayInfoEntry>()
+	        var modelDisplay = from cmd in DbcStorage.CreatureModelData.GetAllRows<CreatureModelDataEntry>()
+                               join cdi in DbcStorage.CreatureDisplayInfo.GetAllRows<CreatureDisplayInfoEntry>()
                                on cmd.ID equals cdi.ModelId
                                where cmd.ModelPath.ToLower() == mdx
                                select cdi;
@@ -261,38 +261,38 @@ namespace Neo.IO.Files.Models.Wotlk
 
                 //Get Extra display info
                 var extraDisplay = from md in modelDisplay
-                                   join cdi in Storage.DbcStorage.CreatureDisplayInfoExtra.GetAllRows<Wotlk.CreatureDisplayInfoExtraEntry>()
+                                   join cdi in DbcStorage.CreatureDisplayInfoExtra.GetAllRows<CreatureDisplayInfoExtraEntry>()
                                    on md.ExtendedDisplayInfoId equals cdi.ID
                                    select cdi;
 
                 if(extraDisplay.Any())
                 {
-                    DisplayOptions.FaceOptions = extraDisplay.Select(x => x.FaceID).Distinct().ToArray();
-                    DisplayOptions.FacialHairOptions = extraDisplay.Select(x => x.FacialHairID).Distinct().ToArray();
-                    DisplayOptions.SkinOptions = extraDisplay.Select(x => x.SkinID).Distinct().ToArray();
-                    DisplayOptions.HairColorOptions = extraDisplay.Select(x => x.HairColorID).Distinct().ToArray();
-                    DisplayOptions.HairStyleOptions = extraDisplay.Select(x => x.HairStyleID).Distinct().ToArray();
+	                this.DisplayOptions.FaceOptions = extraDisplay.Select(x => x.FaceID).Distinct().ToArray();
+	                this.DisplayOptions.FacialHairOptions = extraDisplay.Select(x => x.FacialHairID).Distinct().ToArray();
+	                this.DisplayOptions.SkinOptions = extraDisplay.Select(x => x.SkinID).Distinct().ToArray();
+	                this.DisplayOptions.HairColorOptions = extraDisplay.Select(x => x.HairColorID).Distinct().ToArray();
+	                this.DisplayOptions.HairStyleOptions = extraDisplay.Select(x => x.HairStyleID).Distinct().ToArray();
                 }
             }
 
-            DisplayOptions.TextureVariationFiles.AddRange(variations);
+	        this.DisplayOptions.TextureVariationFiles.AddRange(variations);
         }
 
         private void LoadSkins(BinaryReader reader)
         {
-            mSkin = new M2SkinFile(ModelRoot, mModelName, 0);
-            if (mSkin.Load() == false)
+	        this.mSkin = new M2SkinFile(this.ModelRoot, this.mModelName, 0);
+            if (this.mSkin.Load() == false)
             {
 	            throw new InvalidOperationException("Unable to load skin file");
             }
 
-	        Indices = mSkin.Indices;
+	        this.Indices = this.mSkin.Indices;
 
-            var texLookup = ReadArrayOf<ushort>(reader, mHeader.OfsTexLookup, mHeader.NTexLookup);
-            var renderFlags = ReadArrayOf<uint>(reader, mHeader.OfsRenderFlags, mHeader.NRenderFlags);
-            var uvAnimLookup = ReadArrayOf<short>(reader, mHeader.OfsUvAnimLookup, mHeader.NUvAnimLookup);
+            var texLookup = ReadArrayOf<ushort>(reader, this.mHeader.OfsTexLookup, this.mHeader.NTexLookup);
+            var renderFlags = ReadArrayOf<uint>(reader, this.mHeader.OfsRenderFlags, this.mHeader.NRenderFlags);
+            var uvAnimLookup = ReadArrayOf<short>(reader, this.mHeader.OfsUvAnimLookup, this.mHeader.NUvAnimLookup);
 
-            mSubMeshes = mSkin.SubMeshes.Select(sm => new M2SubMeshInfo
+	        this.mSubMeshes = this.mSkin.SubMeshes.Select(sm => new M2SubMeshInfo
             {
                 BoundingSphere =
                     new BoundingSphere(new Vector3(sm.centerBoundingBox.X, -sm.centerBoundingBox.Y, sm.centerBoundingBox.Z), sm.radius),
@@ -300,9 +300,9 @@ namespace Neo.IO.Files.Models.Wotlk
                 StartIndex = sm.startTriangle + (((sm.unk1 & 1) != 0) ? (ushort.MaxValue + 1) : 0)
             }).ToArray();
 
-            foreach (var texUnit in mSkin.TexUnits)
+            foreach (var texUnit in this.mSkin.TexUnits)
             {
-                var mesh = mSkin.SubMeshes[texUnit.submeshIndex];
+                var mesh = this.mSkin.SubMeshes[texUnit.submeshIndex];
 
                 int uvIndex;
                 if (texUnit.textureAnimIndex >= uvAnimLookup.Length || uvAnimLookup[texUnit.textureAnimIndex] < 0)
@@ -325,31 +325,31 @@ namespace Neo.IO.Files.Models.Wotlk
                 switch (texUnit.op_count)
                 {
                     case 2:
-                        textures.Add(mTextures[texLookup[texUnit.texture]]);
-                        textures.Add(mTextures[texLookup[texUnit.texture + 1]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture + 1]]);
                         texIndices.Add(texLookup[texUnit.texture]);
                         texIndices.Add(texLookup[texUnit.texture + 1]);
                         break;
                     case 3:
-                        textures.Add(mTextures[texLookup[texUnit.texture]]);
-                        textures.Add(mTextures[texLookup[texUnit.texture + 1]]);
-                        textures.Add(mTextures[texLookup[texUnit.texture + 2]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture + 1]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture + 2]]);
                         texIndices.Add(texLookup[texUnit.texture]);
                         texIndices.Add(texLookup[texUnit.texture + 1]);
                         texIndices.Add(texLookup[texUnit.texture + 2]);
                         break;
                     case 4:
-                        textures.Add(mTextures[texLookup[texUnit.texture]]);
-                        textures.Add(mTextures[texLookup[texUnit.texture + 1]]);
-                        textures.Add(mTextures[texLookup[texUnit.texture + 2]]);
-                        textures.Add(mTextures[texLookup[texUnit.texture + 3]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture + 1]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture + 2]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture + 3]]);
                         texIndices.Add(texLookup[texUnit.texture]);
                         texIndices.Add(texLookup[texUnit.texture + 1]);
                         texIndices.Add(texLookup[texUnit.texture + 2]);
                         texIndices.Add(texLookup[texUnit.texture + 3]);
                         break;
                     default:
-                        textures.Add(mTextures[texLookup[texUnit.texture]]);
+                        textures.Add(this.mTextures[texLookup[texUnit.texture]]);
                         texIndices.Add(texLookup[texUnit.texture]);
                         break;
                 }
@@ -358,7 +358,7 @@ namespace Neo.IO.Files.Models.Wotlk
                 var blendMode = flags >> 16;
                 var flag = flags & 0xFFFF;
 
-                if (mRemapBlend && texUnit.shaderId < mBlendMap.Length)
+                if (this.mRemapBlend && texUnit.shaderId < this.mBlendMap.Length)
                 {
 	                blendMode = this.mBlendMap[texUnit.shaderId];
                 }
@@ -374,7 +374,7 @@ namespace Neo.IO.Files.Models.Wotlk
 	                this.HasOpaquePass = true;
                 }
 
-	            Passes.Add(new M2RenderPass
+	            this.Passes.Add(new M2RenderPass
                 {
                     TextureIndices = texIndices,
                     Textures = textures,
@@ -397,32 +397,32 @@ namespace Neo.IO.Files.Models.Wotlk
 
         private void LoadAnimations(BinaryReader reader)
         {
-            var bones = ReadArrayOf<M2Bone>(reader, mHeader.OfsBones, mHeader.NBones);
-            Bones = bones.Select(b => new M2AnimationBone(this, ref b, reader)).ToArray();
+            var bones = ReadArrayOf<M2Bone>(reader, this.mHeader.OfsBones, this.mHeader.NBones);
+	        this.Bones = bones.Select(b => new M2AnimationBone(this, ref b, reader)).ToArray();
 
-            if (Bones.Any(b => b.IsBillboarded))
+            if (this.Bones.Any(b => b.IsBillboarded))
             {
 	            this.NeedsPerInstanceAnimation = true;
             }
 
-	        AnimationLookup = ReadArrayOf<short>(reader, mHeader.OfsAnimLookup, mHeader.NAnimLookup);
-            Animations = ReadArrayOf<AnimationEntry>(reader, mHeader.OfsAnimations, mHeader.NAnimations);
+	        this.AnimationLookup = ReadArrayOf<short>(reader, this.mHeader.OfsAnimLookup, this.mHeader.NAnimLookup);
+	        this.Animations = ReadArrayOf<AnimationEntry>(reader, this.mHeader.OfsAnimations, this.mHeader.NAnimations);
 
-            AnimationIds = Animations.Select(x => x.animationID).ToArray();
+	        this.AnimationIds = this.Animations.Select(x => x.animationID).ToArray();
 
-            var uvAnims = ReadArrayOf<M2TexAnim>(reader, mHeader.OfsUvAnimation, mHeader.NUvAnimation);
-            UvAnimations = uvAnims.Select(uv => new M2UVAnimation(this, ref uv, reader)).ToArray();
+            var uvAnims = ReadArrayOf<M2TexAnim>(reader, this.mHeader.OfsUvAnimation, this.mHeader.NUvAnimation);
+	        this.UvAnimations = uvAnims.Select(uv => new M2UVAnimation(this, ref uv, reader)).ToArray();
 
-            var colorAnims = ReadArrayOf<M2ColorAnim>(reader, mHeader.OfsSubmeshAnimations, mHeader.NSubmeshAnimations);
-            ColorAnimations = colorAnims.Select(c => new M2TexColorAnimation(this, ref c, reader)).ToArray();
+            var colorAnims = ReadArrayOf<M2ColorAnim>(reader, this.mHeader.OfsSubmeshAnimations, this.mHeader.NSubmeshAnimations);
+	        this.ColorAnimations = colorAnims.Select(c => new M2TexColorAnimation(this, ref c, reader)).ToArray();
 
-            var transparencies = ReadArrayOf<AnimationBlock>(reader, mHeader.OfsTransparencies, mHeader.NTransparencies);
-            Transparencies = transparencies.Select(t => new M2AlphaAnimation(this, ref t, reader)).ToArray();
+            var transparencies = ReadArrayOf<AnimationBlock>(reader, this.mHeader.OfsTransparencies, this.mHeader.NTransparencies);
+	        this.Transparencies = transparencies.Select(t => new M2AlphaAnimation(this, ref t, reader)).ToArray();
         }
 
         private void SortPasses()
         {
-            Passes.Sort((e1, e2) =>
+	        this.Passes.Sort((e1, e2) =>
             {
                 if (e1.BlendMode == 0 && e2.BlendMode != 0)
                 {
@@ -468,7 +468,7 @@ namespace Neo.IO.Files.Models.Wotlk
 
         public override int GetNumberOfBones()
         {
-            return Bones.Length;
+            return this.Bones.Length;
         }
 
         private static T[] ReadArrayOf<T>(BinaryReader reader, int offset, int count) where T : struct

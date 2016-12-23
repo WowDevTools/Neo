@@ -11,19 +11,19 @@ namespace Neo.IO.MPQ
 
         public Archive(IntPtr handle, string name)
         {
-            mHandle = handle;
-            Name = name;
+	        this.mHandle = handle;
+	        this.Name = name;
         }
 
         public bool Contains(string file)
         {
-            return Imports.SFileHasFile(mHandle, file);
+            return Imports.SFileHasFile(this.mHandle, file);
         }
 
         public Stream Open(string file)
         {
             IntPtr handle;
-            if (Imports.SFileOpenFileEx(mHandle, file, 0, out handle) == false)
+            if (Imports.SFileOpenFileEx(this.mHandle, file, 0, out handle) == false)
             {
 	            return null;
             }

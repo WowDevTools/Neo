@@ -57,7 +57,7 @@ namespace Neo.UI.Dialogs
                 new Point(25, pos.Y)
             };
 
-            mCurHue = h;
+	        this.mCurHue = h;
 
             var gradient = DetailGradient.Fill as LinearGradientBrush;
             if (gradient == null)
@@ -81,7 +81,7 @@ namespace Neo.UI.Dialogs
             {
 	            elem.CaptureMouse();
             }
-	        mIsMouseDown = true;
+	        this.mIsMouseDown = true;
             var rc = sender as Rectangle;
             if (rc == null)
             {
@@ -109,7 +109,7 @@ namespace Neo.UI.Dialogs
                 new Point(25, pos.Y)
             };
 
-            mCurHue = (float)(pos.Y / rc.RenderSize.Height) * 360.0f;
+	        this.mCurHue = (float)(pos.Y / rc.RenderSize.Height) * 360.0f;
 
             var gradient = DetailGradient.Fill as LinearGradientBrush;
             if (gradient == null)
@@ -135,12 +135,12 @@ namespace Neo.UI.Dialogs
             {
 	            elem.ReleaseMouseCapture();
             }
-	        mIsMouseDown = false;
+	        this.mIsMouseDown = false;
         }
 
         private void Rectangle_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mIsMouseDown == false)
+            if (this.mIsMouseDown == false)
             {
 	            return;
             }
@@ -177,7 +177,7 @@ namespace Neo.UI.Dialogs
                 new Point(25, pos.Y)
             };
 
-            mCurHue = (float)(pos.Y / rc.RenderSize.Height) * 360.0f;
+	        this.mCurHue = (float)(pos.Y / rc.RenderSize.Height) * 360.0f;
 
             var gradient = DetailGradient.Fill as LinearGradientBrush;
             if (gradient == null)
@@ -204,7 +204,7 @@ namespace Neo.UI.Dialogs
 	            elem.CaptureMouse();
             }
 
-	        mIsDetailMouseDown = true;
+	        this.mIsDetailMouseDown = true;
         }
 
         private void DetailGradient_MouseUp(object sender, MouseButtonEventArgs e)
@@ -214,12 +214,12 @@ namespace Neo.UI.Dialogs
             {
 	            elem.ReleaseMouseCapture();
             }
-	        mIsDetailMouseDown = false;
+	        this.mIsDetailMouseDown = false;
         }
 
         private void DetailGradient_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mIsDetailMouseDown == false)
+            if (this.mIsDetailMouseDown == false)
             {
 	            return;
             }
@@ -242,7 +242,7 @@ namespace Neo.UI.Dialogs
             var left = Canvas.GetLeft(ColorEllipse);
             var top = Canvas.GetTop(ColorEllipse);
 
-            var h = mCurHue;
+            var h = this.mCurHue;
             var s = left / DetailGradient.RenderSize.Width;
             var v = top / DetailGradient.RenderSize.Height;
 

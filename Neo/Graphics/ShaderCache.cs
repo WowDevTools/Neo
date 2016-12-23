@@ -53,7 +53,7 @@ namespace Neo.Graphics
 		{
 			if (HasCachedShaderProgram(neoShader))
 			{
-				return ShaderProgramCache[neoShader];
+				return this.ShaderProgramCache[neoShader];
 			}
 			else
 			{
@@ -61,7 +61,7 @@ namespace Neo.Graphics
 
 				if (HasCachedShaderProgram(neoShader))
 				{
-					return ShaderProgramCache[neoShader];
+					return this.ShaderProgramCache[neoShader];
 				}
 				else
 				{

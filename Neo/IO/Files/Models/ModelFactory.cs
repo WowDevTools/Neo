@@ -32,7 +32,7 @@ namespace Neo.IO.Files.Models
 
         public M2File CreateM2(string file)
         {
-            switch(Version)
+            switch(this.Version)
             {
                 case FileDataVersion.Warlords:
                     return new WoD.M2File(file);
@@ -47,7 +47,7 @@ namespace Neo.IO.Files.Models
 
         public WmoRoot CreateWmo()
         {
-            switch(Version)
+            switch(this.Version)
             {
                 case FileDataVersion.Warlords:
                     return new WoD.WmoRoot();

@@ -160,18 +160,18 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
                     flagsCustom = int.Parse(dRow[137].ToString()),
                     VerifiedBuild = int.Parse(dRow[138].ToString())
                 };
-                mItem.Add(item);
+	            this.mItem.Add(item);
             }
         }
 
         public void addCreatedItem(Item item)
         {
-            mItem.Add(item);
+	        this.mItem.Add(item);
         }
 
         public Item GetItemByEntry(int pEntryId)
         {
-            return mItem.FirstOrDefault(item => item.EntryId == pEntryId);
+            return this.mItem.FirstOrDefault(item => item.EntryId == pEntryId);
         }
     }
 }

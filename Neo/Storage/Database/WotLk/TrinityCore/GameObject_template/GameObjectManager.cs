@@ -61,7 +61,7 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
                     ScriptName = dRow[35].ToString(),
                     VerifiedBuild = int.Parse(dRow[36].ToString())
                 };
-                mGameObjects.Add(gameobject);
+	            this.mGameObjects.Add(gameobject);
             }
         }
 
@@ -96,27 +96,27 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
                         AnimProgress = int.Parse(dRow[16].ToString()),
                         State = int.Parse(dRow[17].ToString())
                     };
-                    mSpawnedGameObjects.Add(gameobject);
+	                this.mSpawnedGameObjects.Add(gameobject);
                 }
-                mLoadedMaps.Add(pMapId);
+	            this.mLoadedMaps.Add(pMapId);
             }
         }
 
         public GameObject GetGameObjectByEntry(int pEntryId)
         {
-            return mGameObjects.FirstOrDefault(gameobject => gameobject.EntryId == pEntryId);
+            return this.mGameObjects.FirstOrDefault(gameobject => gameobject.EntryId == pEntryId);
         }
 
         public void addGameObject(GameObject gameObject)
         {
-            mGameObjects.Add(gameObject);
+	        this.mGameObjects.Add(gameObject);
         }
 
         private bool MapAlreadyLoaded(int pMapId)
         {
             try
             {
-                var mapLoaded = mLoadedMaps.First(map => map == pMapId);
+                var mapLoaded = this.mLoadedMaps.First(map => map == pMapId);
                 return true;
             }
             catch
@@ -132,7 +132,7 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
             var camPosYPlus = pPosition.Y + pRadius;
             var camPosYMinus = pPosition.Y - pRadius;
 
-            var retVal = (from SpawnedGameObject gameobject in mSpawnedGameObjects
+            var retVal = (from SpawnedGameObject gameobject in this.mSpawnedGameObjects
                 where ((gameobject.Position.X <= camPosXPlus && gameobject.Position.X >= camPosXMinus) && (gameobject.Position.Y <= camPosYPlus && gameobject.Position.Y >= camPosYMinus))
                 select gameobject).ToList<SpawnedGameObject>();
 

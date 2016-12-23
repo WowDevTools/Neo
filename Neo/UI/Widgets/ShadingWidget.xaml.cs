@@ -25,12 +25,12 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        ColorPreviewRect.Fill = new SolidColorBrush(obj);
-            mPreventUpdate = true;
-            RedBox.Text = obj.R.ToString();
-            BlueBox.Text = obj.B.ToString();
-            GreenBox.Text = obj.G.ToString();
-            mPreventUpdate = false;
+	        this.ColorPreviewRect.Fill = new SolidColorBrush(obj);
+	        this.mPreventUpdate = true;
+	        this.RedBox.Text = obj.R.ToString();
+	        this.BlueBox.Text = obj.B.ToString();
+	        this.GreenBox.Text = obj.G.ToString();
+	        this.mPreventUpdate = false;
 
             model.HandleShadingMultiplier(new SharpDX.Vector3((obj.R / 255.0f) * 2.0f,
                 (obj.G / 255.0f) * 2.0f, (obj.B / 255.0f) * 2.0f));
@@ -38,7 +38,7 @@ namespace Neo.UI.Widgets
 
         private void RedBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (mPreventUpdate)
+            if (this.mPreventUpdate)
             {
 	            return;
             }
@@ -50,8 +50,8 @@ namespace Neo.UI.Widgets
             }
 
 	        int r, g, b;
-            if (!int.TryParse(RedBox.Text, out r) || !int.TryParse(GreenBox.Text, out g) ||
-                !int.TryParse(BlueBox.Text, out b))
+            if (!int.TryParse(this.RedBox.Text, out r) || !int.TryParse(this.GreenBox.Text, out g) ||
+                !int.TryParse(this.BlueBox.Text, out b))
             {
 	            return;
             }
@@ -61,7 +61,7 @@ namespace Neo.UI.Widgets
 		        return;
 	        }
 
-	        ColorPreviewRect.Fill = new SolidColorBrush(Color.FromRgb((byte)r, (byte)g, (byte)b));
+	        this.ColorPreviewRect.Fill = new SolidColorBrush(Color.FromRgb((byte)r, (byte)g, (byte)b));
             model.HandleShadingMultiplier(new SharpDX.Vector3((r / 255.0f) * 2.0f,
                 (g / 255.0f) * 2.0f, (b / 255.0f) * 2.0f));
         }
@@ -75,7 +75,7 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleIntensityChanged((float)IntensitySlider.Value);
+	        model.HandleIntensityChanged((float) this.IntensitySlider.Value);
         }
 
         private void InnerRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -110,7 +110,7 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleTabletControl(TabletControlBox.IsChecked ?? false);
+	        model.HandleTabletControl(this.TabletControlBox.IsChecked ?? false);
         }
 
         private void Handle_PenSensivityChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

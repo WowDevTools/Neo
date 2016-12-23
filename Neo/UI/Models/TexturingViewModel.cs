@@ -30,7 +30,7 @@ namespace Neo.UI.Models
         private readonly List<string> mFavoriteTextures = new List<string>();
         private readonly List<string> mTilesets = new List<string>();
 
-        public TexturingWidget Widget { get { return mWidget; } }
+        public TexturingWidget Widget { get { return this.mWidget; } }
 
         public TexturingViewModel(TexturingWidget widget)
         {
@@ -39,7 +39,7 @@ namespace Neo.UI.Models
 	            EditorWindowController.Instance.TexturingModel = this;
             }
 
-	        mWidget = widget;
+	        this.mWidget = widget;
             if (WorldFrame.Instance != null)
             {
 	            WorldFrame.Instance.OnWorldClicked += OnWorldClick;
@@ -105,262 +105,262 @@ namespace Neo.UI.Models
 
         public void HandleAmountSlider(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.TextureChangeManager.Instance.Amount = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleInnerRadiusSlider(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.InnerRadius = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleOuterRadiusSlider(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.OuterRadius = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandlePenSensivity(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.PenSensivity = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleTabletControl(bool value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.IsTabletOn = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleSprayMode(bool value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.IsSprayOn = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleTabletChangeRadius(bool value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.IsTablet_RChange = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleTabletChangeInnerRadius(bool value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.IsTablet_IRChange = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleTabletControlPressure(bool value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.IsTablet_PChange = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleAllowedAmplitude(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.Amplitude = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleAllowedInnerAmplitude(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.InnerAmplitude = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleParticleSize(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.SprayParticleSize = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleParticleAmount(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.SprayParticleAmount = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleParticleHardness(float value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.SprayParticleHarndess = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleSpraySolidInnerRadius(bool value)
         {
-            mIsValueChangedSurpressed = true;
+	        this.mIsValueChangedSurpressed = true;
             Editing.EditManager.Instance.IsSpraySolidInnerRadius = value;
-            mIsValueChangedSurpressed = false;
+	        this.mIsValueChangedSurpressed = false;
         }
 
         public void HandleInnerRadiusChanged(float newRadius)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.InnerRadiusSlider.Value = newRadius;
+	        this.mWidget.InnerRadiusSlider.Value = newRadius;
         }
 
         public void HandleOuterRadiusChanged(float newRadius)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.OuterRadiusSlider.Value = newRadius;
+	        this.mWidget.OuterRadiusSlider.Value = newRadius;
         }
 
         public void HandleAmoutChanged(float newAmount)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.AmountSlider.Value = newAmount;
+	        this.mWidget.AmountSlider.Value = newAmount;
         }
 
         public void HandleOpacityChanged(float newOpacity)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.GradientSlider.Value = newOpacity;
+	        this.mWidget.GradientSlider.Value = newOpacity;
         }
 
         public void HandlePenSensivityChanged(float newSensivity)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.Tablet_SensivitySlider.Value = newSensivity;
+	        this.mWidget.Tablet_SensivitySlider.Value = newSensivity;
         }
 
         public void HandleTabletControlChanged(bool newIsTabletChanged)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.TabletControlBox.IsChecked = newIsTabletChanged;
+	        this.mWidget.TabletControlBox.IsChecked = newIsTabletChanged;
         }
 
         public void HandleSprayModeChanged(bool newIsSprayOn)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.SprayModeBox.IsChecked = newIsSprayOn;
+	        this.mWidget.SprayModeBox.IsChecked = newIsSprayOn;
         }
 
         public void HandleTabletChangeRadiusChanged(bool newIsTablet_RChanged)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.TabletControlBox_Radius.IsChecked = newIsTablet_RChanged;
+	        this.mWidget.TabletControlBox_Radius.IsChecked = newIsTablet_RChanged;
         }
 
         public void HandleTabletChangeInnerRadiusChanged(bool newIsTablet_IRChanged)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.TabletControlBox_InnerRadius.IsChecked = newIsTablet_IRChanged;
+	        this.mWidget.TabletControlBox_InnerRadius.IsChecked = newIsTablet_IRChanged;
         }
 
         public void HandleTabletControlPressureChanged(bool newIsTablet_PChanged)
         {
-            if(mIsValueChangedSurpressed)
+            if(this.mIsValueChangedSurpressed)
             {
 	            return;
             }
-	        mWidget.PressureControlBox.IsChecked = newIsTablet_PChanged;
+	        this.mWidget.PressureControlBox.IsChecked = newIsTablet_PChanged;
         }
 
         public void HandleAllowedAmplitudeChanged(float newAmplitude )
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
-	        mWidget.Tablet_RadiusSlider.Value = newAmplitude;
+	        this.mWidget.Tablet_RadiusSlider.Value = newAmplitude;
         }
 
         public void HandleAllowedInnerAmplitudeChanged(float newInnerAmplitude)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
-	        mWidget.Tablet_InnerRadiusSlider.Value = newInnerAmplitude;
+	        this.mWidget.Tablet_InnerRadiusSlider.Value = newInnerAmplitude;
         }
 
         public void HandleParticleSizeChanged(float newSprayParticleSize)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
-	        mWidget.Spray_ParticleSizeSlider.Value = newSprayParticleSize;
+	        this.mWidget.Spray_ParticleSizeSlider.Value = newSprayParticleSize;
         }
 
         public void HandleParticleAmountChanged(float newSprayParticleAmount)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.Spray_ParticleAmountSlider.Value = newSprayParticleAmount;
+	        this.mWidget.Spray_ParticleAmountSlider.Value = newSprayParticleAmount;
         }
 
         public void HandleParticleHardnessChanged(float newSprayParticleHardness)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
 
-	        mWidget.Spray_ParticleHardnessSlider.Value = newSprayParticleHardness;
+	        this.mWidget.Spray_ParticleHardnessSlider.Value = newSprayParticleHardness;
         }
 
         public void HandleSpraySolidInnerRadiusChanged(bool newIsSpraySolidInnerRadius)
         {
-            if (mIsValueChangedSurpressed)
+            if (this.mIsValueChangedSurpressed)
             {
 	            return;
             }
-	        mWidget.SpraySolidInnerRadiusBox.IsChecked = newIsSpraySolidInnerRadius;
+	        this.mWidget.SpraySolidInnerRadiusBox.IsChecked = newIsSpraySolidInnerRadius;
         }
 
         public void SwitchToTexturing()
@@ -370,17 +370,16 @@ namespace Neo.UI.Models
 
         public async void UpdateFilters()
         {
-            var query = mWidget.TextureQueryBox.Text.ToLowerInvariant();
+            var query = this.mWidget.TextureQueryBox.Text.ToLowerInvariant();
             if (string.IsNullOrEmpty(query) || query.Length < 4)
             {
 	            return;
             }
 
-	        var selectedFilters = (from CheckBox cb in mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string)cb.Content).ToLowerInvariant()).ToList();
+	        var selectedFilters = (from CheckBox cb in this.mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string)cb.Content).ToLowerInvariant()).ToList();
 
-            mWidget.SearchResultLayout.Controls.Clear();
-            var newValues =
-                mTilesets.Where(s => s.Contains(query) && (selectedFilters.Count == 0 || selectedFilters.Any(s.Contains)));
+	        this.mWidget.SearchResultLayout.Controls.Clear();
+            var newValues = this.mTilesets.Where(s => s.Contains(query) && (selectedFilters.Count == 0 || selectedFilters.Any(s.Contains)));
 
             var toAdd = new List<Control>();
             foreach (var tex in newValues)
@@ -409,7 +408,7 @@ namespace Neo.UI.Models
                 toAdd.Add(pnl);
             }
 
-            mWidget.SearchResultLayout.Controls.AddRange(toAdd.ToArray());
+	        this.mWidget.SearchResultLayout.Controls.AddRange(toAdd.ToArray());
         }
 
         public async void SearchForTexture(string query)
@@ -419,12 +418,11 @@ namespace Neo.UI.Models
 	            return;
             }
 
-	        var selectedFilters = (from CheckBox cb in mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string) cb.Content).ToLowerInvariant()).ToList();
+	        var selectedFilters = (from CheckBox cb in this.mWidget.FilterWrapPanel.Children where cb.IsChecked ?? false select ((string) cb.Content).ToLowerInvariant()).ToList();
 
-            mWidget.SearchResultLayout.Controls.Clear();
+	        this.mWidget.SearchResultLayout.Controls.Clear();
             query = query.ToLowerInvariant();
-            var newValues =
-                mTilesets.Where(s => s.Contains(query) && (selectedFilters.Count == 0 || selectedFilters.Any(s.Contains)));
+            var newValues = this.mTilesets.Where(s => s.Contains(query) && (selectedFilters.Count == 0 || selectedFilters.Any(s.Contains)));
 
             var toAdd = new List<Control>();
             foreach (var tex in newValues)
@@ -453,19 +451,19 @@ namespace Neo.UI.Models
                 toAdd.Add(pnl);
             }
 
-            mWidget.SearchResultLayout.Controls.AddRange(toAdd.ToArray());
+	        this.mWidget.SearchResultLayout.Controls.AddRange(toAdd.ToArray());
         }
 
         public async void OnFavoriteButtonClicked()
         {
-            var curTexture = mWidget.TexturePreviewImage.Tag as string;
+            var curTexture = this.mWidget.TexturePreviewImage.Tag as string;
             if (string.IsNullOrEmpty(curTexture))
             {
 	            return;
             }
 
 	        curTexture = curTexture.ToLowerInvariant();
-            var index = mFavoriteTextures.IndexOf(curTexture);
+            var index = this.mFavoriteTextures.IndexOf(curTexture);
             if (index < 0)
             {
                 var pnl = new Panel
@@ -489,20 +487,20 @@ namespace Neo.UI.Models
                 pnl.Controls.Add(pb);
 
                 SetEventHandlers(pb);
-                mFavoriteTextures.Insert(0, curTexture);
-                mWidget.FavoriteWrapPanel.Controls.Add(pnl);
-                mWidget.FavoriteWrapPanel.Controls.SetChildIndex(pnl, 0);
-                mWidget.FavoriteButton.Content = "Remove Favorite";
+	            this.mFavoriteTextures.Insert(0, curTexture);
+	            this.mWidget.FavoriteWrapPanel.Controls.Add(pnl);
+	            this.mWidget.FavoriteWrapPanel.Controls.SetChildIndex(pnl, 0);
+	            this.mWidget.FavoriteButton.Content = "Remove Favorite";
             }
             else
             {
-                mWidget.FavoriteWrapPanel.Controls.RemoveAt(index);
-                mFavoriteTextures.RemoveAt(index);
-                mWidget.FavoriteButton.Content = "Add Favorite";
+	            this.mWidget.FavoriteWrapPanel.Controls.RemoveAt(index);
+	            this.mFavoriteTextures.RemoveAt(index);
+	            this.mWidget.FavoriteButton.Content = "Add Favorite";
             }
 
             var coll = new StringCollection();
-            coll.AddRange(mFavoriteTextures.ToArray());
+            coll.AddRange(this.mFavoriteTextures.ToArray());
             Properties.Settings.Default.FavoriteTextures = coll;
             Properties.Settings.Default.Save();
         }
@@ -534,13 +532,13 @@ namespace Neo.UI.Models
         private async void AddRecentTexture(string texture, bool initial = false)
         {
             texture = texture.ToLowerInvariant();
-            if (mRecentTextures.Contains(texture))
+            if (this.mRecentTextures.Contains(texture))
             {
-                var index = mRecentTextures.IndexOf(texture);
-                mRecentTextures.RemoveAt(index);
-                mRecentTextures.Add(texture);
-                var elem = mWidget.RecentWrapPanel.Controls[index];
-                mWidget.RecentWrapPanel.Controls.SetChildIndex(elem, 0);
+                var index = this.mRecentTextures.IndexOf(texture);
+	            this.mRecentTextures.RemoveAt(index);
+	            this.mRecentTextures.Add(texture);
+                var elem = this.mWidget.RecentWrapPanel.Controls[index];
+	            this.mWidget.RecentWrapPanel.Controls.SetChildIndex(elem, 0);
             }
             else
             {
@@ -570,15 +568,15 @@ namespace Neo.UI.Models
 
                 SetEventHandlers(pb);
 
-                mRecentTextures.Insert(0, texture);
-                mWidget.RecentWrapPanel.Controls.Add(pnl);
-                mWidget.RecentWrapPanel.Controls.SetChildIndex(pnl, 0);
+	            this.mRecentTextures.Insert(0, texture);
+	            this.mWidget.RecentWrapPanel.Controls.Add(pnl);
+	            this.mWidget.RecentWrapPanel.Controls.SetChildIndex(pnl, 0);
             }
 
             if (initial == false)
             {
                 var newColl = new StringCollection();
-                newColl.AddRange(mRecentTextures.ToArray());
+                newColl.AddRange(this.mRecentTextures.ToArray());
                 Properties.Settings.Default.RecentTextures = newColl;
                 Properties.Settings.Default.Save();
             }
@@ -588,12 +586,12 @@ namespace Neo.UI.Models
         {
             foreach (string tex in textures)
             {
-                if (mFavoriteTextures.Contains(tex.ToLowerInvariant()))
+                if (this.mFavoriteTextures.Contains(tex.ToLowerInvariant()))
                 {
 	                continue;
                 }
 
-	            mFavoriteTextures.Add(tex.ToLowerInvariant());
+	            this.mFavoriteTextures.Add(tex.ToLowerInvariant());
 
                 var pnl = new Panel
                 {
@@ -620,7 +618,7 @@ namespace Neo.UI.Models
                 }
 
 	            SetEventHandlers(pb);
-                mWidget.FavoriteWrapPanel.Controls.Add(pnl);
+	            this.mWidget.FavoriteWrapPanel.Controls.Add(pnl);
             }
         }
 
@@ -629,7 +627,7 @@ namespace Neo.UI.Models
             var tilesetRoot = FileManager.Instance.FileListing.RootEntry.Children["tileset"] as DirectoryEntry;
             HandleTilesetDirectory(tilesetRoot, "Tileset");
 
-            mWidget.Dispatcher.BeginInvoke(new Action(() =>
+	        this.mWidget.Dispatcher.BeginInvoke(new Action(() =>
             {
                 foreach (var tex in Properties.Settings.Default.RecentTextures)
                 {
@@ -658,7 +656,7 @@ namespace Neo.UI.Models
 	                    continue;
                     }
 
-	                mTilesets.Add((curDir + "\\" + entry.Name).ToLowerInvariant());
+	                this.mTilesets.Add((curDir + "\\" + entry.Name).ToLowerInvariant());
                 }
                 else
                 {
@@ -683,7 +681,7 @@ namespace Neo.UI.Models
 
             if (intersectionParams.ChunkHit == null)
             {
-                mLastArea = null;
+	            this.mLastArea = null;
                 return;
             }
 
@@ -694,24 +692,24 @@ namespace Neo.UI.Models
 	        }
 
             var updateArea = true;
-            if (mLastArea != null)
+            if (this.mLastArea != null)
             {
                 MapArea lastArea;
-	            if (mLastArea.TryGetTarget(out lastArea) && lastArea == area)
+	            if (this.mLastArea.TryGetTarget(out lastArea) && lastArea == area)
 	            {
 		            updateArea = false;
 	            }
 
             }
 
-            mLastArea = intersectionParams.ChunkHit.Parent;
+	        this.mLastArea = intersectionParams.ChunkHit.Parent;
 	        if (updateArea)
 	        {
-		        SetSelectedTileTextures(mWidget.SelectedTileWrapPanel, area.TextureNames);
+		        SetSelectedTileTextures(this.mWidget.SelectedTileWrapPanel, area.TextureNames);
 	        }
 
             MapChunk lastChunk;
-            if (mLastChunk != null && mLastChunk.TryGetTarget(out lastChunk))
+            if (this.mLastChunk != null && this.mLastChunk.TryGetTarget(out lastChunk))
             {
 	            if (lastChunk == intersectionParams.ChunkHit)
 	            {
@@ -719,8 +717,8 @@ namespace Neo.UI.Models
 	            }
             }
 
-            mLastChunk = new WeakReference<MapChunk>(intersectionParams.ChunkHit);
-            SetSelectedTileTextures(mWidget.SelectedChunkWrapPanel, intersectionParams.ChunkHit.TextureNames);
+	        this.mLastChunk = new WeakReference<MapChunk>(intersectionParams.ChunkHit);
+            SetSelectedTileTextures(this.mWidget.SelectedChunkWrapPanel, intersectionParams.ChunkHit.TextureNames);
         }
 
         private void OnTextureSelected(PictureBox box)
@@ -731,14 +729,14 @@ namespace Neo.UI.Models
 		        return;
 	        }
 
-            mWidget.TexturePreviewImage.Image = box.Image;
-            mWidget.TexturePreviewImage.Tag = texName;
+	        this.mWidget.TexturePreviewImage.Image = box.Image;
+	        this.mWidget.TexturePreviewImage.Tag = texName;
             Editing.TextureChangeManager.Instance.SelectedTexture = texName;
             AddRecentTexture(texName);
 
             var nameLow = texName.ToLowerInvariant();
-            mWidget.FavoriteButton.Content = mFavoriteTextures.Contains(nameLow) ? "Remove Favorite" : "Add Favorite";
-            mWidget.FavoriteButton.IsEnabled = true;
+	        this.mWidget.FavoriteButton.Content = this.mFavoriteTextures.Contains(nameLow) ? "Remove Favorite" : "Add Favorite";
+	        this.mWidget.FavoriteButton.IsEnabled = true;
         }
 
         private void SetEventHandlers(PictureBox box)

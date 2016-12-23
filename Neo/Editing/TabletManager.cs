@@ -44,10 +44,10 @@ namespace Neo.Editing
             {
                 CloseCurrentContext();
 
-                m_logContext = OpenQueryDigitizerContext(out status);
+	            this.m_logContext = OpenQueryDigitizerContext(out status);
 
-                m_wtData = new CWintabData(m_logContext);
-                m_wtData.SetWTPacketEventHandler(HandlePenMessage);
+	            this.m_wtData = new CWintabData(this.m_logContext);
+	            this.m_wtData.SetWTPacketEventHandler(HandlePenMessage);
             }
             catch (Exception ex)
             {
@@ -103,11 +103,11 @@ namespace Neo.Editing
         {
             try
             {
-                if (m_logContext != null)
+                if (this.m_logContext != null)
                 {
-                    m_logContext.Close();
-                    m_logContext = null;
-                    m_wtData = null;
+	                this.m_logContext.Close();
+	                this.m_logContext = null;
+	                this.m_wtData = null;
                 }
 
             }
@@ -119,7 +119,7 @@ namespace Neo.Editing
 
         private void HandlePenMessage(object sender_I, MessageReceivedEventArgs eventArgs_I)
         {
-            if (m_wtData == null)
+            if (this.m_wtData == null)
             {
 	            return;
             }
@@ -127,12 +127,12 @@ namespace Neo.Editing
 	        try
             {
                 uint pktID = (uint)eventArgs_I.Message.WParam;
-                WintabPacket pkt = m_wtData.GetDataPacket(pktID);
+                WintabPacket pkt = this.m_wtData.GetDataPacket(pktID);
                 if (pkt.pkContext != 0)
                 {
                     // Normalize data between 0 and 40
                     float normalizedValue = (40f - 0f) / ((float)CWintabInfo.GetMaxPressure() - 0f) * ((float)pkt.pkNormalPressure.pkAbsoluteNormalPressure - (float)CWintabInfo.GetMaxPressure()) + 40f;
-                    TabletPressure = normalizedValue;
+	                this.TabletPressure = normalizedValue;
                 }
             }
             catch (Exception ex)

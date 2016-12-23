@@ -108,10 +108,10 @@ namespace Neo.IO.Files.Models
         public Quaternion ToQuaternion()
         {
             return new Quaternion(
-                    (x < 0 ? x + 32768 : x - 32767) / 32767.0f,
-                    (y < 0 ? y + 32768 : y - 32767) / 32767.0f,
-                    (z < 0 ? z + 32768 : z - 32767) / 32767.0f,
-                    (w < 0 ? w + 32768 : w - 32767) / 32767.0f);
+                    (this.x < 0 ? this.x + 32768 : this.x - 32767) / 32767.0f,
+                    (this.y < 0 ? this.y + 32768 : this.y - 32767) / 32767.0f,
+                    (this.z < 0 ? this.z + 32768 : this.z - 32767) / 32767.0f,
+                    (this.w < 0 ? this.w + 32768 : this.w - 32767) / 32767.0f);
         }
     }
 
@@ -126,10 +126,10 @@ namespace Neo.IO.Files.Models
         public Quaternion ToQuaternion()
         {
             return new Quaternion(
-                    (x < 0 ? x + 32768 : x - 32767) / -32767.0f,
-                    (y < 0 ? y + 32768 : y - 32767) / -32767.0f,
-                    (z < 0 ? z + 32768 : z - 32767) / -32767.0f,
-                    (w < 0 ? w + 32768 : w - 32767) / 32767.0f);
+                    (this.x < 0 ? this.x + 32768 : this.x - 32767) / -32767.0f,
+                    (this.y < 0 ? this.y + 32768 : this.y - 32767) / -32767.0f,
+                    (this.z < 0 ? this.z + 32768 : this.z - 32767) / -32767.0f,
+                    (this.w < 0 ? this.w + 32768 : this.w - 32767) / 32767.0f);
         }
     }
 }

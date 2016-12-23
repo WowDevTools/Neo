@@ -15,14 +15,13 @@ namespace Neo.Scene.Models
 
             public InstanceSortComparer(IDictionary<int, M2RenderInstance> dict)
             {
-                mInstances = dict;
+	            this.mInstances = dict;
             }
 
             public int Compare(int first, int second)
             {
                 M2RenderInstance renderA, renderB;
-                if (mInstances.TryGetValue(first, out renderA) &&
-                    mInstances.TryGetValue(second, out renderB))
+                if (this.mInstances.TryGetValue(first, out renderA) && this.mInstances.TryGetValue(second, out renderB))
                 {
                     int compare = renderB.Depth.CompareTo(renderA.Depth);
                     if (compare != 0)
@@ -48,26 +47,26 @@ namespace Neo.Scene.Models
 
         public M2Manager()
         {
-            mSortedInstances = new SortedDictionary<int, M2RenderInstance>(
-                new InstanceSortComparer(mVisibleInstances));
+	        this.mSortedInstances = new SortedDictionary<int, M2RenderInstance>(
+                new InstanceSortComparer(this.mVisibleInstances));
         }
 
         public void Initialize()
         {
-            mIsRunning = true;
-            mUnloadThread = new Thread(UnloadProc);
-            mUnloadThread.Start();
+	        this.mIsRunning = true;
+	        this.mUnloadThread = new Thread(UnloadProc);
+	        this.mUnloadThread.Start();
         }
 
         public void Shutdown()
         {
-            mIsRunning = false;
-            mUnloadThread.Join();
+	        this.mIsRunning = false;
+	        this.mUnloadThread.Join();
         }
 
         public void Intersect(IntersectionParams parameters)
         {
-            if (mVisibleInstances == null || mNonBatchedInstances == null || mSortedInstances == null)
+            if (this.mVisibleInstances == null || this.mNonBatchedInstances == null || this.mSortedInstances == null)
             {
 	            return;
             }
@@ -78,9 +77,9 @@ namespace Neo.Scene.Models
             var minDistance = float.MaxValue;
             M2RenderInstance selectedInstance = null;
 
-            lock (mVisibleInstances)
+            lock (this.mVisibleInstances)
             {
-                foreach (var pair in mVisibleInstances)
+                foreach (var pair in this.mVisibleInstances)
                 {
                     if (pair.Value.Uuid == Editing.ModelSpawnManager.M2InstanceUuid)
                     {
@@ -96,9 +95,9 @@ namespace Neo.Scene.Models
                 }
             }
 
-            lock (mNonBatchedInstances)
+            lock (this.mNonBatchedInstances)
             {
-                foreach (var pair in mNonBatchedInstances)
+                foreach (var pair in this.mNonBatchedInstances)
                 {
                     float dist;
                     if (pair.Value.Intersects(parameters, ref globalRay, out dist) && dist < minDistance)
@@ -109,9 +108,9 @@ namespace Neo.Scene.Models
                 }
             }
 
-            lock (mSortedInstances)
+            lock (this.mSortedInstances)
             {
-                foreach (var pair in mSortedInstances)
+                foreach (var pair in this.mSortedInstances)
                 {
                     float dist;
                     if (pair.Value.Intersects(parameters, ref globalRay, out dist) && dist < minDistance)
@@ -142,24 +141,24 @@ namespace Neo.Scene.Models
                 UpdateBrushHighlighting(brushPosition, highlightRadius);
             }
 
-            lock (mAddLock)
+            lock (this.mAddLock)
             {
                 M2BatchRenderer.BeginDraw();
                 // First draw all the instance batches
-                foreach (var renderer in mRenderer.Values)
+                foreach (var renderer in this.mRenderer.Values)
                 {
 	                renderer.RenderBatch();
                 }
 
 	            M2SingleRenderer.BeginDraw();
                 // Now draw those objects that need per instance animation
-                foreach (var instance in mNonBatchedInstances.Values)
+                foreach (var instance in this.mNonBatchedInstances.Values)
                 {
 	                instance.Renderer.RenderSingleInstance(instance);
                 }
 
 	            // Then draw those that have alpha blending and need ordering
-                foreach (var instance in mSortedInstances.Values)
+                foreach (var instance in this.mSortedInstances.Values)
                 {
 	                instance.Renderer.RenderSingleInstance(instance);
                 }
@@ -177,27 +176,27 @@ namespace Neo.Scene.Models
 	                continue;
                 }
 
-	            lock (mAddLock)
+	            lock (this.mAddLock)
                 {
                     M2Renderer renderer;
-                    if (!mRenderer.TryGetValue(instance.Hash, out renderer))
+                    if (!this.mRenderer.TryGetValue(instance.Hash, out renderer))
                     {
 	                    continue;
                     }
 
 	                renderer.PushMapReference(instance);
-                    mVisibleInstances.Add(instance.Uuid, instance.RenderInstance);
+	                this.mVisibleInstances.Add(instance.Uuid, instance.RenderInstance);
 
                     var model = renderer.Model;
                     if (model.HasBlendPass)
                     {
                         // The model has an alpha pass and therefore needs to be ordered by depth
-                        mSortedInstances.Add(instance.Uuid, instance.RenderInstance);
+	                    this.mSortedInstances.Add(instance.Uuid, instance.RenderInstance);
                     }
                     else if (model.NeedsPerInstanceAnimation)
                     {
                         // The model needs per instance animation and therefore cannot be batched
-                        mNonBatchedInstances.Add(instance.Uuid, instance.RenderInstance);
+	                    this.mNonBatchedInstances.Add(instance.Uuid, instance.RenderInstance);
                     }
                 }
             }
@@ -205,9 +204,9 @@ namespace Neo.Scene.Models
 
         private void UpdateBrushHighlighting(Vector3 brushPosition, float radius)
         {
-            lock (mAddLock)
+            lock (this.mAddLock)
             {
-                foreach (var instance in mVisibleInstances.Values)
+                foreach (var instance in this.mVisibleInstances.Values)
                 {
 	                instance.UpdateBrushHighlighting(brushPosition, radius);
                 }
@@ -217,13 +216,13 @@ namespace Neo.Scene.Models
         public void ViewChanged()
         {
             IsViewDirty = true;
-            lock(mAddLock)
+            lock(this.mAddLock)
             {
-                mSortedInstances.Clear();
-                mNonBatchedInstances.Clear();
-                mVisibleInstances.Clear();
+	            this.mSortedInstances.Clear();
+	            this.mNonBatchedInstances.Clear();
+	            this.mVisibleInstances.Clear();
 
-                foreach (var renderer in mRenderer.Values)
+                foreach (var renderer in this.mRenderer.Values)
                 {
 	                renderer.ViewChanged();
                 }
@@ -245,35 +244,34 @@ namespace Neo.Scene.Models
 
         public void RemoveInstance(int hash, int uuid)
         {
-            if (mRenderer == null || mAddLock == null || mSortedInstances == null || mNonBatchedInstances == null ||
-                mVisibleInstances == null)
+            if (this.mRenderer == null || this.mAddLock == null || this.mSortedInstances == null || this.mNonBatchedInstances == null || this.mVisibleInstances == null)
             {
 	            return;
             }
 
-	        lock (mRenderer)
+	        lock (this.mRenderer)
             {
-                lock (mAddLock)
+                lock (this.mAddLock)
                 {
-                    mSortedInstances.Remove(uuid);
-                    mNonBatchedInstances.Remove(uuid);
-                    mVisibleInstances.Remove(uuid);
+	                this.mSortedInstances.Remove(uuid);
+	                this.mNonBatchedInstances.Remove(uuid);
+	                this.mVisibleInstances.Remove(uuid);
                 }
 
                 M2Renderer renderer;
-                if (!mRenderer.TryGetValue(hash, out renderer))
+                if (!this.mRenderer.TryGetValue(hash, out renderer))
                 {
 	                return;
                 }
 
 	            if (renderer.RemoveInstance(uuid))
                 {
-                    lock (mAddLock)
+                    lock (this.mAddLock)
                     {
 	                    this.mRenderer.Remove(hash);
                     }
 
-	                lock (mUnloadList)
+	                lock (this.mUnloadList)
 	                {
 		                this.mUnloadList.Add(renderer);
 	                }
@@ -284,10 +282,10 @@ namespace Neo.Scene.Models
         public M2RenderInstance AddInstance(string model, int uuid, Vector3 position, Vector3 rotation, Vector3 scaling)
         {
             var hash = model.ToUpperInvariant().GetHashCode();
-            lock(mRenderer)
+            lock(this.mRenderer)
             {
                 M2Renderer renderer;
-                if (mRenderer.TryGetValue(hash, out renderer))
+                if (this.mRenderer.TryGetValue(hash, out renderer))
                 {
 	                return renderer.AddInstance(uuid, position, rotation, scaling);
                 }
@@ -299,7 +297,7 @@ namespace Neo.Scene.Models
                 }
 
 	            var render = new M2Renderer(file);
-                lock (mAddLock)
+                lock (this.mAddLock)
                 {
 	                this.mRenderer.Add(hash, render);
                 }
@@ -310,15 +308,15 @@ namespace Neo.Scene.Models
 
         private void UnloadProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
                 M2Renderer element = null;
-                lock(mUnloadList)
+                lock(this.mUnloadList)
                 {
-                    if(mUnloadList.Count > 0)
+                    if(this.mUnloadList.Count > 0)
                     {
-                        element = mUnloadList[0];
-                        mUnloadList.RemoveAt(0);
+                        element = this.mUnloadList[0];
+	                    this.mUnloadList.RemoveAt(0);
                     }
                 }
 

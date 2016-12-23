@@ -16,12 +16,12 @@ namespace Neo.Utils
 
         public TimeSpan GetTime()
         {
-            return mTimer.Elapsed;
+            return this.mTimer.Elapsed;
         }
 
         public void Reset()
         {
-            mTimer.Restart();
+	        this.mTimer.Restart();
         }
     }
 }

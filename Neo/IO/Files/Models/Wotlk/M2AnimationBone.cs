@@ -19,24 +19,24 @@ namespace Neo.IO.Files.Models.Wotlk
 
         public M2AnimationBone(M2File file, ref M2Bone bone, BinaryReader reader)
         {
-            mBone = bone;
-            IsBillboarded = (bone.flags & 0x08) != 0;  // Some billboards have 0x40 for cylindrical?
-            IsTransformed = (bone.flags & 0x200) != 0;
+	        this.mBone = bone;
+	        this.IsBillboarded = (bone.flags & 0x08) != 0;  // Some billboards have 0x40 for cylindrical?
+	        this.IsTransformed = (bone.flags & 0x200) != 0;
 
             bone.pivot.Y = -bone.pivot.Y;
-            mPivot = Matrix4.Translation(bone.pivot);
-            mInvPivot = Matrix4.Translation(-bone.pivot);
+	        this.mPivot = Matrix4.Translation(bone.pivot);
+	        this.mInvPivot = Matrix4.Translation(-bone.pivot);
 
-            mTranslation = new M2Vector3AnimationBlock(file, bone.translation, reader);
-            mRotation = new M2Quaternion16AnimationBlock(file, bone.rotation, reader, Quaternion.Identity);
-            mScaling = new M2Vector3AnimationBlock(file, bone.scaling, reader, Vector3.One);
+	        this.mTranslation = new M2Vector3AnimationBlock(file, bone.translation, reader);
+	        this.mRotation = new M2Quaternion16AnimationBlock(file, bone.rotation, reader, Quaternion.Identity);
+	        this.mScaling = new M2Vector3AnimationBlock(file, bone.scaling, reader, Vector3.One);
         }
 
         public void UpdateMatrix(uint time, int animation, out Matrix4 matrix,
             M2Animator animator, BillboardParameters billboard)
         {
             var boneMatrix = Matrix4.Identity;
-            if (IsBillboarded && billboard != null)
+            if (this.IsBillboarded && billboard != null)
             {
                 var billboardMatrix = Matrix4.Identity;
                 billboardMatrix.Row1 = new Vector4(billboard.Forward, 0);
@@ -45,18 +45,18 @@ namespace Neo.IO.Files.Models.Wotlk
                 boneMatrix = billboard.InverseRotation * billboardMatrix;
             }
 
-            if (IsTransformed)
+            if (this.IsTransformed)
             {
-                var position = mTranslation.GetValue(animation, time, animator.AnimationLength);
+                var position = this.mTranslation.GetValue(animation, time, animator.AnimationLength);
                 position.Y = -position.Y;
-                var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
-                var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
+                var scaling = this.mScaling.GetValue(animation, time, animator.AnimationLength);
+                var rotation = this.mRotation.GetValue(animation, time, animator.AnimationLength);
                 boneMatrix *= Matrix4.Rotate(rotation) * Matrix4.Scale(scaling) * Matrix4.Translation(position);
             }
 
-            boneMatrix = mInvPivot * boneMatrix * mPivot;
+            boneMatrix = this.mInvPivot * boneMatrix * this.mPivot;
 
-            if (mBone.parentBone >= 0)
+            if (this.mBone.parentBone >= 0)
             {
 	            boneMatrix *= animator.GetBoneMatrix(time, this.mBone.parentBone, billboard);
             }

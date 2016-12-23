@@ -26,20 +26,20 @@ namespace Neo.Editing
 
         public void Update()
         {
-            if (SelectedModel == null)
+            if (this.SelectedModel == null)
             {
-                IsCopying = false;
-                mLastCursorPosition = InterfaceHelper.GetCursorPosition();
-	            mLastPos = EditManager.Instance.MousePosition;
+	            this.IsCopying = false;
+	            this.mLastCursorPosition = InterfaceHelper.GetCursorPosition();
+	            this.mLastPos = EditManager.Instance.MousePosition;
 
                 EditorWindowController.Instance.OnUpdate(Vector3.Zero, Vector3.Zero);
                 return;
             }
 
             var curPos = InterfaceHelper.GetCursorPosition();
-	        var dpos = new Point(curPos.X - mLastCursorPosition.X, curPos.Y - mLastCursorPosition.Y);
+	        var dpos = new Point(curPos.X - this.mLastCursorPosition.X, curPos.Y - this.mLastCursorPosition.Y);
 
-            EditorWindowController.Instance.OnUpdate(SelectedModel.GetPosition(),SelectedModel.GetNamePlatePosition());
+            EditorWindowController.Instance.OnUpdate(this.SelectedModel.GetPosition(), this.SelectedModel.GetNamePlatePosition());
 
 
 	        KeyboardState keyboardState = Keyboard.GetState();
@@ -61,12 +61,12 @@ namespace Neo.Editing
 	        if (ctrlDown && cDown) // Copying
             {
                 ModelSpawnManager.Instance.CopyClickedModel();
-                IsCopying = ModelSpawnManager.Instance.ClickedInstance != null;
+	            this.IsCopying = ModelSpawnManager.Instance.ClickedInstance != null;
             }
 
             if (ctrlDown && vDown) // Pasting
             {
-	            if (IsCopying)
+	            if (this.IsCopying)
 	            {
 		            // INVESTIGATE: Possible introduction of new bug (removed explicit passing of mouse state
 		            ModelSpawnManager.Instance.OnTerrainClicked(WorldFrame.Instance.LastMouseIntersection);
@@ -76,58 +76,58 @@ namespace Neo.Editing
             if ((altDown || ctrlDown || shiftDown) & rmbDown) // Rotating
             {
                 var angle = MathHelper.DegreesToRadians(dpos.X * 6);
-                SelectedModel.Rotate(altDown ? angle : 0, ctrlDown ? angle : 0, shiftDown ? angle : 0);
+	            this.SelectedModel.Rotate(altDown ? angle : 0, ctrlDown ? angle : 0, shiftDown ? angle : 0);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
             if (altDown & mmbDown & !shiftDown) // Scaling
             {
-                var amount = (mLastCursorPosition.Y - curPos.Y) / 512.0f;
-                SelectedModel.UpdateScale(amount);
+                var amount = (this.mLastCursorPosition.Y - curPos.Y) / 512.0f;
+	            this.SelectedModel.UpdateScale(amount);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
-            if (mmbDown && !altDown && InterfaceHelper.GetCursorPosition() != mLastCursorPosition) // Moving
+            if (mmbDown && !altDown && InterfaceHelper.GetCursorPosition() != this.mLastCursorPosition) // Moving
             {
                 Vector3 delta;
 
-                delta.X = EditManager.Instance.MousePosition.X - mLastPos.X;
-                delta.Y = EditManager.Instance.MousePosition.Y - mLastPos.Y;
-                delta.Z = -(InterfaceHelper.GetCursorPosition().Y - mLastCursorPosition.Y); //Better to use the 2d screen pos of the mouse.
+                delta.X = EditManager.Instance.MousePosition.X - this.mLastPos.X;
+                delta.Y = EditManager.Instance.MousePosition.Y - this.mLastPos.Y;
+                delta.Z = -(InterfaceHelper.GetCursorPosition().Y - this.mLastCursorPosition.Y); //Better to use the 2d screen pos of the mouse.
 
                 var position = new Vector3(!shiftDown ? delta.X/ Slowness : 0, !shiftDown ? delta.Y/ Slowness : 0, shiftDown ? delta.Z/ Slowness : 0);
 
-                SelectedModel.SetPosition(position);
+	            this.SelectedModel.SetPosition(position);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
 
-            mLastCursorPosition = curPos;
-            mLastPos = EditManager.Instance.MousePosition;
+	        this.mLastCursorPosition = curPos;
+	        this.mLastPos = EditManager.Instance.MousePosition;
 
             if(delDown) // Delete model
             {
-                SelectedModel.Remove();
+	            this.SelectedModel.Remove();
             }
 
             if(ctrlDown && rDown) // Reset rotation
             {
-                var newRotation = SelectedModel.GetRotation() * -1;
-                SelectedModel.Rotate(newRotation.X, newRotation.Y, newRotation.Z);
+                var newRotation = this.SelectedModel.GetRotation() * -1;
+	            this.SelectedModel.Rotate(newRotation.X, newRotation.Y, newRotation.Z);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
 
             }
 
             if (ctrlDown && mDown) // Move to cursor pos.
             {
-                SelectedModel.SetPosition(EditManager.Instance.MousePosition);
+	            this.SelectedModel.SetPosition(EditManager.Instance.MousePosition);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
 
             }
 
             if(pagedownDown) // Snap model to ground.
             {
-                var curPosition = SelectedModel.GetPosition();
+                var curPosition = this.SelectedModel.GetPosition();
                 WorldFrame.Instance.MapManager.GetLandHeight(curPosition.X, curPosition.Y, out curPosition.Z);
-	            var delta = curPosition - SelectedModel.GetPosition();
-                SelectedModel.SetPosition(delta);
+	            var delta = curPosition - this.SelectedModel.GetPosition();
+	            this.SelectedModel.SetPosition(delta);
                 WorldFrame.Instance.UpdateSelectedBoundingBox();
             }
         }

@@ -26,7 +26,7 @@ namespace Neo.UI.Dialogs
 	            return;
             }
 
-	        viewModel.Handle_BrowserSelectionChanged(AssetTreeView.SelectedItem as AssetBrowserDirectory);
+	        viewModel.Handle_BrowserSelectionChanged(this.AssetTreeView.SelectedItem as AssetBrowserDirectory);
         }
 
         private void HideUnknownFiles_Click(object sender, RoutedEventArgs e)
@@ -99,7 +99,7 @@ namespace Neo.UI.Dialogs
 
         private void FileBox_ItemSelected(object sender, RoutedEventArgs e)
         {
-            if (SelectedFilesListView.SelectedItem == null)
+            if (this.SelectedFilesListView.SelectedItem == null)
             {
 	            return;
             }
@@ -110,7 +110,7 @@ namespace Neo.UI.Dialogs
 	            return;
             }
 
-	        viewModel.Handle_FileClicked(SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement);
+	        viewModel.Handle_FileClicked(this.SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement);
         }
 
         private void ExportSelected_Click(object sender, RoutedEventArgs e)

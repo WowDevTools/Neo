@@ -34,9 +34,9 @@ namespace Neo.Scene
         {
             public WorldTextVertex(Vector3 pos, float u, float v)
             {
-                position = pos;
-                texCoord.X = u;
-                texCoord.Y = v;
+	            this.position = pos;
+	            this.texCoord.X = u;
+	            this.texCoord.Y = v;
             }
 
             public Vector3 position;
@@ -62,19 +62,19 @@ namespace Neo.Scene
 
         public Font Font
         {
-            get { return mFont; }
+            get { return this.mFont; }
             set { UpdateFont(value); }
         }
 
         public Brush Brush
         {
-            get { return mBrush; }
+            get { return this.mBrush; }
             set { UpdateBrush(value); }
         }
 
         public string Text
         {
-            get { return mText; }
+            get { return this.mText; }
             set { UpdateText(value); }
         }
 
@@ -107,8 +107,8 @@ namespace Neo.Scene
 		        this.mBrush = brush;
 	        }
 
-	        Scaling = 1.0f;
-            DrawMode = TextDrawMode.TextDraw3D;
+	        this.Scaling = 1.0f;
+	        this.DrawMode = TextDrawMode.TextDraw3D;
         }
 
         ~WorldText()
@@ -118,15 +118,15 @@ namespace Neo.Scene
 
         private void Dispose(bool disposing)
         {
-            if (mTexture != null)
+            if (this.mTexture != null)
             {
-                mTexture.Dispose();
-                mTexture = null;
+	            this.mTexture.Dispose();
+	            this.mTexture = null;
             }
 
-            mFont = null;
-            mBrush = null;
-            mText = null;
+	        this.mFont = null;
+	        this.mBrush = null;
+	        this.mText = null;
         }
 
         public virtual void Dispose()
@@ -143,24 +143,24 @@ namespace Neo.Scene
 
         public void OnFrame(Camera camera)
         {
-            if (!mIsInitialized)
+            if (!this.mIsInitialized)
             {
                 OnSyncLoad();
-                mIsInitialized = true;
+	            this.mIsInitialized = true;
             }
 
-            if (mIsDirty)
+            if (this.mIsDirty)
             {
                 OnRenderText();
-                mIsDirty = false;
+	            this.mIsDirty = false;
             }
 
-            if (!mShouldDraw)
+            if (!this.mShouldDraw)
             {
 	            return;
             }
 
-	        switch (DrawMode)
+	        switch (this.DrawMode)
 	        {
 		        case TextDrawMode.TextDraw2D:
 		        {
@@ -198,7 +198,7 @@ namespace Neo.Scene
 
         private void DrawText2D(Camera camera, bool world)
         {
-            var center = Position;
+            var center = this.Position;
             if (world)
             {
                 center = WorldToScreenCoords(camera, center);
@@ -208,9 +208,9 @@ namespace Neo.Scene
 	            }
             }
 
-            var scale = Scaling;
-            var right = new Vector3(mWidth, 0, 0) * 0.5f;
-            var up = new Vector3(0, mHeight, 0) * 0.5f;
+            var scale = this.Scaling;
+            var right = new Vector3(this.mWidth, 0, 0) * 0.5f;
+            var up = new Vector3(0, this.mHeight, 0) * 0.5f;
 
             gVertexBuffer.BufferData(new[]
             {
@@ -233,16 +233,16 @@ namespace Neo.Scene
                 gMesh.Program.Bind();
             }
 
-            gMesh.Program.SetFragmentTexture(0, mTexture);
+            gMesh.Program.SetFragmentTexture(0, this.mTexture);
             gMesh.DrawNonIndexed();
         }
 
         private void DrawText3D(Camera camera, bool noDepth)
         {
-            var center = Position;
-            var scale = Scaling / 10.0f;
-            var right = camera.Right * mWidth * 0.5f;
-            var up = camera.Up * mHeight * 0.5f;
+            var center = this.Position;
+            var scale = this.Scaling / 10.0f;
+            var right = camera.Right * this.mWidth * 0.5f;
+            var up = camera.Up * this.mHeight * 0.5f;
 
             if (camera.LeftHanded)
             {
@@ -270,56 +270,56 @@ namespace Neo.Scene
                 gMesh.Program.Bind();
             }
 
-            gMesh.Program.SetFragmentTexture(0, mTexture);
+            gMesh.Program.SetFragmentTexture(0, this.mTexture);
             gMesh.DrawNonIndexed();
         }
 
         private void UpdateText(string text)
         {
-            if (text.Equals(mText))
+            if (text.Equals(this.mText))
             {
 	            return;
             }
 
-	        mText = text;
-            mIsDirty = true;
+	        this.mText = text;
+	        this.mIsDirty = true;
         }
 
         private void UpdateFont(Font font)
         {
-            if (font.Equals(mFont))
+            if (font.Equals(this.mFont))
             {
 	            return;
             }
 
-	        mFont = font;
-            mIsDirty = true;
+	        this.mFont = font;
+	        this.mIsDirty = true;
         }
 
         private void UpdateBrush(Brush brush)
         {
-            if (brush.Equals(mBrush))
+            if (brush.Equals(this.mBrush))
             {
 	            return;
             }
 
-	        mBrush = brush;
-            mIsDirty = true;
+	        this.mBrush = brush;
+	        this.mIsDirty = true;
         }
 
 	    // INVESTIGATE: Is this creating an internal BLP from a bitmap?
         private unsafe void OnRenderText()
         {
-            var size = gGraphics.MeasureString(mText, mFont);
+            var size = gGraphics.MeasureString(this.mText, this.mFont);
             var width = (int) (size.Width + 0.5f);
             var height = (int) (size.Height + 0.5f);
 
-            mWidth = size.Width;
-            mHeight = size.Height;
+	        this.mWidth = size.Width;
+	        this.mHeight = size.Height;
 
             if (width == 0 || height == 0)
             {
-                mShouldDraw = false;
+	            this.mShouldDraw = false;
                 return;
             }
 
@@ -329,7 +329,7 @@ namespace Neo.Scene
                 using (var graphics = System.Drawing.Graphics.FromImage(bitmap))
                 {
                     graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-                    graphics.DrawString(mText, mFont, mBrush, 0, 0);
+                    graphics.DrawString(this.mText, this.mFont, this.mBrush, 0, 0);
                 }
 
                 var rect = new Rectangle(0, 0, width, height);
@@ -377,13 +377,13 @@ namespace Neo.Scene
 
             texLoadInfo.Layers.Add(buffer);
             texLoadInfo.RowPitchs.Add(width * 4);
-            mTexture.LoadFromLoadInfo(texLoadInfo);
-            mShouldDraw = true;
+	        this.mTexture.LoadFromLoadInfo(texLoadInfo);
+	        this.mShouldDraw = true;
         }
 
         private void OnSyncLoad()
         {
-            mTexture = new Graphics.Texture();
+	        this.mTexture = new Graphics.Texture();
         }
 
         public static void Initialize()

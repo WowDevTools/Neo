@@ -24,10 +24,10 @@ namespace Neo.UI
             DataContext = new EditorWindowController(this);
             InitializeComponent();
 
-            PathTextBox.Text = Properties.Settings.Default.DataPath;
+	        this.PathTextBox.Text = Properties.Settings.Default.DataPath;
         }
 
-        public RenderControl DrawTarget { get { return RenderTarget; } }
+        public RenderControl DrawTarget { get { return this.RenderTarget; } }
 
         private void MenuSaveItem_Click(object sender, RoutedEventArgs e)
         {
@@ -78,7 +78,7 @@ namespace Neo.UI
                 Height = 345,
                 Width = 380,
                 ResizeMode = ResizeMode.NoResize,
-                Content = new Widgets.DatabaseSettings()
+                Content = new DatabaseSettings()
             };
             window.ShowDialog();
         }
@@ -87,7 +87,7 @@ namespace Neo.UI
         {
             if (Storage.Database.MySqlConnector.Instance.CheckConnection())
             {
-                var creatureEditor = new Dialogs.CreatureEditor();
+                var creatureEditor = new CreatureEditor();
                 creatureEditor.ShowDialog();
             }
             else
@@ -100,7 +100,7 @@ namespace Neo.UI
         {
             if (Storage.Database.MySqlConnector.Instance.CheckConnection())
             {
-                var GameObjectEditor = new Dialogs.GameObjectEditor();
+                var GameObjectEditor = new GameObjectEditor();
                 GameObjectEditor.ShowDialog();
             }
             else
@@ -113,7 +113,7 @@ namespace Neo.UI
         {
             if (Storage.Database.MySqlConnector.Instance.CheckConnection())
             {
-                var ItemEditor = new Dialogs.ItemEditor();
+                var ItemEditor = new ItemEditor();
                 ItemEditor.ShowDialog();
             }
             else
@@ -147,7 +147,7 @@ namespace Neo.UI
             if (EditorWindowController.Instance.IEditingModel != null)
             {
                 EditorWindowController.Instance.IEditingModel.SwitchWidgets(0);
-                IEditingPane.Hide();
+	            this.IEditingPane.Hide();
             }
 
             Log.AddSink(this);
@@ -160,23 +160,23 @@ namespace Neo.UI
 
         public void OnUpdateCurrentAdt(int x, int y)
         {
-            CurrentAdtLabel.Content = "ADT: " + x + "/" + y;
+	        this.CurrentAdtLabel.Content = "ADT: " + x + "/" + y;
         }
 
         public void OnUpdateCurrentChunk(int x, int y)
         {
-            CurrentChunkLabel.Content = "Chunk: " + x + "/" + y;
+	        this.CurrentChunkLabel.Content = "Chunk: " + x + "/" + y;
         }
 
         public void OnUpdatePosition(Vector3 position)
         {
-            CurrentPositionLabel.Content = "Position: " + position;
+	        this.CurrentPositionLabel.Content = "Position: " + position;
         }
 
         public void OnUpdate(Vector3 modelPosition, Vector3 namePlatePosition)
         {
-            CurrentModelPositionLabel.Content = "Model Position: " + modelPosition;
-            CurrentNamePlatePositionLabel.Content = "NamePlate Position: " + namePlatePosition;
+	        this.CurrentModelPositionLabel.Content = "Model Position: " + modelPosition;
+	        this.CurrentNamePlatePositionLabel.Content = "NamePlate Position: " + namePlatePosition;
         }
 
         public void AddMessage(LogLevel logLevel, string title, string message)
@@ -211,8 +211,8 @@ namespace Neo.UI
 
                 pr.Inlines.Add(titleRun);
                 pr.Inlines.Add(new Run(message));
-                LogDocument.Blocks.Add(pr);
-                var scroller = LogDocument.Parent as FlowDocumentScrollViewer;
+	            this.LogDocument.Blocks.Add(pr);
+                var scroller = this.LogDocument.Parent as FlowDocumentScrollViewer;
                 if (scroller == null)
                 {
 	                return;
@@ -274,12 +274,12 @@ namespace Neo.UI
             try
             {
                 item.GetDisplayName(Sigdn.Filesyspath, out ptrOut);
-                PathTextBox.Text = Marshal.PtrToStringUni(ptrOut);
+	            this.PathTextBox.Text = Marshal.PtrToStringUni(ptrOut);
             }
             catch (Exception)
             {
                 item.GetDisplayName(Sigdn.Normaldisplay, out ptrOut);
-                PathTextBox.Text = Marshal.PtrToStringUni(ptrOut);
+	            this.PathTextBox.Text = Marshal.PtrToStringUni(ptrOut);
             }
             finally
             {
@@ -292,23 +292,23 @@ namespace Neo.UI
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(PathTextBox.Text))
+            if (string.IsNullOrEmpty(this.PathTextBox.Text))
             {
 	            return;
             }
 
-	        Properties.Settings.Default.DataPath = PathTextBox.Text;
+	        Properties.Settings.Default.DataPath = this.PathTextBox.Text;
             Properties.Settings.Default.Save();
 
-            SplashDocument.Visibility = Visibility.Collapsed;
-            LoadingDocument.Visibility = Visibility.Visible;
+	        this.SplashDocument.Visibility = Visibility.Collapsed;
+	        this.LoadingDocument.Visibility = Visibility.Visible;
 
-            IO.FileManager.Instance.DataPath = PathTextBox.Text;
+            IO.FileManager.Instance.DataPath = this.PathTextBox.Text;
             IO.FileManager.Instance.LoadComplete += () =>
             {
                 Dispatcher.Invoke(() =>
                 {
-                    LoadingDocument.Visibility = Visibility.Collapsed;
+	                this.LoadingDocument.Visibility = Visibility.Collapsed;
                     InitMaps();
                 });
             };
@@ -318,9 +318,9 @@ namespace Neo.UI
 
         private void InitMaps()
         {
-            MapTileGrid.Children.Clear();
+	        this.MapTileGrid.Children.Clear();
 
-            var filter = MapFilterTextBox.Text;
+            var filter = this.MapFilterTextBox.Text;
 
             var children = new List<StackPanel>();
             for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)
@@ -388,8 +388,8 @@ namespace Neo.UI
                 {
                     if ((panel.Tag as bool?) ?? false)
                     {
-                        EntrySelectView.MapSelected(row.GetInt32(0));
-                        var scroll = MapTileGrid.Parent as ScrollViewer;
+	                    this.EntrySelectView.MapSelected(row.GetInt32(0));
+                        var scroll = this.MapTileGrid.Parent as ScrollViewer;
                         if (scroll == null)
                         {
 	                        return;
@@ -401,7 +401,7 @@ namespace Neo.UI
 	                        g.Visibility = Visibility.Collapsed;
                         }
 
-	                    EntrySelectView.Visibility = Visibility.Visible;
+	                    this.EntrySelectView.Visibility = Visibility.Visible;
                     }
 
                     panel.Background =
@@ -413,14 +413,14 @@ namespace Neo.UI
                 children.Add(panel);
             }
 
-            if (MapSortTypeCheckBox.IsChecked ?? false)
+            if (this.MapSortTypeCheckBox.IsChecked ?? false)
             {
 	            children.Sort((e1, e2) => string.Compare(((TextBlock)e1.Children[0]).Text, ((TextBlock)e2.Children[0]).Text, StringComparison.Ordinal));
             }
 
-	        children.ForEach(c => MapTileGrid.Children.Add(c));
+	        children.ForEach(c => this.MapTileGrid.Children.Add(c));
 
-            var scroller = MapTileGrid.Parent as ScrollViewer;
+            var scroller = this.MapTileGrid.Parent as ScrollViewer;
             if (scroller == null)
             {
 	            return;
@@ -442,7 +442,7 @@ namespace Neo.UI
 	            return;
             }
 
-	        PathTextBox.Text = result;
+	        this.PathTextBox.Text = result;
         }
 
         private static string LoadFromKey(RegistryKey baseKey)
@@ -491,7 +491,7 @@ namespace Neo.UI
 	            return;
             }
 
-	        var scroller = MapTileGrid.Parent as ScrollViewer;
+	        var scroller = this.MapTileGrid.Parent as ScrollViewer;
             if (scroller == null)
             {
 	            return;
@@ -524,7 +524,7 @@ namespace Neo.UI
                 Title = "About",
                 Height = 170,
                 Width = 300,
-                Content = new Dialogs.AboutBox()
+                Content = new AboutBox()
             };
             window.ShowDialog();
         }
@@ -556,7 +556,7 @@ namespace Neo.UI
                 WorldFrame.Instance.MapManager.OnSaveAllFiles();
             }
 
-            GenerateWdlButton.IsEnabled = false;
+	        this.GenerateWdlButton.IsEnabled = false;
             var loadDialog = new WdlLoadingDialog();
             Action<string, float> progressCallback = (action, progress) =>
             {
@@ -584,9 +584,9 @@ namespace Neo.UI
         private void RaiseLowerClick(object sender, RoutedEventArgs e)
         {
 
-            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            if ((this.IEditingPane.IsHidden || this.IEditingPane.IsAutoHidden) && !this.IEditingPane.IsFloating)
             {
-                IEditingPane.Dock();
+	            this.IEditingPane.Dock();
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
@@ -597,9 +597,9 @@ namespace Neo.UI
 
         private void TexturingClick(object sender, RoutedEventArgs e)
         {
-            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            if ((this.IEditingPane.IsHidden || this.IEditingPane.IsAutoHidden) && !this.IEditingPane.IsFloating)
             {
-                IEditingPane.Dock();
+	            this.IEditingPane.Dock();
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
@@ -610,9 +610,9 @@ namespace Neo.UI
 
         private void ShadingClick(object sender, RoutedEventArgs e)
         {
-            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            if ((this.IEditingPane.IsHidden || this.IEditingPane.IsAutoHidden) && !this.IEditingPane.IsFloating)
             {
-                IEditingPane.Dock();
+	            this.IEditingPane.Dock();
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
@@ -623,9 +623,9 @@ namespace Neo.UI
 
         private void ModelSpawningClick(object sender, RoutedEventArgs e)
         {
-            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            if ((this.IEditingPane.IsHidden || this.IEditingPane.IsAutoHidden) && !this.IEditingPane.IsFloating)
             {
-                IEditingPane.Dock();
+	            this.IEditingPane.Dock();
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
@@ -636,9 +636,9 @@ namespace Neo.UI
 
         private void ChunkEditingClick(object sender, RoutedEventArgs e)
         {
-            if ((IEditingPane.IsHidden || IEditingPane.IsAutoHidden) && !IEditingPane.IsFloating)
+            if ((this.IEditingPane.IsHidden || this.IEditingPane.IsAutoHidden) && !this.IEditingPane.IsFloating)
             {
-                IEditingPane.Dock();
+	            this.IEditingPane.Dock();
             }
 
             if (EditorWindowController.Instance.IEditingModel != null)
@@ -649,7 +649,7 @@ namespace Neo.UI
 
         private void AssetBrowserDocument_IsActiveChanged(object sender, EventArgs e)
         {
-            if (!AssetBrowserDocument.IsActive)
+            if (!this.AssetBrowserDocument.IsActive)
             {
 	            ThumbnailCache.Write(true);
             }
@@ -657,25 +657,25 @@ namespace Neo.UI
 
         private void MenuItem_Wireframe_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem_Wireframe.IsChecked = WorldFrame.Instance.MapManager.ToggleWireframe();
+	        this.MenuItem_Wireframe.IsChecked = WorldFrame.Instance.MapManager.ToggleWireframe();
         }
 
         private void MenuItem_Terrain_Click(object sender, RoutedEventArgs e)
         {
             WorldFrame.Instance.MapManager.HideTerrain = !WorldFrame.Instance.MapManager.HideTerrain;
-            MenuItem_Terrain.IsChecked = !WorldFrame.Instance.MapManager.HideTerrain;
+	        this.MenuItem_Terrain.IsChecked = !WorldFrame.Instance.MapManager.HideTerrain;
         }
 
         private void MenuItem_M2_Click(object sender, RoutedEventArgs e)
         {
             WorldFrame.Instance.HideM2 = !WorldFrame.Instance.HideM2;
-            MenuItem_M2.IsChecked = !WorldFrame.Instance.HideM2;
+	        this.MenuItem_M2.IsChecked = !WorldFrame.Instance.HideM2;
         }
 
         private void MenuItem_WMO_Click(object sender, RoutedEventArgs e)
         {
             WorldFrame.Instance.HideWMO = !WorldFrame.Instance.HideWMO;
-            MenuItem_WMO.IsChecked = !WorldFrame.Instance.HideWMO;
+	        this.MenuItem_WMO.IsChecked = !WorldFrame.Instance.HideWMO;
         }
     }
 }

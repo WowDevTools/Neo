@@ -12,7 +12,7 @@ namespace Neo.UI.Models
     {
         private readonly IEditingWidget mWidget;
 
-        public IEditingWidget Widget { get { return mWidget; } }
+        public IEditingWidget Widget { get { return this.mWidget; } }
 
         public IEditingViewModel(IEditingWidget widget)
         {
@@ -21,7 +21,7 @@ namespace Neo.UI.Models
 	            EditorWindowController.Instance.IEditingModel = this;
             }
 
-	        mWidget = widget;
+	        this.mWidget = widget;
         }
 
         public void SwitchWidgets(int widget)
@@ -29,55 +29,55 @@ namespace Neo.UI.Models
             switch (widget)
             {
                 case 0:
-                    mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TexturingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
-                    mWidget.ShadingWidget.Visibility = Visibility.Hidden;
-                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TexturingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
                     break;
 
                 case 1:
-                    mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TexturingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TerrainSettingsWidget.Visibility = Visibility.Visible;
-                    mWidget.ShadingWidget.Visibility = Visibility.Hidden;
-                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TexturingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TerrainSettingsWidget.Visibility = Visibility.Visible;
+	                this.mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
                     EditManager.Instance.EnableSculpting();
                     break;
 
                 case 3:
-                    mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TexturingWidget.Visibility = Visibility.Visible;
-                    mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
-                    mWidget.ShadingWidget.Visibility = Visibility.Hidden;
-                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TexturingWidget.Visibility = Visibility.Visible;
+	                this.mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
                     EditManager.Instance.EnableTexturing();
                     break;
 
                 case 4:
-                    mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TexturingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
-                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
-                    mWidget.ShadingWidget.Visibility = Visibility.Visible;
+	                this.mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TexturingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ShadingWidget.Visibility = Visibility.Visible;
                     EditManager.Instance.EnableSculpting();
                     EditManager.Instance.EnableShading();
                     break;
 
                 case 5:
-                    mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TexturingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
-                    mWidget.ShadingWidget.Visibility = Visibility.Hidden;
-                    mWidget.ModelSpawnWidget.Visibility = Visibility.Visible;
+	                this.mWidget.ChunkEditingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TexturingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ModelSpawnWidget.Visibility = Visibility.Visible;
                     break;
 
                 case 6:
-                    mWidget.TexturingWidget.Visibility = Visibility.Hidden;
-                    mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
-                    mWidget.ShadingWidget.Visibility = Visibility.Hidden;
-                    mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
-                    mWidget.ChunkEditingWidget.Visibility = Visibility.Visible;
+	                this.mWidget.TexturingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.TerrainSettingsWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ShadingWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ModelSpawnWidget.Visibility = Visibility.Hidden;
+	                this.mWidget.ChunkEditingWidget.Visibility = Visibility.Visible;
                     EditManager.Instance.EnableChunkEditing();
                     break;
             }

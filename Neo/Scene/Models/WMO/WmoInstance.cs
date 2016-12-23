@@ -17,11 +17,11 @@ namespace Neo.Scene.Models.WMO
 
         private WorldText mWorldModelName;
 
-        public BoundingBox InstanceBoundingBox { get { return BoundingBox; } }
+        public BoundingBox InstanceBoundingBox { get { return this.BoundingBox; } }
 
         public int Uuid { get; private set; }
         public BoundingBox[] GroupBoxes { get; private set; }
-        public Matrix4 InstanceMatrix { get { return mInstanceMatrix; } }
+        public Matrix4 InstanceMatrix { get { return this.mInstanceMatrix; } }
         public Vector3[] InstanceCorners { get; private set; }
 
         public bool IsSpecial { get { return false; } }
@@ -38,58 +38,58 @@ namespace Neo.Scene.Models.WMO
 
         public WmoInstance(int uuid, Vector3 position, Vector3 rotation, WmoRootRender model)
         {
-            ReferenceCount = 1;
-            Uuid = uuid;
-            BoundingBox = model.BoundingBox;
+	        this.ReferenceCount = 1;
+	        this.Uuid = uuid;
+	        this.BoundingBox = model.BoundingBox;
 
-            mPosition = position;
-            mRotation = rotation;
-            mModel = model;
+	        this.mPosition = position;
+	        this.mRotation = rotation;
+	        this.mModel = model;
 
-	        mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mRotation.X)) *
-	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mRotation.Y)) *
-	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
+	        this.mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(this.mRotation.X)) *
+	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(this.mRotation.Y)) *
+	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(this.mRotation.Z));
 
-	        mRenderer = new WeakReference<WmoRootRender>(model);
+	        this.mRenderer = new WeakReference<WmoRootRender>(model);
 
-            InstanceCorners = model.BoundingBox.GetCorners();
+	        this.InstanceCorners = model.BoundingBox.GetCorners();
 	        // TODO: Find correct function to use here
-            Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
+            Vector3.TransformVector(this.InstanceCorners, ref this.mInstanceMatrix, this.InstanceCorners);
 
-            BoundingBox = BoundingBox.Transform(ref mInstanceMatrix);
-            GroupBoxes = new BoundingBox[model.Groups.Count];
-            for(var i = 0; i < GroupBoxes.Length; ++i)
+	        this.BoundingBox = this.BoundingBox.Transform(ref this.mInstanceMatrix);
+	        this.GroupBoxes = new BoundingBox[model.Groups.Count];
+            for(var i = 0; i < this.GroupBoxes.Length; ++i)
             {
                 var group = model.Groups[i];
-                GroupBoxes[i] = group.BoundingBox.Transform(ref mInstanceMatrix);
+	            this.GroupBoxes[i] = group.BoundingBox.Transform(ref this.mInstanceMatrix);
             }
-            Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+            Matrix4.Invert(ref this.mInstanceMatrix, out this.mInverseInstanceMatrix);
 
-            mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
-            ModelRoot = model.Data;
+	        this.mInstanceMatrix = Matrix4.Transpose(this.mInstanceMatrix);
+	        this.ModelRoot = model.Data;
         }
 
         public bool Intersects(IntersectionParams parameters, ref Ray globalRay, out float distance)
         {
             distance = float.MaxValue;
-            if (globalRay.Intersects(ref BoundingBox) == false)
+            if (globalRay.Intersects(ref this.BoundingBox) == false)
             {
 	            return false;
             }
 
 	        WmoRootRender renderer;
-            if (mRenderer.TryGetTarget(out renderer) == false)
+            if (this.mRenderer.TryGetTarget(out renderer) == false)
             {
 	            return false;
             }
 
 	        var instRay = Picking.Build(ref parameters.ScreenPosition, ref parameters.InverseView,
-                ref parameters.InverseProjection, ref mInverseInstanceMatrix);
+                ref parameters.InverseProjection, ref this.mInverseInstanceMatrix);
 
             var hasHit = false;
-            for (var i = 0; i < GroupBoxes.Length; ++i)
+            for (var i = 0; i < this.GroupBoxes.Length; ++i)
             {
-                if (globalRay.Intersects(ref GroupBoxes[i]) == false)
+                if (globalRay.Intersects(ref this.GroupBoxes[i]) == false)
                 {
 	                continue;
                 }
@@ -114,8 +114,8 @@ namespace Neo.Scene.Models.WMO
         {
             DestroyModelNameplate();
 
-            ModelRoot = null;
-            mRenderer = null;
+	        this.ModelRoot = null;
+	        this.mRenderer = null;
         }
 
         public virtual void Dispose()
@@ -126,52 +126,52 @@ namespace Neo.Scene.Models.WMO
 
         public void CreateModelNameplate()
         {
-            if (mWorldModelName != null)
+            if (this.mWorldModelName != null)
             {
 	            return;
             }
 
-	        mWorldModelName = new WorldText
+	        this.mWorldModelName = new WorldText
             {
-                Text = System.IO.Path.GetFileName(ModelRoot.FileName),
+                Text = System.IO.Path.GetFileName(this.ModelRoot.FileName),
                 Scaling = 1.0f,
                 DrawMode = WorldText.TextDrawMode.TextDraw3D
             };
 
             UpdateModelNameplate();
-            WorldFrame.Instance.WorldTextManager.AddText(mWorldModelName);
+            WorldFrame.Instance.WorldTextManager.AddText(this.mWorldModelName);
         }
 
         public void Rotate(float x, float y, float z)
         {
-            mRotation.X += x;
-            mRotation.Y += y;
-            mRotation.Z += z;
+	        this.mRotation.X += x;
+	        this.mRotation.Y += y;
+	        this.mRotation.Z += z;
 
-	        mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mRotation.X)) *
-	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mRotation.Y)) *
-	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
+	        this.mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(this.mRotation.X)) *
+	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(this.mRotation.Y)) *
+	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(this.mRotation.Z));
 
-	        mInstanceMatrix *= Matrix4.CreateTranslation(mPosition);
+	        this.mInstanceMatrix *= Matrix4.CreateTranslation(this.mPosition);
 
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
 
 
-            Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+            Matrix4.Invert(ref this.mInstanceMatrix, out this.mInverseInstanceMatrix);
 
-            BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix);
-            GroupBoxes = new BoundingBox[mModel.Groups.Count];
-            for (var i = 0; i < GroupBoxes.Length; ++i)
+	        this.BoundingBox = this.mModel.BoundingBox.Transform(ref this.mInstanceMatrix);
+	        this.GroupBoxes = new BoundingBox[this.mModel.Groups.Count];
+            for (var i = 0; i < this.GroupBoxes.Length; ++i)
             {
-                var group = mModel.Groups[i];
-                GroupBoxes[i] = group.BoundingBox.Transform(ref mInstanceMatrix);
+                var group = this.mModel.Groups[i];
+	            this.GroupBoxes[i] = group.BoundingBox.Transform(ref this.mInstanceMatrix);
             }
 
-            InstanceCorners = mModel.BoundingBox.GetCorners();
+	        this.InstanceCorners = this.mModel.BoundingBox.GetCorners();
 	        // TODO: Find correct function to use here
-	        Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
-            mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
-            ModelRoot = mModel.Data;
+	        Vector3.TransformVector(this.InstanceCorners, ref this.mInstanceMatrix, this.InstanceCorners);
+	        this.mInstanceMatrix = Matrix4.Transpose(this.mInstanceMatrix);
+	        this.ModelRoot = this.mModel.Data;
             UpdateModelNameplate();
         }
 
@@ -182,96 +182,96 @@ namespace Neo.Scene.Models.WMO
 
         public void SetPosition(Vector3 position)
         {
-            mPosition += position;
+	        this.mPosition += position;
 
-	        mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mRotation.X)) *
-	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mRotation.Y)) *
-	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mRotation.Z));
+	        this.mInstanceMatrix = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(this.mRotation.X)) *
+	                          Matrix4.CreateRotationY(MathHelper.DegreesToRadians(this.mRotation.Y)) *
+	                          Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(this.mRotation.Z));
             //mRenderer = new WeakReference<WmoRootRender>(mModel);
 
-            mInstanceMatrix *= Matrix4.CreateTranslation(mPosition);
+	        this.mInstanceMatrix *= Matrix4.CreateTranslation(this.mPosition);
 
-            Matrix4.Invert(ref mInstanceMatrix, out mInverseInstanceMatrix);
+            Matrix4.Invert(ref this.mInstanceMatrix, out this.mInverseInstanceMatrix);
 
-            BoundingBox = mModel.BoundingBox.Transform(ref mInstanceMatrix); //here is the problem, after this line the bBox is fucked up
+	        this.BoundingBox = this.mModel.BoundingBox.Transform(ref this.mInstanceMatrix); //here is the problem, after this line the bBox is fucked up
 
-            GroupBoxes = new BoundingBox[mModel.Groups.Count];
-            for (var i = 0; i < GroupBoxes.Length; ++i)
+	        this.GroupBoxes = new BoundingBox[this.mModel.Groups.Count];
+            for (var i = 0; i < this.GroupBoxes.Length; ++i)
             {
-                var group = mModel.Groups[i];
-                GroupBoxes[i] = group.BoundingBox.Transform(ref mInstanceMatrix);
+                var group = this.mModel.Groups[i];
+	            this.GroupBoxes[i] = group.BoundingBox.Transform(ref this.mInstanceMatrix);
             }
 
-            InstanceCorners = mModel.BoundingBox.GetCorners();
+	        this.InstanceCorners = this.mModel.BoundingBox.GetCorners();
 	        // TODO: Find correct function to use here
-	        Vector3.TransformVector(InstanceCorners, ref mInstanceMatrix, InstanceCorners);
-            mInstanceMatrix = Matrix4.Transpose(mInstanceMatrix);
-            ModelRoot = mModel.Data;
+	        Vector3.TransformVector(this.InstanceCorners, ref this.mInstanceMatrix, this.InstanceCorners);
+	        this.mInstanceMatrix = Matrix4.Transpose(this.mInstanceMatrix);
+	        this.ModelRoot = this.mModel.Data;
             UpdateModelNameplate();
         }
 
 	    [Obsolete]
         public Vector3 GetPosition()
         {
-            return mPosition;
+            return this.mPosition;
         }
 
 	    [Obsolete]
         public Vector3 GetRotation()
         {
-            return mRotation;
+            return this.mRotation;
         }
 
         public void DestroyModelNameplate()
         {
-            if (mWorldModelName == null)
+            if (this.mWorldModelName == null)
             {
 	            return;
             }
 
-	        WorldFrame.Instance.WorldTextManager.RemoveText(mWorldModelName);
-            mWorldModelName.Dispose();
-            mWorldModelName = null;
+	        WorldFrame.Instance.WorldTextManager.RemoveText(this.mWorldModelName);
+	        this.mWorldModelName.Dispose();
+	        this.mWorldModelName = null;
         }
 
         private void UpdateModelNameplate()
         {
-            if (mWorldModelName == null)
+            if (this.mWorldModelName == null)
             {
 	            return;
             }
 
-	        Vector3 diff = BoundingBox.Maximum - BoundingBox.Minimum;
-            mWorldModelName.Scaling = diff.Length / 60.0f;
-            if (mWorldModelName.Scaling < 0.3f)
+	        Vector3 diff = this.BoundingBox.Maximum - this.BoundingBox.Minimum;
+	        this.mWorldModelName.Scaling = diff.Length / 60.0f;
+            if (this.mWorldModelName.Scaling < 0.3f)
             {
 	            this.mWorldModelName.Scaling = 0.3f;
             }
 
-	        var position = BoundingBox.Minimum + (diff * 0.5f);
-            position.Z = 1.5f + BoundingBox.Minimum.Z + (diff.Z * 1.08f);
-            mWorldModelName.Position = position;
+	        var position = this.BoundingBox.Minimum + (diff * 0.5f);
+            position.Z = 1.5f + this.BoundingBox.Minimum.Z + (diff.Z * 1.08f);
+	        this.mWorldModelName.Position = position;
         }
 
         public Vector3 GetNamePlatePosition()
         {
-            if (mWorldModelName == null)
+            if (this.mWorldModelName == null)
             {
 	            return new Vector3(0.0f,0.0f,0.0f);
             }
 
-	        return mWorldModelName.Position;
+	        return this.mWorldModelName.Position;
         }
 
         public void Remove()
         {
-            WorldFrame.Instance.WmoManager.RemoveInstance(ModelRoot.FileName, Uuid,true);
+            WorldFrame.Instance.WmoManager.RemoveInstance(this.ModelRoot.FileName, this.Uuid,true);
             WorldFrame.Instance.ClearSelection();
         }
 
         public string GetModelName()
         {
-            return ModelRoot.FileName;
+            return this.ModelRoot.FileName;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Neo.UI.Widgets
             DataContext = new TexturingViewModel(this);
             InitializeComponent();
 
-            foreach(CheckBox cb in FilterWrapPanel.Children)
+            foreach(CheckBox cb in this.FilterWrapPanel.Children)
             {
 	            cb.Click += FilterCheckBoxClicked;
             }
@@ -136,7 +136,7 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleTabletControl(TabletControlBox.IsChecked ?? false);
+	        model.HandleTabletControl(this.TabletControlBox.IsChecked ?? false);
         }
 
         private void TabletChangeRadius_Changed(object sender, RoutedEventArgs e)
@@ -147,7 +147,7 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleTabletChangeRadius(TabletControlBox_Radius.IsChecked ?? false);
+	        model.HandleTabletChangeRadius(this.TabletControlBox_Radius.IsChecked ?? false);
         }
 
         private void Handle_AllowedAmplitudeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -170,7 +170,7 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleTabletControlPressure(PressureControlBox.IsChecked ?? false);
+	        model.HandleTabletControlPressure(this.PressureControlBox.IsChecked ?? false);
         }
 
         private void TabletChangeInnerRadius_Changed(object sender, RoutedEventArgs e)
@@ -181,7 +181,7 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleTabletChangeInnerRadius(TabletControlBox_InnerRadius.IsChecked ?? false);
+	        model.HandleTabletChangeInnerRadius(this.TabletControlBox_InnerRadius.IsChecked ?? false);
         }
 
         private void Handle_AllowedInnerAmplitudeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -204,7 +204,7 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleSprayMode(SprayModeBox.IsChecked ?? false);
+	        model.HandleSprayMode(this.SprayModeBox.IsChecked ?? false);
         }
 
         private void Handle_ParticleSizeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -251,7 +251,7 @@ namespace Neo.UI.Widgets
 	            return;
             }
 
-	        model.HandleSpraySolidInnerRadius(SpraySolidInnerRadiusBox.IsChecked ?? false);
+	        model.HandleSpraySolidInnerRadius(this.SpraySolidInnerRadiusBox.IsChecked ?? false);
         }
     }
 }

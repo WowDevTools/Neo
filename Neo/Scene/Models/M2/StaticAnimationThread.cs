@@ -19,20 +19,20 @@ namespace Neo.Scene.Models.M2
 
         public void Initialize()
         {
-            mIsRunning = true;
-            mThread = new Thread(AnimationProc);
-            mThread.Start();
+	        this.mIsRunning = true;
+	        this.mThread = new Thread(AnimationProc);
+	        this.mThread.Start();
         }
 
         public void Shutdown()
         {
-            mIsRunning = false;
-            mThread.Join();
+	        this.mIsRunning = false;
+	        this.mThread.Join();
         }
 
         public void AddAnimator(IM2Animator animator)
         {
-            lock (mAnimators)
+            lock (this.mAnimators)
             {
 	            this.mAnimators.Add(animator);
             }
@@ -40,7 +40,7 @@ namespace Neo.Scene.Models.M2
 
         public void RemoveAnimator(IM2Animator animator)
         {
-            lock (mAnimators)
+            lock (this.mAnimators)
             {
 	            this.mAnimators.Remove(animator);
             }
@@ -48,11 +48,11 @@ namespace Neo.Scene.Models.M2
 
         private void AnimationProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
-                lock(mAnimators)
+                lock(this.mAnimators)
                 {
-                    foreach (var animator in mAnimators)
+                    foreach (var animator in this.mAnimators)
                     {
 	                    animator.Update(null);
                     }

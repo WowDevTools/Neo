@@ -24,12 +24,12 @@ namespace Neo.IO
 
 	    private FileManager()
         {
-            FileListing = new DefaultFileListing();
+	        this.FileListing = new DefaultFileListing();
         }
 
         public void ExportFile(string path)
         {
-            using (var file = Provider.OpenFile(path))
+            using (var file = this.Provider.OpenFile(path))
             {
 	            if (file == null)
 	            {
@@ -117,17 +117,17 @@ namespace Neo.IO
 
         public void InitFromPath()
         {
-            if(string.IsNullOrEmpty(DataPath))
+            if(string.IsNullOrEmpty(this.DataPath))
             {
 	            throw new InvalidOperationException("Cannot initialize file system without a path");
             }
 
-	        if (File.Exists(Path.Combine(DataPath, ".build.info")))
+	        if (File.Exists(Path.Combine(this.DataPath, ".build.info")))
             {
                 Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Warlords;
                 Files.Models.ModelFactory.Instance.Version = FileDataVersion.Warlords;
                 Files.Sky.SkyManager.InitVersion(FileDataVersion.Warlords);
-                Version = FileDataVersion.Warlords;
+	            this.Version = FileDataVersion.Warlords;
 
                 var mgr = new CASC.FileManager();
                 mgr.LoadComplete += () =>
@@ -140,8 +140,8 @@ namespace Neo.IO
                     }
                 };
 
-                Provider = mgr;
-                mgr.Initialize(DataPath);
+	            this.Provider = mgr;
+                mgr.Initialize(this.DataPath);
             }
             else
 	        {
@@ -153,7 +153,7 @@ namespace Neo.IO
 
         private void InitMpq()
         {
-            var version = FileVersionInfo.GetVersionInfo(Path.Combine(DataPath, "Wow.exe"));
+            var version = FileVersionInfo.GetVersionInfo(Path.Combine(this.DataPath, "Wow.exe"));
             if (version.FilePrivatePart > 13000 || version.FilePrivatePart < 9000)
             {
 	            throw new NotImplementedException("MPQ is only implemented for WOTLK (builds 9000 - 13000)");
@@ -162,7 +162,7 @@ namespace Neo.IO
 	        Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Lichking;
             Files.Models.ModelFactory.Instance.Version = FileDataVersion.Lichking;
             Files.Sky.SkyManager.InitVersion(FileDataVersion.Lichking);
-            Version = FileDataVersion.Lichking;
+	        this.Version = FileDataVersion.Lichking;
 
             var mgr = new MPQ.FileManager();
             mgr.LoadComplete += () =>
@@ -175,8 +175,8 @@ namespace Neo.IO
                 }
             };
 
-            Provider = mgr;
-            mgr.InitFromPath(DataPath);
+	        this.Provider = mgr;
+            mgr.InitFromPath(this.DataPath);
         }
 
         private void DefaultExport(Stream input, string path)

@@ -63,8 +63,8 @@ namespace Neo.Settings
 
 	    private KeyBindings()
         {
-            CameraKeys = new CameraKeys();
-            InteractionKeys = new InteractionKeys();
+	        this.CameraKeys = new CameraKeys();
+	        this.InteractionKeys = new InteractionKeys();
         }
 
         public static void Save()

@@ -23,35 +23,35 @@ namespace Neo.Scene.Terrain
 
         public MapAreaRender(int indexX, int indexY)
         {
-            IndexX = indexX;
-            IndexY = indexY;
+	        this.IndexX = indexX;
+	        this.IndexY = indexY;
         }
 
         public void OnTextureChange(Editing.TextureChangeParameters parameters)
         {
-            if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
+            if (this.mAsyncLoaded == false || this.AreaFile.IsValid == false || this.mSyncLoaded == false)
             {
 	            return;
             }
 
-	        AreaFile.OnTextureTerrain(parameters);
+	        this.AreaFile.OnTextureTerrain(parameters);
         }
 
         public void OnTerrainChange(Editing.TerrainChangeParameters parameters)
         {
-            if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
+            if (this.mAsyncLoaded == false || this.AreaFile.IsValid == false || this.mSyncLoaded == false)
             {
 	            return;
             }
 
-	        mIsDirty = AreaFile.OnChangeTerrain(parameters);
-            if (!mIsDirty)
+	        this.mIsDirty = this.AreaFile.OnChangeTerrain(parameters);
+            if (!this.mIsDirty)
             {
 	            return;
             }
 
-	        mBoundingBox = AreaFile.BoundingBox;
-            foreach (var chunk in mChunks)
+	        this.mBoundingBox = this.AreaFile.BoundingBox;
+            foreach (var chunk in this.mChunks)
             {
                 if (chunk == null)
                 {
@@ -64,37 +64,37 @@ namespace Neo.Scene.Terrain
 
         public void OnUpdateModelPositions(Editing.TerrainChangeParameters parameters)
         {
-            if (mAsyncLoaded == false || AreaFile.IsValid == false || mSyncLoaded == false)
+            if (this.mAsyncLoaded == false || this.AreaFile.IsValid == false || this.mSyncLoaded == false)
             {
 	            return;
             }
 
-	        AreaFile.OnUpdateModelPositions(parameters);
+	        this.AreaFile.OnUpdateModelPositions(parameters);
         }
 
         public void OnFrame()
         {
-            if (mAsyncLoaded == false)
+            if (this.mAsyncLoaded == false)
             {
 	            return;
             }
 
-	        if (AreaFile.IsValid == false)
+	        if (this.AreaFile.IsValid == false)
 	        {
 		        return;
 	        }
 
 	        // INVESTIGATE: Possible performance issue
-	        if(mSyncLoaded == false)
+	        if(this.mSyncLoaded == false)
             {
-                mVertexBuffer = new VertexBuffer();
-                mVertexBuffer.BufferData(AreaFile.FullVertices);
-                mSyncLoaded = true;
+	            this.mVertexBuffer = new VertexBuffer();
+	            this.mVertexBuffer.BufferData(this.AreaFile.FullVertices);
+	            this.mSyncLoaded = true;
             }
 
             if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
             {
-                if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mBoundingBox) == false)
+                if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref this.mBoundingBox) == false)
                 {
                     // step 1: reject the area if we dont have to update m2 models if its not in the sky sphere
                     if (!M2Manager.IsViewDirty || WorldFrame.Instance.State != AppState.World)
@@ -104,26 +104,26 @@ namespace Neo.Scene.Terrain
 
 	                // step 2: if models are supposed to be updated and the model box is not contained in the sky sphere
                     // it has to be rejected as well as there is no way it could ever contribute
-                    if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mModelBox) == false)
+                    if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref this.mModelBox) == false)
                     {
 	                    return;
                     }
                 }
 
-                if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
+                if (WorldFrame.Instance.ActiveCamera.Contains(ref this.mBoundingBox) == false)
                 {
 	                if (!M2Manager.IsViewDirty || WorldFrame.Instance.State != AppState.World)
 	                {
 		                return;
 	                }
 
-	                if (!WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))
+	                if (!WorldFrame.Instance.ActiveCamera.Contains(ref this.mModelBox))
 	                {
 		                return;
 	                }
 
 	                // INVESTIGATE: Possible early return bug
-	                foreach (var chunk in mChunks)
+	                foreach (var chunk in this.mChunks)
 	                {
 		                chunk.PushDoodadReferences();
 	                }
@@ -133,16 +133,16 @@ namespace Neo.Scene.Terrain
             }
 
 	        // INVESTIGATE: Possible performance issue
-	        if (mIsDirty)
+	        if (this.mIsDirty)
             {
-                AreaFile.UpdateNormals();
-                mVertexBuffer.BufferData(AreaFile.FullVertices);
-                mIsDirty = false;
+	            this.AreaFile.UpdateNormals();
+	            this.mVertexBuffer.BufferData(this.AreaFile.FullVertices);
+	            this.mIsDirty = false;
             }
 
-            MapChunkRender.ChunkMesh.UpdateVertexBuffer(mVertexBuffer);
+            MapChunkRender.ChunkMesh.UpdateVertexBuffer(this.mVertexBuffer);
 
-            foreach (var chunk in mChunks)
+            foreach (var chunk in this.mChunks)
             {
 	            chunk.OnFrame();
             }
@@ -150,8 +150,8 @@ namespace Neo.Scene.Terrain
 
         public void AsyncLoaded(IO.Files.Terrain.MapArea area)
         {
-            AreaFile = area;
-            if (AreaFile.IsValid == false)
+	        this.AreaFile = area;
+            if (this.AreaFile.IsValid == false)
             {
 	            return;
             }
@@ -160,12 +160,12 @@ namespace Neo.Scene.Terrain
             {
                 var chunk = new MapChunkRender();
                 chunk.OnAsyncLoad(area.GetChunk(i), this);
-                mChunks[i] = chunk;
+	            this.mChunks[i] = chunk;
             }
 
-            mBoundingBox = area.BoundingBox;
-            mModelBox = area.ModelBox;
-            mAsyncLoaded = true;
+	        this.mBoundingBox = area.BoundingBox;
+	        this.mModelBox = area.ModelBox;
+	        this.mAsyncLoaded = true;
         }
 
         ~MapAreaRender()
@@ -175,33 +175,33 @@ namespace Neo.Scene.Terrain
 
         private void Dispose(bool disposing)
         {
-            if (mChunks != null)
+            if (this.mChunks != null)
             {
                 for (var i = 0; i < 256; ++i)
                 {
-                    if (mChunks[i] == null)
+                    if (this.mChunks[i] == null)
                     {
 	                    continue;
                     }
 
-	                mChunks[i].Dispose();
-                    mChunks[i] = null;
+	                this.mChunks[i].Dispose();
+	                this.mChunks[i] = null;
                 }
 
-                mChunks = null;
+	            this.mChunks = null;
             }
 
-            if (AreaFile != null)
+            if (this.AreaFile != null)
             {
-                AreaFile.Dispose();
-                AreaFile = null;
+	            this.AreaFile.Dispose();
+	            this.AreaFile = null;
             }
 
-            mAsyncLoaded = false;
+	        this.mAsyncLoaded = false;
 
-            if (mVertexBuffer != null)
+            if (this.mVertexBuffer != null)
             {
-                var vertexBuffer = mVertexBuffer;
+                var vertexBuffer = this.mVertexBuffer;
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
                     if (vertexBuffer != null)
@@ -210,7 +210,7 @@ namespace Neo.Scene.Terrain
                     }
                 });
 
-                mVertexBuffer = null;
+	            this.mVertexBuffer = null;
             }
         }
 

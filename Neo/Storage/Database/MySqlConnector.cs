@@ -21,18 +21,18 @@ namespace Neo.Storage.Database
 
         public void OpenConnection()
         {
-            if (string.IsNullOrEmpty(MySqlServer) || string.IsNullOrEmpty(MySqlUser) || string.IsNullOrEmpty(MySqlDatabase))
+            if (string.IsNullOrEmpty(this.MySqlServer) || string.IsNullOrEmpty(this.MySqlUser) || string.IsNullOrEmpty(this.MySqlDatabase))
             {
 	            throw new ArgumentException();
             }
 
-	        if (mMySqlConn.State != ConnectionState.Open)
+	        if (this.mMySqlConn.State != ConnectionState.Open)
             {
-                mMySqlConn.ConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", MySqlServer, MySqlUser, MySqlPassword, MySqlDatabase);
+	            this.mMySqlConn.ConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", this.MySqlServer, this.MySqlUser, this.MySqlPassword, this.MySqlDatabase);
 
                 try
                 {
-                    mMySqlConn.Open();
+	                this.mMySqlConn.Open();
                 }
                 catch (MySql.Data.MySqlClient.MySqlException ex)
                 {
@@ -44,7 +44,7 @@ namespace Neo.Storage.Database
 	            Console.WriteLine("The connection is already open.");
             }
 
-            if (mMySqlConn.State != ConnectionState.Open)
+            if (this.mMySqlConn.State != ConnectionState.Open)
             {
 	            throw new TimeoutException("Can't connect to the server.");
             }
@@ -57,15 +57,15 @@ namespace Neo.Storage.Database
 	            throw new ArgumentException();
             }
 
-	        MySqlServer = pMySqlServer;
-            MySqlUser = pMySqlUser;
-            MySqlPassword = pMySqlPassword;
-            MySqlDatabase = pMySqlDatabase;
+	        this.MySqlServer = pMySqlServer;
+	        this.MySqlUser = pMySqlUser;
+	        this.MySqlPassword = pMySqlPassword;
+	        this.MySqlDatabase = pMySqlDatabase;
         }
 
         public bool CheckConnection()
         {
-            if (mMySqlConn.State == ConnectionState.Open)
+            if (this.mMySqlConn.State == ConnectionState.Open)
             {
 	            return true;
             }
@@ -74,7 +74,7 @@ namespace Neo.Storage.Database
 
         public void CloseConnection()
         {
-            if (mMySqlConn.State == ConnectionState.Open)
+            if (this.mMySqlConn.State == ConnectionState.Open)
             {
 	            this.mMySqlConn.Close();
             }
@@ -82,11 +82,11 @@ namespace Neo.Storage.Database
 
         public DataTable QueryToDataTable(string pQuery)
         {
-            if(mMySqlConn.State == ConnectionState.Open)
+            if(this.mMySqlConn.State == ConnectionState.Open)
             {
                 DataTable retVal = new DataTable();
 
-                MySql.Data.MySqlClient.MySqlDataAdapter mySqlDataAdapter = new MySql.Data.MySqlClient.MySqlDataAdapter(pQuery, mMySqlConn);
+                MySql.Data.MySqlClient.MySqlDataAdapter mySqlDataAdapter = new MySql.Data.MySqlClient.MySqlDataAdapter(pQuery, this.mMySqlConn);
                 mySqlDataAdapter.Fill(retVal);
                 mySqlDataAdapter.Dispose();
 
@@ -97,9 +97,9 @@ namespace Neo.Storage.Database
 
         public bool Query(string pQuery)
         {
-            if(mMySqlConn.State == ConnectionState.Open)
+            if(this.mMySqlConn.State == ConnectionState.Open)
             {
-                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(pQuery, mMySqlConn);
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(pQuery, this.mMySqlConn);
 
                 try
                 {

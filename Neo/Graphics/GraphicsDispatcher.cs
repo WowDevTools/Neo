@@ -9,11 +9,11 @@ namespace Neo.Graphics
         private readonly List<Action> mFrames = new List<Action>();
         private int mAssignedThread;
 
-        public bool InvokeRequired { get { return Thread.CurrentThread.ManagedThreadId != mAssignedThread; } }
+        public bool InvokeRequired { get { return Thread.CurrentThread.ManagedThreadId != this.mAssignedThread; } }
 
         public void AssignToThread()
         {
-            mAssignedThread = Thread.CurrentThread.ManagedThreadId;
+	        this.mAssignedThread = Thread.CurrentThread.ManagedThreadId;
         }
 
         public void ProcessFrame()
@@ -24,15 +24,15 @@ namespace Neo.Graphics
             do
             {
                 Action curFrame;
-                lock(mFrames)
+                lock(this.mFrames)
                 {
-                    if (mFrames.Count == 0)
+                    if (this.mFrames.Count == 0)
                     {
 	                    return;
                     }
 
-	                curFrame = mFrames[0];
-                    mFrames.RemoveAt(0);
+	                curFrame = this.mFrames[0];
+	                this.mFrames.RemoveAt(0);
                 }
 
                 curFrame();
@@ -42,7 +42,7 @@ namespace Neo.Graphics
 
         public object BeginInvoke(Action frame)
         {
-            lock (mFrames)
+            lock (this.mFrames)
             {
 	            this.mFrames.Add(frame);
             }
@@ -51,7 +51,7 @@ namespace Neo.Graphics
 
         public void Remove(object token)
         {
-            lock (mFrames)
+            lock (this.mFrames)
             {
 	            this.mFrames.Remove((Action)token);
             }

@@ -100,7 +100,7 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
                     ScriptName = dRow[74].ToString(),
                     VerifiedBuild = int.Parse(dRow[75].ToString())
                 };
-                mCreatures.Add(creature);
+	            this.mCreatures.Add(creature);
             }
         }
 
@@ -140,27 +140,27 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
                         DynamicFlags = (DynamicFlags)Enum.Parse(typeof(DynamicFlags), dRow[21].ToString()),
                         VerifiedBuild = int.Parse(dRow[22].ToString())
                     };
-                    mSpawnedCreatures.Add(creature);
+	                this.mSpawnedCreatures.Add(creature);
                 }
-                mLoadedMaps.Add(pMapId);
+	            this.mLoadedMaps.Add(pMapId);
             }
         }
 
         public void addCreatedCreature(Creature creature)
         {
-            mCreatures.Add(creature);
+	        this.mCreatures.Add(creature);
         }
 
         public Creature GetCreatureByEntry(int pEntryId)
         {
-            return mCreatures.FirstOrDefault(creature => creature.EntryId == pEntryId);
+            return this.mCreatures.FirstOrDefault(creature => creature.EntryId == pEntryId);
         }
 
         private bool MapAlreadyLoaded(int pMapId)
         {
             try
             {
-                var mapLoaded = mLoadedMaps.First(map => map == pMapId);
+                var mapLoaded = this.mLoadedMaps.First(map => map == pMapId);
                 return true;
             }
             catch
@@ -176,7 +176,7 @@ namespace Neo.Storage.Database.WotLk.TrinityCore
             var camPosYPlus = pPosition.Y + pRadius;
             var camPosYMinus = pPosition.Y - pRadius;
 
-            var retVal = (from SpawnedCreature creature in mSpawnedCreatures
+            var retVal = (from SpawnedCreature creature in this.mSpawnedCreatures
                 where ((creature.Position.X <= camPosXPlus && creature.Position.X >= camPosXMinus) && (creature.Position.Y <= camPosYPlus && creature.Position.Y >= camPosYMinus))
                 select creature).ToList<SpawnedCreature>();
 

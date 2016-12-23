@@ -18,7 +18,7 @@ namespace Neo.UI.Components
 
         public AssetBrowserFilePreview(AssetBrowserFile file)
         {
-            FileEntry = file;
+	        this.FileEntry = file;
             DataContext = file;
             InitializeComponent();
 
@@ -27,11 +27,11 @@ namespace Neo.UI.Components
 
         public void ReloadImage()
         {
-            if (FileEntry.Extension == ".blp")
+            if (this.FileEntry.Extension == ".blp")
             {
 	            LoadImage(this.FileEntry);
             }
-            else if (FileEntry.Extension == ".m2")
+            else if (this.FileEntry.Extension == ".m2")
             {
 	            this.PreviewImage.Source = WpfImageSource.FromGdiImage(ThumbnailCache.TryGetThumbnail(this.FileEntry.FullPath, Images.Page_Icon_48));
             }
@@ -43,7 +43,7 @@ namespace Neo.UI.Components
 
         private void LoadImage(AssetBrowserFile file)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() => PreviewImage.Source = WpfImageSource.FromTexture(file.FullPath)));
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() => this.PreviewImage.Source = WpfImageSource.FromTexture(file.FullPath)));
         }
     }
 }

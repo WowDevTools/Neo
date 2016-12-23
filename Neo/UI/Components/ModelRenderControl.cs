@@ -38,7 +38,7 @@ namespace Neo.UI.Components
 
             public override string ToString()
             {
-                return Name;
+                return this.Name;
             }
         }
 
@@ -56,7 +56,7 @@ namespace Neo.UI.Components
         {
             get
             {
-                return base.Focused || IsFocusedElementInTree(flowLayoutPanel1);
+                return base.Focused || IsFocusedElementInTree(this.flowLayoutPanel1);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Neo.UI.Components
 	            return;
             }
 
-	        mRenderer = new M2Renderer(file);
+	        this.mRenderer = new M2Renderer(file);
             SetModelCameraParameters(file);
         }
 
@@ -138,11 +138,11 @@ namespace Neo.UI.Components
                 return;
             }
 
-            mRenderer = new M2Renderer(file);
-            for (var i = 0; i < mRenderer.PortraitRenderer.Textures.Length; ++i)
+	        this.mRenderer = new M2Renderer(file);
+            for (var i = 0; i < this.mRenderer.PortraitRenderer.Textures.Length; ++i)
             {
-                var tex = mRenderer.PortraitRenderer.Textures[i];
-                var root = mRenderer.Model.ModelRoot;
+                var tex = this.mRenderer.PortraitRenderer.Textures[i];
+                var root = this.mRenderer.Model.ModelRoot;
 
                 switch (tex.TextureType)
                 {
@@ -163,10 +163,10 @@ namespace Neo.UI.Components
             var bboxMax = file.BoundingBox.Maximum.Z;
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
-                mCamera.SetParameters(new Vector3(file.BoundingRadius * 1.5f, 0, bboxMin + (bboxMax - bboxMin) / 2),
+	            this.mCamera.SetParameters(new Vector3(file.BoundingRadius * 1.5f, 0, bboxMin + (bboxMax - bboxMin) / 2),
                     new Vector3(0, 0, bboxMin + (bboxMax - bboxMin) / 2), Vector3.UnitZ, Vector3.UnitY);
 
-                comboBox1.Items.Clear();
+	            this.comboBox1.Items.Clear();
 
                 var values = Enum.GetValues(typeof(AnimationType));
 
@@ -184,7 +184,7 @@ namespace Neo.UI.Components
 		                    continue;
 	                    }
 
-	                    comboBox1.Items.Add(new AnimationIndexEntry
+	                    this.comboBox1.Items.Add(new AnimationIndexEntry
                         {
                             AnimationIndex = anim,
                             Name = Enum.GetName(typeof(AnimationType), anim)
@@ -200,7 +200,7 @@ namespace Neo.UI.Components
 	                        continue;
                         }
 
-	                    comboBox1.Items.Add(new AnimationIndexEntry
+	                    this.comboBox1.Items.Add(new AnimationIndexEntry
                         {
                             AnimationIndex = anim,
                             Name = Enum.GetName(typeof(AnimationType), anim)
@@ -208,25 +208,25 @@ namespace Neo.UI.Components
                     }
                 }
 
-                if (comboBox1.Items.Count > 0) //Preset combobox and animator state
+                if (this.comboBox1.Items.Count > 0) //Preset combobox and animator state
                 {
-                    comboBox1.SelectedIndex = 0;
-                    mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)((AnimationIndexEntry)comboBox1.Items[0]).AnimationIndex);
+	                this.comboBox1.SelectedIndex = 0;
+	                this.mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)((AnimationIndexEntry) this.comboBox1.Items[0]).AnimationIndex);
                 }
             });
 
 
             if (file.DisplayOptions.TextureVariationFiles.Count > 1)
             {
-                nudVariation.ReadOnly = false;
-                nudVariation.Maximum = file.DisplayOptions.TextureVariationFiles.Count;
-                nudVariation.Value = file.DisplayOptions.TextureVariation + 1;
-                nudVariation.Increment = 1;
+	            this.nudVariation.ReadOnly = false;
+	            this.nudVariation.Maximum = file.DisplayOptions.TextureVariationFiles.Count;
+	            this.nudVariation.Value = file.DisplayOptions.TextureVariation + 1;
+	            this.nudVariation.Increment = 1;
             }
             else
             {
-                nudVariation.Increment = 0;
-                nudVariation.ReadOnly = true;
+	            this.nudVariation.Increment = 0;
+	            this.nudVariation.ReadOnly = true;
             }
         }
 
@@ -245,9 +245,9 @@ namespace Neo.UI.Components
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Black);
-            if (mPaintBitmap != null)
+            if (this.mPaintBitmap != null)
             {
-                e.Graphics.DrawImage(mPaintBitmap, new PointF(0, 0));
+                e.Graphics.DrawImage(this.mPaintBitmap, new PointF(0, 0));
             }
         }
 
@@ -264,15 +264,15 @@ namespace Neo.UI.Components
 		        return;
 	        }
 
-	        mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
-            mMatrixBuffer = new UniformBuffer(WorldFrame.Instance.GraphicsContext);
+	        this.mTarget = new RenderTarget(WorldFrame.Instance.GraphicsContext);
+	        this.mMatrixBuffer = new UniformBuffer(WorldFrame.Instance.GraphicsContext);
 
-            mCamera = new PerspectiveCamera();
-            mCamera.ViewChanged += ViewChanged;
-            mCamera.ProjectionChanged += ProjChanged;
-            mCamera.SetClip(0.2f, 1000.0f);
-            mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
-            mCamControl = new CameraControl(this)
+	        this.mCamera = new PerspectiveCamera();
+	        this.mCamera.ViewChanged += ViewChanged;
+	        this.mCamera.ProjectionChanged += ProjChanged;
+	        this.mCamera.SetClip(0.2f, 1000.0f);
+	        this.mCamera.SetParameters(new Vector3(10, 0, 0), Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
+	        this.mCamControl = new CameraControl(this)
             {
                 TurnFactor = 0.1f,
                 SpeedFactor = 20.0f
@@ -280,11 +280,11 @@ namespace Neo.UI.Components
 
             MouseDown += OnClick;
             Resize += OnResize;
-            renderTimer.Tick += OnRenderTimerTick;
+	        this.renderTimer.Tick += OnRenderTimerTick;
 
             OnResize(this, null);
 
-            renderTimer.Start();
+	        this.renderTimer.Start();
         }
 
 	    private void OnResize(object sender, EventArgs args)
@@ -303,24 +303,24 @@ namespace Neo.UI.Components
                 MipLevels = 1
             };
 
-            if (mResolveTexture != null)
+            if (this.mResolveTexture != null)
             {
 	            this.mResolveTexture.Dispose();
             }
 
-	        mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        this.mResolveTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            if (mMapTexture != null)
+            if (this.mMapTexture != null)
             {
 	            this.mMapTexture.Dispose();
             }
 
 	        texDesc.CpuAccessFlags = CpuAccessFlags.Read;
             texDesc.Usage = ResourceUsage.Staging;
-            mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
+	        this.mMapTexture = new Texture2D(WorldFrame.Instance.GraphicsContext.Device, texDesc);
 
-            mTarget.Resize(ClientSize.Width, ClientSize.Height, true);
-            mCamera.SetAspect((float)ClientSize.Width / ClientSize.Height);
+	        this.mTarget.Resize(ClientSize.Width, ClientSize.Height, true);
+	        this.mCamera.SetAspect((float)ClientSize.Width / ClientSize.Height);
         }
 
 	    private void OnClick(object sender, MouseEventArgs args)
@@ -330,7 +330,7 @@ namespace Neo.UI.Components
 
 	    private void OnRenderTimerTick(object sender, EventArgs args)
         {
-            mCamControl.Update(mCamera, false);
+	        this.mCamControl.Update(this.mCamera, false);
             if (WorldFrame.Instance.Dispatcher.InvokeRequired)
             {
 	            WorldFrame.Instance.Dispatcher.BeginInvoke(OnRenderModel);
@@ -343,38 +343,38 @@ namespace Neo.UI.Components
 
 	    private void ViewChanged(Camera cam, Matrix4 matView)
         {
-            mMatrixBuffer.BufferData(cam.ViewProjection);
+	        this.mMatrixBuffer.BufferData(cam.ViewProjection);
         }
 
 	    private void ProjChanged(Camera cam, Matrix4 matProj)
         {
-            mMatrixBuffer.BufferData(cam.ViewProjection);
+	        this.mMatrixBuffer.BufferData(cam.ViewProjection);
         }
 
 	    private unsafe void OnRenderModel()
         {
-            if (mRenderer == null)
+            if (this.mRenderer == null)
             {
 	            return;
             }
 
-	        mTarget.Clear();
-            mTarget.Apply();
+	        this.mTarget.Clear();
+	        this.mTarget.Apply();
 
             var ctx = WorldFrame.Instance.GraphicsContext;
             var vp = ctx.Viewport;
             ctx.Context.Rasterizer.SetViewport(new Viewport(0, 0, ClientSize.Width, ClientSize.Height, 0.0f, 1.0f));
 
-            ctx.Context.VertexShader.SetConstantBuffer(0, mMatrixBuffer.BufferID);
-            mRenderer.RenderPortrait();
+            ctx.Context.VertexShader.SetConstantBuffer(0, this.mMatrixBuffer.BufferID);
+	        this.mRenderer.RenderPortrait();
 
-            mTarget.Remove();
+	        this.mTarget.Remove();
             ctx.Context.Rasterizer.SetViewport(vp);
 
-            ctx.Context.ResolveSubresource(mTarget.Texture, 0, mResolveTexture, 0, Format.B8G8R8A8_UNorm);
-            ctx.Context.CopyResource(mResolveTexture, mMapTexture);
+            ctx.Context.ResolveSubresource(this.mTarget.Texture, 0, this.mResolveTexture, 0, Format.B8G8R8A8_UNorm);
+            ctx.Context.CopyResource(this.mResolveTexture, this.mMapTexture);
 
-            var box = ctx.Context.MapSubresource(mMapTexture, 0, MapMode.Read, MapFlags.None);
+            var box = ctx.Context.MapSubresource(this.mMapTexture, 0, MapMode.Read, MapFlags.None);
             var bmp = new Bitmap(ClientSize.Width, ClientSize.Height, PixelFormat.Format32bppArgb);
             var bmpd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly,
                 PixelFormat.Format32bppArgb);
@@ -387,24 +387,24 @@ namespace Neo.UI.Components
             }
 
             bmp.UnlockBits(bmpd);
-            if (mPaintBitmap != null)
+            if (this.mPaintBitmap != null)
             {
 	            this.mPaintBitmap.Dispose();
             }
 
-	        mPaintBitmap = bmp;
-            ctx.Context.UnmapSubresource(mMapTexture, 0);
+	        this.mPaintBitmap = bmp;
+            ctx.Context.UnmapSubresource(this.mMapTexture, 0);
             Invalidate();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            mCamControl.InvertX = checkBox1.Checked;
+	        this.mCamControl.InvertX = this.checkBox1.Checked;
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            mCamControl.InvertY = checkBox2.Checked;
+	        this.mCamControl.InvertY = this.checkBox2.Checked;
         }
 
         private bool IsFocusedElementInTree(Control control)
@@ -414,18 +414,18 @@ namespace Neo.UI.Components
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (mRenderer == null)
+            if (this.mRenderer == null)
             {
 	            return;
             }
 
-	        var item = comboBox1.SelectedItem as AnimationIndexEntry;
+	        var item = this.comboBox1.SelectedItem as AnimationIndexEntry;
             if (item == null)
             {
 	            return;
             }
 
-	        mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)item.AnimationIndex);
+	        this.mRenderer.PortraitRenderer.Animator.SetAnimation((AnimationType)item.AnimationIndex);
         }
 
         private void comboBox1_KeyDown(object sender, KeyEventArgs e)
@@ -440,9 +440,9 @@ namespace Neo.UI.Components
 
         private void nudVariation_ValueChanged(object sender, EventArgs e)
         {
-            nudVariation.ReadOnly = true;
-            nudVariation.Increment = 0;
-            SetModel(mRenderer.Model.FileName, (int)(nudVariation.Value - 1));
+	        this.nudVariation.ReadOnly = true;
+	        this.nudVariation.Increment = 0;
+            SetModel(this.mRenderer.Model.FileName, (int)(this.nudVariation.Value - 1));
         }
     }
 }

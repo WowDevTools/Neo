@@ -19,15 +19,15 @@ namespace Neo.UI.ViewModels
 
         public NewConnectionViewModel()
         {
-            FinishCommand = new DelegateCommand(AcceptInteraction);
-            CancelCommand = new DelegateCommand(CancelInteraction);
+	        this.FinishCommand = new DelegateCommand(AcceptInteraction);
+	        this.CancelCommand = new DelegateCommand(CancelInteraction);
         }
 
         public INotification Notification
         {
             get
             {
-                return mNotification;
+                return this.mNotification;
             }
             set
             {
@@ -35,31 +35,31 @@ namespace Neo.UI.ViewModels
                 {
 	                return;
                 }
-	            mNotification = (SaveAsNotification) value;
-                OnPropertyChanged(() => Notification);
+	            this.mNotification = (SaveAsNotification) value;
+                OnPropertyChanged(() => this.Notification);
             }
         }
 
         public void AcceptInteraction()
         {
-            if (mNotification != null)
+            if (this.mNotification != null)
             {
-                mNotification.SaveAs = SaveAs;
-                mNotification.Confirmed = true;
+	            this.mNotification.SaveAs = this.SaveAs;
+	            this.mNotification.Confirmed = true;
             }
 
-            FinishInteraction();
+	        this.FinishInteraction();
         }
 
         public void CancelInteraction()
         {
-            if (mNotification != null)
+            if (this.mNotification != null)
             {
-                mNotification.SaveAs = null;
-                mNotification.Confirmed = false;
+	            this.mNotification.SaveAs = null;
+	            this.mNotification.Confirmed = false;
             }
 
-            FinishInteraction();
+	        this.FinishInteraction();
         }
     }
 
@@ -69,7 +69,7 @@ namespace Neo.UI.ViewModels
 
         public SaveAsNotification()
         {
-            SaveAs = null;
+	        this.SaveAs = null;
         }
     }
 }

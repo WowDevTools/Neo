@@ -64,11 +64,11 @@ namespace Neo.Graphics
 	    {
 		    get
 		    {
-			   return texturePath;
+			   return this.texturePath;
 		    }
 		    set
 		    {
-			    texturePath = value.ToUpperInvariant();
+			    this.texturePath = value.ToUpperInvariant();
 		    }
 	    }
 	    private string texturePath;

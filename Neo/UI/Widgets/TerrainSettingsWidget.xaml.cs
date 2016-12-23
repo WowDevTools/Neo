@@ -32,7 +32,7 @@ namespace Neo.UI.Dialogs
 	            return;
             }
 
-	        model.HandleIntensityChanged((float)IntensitySlider.Value);
+	        model.HandleIntensityChanged((float) this.IntensitySlider.Value);
         }
 
         private void InnerRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -119,7 +119,7 @@ namespace Neo.UI.Dialogs
 	            return;
             }
 
-	        model.HandleAlignToGround(AlignModelsBox.IsChecked ?? false);
+	        model.HandleAlignToGround(this.AlignModelsBox.IsChecked ?? false);
         }
 
         private void TabletControl_Changed(object sender, RoutedEventArgs e)
@@ -130,7 +130,7 @@ namespace Neo.UI.Dialogs
 	            return;
             }
 
-	        model.HandleTabletControl(TabletControlBox.IsChecked ?? false);
+	        model.HandleTabletControl(this.TabletControlBox.IsChecked ?? false);
         }
 
         private void Handle_PenSensivityChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

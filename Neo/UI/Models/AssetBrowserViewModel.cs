@@ -31,21 +31,24 @@ namespace Neo.UI.Models
         private IEnumerable<AssetBrowserFilePreviewElement> mFullElements = new List<AssetBrowserFilePreviewElement>();
         private ThumbnailCapture mThumbCapture;
 
-        public bool ShowTextures { get { return mShowTextures; } set { mShowTextures = value; UpdateShowTextures(value); } }
+        public bool ShowTextures { get { return this.mShowTextures; } set {
+	        this.mShowTextures = value; UpdateShowTextures(value); } }
 
-        public bool ShowModels { get { return mShowModels; } set { mShowModels = value; UpdateShowModels(value); } }
-        public bool HideUnknownFiles { get { return mHideUnknown; } set { mHideUnknown = value; UpdateHideUnknownFiles(value); } }
-        public bool ShowSpecularTextures { get { return mShowSpecularTextures; } set { UpdateShowSpecularTextures(value); } }
+        public bool ShowModels { get { return this.mShowModels; } set {
+	        this.mShowModels = value; UpdateShowModels(value); } }
+        public bool HideUnknownFiles { get { return this.mHideUnknown; } set {
+	        this.mHideUnknown = value; UpdateHideUnknownFiles(value); } }
+        public bool ShowSpecularTextures { get { return this.mShowSpecularTextures; } set { UpdateShowSpecularTextures(value); } }
 
-        public IEnumerable<AssetBrowserDirectory> AssetBrowserRoot { get { return new[] { mRootDiretory }; } }
+        public IEnumerable<AssetBrowserDirectory> AssetBrowserRoot { get { return new[] {this.mRootDiretory }; } }
 
 
         public AssetBrowserViewModel(Dialogs.AssetBrowser browser)
         {
-            mBrowser = browser;
+	        this.mBrowser = browser;
             browser.Loaded += OnInitialized;
             FileManager.Instance.LoadComplete += OnFilesLoaded;
-            mRootDiretory = new AssetBrowserDirectory(this, new DirectoryEntry {Name = ""}, null);
+	        this.mRootDiretory = new AssetBrowserDirectory(this, new DirectoryEntry {Name = ""}, null);
             EditorWindowController.Instance.AssetBrowserModel = this;
 
             if (ThumbnailCache.ThumnailAdded == null)
@@ -62,23 +65,23 @@ namespace Neo.UI.Models
 
         public async void HandleExportSelectedFile()
         {
-            var selected = mBrowser.SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement;
+            var selected = this.mBrowser.SelectedFilesListView.SelectedItem as AssetBrowserFilePreviewElement;
             if (selected == null)
             {
 	            return;
             }
 
-	        mBrowser.ExportFolderLink.IsEnabled = false;
-            mBrowser.ExportOneFileLink.IsEnabled = false;
-            mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
-            mBrowser.SelectedFilesListView.Visibility = Visibility.Hidden;
+	        this.mBrowser.ExportFolderLink.IsEnabled = false;
+	        this.mBrowser.ExportOneFileLink.IsEnabled = false;
+	        this.mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
+	        this.mBrowser.SelectedFilesListView.Visibility = Visibility.Hidden;
 
             await Task.Factory.StartNew(() => FileManager.Instance.ExportFile(selected.View.FileEntry.FullPath));
 
-            mBrowser.ExportFolderLink.IsEnabled = true;
-            mBrowser.ExportOneFileLink.IsEnabled = true;
-            mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
-            mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
+	        this.mBrowser.ExportFolderLink.IsEnabled = true;
+	        this.mBrowser.ExportOneFileLink.IsEnabled = true;
+	        this.mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
+	        this.mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
 
             var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath ?? ".\\Export"), selected.View.FileEntry.FullPath);
             MessageBox.Show(string.Format("The selected file has been successfully exported to:\n{0}", exportPath), "Neo - Export File");
@@ -86,16 +89,16 @@ namespace Neo.UI.Models
 
         public async void HandleExportSelectedFolder()
         {
-            var selected = mBrowser.AssetTreeView.SelectedItem as AssetBrowserDirectory;
+            var selected = this.mBrowser.AssetTreeView.SelectedItem as AssetBrowserDirectory;
             if (selected == null)
             {
 	            return;
             }
 
-	        mBrowser.ExportFolderLink.IsEnabled = false;
-            mBrowser.ExportOneFileLink.IsEnabled = false;
-            mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
-            mBrowser.SelectedFilesListView.Visibility = Visibility.Hidden;
+	        this.mBrowser.ExportFolderLink.IsEnabled = false;
+	        this.mBrowser.ExportOneFileLink.IsEnabled = false;
+	        this.mBrowser.BusyOverlayGrid.Visibility = Visibility.Visible;
+	        this.mBrowser.SelectedFilesListView.Visibility = Visibility.Hidden;
 
             await Task.Factory.StartNew(() =>
             {
@@ -105,10 +108,10 @@ namespace Neo.UI.Models
                 }
             });
 
-            mBrowser.ExportFolderLink.IsEnabled = true;
-            mBrowser.ExportOneFileLink.IsEnabled = true;
-            mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
-            mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
+	        this.mBrowser.ExportFolderLink.IsEnabled = true;
+	        this.mBrowser.ExportOneFileLink.IsEnabled = true;
+	        this.mBrowser.BusyOverlayGrid.Visibility = Visibility.Hidden;
+	        this.mBrowser.SelectedFilesListView.Visibility = Visibility.Visible;
 
             var exportPath = Path.Combine(Path.GetFullPath(Properties.Settings.Default.ExportPath ?? ".\\Export"), selected.FullPath);
             MessageBox.Show(string.Format("The selected folder has been successfully exported to:\n{0}", exportPath), "Neo - Export Folder");
@@ -118,131 +121,129 @@ namespace Neo.UI.Models
         {
             if (element.View.FileEntry.Extension.Contains("blp"))
             {
-                mBrowser.TexturePreviewImage.Source = element.View.PreviewImage.Source;
-                mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
-                mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
-                mBrowser.TexturePreviewImage.Visibility = Visibility.Visible;
+	            this.mBrowser.TexturePreviewImage.Source = element.View.PreviewImage.Source;
+	            this.mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
+	            this.mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
+	            this.mBrowser.TexturePreviewImage.Visibility = Visibility.Visible;
             }
             else if (element.View.FileEntry.Extension.Contains("m2"))
             {
-                mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
-                mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
-                mBrowser.ModelPreviewRender.SetModel(element.View.FileEntry.FullPath);
-                mBrowser.ModelPreviewControl.Visibility = Visibility.Visible;
+	            this.mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
+	            this.mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
+	            this.mBrowser.ModelPreviewRender.SetModel(element.View.FileEntry.FullPath);
+	            this.mBrowser.ModelPreviewControl.Visibility = Visibility.Visible;
             }
             else if (element.View.FileEntry.Extension.Contains("wmo"))
             {
-                mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
-                mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
-                mBrowser.WmoPreviewControl.Visibility = Visibility.Visible;
-                mBrowser.WmoPreviewRender.SetModel(element.View.FileEntry.FullPath);
+	            this.mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
+	            this.mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
+	            this.mBrowser.WmoPreviewControl.Visibility = Visibility.Visible;
+	            this.mBrowser.WmoPreviewRender.SetModel(element.View.FileEntry.FullPath);
             }
             else
             {
-                mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
-                mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
-                mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
-                mBrowser.TexturePreviewImage.Source = null;
+	            this.mBrowser.ModelPreviewControl.Visibility = Visibility.Hidden;
+	            this.mBrowser.TexturePreviewImage.Visibility = Visibility.Hidden;
+	            this.mBrowser.WmoPreviewControl.Visibility = Visibility.Hidden;
+	            this.mBrowser.TexturePreviewImage.Source = null;
             }
         }
 
         public void Handle_BrowserSelectionChanged(AssetBrowserDirectory newItem)
         {
-            mCurrentDirectory = newItem;
+	        this.mCurrentDirectory = newItem;
 
             if (newItem == null)
             {
 	            return;
             }
 
-	        mCurrentDirectory = newItem;
+	        this.mCurrentDirectory = newItem;
             UpdateItems(true);
         }
 
         private void UpdateShowSpecularTextures(bool value)
         {
-            mShowSpecularTextures = value;
+	        this.mShowSpecularTextures = value;
 
-            var textures = mFullElements.Where(f => f.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp") || f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp"));
+            var textures = this.mFullElements.Where(f => f.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp") || f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp"));
             if (value)
             {
-                foreach (var elem in textures.Where(elem => mCurFiles.Contains(elem) == false))
+                foreach (var elem in textures.Where(elem => this.mCurFiles.Contains(elem) == false))
                 {
-                    mCurFiles.Add(elem);
+	                this.mCurFiles.Add(elem);
                 }
             }
             else
             {
-                foreach (var elem in textures.Where(elem => mCurFiles.Contains(elem)))
+                foreach (var elem in textures.Where(elem => this.mCurFiles.Contains(elem)))
                 {
-                    mCurFiles.Remove(elem);
+	                this.mCurFiles.Remove(elem);
                 }
             }
         }
 
         private void UpdateShowModels(bool value)
         {
-            mShowModels = value;
+	        this.mShowModels = value;
 
-            var models = mFullElements.Where(f => f.View.FileEntry.Extension.Contains("m2"));
+            var models = this.mFullElements.Where(f => f.View.FileEntry.Extension.Contains("m2"));
             if (value)
             {
-                foreach (var elem in models.Where(elem => mCurFiles.Contains(elem) == false))
+                foreach (var elem in models.Where(elem => this.mCurFiles.Contains(elem) == false))
                 {
-                    mCurFiles.Add(elem);
+	                this.mCurFiles.Add(elem);
                 }
             }
             else
             {
-                foreach (var elem in models.Where(elem => mCurFiles.Contains(elem)))
+                foreach (var elem in models.Where(elem => this.mCurFiles.Contains(elem)))
                 {
-                    mCurFiles.Remove(elem);
+	                this.mCurFiles.Remove(elem);
                 }
             }
         }
 
         private void UpdateShowTextures(bool value)
         {
-            mShowTextures = value;
+	        this.mShowTextures = value;
 
-            var textures = mFullElements.Where(f => f.View.FileEntry.Extension.Contains("blp"));
+            var textures = this.mFullElements.Where(f => f.View.FileEntry.Extension.Contains("blp"));
             if (value)
             {
-                foreach (var elem in textures.Where(elem => mCurFiles.Contains(elem) == false))
+                foreach (var elem in textures.Where(elem => this.mCurFiles.Contains(elem) == false))
                 {
-                    mCurFiles.Add(elem);
+	                this.mCurFiles.Add(elem);
                 }
             }
             else
             {
-                foreach (var elem in textures.Where(elem => mCurFiles.Contains(elem)))
+                foreach (var elem in textures.Where(elem => this.mCurFiles.Contains(elem)))
                 {
-                    mCurFiles.Remove(elem);
+	                this.mCurFiles.Remove(elem);
                 }
             }
         }
 
         private void UpdateHideUnknownFiles(bool value)
         {
-            mHideUnknown = value;
+	        this.mHideUnknown = value;
             if (value == false)
             {
-                foreach (var elem in mFullElements.Where(elem => mCurFiles.Contains(elem) == false))
+                foreach (var elem in this.mFullElements.Where(elem => this.mCurFiles.Contains(elem) == false))
                 {
                     if ((elem.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp") ||
-                         elem.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp")) &&
-                        mShowSpecularTextures == false)
+                         elem.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp")) && this.mShowSpecularTextures == false)
                     {
                         continue;
                     }
 
-                    mCurFiles.Add(elem);
+	                this.mCurFiles.Add(elem);
                 }
             }
             else
             {
-                var toRemove =
-                    mFullElements.Where(
+                var toRemove = this.mFullElements.Where(
                         f =>
                             f.View.FileEntry.Extension.Contains("m2") == false &&
                             f.View.FileEntry.Extension.Contains("blp") == false
@@ -257,41 +258,40 @@ namespace Neo.UI.Models
 
         private void UpdateItems(bool directoryChanged = false)
         {
-            if (mCurrentDirectory == null)
+            if (this.mCurrentDirectory == null)
             {
-                mBrowser.SelectedFilesListView.ItemsSource = new object[0];
+	            this.mBrowser.SelectedFilesListView.ItemsSource = new object[0];
                 return;
             }
 
-            var files =
-                mCurrentDirectory.Files.Select(
+            var files = this.mCurrentDirectory.Files.Select(
                     f => new AssetBrowserFilePreviewElement {View = new AssetBrowserFilePreview(f)}).ToList();
             var elements = files.Where(f =>
             {
                 string[] known = new string[] { "m2", "blp", "wmo" };
 
                 var ext = f.View.FileEntry.Extension.ToLowerInvariant();
-                if (ext.Contains("blp") && mShowTextures == false)
+                if (ext.Contains("blp") && this.mShowTextures == false)
                 {
 	                return false;
                 }
 
-	            if (ext.Contains("m2") && mShowModels == false)
+	            if (ext.Contains("m2") && this.mShowModels == false)
 	            {
 		            return false;
 	            }
 
-	            if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp") && mShowSpecularTextures == false)
+	            if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_s.blp") && this.mShowSpecularTextures == false)
 	            {
 		            return false;
 	            }
 
-	            if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp") && mShowSpecularTextures == false)
+	            if (f.View.FileEntry.Name.ToLowerInvariant().Contains("_h.blp") && this.mShowSpecularTextures == false)
 	            {
 		            return false;
 	            }
 
-	            if (!known.Contains(ext.TrimStart('.')) && mHideUnknown)
+	            if (!known.Contains(ext.TrimStart('.')) && this.mHideUnknown)
 	            {
 		            return false;
 	            }
@@ -299,17 +299,17 @@ namespace Neo.UI.Models
 	            return true;
             }).ToList();
 
-            if (directoryChanged == false && mCurFiles.Count() == elements.Count())
+            if (directoryChanged == false && this.mCurFiles.Count() == elements.Count())
             {
 	            return;
             }
 
-	        mFullElements = files;
+	        this.mFullElements = files;
 
-            mCurFiles.Clear();
+	        this.mCurFiles.Clear();
             foreach(var elem in elements)
             {
-                mCurFiles.Add(elem);
+	            this.mCurFiles.Add(elem);
 
                 if (elem.View.FileEntry.Extension.Contains("m2"))
                 {
@@ -323,19 +323,19 @@ namespace Neo.UI.Models
 
         private void UpdateThumbnail(string filename)
         {
-            mBrowser.Dispatcher.Invoke(() => mCurFiles.FirstOrDefault(x => x.View.FileEntry.FullPath == filename)?.View.ReloadImage());
+	        this.mBrowser.Dispatcher.Invoke(() => this.mCurFiles.FirstOrDefault(x => x.View.FileEntry.FullPath == filename)?.View.ReloadImage());
         }
 
         private void OnInitialized(object sender, EventArgs args)
         {
-            mBrowser.SelectedFilesListView.ItemsSource = mCurFiles;
-            mThumbCapture = new ThumbnailCapture(114, 114);
+	        this.mBrowser.SelectedFilesListView.ItemsSource = this.mCurFiles;
+	        this.mThumbCapture = new ThumbnailCapture(114, 114);
         }
 
         private void OnFilesLoaded()
         {
-            mRootDiretory = new AssetBrowserDirectory(this, FileManager.Instance.FileListing.RootEntry, null);
-            mBrowser.Dispatcher.Invoke(() =>
+	        this.mRootDiretory = new AssetBrowserDirectory(this, FileManager.Instance.FileListing.RootEntry, null);
+	        this.mBrowser.Dispatcher.Invoke(() =>
                 OnPropertyChanged("AssetBrowserRoot"));
         }
 

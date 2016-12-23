@@ -24,7 +24,7 @@ namespace Neo.Graphics
                 nOut = 0;
                 for(k = 0; k < 8 && (nIn == 0 || nOut == 0); ++k)
                 {
-                    Plane.DotCoordinate(ref mPlanes[i], ref BoxCorners[k], out distance);
+                    Plane.DotCoordinate(ref this.mPlanes[i], ref BoxCorners[k], out distance);
                     if (distance < 0)
                     {
 	                    ++nOut;
@@ -54,7 +54,7 @@ namespace Neo.Graphics
 
             for(var i = 0; i < 6; ++i)
             {
-                Plane.DotNormal(ref mPlanes[i], ref sphere.Center, out distance);
+                Plane.DotNormal(ref this.mPlanes[i], ref sphere.Center, out distance);
                 if (distance < sphere.Radius)
                 {
 	                return ContainmentType.Disjoint;
@@ -105,37 +105,37 @@ namespace Neo.Graphics
             Clip[15] = matView.M41 * matProj.M14 + matView.M42 * matProj.M24 + matView.M43
                        * matProj.M34 + matView.M44 * matProj.M44;
 
-            mPlanes[0] = new Plane(
+	        this.mPlanes[0] = new Plane(
                 Clip[3] - Clip[0],
                 Clip[7] - Clip[4],
                 Clip[11] - Clip[8],
                 Clip[15] - Clip[12]);
 
-            mPlanes[1] = new Plane(
+	        this.mPlanes[1] = new Plane(
                 Clip[3] + Clip[0],
                 Clip[7] + Clip[4],
                 Clip[11] + Clip[8],
                 Clip[15] + Clip[12]);
 
-            mPlanes[2] = new Plane(
+	        this.mPlanes[2] = new Plane(
                 Clip[3] + Clip[1],
                 Clip[7] + Clip[5],
                 Clip[11] + Clip[9],
                 Clip[15] + Clip[13]);
 
-            mPlanes[3] = new Plane(
+	        this.mPlanes[3] = new Plane(
                 Clip[3] - Clip[1],
                 Clip[7] - Clip[5],
                 Clip[11] - Clip[9],
                 Clip[15] - Clip[13]);
 
-            mPlanes[4] = new Plane(
+	        this.mPlanes[4] = new Plane(
                 Clip[3] - Clip[2],
                 Clip[7] - Clip[6],
                 Clip[11] - Clip[10],
                 Clip[15] - Clip[14]);
 
-            mPlanes[5] = new Plane(
+	        this.mPlanes[5] = new Plane(
                 Clip[3] + Clip[2],
                 Clip[7] + Clip[6],
                 Clip[11] + Clip[10],

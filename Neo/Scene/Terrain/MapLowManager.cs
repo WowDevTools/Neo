@@ -26,11 +26,11 @@ namespace Neo.Scene.Terrain
 
         public MapLowManager()
         {
-            mLoadThread = new Thread(LoadProc);
-            mUnloadThread = new Thread(UnloadProc);
+	        this.mLoadThread = new Thread(LoadProc);
+	        this.mUnloadThread = new Thread(UnloadProc);
 
-            mLoadThread.Start();
-            mUnloadThread.Start();
+	        this.mLoadThread.Start();
+	        this.mUnloadThread.Start();
         }
 
         public void OnEnterWorld(string continent, ref Vector2 position)
@@ -43,7 +43,7 @@ namespace Neo.Scene.Terrain
 			        strm.CopyTo(wdlFileStream);
 		        }
 
-		        mWdlFile = new WorldLOD(wdlFileStream.ToArray());
+		        this.mWdlFile = new WorldLOD(wdlFileStream.ToArray());
 	        }
 
 	        //mWdlFile = new IO.Files.Terrain.WdlFile();
@@ -54,14 +54,14 @@ namespace Neo.Scene.Terrain
 
         public void Shutdown()
         {
-            mIsRunning = false;
-            mLoadThread.Join();
-            mUnloadThread.Join();
+	        this.mIsRunning = false;
+	        this.mLoadThread.Join();
+	        this.mUnloadThread.Join();
 
-            mAreas.Clear();
+	        this.mAreas.Clear();
             // ReSharper disable InconsistentlySynchronizedField
-            mDataToLoad.Clear();
-            mLoadedData.Clear();
+	        this.mDataToLoad.Clear();
+	        this.mLoadedData.Clear();
         }
 
         public void UpdatePosition(ref Vector2 position)
@@ -69,7 +69,7 @@ namespace Neo.Scene.Terrain
             var cx = position.X;
             var cy = position.Y;
 
-            if (IO.FileManager.Instance.Version < IO.FileDataVersion.Lichking)
+            if (FileManager.Instance.Version < FileDataVersion.Lichking)
             {
 	            cy = 64.0f * Metrics.TileSize - cy;
             }
@@ -77,20 +77,20 @@ namespace Neo.Scene.Terrain
 	        var ix = (int)Math.Floor(cx / Metrics.TileSize);
             var iy = (int)Math.Floor(cy / Metrics.TileSize);
 
-            var oldCount = mCurrentValidLinks.Count;
-            mCurrentValidLinks.RemoveAll(index =>
+            var oldCount = this.mCurrentValidLinks.Count;
+	        this.mCurrentValidLinks.RemoveAll(index =>
             {
                 var x = index % 0xFF;
                 var y = index / 0xFF;
                 return (x > ix + 4 || x < ix - 4 || y > iy + 4 || y < iy - 4);
             });
 
-            if (oldCount == mCurrentValidLinks.Count && oldCount != 0)
+            if (oldCount == this.mCurrentValidLinks.Count && oldCount != 0)
             {
 	            return;
             }
 
-	        mCurrentValidLinks.Clear();
+	        this.mCurrentValidLinks.Clear();
             for (var x = ix - 4; x <= ix + 4; ++x)
             {
                 for (var y = iy - 4; y <= iy + 4; ++y)
@@ -100,13 +100,13 @@ namespace Neo.Scene.Terrain
 	                    continue;
                     }
 
-	                mCurrentValidLinks.Add(y * 0xFF + x);
+	                this.mCurrentValidLinks.Add(y * 0xFF + x);
                 }
             }
 
             var loadMask = new List<int>();
             var invalidList = new List<MapAreaLowRender>();
-            foreach (var tile in mAreas)
+            foreach (var tile in this.mAreas)
             {
                 var index = tile.IndexX + tile.IndexY * 0xFF;
                 var indexX = tile.IndexX;
@@ -120,27 +120,27 @@ namespace Neo.Scene.Terrain
                 loadMask.Add(index);
             }
 
-            lock(mUnloadAreas)
+            lock(this.mUnloadAreas)
             {
                 foreach(var area in invalidList)
                 {
-                    mAreas.Remove(area);
-                    mUnloadAreas.Add(area);
+	                this.mAreas.Remove(area);
+	                this.mUnloadAreas.Add(area);
                 }
             }
 
-            lock(mDataToLoad)
+            lock(this.mDataToLoad)
             {
-                loadMask.AddRange(mDataToLoad.Select(tile => tile.IndexX + tile.IndexY * 0xFF));
+                loadMask.AddRange(this.mDataToLoad.Select(tile => tile.IndexX + tile.IndexY * 0xFF));
             }
 
-            foreach(var link in mCurrentValidLinks.Where(i => loadMask.Contains(i) == false))
+            foreach(var link in this.mCurrentValidLinks.Where(i => loadMask.Contains(i) == false))
             {
                 var x = link % 0xFF;
                 var y = link / 0xFF;
 
                 var provider = new MapAreaLowRender(x, y);
-                lock (mDataToLoad)
+                lock (this.mDataToLoad)
                 {
 	                this.mDataToLoad.Add(provider);
                 }
@@ -151,23 +151,23 @@ namespace Neo.Scene.Terrain
         {
             MapAreaLowRender.Mesh.BeginDraw();
 
-            lock(mLoadedData)
+            lock(this.mLoadedData)
             {
-                foreach(var data in mLoadedData)
+                foreach(var data in this.mLoadedData)
                 {
                     var index = data.IndexX + data.IndexY * 0xFF;
-                    if (mCurrentValidLinks.Contains(index) == false)
+                    if (this.mCurrentValidLinks.Contains(index) == false)
                     {
 	                    continue;
                     }
 
-	                mAreas.Add(data);
+	                this.mAreas.Add(data);
                 }
 
-                mLoadedData.Clear();
+	            this.mLoadedData.Clear();
             }
 
-            foreach (var area in mAreas)
+            foreach (var area in this.mAreas)
             {
 	            area.OnFrame();
             }
@@ -175,15 +175,15 @@ namespace Neo.Scene.Terrain
 
         private void LoadProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
                 MapAreaLowRender item = null;
-                lock(mDataToLoad)
+                lock(this.mDataToLoad)
                 {
-                    if(mDataToLoad.Count > 0)
+                    if(this.mDataToLoad.Count > 0)
                     {
-                        item = mDataToLoad[0];
-                        mDataToLoad.RemoveAt(0);
+                        item = this.mDataToLoad[0];
+	                    this.mDataToLoad.RemoveAt(0);
                     }
                 }
 
@@ -193,8 +193,8 @@ namespace Neo.Scene.Terrain
                     continue;
                 }
 
-                item.InitFromHeightData(mWdlFile.GetEntry(item.IndexX, item.IndexY));
-                lock (mLoadedData)
+                item.InitFromHeightData(this.mWdlFile.GetEntry(item.IndexX, item.IndexY));
+                lock (this.mLoadedData)
                 {
 	                this.mLoadedData.Add(item);
                 }
@@ -203,16 +203,16 @@ namespace Neo.Scene.Terrain
 
         private void UnloadProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
-                lock (mUnloadAreas)
+                lock (this.mUnloadAreas)
                 {
-                    foreach (var area in mUnloadAreas)
+                    foreach (var area in this.mUnloadAreas)
                     {
 	                    area.Dispose();
                     }
 
-	                mUnloadAreas.Clear();
+	                this.mUnloadAreas.Clear();
                 }
 
                 Thread.Sleep(1000);

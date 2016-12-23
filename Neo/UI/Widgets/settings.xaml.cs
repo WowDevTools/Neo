@@ -14,12 +14,12 @@ namespace Neo.UI.Dialogs
         public Settings()
         {
             InitializeComponent();
-            CheckBoxHighlightModel.IsChecked = Properties.Settings.Default.HighlightModelsInBrush;
-            CheckBoxDrawBrushModels.IsChecked = Properties.Settings.Default.UpdateDrawBrushOnModels;
-            DayNightScalingSlider.Value = Properties.Settings.Default.DayNightScaling * 10.0f;
-            UseDayNightCycle.IsChecked = Properties.Settings.Default.UseDayNightCycle;
-            ChangeUseDayNight_Click(UseDayNightCycle, new RoutedEventArgs());
-            DefaultDayTimeTextBox.Text = Properties.Settings.Default.DefaultDayTime.ToString();
+	        this.CheckBoxHighlightModel.IsChecked = Properties.Settings.Default.HighlightModelsInBrush;
+	        this.CheckBoxDrawBrushModels.IsChecked = Properties.Settings.Default.UpdateDrawBrushOnModels;
+	        this.DayNightScalingSlider.Value = Properties.Settings.Default.DayNightScaling * 10.0f;
+	        this.UseDayNightCycle.IsChecked = Properties.Settings.Default.UseDayNightCycle;
+            ChangeUseDayNight_Click(this.UseDayNightCycle, new RoutedEventArgs());
+	        this.DefaultDayTimeTextBox.Text = Properties.Settings.Default.DefaultDayTime.ToString();
 
             SetAssetRenderColorBox();
         }
@@ -67,7 +67,7 @@ namespace Neo.UI.Dialogs
         private void DayNightDefaultTime_Changed(object sender, TextChangedEventArgs e)
         {
             var tb = sender as TextBox;
-            if (tb == null || DefaultDayNightTimeIndicator == null)
+            if (tb == null || this.DefaultDayNightTimeIndicator == null)
             {
 	            return;
             }
@@ -79,7 +79,7 @@ namespace Neo.UI.Dialogs
             }
 
 	        var ts = TimeSpan.FromMinutes(time / 2.0);
-            DefaultDayNightTimeIndicator.Text = "= " + (ts.Hours.ToString("D2") + ":" + ts.Minutes.ToString("D2"));
+	        this.DefaultDayNightTimeIndicator.Text = "= " + (ts.Hours.ToString("D2") + ":" + ts.Minutes.ToString("D2"));
             lock (Properties.Settings.Default)
             {
 	            Properties.Settings.Default.DefaultDayTime = time;
@@ -96,8 +96,8 @@ namespace Neo.UI.Dialogs
 	            return;
             }
 
-	        DefaultTimePanel.Visibility = (cb.IsChecked ?? false) ? Visibility.Collapsed : Visibility.Visible;
-            DayNightCycleScalingPanel.Visibility = (cb.IsChecked ?? false) ? Visibility.Visible : Visibility.Collapsed;
+	        this.DefaultTimePanel.Visibility = (cb.IsChecked ?? false) ? Visibility.Collapsed : Visibility.Visible;
+	        this.DayNightCycleScalingPanel.Visibility = (cb.IsChecked ?? false) ? Visibility.Visible : Visibility.Collapsed;
 
             lock (Properties.Settings.Default)
             {
@@ -130,8 +130,8 @@ namespace Neo.UI.Dialogs
 
         private void AssetRenderColorCombo_Loaded(object sender, RoutedEventArgs e)
         {
-            AssetRenderColorCombo.Items.Clear();
-            AssetRenderColorCombo.Items.Add("(Default)");
+	        this.AssetRenderColorCombo.Items.Clear();
+	        this.AssetRenderColorCombo.Items.Add("(Default)");
 
             foreach (PropertyInfo property in typeof(System.Drawing.Color).GetProperties(BindingFlags.Static | BindingFlags.Public))
             {
@@ -152,17 +152,17 @@ namespace Neo.UI.Dialogs
                 }
             }
 
-            AssetRenderColorCombo.SelectedItem = selected;
+	        this.AssetRenderColorCombo.SelectedItem = selected;
         }
 
         private void AssetRenderColorCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (AssetRenderColorCombo.SelectedItem == null)
+            if (this.AssetRenderColorCombo.SelectedItem == null)
             {
 	            return;
             }
 
-	        if(AssetRenderColorCombo.SelectedItem.ToString() == "(Default)")
+	        if(this.AssetRenderColorCombo.SelectedItem.ToString() == "(Default)")
 	        {
 		        Properties.Settings.Default.AssetRenderBackgroundColor = System.Drawing.Color.FromArgb(1, 71, 95, 121);
 	        }
@@ -178,7 +178,7 @@ namespace Neo.UI.Dialogs
         private void SetAssetRenderColorBox()
         {
             var c = Properties.Settings.Default.AssetRenderBackgroundColor;
-            AssetRenderColorShow.Color = System.Windows.Media.Color.FromRgb(c.R, c.G, c.B);
+	        this.AssetRenderColorShow.Color = System.Windows.Media.Color.FromRgb(c.R, c.G, c.B);
         }
     }
 }

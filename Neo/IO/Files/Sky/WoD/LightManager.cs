@@ -31,28 +31,28 @@ namespace Neo.IO.Files.Sky.WoD
 
         public override void Initialize()
         {
-            mLightCollection.FillLights();
-            mSkyTexture = new Graphics.Texture();
-            WorldFrame.Instance.MapManager.SkySphere.UpdateSkyTexture(mSkyTexture);
+	        this.mLightCollection.FillLights();
+	        this.mSkyTexture = new Graphics.Texture();
+            WorldFrame.Instance.MapManager.SkySphere.UpdateSkyTexture(this.mSkyTexture);
         }
 
         public override void OnEnterWorld(int mapId)
         {
-            mLights = mLightCollection.GetLightsForMap(mapId);
-            if (mLightCollection.HasZoneLights(mapId))
+	        this.mLights = this.mLightCollection.GetLightsForMap(mapId);
+            if (this.mLightCollection.HasZoneLights(mapId))
             {
 	            this.mZoneLights = this.mLightCollection.GetZoneLightsForMap(mapId);
             }
             else
             {
-                mZoneLights = new List<ZoneLight>();
-                mZoneWeights = new float[0];
+	            this.mZoneLights = new List<ZoneLight>();
+	            this.mZoneWeights = new float[0];
             }
 
-            mWeights = new float[mLights.Count];
-            mZoneWeights = new float[mZoneLights.Count];
+	        this.mWeights = new float[this.mLights.Count];
+	        this.mZoneWeights = new float[this.mZoneLights.Count];
 
-            mLights.Sort((l1, l2) =>
+	        this.mLights.Sort((l1, l2) =>
             {
                 if (l1.IsGlobal && l2.IsGlobal)
                 {
@@ -75,19 +75,19 @@ namespace Neo.IO.Files.Sky.WoD
 
         public override void AsyncUpdate()
         {
-            if (mPositionChanged)
+            if (this.mPositionChanged)
             {
-                mPositionChanged = false;
+	            this.mPositionChanged = false;
 
                 var globalLights = new List<int>();
-                for (var i = 0; i < mWeights.Length; ++i)
+                for (var i = 0; i < this.mWeights.Length; ++i)
                 {
 	                this.mWeights[i] = 0.0f;
                 }
 
-	            for(var index = mLights.Count - 1; index >= 0; --index)
+	            for(var index = this.mLights.Count - 1; index >= 0; --index)
                 {
-                    var light = mLights[index];
+                    var light = this.mLights[index];
                     if(light.IsGlobal)
                     {
                         globalLights.Add(index);
@@ -100,13 +100,13 @@ namespace Neo.IO.Files.Sky.WoD
                     var outer = light.OuterRadius;
                     outer *= outer;
 
-                    var dx = pos.X - mLastPosition.X;
-                    var dy = pos.Z - mLastPosition.Y;
+                    var dx = pos.X - this.mLastPosition.X;
+                    var dy = pos.Z - this.mLastPosition.Y;
                     var diff = dx * dx + dy * dy;
                     if(diff <= inner)
                     {
-                        mWeights[index] = 1.0f;
-                        for (var j = index + 1; j < mWeights.Length; ++j)
+	                    this.mWeights[index] = 1.0f;
+                        for (var j = index + 1; j < this.mWeights.Length; ++j)
                         {
 	                        this.mWeights[j] = 0.0f;
                         }
@@ -114,8 +114,8 @@ namespace Neo.IO.Files.Sky.WoD
                     else if (diff <= outer)
                     {
                         var sat = (diff - inner) / (outer - inner);
-                        mWeights[index] = 1.0f - sat;
-                        for (var j = index + 1; j < mWeights.Length; ++j)
+	                    this.mWeights[index] = 1.0f - sat;
+                        for (var j = index + 1; j < this.mWeights.Length; ++j)
                         {
 	                        this.mWeights[j] *= sat;
                         }
@@ -126,18 +126,18 @@ namespace Neo.IO.Files.Sky.WoD
                     }
                 }
 
-                var totalW = mWeights.Sum();
+                var totalW = this.mWeights.Sum();
                 var fullLight = 0;
                 var hasFullLight = false;
                 var partialLights = new List<int>();
-                for(var i = 0; i < mZoneLights.Count; ++i)
+                for(var i = 0; i < this.mZoneLights.Count; ++i)
                 {
-                    var zl = mZoneLights[i];
-                    if (zl.GetDistance(ref mLastPosition2D) < 50.0f)
+                    var zl = this.mZoneLights[i];
+                    if (zl.GetDistance(ref this.mLastPosition2D) < 50.0f)
                     {
 	                    partialLights.Add(i);
                     }
-                    else if (zl.IsInside(ref mLastPosition2D))
+                    else if (zl.IsInside(ref this.mLastPosition2D))
                     {
                         fullLight = i;
                         hasFullLight = true;
@@ -153,7 +153,7 @@ namespace Neo.IO.Files.Sky.WoD
 	                this.mZoneWeights[fullLight] = 1.0f;
                 }
 
-	            for(var i = 0; i < mZoneLights.Count; ++i)
+	            for(var i = 0; i < this.mZoneLights.Count; ++i)
                 {
                     if (hasFullLight == false || (i != fullLight))
                     {
@@ -163,9 +163,9 @@ namespace Neo.IO.Files.Sky.WoD
 
                 foreach(var i in partialLights)
                 {
-                    var zl = mZoneLights[i];
-                    var dist = zl.GetDistance(ref mLastPosition2D);
-                    var inner = zl.IsInside(ref mLastPosition2D);
+                    var zl = this.mZoneLights[i];
+                    var dist = zl.GetDistance(ref this.mLastPosition2D);
+                    var inner = zl.IsInside(ref this.mLastPosition2D);
                     if (inner)
                     {
 	                    dist = 50 - dist;
@@ -176,7 +176,7 @@ namespace Neo.IO.Files.Sky.WoD
                     }
 
 	                var sat = dist / 100.0f;
-                    mZoneWeights[i] = 1.0f - sat;
+	                this.mZoneWeights[i] = 1.0f - sat;
                     for (var j = 0; j < i; ++j)
                     {
 	                    this.mZoneWeights[j] *= sat;
@@ -189,10 +189,10 @@ namespace Neo.IO.Files.Sky.WoD
                 }
 
                 var fac = 1.0f - totalW;
-                for(var i = 0; i < mZoneLights.Count; ++i)
+                for(var i = 0; i < this.mZoneLights.Count; ++i)
                 {
-                    mZoneWeights[i] *= fac;
-                    totalW += mZoneWeights[i];
+	                this.mZoneWeights[i] *= fac;
+                    totalW += this.mZoneWeights[i];
                 }
 
                 var remain = 1.0f - totalW;
@@ -205,7 +205,7 @@ namespace Neo.IO.Files.Sky.WoD
                     }
                 }
 
-                if (mZoneLights.Count > 0 && mWeights.Length == 0 && partialLights.Count == 0 && hasFullLight == false)
+                if (this.mZoneLights.Count > 0 && this.mWeights.Length == 0 && partialLights.Count == 0 && hasFullLight == false)
                 {
 	                this.mZoneWeights[0] = 1.0f;
                 }
@@ -216,33 +216,33 @@ namespace Neo.IO.Files.Sky.WoD
 
         public override void UpdatePosition(Vector3 position)
         {
-            mLastPosition = position;
-            mLastPosition2D = new Vector2(position.X, position.Y);
-            mPositionChanged = true;
+	        this.mLastPosition = position;
+	        this.mLastPosition2D = new Vector2(position.X, position.Y);
+	        this.mPositionChanged = true;
         }
 
         public override void SyncUpdate()
         {
-            if (mLights.Count == 0)
+            if (this.mLights.Count == 0)
             {
 	            return;
             }
 
-	        if(mIsTextureDirty)
+	        if(this.mIsTextureDirty)
             {
-	            mIsTextureDirty = false;
+	            this.mIsTextureDirty = false;
 	            // TODO: Recreate texture from bitmap
 	            // mSkyTexture.UpdateMemory(1, 180, SharpDX.DXGI.Format.B8G8R8A8_UNorm, mSkyGraph, 4);
             }
 
-            if (mIsDirty == false)
+            if (this.mIsDirty == false)
             {
 	            return;
             }
 
-	        lock(mColorLock)
+	        lock(this.mColorLock)
             {
-                mIsDirty = false;
+	            this.mIsDirty = false;
             }
         }
 
@@ -255,12 +255,12 @@ namespace Neo.IO.Files.Sky.WoD
 	            ms = Properties.Settings.Default.DefaultDayTime;
             }
 
-	        for (var i = 0; i < mColorValuesTemp.Length; ++i)
+	        for (var i = 0; i < this.mColorValuesTemp.Length; ++i)
 	        {
 		        this.mColorValuesTemp[i] = new Vector3(1, 1, 1);
 	        }
 
-	        for (var i = 0; i < mFloatValuesTemp.Length; ++i)
+	        for (var i = 0; i < this.mFloatValuesTemp.Length; ++i)
 	        {
 		        this.mFloatValuesTemp[i] = 1.0f;
 	        }
@@ -268,100 +268,100 @@ namespace Neo.IO.Files.Sky.WoD
 	        var curColors = new Vector3[(int) LightColor.MaxLightType];
             var curFloats = new float[(int) LightFloat.MaxLightFloat];
 
-            for(var j = 0; j < mLights.Count && j < mWeights.Length; ++j)
+            for(var j = 0; j < this.mLights.Count && j < this.mWeights.Length; ++j)
             {
-                if (mWeights[j] <= 1e-5)
+                if (this.mWeights[j] <= 1e-5)
                 {
 	                continue;
                 }
 
-	            mLights[j].GetAllColorsForTime(ms, curColors);
-                mLights[j].GetAllFloatsForTime(ms, curFloats);
+	            this.mLights[j].GetAllColorsForTime(ms, curColors);
+	            this.mLights[j].GetAllFloatsForTime(ms, curFloats);
 
                 for (var i = 0; i < curColors.Length; ++i)
                 {
-                    curColors[i] *= mWeights[j];
-                    mColorValuesTemp[i] += curColors[i];
+                    curColors[i] *= this.mWeights[j];
+	                this.mColorValuesTemp[i] += curColors[i];
                 }
 
                 for (var i = 0; i < curFloats.Length; ++i)
                 {
-                    curFloats[i] *= mWeights[j];
-                    mFloatValuesTemp[i] += curFloats[i];
+                    curFloats[i] *= this.mWeights[j];
+	                this.mFloatValuesTemp[i] += curFloats[i];
                 }
             }
 
-            for (var j = 0; j < mZoneLights.Count && j < mZoneWeights.Length; ++j)
+            for (var j = 0; j < this.mZoneLights.Count && j < this.mZoneWeights.Length; ++j)
             {
-                if (mZoneWeights[j] <= 1e-5)
+                if (this.mZoneWeights[j] <= 1e-5)
                 {
 	                continue;
                 }
 
-	            mZoneLights[j].Light.GetAllColorsForTime(ms, curColors);
-                mZoneLights[j].Light.GetAllFloatsForTime(ms, curFloats);
+	            this.mZoneLights[j].Light.GetAllColorsForTime(ms, curColors);
+	            this.mZoneLights[j].Light.GetAllFloatsForTime(ms, curFloats);
 
                 for (var i = 0; i < curColors.Length; ++i)
                 {
-                    curColors[i] *= mZoneWeights[j];
-                    mColorValuesTemp[i] += curColors[i];
+                    curColors[i] *= this.mZoneWeights[j];
+	                this.mColorValuesTemp[i] += curColors[i];
                 }
 
                 for (var i = 0; i < curFloats.Length; ++i)
                 {
-                    curFloats[i] *= mZoneWeights[j];
-                    mFloatValuesTemp[i] += curFloats[i];
+                    curFloats[i] *= this.mZoneWeights[j];
+	                this.mFloatValuesTemp[i] += curFloats[i];
                 }
             }
 
-            for (var i = 0; i < mColorValuesTemp.Length; ++i)
+            for (var i = 0; i < this.mColorValuesTemp.Length; ++i)
             {
 	            this.mColorValuesTemp[i] -= new Vector3(1, 1, 1);
             }
-	        for (var i = 0; i < mFloatValuesTemp.Length; ++i)
+	        for (var i = 0; i < this.mFloatValuesTemp.Length; ++i)
 	        {
 		        this.mFloatValuesTemp[i] -= 1.0f;
 	        }
 
-	        if(mWeights.Length == 0 && mZoneWeights.Length == 0)
+	        if(this.mWeights.Length == 0 && this.mZoneWeights.Length == 0)
             {
-                mColorValuesTemp[(int) LightColor.Top] = new Vector3(0.25f, 0.5f, 1.0f);
-                mColorValuesTemp[(uint) LightColor.Middle] = new Vector3(0.25f, 0.5f, 1.0f);
-                mColorValuesTemp[(uint) LightColor.MiddleLower] = new Vector3(0.25f, 0.5f, 1.0f);
-                mColorValuesTemp[(uint) LightColor.Lower] = new Vector3(0.25f, 0.5f, 1.0f);
-                mColorValuesTemp[(uint) LightColor.Horizon] = new Vector3(0.25f, 0.5f, 1.0f);
-                mColorValuesTemp[(uint) LightColor.Fog] = new Vector3(0.25f, 0.5f, 1.0f);
-                mColorValuesTemp[(uint) LightColor.Diffuse] = new Vector3(0.25f, 0.5f, 1.0f);
-                mColorValuesTemp[(uint) LightColor.Ambient] = new Vector3(0.3f, 0.3f, 0.3f);
-                mFloatValues[(uint) LightFloat.FogDensity] = 0.66f;
-                mFloatValues[(uint) LightFloat.FogEnd] = 200.0f;
+	            this.mColorValuesTemp[(int) LightColor.Top] = new Vector3(0.25f, 0.5f, 1.0f);
+	            this.mColorValuesTemp[(uint) LightColor.Middle] = new Vector3(0.25f, 0.5f, 1.0f);
+	            this.mColorValuesTemp[(uint) LightColor.MiddleLower] = new Vector3(0.25f, 0.5f, 1.0f);
+	            this.mColorValuesTemp[(uint) LightColor.Lower] = new Vector3(0.25f, 0.5f, 1.0f);
+	            this.mColorValuesTemp[(uint) LightColor.Horizon] = new Vector3(0.25f, 0.5f, 1.0f);
+	            this.mColorValuesTemp[(uint) LightColor.Fog] = new Vector3(0.25f, 0.5f, 1.0f);
+	            this.mColorValuesTemp[(uint) LightColor.Diffuse] = new Vector3(0.25f, 0.5f, 1.0f);
+	            this.mColorValuesTemp[(uint) LightColor.Ambient] = new Vector3(0.3f, 0.3f, 0.3f);
+	            this.mFloatValues[(uint) LightFloat.FogDensity] = 0.66f;
+	            this.mFloatValues[(uint) LightFloat.FogEnd] = 200.0f;
             }
 
-            lock(mColorLock)
+            lock(this.mColorLock)
             {
-                mColorValues = mColorValuesTemp;
-                mFloatValues = mFloatValuesTemp;
-                mIsDirty = true;
+	            this.mColorValues = this.mColorValuesTemp;
+	            this.mFloatValues = this.mFloatValuesTemp;
+	            this.mIsDirty = true;
             }
 
             UpdateSkyTexture();
 
-            var fogStart = mFloatValues[(int) LightFloat.FogScale] * mFloatValues[(int) LightFloat.FogEnd];
+            var fogStart = this.mFloatValues[(int) LightFloat.FogScale] * this.mFloatValues[(int) LightFloat.FogEnd];
             fogStart /= 72.0f;
 
-            WorldFrame.Instance.UpdateMapAmbient(mColorValues[(int) LightColor.Ambient]);
-            WorldFrame.Instance.UpdateMapDiffuse(mColorValues[(int) LightColor.Diffuse]);
-            WorldFrame.Instance.UpdateFogParams(mColorValues[(int) LightColor.Fog], fogStart);
+            WorldFrame.Instance.UpdateMapAmbient(this.mColorValues[(int) LightColor.Ambient]);
+            WorldFrame.Instance.UpdateMapDiffuse(this.mColorValues[(int) LightColor.Diffuse]);
+            WorldFrame.Instance.UpdateFogParams(this.mColorValues[(int) LightColor.Fog], fogStart);
         }
 
         private void UpdateSkyTexture()
         {
-            var top = mColorValues[(int) LightColor.Top];
-            var middle = mColorValues[(int) LightColor.Middle];
-            var middleLower = mColorValues[(int) LightColor.MiddleLower];
-            var lower = mColorValues[(int) LightColor.Lower];
-            var horizon = mColorValues[(int) LightColor.Horizon];
-            var fog = mColorValues[(int) LightColor.Fog];
+            var top = this.mColorValues[(int) LightColor.Top];
+            var middle = this.mColorValues[(int) LightColor.Middle];
+            var middleLower = this.mColorValues[(int) LightColor.MiddleLower];
+            var lower = this.mColorValues[(int) LightColor.Lower];
+            var horizon = this.mColorValues[(int) LightColor.Horizon];
+            var fog = this.mColorValues[(int) LightColor.Fog];
 
             for (var i = 0; i < 80; ++i)
             {
@@ -372,38 +372,38 @@ namespace Neo.IO.Files.Sky.WoD
             {
                 var sat = (i - 80) / 10.0f;
                 var clr = fog + (horizon - fog) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
             for (var i = 90; i < 95; ++i)
             {
                 var sat = (i - 90) / 5.0f;
                 var clr = horizon + (lower - horizon) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
             for (var i = 95; i < 105; ++i)
             {
                 var sat = (i - 95) / 10.0f;
                 var clr = lower + (middleLower - lower) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
             for (var i = 105; i < 120; ++i)
             {
                 var sat = (i - 105) / 15.0f;
                 var clr = middleLower + (middle - middleLower) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
             for (var i = 120; i < 180; ++i)
             {
                 var sat = (i - 120) / 60.0f;
                 var clr = middle + (top - middle) * sat;
-                mSkyGraph[i] = ToRgbx(ref clr);
+	            this.mSkyGraph[i] = ToRgbx(ref clr);
             }
 
-            mIsTextureDirty = true;
+	        this.mIsTextureDirty = true;
         }
 
         private static uint ToRgbx(ref Vector3 value)

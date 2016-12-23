@@ -40,14 +40,14 @@ namespace Neo.UI.Dialogs
 	        var binding = button.Tag as KeyBindingControl;
             System.Windows.Controls.Border border;
 
-            if (binding != null && Equals(binding, mCurrentBinding))
+            if (binding != null && Equals(binding, this.mCurrentBinding))
             {
-                border = mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
+                border = this.mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
                 if(border != null)
                 {
 	                border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
                 }
-	            mCurrentBinding = null;
+	            this.mCurrentBinding = null;
                 return;
             }
 
@@ -56,9 +56,9 @@ namespace Neo.UI.Dialogs
 	            return;
             }
 
-	        if (mCurrentBinding != null)
+	        if (this.mCurrentBinding != null)
             {
-                border = mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
+                border = this.mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
                 if (border != null)
                 {
 	                border.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 0, 0));
@@ -71,65 +71,65 @@ namespace Neo.UI.Dialogs
 	            border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
             }
 
-	        mCurrentBinding = binding;
-            mCurrentKeys.Clear();
+	        this.mCurrentBinding = binding;
+	        this.mCurrentKeys.Clear();
         }
 
         private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs args)
         {
-            if (mCurrentPressedKeys.Contains(args.Key))
+            if (this.mCurrentPressedKeys.Contains(args.Key))
             {
 	            return;
             }
 
-	        if (mCurrentBinding == null)
+	        if (this.mCurrentBinding == null)
 	        {
 		        return;
 	        }
 
-	        mCurrentKeys.Add(args.Key);
-            mCurrentPressedKeys.Add(args.Key);
-            mCurrentBinding.Label.Text = string.Join(" + ", mCurrentKeys.Select(k => Converter.ConvertToString(k)));
+	        this.mCurrentKeys.Add(args.Key);
+	        this.mCurrentPressedKeys.Add(args.Key);
+	        this.mCurrentBinding.Label.Text = string.Join(" + ", this.mCurrentKeys.Select(k => Converter.ConvertToString(k)));
         }
 
         private void OnKeyUp(object sender, System.Windows.Input.KeyEventArgs args)
         {
-            if (mCurrentBinding == null)
+            if (this.mCurrentBinding == null)
             {
 	            return;
             }
 
-	        mCurrentPressedKeys.Remove(args.Key);
-            if (mCurrentPressedKeys.Count != 0)
+	        this.mCurrentPressedKeys.Remove(args.Key);
+            if (this.mCurrentPressedKeys.Count != 0)
             {
 	            return;
             }
 
-	        var border = mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
+	        var border = this.mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
             if (border != null)
             {
 	            border.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             }
-	        var bindField = mCurrentBinding.Tag as Tuple<FieldInfo, object>;
-            if (bindField != null && mCurrentKeys.Count > 0)
+	        var bindField = this.mCurrentBinding.Tag as Tuple<FieldInfo, object>;
+            if (bindField != null && this.mCurrentKeys.Count > 0)
             {
-                bindField.Item1.SetValue(bindField.Item2, mCurrentKeys.Select(k => (Keys)KeyInterop.VirtualKeyFromKey(k)).ToArray());
+                bindField.Item1.SetValue(bindField.Item2, this.mCurrentKeys.Select(k => (Keys)KeyInterop.VirtualKeyFromKey(k)).ToArray());
                 KeyBindings.Save();
             }
 
-            mCurrentBinding = null;
+	        this.mCurrentBinding = null;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            SensitivitySliderIndicator.Text = (SensitivitySlider.Value / 5.0f).ToString("F2");
+	        this.SensitivitySliderIndicator.Text = (this.SensitivitySlider.Value / 5.0f).ToString("F2");
 
             if (DesignerProperties.GetIsInDesignMode(this))
             {
 	            return;
             }
 
-	        if (mInitialized)
+	        if (this.mInitialized)
 	        {
 		        return;
 	        }
@@ -139,7 +139,7 @@ namespace Neo.UI.Dialogs
 		        return;
 	        }
 
-	        mInitialized = true;
+	        this.mInitialized = true;
             KeyDown += OnKeyDown;
             KeyUp += OnKeyUp;
             var baseType = typeof(KeyBindings);
@@ -210,7 +210,7 @@ namespace Neo.UI.Dialogs
 
 
 	        var newValue = slider.Value / 5.0f;
-            if (SensitivitySliderIndicator != null)
+            if (this.SensitivitySliderIndicator != null)
             {
 	            this.SensitivitySliderIndicator.Text = newValue.ToString("F2");
             }
@@ -230,7 +230,7 @@ namespace Neo.UI.Dialogs
             if (TabletManager.Instance.IsConnected)
             {
                 // if the tablet is connected hide reconnect button
-                reconnect.Visibility = Visibility.Hidden;
+	            this.reconnect.Visibility = Visibility.Hidden;
             }
         }
 
@@ -240,10 +240,10 @@ namespace Neo.UI.Dialogs
             if (TabletManager.Instance.IsConnected)
             {
                 // if the tablet is connected hide reconnect button
-                reconnect.Visibility = Visibility.Hidden;
+	            this.reconnect.Visibility = Visibility.Hidden;
             }
             else {
-                reconnect.Visibility = Visibility.Visible;
+	            this.reconnect.Visibility = Visibility.Visible;
             }
         }
     }

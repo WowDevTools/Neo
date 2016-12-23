@@ -101,13 +101,13 @@ namespace Neo.Storage
 
         public static void BuildCache()
         {
-            if (IO.FileManager.Instance.Version == IO.FileDataVersion.Warlords)
+            if (FileManager.Instance.Version == FileDataVersion.Warlords)
             {
                 CreatureDisplayInfo.BuildCache<IO.Files.Models.WoD.CreatureDisplayInfoEntry>();
                 CreatureModelData.BuildCache<IO.Files.Models.WoD.CreatureModelDataEntry>();
                 FileData.BuildCache<IO.Files.Models.WoD.FileDataIDEntry>();
             }
-            else if (IO.FileManager.Instance.Version == IO.FileDataVersion.Lichking)
+            else if (FileManager.Instance.Version == FileDataVersion.Lichking)
             {
                 CreatureDisplayInfo.BuildCache<IO.Files.Models.Wotlk.CreatureDisplayInfoEntry>();
                 CreatureModelData.BuildCache<IO.Files.Models.Wotlk.CreatureModelDataEntry>();

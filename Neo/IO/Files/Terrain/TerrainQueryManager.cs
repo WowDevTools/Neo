@@ -19,7 +19,7 @@ namespace Neo.IO.Files.Terrain
 
         public void Execute(MapAreaQuery query)
         {
-            mMapAreaImplementation.Execute(query);
+	        this.mMapAreaImplementation.Execute(query);
         }
 
         private void Initialize()
@@ -27,7 +27,7 @@ namespace Neo.IO.Files.Terrain
             switch (FileManager.Instance.Version)
             {
                 case FileDataVersion.Lichking:
-                    mMapAreaImplementation = new Wotlk.MapQueryImpl();
+	                this.mMapAreaImplementation = new Wotlk.MapQueryImpl();
                     break;
             }
         }
