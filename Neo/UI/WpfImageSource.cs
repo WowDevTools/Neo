@@ -12,7 +12,7 @@ namespace Neo.UI
     {
         private static readonly BitmapSource ErrorBitmap;
 
-        public unsafe static BitmapSource FromBgra(int width, int height, uint[] colors)
+        public static unsafe BitmapSource FromBgra(int width, int height, uint[] colors)
         {
             fixed (uint* ptr = colors)
             {

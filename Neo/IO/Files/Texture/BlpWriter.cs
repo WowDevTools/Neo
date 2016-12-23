@@ -85,7 +85,7 @@ namespace Neo.IO.Files.Texture
             return header;
         }
 
-        private unsafe static byte[] GetLayerData(int width, int height, int layer, Texture2D texture)
+        private static unsafe byte[] GetLayerData(int width, int height, int layer, Texture2D texture)
         {
             var data = new byte[width * height * 4];
             var eventObj = new EventWaitHandle(false, EventResetMode.AutoReset);
