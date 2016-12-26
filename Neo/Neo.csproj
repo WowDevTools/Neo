@@ -567,7 +567,6 @@
     <Compile Include="Utils\InterfaceHelper.cs" />
     <Compile Include="Utils\InputHelper.cs" />
     <Compile Include="Utils\LibTxc.cs" />
-    <Compile Include="Utils\MathExtensions.cs" />
     <Compile Include="Utils\Polygon.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
     <Compile Include="Utils\TimeManager.cs" />
