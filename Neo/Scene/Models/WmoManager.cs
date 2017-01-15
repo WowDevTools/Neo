@@ -58,7 +58,7 @@ namespace Neo.Scene.Models
 	        {
 		        parameters.WmoHit = true;
 		        parameters.WmoInstance = wmoHit;
-		        parameters.WmoModel = wmoHit.ModelRoot;
+		        parameters.WorldModel = wmoHit.ModelRoot;
 		        parameters.WmoPosition = globalRay.Position + minDistance * globalRay.Direction;
 		        parameters.WmoDistance = minDistance;
 	        }

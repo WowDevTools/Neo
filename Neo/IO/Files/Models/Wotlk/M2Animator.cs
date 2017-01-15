@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class M2Animator : IM2Animator
+    public class M2Animator : IM2Animator
     {
         public Matrix4[] BoneMatrices { get; private set; }
         private M2AnimationBone[] mBones;

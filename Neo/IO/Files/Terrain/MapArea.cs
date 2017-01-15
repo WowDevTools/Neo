@@ -8,7 +8,6 @@ using Neo.Scene;
 using Neo.Scene.Texture;
 using OpenTK;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.IO.Files.Terrain
 {

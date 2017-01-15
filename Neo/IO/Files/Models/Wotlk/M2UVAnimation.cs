@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class M2UVAnimation
+    public class M2UVAnimation
     {
         private readonly M2Vector3AnimationBlock mTranslation;
         private readonly M2InvQuaternion16AnimationBlock mRotation;
@@ -22,7 +22,7 @@ namespace Neo.IO.Files.Models.Wotlk
             var scaling = mScaling.GetValueDefaultLength(animation, time);
             var rotation = mRotation.GetValueDefaultLength(animation, time);
 
-            matrix = Matrix4.Rotate(rotation) * Matrix4.Scale(scaling) * Matrix4.Translation(position);
+            matrix = Matrix4.CreateFromQuaternion(rotation) * Matrix4.CreateScale(scaling) * Matrix4.CreateTranslation(position);
         }
     }
 }

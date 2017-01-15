@@ -36,11 +36,11 @@ namespace Neo.Scene.Models.WMO
         public int BaseIndex { get; set; }
         public int BaseVertex { get; set; }
 
-        public IO.Files.Models.WmoGroup Data { get; private set; }
+        public IO.Files.Models.IWorldModelGroup Data { get; private set; }
 
         public BoundingBox BoundingBox { get { return Data.BoundingBox; } }
 
-        public WmoGroupRender(IO.Files.Models.WmoGroup group, WmoRootRender root)
+        public WmoGroupRender(IO.Files.Models.IWorldModelGroup group, WmoRootRender root)
         {
             Data = group;
             foreach(var batch in Data.Batches)

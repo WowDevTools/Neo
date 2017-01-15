@@ -1,7 +1,7 @@
 ﻿
 namespace Neo.IO.Files.Models
 {
-	public class WmoMaterial
+	public sealed class WmoMaterial
     {
         private readonly int mTexture1;
         private readonly int mTexture2;
@@ -13,7 +13,7 @@ namespace Neo.IO.Files.Models
         public uint Flags1 { get; private set; }
         public uint MaterialFlags { get; private set; }
 
-        public WmoMaterial(WmoRoot root, int shader, int texture1, int texture2, int texture3, int blendMode, uint flags, uint materialFlags)
+        public WmoMaterial(IWorldModelRoot root, int shader, int texture1, int texture2, int texture3, int blendMode, uint flags, uint materialFlags)
         {
             Textures = new Graphics.Texture[0];
             MaterialFlags = materialFlags;
@@ -26,7 +26,7 @@ namespace Neo.IO.Files.Models
             LoadTextures(root);
         }
 
-        private void LoadTextures(WmoRoot root)
+        private void LoadTextures(IWorldModelRoot root)
         {
             switch (ShaderType)
             {

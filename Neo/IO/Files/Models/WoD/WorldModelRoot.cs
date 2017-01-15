@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using OpenTK;
 using SlimTK;
-using Warcraft.Core;
 
-namespace Neo.IO.Files.Models.Wotlk
+namespace Neo.IO.Files.Models.WoD
 {
-    class WmoRoot : Models.WmoRoot
+    public sealed class WorldModelRoot : Models.IWorldModelRoot
     {
         private Mohd mHeader;
         // ReSharper disable once CollectionNeverQueried.Local
@@ -18,12 +17,16 @@ namespace Neo.IO.Files.Models.Wotlk
         private List<WmoMaterial> mMaterials = new List<WmoMaterial>();
         private Dictionary<uint, string> mGroupNameTable = new Dictionary<uint, string>();
         private List<Mogi> mGroupInfos = new List<Mogi>();
-        private List<WmoGroup> mGroups = new List<WmoGroup>();
+        private List<WorldModelGroup> mGroups = new List<WorldModelGroup>();
 
-        public uint AmbientColor { get { return mHeader.ambientColor; } }
+	    public IList<IWorldModelGroup> Groups { get; private set; }
+	    public string FileName { get; private set; }
+	    public BoundingBox BoundingBox { get; private set; }
+
+	    public uint AmbientColor { get { return mHeader.ambientColor; } }
         public bool UseParentAmbient { get { return (mHeader.flags & 2) == 0; } }
 
-        ~WmoRoot()
+        ~WorldModelRoot()
         {
             Dispose(false);
         }
@@ -98,7 +101,7 @@ namespace Neo.IO.Files.Models.Wotlk
 
         public override bool Load(string fileName)
         {
-            Groups = new List<Models.WmoGroup>();
+            Groups = new List<Models.IWorldModelGroup>();
             FileName = fileName;
 
             using (var file = FileManager.Instance.Provider.OpenFile(fileName))
@@ -155,9 +158,9 @@ namespace Neo.IO.Files.Models.Wotlk
                 {
 
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
-                    Log.Error("Unable to load WMO: " + e.Message);
+                    Log.Error("Unable to load WMO: " + e);
                     return false;
                 }
 
@@ -167,7 +170,7 @@ namespace Neo.IO.Files.Models.Wotlk
 
         private bool LoadGroups()
         {
-            if (mHeader.nGroups == 0)
+            if(mHeader.nGroups == 0)
             {
                 Log.Warning("WMO has no groups - Skipping");
                 return true;
@@ -178,10 +181,10 @@ namespace Neo.IO.Files.Models.Wotlk
             var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-            for (var i = 0; i < mHeader.nGroups; ++i)
+            for(var i = 0; i < mHeader.nGroups; ++i)
             {
                 var groupName = string.Format("{0}_{1:D3}.wmo", rootPath, i);
-                var group = new WmoGroup(groupName, this);
+                var group = new WorldModelGroup(groupName, this);
 
                 if (group.Load())
                 {
@@ -201,7 +204,7 @@ namespace Neo.IO.Files.Models.Wotlk
             }
 
 
-            Groups = mGroups.Select(g => (Models.WmoGroup)g).ToList().AsReadOnly();
+            Groups = mGroups.Select(g => (Models.IWorldModelGroup)g).ToList().AsReadOnly();
 
             BoundingBox = new BoundingBox(minPos, maxPos);
             return true;

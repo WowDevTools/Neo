@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using OpenTK;
 using SlimTK;
-using Warcraft.Core;
 
-namespace Neo.IO.Files.Models.WoD
+namespace Neo.IO.Files.Models.Wotlk
 {
-    class WmoRoot : Models.WmoRoot
+    public sealed class WorldModelRoot : IWorldModelRoot
     {
         private Mohd mHeader;
         // ReSharper disable once CollectionNeverQueried.Local
@@ -18,12 +17,16 @@ namespace Neo.IO.Files.Models.WoD
         private List<WmoMaterial> mMaterials = new List<WmoMaterial>();
         private Dictionary<uint, string> mGroupNameTable = new Dictionary<uint, string>();
         private List<Mogi> mGroupInfos = new List<Mogi>();
-        private List<WmoGroup> mGroups = new List<WmoGroup>();
+        private List<WorldModelGroup> mGroups = new List<WorldModelGroup>();
 
-        public uint AmbientColor { get { return mHeader.ambientColor; } }
+	    public IList<IWorldModelGroup> Groups { get; private set; }
+	    public string FileName { get; private set; }
+	    public BoundingBox BoundingBox { get; private set; }
+
+	    public uint AmbientColor { get { return mHeader.ambientColor; } }
         public bool UseParentAmbient { get { return (mHeader.flags & 2) == 0; } }
 
-        ~WmoRoot()
+        ~WorldModelRoot()
         {
             Dispose(false);
         }
@@ -67,7 +70,7 @@ namespace Neo.IO.Files.Models.WoD
             }
         }
 
-        public override void Dispose()
+	    public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -83,12 +86,12 @@ namespace Neo.IO.Files.Models.WoD
             return "";
         }
 
-        public override Graphics.Texture GetTexture(int index)
+	    public Graphics.Texture GetTexture(int index)
         {
             return mTextures[index];
         }
 
-        public override WmoMaterial GetMaterial(int index)
+        public WmoMaterial GetMaterial(int index)
         {
             if (index >= mMaterials.Count)
                 throw new IndexOutOfRangeException();
@@ -96,9 +99,9 @@ namespace Neo.IO.Files.Models.WoD
             return mMaterials[index];
         }
 
-        public override bool Load(string fileName)
+        public bool Load(string fileName)
         {
-            Groups = new List<Models.WmoGroup>();
+            Groups = new List<Models.IWorldModelGroup>();
             FileName = fileName;
 
             using (var file = FileManager.Instance.Provider.OpenFile(fileName))
@@ -155,9 +158,9 @@ namespace Neo.IO.Files.Models.WoD
                 {
 
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    Log.Error("Unable to load WMO: " + e);
+                    Log.Error("Unable to load WMO: " + e.Message);
                     return false;
                 }
 
@@ -165,9 +168,9 @@ namespace Neo.IO.Files.Models.WoD
             }
         }
 
-        private bool LoadGroups()
+	    private bool LoadGroups()
         {
-            if(mHeader.nGroups == 0)
+            if (mHeader.nGroups == 0)
             {
                 Log.Warning("WMO has no groups - Skipping");
                 return true;
@@ -178,10 +181,10 @@ namespace Neo.IO.Files.Models.WoD
             var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-            for(var i = 0; i < mHeader.nGroups; ++i)
+            for (var i = 0; i < mHeader.nGroups; ++i)
             {
                 var groupName = string.Format("{0}_{1:D3}.wmo", rootPath, i);
-                var group = new WmoGroup(groupName, this);
+                var group = new WorldModelGroup(groupName, this);
 
                 if (group.Load())
                 {
@@ -201,7 +204,7 @@ namespace Neo.IO.Files.Models.WoD
             }
 
 
-            Groups = mGroups.Select(g => (Models.WmoGroup)g).ToList().AsReadOnly();
+            Groups = mGroups.Select(g => (Models.IWorldModelGroup)g).ToList().AsReadOnly();
 
             BoundingBox = new BoundingBox(minPos, maxPos);
             return true;

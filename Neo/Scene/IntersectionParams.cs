@@ -10,7 +10,7 @@ namespace Neo.Scene
     {
         public M2File M2Model { get; set; }
         public M2RenderInstance M2Instance { get; set; }
-        public WmoRoot WmoModel { get; set; }
+        public IWorldModelRoot WorldModel { get; set; }
         public WmoInstance WmoInstance { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public MapChunk ChunkHit { get; set; }

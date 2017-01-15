@@ -229,9 +229,9 @@
     <Compile Include="IO\Files\Models\M2RenderPass.cs" />
     <Compile Include="IO\Files\Models\M2SubMeshInfo.cs" />
     <Compile Include="IO\Files\Models\ModelFactory.cs" />
-    <Compile Include="IO\Files\Models\WmoGroup.cs" />
+    <Compile Include="IO\Files\Models\IWorldModelGroup.cs" />
     <Compile Include="IO\Files\Models\WmoMaterial.cs" />
-    <Compile Include="IO\Files\Models\WmoRoot.cs" />
+    <Compile Include="IO\Files\Models\IWorldModelRoot.cs" />
     <Compile Include="IO\Files\Models\CommonM2Structures.cs" />
     <Compile Include="IO\Files\Models\WoD\M2AlphaAnimation.cs" />
     <Compile Include="IO\Files\Models\WoD\M2AnimationBlock.cs" />
@@ -242,8 +242,8 @@
     <Compile Include="IO\Files\Models\WoD\M2TexColorAnimation.cs" />
     <Compile Include="IO\Files\Models\WoD\M2UVAnimation.cs" />
     <Compile Include="IO\Files\Models\WoD\ModelStructs.cs" />
-    <Compile Include="IO\Files\Models\WoD\WmoGroup.cs" />
-    <Compile Include="IO\Files\Models\WoD\WmoRoot.cs" />
+    <Compile Include="IO\Files\Models\WoD\WorldModelGroup.cs" />
+    <Compile Include="IO\Files\Models\WoD\WorldModelRoot.cs" />
     <Compile Include="IO\Files\Models\WoD\WmoStructures.cs" />
     <Compile Include="IO\Files\Models\Wotlk\M2AlphaAnimation.cs" />
     <Compile Include="IO\Files\Models\Wotlk\M2AnimationBlock.cs" />
@@ -255,8 +255,8 @@
     <Compile Include="IO\Files\Models\Wotlk\M2TexColorAninmation.cs" />
     <Compile Include="IO\Files\Models\Wotlk\M2UVAnimation.cs" />
     <Compile Include="IO\Files\Models\Wotlk\ModelStructs.cs" />
-    <Compile Include="IO\Files\Models\Wotlk\WmoGroup.cs" />
-    <Compile Include="IO\Files\Models\Wotlk\WmoRoot.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\WorldModelGroup.cs" />
+    <Compile Include="IO\Files\Models\Wotlk\WorldModelRoot.cs" />
     <Compile Include="IO\Files\Models\Wotlk\WmoStructures.cs" />
     <Compile Include="IO\Files\Sky\SkyManager.cs" />
     <Compile Include="IO\Files\Sky\WoD\LightManager.cs">

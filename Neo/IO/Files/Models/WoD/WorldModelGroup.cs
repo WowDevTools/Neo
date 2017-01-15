@@ -7,13 +7,13 @@ using SlimTK;
 
 namespace Neo.IO.Files.Models.WoD
 {
-    class WmoGroup : Models.WmoGroup
+    public sealed class WorldModelGroup : IWorldModelGroup
     {
         private WmoVertex[] mVertices;
         private List<ushort> mIndices = new List<ushort>();
         private readonly List<WmoBatch> mBatches = new List<WmoBatch>();
 
-        private readonly WeakReference<WmoRoot> mParent;
+        private readonly WeakReference<WorldModelRoot> mParent;
         private readonly string mFileName;
 
         private Mogp mHeader;
@@ -26,7 +26,15 @@ namespace Neo.IO.Files.Models.WoD
         public Vector3 MinPosition { get { return BoundingBox.Minimum; } }
         public Vector3 MaxPosition { get { return BoundingBox.Maximum; } }
 
-        public WmoGroup(string fileName, WmoRoot root)
+	    public BoundingBox BoundingBox { get; private set; }
+	    public IList<ushort> Indices { get; private set; }
+	    public IList<WmoBatch> Batches { get; private set; }
+	    public WmoVertex[] Vertices { get; private set; }
+	    public bool IsIndoor { get; private set; }
+	    public string Name { get; private set; }
+	    public bool DisableRendering { get; private set; }
+
+	    public WorldModelGroup(string fileName, WorldModelRoot root)
         {
             Batches = new List<WmoBatch>();
             Indices = new List<ushort>();
@@ -35,7 +43,7 @@ namespace Neo.IO.Files.Models.WoD
             DisableRendering = false;
 
             mFileName = fileName;
-            mParent = new WeakReference<WmoRoot>(root);
+            mParent = new WeakReference<WorldModelRoot>(root);
         }
 
         public bool Load()
@@ -84,7 +92,7 @@ namespace Neo.IO.Files.Models.WoD
                 }
             }
 
-            WmoRoot root;
+            WorldModelRoot root;
             if (mParent.TryGetTarget(out root))
             {
                 Name = root.GetGroupNameByOffset(mHeader.groupName);
@@ -218,7 +226,7 @@ namespace Neo.IO.Files.Models.WoD
 
         private bool CombineVertexData()
         {
-            WmoRoot parent;
+            WorldModelRoot parent;
             if (!mParent.TryGetTarget(out parent))
             {
                 Log.Fatal("FATAL ERROR! Parent of WMO group is null!!");
@@ -297,7 +305,7 @@ namespace Neo.IO.Files.Models.WoD
                 return false;
             }
 
-            WmoRoot parent;
+            WorldModelRoot parent;
             if(!mParent.TryGetTarget(out parent))
             {
                 Log.Fatal("FATAL ERROR! Parent of WMO group is null!!");

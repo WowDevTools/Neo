@@ -41,15 +41,15 @@ namespace Neo.IO.Files.Models
             }
         }
 
-        public WmoRoot CreateWmo()
+        public IWorldModelRoot CreateWmo()
         {
             switch(Version)
             {
                 case FileDataVersion.Warlords:
-                    return new WoD.WmoRoot();
+                    return new WoD.WorldModelRoot();
 
                 case FileDataVersion.Lichking:
-                    return new Wotlk.WmoRoot();
+                    return new Wotlk.WorldModelRoot();
 
                 default:
                     throw new NotImplementedException("Version not yet supported for WMO models");

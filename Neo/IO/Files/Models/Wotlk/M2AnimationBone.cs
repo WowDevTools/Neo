@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class M2AnimationBone
+    public sealed class M2AnimationBone
     {
         private readonly M2Bone mBone;
         private readonly Matrix4 mInvPivot;
@@ -24,8 +24,8 @@ namespace Neo.IO.Files.Models.Wotlk
             IsTransformed = (bone.flags & 0x200) != 0;
 
             bone.pivot.Y = -bone.pivot.Y;
-            mPivot = Matrix4.Translation(bone.pivot);
-            mInvPivot = Matrix4.Translation(-bone.pivot);
+            mPivot = Matrix4.CreateTranslation(bone.pivot);
+            mInvPivot = Matrix4.CreateTranslation(-bone.pivot);
 
             mTranslation = new M2Vector3AnimationBlock(file, bone.translation, reader);
             mRotation = new M2Quaternion16AnimationBlock(file, bone.rotation, reader, Quaternion.Identity);
@@ -51,7 +51,7 @@ namespace Neo.IO.Files.Models.Wotlk
                 position.Y = -position.Y;
                 var scaling = mScaling.GetValue(animation, time, animator.AnimationLength);
                 var rotation = mRotation.GetValue(animation, time, animator.AnimationLength);
-                boneMatrix *= Matrix4.Rotate(rotation) * Matrix4.Scale(scaling) * Matrix4.Translation(position);
+                boneMatrix *= Matrix4.CreateFromQuaternion(rotation) * Matrix4.CreateScale(scaling) * Matrix4.CreateTranslation(position);
             }
 
             boneMatrix = mInvPivot * boneMatrix * mPivot;

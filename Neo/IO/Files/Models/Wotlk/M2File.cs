@@ -7,11 +7,10 @@ using Neo.Scene.Models.M2;
 using Neo.Storage;
 using OpenTK;
 using SlimTK;
-using Warcraft.Core;
 
 namespace Neo.IO.Files.Models.Wotlk
 {
-    class M2File : Models.M2File
+    public sealed class M2File : Models.M2File
     {
         private string mModelName;
         private readonly string mFileName;

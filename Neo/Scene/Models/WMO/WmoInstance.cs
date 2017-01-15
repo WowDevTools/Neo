@@ -26,7 +26,7 @@ namespace Neo.Scene.Models.WMO
 
         public bool IsSpecial { get { return false; } }
 
-        public WmoRoot ModelRoot { get; private set; }
+        public IWorldModelRoot ModelRoot { get; private set; }
 
         public int ReferenceCount;
 

@@ -10,7 +10,7 @@ namespace Neo.Scene.Models.WMO
 {
     public class WmoRootRender : IDisposable
     {
-        public WmoRoot Data { get; private set; }
+        public IWorldModelRoot Data { get; private set; }
 
         private bool mAsyncLoaded;
         private bool mIsSyncLoaded;
@@ -144,7 +144,7 @@ namespace Neo.Scene.Models.WMO
             return false;
         }
 
-        public void OnAsyncLoad(WmoRoot root)
+        public void OnAsyncLoad(IWorldModelRoot root)
         {
             mAsyncLoaded = true;
 
