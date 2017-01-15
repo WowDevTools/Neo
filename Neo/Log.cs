@@ -13,12 +13,12 @@ namespace Neo
         Debug
     }
 
-    interface ILogSink
+	internal interface ILogSink
     {
         void AddMessage(LogLevel logLevel, string title, string message);
     }
 
-    class ConsoleLogSink : ILogSink
+	internal class ConsoleLogSink : ILogSink
     {
         private static void SetLevelColor(LogLevel level)
         {
@@ -54,14 +54,16 @@ namespace Neo
         }
     }
 
-    class FileLogSink : ILogSink
+	internal class FileLogSink : ILogSink
     {
         public FileLogSink()
         {
             if (Directory.Exists("Logs") == false)
-                Directory.CreateDirectory("Logs");
+            {
+	            Directory.CreateDirectory("Logs");
+            }
 
-            File.Create($"Log{Path.DirectorySeparatorChar}Log.txt").Close();
+	        File.Create($"Log{Path.DirectorySeparatorChar}Log.txt").Close();
         }
 
         public void AddMessage(LogLevel level, string title, string message)
@@ -73,7 +75,7 @@ namespace Neo
         }
     }
 
-    static class Log
+	internal static class Log
     {
         private static readonly List<ILogSink> Sinks = new List<ILogSink>();
         private const LogLevel LogLevel = Neo.LogLevel.Debug;
@@ -92,25 +94,33 @@ namespace Neo
         private static void AddMessage(LogLevel level, string title, string message)
         {
             if ((int) level > (int) LogLevel)
-                return;
+            {
+	            return;
+            }
 
-            lock(Sinks)
+	        lock(Sinks)
             {
                 foreach (var sink in Sinks)
-                    sink.AddMessage(level, title, message);
+                {
+	                sink.AddMessage(level, title, message);
+                }
             }
         }
 
         public static void AddSink(ILogSink sink)
         {
             lock (Sinks)
-                Sinks.Add(sink);
+            {
+	            Sinks.Add(sink);
+            }
         }
 
         public static void RemoveSink(ILogSink sink)
         {
             lock (Sinks)
-                Sinks.Remove(sink);
+            {
+	            Sinks.Remove(sink);
+            }
         }
 
         public static void Debug(object message, [CallerFilePath] string fileName = "", [CallerLineNumber] int line = 0)

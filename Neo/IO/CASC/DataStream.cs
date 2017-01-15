@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Neo.IO.CASC
 {
-    class DataStream : IDisposable
+	internal class DataStream : IDisposable
     {
         public FileStream Stream { get; private set; }
 
         public DataStream(string file)
         {
-            Stream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+	        this.Stream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
 
         ~DataStream()
@@ -19,10 +19,10 @@ namespace Neo.IO.CASC
 
         private void Dispose(bool disposing)
         {
-            if (Stream != null)
+            if (this.Stream != null)
             {
-                Stream.Close();
-                Stream = null;
+	            this.Stream.Close();
+	            this.Stream = null;
             }
         }
 

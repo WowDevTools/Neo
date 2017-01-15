@@ -11,18 +11,18 @@ namespace Neo.IO.Files.Sky.WoD
         public List<MapLight> GetLightsForMap(int mapid)
         {
             List<MapLight> ret;
-            return mLights.TryGetValue(mapid, out ret) ? ret : new List<MapLight>();
+            return this.mLights.TryGetValue(mapid, out ret) ? ret : new List<MapLight>();
         }
 
         public List<ZoneLight> GetZoneLightsForMap(int mapid)
         {
             List<ZoneLight> ret;
-            return mZoneLights.TryGetValue(mapid, out ret) ? ret : new List<ZoneLight>();
+            return this.mZoneLights.TryGetValue(mapid, out ret) ? ret : new List<ZoneLight>();
         }
 
         public bool HasZoneLights(int mapid)
         {
-            return mZoneLights.ContainsKey(mapid);
+            return this.mZoneLights.ContainsKey(mapid);
         }
 
         // ReSharper disable once FunctionComplexityOverflow
@@ -35,9 +35,13 @@ namespace Neo.IO.Files.Sky.WoD
                 var entry = row.Get<LightDataEntry>(0);
                 List<LightDataEntry> l;
                 if (dataEntries.TryGetValue(entry.skyId, out l))
-                    l.Add(entry);
+                {
+	                l.Add(entry);
+                }
                 else
-                    dataEntries.Add(entry.skyId, new List<LightDataEntry> {entry});
+                {
+	                dataEntries.Add(entry.skyId, new List<LightDataEntry> {entry});
+                }
             }
 
             var lightMap = new Dictionary<int, MapLight>();
@@ -57,15 +61,21 @@ namespace Neo.IO.Files.Sky.WoD
                 var l = new MapLight(light, ref paramsData);
                 List<LightDataEntry> elems;
                 if (dataEntries.TryGetValue((uint) light.RefParams, out elems))
-                    l.AddAllData(elems);
+                {
+	                l.AddAllData(elems);
+                }
 
-                List<MapLight> lightList;
-                if (mLights.TryGetValue(light.MapId, out lightList))
-                    lightList.Add(l);
+	            List<MapLight> lightList;
+                if (this.mLights.TryGetValue(light.MapId, out lightList))
+                {
+	                lightList.Add(l);
+                }
                 else
-                    mLights.Add(light.MapId, new List<MapLight> {l});
+                {
+	                this.mLights.Add(light.MapId, new List<MapLight> {l});
+                }
 
-                lightMap[light.Id] = l;
+	            lightMap[light.Id] = l;
             }
 
             var zoneLightMap = new Dictionary<int, ZoneLight>();
@@ -76,18 +86,22 @@ namespace Neo.IO.Files.Sky.WoD
                 light.SetDbcZoneLight(ref zl);
                 var le = Storage.DbcStorage.Light.GetRowById(zl.RefLight).Get<LightEntry>(0);
 
-                var dq = mLights[le.MapId];
+                var dq = this.mLights[le.MapId];
                 dq.RemoveAll(m => m.LightId == le.Id);
 
                 var lp = lightMap[le.Id];
                 light.Light = lp;
                 List<ZoneLight> zlList;
-                if (mZoneLights.TryGetValue(zl.MapId, out zlList))
-                    zlList.Add(light);
+                if (this.mZoneLights.TryGetValue(zl.MapId, out zlList))
+                {
+	                zlList.Add(light);
+                }
                 else
-                    mZoneLights.Add(zl.MapId, new List<ZoneLight> {light});
+                {
+	                this.mZoneLights.Add(zl.MapId, new List<ZoneLight> {light});
+                }
 
-                zoneLightMap[zl.Id] = light;
+	            zoneLightMap[zl.Id] = light;
             }
 
             for (var i = 0; i < Storage.DbcStorage.ZoneLightPoint.NumRows; ++i)
@@ -95,15 +109,19 @@ namespace Neo.IO.Files.Sky.WoD
                 var zp = Storage.DbcStorage.ZoneLightPoint.GetRow(i).Get<ZoneLightPoint>(0);
                 ZoneLight zl;
                 if (zoneLightMap.TryGetValue(zp.RefZoneLight, out zl) == false)
-                    continue;
+                {
+	                continue;
+                }
 
-                zl.AddPolygonPoint(ref zp);
+	            zl.AddPolygonPoint(ref zp);
             }
 
             foreach (var pair in zoneLightMap)
-                pair.Value.CreatePolygon();
+            {
+	            pair.Value.CreatePolygon();
+            }
 
-            InitGlobalLight();
+	        InitGlobalLight();
         }
 
         private void InitGlobalLight()
@@ -122,10 +140,12 @@ namespace Neo.IO.Files.Sky.WoD
             for (var i = 0; i < Storage.DbcStorage.Map.NumRows; ++i)
             {
                 var mapid = Storage.DbcStorage.Map.GetRow(i).GetInt32(0);
-                if (mLights.ContainsKey(mapid) || mZoneLights.ContainsKey(mapid))
-                    continue;
+                if (this.mLights.ContainsKey(mapid) || this.mZoneLights.ContainsKey(mapid))
+                {
+	                continue;
+                }
 
-                mLights.Add(mapid, new List<MapLight> { globalMapLight });
+	            this.mLights.Add(mapid, new List<MapLight> { globalMapLight });
             }
 
         }

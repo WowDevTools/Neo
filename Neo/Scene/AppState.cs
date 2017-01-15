@@ -1,6 +1,6 @@
 ﻿namespace Neo.Scene
 {
-    enum AppState
+	internal enum AppState
     {
         Idle,
         Splash,

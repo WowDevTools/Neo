@@ -3,7 +3,7 @@ using OpenTK.Graphics;
 
 namespace Neo.Graphics
 {
-    class RenderTarget : IDisposable
+	internal class RenderTarget : IDisposable
     {
         private Texture2D mDepthTexture;
         private DepthStencilView mDepthView;
@@ -19,7 +19,7 @@ namespace Neo.Graphics
 
         public RenderTarget()
         {
-            backgroundcolor = ConvertColor(Properties.Settings.Default.AssetRenderBackgroundColor);
+	        this.backgroundcolor = this.ConvertColor(Properties.Settings.Default.AssetRenderBackgroundColor);
 
             Properties.Settings.Default.SettingChanging += SettingsChanging;
         }
@@ -32,45 +32,47 @@ namespace Neo.Graphics
         private void SettingsChanging(object sender, System.Configuration.SettingChangingEventArgs e)
         {
             if (e.SettingName == "AssetRenderBackgroundColor")
-                backgroundcolor = ConvertColor((System.Drawing.Color)e.NewValue);
+            {
+	            this.backgroundcolor = this.ConvertColor((System.Drawing.Color)e.NewValue);
+            }
         }
 
         private void Dispose(bool disposing)
         {
-            if (mDepthView != null)
+            if (this.mDepthView != null)
             {
-                mDepthView.Dispose();
-                mDepthView = null;
+	            this.mDepthView.Dispose();
+	            this.mDepthView = null;
             }
 
-            if (mOldDepthView != null)
+            if (this.mOldDepthView != null)
             {
-                mOldDepthView.Dispose();
-                mOldDepthView = null;
+	            this.mOldDepthView.Dispose();
+	            this.mOldDepthView = null;
             }
 
-            if (mOldRenderTarget != null)
+            if (this.mOldRenderTarget != null)
             {
-                mOldRenderTarget.Dispose();
-                mOldRenderTarget = null;
+	            this.mOldRenderTarget.Dispose();
+	            this.mOldRenderTarget = null;
             }
 
-            if (mDepthTexture != null)
+            if (this.mDepthTexture != null)
             {
-                mDepthTexture.Dispose();
-                mDepthTexture = null;
+	            this.mDepthTexture.Dispose();
+	            this.mDepthTexture = null;
             }
 
-            if (Native != null)
+            if (this.Native != null)
             {
-                Native.Dispose();
-                Native = null;
+	            this.Native.Dispose();
+	            this.Native = null;
             }
 
-            if (Texture != null)
+            if (this.Texture != null)
             {
-                Texture.Dispose();
-                Texture = null;
+	            this.Texture.Dispose();
+	            this.Texture = null;
             }
 
         }
@@ -83,7 +85,7 @@ namespace Neo.Graphics
 
         public void Clear()
         {
-	        if (Native == null)
+	        if (this.Native == null)
 	        {
 		        return;
 	        }
@@ -95,7 +97,7 @@ namespace Neo.Graphics
 
         public void Apply()
         {
-	        if (Native == null || mDepthView == null)
+	        if (this.Native == null || this.mDepthView == null)
 	        {
 		        throw new InvalidOperationException("Cannot bind render target before its initialized");
 	        }
@@ -107,26 +109,36 @@ namespace Neo.Graphics
 
         public void Remove()
         {
-	        if (mOldDepthView != null && mOldRenderTarget != null)
+	        if (this.mOldDepthView != null && this.mOldRenderTarget != null)
 	        {
 		        // TODO: Figure out the purpose of this
 		        //mContext.Context.OutputMerger.SetRenderTargets(mOldDepthView, mOldRenderTarget);
 	        }
 
-            if (mOldDepthView != null) mOldDepthView.Dispose();
-            if (mOldRenderTarget != null) mOldRenderTarget.Dispose();
+            if (this.mOldDepthView != null)
+            {
+	            this.mOldDepthView.Dispose();
+            }
+	        if (this.mOldRenderTarget != null)
+	        {
+		        this.mOldRenderTarget.Dispose();
+	        }
         }
 
         // ReSharper disable once FunctionComplexityOverflow
         public void Resize(int width, int height, bool bgra)
         {
-            if (Texture != null)
-                Texture.Dispose();
+            if (this.Texture != null)
+            {
+	            this.Texture.Dispose();
+            }
 
-            if (Native != null)
-                Native.Dispose();
+	        if (this.Native != null)
+	        {
+		        this.Native.Dispose();
+	        }
 
-            var texDesc = new Texture2DDescription
+	        var texDesc = new Texture2DDescription
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.RenderTarget,
@@ -140,7 +152,7 @@ namespace Neo.Graphics
                 Width = width
             };
 
-            Texture = new Texture2D(mContext.Device, texDesc);
+	        this.Texture = new Texture2D(mContext.Device, texDesc);
 
             var rtvd = new RenderTargetViewDescription
             {
@@ -150,15 +162,19 @@ namespace Neo.Graphics
                 Texture2DMS = new RenderTargetViewDescription.Texture2DMultisampledResource()
             };
 
-            Native = new RenderTargetView(mContext.Device, Texture, rtvd);
+	        this.Native = new RenderTargetView(mContext.Device, this.Texture, rtvd);
 
-            if (mDepthTexture != null)
-                mDepthTexture.Dispose();
+            if (this.mDepthTexture != null)
+            {
+	            this.mDepthTexture.Dispose();
+            }
 
-            if (mDepthView != null)
-                mDepthView.Dispose();
+	        if (this.mDepthView != null)
+	        {
+		        this.mDepthView.Dispose();
+	        }
 
-            texDesc = new Texture2DDescription
+	        texDesc = new Texture2DDescription
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.DepthStencil,
@@ -172,7 +188,7 @@ namespace Neo.Graphics
                 Width = width
             };
 
-            mDepthTexture = new Texture2D(mContext.Device, texDesc);
+	        this.mDepthTexture = new Texture2D(mContext.Device, texDesc);
 
             var dsvd = new DepthStencilViewDescription
             {
@@ -182,7 +198,7 @@ namespace Neo.Graphics
                 Texture2DMS = new DepthStencilViewDescription.Texture2DMultisampledResource()
             };
 
-            mDepthView = new DepthStencilView(mContext.Device, mDepthTexture, dsvd);
+	        this.mDepthView = new DepthStencilView(mContext.Device, this.mDepthTexture, dsvd);
         }
     }
 }

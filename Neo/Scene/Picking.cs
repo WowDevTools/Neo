@@ -5,7 +5,7 @@ using SlimTK;
 
 namespace Neo.Scene
 {
-    static class Picking
+	internal static class Picking
     {
         public static Ray Build(ref Vector2 screenPos, ref Matrix4 invView, ref Matrix4 invProj)
         {

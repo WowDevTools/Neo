@@ -23,8 +23,8 @@ namespace Neo.IO.Files.Models.WoD
 	    public string FileName { get; private set; }
 	    public BoundingBox BoundingBox { get; private set; }
 
-	    public uint AmbientColor { get { return mHeader.ambientColor; } }
-        public bool UseParentAmbient { get { return (mHeader.flags & 2) == 0; } }
+	    public uint AmbientColor { get { return this.mHeader.ambientColor; } }
+        public bool UseParentAmbient { get { return (this.mHeader.flags & 2) == 0; } }
 
         ~WorldModelRoot()
         {
@@ -33,40 +33,40 @@ namespace Neo.IO.Files.Models.WoD
 
         private void Dispose(bool disposing)
         {
-            if (mMaterials != null)
+            if (this.mMaterials != null)
             {
-                mMaterials.Clear();
-                mMaterials = null;
+	            this.mMaterials.Clear();
+	            this.mMaterials = null;
             }
 
-            if (mTextures != null)
+            if (this.mTextures != null)
             {
-                mTextures.Clear();
-                mTextures = null;
+	            this.mTextures.Clear();
+	            this.mTextures = null;
             }
 
-            if (mTextureNames != null)
+            if (this.mTextureNames != null)
             {
-                mTextureNames.Clear();
-                mTextureNames = null;
+	            this.mTextureNames.Clear();
+	            this.mTextureNames = null;
             }
 
-            if (mGroups != null)
+            if (this.mGroups != null)
             {
-                mGroups.Clear();
-                mGroups = null;
+	            this.mGroups.Clear();
+	            this.mGroups = null;
             }
 
-            if (mGroupNameTable != null)
+            if (this.mGroupNameTable != null)
             {
-                mGroupNameTable.Clear();
-                mGroupNameTable = null;
+	            this.mGroupNameTable.Clear();
+	            this.mGroupNameTable = null;
             }
 
-            if (mGroupInfos != null)
+            if (this.mGroupInfos != null)
             {
-                mGroupInfos.Clear();
-                mGroupInfos = null;
+	            this.mGroupInfos.Clear();
+	            this.mGroupInfos = null;
             }
         }
 
@@ -78,9 +78,9 @@ namespace Neo.IO.Files.Models.WoD
 
         public string GetGroupNameByOffset(uint offset)
         {
-            if (mGroupNameTable.ContainsKey(offset))
+            if (this.mGroupNameTable.ContainsKey(offset))
             {
-                return mGroupNameTable[offset];
+                return this.mGroupNameTable[offset];
             }
 
             return "";
@@ -88,28 +88,32 @@ namespace Neo.IO.Files.Models.WoD
 
         public override Graphics.Texture GetTexture(int index)
         {
-            return mTextures[index];
+            return this.mTextures[index];
         }
 
         public override WmoMaterial GetMaterial(int index)
         {
-            if (index >= mMaterials.Count)
-                throw new IndexOutOfRangeException();
+            if (index >= this.mMaterials.Count)
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return mMaterials[index];
+	        return this.mMaterials[index];
         }
 
         public override bool Load(string fileName)
         {
-            Groups = new List<Models.IWorldModelGroup>();
-            FileName = fileName;
+            this.Groups = new List<Models.IWorldModelGroup>();
+            this.FileName = fileName;
 
             using (var file = FileManager.Instance.Provider.OpenFile(fileName))
             {
                 if (file == null)
-                    throw new ArgumentException("WMO not found: " + fileName);
+                {
+	                throw new ArgumentException("WMO not found: " + fileName);
+                }
 
-                var reader = new BinaryReader(file);
+	            var reader = new BinaryReader(file);
 
                 try
                 {
@@ -126,7 +130,7 @@ namespace Neo.IO.Files.Models.WoD
                         switch (signature)
                         {
                             case 0x4D4F4844:
-                                mHeader = reader.Read<Mohd>();
+	                            this.mHeader = reader.Read<Mohd>();
                                 hasHeader = true;
                                 break;
 
@@ -170,43 +174,62 @@ namespace Neo.IO.Files.Models.WoD
 
         private bool LoadGroups()
         {
-            if(mHeader.nGroups == 0)
+            if(this.mHeader.nGroups == 0)
             {
                 Log.Warning("WMO has no groups - Skipping");
                 return true;
             }
 
-            var rootPath = Path.ChangeExtension(FileName, null);
+            var rootPath = Path.ChangeExtension(this.FileName, null);
 
             var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-            for(var i = 0; i < mHeader.nGroups; ++i)
+            for(var i = 0; i < this.mHeader.nGroups; ++i)
             {
                 var groupName = string.Format("{0}_{1:D3}.wmo", rootPath, i);
                 var group = new WorldModelGroup(groupName, this);
 
                 if (group.Load())
                 {
-                    mGroups.Add(group);
+	                this.mGroups.Add(group);
                     var gmin = group.MinPosition;
                     var gmax = group.MaxPosition;
 
-                    if (gmin.X < minPos.X) minPos.X = gmin.X;
-                    if (gmin.Y < minPos.Y) minPos.Y = gmin.Y;
-                    if (gmin.Z < minPos.Z) minPos.Z = gmin.Z;
-                    if (gmax.X > maxPos.X) maxPos.X = gmax.X;
-                    if (gmax.Y > maxPos.Y) maxPos.Y = gmax.Y;
-                    if (gmax.Z > maxPos.Z) maxPos.Z = gmax.Z;
+                    if (gmin.X < minPos.X)
+                    {
+	                    minPos.X = gmin.X;
+                    }
+	                if (gmin.Y < minPos.Y)
+	                {
+		                minPos.Y = gmin.Y;
+	                }
+	                if (gmin.Z < minPos.Z)
+	                {
+		                minPos.Z = gmin.Z;
+	                }
+	                if (gmax.X > maxPos.X)
+	                {
+		                maxPos.X = gmax.X;
+	                }
+	                if (gmax.Y > maxPos.Y)
+	                {
+		                maxPos.Y = gmax.Y;
+	                }
+	                if (gmax.Z > maxPos.Z)
+	                {
+		                maxPos.Z = gmax.Z;
+	                }
                 }
                 else
-                    return false;
+                {
+	                return false;
+                }
             }
 
+            this.Groups = this.mGroups.Select(g => (Models.IWorldModelGroup)g).ToList().AsReadOnly();
 
-            Groups = mGroups.Select(g => (Models.IWorldModelGroup)g).ToList().AsReadOnly();
-
-            BoundingBox = new BoundingBox(minPos, maxPos);
+	        this.BoundingBox = new BoundingBox(minPos, maxPos);
             return true;
         }
 
@@ -214,7 +237,7 @@ namespace Neo.IO.Files.Models.WoD
         {
             var numMaterials = size / SizeCache<Momt>.Size;
             var materials = reader.ReadArray<Momt>(numMaterials);
-            mMaterials = materials.Select(m => new WmoMaterial(this, m.shader, m.texture1, m.texture2, m.texture3, m.blendMode, m.flags1, m.flags)).ToList();
+	        this.mMaterials = materials.Select(m => new WmoMaterial(this, m.shader, m.texture1, m.texture2, m.texture3, m.blendMode, m.flags1, m.flags)).ToList();
         }
 
         private void LoadGroupNames(BinaryReader reader, int size)
@@ -230,7 +253,7 @@ namespace Neo.IO.Files.Models.WoD
                     continue;
                 }
 
-                mGroupNameTable.Add(curOffset, Encoding.UTF8.GetString(curBytes.ToArray()));
+	            this.mGroupNameTable.Add(curOffset, Encoding.UTF8.GetString(curBytes.ToArray()));
                 curBytes.Clear();
                 curOffset = i + 1;
             }
@@ -240,7 +263,7 @@ namespace Neo.IO.Files.Models.WoD
         {
             var numGroups = size / SizeCache<Mogi>.Size;
             var groupInfos = reader.ReadArray<Mogi>(numGroups);
-            mGroupInfos = groupInfos.ToList();
+	        this.mGroupInfos = groupInfos.ToList();
         }
 
         private void ReadTextures(BinaryReader reader, int size)
@@ -255,13 +278,15 @@ namespace Neo.IO.Files.Models.WoD
                 if (b == 0)
                 {
                     var texName = Encoding.ASCII.GetString(curBytes.ToArray());
-                    mTextureNames.Add(offset, texName);
-                    mTextures.Add(offset, Scene.Texture.TextureManager.Instance.GetTexture(texName));
+	                this.mTextureNames.Add(offset, texName);
+	                this.mTextures.Add(offset, Scene.Texture.TextureManager.Instance.GetTexture(texName));
                     offset = i + 1;
                     curBytes.Clear();
                 }
                 else
-                    curBytes.Add(b);
+                {
+	                curBytes.Add(b);
+                }
             }
         }
     }

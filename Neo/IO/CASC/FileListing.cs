@@ -3,13 +3,13 @@ using System.IO.Compression;
 
 namespace Neo.IO.CASC
 {
-    class FileListing : IFileListing
+	internal class FileListing : IFileListing
     {
         public DirectoryEntry RootEntry { get; private set; }
 
         public FileListing()
         {
-            RootEntry = new DirectoryEntry {Name = "Files"};
+	        this.RootEntry = new DirectoryEntry {Name = "Files"};
 
             if (File.Exists("listfile.bin") == false)
             {
@@ -39,13 +39,13 @@ namespace Neo.IO.CASC
                         for (var i = 0; i < numDirs; ++i)
                         {
                             var dir = ReadDirectory(reader);
-                            RootEntry.Children.Add(dir.Name.ToLowerInvariant(), dir);
+	                        this.RootEntry.Children.Add(dir.Name.ToLowerInvariant(), dir);
                         }
 
                         for (var i = 0; i < numFiles; ++i)
                         {
                             var name = reader.ReadString();
-                            RootEntry.Children.Add(name.ToLowerInvariant(), new FileEntry {Name = name});
+	                        this.RootEntry.Children.Add(name.ToLowerInvariant(), new FileEntry {Name = name});
                         }
                     }
                 }

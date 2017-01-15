@@ -28,9 +28,11 @@ namespace Neo.UI.Dialogs
         {
             var model = DataContext as SculptingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleIntensityChanged((float)IntensitySlider.Value);
+	        model.HandleIntensityChanged((float) this.IntensitySlider.Value);
         }
 
         private void InnerRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -38,9 +40,11 @@ namespace Neo.UI.Dialogs
             var newValue = e.NewValue;
             var model = DataContext as SculptingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleInnerRadiusChanged((float)newValue);
+	        model.HandleInnerRadiusChanged((float)newValue);
         }
 
         private void OuterRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -48,28 +52,36 @@ namespace Neo.UI.Dialogs
             var newValue = e.NewValue;
             var model = DataContext as SculptingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleOuterRadiusChanged((float)newValue);
+	        model.HandleOuterRadiusChanged((float)newValue);
         }
 
         private void ChangeMode_Checked(object sender, RoutedEventArgs e)
         {
             var button = sender as RadioButton;
             if (button == null)
-                return;
+            {
+	            return;
+            }
 
-            if(button.IsChecked ?? false)
+	        if(button.IsChecked ?? false)
             {
                 TerrainChangeType mode;
                 if (!System.Enum.TryParse(button.Tag as string ?? "", out mode))
-                    return;
+                {
+	                return;
+                }
 
-                var model = DataContext as SculptingViewModel;
+	            var model = DataContext as SculptingViewModel;
                 if (model == null)
-                    return;
+                {
+	                return;
+                }
 
-                model.HandleType(mode);
+	            model.HandleType(mode);
             }
         }
 
@@ -77,19 +89,25 @@ namespace Neo.UI.Dialogs
         {
             var button = sender as RadioButton;
             if (button == null)
-                return;
+            {
+	            return;
+            }
 
-            if (button.IsChecked ?? false)
+	        if (button.IsChecked ?? false)
             {
                 TerrainAlgorithm algo;
                 if (!System.Enum.TryParse(button.Tag as string ?? "", out algo))
-                    return;
+                {
+	                return;
+                }
 
-                var model = DataContext as SculptingViewModel;
+	            var model = DataContext as SculptingViewModel;
                 if (model == null)
-                    return;
+                {
+	                return;
+                }
 
-                model.HandleAlgorithm(algo);
+	            model.HandleAlgorithm(algo);
             }
         }
 
@@ -97,18 +115,22 @@ namespace Neo.UI.Dialogs
         {
             var model = DataContext as SculptingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleAlignToGround(AlignModelsBox.IsChecked ?? false);
+	        model.HandleAlignToGround(this.AlignModelsBox.IsChecked ?? false);
         }
 
         private void TabletControl_Changed(object sender, RoutedEventArgs e)
         {
             var model = DataContext as SculptingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleTabletControl(TabletControlBox.IsChecked ?? false);
+	        model.HandleTabletControl(this.TabletControlBox.IsChecked ?? false);
         }
 
         private void Handle_PenSensivityChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -116,9 +138,11 @@ namespace Neo.UI.Dialogs
             var newValue = e.NewValue;
             var model = DataContext as SculptingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandlePenSensivity((float)newValue);
+	        model.HandlePenSensivity((float)newValue);
         }
     }
 }

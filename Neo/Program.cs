@@ -8,10 +8,10 @@ using Neo.UI.Services;
 
 namespace Neo
 {
-    class Program
+	internal class Program
     {
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             AppDomain.CurrentDomain.UnhandledException += (args, e) => Log.Debug(e.ExceptionObject.ToString());
 

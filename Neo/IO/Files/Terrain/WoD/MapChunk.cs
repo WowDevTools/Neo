@@ -33,114 +33,118 @@ namespace Neo.IO.Files.Terrain.WoD
         private static readonly uint[] Indices = new uint[768];
 
         public bool HasMccv { get; private set; }
-        public override int AreaId { get { return mHeader.AreaId; } set { mHeader.AreaId = value; } }
-        public override uint Flags { get { return mHeader.Flags; } set { mHeader.Flags = value; } }
+        public override int AreaId { get { return this.mHeader.AreaId; } set { this.mHeader.AreaId = value; } }
+        public override uint Flags { get { return this.mHeader.Flags; } set { this.mHeader.Flags = value; } }
 
         public MapChunk(ChunkStreamInfo mainInfo, ChunkStreamInfo texInfo, ChunkStreamInfo objInfo, int indexX, int indexY, MapArea parent)
         {
-            SpecularFactors = new float[4];
-            mIsYInverted = true;
-            Parent = new WeakReference<Terrain.MapArea>(parent);
-            mParent = new WeakReference<MapArea>(parent);
-            mMainInfo = mainInfo;
-            mTexInfo = texInfo;
-            mObjInfo = objInfo;
+	        this.SpecularFactors = new float[4];
+	        this.mIsYInverted = true;
+	        this.Parent = new WeakReference<Terrain.MapArea>(parent);
+	        this.mParent = new WeakReference<MapArea>(parent);
+	        this.mMainInfo = mainInfo;
+	        this.mTexInfo = texInfo;
+	        this.mObjInfo = objInfo;
 
-            mReader = mainInfo.Stream;
-            mTexReader = texInfo.Stream;
-            mObjReader = objInfo.Stream;
+	        this.mReader = mainInfo.Stream;
+	        this.mTexReader = texInfo.Stream;
+	        this.mObjReader = objInfo.Stream;
 
-            IndexX = indexX;
-            IndexY = indexY;
+	        this.IndexX = indexX;
+	        this.IndexY = indexY;
 
-            for (var i = 0; i < 145; ++i) mShadingFloats[i] = Vector4.One;
+            for (var i = 0; i < 145; ++i)
+            {
+	            this.mShadingFloats[i] = Vector4.One;
+            }
         }
 
         public void AddDoodad(int mcrfValue, BoundingBox box)
         {
-            var references = DoodadReferences;
+            var references = this.DoodadReferences;
             Array.Resize(ref references, references.Length + 1);
             references[references.Length - 1] = mcrfValue;
-            DoodadReferences = references;
+	        this.DoodadReferences = references;
 
-            DoodadsChanged = true;
+	        this.DoodadsChanged = true;
         }
 
         public void TryAddDoodad(int mcrfValue, BoundingBox box)
         {
-            var chunkBox = new BoundingBox(new Vector3(BoundingBox.Minimum.X, BoundingBox.Minimum.Y, float.MinValue),
-                new Vector3(BoundingBox.Maximum.X, BoundingBox.Maximum.Y, float.MaxValue));
+            var chunkBox = new BoundingBox(new Vector3(this.BoundingBox.Minimum.X, this.BoundingBox.Minimum.Y, float.MinValue),
+                new Vector3(this.BoundingBox.Maximum.X, this.BoundingBox.Maximum.Y, float.MaxValue));
 
             var intersects = chunkBox.Intersects(ref box);
             if (intersects == false)
-                return;
+            {
+	            return;
+            }
 
-            var references = DoodadReferences;
+	        var references = this.DoodadReferences;
             Array.Resize(ref references, references.Length + 1);
             references[references.Length - 1] = mcrfValue;
-            DoodadReferences = references;
+	        this.DoodadReferences = references;
 
-            DoodadsChanged = true;
+	        this.DoodadsChanged = true;
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (mReader != null)
+            if (this.mReader != null)
             {
-                mReader.Dispose();
-                mReader = null;
+	            this.mReader.Dispose();
+	            this.mReader = null;
             }
 
-            if (mTexReader != null)
+            if (this.mTexReader != null)
             {
-                mTexReader.Dispose();
-                mTexReader = null;
+	            this.mTexReader.Dispose();
+	            this.mTexReader = null;
             }
 
-            if (mObjReader != null)
+            if (this.mObjReader != null)
             {
-                mObjReader.Dispose();
-                mObjReader = null;
+	            this.mObjReader.Dispose();
+	            this.mObjReader = null;
             }
 
-            if (mOriginalMainChunks != null)
+            if (this.mOriginalMainChunks != null)
             {
-                mOriginalMainChunks.Clear();
-                mOriginalMainChunks = null;
+	            this.mOriginalMainChunks.Clear();
+	            this.mOriginalMainChunks = null;
             }
 
-            if (mOriginalObjChunks != null)
+            if (this.mOriginalObjChunks != null)
             {
-                mOriginalObjChunks.Clear();
-                mOriginalObjChunks = null;
+	            this.mOriginalObjChunks.Clear();
+	            this.mOriginalObjChunks = null;
             }
 
-            if (mOriginalTexChunks != null)
+            if (this.mOriginalTexChunks != null)
             {
-                mOriginalTexChunks.Clear();
-                mOriginalTexChunks = null;
+	            this.mOriginalTexChunks.Clear();
+	            this.mOriginalTexChunks = null;
             }
 
-            mMainInfo = null;
-            mTexInfo = null;
-            mObjInfo = null;
-            mParent = null;
-            mShadingFloats = null;
+	        this.mMainInfo = null;
+	        this.mTexInfo = null;
+	        this.mObjInfo = null;
+	        this.mParent = null;
+	        this.mShadingFloats = null;
 
             base.Dispose(disposing);
         }
 
         public void WriteBaseChunks(BinaryWriter writer)
         {
-            var minHeight = Vertices.Select(v => v.Position.Z).Min();
-            mHeader.Position.Z = minHeight;
-            var heights = Vertices.Select(v => v.Position.Z - minHeight).ToArray();
-            var normals =
-                Vertices.SelectMany(
+            var minHeight = this.Vertices.Select(v => v.Position.Z).Min();
+	        this.mHeader.Position.Z = minHeight;
+            var heights = this.Vertices.Select(v => v.Position.Z - minHeight).ToArray();
+            var normals = this.Vertices.SelectMany(
                     v => new[] {(sbyte) (-v.Normal.X * 127.0f), (sbyte) (-v.Normal.Y * 127.0f), (sbyte) (v.Normal.Z * 127.0f)})
                     .ToArray();
 
-            var colors = mShadingFloats.Select(v =>
+            var colors = this.mShadingFloats.Select(v =>
             {
                 uint b = (byte) Math.Max(Math.Min((v.Z / 2.0f) * 255.0f, 255), 0);
                 uint g = (byte) Math.Max(Math.Min((v.Y / 2.0f) * 255.0f, 255), 0);
@@ -150,21 +154,21 @@ namespace Neo.IO.Files.Terrain.WoD
 
             AddOrReplaceChunk(0x4D435654, heights);
             AddOrReplaceChunk(0x4D434E52, normals);
-            if (HasMccv)
+            if (this.HasMccv)
             {
-                mHeader.Flags |= 0x40;
+	            this.mHeader.Flags |= 0x40;
                 AddOrReplaceChunk(0x4D434356, colors);
             }
 
-            var totalSize = mOriginalMainChunks.Sum(pair => pair.Value.Size + 8);
+            var totalSize = this.mOriginalMainChunks.Sum(pair => pair.Value.Size + 8);
             totalSize += SizeCache<Mcnk>.Size;
 
             writer.Write(0x4D434E4B);
             writer.Write(totalSize);
-            writer.Write(mHeader);
+            writer.Write(this.mHeader);
 
             var startPos = writer.BaseStream.Position;
-            foreach(var chunk in mOriginalMainChunks)
+            foreach(var chunk in this.mOriginalMainChunks)
             {
                 writer.Write(chunk.Key);
                 writer.Write(chunk.Value.Size);
@@ -173,19 +177,19 @@ namespace Neo.IO.Files.Terrain.WoD
 
             var endPos = writer.BaseStream.Position;
             writer.BaseStream.Position = startPos - SizeCache<Mcnk>.Size;
-            writer.Write(mHeader);
+            writer.Write(this.mHeader);
             writer.BaseStream.Position = endPos;
         }
 
         public void WriteObjChunks(BinaryWriter writer)
         {
-            AddOrUpdateChunk(mOriginalObjChunks, 0x4D435244, DoodadReferences);
+            AddOrUpdateChunk(this.mOriginalObjChunks, 0x4D435244, this.DoodadReferences);
 
-            var totalSize = mOriginalObjChunks.Sum(pair => pair.Value.Size + 8);
+            var totalSize = this.mOriginalObjChunks.Sum(pair => pair.Value.Size + 8);
             writer.Write(0x4D434E4B);
             writer.Write(totalSize);
 
-            foreach (var chunk in mOriginalObjChunks)
+            foreach (var chunk in this.mOriginalObjChunks)
             {
                 writer.Write(chunk.Key);
                 writer.Write(chunk.Value.Size);
@@ -196,14 +200,14 @@ namespace Neo.IO.Files.Terrain.WoD
         public void WriteTexChunks(BinaryWriter writer)
         {
             var alpha = SaveAlpha();
-            AddOrUpdateChunk(mOriginalTexChunks, 0x4D43414C, alpha.ToArray());
-            AddOrUpdateChunk(mOriginalTexChunks, 0x4D434C59, mLayers);
+            AddOrUpdateChunk(this.mOriginalTexChunks, 0x4D43414C, alpha.ToArray());
+            AddOrUpdateChunk(this.mOriginalTexChunks, 0x4D434C59, this.mLayers);
 
-            var totalSize = mOriginalTexChunks.Sum(pair => pair.Value.Size + 8);
+            var totalSize = this.mOriginalTexChunks.Sum(pair => pair.Value.Size + 8);
             writer.Write(0x4D434E4B);
             writer.Write(totalSize);
 
-            foreach (var chunk in mOriginalTexChunks)
+            foreach (var chunk in this.mOriginalTexChunks)
             {
                 writer.Write(chunk.Key);
                 writer.Write(chunk.Value.Size);
@@ -218,15 +222,17 @@ namespace Neo.IO.Files.Terrain.WoD
             if(changed)
             {
                 MapArea parent;
-                mParent.TryGetTarget(out parent);
+	            this.mParent.TryGetTarget(out parent);
 
-                var omin = BoundingBox.Minimum;
-                var omax = BoundingBox.Maximum;
-                BoundingBox = new BoundingBox(new Vector3(omin.X, omin.Y, mMinHeight),
-                    new Vector3(omax.X, omax.Y, mMaxHeight));
+                var omin = this.BoundingBox.Minimum;
+                var omax = this.BoundingBox.Maximum;
+	            this.BoundingBox = new BoundingBox(new Vector3(omin.X, omin.Y, this.mMinHeight),
+                    new Vector3(omax.X, omax.Y, this.mMaxHeight));
 
                 if (parent != null)
-                    parent.UpdateBoundingBox(BoundingBox);
+                {
+	                parent.UpdateBoundingBox(this.BoundingBox);
+                }
             }
 
             return changed;
@@ -237,18 +243,22 @@ namespace Neo.IO.Files.Terrain.WoD
             base.UpdateNormals();
 
             MapArea parent;
-            mParent.TryGetTarget(out parent);
+	        this.mParent.TryGetTarget(out parent);
             if (parent != null)
-                parent.UpdateVertices(this);
+            {
+	            parent.UpdateVertices(this);
+            }
         }
 
         public bool Intersect(ref Ray ray, out float distance)
         {
             distance = float.MaxValue;
-            if (BoundingBox.Intersects(ref ray) == false)
-                return false;
+            if (this.BoundingBox.Intersects(ref ray) == false)
+            {
+	            return false;
+            }
 
-            var minDist = float.MaxValue;
+	        var minDist = float.MaxValue;
             var hasHit = false;
             var dir = ray.Direction;
             var orig = ray.Position;
@@ -260,68 +270,85 @@ namespace Neo.IO.Files.Terrain.WoD
                 var i0 = Indices[i];
                 var i1 = Indices[i + 1];
                 var i2 = Indices[i + 2];
-                Vector3.Subtract(ref Vertices[i1].Position, ref Vertices[i0].Position, out e1);
-                Vector3.Subtract(ref Vertices[i2].Position, ref Vertices[i0].Position, out e2);
+                Vector3.Subtract(ref this.Vertices[i1].Position, ref this.Vertices[i0].Position, out e1);
+                Vector3.Subtract(ref this.Vertices[i2].Position, ref this.Vertices[i0].Position, out e2);
 
                 Vector3.Cross(ref dir, ref e2, out p);
                 float det;
                 Vector3.Dot(ref e1, ref p, out det);
 
                 if (Math.Abs(det) < 1e-4)
-                    continue;
+                {
+	                continue;
+                }
 
-                var invDet = 1.0f / det;
-                Vector3.Subtract(ref orig, ref Vertices[i0].Position, out T);
+	            var invDet = 1.0f / det;
+                Vector3.Subtract(ref orig, ref this.Vertices[i0].Position, out T);
                 float u;
                 Vector3.Dot(ref T, ref p, out u);
                 u *= invDet;
 
                 if (u < 0 || u > 1)
-                    continue;
+                {
+	                continue;
+                }
 
-                Vector3.Cross(ref T, ref e1, out q);
+	            Vector3.Cross(ref T, ref e1, out q);
                 float v;
                 Vector3.Dot(ref dir, ref q, out v);
                 v *= invDet;
                 if (v < 0 || (u + v) > 1)
-                    continue;
+                {
+	                continue;
+                }
 
-                float t;
+	            float t;
                 Vector3.Dot(ref e2, ref q, out t);
                 t *= invDet;
 
-                if (t < 1e-4) continue;
+                if (t < 1e-4)
+                {
+	                continue;
+                }
 
-                hasHit = true;
+	            hasHit = true;
                 if (t < minDist)
-                    minDist = t;
+                {
+	                minDist = t;
+                }
             }
 
             if(hasHit)
-                distance = minDist;
+            {
+	            distance = minDist;
+            }
 
-            return hasHit;
+	        return hasHit;
         }
 
         public void AsyncLoad()
         {
-            mReader.BaseStream.Position = mMainInfo.PosStart;
-            var chunkSize = mReader.ReadInt32();
-            mHeader = mReader.Read<Mcnk>();
+	        this.mReader.BaseStream.Position = this.mMainInfo.PosStart;
+            var chunkSize = this.mReader.ReadInt32();
+	        this.mHeader = this.mReader.Read<Mcnk>();
             var hasMccv = false;
 
             for (var i = 0; i < 4096; ++i)
-                AlphaValues[i] = 0xFF;
-
-            while (mReader.BaseStream.Position + 8 <= mMainInfo.PosStart + 8 + chunkSize)
             {
-                var id = mReader.ReadUInt32();
-                var size = mReader.ReadInt32();
+	            this.AlphaValues[i] = 0xFF;
+            }
 
-                if (mReader.BaseStream.Position + size > mMainInfo.PosStart + 8 + chunkSize)
-                    break;
+	        while (this.mReader.BaseStream.Position + 8 <= this.mMainInfo.PosStart + 8 + chunkSize)
+            {
+                var id = this.mReader.ReadUInt32();
+                var size = this.mReader.ReadInt32();
 
-                var cur = mReader.BaseStream.Position;
+                if (this.mReader.BaseStream.Position + size > this.mMainInfo.PosStart + 8 + chunkSize)
+                {
+	                break;
+                }
+
+	            var cur = this.mReader.BaseStream.Position;
 
                 switch(id)
                 {
@@ -343,9 +370,9 @@ namespace Neo.IO.Files.Terrain.WoD
                         break;
                 }
 
-                mReader.BaseStream.Position = cur;
-                var data = mReader.ReadBytes(size);
-                mOriginalMainChunks.Add(id, new DataChunk {Data = data, Signature = id, Size = size});
+	            this.mReader.BaseStream.Position = cur;
+                var data = this.mReader.ReadBytes(size);
+	            this.mOriginalMainChunks.Add(id, new DataChunk {Data = data, Signature = id, Size = size});
             }
 
             LoadHoles();
@@ -353,7 +380,9 @@ namespace Neo.IO.Files.Terrain.WoD
             if (hasMccv == false)
             {
                 for (var i = 0; i < 145; ++i)
-                    Vertices[i].Color = 0x7F7F7F7F;
+                {
+	                this.Vertices[i].Color = 0x7F7F7F7F;
+                }
             }
 
             LoadTexData();
@@ -364,18 +393,20 @@ namespace Neo.IO.Files.Terrain.WoD
 
         private void LoadObjData()
         {
-            mObjReader.BaseStream.Position = mObjInfo.PosStart;
-            var chunkSize = mObjReader.ReadInt32();
+	        this.mObjReader.BaseStream.Position = this.mObjInfo.PosStart;
+            var chunkSize = this.mObjReader.ReadInt32();
 
-            while(mObjReader.BaseStream.Position + 8 <= mObjInfo.PosStart + 8 + chunkSize)
+            while(this.mObjReader.BaseStream.Position + 8 <= this.mObjInfo.PosStart + 8 + chunkSize)
             {
-                var id = mObjReader.ReadUInt32();
-                var size = mObjReader.ReadInt32();
+                var id = this.mObjReader.ReadUInt32();
+                var size = this.mObjReader.ReadInt32();
 
-                if (mObjReader.BaseStream.Position + size > mObjInfo.PosStart + 8 + chunkSize)
-                    break;
+                if (this.mObjReader.BaseStream.Position + size > this.mObjInfo.PosStart + 8 + chunkSize)
+                {
+	                break;
+                }
 
-                var cur = mObjReader.BaseStream.Position;
+	            var cur = this.mObjReader.BaseStream.Position;
                 switch(id)
                 {
                     case 0x4D435244:
@@ -383,62 +414,78 @@ namespace Neo.IO.Files.Terrain.WoD
                         break;
                 }
 
-                mObjReader.BaseStream.Position = cur;
-                var data = mObjReader.ReadBytes(size);
-                mOriginalObjChunks.Add(id, new DataChunk { Data = data, Signature = id, Size = size });
-                mObjReader.BaseStream.Position = cur + size;
+	            this.mObjReader.BaseStream.Position = cur;
+                var data = this.mObjReader.ReadBytes(size);
+	            this.mOriginalObjChunks.Add(id, new DataChunk { Data = data, Signature = id, Size = size });
+	            this.mObjReader.BaseStream.Position = cur + size;
             }
         }
 
         private void LoadMcrd(int size)
         {
-            DoodadReferences = mObjReader.ReadArray<int>(size / 4);
-            var minPos = BoundingBox.Minimum;
-            var maxPos = BoundingBox.Maximum;
+	        this.DoodadReferences = this.mObjReader.ReadArray<int>(size / 4);
+            var minPos = this.BoundingBox.Minimum;
+            var maxPos = this.BoundingBox.Maximum;
 
             MapArea parent;
-            if (mParent.TryGetTarget(out parent) == false)
-                return;
+            if (this.mParent.TryGetTarget(out parent) == false)
+            {
+	            return;
+            }
 
-            foreach (var reference in DoodadReferences)
+	        foreach (var reference in this.DoodadReferences)
             {
                 var inst = parent.DoodadInstances[reference];
                 var min = inst.BoundingBox.Minimum;
                 var max = inst.BoundingBox.Maximum;
 
                 if (min.X < minPos.X)
-                    minPos.X = min.X;
-                if (min.Y < minPos.Y)
-                    minPos.Y = min.Y;
-                if (min.Z < minPos.Z)
-                    minPos.Z = min.Z;
-                if (max.X > maxPos.X)
-                    maxPos.X = max.X;
-                if (max.Y > maxPos.Y)
-                    maxPos.Y = max.Y;
-                if (max.Z > maxPos.Z)
-                    maxPos.Z = max.Z;
+                {
+	                minPos.X = min.X;
+                }
+	            if (min.Y < minPos.Y)
+	            {
+		            minPos.Y = min.Y;
+	            }
+	            if (min.Z < minPos.Z)
+	            {
+		            minPos.Z = min.Z;
+	            }
+	            if (max.X > maxPos.X)
+	            {
+		            maxPos.X = max.X;
+	            }
+	            if (max.Y > maxPos.Y)
+	            {
+		            maxPos.Y = max.Y;
+	            }
+	            if (max.Z > maxPos.Z)
+	            {
+		            maxPos.Z = max.Z;
+	            }
             }
 
-            ModelBox = new BoundingBox(minPos, maxPos);
+	        this.ModelBox = new BoundingBox(minPos, maxPos);
         }
 
         private void LoadTexData()
         {
             try
             {
-                mTexReader.BaseStream.Position = mTexInfo.PosStart;
-                var chunkSize = mTexReader.ReadInt32();
+	            this.mTexReader.BaseStream.Position = this.mTexInfo.PosStart;
+                var chunkSize = this.mTexReader.ReadInt32();
 
-                while (mTexReader.BaseStream.Position + 8 <= mTexInfo.PosStart + 8 + chunkSize)
+                while (this.mTexReader.BaseStream.Position + 8 <= this.mTexInfo.PosStart + 8 + chunkSize)
                 {
-                    var id = mTexReader.ReadUInt32();
-                    var size = mTexReader.ReadInt32();
+                    var id = this.mTexReader.ReadUInt32();
+                    var size = this.mTexReader.ReadInt32();
 
-                    if (mTexReader.BaseStream.Position + size > mTexInfo.PosStart + 8 + chunkSize)
-                        break;
+                    if (this.mTexReader.BaseStream.Position + size > this.mTexInfo.PosStart + 8 + chunkSize)
+                    {
+	                    break;
+                    }
 
-                    var cur = mTexReader.BaseStream.Position;
+	                var cur = this.mTexReader.BaseStream.Position;
 
                     switch (id)
                     {
@@ -447,8 +494,8 @@ namespace Neo.IO.Files.Terrain.WoD
                             break;
 
                         case 0x4D43414C:
-                            mAlphaDataCompressed = Marshal.AllocHGlobal(size);
-                            mTexReader.ReadToPointer(mAlphaDataCompressed, size);
+	                        this.mAlphaDataCompressed = Marshal.AllocHGlobal(size);
+	                        this.mTexReader.ReadToPointer(this.mAlphaDataCompressed, size);
                             break;
 
                         case 0x4D435348:
@@ -460,11 +507,11 @@ namespace Neo.IO.Files.Terrain.WoD
                                     {
                                         for (var j = 0; j < 8; ++j)
                                         {
-                                            var mask = mTexReader.ReadByte();
+                                            var mask = this.mTexReader.ReadByte();
                                             for (var k = 0; k < 8; ++k)
                                             {
-                                                AlphaValues[curPtr] &= 0xFFFFFF00;
-                                                AlphaValues[curPtr++] |= ((mask & (1 << k)) == 0) ? (byte)0xFF : (byte)0xCC;
+	                                            this.AlphaValues[curPtr] &= 0xFFFFFF00;
+	                                            this.AlphaValues[curPtr++] |= ((mask & (1 << k)) == 0) ? (byte)0xFF : (byte)0xCC;
                                             }
                                         }
                                     }
@@ -473,60 +520,72 @@ namespace Neo.IO.Files.Terrain.WoD
                             break;
                     }
 
-                    mTexReader.BaseStream.Position = cur;
-                    var data = mTexReader.ReadBytes(size);
-                    mOriginalTexChunks.Add(id, new DataChunk { Data = data, Signature = id, Size = size });
-                    mTexReader.BaseStream.Position = cur + size;
+	                this.mTexReader.BaseStream.Position = cur;
+                    var data = this.mTexReader.ReadBytes(size);
+	                this.mOriginalTexChunks.Add(id, new DataChunk { Data = data, Signature = id, Size = size });
+	                this.mTexReader.BaseStream.Position = cur + size;
                 }
 
                 LoadAlpha();
 
                 var textures = new List<Graphics.Texture>();
                 MapArea parent;
-                mParent.TryGetTarget(out parent);
+	            this.mParent.TryGetTarget(out parent);
                 if (parent == null)
-                    throw new InvalidOperationException("Parent got disposed but loading was still invoked");
-
-                TextureScales = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
-                TextureNames = new string[mLayers.Length];
-                SpecularTextures = new List<Graphics.Texture>();
-                for (var i = 0; i < mLayers.Length && i < 4; ++i)
                 {
-                    var texName = parent.GetTextureName(mLayers[i].TextureId);
-                    TextureNames[i] = texName;
-                    textures.Add(parent.GetTexture(mLayers[i].TextureId));
-                    SpecularTextures.Add(parent.GetSpecularTexture(mLayers[i].TextureId));
-                    SpecularFactors[i] = parent.IsSpecularTextureLoaded(mLayers[i].TextureId) ? 1 : 0;
-                    TextureScales[i] = parent.GetTextureScale(mLayers[i].TextureId);
+	                throw new InvalidOperationException("Parent got disposed but loading was still invoked");
                 }
 
-                Textures = textures;
+	            this.TextureScales = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
+	            this.TextureNames = new string[this.mLayers.Length];
+	            this.SpecularTextures = new List<Graphics.Texture>();
+                for (var i = 0; i < this.mLayers.Length && i < 4; ++i)
+                {
+                    var texName = parent.GetTextureName(this.mLayers[i].TextureId);
+	                this.TextureNames[i] = texName;
+                    textures.Add(parent.GetTexture(this.mLayers[i].TextureId));
+	                this.SpecularTextures.Add(parent.GetSpecularTexture(this.mLayers[i].TextureId));
+	                this.SpecularFactors[i] = parent.IsSpecularTextureLoaded(this.mLayers[i].TextureId) ? 1 : 0;
+	                this.TextureScales[i] = parent.GetTextureScale(this.mLayers[i].TextureId);
+                }
+
+	            this.Textures = textures;
             }
             finally
             {
-                if (mAlphaDataCompressed != IntPtr.Zero)
-                    Marshal.FreeHGlobal(mAlphaDataCompressed);
+                if (this.mAlphaDataCompressed != IntPtr.Zero)
+                {
+	                Marshal.FreeHGlobal(this.mAlphaDataCompressed);
+                }
             }
         }
 
         private void LoadAlpha()
         {
-            var nLayers = Math.Min(mLayers.Length, 4);
+            var nLayers = Math.Min(this.mLayers.Length, 4);
             for(var i = 1; i < nLayers; ++i)
             {
-                if ((mLayers[i].Flags & 0x200) != 0)
-                    LoadLayerRle(mLayers[i], i);
-                else if ((mLayers[i].Flags & 0x100) != 0)
+                if ((this.mLayers[i].Flags & 0x200) != 0)
+                {
+	                LoadLayerRle(this.mLayers[i], i);
+                }
+                else if ((this.mLayers[i].Flags & 0x100) != 0)
                 {
                     if (WorldFrame.Instance.MapManager.HasNewBlend)
-                        LoadUncompressed(mLayers[i], i);
+                    {
+	                    LoadUncompressed(this.mLayers[i], i);
+                    }
                     else
-                        LoadLayerCompressed(mLayers[i], i);
+                    {
+	                    LoadLayerCompressed(this.mLayers[i], i);
+                    }
                 }
                 else
                 {
                     for (var j = 0; j < 4096; ++j)
-                        AlphaValues[j] |= 0xFFu << (8 * i);
+                    {
+	                    this.AlphaValues[j] |= 0xFFu << (8 * i);
+                    }
                 }
             }
 
@@ -535,15 +594,17 @@ namespace Neo.IO.Files.Terrain.WoD
 
         private unsafe void LoadUncompressed(Mcly layerInfo, int layer)
         {
-            var ptr = mAlphaDataCompressed.ToPointer();
+            var ptr = this.mAlphaDataCompressed.ToPointer();
             var startPos = layerInfo.OfsMcal;
             for (var i = 0; i < 4096; ++i)
-                AlphaValues[i] |= (uint) ((byte*)ptr)[startPos++] << (8 * layer);
+            {
+	            this.AlphaValues[i] |= (uint) ((byte*)ptr)[startPos++] << (8 * layer);
+            }
         }
 
         private unsafe void LoadLayerCompressed(Mcly layerInfo, int layer)
         {
-            var ptr = mAlphaDataCompressed.ToPointer();
+            var ptr = this.mAlphaDataCompressed.ToPointer();
             var startPos = layerInfo.OfsMcal;
             var counter = 0;
             for (var k = 0; k < 64; ++k)
@@ -556,15 +617,15 @@ namespace Neo.IO.Files.Terrain.WoD
                     val2 = j == 31 ? val1 : val2;
                     val1 = (byte)((val1 / 15.0f) * 255.0f);
                     val2 = (byte)((val2 / 15.0f) * 255.0f);
-                    AlphaValues[counter++] |= (uint)val1 << (8 * layer);
-                    AlphaValues[counter++] |= (uint)val2 << (8 * layer);
+	                this.AlphaValues[counter++] |= (uint)val1 << (8 * layer);
+	                this.AlphaValues[counter++] |= (uint)val2 << (8 * layer);
                 }
             }
         }
 
         private unsafe void LoadLayerRle(Mcly layerInfo, int layer)
         {
-            var ptr = mAlphaDataCompressed.ToPointer();
+            var ptr = this.mAlphaDataCompressed.ToPointer();
             var counterOut = 0;
             var startPos = layerInfo.OfsMcal;
             while (counterOut < 4096)
@@ -575,23 +636,27 @@ namespace Neo.IO.Files.Terrain.WoD
                     var value = ((byte*)ptr)[startPos++];
                     var repeat = indicator & 0x7F;
                     for (var k = 0; k < repeat && counterOut < 4096; ++k)
-                        AlphaValues[counterOut++] |= (uint)value << (layer * 8);
+                    {
+	                    this.AlphaValues[counterOut++] |= (uint)value << (layer * 8);
+                    }
                 }
                 else
                 {
                     for (var k = 0; k < (indicator & 0x7F) && counterOut < 4096; ++k)
-                        AlphaValues[counterOut++] |= (uint)((byte*)ptr)[startPos++] << (8 * layer);
+                    {
+	                    this.AlphaValues[counterOut++] |= (uint)((byte*)ptr)[startPos++] << (8 * layer);
+                    }
                 }
             }
         }
 
         private void LoadMcvt()
         {
-            var heights = mReader.ReadArray<float>(145);
+            var heights = this.mReader.ReadArray<float>(145);
 
-            var posx = Metrics.MapMidPoint - mHeader.Position.Y;
-            var posy = Metrics.MapMidPoint + mHeader.Position.X;
-            var posz = mHeader.Position.Z;
+            var posx = Metrics.MapMidPoint - this.mHeader.Position.Y;
+            var posy = Metrics.MapMidPoint + this.mHeader.Position.X;
+            var posz = this.mHeader.Position.Z;
 
             var counter = 0;
 
@@ -605,41 +670,55 @@ namespace Neo.IO.Files.Terrain.WoD
                     var height = posz + heights[counter];
                     var x = posx + j * Metrics.UnitSize;
                     if ((i % 2) != 0)
-                        x += 0.5f * Metrics.UnitSize;
-                    var y = posy - i * Metrics.UnitSize * 0.5f;
+                    {
+	                    x += 0.5f * Metrics.UnitSize;
+                    }
+	                var y = posy - i * Metrics.UnitSize * 0.5f;
 
-                    Vertices[counter].Position = new Vector3(x, y, height);
+	                this.Vertices[counter].Position = new Vector3(x, y, height);
 
                     if (height < minPos.Z)
-                        minPos.Z = height;
-                    if (height > maxPos.Z)
-                        maxPos.Z = height;
+                    {
+	                    minPos.Z = height;
+                    }
+	                if (height > maxPos.Z)
+	                {
+		                maxPos.Z = height;
+	                }
 
-                    if (x < minPos.X)
-                        minPos.X = x;
-                    if (x > maxPos.X)
-                        maxPos.X = x;
-                    if (y < minPos.Y)
-                        minPos.Y = y;
-                    if (y > maxPos.Y)
-                        maxPos.Y = y;
+	                if (x < minPos.X)
+	                {
+		                minPos.X = x;
+	                }
+	                if (x > maxPos.X)
+	                {
+		                maxPos.X = x;
+	                }
+	                if (y < minPos.Y)
+	                {
+		                minPos.Y = y;
+	                }
+	                if (y > maxPos.Y)
+	                {
+		                maxPos.Y = y;
+	                }
 
-                    Vertices[counter].TexCoordAlpha = new Vector2(j / 8.0f + ((i % 2) != 0 ? (0.5f / 8.0f) : 0), i / 16.0f);
-                    Vertices[counter].TexCoord = new Vector2(j + ((i % 2) != 0 ? 0.5f : 0.0f), i * 0.5f);
+	                this.Vertices[counter].TexCoordAlpha = new Vector2(j / 8.0f + ((i % 2) != 0 ? (0.5f / 8.0f) : 0), i / 16.0f);
+	                this.Vertices[counter].TexCoord = new Vector2(j + ((i % 2) != 0 ? 0.5f : 0.0f), i * 0.5f);
                     ++counter;
                 }
             }
 
-            mMinHeight = minPos.Z;
-            mMaxHeight = maxPos.Z;
+	        this.mMinHeight = minPos.Z;
+	        this.mMaxHeight = maxPos.Z;
 
-            BoundingBox = new BoundingBox(minPos, maxPos);
-            mMidPoint = minPos + (maxPos - minPos) / 2.0f;
+	        this.BoundingBox = new BoundingBox(minPos, maxPos);
+	        this.mMidPoint = minPos + (maxPos - minPos) / 2.0f;
         }
 
         private void LoadMcnr()
         {
-            var normals = mReader.ReadArray<sbyte>(145 * 3);
+            var normals = this.mReader.ReadArray<sbyte>(145 * 3);
             var counter = 0;
 
             for (var i = 0; i < 17; ++i)
@@ -650,7 +729,7 @@ namespace Neo.IO.Files.Terrain.WoD
                     var ny = normals[counter * 3 + 1] / -127.0f;
                     var nz = normals[counter * 3 + 2] / 127.0f;
 
-                    Vertices[counter].Normal = new Vector3(nx, ny, nz);
+	                this.Vertices[counter].Normal = new Vector3(nx, ny, nz);
                     ++counter;
                 }
             }
@@ -658,56 +737,53 @@ namespace Neo.IO.Files.Terrain.WoD
 
         private void LoadMccv()
         {
-            var colors = mReader.ReadArray<uint>(145);
+            var colors = this.mReader.ReadArray<uint>(145);
             for (var i = 0; i < 145; ++i)
             {
-                Vertices[i].Color = colors[i];
+	            this.Vertices[i].Color = colors[i];
                 var r = (colors[i] >> 16) & 0xFF;
                 var g = (colors[i] >> 8) & 0xFF;
                 var b = (colors[i]) & 0xFF;
                 var a = (colors[i] >> 24) & 0xFF;
 
-                mShadingFloats[i] = new Vector4(b * 2.0f / 255.0f, g * 2.0f / 255.0f, r * 2.0f / 255.0f, a * 2.0f / 255.0f);
+	            this.mShadingFloats[i] = new Vector4(b * 2.0f / 255.0f, g * 2.0f / 255.0f, r * 2.0f / 255.0f, a * 2.0f / 255.0f);
             }
         }
 
         private void LoadMclv()
         {
-            var colors = mReader.ReadArray<uint>(145);
+            var colors = this.mReader.ReadArray<uint>(145);
             for(var i = 0; i < 145; ++i)
             {
-                Vertices[i].AdditiveColor = colors[i];
+	            this.Vertices[i].AdditiveColor = colors[i];
             }
         }
 
         private void LoadHoles()
         {
-            if((mHeader.Flags & 0x10000) == 0)
+            if((this.mHeader.Flags & 0x10000) == 0)
             {
                 for (var i = 0; i < 4; ++i)
                 {
                     for (var j = 0; j < 4; ++j)
                     {
                         var baseIndex = i * 2 * 8 + j * 2;
-                        var mask = (mHeader.Holes & (1 << (i * 4 + j))) != 0;
-                        HoleValues[baseIndex] =
-                        HoleValues[baseIndex + 1] =
-                        HoleValues[baseIndex + 8] =
-                        HoleValues[baseIndex + 9] = (byte)(mask ? 0x00 : 0xFF);
+                        var mask = (this.mHeader.Holes & (1 << (i * 4 + j))) != 0;
+	                    this.HoleValues[baseIndex] = this.HoleValues[baseIndex + 1] = this.HoleValues[baseIndex + 8] = this.HoleValues[baseIndex + 9] = (byte)(mask ? 0x00 : 0xFF);
                     }
                 }
             }
             else
             {
                 var holeBytes = new byte[8];
-                Buffer.BlockCopy(BitConverter.GetBytes(mHeader.Mcvt), 0, holeBytes, 0, 4);
-                Buffer.BlockCopy(BitConverter.GetBytes(mHeader.Mcnr), 0, holeBytes, 4, 4);
+                Buffer.BlockCopy(BitConverter.GetBytes(this.mHeader.Mcvt), 0, holeBytes, 0, 4);
+                Buffer.BlockCopy(BitConverter.GetBytes(this.mHeader.Mcnr), 0, holeBytes, 4, 4);
 
                 for(var i = 0; i < 8; ++i)
                 {
                     for(var j = 0; j < 8; ++j)
                     {
-                        HoleValues[i * 8 + j] = (byte) (((holeBytes[i] >> j) & 1) != 0 ? 0x00 : 0xFF);
+	                    this.HoleValues[i * 8 + j] = (byte) (((holeBytes[i] >> j) & 1) != 0 ? 0x00 : 0xFF);
                     }
                 }
             }
@@ -715,16 +791,18 @@ namespace Neo.IO.Files.Terrain.WoD
 
         private void LoadMcly(int size)
         {
-            mLayers = mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size);
+	        this.mLayers = this.mTexReader.ReadArray<Mcly>(size / SizeCache<Mcly>.Size);
         }
 
         private unsafe DataChunk ChunkFromArray<T>(uint signature, T[] data) where T : struct
         {
             var byteData = new byte[data.Length * SizeCache<T>.Size];
             fixed(byte* ptr = byteData)
-                UnsafeNativeMethods.CopyMemory(ptr, (byte*) SizeCache<T>.GetUnsafePtr(ref data[0]), byteData.Length);
+            {
+	            UnsafeNativeMethods.CopyMemory(ptr, (byte*) SizeCache<T>.GetUnsafePtr(ref data[0]), byteData.Length);
+            }
 
-            return new DataChunk
+	        return new DataChunk
             {
                 Data = byteData,
                 Signature = signature,
@@ -735,17 +813,23 @@ namespace Neo.IO.Files.Terrain.WoD
         private void AddOrReplaceChunk<T>(uint signature, T[] data) where T : struct
         {
             var chunk = ChunkFromArray(signature, data);
-            if (mOriginalMainChunks.ContainsKey(signature) == false)
-                mOriginalMainChunks.Add(signature, chunk);
+            if (this.mOriginalMainChunks.ContainsKey(signature) == false)
+            {
+	            this.mOriginalMainChunks.Add(signature, chunk);
+            }
             else
             {
-                var old = mOriginalMainChunks[signature];
+                var old = this.mOriginalMainChunks[signature];
                 if (old.Size >= chunk.Size)
-                    Buffer.BlockCopy(chunk.Data, 0, old.Data, 0, chunk.Size);
+                {
+	                Buffer.BlockCopy(chunk.Data, 0, old.Data, 0, chunk.Size);
+                }
                 else
-                    old = chunk;
+                {
+	                old = chunk;
+                }
 
-                mOriginalMainChunks[signature] = old;
+	            this.mOriginalMainChunks[signature] = old;
             }
         }
 
@@ -765,18 +849,22 @@ namespace Neo.IO.Files.Terrain.WoD
             var radius = parameters.OuterRadius;
             for(var i = 0; i < 145; ++i)
             {
-                var p = Vertices[i].Position;
+                var p = this.Vertices[i].Position;
                 var dist = (new Vector2(p.X, p.Y) - new Vector2(parameters.Center.X, parameters.Center.Y)).Length;
                 if (dist > radius)
-                    continue;
+                {
+	                continue;
+                }
 
-                HasMccv = true;
+	            this.HasMccv = true;
                 changed = true;
                 var factor = dist / radius;
                 if (dist < parameters.InnerRadius)
-                    factor = 1.0f;
+                {
+	                factor = 1.0f;
+                }
 
-                var curColor = mShadingFloats[i];
+	            var curColor = this.mShadingFloats[i];
                 var dr = destColor.X - curColor.Z;
                 var dg = destColor.Y - curColor.Y;
                 var db = destColor.Z - curColor.X;
@@ -789,40 +877,52 @@ namespace Neo.IO.Files.Terrain.WoD
                 {
                     curColor.Z -= cr;
                     if (curColor.Z < destColor.X)
-                        curColor.Z = destColor.X;
+                    {
+	                    curColor.Z = destColor.X;
+                    }
                 }
                 else
                 {
                     curColor.Z += cr;
                     if (curColor.Z > destColor.X)
-                        curColor.Z = destColor.X;
+                    {
+	                    curColor.Z = destColor.X;
+                    }
                 }
                 if (dg < 0)
                 {
                     curColor.Y -= cg;
                     if (curColor.Y < destColor.Y)
-                        curColor.Y = destColor.Y;
+                    {
+	                    curColor.Y = destColor.Y;
+                    }
                 }
                 else
                 {
                     curColor.Y += cg;
                     if (curColor.Y > destColor.Y)
-                        curColor.Y = destColor.Y;
+                    {
+	                    curColor.Y = destColor.Y;
+                    }
                 }
                 if (db < 0)
                 {
                     curColor.X -= cb;
                     if (curColor.X < destColor.Z)
-                        curColor.X = destColor.Z;
+                    {
+	                    curColor.X = destColor.Z;
+                    }
                 }
                 else
                 {
                     curColor.X += cb;
                     if (curColor.X > destColor.Z)
-                        curColor.X = destColor.Z;
+                    {
+	                    curColor.X = destColor.Z;
+                    }
                 }
 
-                mShadingFloats[i] = curColor;
+	            this.mShadingFloats[i] = curColor;
 
                 curColor.X = Math.Min(Math.Max(curColor.X, 0), 2);
                 curColor.Y = Math.Min(Math.Max(curColor.Y, 0), 2);
@@ -834,7 +934,7 @@ namespace Neo.IO.Files.Terrain.WoD
                 var a = (byte) ((curColor.W / 2.0f) * 255.0f);
 
                 var color = (uint)((a << 24) | (r << 16) | (g << 8) | b);
-                Vertices[i].Color = color;
+	            this.Vertices[i].Color = color;
             }
 
             return changed;
@@ -842,18 +942,22 @@ namespace Neo.IO.Files.Terrain.WoD
 
         protected override int AddTextureLayer(string textureName)
         {
-            var old = TextureNames;
-            TextureNames = new string[TextureNames.Count + 1];
+            var old = this.TextureNames;
+	        this.TextureNames = new string[this.TextureNames.Count + 1];
             for (var i = 0; i < old.Count; ++i)
-                TextureNames[i] = old[i];
+            {
+	            this.TextureNames[i] = old[i];
+            }
 
-            TextureNames[TextureNames.Count - 1] = textureName;
+	        this.TextureNames[this.TextureNames.Count - 1] = textureName;
 
             MapArea parent;
-            if (mParent.TryGetTarget(out parent) == false)
-                throw new InvalidOperationException("Couldnt get parent of map chunk");
+            if (this.mParent.TryGetTarget(out parent) == false)
+            {
+	            throw new InvalidOperationException("Couldnt get parent of map chunk");
+            }
 
-            var texId = parent.GetOrAddTexture(textureName);
+	        var texId = parent.GetOrAddTexture(textureName);
             var layer = new Mcly
             {
                 Flags = 0,
@@ -863,18 +967,20 @@ namespace Neo.IO.Files.Terrain.WoD
                 Padding = 0
             };
 
-            var layers = mLayers;
-            mLayers = new Mcly[layers.Length + 1];
+            var layers = this.mLayers;
+	        this.mLayers = new Mcly[layers.Length + 1];
             for (var i = 0; i < layers.Length; ++i)
-                mLayers[i] = layers[i];
+            {
+	            this.mLayers[i] = layers[i];
+            }
 
-            mLayers[layers.Length] = layer;
+	        this.mLayers[layers.Length] = layer;
 
-            Textures.Add(parent.GetTexture(texId));
-            SpecularTextures.Add(parent.GetSpecularTexture(texId));
-            SpecularFactors[SpecularTextures.Count - 1] = parent.IsSpecularTextureLoaded(texId) ? 1 : 0;
-            TexturesChanged = true;
-            return mLayers.Length - 1;
+	        this.Textures.Add(parent.GetTexture(texId));
+	        this.SpecularTextures.Add(parent.GetSpecularTexture(texId));
+	        this.SpecularFactors[this.SpecularTextures.Count - 1] = parent.IsSpecularTextureLoaded(texId) ? 1 : 0;
+	        this.TexturesChanged = true;
+            return this.mLayers.Length - 1;
         }
 
         private unsafe void AddOrUpdateChunk<T>(Dictionary<uint, DataChunk> chunks, uint signature, T[] data) where T : struct
@@ -887,37 +993,47 @@ namespace Neo.IO.Files.Terrain.WoD
             {
                 var ptr = SizeCache<T>.GetUnsafePtr(ref data[0]);
                 fixed (byte* bptr = chunk.Data)
-                    UnsafeNativeMethods.CopyMemory(bptr, (byte*) ptr, totalSize);
+                {
+	                UnsafeNativeMethods.CopyMemory(bptr, (byte*) ptr, totalSize);
+                }
             }
 
             if (chunks.ContainsKey(signature))
-                chunks[signature] = chunk;
+            {
+	            chunks[signature] = chunk;
+            }
             else
-                chunks.Add(signature, chunk);
+            {
+	            chunks.Add(signature, chunk);
+            }
         }
 
         private MemoryStream SaveAlpha()
         {
-            if (mLayers.Length == 0)
-                return new MemoryStream();
+            if (this.mLayers.Length == 0)
+            {
+	            return new MemoryStream();
+            }
 
-            var strm = new MemoryStream();
+	        var strm = new MemoryStream();
             var writer = new BinaryWriter(strm);
 
             var curPos = 0;
-            mLayers[0].Flags &= ~0x300u;
-            mLayers[0].OfsMcal = 0;
-            for (var i = 1; i < mLayers.Length; ++i)
+	        this.mLayers[0].Flags &= ~0x300u;
+	        this.mLayers[0].OfsMcal = 0;
+            for (var i = 1; i < this.mLayers.Length; ++i)
             {
                 bool compressed;
                 var data = GetSavedAlphaForLayer(i, out compressed);
-                mLayers[i].OfsMcal = curPos;
+	            this.mLayers[i].OfsMcal = curPos;
                 if (compressed)
-                    mLayers[i].Flags |= 0x300;
+                {
+	                this.mLayers[i].Flags |= 0x300;
+                }
                 else
                 {
-                    mLayers[i].Flags |= 0x100;
-                    mLayers[i].Flags &= ~0x200u;
+	                this.mLayers[i].Flags |= 0x100;
+	                this.mLayers[i].Flags &= ~0x200u;
                 }
 
                 writer.Write(data);
@@ -930,14 +1046,16 @@ namespace Neo.IO.Files.Terrain.WoD
         private float CalculateAlphaHomogenity(int layer)
         {
             var numCompressable = 1;
-            var lastAlpha = (AlphaValues[0] >> (layer * 8)) & 0xFF;
+            var lastAlpha = (this.AlphaValues[0] >> (layer * 8)) & 0xFF;
             for (var i = 1; i < 4096; ++i)
             {
-                var value = (AlphaValues[i] >> (layer * 8)) & 0xFF;
+                var value = (this.AlphaValues[i] >> (layer * 8)) & 0xFF;
                 if (value == lastAlpha)
-                    ++numCompressable;
+                {
+	                ++numCompressable;
+                }
 
-                lastAlpha = value;
+	            lastAlpha = value;
             }
 
             return numCompressable / 4096.0f;
@@ -959,10 +1077,10 @@ namespace Neo.IO.Files.Terrain.WoD
         public override void SetHole(IntersectionParams intersection, bool add)
         {
             float holesize = CHUNKSIZE / 4.0f;
-            var min = BoundingBox.Minimum;
+            var min = this.BoundingBox.Minimum;
             var intersect = new Vector2(intersection.TerrainPosition.X, intersection.TerrainPosition.Y);
 
-            bool use64bit = (mHeader.Flags & 0x10000) == 0x10000;
+            bool use64bit = (this.mHeader.Flags & 0x10000) == 0x10000;
             if (!use64bit)
             {
                 for (int x = 0; x < 4; x++)
@@ -984,14 +1102,15 @@ namespace Neo.IO.Files.Terrain.WoD
                             int bit = (1 << (y * 4 + x));
 
                             if (add)
-                                mHeader.Holes |= bit;
+                            {
+	                            this.mHeader.Holes |= bit;
+                            }
                             else
-                                mHeader.Holes &= ~bit;
+                            {
+	                            this.mHeader.Holes &= ~bit;
+                            }
 
-                            HoleValues[baseIndex] =
-                            HoleValues[baseIndex + 1] =
-                            HoleValues[baseIndex + 8] =
-                            HoleValues[baseIndex + 9] = (byte)(add ? 0x00 : 0xFF);
+	                        this.HoleValues[baseIndex] = this.HoleValues[baseIndex + 1] = this.HoleValues[baseIndex + 8] = this.HoleValues[baseIndex + 9] = (byte)(add ? 0x00 : 0xFF);
                             return;
                         }
                     }
@@ -1001,8 +1120,8 @@ namespace Neo.IO.Files.Terrain.WoD
             {
                 holesize = CHUNKSIZE / 8.0f;
                 var holeBytes = new byte[8];
-                Buffer.BlockCopy(BitConverter.GetBytes(mHeader.Mcvt), 0, holeBytes, 0, 4);
-                Buffer.BlockCopy(BitConverter.GetBytes(mHeader.Mcnr), 0, holeBytes, 4, 4);
+                Buffer.BlockCopy(BitConverter.GetBytes(this.mHeader.Mcvt), 0, holeBytes, 0, 4);
+                Buffer.BlockCopy(BitConverter.GetBytes(this.mHeader.Mcnr), 0, holeBytes, 4, 4);
 
                 for (var x = 0; x < 8; ++x)
                 {
@@ -1022,15 +1141,19 @@ namespace Neo.IO.Files.Terrain.WoD
                             byte bit = (byte)(1 << x);
 
                             if (add)
-                                holeBytes[y] |= bit;
+                            {
+	                            holeBytes[y] |= bit;
+                            }
                             else
-                                holeBytes[y] = (byte)(holeBytes[y] & ~bit);
+                            {
+	                            holeBytes[y] = (byte)(holeBytes[y] & ~bit);
+                            }
 
-                            mHeader.Mcvt = BitConverter.ToInt32(holeBytes, 0);
-                            mHeader.Mcnr = BitConverter.ToInt32(holeBytes, 4);
+	                        this.mHeader.Mcvt = BitConverter.ToInt32(holeBytes, 0);
+	                        this.mHeader.Mcnr = BitConverter.ToInt32(holeBytes, 4);
 
                             int h = y * 8 + x;
-                            HoleValues[h] = (byte)(add ? 0x00 : 0xFF);
+	                        this.HoleValues[h] = (byte)(add ? 0x00 : 0xFF);
                             return;
                         }
                     }
@@ -1041,33 +1164,30 @@ namespace Neo.IO.Files.Terrain.WoD
 
         public override void SetHoleBig(bool add)
         {
-            bool use64bit = (mHeader.Flags & 0x10000) == 0x10000;
+            bool use64bit = (this.mHeader.Flags & 0x10000) == 0x10000;
             if (!use64bit)
             {
-                mHeader.Holes = add ? int.MaxValue : 0; //Set all shown/hidden
+	            this.mHeader.Holes = add ? int.MaxValue : 0; //Set all shown/hidden
 
                 for (int x = 0; x < 4; x++)
                 {
                     for (int y = 0; y < 4; y++)
                     {
                         var baseIndex = y * 2 * 8 + x * 2;
-                        HoleValues[baseIndex] =
-                        HoleValues[baseIndex + 1] =
-                        HoleValues[baseIndex + 8] =
-                        HoleValues[baseIndex + 9] = (byte)(add ? 0x0 : 0xFF);
+	                    this.HoleValues[baseIndex] = this.HoleValues[baseIndex + 1] = this.HoleValues[baseIndex + 8] = this.HoleValues[baseIndex + 9] = (byte)(add ? 0x0 : 0xFF);
                     }
                 }
             }
             else
             {
-                mHeader.Mcvt = add ? int.MaxValue : 0; //Set all shown/hidden
-                mHeader.Mcnr = add ? int.MaxValue : 0; //Set all shown/hidden
+	            this.mHeader.Mcvt = add ? int.MaxValue : 0; //Set all shown/hidden
+	            this.mHeader.Mcnr = add ? int.MaxValue : 0; //Set all shown/hidden
                 for (var x = 0; x < 8; ++x)
                 {
                     for (var y = 0; y < 8; ++y)
                     {
                         int h = y * 8 + x;
-                        HoleValues[h] = (byte)(add ? 0x00 : 0xFF);
+	                    this.HoleValues[h] = (byte)(add ? 0x00 : 0xFF);
                     }
                 }
             }

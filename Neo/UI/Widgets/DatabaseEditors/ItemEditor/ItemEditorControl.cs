@@ -18,20 +18,23 @@ namespace Neo.UI.Dialog
         public ItemEditorControl()
         {
             InitializeComponent();
-            tbcEditor.Appearance = TabAppearance.FlatButtons;
-            tbcEditor.ItemSize = new Size(0, 1);
-            tbcEditor.SizeMode = TabSizeMode.Fixed;
+	        this.tbcEditor.Appearance = TabAppearance.FlatButtons;
+	        this.tbcEditor.ItemSize = new Size(0, 1);
+	        this.tbcEditor.SizeMode = TabSizeMode.Fixed;
         }
 
         internal class ItemEditorControlDesigner : ControlDesigner
         {
-            public override void Initialize(System.ComponentModel.IComponent component)
+            public override void Initialize(IComponent component)
             {
                 base.Initialize(component);
 
                 var ctl = (this.Control as ItemEditorControl).TabControl as TabControl;
                 EnableDesignMode(ctl, "TabControl");
-                foreach (TabPage page in ctl.TabPages) EnableDesignMode(page, page.Name);
+                foreach (TabPage page in ctl.TabPages)
+                {
+	                EnableDesignMode(page, page.Name);
+                }
             }
         }
 
@@ -43,7 +46,7 @@ namespace Neo.UI.Dialog
 
         private void lbMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tbcEditor.SelectedIndex = lbMenu.SelectedIndex;
+	        this.tbcEditor.SelectedIndex = this.lbMenu.SelectedIndex;
         }
 
         private void AllowableClass_SelectedIndexChanged(object sender, EventArgs e)
@@ -382,11 +385,13 @@ namespace Neo.UI.Dialog
         private long makeFlagOrBitmask(CheckedListBox list, Type e)
         {
             if (!e.IsEnum)
-                return 0;
+            {
+	            return 0;
+            }
 
-            long myFlags = 0x0;
+	        long myFlags = 0x0;
 
-            foreach (Object item in list.CheckedItems)
+            foreach (object item in list.CheckedItems)
             {
                 myFlags += Convert.ToInt64(Enum.Parse(e, item.ToString()));
             }
@@ -394,7 +399,9 @@ namespace Neo.UI.Dialog
             if(list == this.AllowableClass || list == this.AllowableRace)
             {
                 if (myFlags == 0)
-                    myFlags = -1;
+                {
+	                myFlags = -1;
+                }
             }
 
             return myFlags;
@@ -403,9 +410,11 @@ namespace Neo.UI.Dialog
         private void checkFlagOrBitmask(CheckedListBox list, Type e, long value)
         {
             if (!e.IsEnum)
-                return;
+            {
+	            return;
+            }
 
-            foreach (int i in list.CheckedIndices)
+	        foreach (int i in list.CheckedIndices)
             {
                 list.SetItemCheckState(i, CheckState.Unchecked);
             }
@@ -734,16 +743,16 @@ namespace Neo.UI.Dialog
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            if (LoadEntry.Text != "")
+            if (this.LoadEntry.Text != "")
             {
-                if (Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(Convert.ToInt32(LoadEntry.Text)) == null)
+                if (Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(Convert.ToInt32(this.LoadEntry.Text)) == null)
                 {
                     MessageBox.Show("There is no item with this id.");
                 }
 
                 Storage.Database.WotLk.TrinityCore.Item itemLoaded = new Storage.Database.WotLk.TrinityCore.Item();
 
-                itemLoaded = Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(int.Parse(LoadEntry.Text));
+                itemLoaded = Storage.Database.WotLk.TrinityCore.ItemManager.Instance.GetItemByEntry(int.Parse(this.LoadEntry.Text));
 
                 if (itemLoaded != null)
                 {

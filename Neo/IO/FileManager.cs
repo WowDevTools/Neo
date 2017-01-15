@@ -22,14 +22,14 @@ namespace Neo.IO
             Instance = new FileManager();
         }
 
-        FileManager()
+	    private FileManager()
         {
-            FileListing = new DefaultFileListing();
+	        this.FileListing = new DefaultFileListing();
         }
 
         public void ExportFile(string path)
         {
-            using (var file = Provider.OpenFile(path))
+            using (var file = this.Provider.OpenFile(path))
             {
 	            if (file == null)
 	            {
@@ -97,9 +97,11 @@ namespace Neo.IO
             {
                 var fullPath = Path.Combine(Properties.Settings.Default.OutputPath ?? ".\\Output", path);
                 if (!File.Exists(fullPath))
-                    return null;
+                {
+	                return null;
+                }
 
-                using (var strm = File.OpenRead(fullPath))
+	            using (var strm = File.OpenRead(fullPath))
                 {
                     var retStream = new MemoryStream();
                     strm.CopyTo(retStream);
@@ -115,15 +117,17 @@ namespace Neo.IO
 
         public void InitFromPath()
         {
-            if(string.IsNullOrEmpty(DataPath))
-                throw new InvalidOperationException("Cannot initialize file system without a path");
+            if(string.IsNullOrEmpty(this.DataPath))
+            {
+	            throw new InvalidOperationException("Cannot initialize file system without a path");
+            }
 
-            if (File.Exists(Path.Combine(DataPath, ".build.info")))
+	        if (File.Exists(Path.Combine(this.DataPath, ".build.info")))
             {
                 Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Warlords;
                 Files.Models.ModelFactory.Instance.Version = FileDataVersion.Warlords;
                 Files.Sky.SkyManager.InitVersion(FileDataVersion.Warlords);
-                Version = FileDataVersion.Warlords;
+	            this.Version = FileDataVersion.Warlords;
 
                 var mgr = new CASC.FileManager();
                 mgr.LoadComplete += () =>
@@ -131,28 +135,34 @@ namespace Neo.IO
                     Storage.DbcStorage.Initialize();
                     Storage.DbcStorage.BuildCache();
                     if (LoadComplete != null)
-                        LoadComplete();
+                    {
+	                    LoadComplete();
+                    }
                 };
 
-                Provider = mgr;
-                mgr.Initialize(DataPath);
+	            this.Provider = mgr;
+                mgr.Initialize(this.DataPath);
             }
             else
-                InitMpq();
+	        {
+		        InitMpq();
+	        }
 
-            UI.ThumbnailCache.Reload(); //Load thumbnails of models
+	        UI.ThumbnailCache.Reload(); //Load thumbnails of models
         }
 
         private void InitMpq()
         {
-            var version = FileVersionInfo.GetVersionInfo(Path.Combine(DataPath, "Wow.exe"));
+            var version = FileVersionInfo.GetVersionInfo(Path.Combine(this.DataPath, "Wow.exe"));
             if (version.FilePrivatePart > 13000 || version.FilePrivatePart < 9000)
-                throw new NotImplementedException("MPQ is only implemented for WOTLK (builds 9000 - 13000)");
+            {
+	            throw new NotImplementedException("MPQ is only implemented for WOTLK (builds 9000 - 13000)");
+            }
 
-            Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Lichking;
+	        Files.Terrain.AdtFactory.Instance.Version = FileDataVersion.Lichking;
             Files.Models.ModelFactory.Instance.Version = FileDataVersion.Lichking;
             Files.Sky.SkyManager.InitVersion(FileDataVersion.Lichking);
-            Version = FileDataVersion.Lichking;
+	        this.Version = FileDataVersion.Lichking;
 
             var mgr = new MPQ.FileManager();
             mgr.LoadComplete += () =>
@@ -160,17 +170,21 @@ namespace Neo.IO
                 Storage.DbcStorage.Initialize();
                 Storage.DbcStorage.BuildCache();
                 if (LoadComplete != null)
-                    LoadComplete();
+                {
+	                LoadComplete();
+                }
             };
 
-            Provider = mgr;
-            mgr.InitFromPath(DataPath);
+	        this.Provider = mgr;
+            mgr.InitFromPath(this.DataPath);
         }
 
         private void DefaultExport(Stream input, string path)
         {
             using (var output = GetExportStream(path))
-                input.CopyTo(output);
+            {
+	            input.CopyTo(output);
+            }
         }
 
         private unsafe void ExportTexture(Stream input, string path)
@@ -184,9 +198,11 @@ namespace Neo.IO
                 using (var output = GetExportStream(origPath))
                 {
                     if (output == null)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    input.CopyTo(output);
+	                input.CopyTo(output);
                 }
 
                 return;
@@ -195,19 +211,23 @@ namespace Neo.IO
             using (var output = GetExportStream(path))
             {
                 if (output == null)
-                    return;
+                {
+	                return;
+                }
 
-                using (var bmp = new Bitmap(loadInfo.Width, loadInfo.Height, PixelFormat.Format32bppArgb))
+	            using (var bmp = new Bitmap(loadInfo.Width, loadInfo.Height, PixelFormat.Format32bppArgb))
                 {
                     var bmpd = bmp.LockBits(new Rectangle(0, 0, loadInfo.Width, loadInfo.Height),
                         ImageLockMode.WriteOnly,
                         PixelFormat.Format32bppArgb);
 
                     fixed (byte* srcData = loadInfo.Layers[0])
-                        UnsafeNativeMethods.CopyMemory((byte*) bmpd.Scan0.ToPointer(), srcData,
-                            loadInfo.Width * loadInfo.Height * 4);
+                    {
+	                    UnsafeNativeMethods.CopyMemory((byte*) bmpd.Scan0.ToPointer(), srcData,
+		                    loadInfo.Width * loadInfo.Height * 4);
+                    }
 
-                    bmp.UnlockBits(bmpd);
+	                bmp.UnlockBits(bmpd);
                     bmp.Save(output, ImageFormat.Png);
                 }
             }

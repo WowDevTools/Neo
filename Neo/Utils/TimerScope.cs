@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Neo.Utils
 {
-    class TimerScope : IDisposable
+	internal class TimerScope : IDisposable
     {
         private Stopwatch mWatch;
         private string mTask;
@@ -11,9 +11,9 @@ namespace Neo.Utils
 
         public TimerScope(string task, int minTimeForOutput = 0)
         {
-            mDelay = minTimeForOutput;
-            mTask = task;
-            mWatch = Stopwatch.StartNew();
+	        this.mDelay = minTimeForOutput;
+	        this.mTask = task;
+	        this.mWatch = Stopwatch.StartNew();
         }
 
         ~TimerScope()
@@ -23,14 +23,16 @@ namespace Neo.Utils
 
         private void Dispose(bool disposing)
         {
-            if (mWatch != null)
+            if (this.mWatch != null)
             {
-                mWatch.Stop();
-                if (mWatch.ElapsedMilliseconds >= mDelay)
-                    Log.Debug(string.Format("Task {0} finished in {1} milliseconds", mTask, mWatch.ElapsedMilliseconds));
+	            this.mWatch.Stop();
+                if (this.mWatch.ElapsedMilliseconds >= this.mDelay)
+                {
+	                Log.Debug(string.Format("Task {0} finished in {1} milliseconds", this.mTask, this.mWatch.ElapsedMilliseconds));
+                }
 
-                mWatch = null;
-                mTask = null;
+	            this.mWatch = null;
+	            this.mTask = null;
             }
         }
 

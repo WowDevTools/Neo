@@ -9,13 +9,16 @@ using Neo.Crypto;
 
 namespace Neo.UI.Services
 {
-    class XmlService
+	internal class XmlService
     {
         public static void Initialize()
         {
-            if (File.Exists(@".\Config\Connections.xml")) return;
+            if (File.Exists(@".\Config\Connections.xml"))
+            {
+	            return;
+            }
 
-            var doc = new XDocument(new XElement("Connections"));
+	        var doc = new XDocument(new XElement("Connections"));
             doc.Save(@".\Config\Connections.xml");
         }
 
@@ -38,9 +41,12 @@ namespace Neo.UI.Services
                 newConnection.SetAttributeValue("Default", value[5]);
 
                 var xElement = fileDir.Element("Connections");
-                if (xElement != null) xElement.Add(newConnection);
+                if (xElement != null)
+                {
+	                xElement.Add(newConnection);
+                }
 
-                fileDir.Save(@".\Config\Connections.xml");
+	            fileDir.Save(@".\Config\Connections.xml");
             }
             catch (Exception e)
             {

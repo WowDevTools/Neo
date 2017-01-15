@@ -27,7 +27,7 @@ namespace Neo.Graphics
 	    {
 		    get
 		    {
-			    switch (IndexFormat)
+			    switch (this.IndexFormat)
 			    {
 				    case DrawElementsType.UnsignedByte:
 				    {
@@ -56,7 +56,7 @@ namespace Neo.Graphics
 	    public IndexBuffer(DrawElementsType indexFormat) :
             base(BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw)
 	    {
-		    IndexFormat = indexFormat;
+		    this.IndexFormat = indexFormat;
 	    }
 
 	    /// <summary>
@@ -66,7 +66,7 @@ namespace Neo.Graphics
 	    public IndexBuffer() :
 		    base(BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw)
 	    {
-		    IndexFormat = DrawElementsType.UnsignedShort;
+		    this.IndexFormat = DrawElementsType.UnsignedShort;
 	    }
     }
 }

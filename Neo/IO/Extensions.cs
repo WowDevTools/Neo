@@ -19,13 +19,17 @@ namespace Neo.IO
                 {
                     cnl = (cl - 'a') + 10;
                     if (cnl < 10 || cnl > 15)
-                        cnl = (cl - 'A') + 10;
+                    {
+	                    cnl = (cl - 'A') + 10;
+                    }
                 }
                 if (cnh < 0 || cnh > 9)
                 {
                     cnh = (ch - 'a') + 10;
                     if (cnh < 10 || cnh > 15)
-                        cnh = (ch - 'A') + 10;
+                    {
+	                    cnh = (ch - 'A') + 10;
+                    }
                 }
                 yield return (byte)((cnh << 4) | cnl);
             }
@@ -103,13 +107,17 @@ namespace Neo.IO
 	    public static T[] ReadArray<T>(this BinaryReader br, int count) where T : struct
         {
             if (count == 0)
-                return new T[0];
+            {
+	            return new T[0];
+            }
 
-            if (SizeCache<T>.TypeRequiresMarshal)
-                throw new ArgumentException(
-                    "Cannot read a generic structure type that requires marshaling support. Read the structure out manually.");
+	        if (SizeCache<T>.TypeRequiresMarshal)
+	        {
+		        throw new ArgumentException(
+			        "Cannot read a generic structure type that requires marshaling support. Read the structure out manually.");
+	        }
 
-            // NOTE: this may be safer to just call Read<T> each iteration to avoid possibilities of moved memory, etc.
+	        // NOTE: this may be safer to just call Read<T> each iteration to avoid possibilities of moved memory, etc.
             // For now, we'll see if this works.
             var ret = new T[count];
             fixed (byte* pB = br.ReadBytes(SizeCache<T>.Size * count))
@@ -124,9 +132,11 @@ namespace Neo.IO
 	    public static void WriteArray<T>(this BinaryWriter writer, T[] values) where T : struct
         {
             if (values.Length == 0)
-                return;
+            {
+	            return;
+            }
 
-            if (SizeCache<T>.TypeRequiresMarshal)
+	        if (SizeCache<T>.TypeRequiresMarshal)
                 {
 	                throw new ArgumentException(
                     "Cannot write a generic structure type that requires marshaling support. Write the structure out manually.");

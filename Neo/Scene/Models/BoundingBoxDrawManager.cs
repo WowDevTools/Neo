@@ -9,10 +9,10 @@ using Warcraft.Core;
 
 namespace Neo.Scene.Models
 {
-    class BoundingBoxInstance : IDisposable
+	internal class BoundingBoxInstance : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct BoundingVertex
+        private struct BoundingVertex
         {
             public Vector3 position;
             public Vector3 texCoord;
@@ -23,7 +23,7 @@ namespace Neo.Scene.Models
 
         public BoundingBoxInstance(BoundingBox box)
         {
-            mBox = box;
+	        this.mBox = box;
             BuildVertices();
         }
 
@@ -34,14 +34,16 @@ namespace Neo.Scene.Models
 
         public void Dispose()
         {
-            if (mVertexBuffer != null)
-                mVertexBuffer.Dispose();
-            mVertexBuffer = null;
+            if (this.mVertexBuffer != null)
+            {
+	            this.mVertexBuffer.Dispose();
+            }
+	        this.mVertexBuffer = null;
         }
 
         public void OnFrame(Mesh mesh)
         {
-            mesh.UpdateVertexBuffer(mVertexBuffer);
+            mesh.UpdateVertexBuffer(this.mVertexBuffer);
             mesh.Draw();
         }
 
@@ -52,8 +54,8 @@ namespace Neo.Scene.Models
 
         private void BuildVertices()
         {
-            var minimum = mBox.Minimum;
-            var maximum = mBox.Maximum;
+            var minimum = this.mBox.Minimum;
+            var maximum = this.mBox.Maximum;
 
             #region Vertex Building
             var vertices = new[]
@@ -101,8 +103,8 @@ namespace Neo.Scene.Models
             };
             #endregion
 
-            mVertexBuffer = new VertexBuffer();
-            mVertexBuffer.BufferData(vertices);
+	        this.mVertexBuffer = new VertexBuffer();
+	        this.mVertexBuffer.BufferData(vertices);
         }
 
         private void BuildVertices(IReadOnlyList<Vector3> positions)
@@ -119,16 +121,16 @@ namespace Neo.Scene.Models
                 new BoundingVertex {position = positions[7], texCoord = new Vector3(0, 1, 1)}
             };
 
-	        if (mVertexBuffer == null)
+	        if (this.mVertexBuffer == null)
 	        {
-		        mVertexBuffer = new VertexBuffer();
+		        this.mVertexBuffer = new VertexBuffer();
 	        }
 
-            mVertexBuffer.BufferData(vertices);
+	        this.mVertexBuffer.BufferData(vertices);
         }
     }
 
-    class BoundingBoxDrawManager
+	internal class BoundingBoxDrawManager
     {
         private static IndexBuffer gIndexBuffer;
         private static Mesh gMesh;
@@ -138,7 +140,7 @@ namespace Neo.Scene.Models
         {
             gMesh.BeginDraw();
 
-            foreach (var bbox in mBoundingBoxes)
+            foreach (var bbox in this.mBoundingBoxes)
             {
                 bbox.OnFrame(gMesh);
             }
@@ -147,20 +149,20 @@ namespace Neo.Scene.Models
         public BoundingBoxInstance AddDrawableBox(Box box)
         {
             var bbox = new BoundingBoxInstance(box);
-            mBoundingBoxes.Add(bbox);
+	        this.mBoundingBoxes.Add(bbox);
             return bbox;
         }
 
         public BoundingBoxInstance AddDrawableBox(Vector3[] corners)
         {
             var bbox = new BoundingBoxInstance(corners);
-            mBoundingBoxes.Add(bbox);
+	        this.mBoundingBoxes.Add(bbox);
             return bbox;
         }
 
         public void RemoveDrawableBox(BoundingBoxInstance instance)
         {
-            mBoundingBoxes.Remove(instance);
+	        this.mBoundingBoxes.Remove(instance);
             instance.Dispose();
         }
 

@@ -9,7 +9,7 @@ namespace Neo.Scene.Models.WMO
 {
     public class WmoGroupRender : IDisposable
     {
-        class WmoRenderBatch
+	    private class WmoRenderBatch
         {
             public IO.Files.Models.WmoMaterial Material;
             public IO.Files.Models.WmoBatch Batch;
@@ -38,14 +38,14 @@ namespace Neo.Scene.Models.WMO
 
         public IO.Files.Models.IWorldModelGroup Data { get; private set; }
 
-        public BoundingBox BoundingBox { get { return Data.BoundingBox; } }
+        public BoundingBox BoundingBox { get { return this.Data.BoundingBox; } }
 
         public WmoGroupRender(IO.Files.Models.IWorldModelGroup group, WmoRootRender root)
         {
-            Data = group;
-            foreach(var batch in Data.Batches)
+	        this.Data = group;
+            foreach(var batch in this.Data.Batches)
             {
-                mBatches.Add(new WmoRenderBatch
+	            this.mBatches.Add(new WmoRenderBatch
                 {
                     Batch = batch,
                     Material = root.Data.GetMaterial(batch.MaterialId)
@@ -60,13 +60,13 @@ namespace Neo.Scene.Models.WMO
 
         private void Dispose(bool disposing)
         {
-            if (mBatches != null)
+            if (this.mBatches != null)
             {
-                mBatches.Clear();
-                mBatches = null;
+	            this.mBatches.Clear();
+	            this.mBatches = null;
             }
 
-            Data = null;
+	        this.Data = null;
         }
 
         public virtual void Dispose()
@@ -77,18 +77,22 @@ namespace Neo.Scene.Models.WMO
 
         public void OnFrame()
         {
-            if (mLoaded == false)
-                return;
+            if (this.mLoaded == false)
+            {
+	            return;
+            }
 
-            if (Data.DisableRendering)
-                return;
+	        if (this.Data.DisableRendering)
+	        {
+		        return;
+	        }
 
-            Mesh.StartVertex = BaseVertex;
+	        Mesh.StartVertex = this.BaseVertex;
 
-            foreach(var batch in mBatches)
+            foreach(var batch in this.mBatches)
             {
                 SetupBatch(batch);
-                Mesh.StartIndex = BaseIndex + batch.Batch.StartIndex;
+                Mesh.StartIndex = this.BaseIndex + batch.Batch.StartIndex;
                 Mesh.IndexCount = batch.Batch.NumIndices;
 
                 Mesh.Draw();
@@ -97,7 +101,7 @@ namespace Neo.Scene.Models.WMO
 
         public void SyncLoad()
         {
-            mLoaded = true;
+	        this.mLoaded = true;
         }
 
         public bool Intersects(IntersectionParams parameters, ref Ray ray, out float distance)
@@ -109,48 +113,59 @@ namespace Neo.Scene.Models.WMO
             var dir = ray.Direction;
             Vector3 e1, e2, p, T, q;
 
-            foreach (var batch in mBatches)
+            foreach (var batch in this.mBatches)
             {
                 for (int i = batch.Batch.StartIndex, j = 0; j < batch.Batch.NumIndices; i += 3, j += 3)
                 {
-                    var i0 = Data.Indices[i];
-                    var i1 = Data.Indices[i + 1];
-                    var i2 = Data.Indices[i + 2];
-                    Vector3.Subtract(ref Data.Vertices[i1].Position, ref Data.Vertices[i0].Position, out e1);
-                    Vector3.Subtract(ref Data.Vertices[i2].Position, ref Data.Vertices[i0].Position, out e2);
+                    var i0 = this.Data.Indices[i];
+                    var i1 = this.Data.Indices[i + 1];
+                    var i2 = this.Data.Indices[i + 2];
+                    Vector3.Subtract(ref this.Data.Vertices[i1].Position, ref this.Data.Vertices[i0].Position, out e1);
+                    Vector3.Subtract(ref this.Data.Vertices[i2].Position, ref this.Data.Vertices[i0].Position, out e2);
 
                     Vector3.Cross(ref dir, ref e2, out p);
                     float det;
                     Vector3.Dot(ref e1, ref p, out det);
 
                     if (Math.Abs(det) < 1e-4)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var invDet = 1.0f / det;
-                    Vector3.Subtract(ref orig, ref Data.Vertices[i0].Position, out T);
+	                var invDet = 1.0f / det;
+                    Vector3.Subtract(ref orig, ref this.Data.Vertices[i0].Position, out T);
                     float u;
                     Vector3.Dot(ref T, ref p, out u);
                     u *= invDet;
 
                     if (u < 0 || u > 1)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    Vector3.Cross(ref T, ref e1, out q);
+	                Vector3.Cross(ref T, ref e1, out q);
                     float v;
                     Vector3.Dot(ref dir, ref q, out v);
                     v *= invDet;
                     if (v < 0 || (u + v) > 1)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    float t;
+	                float t;
                     Vector3.Dot(ref e2, ref q, out t);
                     t *= invDet;
 
-                    if (t < 1e-4) continue;
+                    if (t < 1e-4)
+                    {
+	                    continue;
+                    }
 
-                    hasHit = true;
+	                hasHit = true;
                     if (t < distance)
-                        distance = t;
+                    {
+	                    distance = t;
+                    }
                 }
             }
 
@@ -163,12 +178,16 @@ namespace Neo.Scene.Models.WMO
             Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
             Mesh.UpdateBlendState((batch.Batch.BlendMode != 0) ? gAlphaBlendState : gNoBlendState);
             ShaderProgram newProgram;
-            if(Data.IsIndoor)
-                newProgram = (batch.Batch.BlendMode != 0) ? gIndoorBlendProgram : gIndoorNoBlendProgram;
+            if(this.Data.IsIndoor)
+            {
+	            newProgram = (batch.Batch.BlendMode != 0) ? gIndoorBlendProgram : gIndoorNoBlendProgram;
+            }
             else
-                newProgram = (batch.Batch.BlendMode != 0) ? gBlendProgram : gNoBlendProgram;
+            {
+	            newProgram = (batch.Batch.BlendMode != 0) ? gBlendProgram : gNoBlendProgram;
+            }
 
-            if(newProgram != Mesh.Program)
+	        if(newProgram != Mesh.Program)
             {
                 Mesh.Program = newProgram;
                 Mesh.Program.Bind();

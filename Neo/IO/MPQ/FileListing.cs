@@ -9,7 +9,7 @@ namespace Neo.IO.MPQ
 
         public FileListing(FileManager fileMgr)
         {
-            RootEntry = new DirectoryEntry {Name = "Files"};
+	        this.RootEntry = new DirectoryEntry {Name = "Files"};
             Init(fileMgr);
         }
 
@@ -20,9 +20,11 @@ namespace Neo.IO.MPQ
                 using (var list = archive.Open("(listfile)"))
                 {
                     if (list == null)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var reader = new StreamReader(list);
+	                var reader = new StreamReader(list);
                     var fullText = reader.ReadToEnd();
                     var lines = fullText.Split('\r');
                     Array.ForEach(lines, AddFile);
@@ -34,18 +36,24 @@ namespace Neo.IO.MPQ
         {
             file = file.Trim();
             if (string.IsNullOrEmpty(file))
-                return;
+            {
+	            return;
+            }
 
-            if (file.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
-                return;
+	        if (file.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+	        {
+		        return;
+	        }
 
-            var dir = Path.GetDirectoryName(file) ?? "";
+	        var dir = Path.GetDirectoryName(file) ?? "";
             var paths = dir.Split(new[] {'\\'}, StringSplitOptions.RemoveEmptyEntries);
-            var curDir = RootEntry;
+            var curDir = this.RootEntry;
             foreach (var path in paths)
             {
                 if (curDir.Children.ContainsKey(path.ToLowerInvariant()))
-                    curDir = curDir.Children[path.ToLowerInvariant()] as DirectoryEntry;
+                {
+	                curDir = curDir.Children[path.ToLowerInvariant()] as DirectoryEntry;
+                }
                 else
                 {
                     var dirEnt = new DirectoryEntry {Name = path};
@@ -54,17 +62,23 @@ namespace Neo.IO.MPQ
                 }
 
                 if (curDir == null)
-                    return;
+                {
+	                return;
+                }
             }
 
             if (curDir == null)
-                return;
+            {
+	            return;
+            }
 
-            var fileName = Path.GetFileName(file);
+	        var fileName = Path.GetFileName(file);
             if (curDir.Children.ContainsKey(fileName.ToLowerInvariant()))
-                return;
+            {
+	            return;
+            }
 
-            curDir.Children.Add(fileName.ToLowerInvariant(), new FileEntry { Name = fileName });
+	        curDir.Children.Add(fileName.ToLowerInvariant(), new FileEntry { Name = fileName });
         }
     }
 }

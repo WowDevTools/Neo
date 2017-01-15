@@ -5,10 +5,11 @@ using System.Text;
 
 namespace Neo.IO
 {
-    class DefaultFileListing : IFileListing
+	internal class DefaultFileListing : IFileListing
     {
         public DirectoryEntry RootEntry { get; private set; }
 
-        public DefaultFileListing() { RootEntry = new DirectoryEntry(); }
+        public DefaultFileListing() {
+	        this.RootEntry = new DirectoryEntry(); }
     }
 }

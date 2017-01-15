@@ -2,7 +2,7 @@
 
 namespace Neo.Editing
 {
-    class TabletManager
+	internal class TabletManager
     {
         /// <summary>
         /// A value between 0 and 40 dependent on how hard you are pressing the pen down
@@ -44,10 +44,10 @@ namespace Neo.Editing
             {
                 CloseCurrentContext();
 
-                m_logContext = OpenQueryDigitizerContext(out status);
+	            this.m_logContext = OpenQueryDigitizerContext(out status);
 
-                m_wtData = new CWintabData(m_logContext);
-                m_wtData.SetWTPacketEventHandler(HandlePenMessage);
+	            this.m_wtData = new CWintabData(this.m_logContext);
+	            this.m_wtData.SetWTPacketEventHandler(HandlePenMessage);
             }
             catch (Exception ex)
             {
@@ -73,9 +73,11 @@ namespace Neo.Editing
                 logContext.Options |= (uint)ECTXOptionValues.CXO_SYSTEM;
 
                 if (logContext == null)
-                    return null;
+                {
+	                return null;
+                }
 
-                // Modify the digitizing region.
+	            // Modify the digitizing region.
                 logContext.Name = "WintabDN Event Data Context";
 
                 // output in a 10000 x 10000 grid
@@ -101,11 +103,11 @@ namespace Neo.Editing
         {
             try
             {
-                if (m_logContext != null)
+                if (this.m_logContext != null)
                 {
-                    m_logContext.Close();
-                    m_logContext = null;
-                    m_wtData = null;
+	                this.m_logContext.Close();
+	                this.m_logContext = null;
+	                this.m_wtData = null;
                 }
 
             }
@@ -115,20 +117,22 @@ namespace Neo.Editing
             }
         }
 
-        private void HandlePenMessage(Object sender_I, MessageReceivedEventArgs eventArgs_I)
+        private void HandlePenMessage(object sender_I, MessageReceivedEventArgs eventArgs_I)
         {
-            if (m_wtData == null)
-                return;
+            if (this.m_wtData == null)
+            {
+	            return;
+            }
 
-            try
+	        try
             {
                 uint pktID = (uint)eventArgs_I.Message.WParam;
-                WintabPacket pkt = m_wtData.GetDataPacket(pktID);
+                WintabPacket pkt = this.m_wtData.GetDataPacket(pktID);
                 if (pkt.pkContext != 0)
                 {
                     // Normalize data between 0 and 40
                     float normalizedValue = (40f - 0f) / ((float)CWintabInfo.GetMaxPressure() - 0f) * ((float)pkt.pkNormalPressure.pkAbsoluteNormalPressure - (float)CWintabInfo.GetMaxPressure()) + 40f;
-                    TabletPressure = normalizedValue;
+	                this.TabletPressure = normalizedValue;
                 }
             }
             catch (Exception ex)

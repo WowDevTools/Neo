@@ -2,21 +2,23 @@
 
 namespace Neo.Editing
 {
-    class MapCreator
+	internal class MapCreator
     {
         private readonly string mInternalName;
 
         public MapCreator(string internalName)
         {
-            mInternalName = internalName;
+	        this.mInternalName = internalName;
         }
 
         public bool CreateNew(string mapName)
         {
             if (Exists())
-                return false;
+            {
+	            return false;
+            }
 
-            return false;
+	        return false;
         }
 
         private bool Exists()
@@ -25,8 +27,10 @@ namespace Neo.Editing
             {
                 var row = DbcStorage.Map.GetRow(i);
                 var internalName = row.GetString(MapFormatGuess.FieldMapName);
-                if (internalName.ToLowerInvariant().Equals(mInternalName.ToLowerInvariant()))
-                    return true;
+                if (internalName.ToLowerInvariant().Equals(this.mInternalName.ToLowerInvariant()))
+                {
+	                return true;
+                }
             }
 
             return false;

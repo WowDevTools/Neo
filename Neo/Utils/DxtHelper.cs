@@ -5,7 +5,7 @@ using SharpDX.DXGI;
 
 namespace Neo.Utils
 {
-    static class DxtHelper
+	internal static class DxtHelper
     {
         public static byte[] Decompress(int width, int height, byte[] source, Format format)
         {
@@ -62,9 +62,11 @@ namespace Neo.Utils
 
                 var blockData = new uint[numBlocksFull * 16];
                 for (uint i = 0; i < numBlocksFull; ++i)
-                    Dxt1GetBlock(strm, blockData, (int)i * 16);
+                {
+	                Dxt1GetBlock(strm, blockData, (int)i * 16);
+                }
 
-                for (var y = 0; y < h; ++y)
+	            for (var y = 0; y < h; ++y)
                 {
                     for (var x = 0; x < w; ++x)
                     {
@@ -90,9 +92,11 @@ namespace Neo.Utils
 
                 var blockData = new uint[numBlocksFull * 16];
                 for (uint i = 0; i < numBlocksFull; ++i)
-                    Dxt3GetBlock(strm, blockData, (int)i * 16);
+                {
+	                Dxt3GetBlock(strm, blockData, (int)i * 16);
+                }
 
-                for (var y = 0; y < h; ++y)
+	            for (var y = 0; y < h; ++y)
                 {
                     for (var x = 0; x < w; ++x)
                     {
@@ -118,9 +122,11 @@ namespace Neo.Utils
 
                 var blockData = new uint[numBlocksFull * 16];
                 for (uint i = 0; i < numBlocksFull; ++i)
-                    Dxt5GetBlock(strm, blockData, (int)i * 16);
+                {
+	                Dxt5GetBlock(strm, blockData, (int)i * 16);
+                }
 
-                for (var y = 0; y < h; ++y)
+	            for (var y = 0; y < h; ++y)
                 {
                     for (var x = 0; x < w; ++x)
                     {
@@ -171,9 +177,11 @@ namespace Neo.Utils
             var indices = stream.ReadUInt32();
             var tableIndices = TableIndices.Value;
             for (var i = 0; i < 16; ++i)
-                tableIndices[i] = (ushort)((indices >> (2 * i)) & 3);
+            {
+	            tableIndices[i] = (ushort)((indices >> (2 * i)) & 3);
+            }
 
-            var arrays = RgbTmpArray.Value;
+	        var arrays = RgbTmpArray.Value;
             var colorVals = new[]
             {
                 BitConverter.ToUInt32(arrays[0], 0),
@@ -197,9 +205,11 @@ namespace Neo.Utils
             var alphaValues = AlphaValues.Value;
             var alpha = stream.ReadUInt64();
             for (var i = 0; i < 16; ++i)
-                alphaValues[i] = (byte)((((alpha >> (4 * i)) & 0x0F) / 15.0f) * 255.0f);
+            {
+	            alphaValues[i] = (byte)((((alpha >> (4 * i)) & 0x0F) / 15.0f) * 255.0f);
+            }
 
-            var color1 = stream.ReadUInt16();
+	        var color1 = stream.ReadUInt16();
             var color2 = stream.ReadUInt16();
 
             Rgb565ToRgb8Array(color1, RgbTmpArray.Value[0]);
@@ -230,9 +240,11 @@ namespace Neo.Utils
             var indices = stream.ReadUInt32();
             var tableIndices = TableIndices.Value;
             for (var i = 0; i < 16; ++i)
-                tableIndices[i] = (ushort)((indices >> (2 * i)) & 3);
+            {
+	            tableIndices[i] = (ushort)((indices >> (2 * i)) & 3);
+            }
 
-            var arrays = RgbTmpArray.Value;
+	        var arrays = RgbTmpArray.Value;
             var colorVals = new[]
             {
                 BitConverter.ToUInt32(arrays[0], 0),
@@ -265,14 +277,20 @@ namespace Neo.Utils
             alphaValues[1] = alpha2;
 
             if (alpha1 > alpha2)
-                for (var i = 0; i < 6; ++i)
-                    alphaValues[i + 2] = (byte)(((6.0f - i) * alpha1 + (1.0f + i) * alpha2) / 7.0f);
+            {
+	            for (var i = 0; i < 6; ++i)
+	            {
+		            alphaValues[i + 2] = (byte)(((6.0f - i) * alpha1 + (1.0f + i) * alpha2) / 7.0f);
+	            }
+            }
             else
             {
                 for (var i = 0; i < 4; ++i)
-                    alphaValues[i + 2] = (byte)(((4.0f - i) * alpha1 + (1.0f + i) * alpha2) / 5.0f);
+                {
+	                alphaValues[i + 2] = (byte)(((4.0f - i) * alpha1 + (1.0f + i) * alpha2) / 5.0f);
+                }
 
-                alphaValues[6] = 0;
+	            alphaValues[6] = 0;
                 alphaValues[7] = 255;
             }
 
@@ -282,9 +300,11 @@ namespace Neo.Utils
             lookupValue |= lu2 << 32;
 
             for (var i = 0; i < 16; ++i)
-                alphaLookup[i] = (uint)((lookupValue >> (i * 3)) & 7);
+            {
+	            alphaLookup[i] = (uint)((lookupValue >> (i * 3)) & 7);
+            }
 
-            var color1 = stream.ReadUInt16();
+	        var color1 = stream.ReadUInt16();
             var color2 = stream.ReadUInt16();
 
             Rgb565ToRgb8Array(color1, RgbTmpArray.Value[0]);
@@ -315,9 +335,11 @@ namespace Neo.Utils
             var indices = stream.ReadUInt32();
             var tableIndices = TableIndices.Value;
             for (var i = 0; i < 16; ++i)
-                tableIndices[i] = (ushort)((indices >> (2 * i)) & 3);
+            {
+	            tableIndices[i] = (ushort)((indices >> (2 * i)) & 3);
+            }
 
-            var arrays = RgbTmpArray.Value;
+	        var arrays = RgbTmpArray.Value;
             var colorVals = new[]
             {
                 BitConverter.ToUInt32(arrays[0], 0),

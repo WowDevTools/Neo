@@ -5,19 +5,19 @@ using Neo.IO.Files.Texture;
 
 namespace Neo.Scene.Texture
 {
-    class TextureWorkItem
+	internal class TextureWorkItem
     {
         public Graphics.Texture Texture { get; private set; }
         public string FileName { get; private set; }
 
         public TextureWorkItem(string file, Graphics.Texture tex)
         {
-            Texture = tex;
-            FileName = file;
+	        this.Texture = tex;
+	        this.FileName = file;
         }
     }
 
-    class TextureManager
+	internal class TextureManager
     {
         public static TextureManager Instance { get; private set; }
 
@@ -38,24 +38,24 @@ namespace Neo.Scene.Texture
             {
                 var t = new Thread(ThreadProc);
                 t.Start();
-                mThreads.Add(t);
+	            this.mThreads.Add(t);
             }
         }
 
         public void Shutdown()
         {
-            mIsRunning = false;
-	        lock (mWorkItems)
+	        this.mIsRunning = false;
+	        lock (this.mWorkItems)
 	        {
-		        mWorkItems.Clear();
+		        this.mWorkItems.Clear();
 	        }
 
-	        lock (mWorkEvent)
+	        lock (this.mWorkEvent)
 	        {
-		        Monitor.PulseAll(mWorkEvent);
+		        Monitor.PulseAll(this.mWorkEvent);
 	        }
 
-            mThreads.ForEach(t => t.Join());
+	        this.mThreads.ForEach(t => t.Join());
         }
 
         public Graphics.Texture GetTexture(string path)
@@ -68,30 +68,30 @@ namespace Neo.Scene.Texture
             var hash = path.ToUpperInvariant().GetHashCode();
             TextureWorkItem workItem;
             Graphics.Texture retTexture;
-            lock (mCache)
+            lock (this.mCache)
             {
                 WeakReference<Graphics.Texture> ret;
-                if(mCache.TryGetValue(hash, out ret))
+                if(this.mCache.TryGetValue(hash, out ret))
                 {
 	                if (ret.TryGetTarget(out retTexture))
 	                {
 		                return retTexture;
 	                }
 
-                    mCache.Remove(hash);
+	                this.mCache.Remove(hash);
                 }
 
                 retTexture = new Graphics.Texture();
-                mCache.Add(hash, new WeakReference<Graphics.Texture>(retTexture));
+	            this.mCache.Add(hash, new WeakReference<Graphics.Texture>(retTexture));
                 workItem = new TextureWorkItem(path, retTexture);
             }
 
-            lock (mWorkItems)
+            lock (this.mWorkItems)
             {
-                mWorkItems.Add(workItem);
-	            lock (mWorkEvent)
+	            this.mWorkItems.Add(workItem);
+	            lock (this.mWorkEvent)
 	            {
-		            Monitor.Pulse(mWorkEvent);
+		            Monitor.Pulse(this.mWorkEvent);
 	            }
             }
 
@@ -100,23 +100,23 @@ namespace Neo.Scene.Texture
 
         private void ThreadProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
                 TextureWorkItem workItem = null;
-                lock(mWorkItems)
+                lock(this.mWorkItems)
                 {
-                    if(mWorkItems.Count > 0)
+                    if(this.mWorkItems.Count > 0)
                     {
-                        workItem = mWorkItems[0];
-                        mWorkItems.RemoveAt(0);
+                        workItem = this.mWorkItems[0];
+	                    this.mWorkItems.RemoveAt(0);
                     }
                 }
 
                 if (workItem == null)
                 {
-	                lock (mWorkEvent)
+	                lock (this.mWorkEvent)
 	                {
-		                Monitor.Wait(mWorkEvent);
+		                Monitor.Wait(this.mWorkEvent);
 	                }
                 }
                 else

@@ -64,11 +64,11 @@ namespace Neo.Graphics
 	    {
 		    get
 		    {
-			   return texturePath;
+			   return this.texturePath;
 		    }
 		    set
 		    {
-			    texturePath = value.ToUpperInvariant();
+			    this.texturePath = value.ToUpperInvariant();
 		    }
 	    }
 	    private string texturePath;
@@ -205,9 +205,13 @@ namespace Neo.Graphics
             if (mTexture != gDefaultTexture)
             {
                 if (mTexture != null)
-                    mTexture.Dispose();
-                if (NativeView != null)
-                    NativeView.Dispose();
+                {
+	                mTexture.Dispose();
+                }
+	            if (NativeView != null)
+	            {
+		            NativeView.Dispose();
+	            }
             }
 
             var boxes = new DataBox[loadInfo.Layers.Count];
@@ -250,14 +254,18 @@ namespace Neo.Graphics
 
                 NativeView = new ShaderResourceView(mContext.Device, mTexture, srvd);
                 if (loadInfo.GenerateMipMaps)
-                    mContext.Context.GenerateMips(NativeView);
+                {
+	                mContext.Context.GenerateMips(NativeView);
+                }
             }
             finally
             {
                 foreach (var stream in streams)
                 {
                     if (stream != null)
-                        stream.Dispose();
+                    {
+	                    stream.Dispose();
+                    }
                 }
             }
         }
@@ -266,9 +274,11 @@ namespace Neo.Graphics
 	    public void UpdateMemory(int width, int height, Format format, byte[] data, int pitch)
         {
             if (data == null)
-                return;
+            {
+	            return;
+            }
 
-            using (var stream = new DataStream(data.Length, true, true))
+	        using (var stream = new DataStream(data.Length, true, true))
             {
                 stream.WriteRange(data);
                 stream.Position = 0;
@@ -305,16 +315,20 @@ namespace Neo.Graphics
 	    public void UpdateMemory(int width, int height, Format format, uint[] data, int pitch)
         {
             if (data == null)
-                return;
+            {
+	            return;
+            }
 
-            using (var stream = new DataStream(data.Length * 4, true, true))
+	        using (var stream = new DataStream(data.Length * 4, true, true))
             {
                 stream.WriteRange(data);
                 stream.Position = 0;
                 var box = new DataBox(stream.DataPointer, pitch, 0);
 
                 if (IsDirty(width, height, format, 1))
-                    CreateNew(width, height, format, new[] { box });
+                {
+	                CreateNew(width, height, format, new[] { box });
+                }
                 else
                 {
                     var region = new ResourceRegion
@@ -347,7 +361,9 @@ namespace Neo.Graphics
                 }
 
                 if (IsDirty(width, height, format, layers.Count))
-                    CreateNew(width, height, format, boxes);
+                {
+	                CreateNew(width, height, format, boxes);
+                }
                 else
                 {
                     for (var i = 0; i < layers.Count; ++i)
@@ -361,7 +377,9 @@ namespace Neo.Graphics
                 foreach (var strm in streams)
                 {
                     if (strm != null)
-                        strm.Dispose();
+                    {
+	                    strm.Dispose();
+                    }
                 }
             }
         }

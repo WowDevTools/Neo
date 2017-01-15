@@ -3,13 +3,13 @@ using OpenTK;
 
 namespace Neo.IO.Files.Models
 {
-    interface IInterpolator<TSource, out TDest>
+	internal interface IInterpolator<TSource, out TDest>
     {
         TDest Interpolate(float fac, ref TSource v1, ref TSource v2);
         TDest Interpolate(ref TSource v1);
     }
 
-    class VectorInterpolator : IInterpolator<Vector3, Vector3>, IInterpolator<Vector4, Vector4>, IInterpolator<Vector2, Vector2>
+	internal class VectorInterpolator : IInterpolator<Vector3, Vector3>, IInterpolator<Vector4, Vector4>, IInterpolator<Vector2, Vector2>
     {
         public Vector3 Interpolate(float fac, ref Vector3 v1, ref Vector3 v2)
         {
@@ -42,7 +42,7 @@ namespace Neo.IO.Files.Models
         }
     }
 
-    class QuaternionInterpolator : IInterpolator<Quaternion16, Quaternion>, IInterpolator<InvQuaternion16, Quaternion>
+	internal class QuaternionInterpolator : IInterpolator<Quaternion16, Quaternion>, IInterpolator<InvQuaternion16, Quaternion>
     {
         public Quaternion Interpolate(float fac, ref Quaternion16 v1, ref Quaternion16 v2)
         {
@@ -71,7 +71,7 @@ namespace Neo.IO.Files.Models
         }
     }
 
-    class NoInterpolateAlpha16 : IInterpolator<short, float>
+	internal class NoInterpolateAlpha16 : IInterpolator<short, float>
     {
         public float Interpolate(float fac, ref short v1, ref short v2)
         {
@@ -84,7 +84,7 @@ namespace Neo.IO.Files.Models
         }
     }
 
-    class InterpolateAlpha16 : IInterpolator<short, float>
+	internal class InterpolateAlpha16 : IInterpolator<short, float>
     {
         public float Interpolate(float fac, ref short v1, ref short v2)
         {
@@ -98,7 +98,7 @@ namespace Neo.IO.Files.Models
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct Quaternion16
+    internal struct Quaternion16
     {
         private readonly short x;
         private readonly short y;
@@ -108,15 +108,15 @@ namespace Neo.IO.Files.Models
         public Quaternion ToQuaternion()
         {
             return new Quaternion(
-                    (x < 0 ? x + 32768 : x - 32767) / 32767.0f,
-                    (y < 0 ? y + 32768 : y - 32767) / 32767.0f,
-                    (z < 0 ? z + 32768 : z - 32767) / 32767.0f,
-                    (w < 0 ? w + 32768 : w - 32767) / 32767.0f);
+                    (this.x < 0 ? this.x + 32768 : this.x - 32767) / 32767.0f,
+                    (this.y < 0 ? this.y + 32768 : this.y - 32767) / 32767.0f,
+                    (this.z < 0 ? this.z + 32768 : this.z - 32767) / 32767.0f,
+                    (this.w < 0 ? this.w + 32768 : this.w - 32767) / 32767.0f);
         }
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct InvQuaternion16
+    internal struct InvQuaternion16
     {
         private readonly short x;
         private readonly short y;
@@ -126,10 +126,10 @@ namespace Neo.IO.Files.Models
         public Quaternion ToQuaternion()
         {
             return new Quaternion(
-                    (x < 0 ? x + 32768 : x - 32767) / -32767.0f,
-                    (y < 0 ? y + 32768 : y - 32767) / -32767.0f,
-                    (z < 0 ? z + 32768 : z - 32767) / -32767.0f,
-                    (w < 0 ? w + 32768 : w - 32767) / 32767.0f);
+                    (this.x < 0 ? this.x + 32768 : this.x - 32767) / -32767.0f,
+                    (this.y < 0 ? this.y + 32768 : this.y - 32767) / -32767.0f,
+                    (this.z < 0 ? this.z + 32768 : this.z - 32767) / -32767.0f,
+                    (this.w < 0 ? this.w + 32768 : this.w - 32767) / 32767.0f);
         }
     }
 }

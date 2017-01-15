@@ -111,7 +111,7 @@ namespace Neo.Graphics
 	    /// </summary>
 	    public void Bind()
 	    {
-		    GL.BindBuffer(BufferType, this.glBufferID);
+		    GL.BindBuffer(this.BufferType, this.glBufferID);
 	    }
 
 	    private void Dispose(bool disposing)

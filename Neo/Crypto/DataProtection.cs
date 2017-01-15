@@ -13,7 +13,7 @@ namespace Neo.Crypto
             try
             {
                 var rawByte = Encoding.Default.GetBytes(unprotectedData);
-                var protectedByte = ProtectedData.Protect(rawByte, mEntropy, DataProtectionScope.CurrentUser);
+                var protectedByte = ProtectedData.Protect(rawByte, this.mEntropy, DataProtectionScope.CurrentUser);
                 return Convert.ToBase64String(protectedByte);
             }
             catch (CryptographicException e)
@@ -29,7 +29,7 @@ namespace Neo.Crypto
             {
                 var encryptedByte = Convert.FromBase64String(data);
 
-                var rawByte = ProtectedData.Unprotect(encryptedByte, mEntropy, DataProtectionScope.CurrentUser);
+                var rawByte = ProtectedData.Unprotect(encryptedByte, this.mEntropy, DataProtectionScope.CurrentUser);
                 return Encoding.Default.GetString(rawByte);
             }
             catch (CryptographicException e)

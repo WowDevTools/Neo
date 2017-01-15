@@ -57,13 +57,15 @@ namespace Neo.UI.Dialogs
                 new Point(25, pos.Y)
             };
 
-            mCurHue = h;
+	        this.mCurHue = h;
 
             var gradient = DetailGradient.Fill as LinearGradientBrush;
             if (gradient == null)
-                return;
+            {
+	            return;
+            }
 
-            gradient.GradientStops = new GradientStopCollection
+	        gradient.GradientStops = new GradientStopCollection
             {
                 new GradientStop(Color.FromRgb(255, 255, 255), 0.0),
                 new GradientStop(color, 1.0)
@@ -76,13 +78,17 @@ namespace Neo.UI.Dialogs
         {
             var elem = sender as UIElement;
             if (elem != null)
-                elem.CaptureMouse();
-            mIsMouseDown = true;
+            {
+	            elem.CaptureMouse();
+            }
+	        this.mIsMouseDown = true;
             var rc = sender as Rectangle;
             if (rc == null)
-                return;
+            {
+	            return;
+            }
 
-            var pos = e.GetPosition(rc);
+	        var pos = e.GetPosition(rc);
             RightSlider.Points = new PointCollection
             {
                 new Point(25, pos.Y),
@@ -103,13 +109,15 @@ namespace Neo.UI.Dialogs
                 new Point(25, pos.Y)
             };
 
-            mCurHue = (float)(pos.Y / rc.RenderSize.Height) * 360.0f;
+	        this.mCurHue = (float)(pos.Y / rc.RenderSize.Height) * 360.0f;
 
             var gradient = DetailGradient.Fill as LinearGradientBrush;
             if (gradient == null)
-                return;
+            {
+	            return;
+            }
 
-            int r, g, b;
+	        int r, g, b;
             ColorUtils.HsvToRgb((pos.Y / rc.RenderSize.Height) * 360.0, 1, 1, out r, out g, out b);
             gradient.GradientStops = new GradientStopCollection
             {
@@ -124,24 +132,32 @@ namespace Neo.UI.Dialogs
         {
             var elem = sender as UIElement;
             if (elem != null)
-                elem.ReleaseMouseCapture();
-            mIsMouseDown = false;
+            {
+	            elem.ReleaseMouseCapture();
+            }
+	        this.mIsMouseDown = false;
         }
 
         private void Rectangle_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mIsMouseDown == false)
-                return;
+            if (this.mIsMouseDown == false)
+            {
+	            return;
+            }
 
-            var rc = sender as Rectangle;
+	        var rc = sender as Rectangle;
             if (rc == null)
-                return;
+            {
+	            return;
+            }
 
-            var pos = e.GetPosition(rc);
+	        var pos = e.GetPosition(rc);
             if (pos.Y < 0 || pos.Y > rc.RenderSize.Height)
-                return;
+            {
+	            return;
+            }
 
-            RightSlider.Points = new PointCollection
+	        RightSlider.Points = new PointCollection
             {
                 new Point(25, pos.Y),
                 new Point(30, pos.Y - 5),
@@ -161,13 +177,15 @@ namespace Neo.UI.Dialogs
                 new Point(25, pos.Y)
             };
 
-            mCurHue = (float)(pos.Y / rc.RenderSize.Height) * 360.0f;
+	        this.mCurHue = (float)(pos.Y / rc.RenderSize.Height) * 360.0f;
 
             var gradient = DetailGradient.Fill as LinearGradientBrush;
             if (gradient == null)
-                return;
+            {
+	            return;
+            }
 
-            int r, g, b;
+	        int r, g, b;
             ColorUtils.HsvToRgb((pos.Y / rc.RenderSize.Height) * 360.0, 1, 1, out r, out g, out b);
             gradient.GradientStops = new GradientStopCollection
             {
@@ -182,30 +200,38 @@ namespace Neo.UI.Dialogs
         {
             var elem = sender as UIElement;
             if (elem != null)
-                elem.CaptureMouse();
+            {
+	            elem.CaptureMouse();
+            }
 
-            mIsDetailMouseDown = true;
+	        this.mIsDetailMouseDown = true;
         }
 
         private void DetailGradient_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var elem = sender as UIElement;
             if (elem != null)
-                elem.ReleaseMouseCapture();
-            mIsDetailMouseDown = false;
+            {
+	            elem.ReleaseMouseCapture();
+            }
+	        this.mIsDetailMouseDown = false;
         }
 
         private void DetailGradient_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mIsDetailMouseDown == false)
-                return;
+            if (this.mIsDetailMouseDown == false)
+            {
+	            return;
+            }
 
-            var pos = e.GetPosition(DetailGradient);
+	        var pos = e.GetPosition(DetailGradient);
             if (pos.X < 0 || pos.Y < 0 || pos.X >= DetailGradient.RenderSize.Width ||
                 pos.Y >= DetailGradient.RenderSize.Height)
-                return;
+            {
+	            return;
+            }
 
-            Canvas.SetLeft(ColorEllipse, pos.X - 5);
+	        Canvas.SetLeft(ColorEllipse, pos.X - 5);
             Canvas.SetTop(ColorEllipse, pos.Y - 5);
 
             UpdateColor();
@@ -216,7 +242,7 @@ namespace Neo.UI.Dialogs
             var left = Canvas.GetLeft(ColorEllipse);
             var top = Canvas.GetTop(ColorEllipse);
 
-            var h = mCurHue;
+            var h = this.mCurHue;
             var s = left / DetailGradient.RenderSize.Width;
             var v = top / DetailGradient.RenderSize.Height;
 
@@ -224,9 +250,11 @@ namespace Neo.UI.Dialogs
             ColorUtils.HsvToRgb(h, s, 1.0 - v, out r, out g, out b);
             var clr = Color.FromRgb((byte) r, (byte) g, (byte) b);
             if (ColorChanged != null)
-                ColorChanged(clr);
+            {
+	            ColorChanged(clr);
+            }
 
-            ColorEllipse.Stroke = new SolidColorBrush(Color.FromRgb((byte) (255 - r), (byte) (255 - g), (byte) (255 - b)));
+	        ColorEllipse.Stroke = new SolidColorBrush(Color.FromRgb((byte) (255 - r), (byte) (255 - g), (byte) (255 - b)));
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

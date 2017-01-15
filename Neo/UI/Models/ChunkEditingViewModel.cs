@@ -9,15 +9,15 @@ using Neo.UI.Widgets;
 
 namespace Neo.UI.Models
 {
-    class ChunkEditingViewModel
+	internal class ChunkEditingViewModel
     {
         private readonly ChunkEditingWidget mWidget;
 
-        public ChunkEditingWidget Widget { get { return mWidget; } }
+        public ChunkEditingWidget Widget { get { return this.mWidget; } }
 
         public ChunkEditingViewModel(ChunkEditingWidget widget)
         {
-            mWidget = widget;
+	        this.mWidget = widget;
         }
 
         public void SetChunkEditState(ChunkEditMode mode)

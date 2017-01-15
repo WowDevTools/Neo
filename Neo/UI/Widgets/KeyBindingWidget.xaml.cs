@@ -33,87 +33,113 @@ namespace Neo.UI.Dialogs
         {
             var button = sender as System.Windows.Controls.Button;
             if (button == null)
-                return;
+            {
+	            return;
+            }
 
-            var binding = button.Tag as KeyBindingControl;
+	        var binding = button.Tag as KeyBindingControl;
             System.Windows.Controls.Border border;
 
-            if (binding != null && Equals(binding, mCurrentBinding))
+            if (binding != null && Equals(binding, this.mCurrentBinding))
             {
-                border = mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
+                border = this.mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
                 if(border != null)
-                    border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                mCurrentBinding = null;
+                {
+	                border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                }
+	            this.mCurrentBinding = null;
                 return;
             }
 
             if (binding == null)
-                return;
-
-            if (mCurrentBinding != null)
             {
-                border = mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
+	            return;
+            }
+
+	        if (this.mCurrentBinding != null)
+            {
+                border = this.mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
                 if (border != null)
-                    border.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+                {
+	                border.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+                }
             }
 
             border = binding.Label.Parent as System.Windows.Controls.Border;
             if (border != null)
-                border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+            {
+	            border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+            }
 
-            mCurrentBinding = binding;
-            mCurrentKeys.Clear();
+	        this.mCurrentBinding = binding;
+	        this.mCurrentKeys.Clear();
         }
 
         private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs args)
         {
-            if (mCurrentPressedKeys.Contains(args.Key))
-                return;
+            if (this.mCurrentPressedKeys.Contains(args.Key))
+            {
+	            return;
+            }
 
-            if (mCurrentBinding == null)
-                return;
+	        if (this.mCurrentBinding == null)
+	        {
+		        return;
+	        }
 
-            mCurrentKeys.Add(args.Key);
-            mCurrentPressedKeys.Add(args.Key);
-            mCurrentBinding.Label.Text = string.Join(" + ", mCurrentKeys.Select(k => Converter.ConvertToString(k)));
+	        this.mCurrentKeys.Add(args.Key);
+	        this.mCurrentPressedKeys.Add(args.Key);
+	        this.mCurrentBinding.Label.Text = string.Join(" + ", this.mCurrentKeys.Select(k => Converter.ConvertToString(k)));
         }
 
         private void OnKeyUp(object sender, System.Windows.Input.KeyEventArgs args)
         {
-            if (mCurrentBinding == null)
-                return;
-
-            mCurrentPressedKeys.Remove(args.Key);
-            if (mCurrentPressedKeys.Count != 0)
-                return;
-
-            var border = mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
-            if (border != null)
-                border.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-            var bindField = mCurrentBinding.Tag as Tuple<FieldInfo, object>;
-            if (bindField != null && mCurrentKeys.Count > 0)
+            if (this.mCurrentBinding == null)
             {
-                bindField.Item1.SetValue(bindField.Item2, mCurrentKeys.Select(k => (Keys)KeyInterop.VirtualKeyFromKey(k)).ToArray());
+	            return;
+            }
+
+	        this.mCurrentPressedKeys.Remove(args.Key);
+            if (this.mCurrentPressedKeys.Count != 0)
+            {
+	            return;
+            }
+
+	        var border = this.mCurrentBinding.Label.Parent as System.Windows.Controls.Border;
+            if (border != null)
+            {
+	            border.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            }
+	        var bindField = this.mCurrentBinding.Tag as Tuple<FieldInfo, object>;
+            if (bindField != null && this.mCurrentKeys.Count > 0)
+            {
+                bindField.Item1.SetValue(bindField.Item2, this.mCurrentKeys.Select(k => (Keys)KeyInterop.VirtualKeyFromKey(k)).ToArray());
                 KeyBindings.Save();
             }
 
-            mCurrentBinding = null;
+	        this.mCurrentBinding = null;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            SensitivitySliderIndicator.Text = (SensitivitySlider.Value / 5.0f).ToString("F2");
+	        this.SensitivitySliderIndicator.Text = (this.SensitivitySlider.Value / 5.0f).ToString("F2");
 
             if (DesignerProperties.GetIsInDesignMode(this))
-                return;
+            {
+	            return;
+            }
 
-            if (mInitialized)
-                return;
+	        if (this.mInitialized)
+	        {
+		        return;
+	        }
 
-            if (DesignerProperties.GetIsInDesignMode(this))
-                return;
+	        if (DesignerProperties.GetIsInDesignMode(this))
+	        {
+		        return;
+	        }
 
-            mInitialized = true;
+	        this.mInitialized = true;
             KeyDown += OnKeyDown;
             KeyUp += OnKeyUp;
             var baseType = typeof(KeyBindings);
@@ -125,13 +151,17 @@ namespace Neo.UI.Dialogs
                 foreach (var binding in instance.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
                 {
                     if (binding.FieldType.IsArray == false)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var arrType = binding.FieldType.GetElementType();
+	                var arrType = binding.FieldType.GetElementType();
                     if (arrType != typeof(Keys))
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var elemName = binding.Name;
+	                var elemName = binding.Name;
                     var keys = (Keys[])binding.GetValue(instance);
                     var control = new KeyBindingControl
                     {
@@ -152,35 +182,45 @@ namespace Neo.UI.Dialogs
         {
            var cb = sender as System.Windows.Controls.CheckBox;
             if (cb == null)
-                return;
+            {
+	            return;
+            }
 
-            WorldFrame.Instance.CamControl.InvertY = !WorldFrame.Instance.CamControl.InvertY;
+	        WorldFrame.Instance.CamControl.InvertY = !WorldFrame.Instance.CamControl.InvertY;
         }
 
         private void InvertMouseBoxX_Clicked(object sender, RoutedEventArgs e)
         {
             var cb = sender as System.Windows.Controls.CheckBox;
             if (cb == null)
-                return;
+            {
+	            return;
+            }
 
-            WorldFrame.Instance.CamControl.InvertX = !WorldFrame.Instance.CamControl.InvertX;
+	        WorldFrame.Instance.CamControl.InvertX = !WorldFrame.Instance.CamControl.InvertX;
         }
 
         private void SensitivitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var slider = sender as System.Windows.Controls.Slider;
             if (slider == null)
-                return;
+            {
+	            return;
+            }
 
 
-            var newValue = slider.Value / 5.0f;
-            if (SensitivitySliderIndicator != null)
-                SensitivitySliderIndicator.Text = newValue.ToString("F2");
+	        var newValue = slider.Value / 5.0f;
+            if (this.SensitivitySliderIndicator != null)
+            {
+	            this.SensitivitySliderIndicator.Text = newValue.ToString("F2");
+            }
 
-            if (WorldFrame.Instance == null || WorldFrame.Instance.CamControl == null)
-                return;
+	        if (WorldFrame.Instance == null || WorldFrame.Instance.CamControl == null)
+	        {
+		        return;
+	        }
 
-            WorldFrame.Instance.CamControl.TurnFactor = (float)newValue * 0.2f;
+	        WorldFrame.Instance.CamControl.TurnFactor = (float)newValue * 0.2f;
         }
 
         private void reconnect_Click(object sender, RoutedEventArgs e)
@@ -190,7 +230,7 @@ namespace Neo.UI.Dialogs
             if (TabletManager.Instance.IsConnected)
             {
                 // if the tablet is connected hide reconnect button
-                reconnect.Visibility = Visibility.Hidden;
+	            this.reconnect.Visibility = Visibility.Hidden;
             }
         }
 
@@ -200,10 +240,10 @@ namespace Neo.UI.Dialogs
             if (TabletManager.Instance.IsConnected)
             {
                 // if the tablet is connected hide reconnect button
-                reconnect.Visibility = Visibility.Hidden;
+	            this.reconnect.Visibility = Visibility.Hidden;
             }
             else {
-                reconnect.Visibility = Visibility.Visible;
+	            this.reconnect.Visibility = Visibility.Visible;
             }
         }
     }

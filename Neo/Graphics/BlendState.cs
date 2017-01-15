@@ -98,7 +98,7 @@ namespace Neo.Graphics
 	    /// </summary>
 	    public void Activate()
 	    {
-		    if (BlendEnabled)
+		    if (this.BlendEnabled)
 		    {
 			    GL.Enable(EnableCap.Blend);
 		    }
@@ -107,11 +107,7 @@ namespace Neo.Graphics
 			    GL.Disable(EnableCap.Blend);
 		    }
 
-			GL.BlendFuncSeparate(
-				SourceBlend,
-				DestinationBlend,
-				SourceAlphaBlend,
-				DestinationAlphaBlend
+			GL.BlendFuncSeparate(this.SourceBlend, this.DestinationBlend, this.SourceAlphaBlend, this.DestinationAlphaBlend
 			);
 	    }
     }

@@ -1,7 +1,7 @@
 ﻿
 namespace Neo.Scene.Terrain
 {
-    class MapAreaQuadTree
+	internal class MapAreaQuadTree
     {
     }
 }

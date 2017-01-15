@@ -33,10 +33,10 @@ namespace Neo.IO.Files.Terrain
 
         protected MapArea()
         {
-            IsValid = true;
-            DoodadInstances = new List<M2Instance>();
-            FullVertices = new AdtVertex[145 * 256];
-            TextureNames = new List<string>();
+	        this.IsValid = true;
+	        this.DoodadInstances = new List<M2Instance>();
+	        this.FullVertices = new AdtVertex[145 * 256];
+	        this.TextureNames = new List<string>();
         }
 
         ~MapArea()
@@ -48,16 +48,20 @@ namespace Neo.IO.Files.Terrain
 
         public int GetFreeM2Uuid()
         {
-            if (DoodadInstances.Count >= (1 << 20) - 1)
-                return -1;
+            if (this.DoodadInstances.Count >= (1 << 20) - 1)
+            {
+	            return -1;
+            }
 
-            var upper = IndexY * 64 + IndexX;
-            var lower = DoodadInstances.Count + 1;
-            while (DoodadInstances.Any(i => i.Uuid == ((upper << 20) | lower)))
+	        var upper = this.IndexY * 64 + this.IndexX;
+            var lower = this.DoodadInstances.Count + 1;
+            while (this.DoodadInstances.Any(i => i.Uuid == ((upper << 20) | lower)))
             {
                 ++lower;
                 if (lower >= (1 << 20) - 1)
-                    return -1;
+                {
+	                return -1;
+                }
             }
 
             return (upper << 20) | lower;
@@ -65,34 +69,36 @@ namespace Neo.IO.Files.Terrain
 
         public bool IsUuidAvailable(int uuid)
         {
-            return DoodadInstances.All(d => d.Uuid != uuid);
+            return this.DoodadInstances.All(d => d.Uuid != uuid);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (DoodadInstances != null)
+            if (this.DoodadInstances != null)
             {
-                foreach (var instance in DoodadInstances)
-                    WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+                foreach (var instance in this.DoodadInstances)
+                {
+	                WorldFrame.Instance.M2Manager.RemoveInstance(instance.Hash, instance.Uuid);
+                }
 
-                DoodadInstances.Clear();
-                DoodadInstances = null;
+	            this.DoodadInstances.Clear();
+	            this.DoodadInstances = null;
             }
 
-            if (TextureNames != null)
+            if (this.TextureNames != null)
             {
-                TextureNames.Clear();
-                TextureNames = null;
+	            this.TextureNames.Clear();
+	            this.TextureNames = null;
             }
 
-            if (mTextures != null)
+            if (this.mTextures != null)
             {
-                mTextures.Clear();
-                mTextures = null;
+	            this.mTextures.Clear();
+	            this.mTextures = null;
             }
 
-            FullVertices = null;
-            Continent = null;
+	        this.FullVertices = null;
+	        this.Continent = null;
         }
 
         public virtual void Dispose()
@@ -115,58 +121,74 @@ namespace Neo.IO.Files.Terrain
 
         public int GetOrAddTexture(string textureName)
         {
-            for (var i = 0; i < TextureNames.Count; ++i)
+            for (var i = 0; i < this.TextureNames.Count; ++i)
             {
-                if (string.Equals(TextureNames[i], textureName, StringComparison.InvariantCultureIgnoreCase))
-                    return i;
+                if (string.Equals(this.TextureNames[i], textureName, StringComparison.InvariantCultureIgnoreCase))
+                {
+	                return i;
+                }
             }
 
-            TextureNames.Add(textureName);
+	        this.TextureNames.Add(textureName);
 
             var specTex = Path.ChangeExtension(textureName, null) + "_s.blp";
             if (FileManager.Instance.Provider.Exists(specTex) == false)
-                mSpecularTextures.Add(DefaultTextures.Specular);
+            {
+	            this.mSpecularTextures.Add(DefaultTextures.Specular);
+            }
             else
-                mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+            {
+	            this.mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+            }
 
-            mTextures.Add(TextureManager.Instance.GetTexture(textureName));
-            return TextureNames.Count - 1;
+	        this.mTextures.Add(TextureManager.Instance.GetTexture(textureName));
+            return this.TextureNames.Count - 1;
         }
 
         public string GetTextureName(int index)
         {
-            if (index >= TextureNames.Count)
-                throw new IndexOutOfRangeException();
+            if (index >= this.TextureNames.Count)
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return TextureNames[index];
+	        return this.TextureNames[index];
         }
 
         public Graphics.Texture GetTexture(int index)
         {
-            if (index >= mTextures.Count)
-                throw new IndexOutOfRangeException();
+            if (index >= this.mTextures.Count)
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return mTextures[index];
+	        return this.mTextures[index];
         }
 
         public Graphics.Texture GetSpecularTexture(int index)
         {
-            if(index >= mSpecularTextures.Count)
-                    throw new IndexOutOfRangeException();
+            if(index >= this.mSpecularTextures.Count)
+            {
+	            throw new IndexOutOfRangeException();
+            }
 
-            return mSpecularTextures[index];
+	        return this.mSpecularTextures[index];
         }
 
         protected void LoadSpecularTextures()
         {
-            mSpecularTextures = new List<Graphics.Texture>();
-            foreach (var tex in TextureNames)
+	        this.mSpecularTextures = new List<Graphics.Texture>();
+            foreach (var tex in this.TextureNames)
             {
                 var specTex = Path.ChangeExtension(tex, null) + "_s.blp";
                 if (FileManager.Instance.Provider.Exists(specTex) == false)
-                    mSpecularTextures.Add(DefaultTextures.Specular);
+                {
+	                this.mSpecularTextures.Add(DefaultTextures.Specular);
+                }
                 else
-                    mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+                {
+	                this.mSpecularTextures.Add(TextureManager.Instance.GetTexture(specTex));
+                }
             }
         }
 

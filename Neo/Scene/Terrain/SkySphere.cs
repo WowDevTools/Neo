@@ -8,10 +8,10 @@ using SlimTK;
 
 namespace Neo.Scene.Terrain
 {
-    class SkySphere
+	internal class SkySphere
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct SphereVertex
+        private struct SphereVertex
         {
             public Vector3 Position;
             public Vector2 TexCoord;
@@ -24,49 +24,51 @@ namespace Neo.Scene.Terrain
         private BoundingSphere mBoundingSphere;
         private readonly float mRadius;
 
-        public BoundingSphere BoundingSphere { get { return mBoundingSphere; } }
+        public BoundingSphere BoundingSphere { get { return this.mBoundingSphere; } }
 
         public SkySphere(float radius, int rings, int sectors)
         {
-            mRadius = radius;
-            mBoundingSphere = new BoundingSphere(Vector3.Zero, radius);
-            mMesh = new Mesh();
-            mMesh.AddElement("POSITION", 0, 3);
-            mMesh.AddElement("TEXCOORD", 0, 2);
-            mMesh.BlendState.BlendEnabled = false;
-            mMesh.DepthState.DepthEnabled = true;
-            mMesh.Stride = IO.SizeCache<SphereVertex>.Size;
+	        this.mRadius = radius;
+	        this.mBoundingSphere = new BoundingSphere(Vector3.Zero, radius);
+	        this.mMesh = new Mesh();
+	        this.mMesh.AddElement("POSITION", 0, 3);
+	        this.mMesh.AddElement("TEXCOORD", 0, 2);
+	        this.mMesh.BlendState.BlendEnabled = false;
+	        this.mMesh.DepthState.DepthEnabled = true;
+	        this.mMesh.Stride = IO.SizeCache<SphereVertex>.Size;
 
             InitVertices(radius, rings, sectors);
 
-            mMesh.VertexBuffer.BufferData(mVertices);
+	        this.mMesh.VertexBuffer.BufferData(this.mVertices);
 
-            mMatrixBuffer = new UniformBuffer();
-            mMatrixBuffer.BufferData(Matrix4.Identity);
+	        this.mMatrixBuffer = new UniformBuffer();
+	        this.mMatrixBuffer.BufferData(Matrix4.Identity);
 
-            mMesh.Program = ShaderCache.GetShaderProgram(NeoShader.Sky);
+	        this.mMesh.Program = ShaderCache.GetShaderProgram(NeoShader.Sky);
         }
 
         public void Render()
         {
-            if (mSkyTexture == null)
-                return;
+            if (this.mSkyTexture == null)
+            {
+	            return;
+            }
 
-            mMesh.Program.SetVertexUniformBuffer(1, mMatrixBuffer);
-            mMesh.Program.SetFragmentTexture(0, mSkyTexture);
-            mMesh.BeginDraw();
-            mMesh.Draw();
+	        this.mMesh.Program.SetVertexUniformBuffer(1, this.mMatrixBuffer);
+	        this.mMesh.Program.SetFragmentTexture(0, this.mSkyTexture);
+	        this.mMesh.BeginDraw();
+	        this.mMesh.Draw();
         }
 
         public void UpdatePosition(Vector3 position)
         {
-            mBoundingSphere = new BoundingSphere(position, mRadius);
-            mMatrixBuffer.BufferData(new Vector4(position, 1.0f));
+	        this.mBoundingSphere = new BoundingSphere(position, this.mRadius);
+	        this.mMatrixBuffer.BufferData(new Vector4(position, 1.0f));
         }
 
         public void UpdateSkyTexture(Graphics.Texture tex)
         {
-            mSkyTexture = tex;
+	        this.mSkyTexture = tex;
         }
 
         private void InitVertices(float radius, int rings, int sectors)
@@ -75,7 +77,7 @@ namespace Neo.Scene.Terrain
             var R = 1.0f / (rings - 1);
             var S = 1.0f / (sectors - 1);
 
-            mVertices = new SphereVertex[rings * sectors];
+	        this.mVertices = new SphereVertex[rings * sectors];
             var counter = 0;
 
             for(var r = 0; r < rings; ++r)
@@ -86,7 +88,7 @@ namespace Neo.Scene.Terrain
                     var x = (float) Math.Cos((2 * Math.PI * s * S)) * (float) Math.Sin(Math.PI * r * R);
                     var y = (float) Math.Sin((2 * Math.PI * s * S)) * (float) Math.Sin(Math.PI * r * R);
 
-                    mVertices[counter++] = new SphereVertex
+	                this.mVertices[counter++] = new SphereVertex
                     {
                         Position = new Vector3(x * radius, y * radius, z * radius),
                         TexCoord = new Vector2(s * S, r * R)
@@ -109,9 +111,9 @@ namespace Neo.Scene.Terrain
                 }
             }
 
-            mMesh.IndexCount = indices.Length;
-	        mMesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
-	        mMesh.IndexBuffer.BufferData(indices);
+	        this.mMesh.IndexCount = indices.Length;
+	        this.mMesh.IndexBuffer.IndexFormat = DrawElementsType.UnsignedInt;
+	        this.mMesh.IndexBuffer.BufferData(indices);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Neo.IO.CASC
 {
-    class JenkinsHash
+	internal class JenkinsHash
     {
         public ulong Compute(string data)
         {
@@ -18,9 +18,11 @@ namespace Neo.IO.CASC
             a = b = c = 0xdeadbeef + (uint)length;
 
             if ((data.Length % 12) != 0)
-                Array.Resize(ref data, data.Length + (12 - (data.Length % 12)));
+            {
+	            Array.Resize(ref data, data.Length + (12 - (data.Length % 12)));
+            }
 
-            var k = 0;
+	        var k = 0;
 
             while (length > 12)
             {
@@ -47,7 +49,7 @@ namespace Neo.IO.CASC
             return ((ulong)c << 32) | b;
         }
 
-        void Mix(ref uint a, ref uint b, ref uint c)
+	    private void Mix(ref uint a, ref uint b, ref uint c)
         {
             a -= c; a ^= Rot(c, 4); c += b;
             b -= a; b ^= Rot(a, 6); a += c;
@@ -57,7 +59,7 @@ namespace Neo.IO.CASC
             c -= b; c ^= Rot(b, 4); b += a;
         }
 
-        void Final(ref uint a, ref uint b, ref uint c)
+	    private void Final(ref uint a, ref uint b, ref uint c)
         {
             c ^= b; c -= Rot(b, 14);
             a ^= c; a -= Rot(c, 11);
@@ -68,7 +70,7 @@ namespace Neo.IO.CASC
             c ^= b; c -= Rot(b, 24);
         }
 
-        uint Rot(uint x, int k)
+	    private uint Rot(uint x, int k)
         {
             return (x << k) | (x >> (32 - k));
         }

@@ -2,7 +2,7 @@
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
-    interface ISpawnedCreature
+	internal interface ISpawnedCreature
     {
         int SpawnGuid { get; set; }
         // Also known as the field "id"

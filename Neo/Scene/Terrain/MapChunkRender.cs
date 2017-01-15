@@ -13,7 +13,7 @@ using DataType = Neo.Graphics.DataType;
 namespace Neo.Scene.Terrain
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct TexAnimBuffer
+    internal struct TexAnimBuffer
     {
         public Matrix4 Layer0;
         public Matrix4 Layer1;
@@ -22,7 +22,7 @@ namespace Neo.Scene.Terrain
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct TexParamsBuffer
+    internal struct TexParamsBuffer
     {
         public Vector4 TextureScales;
         public Vector4 SpecularFactors;
@@ -39,7 +39,7 @@ namespace Neo.Scene.Terrain
         HideLines = 0x8
     }
 
-    class MapChunkRender : IDisposable
+	internal class MapChunkRender : IDisposable
     {
         public static Sampler ColorSampler { get; private set; }
         public static Sampler AlphaSampler { get; private set; }
@@ -81,7 +81,7 @@ namespace Neo.Scene.Terrain
 
         public void UpdateBoundingBox()
         {
-            mBoundingBox = mData.BoundingBox;
+	        this.mBoundingBox = this.mData.BoundingBox;
         }
 
         public MapChunkRender()
@@ -92,36 +92,38 @@ namespace Neo.Scene.Terrain
 
         private void ForceRenderMode(IO.Files.Terrain.MapChunk chunk, bool updateHoles)
         {
-            if(chunk == mData)
+            if(chunk == this.mData)
             {
 	            if (updateHoles)
 	            {
-		            mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
+		            this.mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, this.mData.HoleValues, 8);
 	            }
                 else
                 {
-                    mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId, chunk.HasImpassFlag);
+	                this.mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(this.mData.AreaId, chunk.HasImpassFlag);
                     SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode);
-                    mScaleBuffer.BufferData(mTexParams);
+	                this.mScaleBuffer.BufferData(this.mTexParams);
                 }
             }
         }
 
         private void SetRenderMode(ChunkRenderFlags flags)
         {
-            if (mScaleBuffer == null)
-                return;
-
-            if (flags.HasFlag(ChunkRenderFlags.ShowLines) || flags.HasFlag(ChunkRenderFlags.HideLines))
+            if (this.mScaleBuffer == null)
             {
-                mTexParams.ChunkLine.W = (flags.HasFlag(ChunkRenderFlags.HideLines) ? 0f : 1f);
-                mScaleBuffer.BufferData(mTexParams);
+	            return;
+            }
+
+	        if (flags.HasFlag(ChunkRenderFlags.ShowLines) || flags.HasFlag(ChunkRenderFlags.HideLines))
+            {
+	            this.mTexParams.ChunkLine.W = (flags.HasFlag(ChunkRenderFlags.HideLines) ? 0f : 1f);
+	            this.mScaleBuffer.BufferData(this.mTexParams);
             }
 
             if (flags.HasFlag(ChunkRenderFlags.ShowArea) || flags.HasFlag(ChunkRenderFlags.HideArea))
             {
-                mTexParams.AreaColour.W = (flags.HasFlag(ChunkRenderFlags.HideArea) ? 0f : 1f);
-                mScaleBuffer.BufferData(mTexParams);
+	            this.mTexParams.AreaColour.W = (flags.HasFlag(ChunkRenderFlags.HideArea) ? 0f : 1f);
+	            this.mScaleBuffer.BufferData(this.mTexParams);
             }
         }
 
@@ -132,42 +134,50 @@ namespace Neo.Scene.Terrain
 
         private void Dispose(bool disposing)
         {
-            var alphaTex = mAlphaTexture;
-            var holeTex = mHoleTexture;
-            var constBuffer = mScaleBuffer;
-            var tanim = mTexAnimBuffer;
+            var alphaTex = this.mAlphaTexture;
+            var holeTex = this.mHoleTexture;
+            var constBuffer = this.mScaleBuffer;
+            var tanim = this.mTexAnimBuffer;
 
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
                 if (holeTex != null)
-                    holeTex.Dispose();
-                if (alphaTex != null)
-                    alphaTex.Dispose();
-                if (constBuffer != null)
-                    constBuffer.Dispose();
-                if (tanim != null)
-                    tanim.Dispose();
+                {
+	                holeTex.Dispose();
+                }
+	            if (alphaTex != null)
+	            {
+		            alphaTex.Dispose();
+	            }
+	            if (constBuffer != null)
+	            {
+		            constBuffer.Dispose();
+	            }
+	            if (tanim != null)
+	            {
+		            tanim.Dispose();
+	            }
             });
 
             lock (this)
             {
                 // Sync load can be called even after the object has been disposed.
-                if (mSyncLoadToken != null)
+                if (this.mSyncLoadToken != null)
                 {
-                    WorldFrame.Instance.Dispatcher.Remove(mSyncLoadToken);
-                    mSyncLoadToken = null;
+                    WorldFrame.Instance.Dispatcher.Remove(this.mSyncLoadToken);
+	                this.mSyncLoadToken = null;
                 }
             }
 
             ChunkEditManager.Instance.OnChunkRenderModeChange -= SetRenderMode;
             ChunkEditManager.Instance.ForceRenderUpdate -= ForceRenderMode;
 
-            mAlphaTexture = null;
-            mHoleTexture = null;
-            mScaleBuffer = null;
-            mShaderTextures = null;
-            mReferences = null;
-            mParent = null;
+	        this.mAlphaTexture = null;
+	        this.mHoleTexture = null;
+	        this.mScaleBuffer = null;
+	        this.mShaderTextures = null;
+	        this.mReferences = null;
+	        this.mParent = null;
         }
 
         public virtual void Dispose()
@@ -178,163 +188,183 @@ namespace Neo.Scene.Terrain
 
         public void PushDoodadReferences()
         {
-            if (mData.DoodadsChanged)
+            if (this.mData.DoodadsChanged)
             {
                 MapAreaRender parent;
-                mParent.TryGetTarget(out parent);
+	            this.mParent.TryGetTarget(out parent);
                 if (parent != null)
                 {
-                    mReferences = new M2Instance[mData.DoodadReferences.Length];
-                    for (var i = 0; i < mReferences.Length; ++i)
-                        mReferences[i] = parent.AreaFile.DoodadInstances[mData.DoodadReferences[i]];
+	                this.mReferences = new M2Instance[this.mData.DoodadReferences.Length];
+                    for (var i = 0; i < this.mReferences.Length; ++i)
+                    {
+	                    this.mReferences[i] = parent.AreaFile.DoodadInstances[this.mData.DoodadReferences[i]];
+                    }
                 }
 
-                mData.DoodadsChanged = false;
-                mModelBox = mData.ModelBox;
+	            this.mData.DoodadsChanged = false;
+	            this.mModelBox = this.mData.ModelBox;
             }
 
-            if (mReferences.Length == 0)
-                return;
+            if (this.mReferences.Length == 0)
+            {
+	            return;
+            }
 
-            if (WorldFrame.Instance.ActiveCamera.Contains(ref mModelBox))
-                WorldFrame.Instance.M2Manager.PushMapReferences(mReferences);
+	        if (WorldFrame.Instance.ActiveCamera.Contains(ref this.mModelBox))
+	        {
+		        WorldFrame.Instance.M2Manager.PushMapReferences(this.mReferences);
+	        }
         }
 
         public void OnFrame()
         {
-            if (mIsAsyncLoaded == false)
-                return;
-
-            if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
+            if (this.mIsAsyncLoaded == false)
             {
-                if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mBoundingBox) == false)
+	            return;
+            }
+
+	        if(WorldFrame.Instance.MapManager.IsInitialLoad == false)
+            {
+                if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref this.mBoundingBox) == false)
                 {
                     if (M2Manager.IsViewDirty == false)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref mModelBox) == false)
-                        return;
+	                if (WorldFrame.Instance.MapManager.SkySphere.BoundingSphere.Intersects(ref this.mModelBox) == false)
+	                {
+		                return;
+	                }
                 }
 
-                if (WorldFrame.Instance.ActiveCamera.Contains(ref mBoundingBox) == false)
+                if (WorldFrame.Instance.ActiveCamera.Contains(ref this.mBoundingBox) == false)
                 {
                     if (M2Manager.IsViewDirty == false)
-                        return;
+                    {
+	                    return;
+                    }
 
-                    PushDoodadReferences();
+	                PushDoodadReferences();
                     return;
                 }
             }
 
-            if (mIsSyncLoaded == false)
+            if (this.mIsSyncLoaded == false)
             {
                 if (!BeginSyncLoad())
-                    return;
+                {
+	                return;
+                }
             }
 
             if (M2Manager.IsViewDirty)
-                PushDoodadReferences();
-
-            if (mData.IsAlphaChanged)
             {
-                mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
-                mData.IsAlphaChanged = false;
+	            PushDoodadReferences();
             }
 
-            if (mData.TexturesChanged)
+	        if (this.mData.IsAlphaChanged)
             {
-                mShaderTextures = mData.Textures.ToArray();
-                mShaderSpecularTextures = mData.SpecularTextures.ToArray();
-                mData.TexturesChanged = false;
+	            this.mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, this.mData.AlphaValues, 4 * 64);
+	            this.mData.IsAlphaChanged = false;
+            }
+
+            if (this.mData.TexturesChanged)
+            {
+	            this.mShaderTextures = this.mData.Textures.ToArray();
+	            this.mShaderSpecularTextures = this.mData.SpecularTextures.ToArray();
+	            this.mData.TexturesChanged = false;
             }
 
             UpdateTextureAnimations();
 
-            ChunkMesh.StartVertex = mData.StartVertex;
-            ChunkMesh.Program.SetFragmentTexture(0, mAlphaTexture);
-            ChunkMesh.Program.SetFragmentTexture(1, mHoleTexture);
-            ChunkMesh.Program.SetFragmentTextures(2, mShaderTextures);
-            ChunkMesh.Program.SetFragmentTextures(6, mShaderSpecularTextures);
-            ChunkMesh.Program.SetVertexUniformBuffer(1, mTexAnimBuffer);
+            ChunkMesh.StartVertex = this.mData.StartVertex;
+            ChunkMesh.Program.SetFragmentTexture(0, this.mAlphaTexture);
+            ChunkMesh.Program.SetFragmentTexture(1, this.mHoleTexture);
+            ChunkMesh.Program.SetFragmentTextures(2, this.mShaderTextures);
+            ChunkMesh.Program.SetFragmentTextures(6, this.mShaderSpecularTextures);
+            ChunkMesh.Program.SetVertexUniformBuffer(1, this.mTexAnimBuffer);
 
-            ChunkMesh.Program.SetFragmentUniformBuffer(2, mScaleBuffer);
+            ChunkMesh.Program.SetFragmentUniformBuffer(2, this.mScaleBuffer);
 
             ChunkMesh.Draw();
         }
 
         public void OnAsyncLoad(IO.Files.Terrain.MapChunk chunk, MapAreaRender parent)
         {
-            mData = chunk;
-            mBoundingBox = chunk.BoundingBox;
-            mModelBox = chunk.ModelBox;
-            mReferences = new M2Instance[chunk.DoodadReferences.Length];
-	        for (var i = 0; i < mReferences.Length; ++i)
+	        this.mData = chunk;
+	        this.mBoundingBox = chunk.BoundingBox;
+	        this.mModelBox = chunk.ModelBox;
+	        this.mReferences = new M2Instance[chunk.DoodadReferences.Length];
+	        for (var i = 0; i < this.mReferences.Length; ++i)
 	        {
-		        mReferences[i] = parent.AreaFile.DoodadInstances[chunk.DoodadReferences[i]];
+		        this.mReferences[i] = parent.AreaFile.DoodadInstances[chunk.DoodadReferences[i]];
 	        }
 
-            for (var i = 0; i < mData.Layers.Length; ++i)
+            for (var i = 0; i < this.mData.Layers.Length; ++i)
             {
-                if ((mData.Layers[i].Flags & 0x40) != 0)
+                if ((this.mData.Layers[i].Flags & 0x40) != 0)
                 {
-                    mHasTexAnim = true;
+	                this.mHasTexAnim = true;
 
                     var rotation = 0.0f;
-                    if ((mData.Layers[i].Flags & 1) != 0)
-                        rotation += (float)Math.PI / 4.0f;
-                    if ((mData.Layers[i].Flags & 2) != 0)
-                        rotation += (float)Math.PI / 2.0f;
-                    if((mData.Layers[i].Flags & 4) != 0)
-                        rotation += (float)Math.PI;
+                    if ((this.mData.Layers[i].Flags & 1) != 0)
+                    {
+	                    rotation += (float)Math.PI / 4.0f;
+                    }
+	                if ((this.mData.Layers[i].Flags & 2) != 0)
+	                {
+		                rotation += (float)Math.PI / 2.0f;
+	                }
+	                if((this.mData.Layers[i].Flags & 4) != 0)
+	                {
+		                rotation += (float)Math.PI;
+	                }
 
 	                var quat = Quaternion.FromAxisAngle(Vector3.UnitZ, rotation);
                     var dir = Vector2.Transform(new Vector2(0, 1), quat);
-                    mTexAnimDirections[i] = dir;
+	                this.mTexAnimDirections[i] = dir;
 
-                    mTexAnimDirections[i].Normalize();
-	                if ((mData.Layers[i].Flags & 8) != 0)
+	                this.mTexAnimDirections[i].Normalize();
+	                if ((this.mData.Layers[i].Flags & 8) != 0)
 	                {
-		                mTexAnimDirections[i] *= 1.2f;
+		                this.mTexAnimDirections[i] *= 1.2f;
 	                }
-                    else if ((mData.Layers[i].Flags & 0x10) != 0)
+                    else if ((this.mData.Layers[i].Flags & 0x10) != 0)
                     {
-	                    mTexAnimDirections[i] *= 1.44f;
+	                    this.mTexAnimDirections[i] *= 1.44f;
                     }
-                    else if ((mData.Layers[i].Flags & 0x20) != 0)
+                    else if ((this.mData.Layers[i].Flags & 0x20) != 0)
                     {
-	                    mTexAnimDirections[i] *= 1.728f;
+	                    this.mTexAnimDirections[i] *= 1.728f;
                     }
                 }
             }
 
-            mIsAsyncLoaded = true;
-            mParent = new WeakReference<MapAreaRender>(parent);
+	        this.mIsAsyncLoaded = true;
+	        this.mParent = new WeakReference<MapAreaRender>(parent);
         }
 
         private void UpdateTextureAnimations()
         {
-	        if (mHasTexAnim == false)
+	        if (this.mHasTexAnim == false)
 	        {
 		        return;
 	        }
 
             var curTime = (int)(Utils.TimeManager.Instance.GetTime().TotalMilliseconds / 15.0f);
 
-            mTexAnimStore.Layer0 = Matrix4.CreateTranslation(mTexAnimDirections[0].X * curTime / 1000.0f,
-                mTexAnimDirections[0].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer1 = Matrix4.CreateTranslation(mTexAnimDirections[1].X * curTime / 1000.0f,
-                mTexAnimDirections[1].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer2 = Matrix4.CreateTranslation(mTexAnimDirections[2].X * curTime / 1000.0f,
-                mTexAnimDirections[2].Y * curTime / 1000.0f, 0.0f);
-            mTexAnimStore.Layer3 = Matrix4.CreateTranslation(mTexAnimDirections[3].X * curTime / 1000.0f,
-                mTexAnimDirections[3].Y * curTime / 1000.0f, 0.0f);
+	        this.mTexAnimStore.Layer0 = Matrix4.CreateTranslation(this.mTexAnimDirections[0].X * curTime / 1000.0f, this.mTexAnimDirections[0].Y * curTime / 1000.0f, 0.0f);
+	        this.mTexAnimStore.Layer1 = Matrix4.CreateTranslation(this.mTexAnimDirections[1].X * curTime / 1000.0f, this.mTexAnimDirections[1].Y * curTime / 1000.0f, 0.0f);
+	        this.mTexAnimStore.Layer2 = Matrix4.CreateTranslation(this.mTexAnimDirections[2].X * curTime / 1000.0f, this.mTexAnimDirections[2].Y * curTime / 1000.0f, 0.0f);
+	        this.mTexAnimStore.Layer3 = Matrix4.CreateTranslation(this.mTexAnimDirections[3].X * curTime / 1000.0f, this.mTexAnimDirections[3].Y * curTime / 1000.0f, 0.0f);
 
-            mTexAnimBuffer.BufferData(mTexAnimStore);
+	        this.mTexAnimBuffer.BufferData(this.mTexAnimStore);
         }
 
         private bool BeginSyncLoad()
         {
-	        if (mSyncLoadToken != null)
+	        if (this.mSyncLoadToken != null)
 	        {
 		        return false;
 	        }
@@ -348,39 +378,39 @@ namespace Neo.Scene.Terrain
 
 	        lock (this)
 	        {
-		        mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
+		        this.mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
 	        }
             return false;
         }
 
         private void SyncLoad()
         {
-            mSyncLoadToken = null;
+	        this.mSyncLoadToken = null;
 
-            mTexParams.TextureScales = new Vector4(mData.TextureScales);
-            mTexParams.SpecularFactors = new Vector4(mData.SpecularFactors);
-            mTexParams.ChunkLine = new Vector4(0.0f, 0.7f, 0.0f, 0.0f);
-            mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(mData.AreaId, mData.HasImpassFlag);
+	        this.mTexParams.TextureScales = new Vector4(this.mData.TextureScales);
+	        this.mTexParams.SpecularFactors = new Vector4(this.mData.SpecularFactors);
+	        this.mTexParams.ChunkLine = new Vector4(0.0f, 0.7f, 0.0f, 0.0f);
+	        this.mTexParams.AreaColour = ChunkEditManager.Instance.GetAreaColour(this.mData.AreaId, this.mData.HasImpassFlag);
 
-            mTexAnimBuffer = new UniformBuffer();
-            mTexAnimStore.Layer0 = mTexAnimStore.Layer1 = mTexAnimStore.Layer2 = mTexAnimStore.Layer3 = Matrix4.Identity;
-            mTexAnimBuffer.BufferData(mTexAnimStore);
+	        this.mTexAnimBuffer = new UniformBuffer();
+	        this.mTexAnimStore.Layer0 = this.mTexAnimStore.Layer1 = this.mTexAnimStore.Layer2 = this.mTexAnimStore.Layer3 = Matrix4.Identity;
+	        this.mTexAnimBuffer.BufferData(this.mTexAnimStore);
 
-            mAlphaTexture = new Graphics.Texture();
-            mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, mData.AlphaValues, 4 * 64);
+	        this.mAlphaTexture = new Graphics.Texture();
+	        this.mAlphaTexture.UpdateMemory(64, 64, Format.R8G8B8A8_UNorm, this.mData.AlphaValues, 4 * 64);
 
-            mHoleTexture = new Graphics.Texture();
-            mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, mData.HoleValues, 8);
+	        this.mHoleTexture = new Graphics.Texture();
+	        this.mHoleTexture.UpdateMemory(8, 8, Format.R8_UNorm, this.mData.HoleValues, 8);
 
-            mScaleBuffer = new UniformBuffer();
-            mScaleBuffer.BufferData(mTexParams);
+	        this.mScaleBuffer = new UniformBuffer();
+	        this.mScaleBuffer.BufferData(this.mTexParams);
 
-            mShaderTextures = mData.Textures.ToArray();
-            mShaderSpecularTextures = mData.SpecularTextures.ToArray();
+	        this.mShaderTextures = this.mData.Textures.ToArray();
+	        this.mShaderSpecularTextures = this.mData.SpecularTextures.ToArray();
 
             SetRenderMode(ChunkEditManager.Instance.ChunkRenderMode); //Set current render mode
 
-            mIsSyncLoaded = true;
+	        this.mIsSyncLoaded = true;
         }
 
         public static void Initialize()

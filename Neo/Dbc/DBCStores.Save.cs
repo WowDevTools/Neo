@@ -10,9 +10,9 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.CharTitles.SaveDBC();
+                CharTitles.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -22,11 +22,11 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.Faction.SaveDBC();
-                DbcStores.FactionGroup.SaveDBC();
-                DbcStores.FactionTemplate.SaveDBC();
+                Faction.SaveDBC();
+                FactionGroup.SaveDBC();
+                FactionTemplate.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -36,13 +36,13 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.Spell.SaveDBC();
-                DbcStores.SkillLine.SaveDBC();
-                DbcStores.SkillLineAbility.SaveDBC();
-                DbcStores.SkillRaceClassInfo.SaveDBC();
-                DbcStores.SpellFocusObject.SaveDBC();
+                Spell.SaveDBC();
+                SkillLine.SaveDBC();
+                SkillLineAbility.SaveDBC();
+                SkillRaceClassInfo.SaveDBC();
+                SpellFocusObject.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -52,10 +52,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.Talent.SaveDBC(comparator);
-                DbcStores.TalentTab.SaveDBC();
+                Talent.SaveDBC(comparator);
+                TalentTab.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -65,11 +65,11 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.Achievement.SaveDBC();
-                DbcStores.AchievementCategory.SaveDBC();
-                DbcStores.AchievementCriteria.SaveDBC();
+                Achievement.SaveDBC();
+                AchievementCategory.SaveDBC();
+                AchievementCriteria.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -79,9 +79,9 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.ChrRaces.SaveDBC();
+                ChrRaces.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -91,9 +91,9 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.AreaPoi.SaveDBC();
+                AreaPoi.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -103,9 +103,9 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.ChrClasses.SaveDBC();
+                ChrClasses.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -115,10 +115,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.WorldMapArea.SaveDBC();
-                DbcStores.WorldMapOverlay.SaveDBC();
+                WorldMapArea.SaveDBC();
+                WorldMapOverlay.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -128,9 +128,9 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.Item.SaveDBC();
+                Item.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -140,9 +140,9 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.GameTips.SaveDBC();
+                GameTips.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -152,10 +152,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.NamesReserved.SaveDBC();
-                DbcStores.NamesProfanity.SaveDBC();
+                NamesReserved.SaveDBC();
+                NamesProfanity.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -165,11 +165,11 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.Item.SaveDBC();
-                DbcStores.GemProperties.SaveDBC();
-                DbcStores.SpellItemEnchantment.SaveDBC();
+                Item.SaveDBC();
+                GemProperties.SaveDBC();
+                SpellItemEnchantment.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -179,11 +179,11 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.ChrClasses.SaveDBC();
-                DbcStores.ChrRaces.SaveDBC();
-                DbcStores.CharBaseInfo.SaveDBC();
+                ChrClasses.SaveDBC();
+                ChrRaces.SaveDBC();
+                CharBaseInfo.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -193,9 +193,9 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.ItemSet.SaveDBC();
+                ItemSet.SaveDBC();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

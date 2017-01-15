@@ -5,7 +5,7 @@ using Neo.IO;
 
 namespace Neo.Storage
 {
-    static class MapFormatGuess
+	internal static class MapFormatGuess
     {  
         public static int FieldMapName { get; private set; }
         public static int FieldMapTitle { get; private set; }
@@ -32,12 +32,16 @@ namespace Neo.Storage
                 for(var j = 1; j < map.NumFields; ++j)
                 {
                     if (mapNameFields.Count(f => f >= 0) == 1)
-                        break;
+                    {
+	                    break;
+                    }
 
-                    if (mapNameFields[j] < 0)
-                        continue;
+	                if (mapNameFields[j] < 0)
+	                {
+		                continue;
+	                }
 
-                    var name = record.GetString(j);
+	                var name = record.GetString(j);
                     if (name == null)
                     {
                         mapNameFields[j] = -1;
@@ -48,7 +52,9 @@ namespace Neo.Storage
                     mapTitleFields[j] += 1;
 
                     if (FileManager.Instance.Provider.Exists(string.Format(@"World\Maps\{0}\{0}.wdt", name)))
-                        mapNameFields[j] += 1;
+                    {
+	                    mapNameFields[j] += 1;
+                    }
                 }
             }
 
@@ -56,16 +62,21 @@ namespace Neo.Storage
             var maxValue = mapNameFields.Max();
             for(var i = 0; i < mapNameFields.Count; ++i)
             {
-                if (mapNameFields[i] != maxValue) continue;
+                if (mapNameFields[i] != maxValue)
+                {
+	                continue;
+                }
 
-                idx = i;
+	            idx = i;
                 break;
             }
 
             if (idx < 0)
-                throw new InvalidOperationException("Unable to find the internal name field in Map.dbc");
+            {
+	            throw new InvalidOperationException("Unable to find the internal name field in Map.dbc");
+            }
 
-            FieldMapName = idx;
+	        FieldMapName = idx;
 
             mapTitleFields[idx] = -1;
 
@@ -73,16 +84,21 @@ namespace Neo.Storage
             maxValue = mapTitleFields.Max();
             for (var i = 0; i < mapTitleFields.Count; ++i)
             {
-                if (mapTitleFields[i] != maxValue) continue;
+                if (mapTitleFields[i] != maxValue)
+                {
+	                continue;
+                }
 
-                idx = i;
+	            idx = i;
                 break;
             }
 
             if (idx < 0)
-                throw new InvalidOperationException("Unable to find the title field in Map.dbc");
+            {
+	            throw new InvalidOperationException("Unable to find the title field in Map.dbc");
+            }
 
-            FieldMapTitle = idx;
+	        FieldMapTitle = idx;
 
             InitLoadingScreen();
             FindLoadingScreenLink();
@@ -92,17 +108,21 @@ namespace Neo.Storage
         {
             var loadingScreenFields = new List<bool>();
             for (var i = 0; i < DbcStorage.LoadingScreen.NumFields; ++i)
-                loadingScreenFields.Add(i != 0);
+            {
+	            loadingScreenFields.Add(i != 0);
+            }
 
-            for(var i = 0; i < DbcStorage.LoadingScreen.NumRows; ++i)
+	        for(var i = 0; i < DbcStorage.LoadingScreen.NumRows; ++i)
             {
                 var row = DbcStorage.LoadingScreen.GetRow(i);
                 for(var j = 0; j < loadingScreenFields.Count; ++j)
                 {
                     if (loadingScreenFields[j] == false)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var str = row.GetString(j);
+	                var str = row.GetString(j);
                     if(str == null)
                     {
                         loadingScreenFields[j] = false;
@@ -110,29 +130,40 @@ namespace Neo.Storage
                     }
 
                     if (FileManager.Instance.Provider.Exists(str) == false)
-                        loadingScreenFields[j] = false;
+                    {
+	                    loadingScreenFields[j] = false;
+                    }
                 }
 
                 if (loadingScreenFields.Count(f => f) == 1)
-                    break;
+                {
+	                break;
+                }
             }
 
             FieldLoadingScreenPath = -1;
             FieldLoadingScreenHasWidescreen = -1;
             for (var i = 0; i < loadingScreenFields.Count; ++i)
             {
-                if (!loadingScreenFields[i]) continue;
+                if (!loadingScreenFields[i])
+                {
+	                continue;
+                }
 
-                FieldLoadingScreenPath = i;
+	            FieldLoadingScreenPath = i;
                 FieldLoadingScreenHasWidescreen = i + 1;
                 break;
             }
 
             if (FieldLoadingScreenHasWidescreen >= DbcStorage.LoadingScreen.NumFields)
-                FieldLoadingScreenHasWidescreen = -1;
+            {
+	            FieldLoadingScreenHasWidescreen = -1;
+            }
 
-            if (FieldLoadingScreenPath < 0)
-                throw new InvalidOperationException("Unable to find the loading screen asset path");
+	        if (FieldLoadingScreenPath < 0)
+	        {
+		        throw new InvalidOperationException("Unable to find the loading screen asset path");
+	        }
         }
 
         private static void FindLoadingScreenLink()
@@ -152,9 +183,11 @@ namespace Neo.Storage
                 for(var j = 0; j < mapLoadScreenFields.Count; ++j)
                 {
                     if (mapLoadScreenFields[j] == false)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    if(j == FieldMapName || j == FieldMapTitle)
+	                if(j == FieldMapName || j == FieldMapTitle)
                     {
                         mapLoadScreenFields[j] = false;
                         continue;
@@ -162,11 +195,16 @@ namespace Neo.Storage
 
                     var id = row.GetInt32(j);
                     if (id == 0)
-                        mapLoadNumZeros[j]++;
+                    {
+	                    mapLoadNumZeros[j]++;
+                    }
 
-                    if (DbcStorage.LoadingScreen.GetRowById(id) != null || id == 0) continue;
+	                if (DbcStorage.LoadingScreen.GetRowById(id) != null || id == 0)
+	                {
+		                continue;
+	                }
 
-                    mapLoadScreenFields[j] = false;
+	                mapLoadScreenFields[j] = false;
                 }
             }
 
@@ -175,12 +213,17 @@ namespace Neo.Storage
 
             for(var i = 0; i < mapLoadScreenFields.Count; ++i)
             {
-                if (!mapLoadScreenFields[i]) continue;
+                if (!mapLoadScreenFields[i])
+                {
+	                continue;
+                }
 
-                if (mapLoadNumZeros[i] >= minZeros)
-                    continue;
+	            if (mapLoadNumZeros[i] >= minZeros)
+	            {
+		            continue;
+	            }
 
-                minZeros = mapLoadNumZeros[i];
+	            minZeros = mapLoadNumZeros[i];
                 FieldMapLoadingScreen = i;
             }
         }

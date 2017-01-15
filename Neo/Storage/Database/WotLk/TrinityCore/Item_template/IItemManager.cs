@@ -2,7 +2,7 @@
 
 namespace Neo.Storage.Database.WotLk.TrinityCore
 {
-    interface IItemManager
+	internal interface IItemManager
     {
         void LoadItem(DataTable pDataTable);
         Item GetItemByEntry(int pEntryId);

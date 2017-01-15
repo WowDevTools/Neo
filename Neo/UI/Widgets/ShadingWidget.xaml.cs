@@ -21,14 +21,16 @@ namespace Neo.UI.Widgets
         {
             var model = DataContext as ShadingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            ColorPreviewRect.Fill = new SolidColorBrush(obj);
-            mPreventUpdate = true;
-            RedBox.Text = obj.R.ToString();
-            BlueBox.Text = obj.B.ToString();
-            GreenBox.Text = obj.G.ToString();
-            mPreventUpdate = false;
+	        this.ColorPreviewRect.Fill = new SolidColorBrush(obj);
+	        this.mPreventUpdate = true;
+	        this.RedBox.Text = obj.R.ToString();
+	        this.BlueBox.Text = obj.B.ToString();
+	        this.GreenBox.Text = obj.G.ToString();
+	        this.mPreventUpdate = false;
 
             model.HandleShadingMultiplier(new SharpDX.Vector3((obj.R / 255.0f) * 2.0f,
                 (obj.G / 255.0f) * 2.0f, (obj.B / 255.0f) * 2.0f));
@@ -36,22 +38,30 @@ namespace Neo.UI.Widgets
 
         private void RedBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (mPreventUpdate)
-                return;
+            if (this.mPreventUpdate)
+            {
+	            return;
+            }
 
-            var model = DataContext as ShadingViewModel;
+	        var model = DataContext as ShadingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            int r, g, b;
-            if (!int.TryParse(RedBox.Text, out r) || !int.TryParse(GreenBox.Text, out g) ||
-                !int.TryParse(BlueBox.Text, out b))
-                return;
+	        int r, g, b;
+            if (!int.TryParse(this.RedBox.Text, out r) || !int.TryParse(this.GreenBox.Text, out g) ||
+                !int.TryParse(this.BlueBox.Text, out b))
+            {
+	            return;
+            }
 
-            if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0)
-                return;
+	        if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0)
+	        {
+		        return;
+	        }
 
-            ColorPreviewRect.Fill = new SolidColorBrush(Color.FromRgb((byte)r, (byte)g, (byte)b));
+	        this.ColorPreviewRect.Fill = new SolidColorBrush(Color.FromRgb((byte)r, (byte)g, (byte)b));
             model.HandleShadingMultiplier(new SharpDX.Vector3((r / 255.0f) * 2.0f,
                 (g / 255.0f) * 2.0f, (b / 255.0f) * 2.0f));
         }
@@ -61,9 +71,11 @@ namespace Neo.UI.Widgets
         {
             var model = DataContext as ShadingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleIntensityChanged((float)IntensitySlider.Value);
+	        model.HandleIntensityChanged((float) this.IntensitySlider.Value);
         }
 
         private void InnerRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -71,9 +83,11 @@ namespace Neo.UI.Widgets
             var newValue = e.NewValue;
             var model = DataContext as ShadingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleInnerRadiusChanged((float)newValue);
+	        model.HandleInnerRadiusChanged((float)newValue);
         }
 
         private void OuterRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -81,18 +95,22 @@ namespace Neo.UI.Widgets
             var newValue = e.NewValue;
             var model = DataContext as ShadingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleOuterRadiusChanged((float)newValue);
+	        model.HandleOuterRadiusChanged((float)newValue);
         }
 
         private void TabletControl_Changed(object sender, RoutedEventArgs e)
         {
             var model = DataContext as ShadingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandleTabletControl(TabletControlBox.IsChecked ?? false);
+	        model.HandleTabletControl(this.TabletControlBox.IsChecked ?? false);
         }
 
         private void Handle_PenSensivityChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -100,9 +118,11 @@ namespace Neo.UI.Widgets
             var newValue = e.NewValue;
             var model = DataContext as ShadingViewModel;
             if (model == null)
-                return;
+            {
+	            return;
+            }
 
-            model.HandlePenSensivity((float)newValue);
+	        model.HandlePenSensivity((float)newValue);
         }
     }
 

@@ -7,7 +7,7 @@ using Point = System.Drawing.Point;
 
 namespace Neo.Scene
 {
-    class CameraControl
+	internal class CameraControl
     {
         public delegate void PositionChangedHandler(Vector3 newPosition, bool updateTerrain);
 
@@ -24,41 +24,44 @@ namespace Neo.Scene
 
         public float SpeedFactor
         {
-            get { return mSpeedFactor; }
-            set { mSpeedFactor = value; }
+            get { return this.mSpeedFactor; }
+            set { this.mSpeedFactor = value; }
         }
 
         public float SpeedFactorWheel
         {
-            get { return mSpeedFactorWheel; }
-            set { mSpeedFactorWheel = value; }
+            get { return this.mSpeedFactorWheel; }
+            set { this.mSpeedFactorWheel = value; }
         }
 
         public event PositionChangedHandler PositionChanged;
 
         public CameraControl(Control window)
         {
-            TurnFactor = 0.2f;
-            mWindow = window;
+	        this.TurnFactor = 0.2f;
+	        this.mWindow = window;
         }
 
         public void ForceUpdate(Vector3 position)
         {
-            if (PositionChanged != null) PositionChanged.Invoke(position, true);
+            if (PositionChanged != null)
+            {
+	            PositionChanged.Invoke(position, true);
+            }
         }
 
         public void Update(Camera cam, bool stateOnly)
         {
-            if (mWindow.Focused == false || stateOnly)
+            if (this.mWindow.Focused == false || stateOnly)
             {
-                mLastCursorPos = InterfaceHelper.GetCursorPosition();
-                mLastUpdate = DateTime.Now;
+	            this.mLastCursorPos = InterfaceHelper.GetCursorPosition();
+	            this.mLastUpdate = DateTime.Now;
                 return;
             }
 
             var positionChanged = false;
             var updateTerrain = false;
-            var diff = (float)(DateTime.Now - mLastUpdate).TotalSeconds;
+            var diff = (float)(DateTime.Now - this.mLastUpdate).TotalSeconds;
 
             var camBind = KeyBindings.Instance.CameraKeys;
 
@@ -66,40 +69,40 @@ namespace Neo.Scene
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveForward(diff * mSpeedFactor);
+                cam.MoveForward(diff * this.mSpeedFactor);
             }
 
             if (InputHelper.AreKeysDown(camBind.Backward))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveForward(-diff * mSpeedFactor);
+                cam.MoveForward(-diff * this.mSpeedFactor);
             }
 
             if (InputHelper.AreKeysDown(camBind.Right))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveRight(diff * mSpeedFactor);
+                cam.MoveRight(diff * this.mSpeedFactor);
             }
 
             if (InputHelper.AreKeysDown(camBind.Left))
             {
                 positionChanged = true;
                 updateTerrain = true;
-                cam.MoveRight(-diff * mSpeedFactor);
+                cam.MoveRight(-diff * this.mSpeedFactor);
             }
 
             if (InputHelper.AreKeysDown(camBind.Up))
             {
                 positionChanged = true;
-                cam.MoveUp(diff * mSpeedFactor);
+                cam.MoveUp(diff * this.mSpeedFactor);
             }
 
             if (InputHelper.AreKeysDown(camBind.Down))
             {
                 positionChanged = true;
-                cam.MoveUp(-diff * mSpeedFactor);
+                cam.MoveUp(-diff * this.mSpeedFactor);
             }
 
 	        KeyboardState keyboardState = Keyboard.GetState();
@@ -110,25 +113,27 @@ namespace Neo.Scene
                 !keyboardState.IsKeyDown(Key.ShiftLeft))
             {
                 var curPos = InterfaceHelper.GetCursorPosition();
-                var dx = curPos.X - mLastCursorPos.X;
-                var dy = curPos.Y - mLastCursorPos.Y;
+                var dx = curPos.X - this.mLastCursorPos.X;
+                var dy = curPos.Y - this.mLastCursorPos.Y;
 
 	            if (dx != 0)
 	            {
-		            cam.Yaw(dx * TurnFactor * (InvertX ? 1 : -1));
+		            cam.Yaw(dx * this.TurnFactor * (this.InvertX ? 1 : -1));
 	            }
 
 	            if (dy != 0)
 	            {
-		            cam.Pitch(dy * TurnFactor * (InvertY ? 1 : -1));
+		            cam.Pitch(dy * this.TurnFactor * (this.InvertY ? 1 : -1));
 	            }
             }
 
             if (positionChanged && PositionChanged != null)
-                PositionChanged(cam.Position, updateTerrain);
+            {
+	            PositionChanged(cam.Position, updateTerrain);
+            }
 
-            mLastUpdate = DateTime.Now;
-            mLastCursorPos = InterfaceHelper.GetCursorPosition();
+	        this.mLastUpdate = DateTime.Now;
+	        this.mLastCursorPos = InterfaceHelper.GetCursorPosition();
         }
 
         public void HandleMouseWheel(int delta)
@@ -137,7 +142,7 @@ namespace Neo.Scene
 	        if (mouseState.IsButtonDown(MouseButton.Right))
 	        {
                 var cam = WorldFrame.Instance.ActiveCamera;
-                cam.MoveForward(delta * mSpeedFactorWheel);
+                cam.MoveForward(delta * this.mSpeedFactorWheel);
                 WorldFrame.Instance.MapManager.UpdatePosition(cam.Position, true);
             }
         }

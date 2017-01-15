@@ -18,7 +18,7 @@ namespace Neo.Editing
         Flags
     }
 
-    class ChunkEditManager
+	internal class ChunkEditManager
     {
         public static ChunkEditManager Instance { get; private set; }
 
@@ -55,27 +55,27 @@ namespace Neo.Editing
 
         public void Initialize()
         {
-            AreaColours = new Dictionary<int, Vector4>();
-            ChunkEditMode = ChunkEditMode.AreaPaint;
+	        this.AreaColours = new Dictionary<int, Vector4>();
+	        this.ChunkEditMode = ChunkEditMode.AreaPaint;
         }
 
         public void OnFrame()
         {
             var chunk = WorldFrame.Instance.LastMouseIntersection.ChunkHit;
-            if (chunk != null && chunk != mHoveredChunk)
+            if (chunk != null && chunk != this.mHoveredChunk)
             {
-	            if (chunk.AreaId != mHoveredChunk?.AreaId)
+	            if (chunk.AreaId != this.mHoveredChunk?.AreaId)
 	            {
 		            HoveredAreaChange?.Invoke(chunk.AreaId);
 	            }
-                mHoveredChunk = chunk;
+	            this.mHoveredChunk = chunk;
 
 	            if (WorldFrame.Instance.RenderWindowContainsMouse())
 	            {
 		            OnChunkClicked(WorldFrame.Instance.LastMouseIntersection);
 	            }
             }
-            else if (chunk != null && SmallHole && ChunkEditMode == ChunkEditMode.Hole) //Small hole mode allow holding mouse down
+            else if (chunk != null && this.SmallHole && this.ChunkEditMode == ChunkEditMode.Hole) //Small hole mode allow holding mouse down
             {
 	            if (WorldFrame.Instance.RenderWindowContainsMouse())
 	            {
@@ -86,7 +86,7 @@ namespace Neo.Editing
 
         public void SetChunkRenderMode(ChunkRenderFlags flags)
         {
-            ChunkRenderMode = flags;
+	        this.ChunkRenderMode = flags;
             OnChunkRenderModeChange?.Invoke(flags);
         }
 
@@ -97,27 +97,29 @@ namespace Neo.Editing
         /// <returns></returns>
         public Vector4 GetAreaColour(int id, bool impass)
         {
-            if (!AreaColours.ContainsKey(id))
+            if (!this.AreaColours.ContainsKey(id))
             {
                 Color colour = new Random().NextColor();
 
-	            while (Array.IndexOf(mBlockedColours, colour) >= 0) //Blocked colour check
+	            while (Array.IndexOf(this.mBlockedColours, colour) >= 0) //Blocked colour check
 	            {
 		            colour = new Random().NextColor();
 	            }
 
-                AreaColours.Add(id, new Vector4(colour.R / 255f, colour.G / 255f, colour.B / 255f, 0f));
+	            this.AreaColours.Add(id, new Vector4(colour.R / 255f, colour.G / 255f, colour.B / 255f, 0f));
             }
 
             if (impass)
-                return new Vector4(1, 1, 1, 0);
+            {
+	            return new Vector4(1, 1, 1, 0);
+            }
 
-            return AreaColours[id];
+	        return this.AreaColours[id];
         }
 
         public void SetSelectedAreaId(int id)
         {
-            SelectedAreaId = id;
+	        this.SelectedAreaId = id;
         }
 
         public void OnChange(TimeSpan diff)
@@ -127,20 +129,20 @@ namespace Neo.Editing
 
         private void OnChunkClicked(IntersectionParams intersection)
         {
-            var chunk = mHoveredChunk;
+            var chunk = this.mHoveredChunk;
 	        MapArea parent;
-            switch (ChunkEditMode)
+            switch (this.ChunkEditMode)
             {
                 case ChunkEditMode.AreaPaint:
 				{
-					if (SelectedAreaId == 0 || !InputHelper.IsButtonDown(MouseButton.Left))
+					if (this.SelectedAreaId == 0 || !InputHelper.IsButtonDown(MouseButton.Left))
 					{
 						return;
 					}
 
                     if (chunk.Parent.TryGetTarget(out parent))
                     {
-                        chunk.AreaId = SelectedAreaId;
+                        chunk.AreaId = this.SelectedAreaId;
                         parent.SetChanged();
                         ForceRenderUpdate?.Invoke(chunk, false);
                     }
@@ -153,8 +155,8 @@ namespace Neo.Editing
 						return;
 					}
 
-                    SelectedAreaId = chunk.AreaId;
-                    SelectedAreaIdChange?.Invoke(SelectedAreaId);
+					this.SelectedAreaId = chunk.AreaId;
+                    SelectedAreaIdChange?.Invoke(this.SelectedAreaId);
                     break;
 	            }
                 case ChunkEditMode.Hole:
@@ -166,10 +168,14 @@ namespace Neo.Editing
 
 		            if (chunk.Parent.TryGetTarget(out parent))
 		            {
-			            if (SmallHole)
-				            chunk.SetHole(intersection, AddHole);
+			            if (this.SmallHole)
+			            {
+				            chunk.SetHole(intersection, this.AddHole);
+			            }
 			            else
-				            chunk.SetHoleBig(AddHole);
+			            {
+				            chunk.SetHoleBig(this.AddHole);
+			            }
 
 			            parent.SetChanged();
 			            ForceRenderUpdate?.Invoke(chunk, true);

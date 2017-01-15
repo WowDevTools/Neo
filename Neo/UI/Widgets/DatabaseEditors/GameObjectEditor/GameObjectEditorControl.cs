@@ -21,9 +21,9 @@ namespace Neo.UI.Dialog
         public GameObjectEditorControl()
         {
             InitializeComponent();
-            tbcEditor.Appearance = TabAppearance.FlatButtons;
-            tbcEditor.ItemSize = new Size(0, 1);
-            tbcEditor.SizeMode = TabSizeMode.Fixed;
+	        this.tbcEditor.Appearance = TabAppearance.FlatButtons;
+	        this.tbcEditor.ItemSize = new Size(0, 1);
+	        this.tbcEditor.SizeMode = TabSizeMode.Fixed;
         }
 
 
@@ -33,7 +33,7 @@ namespace Neo.UI.Dialog
             if (!string.IsNullOrEmpty(pModelId))
             {
                 int displayId;
-                if (Int32.TryParse(pModelId, out displayId))
+                if (int.TryParse(pModelId, out displayId))
                 {
                     MessageBox.Show("" + displayId);
                 }
@@ -43,78 +43,128 @@ namespace Neo.UI.Dialog
 
         public void loadGameObject(Storage.Database.WotLk.TrinityCore.GameObject gameObject)
         {
-            Entry.Text = gameObject.EntryId.ToString();
-            Type.Text = gameObject.Type.ToString();
+	        this.Entry.Text = gameObject.EntryId.ToString();
+	        this.Type.Text = gameObject.Type.ToString();
             Type_SelectedIndexChanged(this, EventArgs.Empty);
-            ModelId.Text = gameObject.DisplayId.ToString();
-            GameObjectName.Text = gameObject.Name;
-            IconName.Text = gameObject.IconName;
-            CastBarCaption.Text = gameObject.CastBarCaption;
-            Faction.Text = gameObject.Faction.ToString();
-            checkFlagOrBitmask(Flags, typeof(Storage.Database.WotLk.TrinityCore.Flags), gameObject.Flags);
-            GameObjectSize.Text = gameObject.Size.ToString();
-            if(tbData.Controls.ContainsKey("Data0"))
-                tbData.Controls.Find("Data0", false)[0].Text = gameObject.Data0.ToString();
-            if (tbData.Controls.ContainsKey("Data1"))
-                tbData.Controls.Find("Data1", false)[0].Text = gameObject.Data1.ToString();
-            if (tbData.Controls.ContainsKey("Data2"))
-                tbData.Controls.Find("Data2", false)[0].Text = gameObject.Data2.ToString();
-            if (tbData.Controls.ContainsKey("Data3"))
-                tbData.Controls.Find("Data3", false)[0].Text = gameObject.Data3.ToString();
-            if (tbData.Controls.ContainsKey("Data4"))
-                tbData.Controls.Find("Data4", false)[0].Text = gameObject.Data4.ToString();
-            if (tbData.Controls.ContainsKey("Data5"))
-                tbData.Controls.Find("Data5", false)[0].Text = gameObject.Data5.ToString();
-            if (tbData.Controls.ContainsKey("Data6"))
-                tbData.Controls.Find("Data6", false)[0].Text = gameObject.Data6.ToString();
-            if (tbData.Controls.ContainsKey("Data7"))
-                tbData.Controls.Find("Data7", false)[0].Text = gameObject.Data7.ToString();
-            if (tbData.Controls.ContainsKey("Data8"))
-                tbData.Controls.Find("Data8", false)[0].Text = gameObject.Data8.ToString();
-            if (tbData.Controls.ContainsKey("Data9"))
-                tbData.Controls.Find("Data9", false)[0].Text = gameObject.Data9.ToString();
-            if (tbData.Controls.ContainsKey("Data10"))
-                tbData.Controls.Find("Data10", false)[0].Text = gameObject.Data10.ToString();
-            if (tbData.Controls.ContainsKey("Data11"))
-                tbData.Controls.Find("Data11", false)[0].Text = gameObject.Data11.ToString();
-            if (tbData2.Controls.ContainsKey("Data12"))
-                tbData2.Controls.Find("Data12", false)[0].Text = gameObject.Data12.ToString();
-            if (tbData2.Controls.ContainsKey("Data13"))
-                tbData2.Controls.Find("Data13", false)[0].Text = gameObject.Data13.ToString();
-            if (tbData2.Controls.ContainsKey("Data14"))
-                tbData2.Controls.Find("Data14", false)[0].Text = gameObject.Data14.ToString();
-            if (tbData2.Controls.ContainsKey("Data15"))
-                tbData2.Controls.Find("Data15", false)[0].Text = gameObject.Data15.ToString();
-            if (tbData2.Controls.ContainsKey("Data16"))
-                tbData2.Controls.Find("Data16", false)[0].Text = gameObject.Data16.ToString();
-            if (tbData2.Controls.ContainsKey("Data17"))
-                tbData2.Controls.Find("Data17", false)[0].Text = gameObject.Data17.ToString();
-            if (tbData2.Controls.ContainsKey("Data18"))
-                tbData2.Controls.Find("Data18", false)[0].Text = gameObject.Data18.ToString();
-            if (tbData2.Controls.ContainsKey("Data19"))
-                tbData2.Controls.Find("Data19", false)[0].Text = gameObject.Data19.ToString();
-            if (tbData2.Controls.ContainsKey("Data20"))
-                tbData2.Controls.Find("Data20", false)[0].Text = gameObject.Data20.ToString();
-            if (tbData2.Controls.ContainsKey("Data21"))
-                tbData2.Controls.Find("Data21", false)[0].Text = gameObject.Data21.ToString();
-            if (tbData2.Controls.ContainsKey("Data22"))
-                tbData2.Controls.Find("Data22", false)[0].Text = gameObject.Data22.ToString();
-            if (tbData2.Controls.ContainsKey("Data23"))
-                tbData2.Controls.Find("Data23", false)[0].Text = gameObject.Data23.ToString();
-            AiName.Text = gameObject.AiName;
-            ScriptName.Text = gameObject.ScriptName;
-            VerifiedBuild.Text = gameObject.VerifiedBuild.ToString();
+	        this.ModelId.Text = gameObject.DisplayId.ToString();
+	        this.GameObjectName.Text = gameObject.Name;
+	        this.IconName.Text = gameObject.IconName;
+	        this.CastBarCaption.Text = gameObject.CastBarCaption;
+	        this.Faction.Text = gameObject.Faction.ToString();
+            checkFlagOrBitmask(this.Flags, typeof(Storage.Database.WotLk.TrinityCore.Flags), gameObject.Flags);
+	        this.GameObjectSize.Text = gameObject.Size.ToString();
+            if(this.tbData.Controls.ContainsKey("Data0"))
+            {
+	            this.tbData.Controls.Find("Data0", false)[0].Text = gameObject.Data0.ToString();
+            }
+	        if (this.tbData.Controls.ContainsKey("Data1"))
+	        {
+		        this.tbData.Controls.Find("Data1", false)[0].Text = gameObject.Data1.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data2"))
+	        {
+		        this.tbData.Controls.Find("Data2", false)[0].Text = gameObject.Data2.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data3"))
+	        {
+		        this.tbData.Controls.Find("Data3", false)[0].Text = gameObject.Data3.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data4"))
+	        {
+		        this.tbData.Controls.Find("Data4", false)[0].Text = gameObject.Data4.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data5"))
+	        {
+		        this.tbData.Controls.Find("Data5", false)[0].Text = gameObject.Data5.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data6"))
+	        {
+		        this.tbData.Controls.Find("Data6", false)[0].Text = gameObject.Data6.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data7"))
+	        {
+		        this.tbData.Controls.Find("Data7", false)[0].Text = gameObject.Data7.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data8"))
+	        {
+		        this.tbData.Controls.Find("Data8", false)[0].Text = gameObject.Data8.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data9"))
+	        {
+		        this.tbData.Controls.Find("Data9", false)[0].Text = gameObject.Data9.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data10"))
+	        {
+		        this.tbData.Controls.Find("Data10", false)[0].Text = gameObject.Data10.ToString();
+	        }
+	        if (this.tbData.Controls.ContainsKey("Data11"))
+	        {
+		        this.tbData.Controls.Find("Data11", false)[0].Text = gameObject.Data11.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data12"))
+	        {
+		        this.tbData2.Controls.Find("Data12", false)[0].Text = gameObject.Data12.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data13"))
+	        {
+		        this.tbData2.Controls.Find("Data13", false)[0].Text = gameObject.Data13.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data14"))
+	        {
+		        this.tbData2.Controls.Find("Data14", false)[0].Text = gameObject.Data14.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data15"))
+	        {
+		        this.tbData2.Controls.Find("Data15", false)[0].Text = gameObject.Data15.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data16"))
+	        {
+		        this.tbData2.Controls.Find("Data16", false)[0].Text = gameObject.Data16.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data17"))
+	        {
+		        this.tbData2.Controls.Find("Data17", false)[0].Text = gameObject.Data17.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data18"))
+	        {
+		        this.tbData2.Controls.Find("Data18", false)[0].Text = gameObject.Data18.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data19"))
+	        {
+		        this.tbData2.Controls.Find("Data19", false)[0].Text = gameObject.Data19.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data20"))
+	        {
+		        this.tbData2.Controls.Find("Data20", false)[0].Text = gameObject.Data20.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data21"))
+	        {
+		        this.tbData2.Controls.Find("Data21", false)[0].Text = gameObject.Data21.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data22"))
+	        {
+		        this.tbData2.Controls.Find("Data22", false)[0].Text = gameObject.Data22.ToString();
+	        }
+	        if (this.tbData2.Controls.ContainsKey("Data23"))
+	        {
+		        this.tbData2.Controls.Find("Data23", false)[0].Text = gameObject.Data23.ToString();
+	        }
+	        this.AiName.Text = gameObject.AiName;
+	        this.ScriptName.Text = gameObject.ScriptName;
+	        this.VerifiedBuild.Text = gameObject.VerifiedBuild.ToString();
         }
 
 
         private uint makeFlagOrBitmask(CheckedListBox list, Type e)
         {
             if (!e.IsEnum)
-                return 0;
+            {
+	            return 0;
+            }
 
-            uint myFlags = 0x0;
+	        uint myFlags = 0x0;
 
-            foreach (Object item in list.CheckedItems)
+            foreach (object item in list.CheckedItems)
             {
                 myFlags += Convert.ToUInt32(Enum.Parse(e, item.ToString()));
             }
@@ -125,9 +175,11 @@ namespace Neo.UI.Dialog
         private void checkFlagOrBitmask(CheckedListBox list, Type e, uint value)
         {
             if (!e.IsEnum)
-                return;
+            {
+	            return;
+            }
 
-            foreach (int i in list.CheckedIndices)
+	        foreach (int i in list.CheckedIndices)
             {
                 list.SetItemCheckState(i, CheckState.Unchecked);
             }
@@ -147,48 +199,48 @@ namespace Neo.UI.Dialog
 
         private void lbMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tbcEditor.SelectedIndex = lbMenu.SelectedIndex;
+	        this.tbcEditor.SelectedIndex = this.lbMenu.SelectedIndex;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             Storage.Database.WotLk.TrinityCore.GameObject gameObject = new Storage.Database.WotLk.TrinityCore.GameObject();
-            gameObject.EntryId = int.Parse(Entry.Text);
-            gameObject.Type = (Storage.Database.WotLk.TrinityCore.EnumType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.EnumType), Type.Text);
-            gameObject.DisplayId = int.Parse(ModelId.Text);
-            gameObject.Name = GameObjectName.Text;
-            gameObject.IconName = IconName.Text;
-            gameObject.CastBarCaption = CastBarCaption.Text;
-            gameObject.Faction = int.Parse(Faction.Text);
-            gameObject.Flags = makeFlagOrBitmask(Flags, typeof(Storage.Database.WotLk.TrinityCore.Flags));
-            gameObject.Size = float.Parse(GameObjectSize.Text);
-            gameObject.Data0 = tbData.Controls.ContainsKey("Data0") ? int.Parse(tbData.Controls.Find("Data0", false)[0].Text) : 0;
-            gameObject.Data1 = tbData.Controls.ContainsKey("Data1") ? int.Parse(tbData.Controls.Find("Data1", false)[0].Text) : 0;
-            gameObject.Data2 = tbData.Controls.ContainsKey("Data2") ? int.Parse(tbData.Controls.Find("Data2", false)[0].Text) : 0;
-            gameObject.Data3 = tbData.Controls.ContainsKey("Data3") ? int.Parse(tbData.Controls.Find("Data3", false)[0].Text) : 0;
-            gameObject.Data4 = tbData.Controls.ContainsKey("Data4") ? int.Parse(tbData.Controls.Find("Data4", false)[0].Text) : 0;
-            gameObject.Data5 = tbData.Controls.ContainsKey("Data5") ? int.Parse(tbData.Controls.Find("Data5", false)[0].Text) : 0;
-            gameObject.Data6 = tbData.Controls.ContainsKey("Data6") ? int.Parse(tbData.Controls.Find("Data6", false)[0].Text) : 0;
-            gameObject.Data7 = tbData.Controls.ContainsKey("Data7") ? int.Parse(tbData.Controls.Find("Data7", false)[0].Text) : 0;
-            gameObject.Data8 = tbData.Controls.ContainsKey("Data8") ? int.Parse(tbData.Controls.Find("Data8", false)[0].Text) : 0;
-            gameObject.Data9 = tbData.Controls.ContainsKey("Data9") ? int.Parse(tbData.Controls.Find("Data9", false)[0].Text) : 0;
-            gameObject.Data10 = tbData.Controls.ContainsKey("Data10") ? int.Parse(tbData.Controls.Find("Data10", false)[0].Text) : 0;
-            gameObject.Data11 = tbData.Controls.ContainsKey("Data11") ? int.Parse(tbData.Controls.Find("Data11", false)[0].Text) : 0;
-            gameObject.Data12 = tbData.Controls.ContainsKey("Data12") ? int.Parse(tbData.Controls.Find("Data12", false)[0].Text) : 0;
-            gameObject.Data13 = tbData.Controls.ContainsKey("Data13") ? int.Parse(tbData.Controls.Find("Data13", false)[0].Text) : 0;
-            gameObject.Data14 = tbData.Controls.ContainsKey("Data14") ? int.Parse(tbData.Controls.Find("Data14", false)[0].Text) : 0;
-            gameObject.Data15 = tbData.Controls.ContainsKey("Data15") ? int.Parse(tbData.Controls.Find("Data15", false)[0].Text) : 0;
-            gameObject.Data16 = tbData.Controls.ContainsKey("Data16") ? int.Parse(tbData.Controls.Find("Data16", false)[0].Text) : 0;
-            gameObject.Data17 = tbData.Controls.ContainsKey("Data17") ? int.Parse(tbData.Controls.Find("Data17", false)[0].Text) : 0;
-            gameObject.Data18 = tbData.Controls.ContainsKey("Data18") ? int.Parse(tbData.Controls.Find("Data18", false)[0].Text) : 0;
-            gameObject.Data19 = tbData.Controls.ContainsKey("Data19") ? int.Parse(tbData.Controls.Find("Data19", false)[0].Text) : 0;
-            gameObject.Data20 = tbData.Controls.ContainsKey("Data20") ? int.Parse(tbData.Controls.Find("Data20", false)[0].Text) : 0;
-            gameObject.Data21 = tbData.Controls.ContainsKey("Data21") ? int.Parse(tbData.Controls.Find("Data21", false)[0].Text) : 0;
-            gameObject.Data22 = tbData.Controls.ContainsKey("Data22") ? int.Parse(tbData.Controls.Find("Data22", false)[0].Text) : 0;
-            gameObject.Data23 = tbData.Controls.ContainsKey("Data23") ? int.Parse(tbData.Controls.Find("Data23", false)[0].Text) : 0;
-            gameObject.AiName = AiName.Text;
-            gameObject.ScriptName = ScriptName.Text;
-            gameObject.VerifiedBuild = int.Parse(VerifiedBuild.Text);
+            gameObject.EntryId = int.Parse(this.Entry.Text);
+            gameObject.Type = (Storage.Database.WotLk.TrinityCore.EnumType)Enum.Parse(typeof(Storage.Database.WotLk.TrinityCore.EnumType), this.Type.Text);
+            gameObject.DisplayId = int.Parse(this.ModelId.Text);
+            gameObject.Name = this.GameObjectName.Text;
+            gameObject.IconName = this.IconName.Text;
+            gameObject.CastBarCaption = this.CastBarCaption.Text;
+            gameObject.Faction = int.Parse(this.Faction.Text);
+            gameObject.Flags = makeFlagOrBitmask(this.Flags, typeof(Storage.Database.WotLk.TrinityCore.Flags));
+            gameObject.Size = float.Parse(this.GameObjectSize.Text);
+            gameObject.Data0 = this.tbData.Controls.ContainsKey("Data0") ? int.Parse(this.tbData.Controls.Find("Data0", false)[0].Text) : 0;
+            gameObject.Data1 = this.tbData.Controls.ContainsKey("Data1") ? int.Parse(this.tbData.Controls.Find("Data1", false)[0].Text) : 0;
+            gameObject.Data2 = this.tbData.Controls.ContainsKey("Data2") ? int.Parse(this.tbData.Controls.Find("Data2", false)[0].Text) : 0;
+            gameObject.Data3 = this.tbData.Controls.ContainsKey("Data3") ? int.Parse(this.tbData.Controls.Find("Data3", false)[0].Text) : 0;
+            gameObject.Data4 = this.tbData.Controls.ContainsKey("Data4") ? int.Parse(this.tbData.Controls.Find("Data4", false)[0].Text) : 0;
+            gameObject.Data5 = this.tbData.Controls.ContainsKey("Data5") ? int.Parse(this.tbData.Controls.Find("Data5", false)[0].Text) : 0;
+            gameObject.Data6 = this.tbData.Controls.ContainsKey("Data6") ? int.Parse(this.tbData.Controls.Find("Data6", false)[0].Text) : 0;
+            gameObject.Data7 = this.tbData.Controls.ContainsKey("Data7") ? int.Parse(this.tbData.Controls.Find("Data7", false)[0].Text) : 0;
+            gameObject.Data8 = this.tbData.Controls.ContainsKey("Data8") ? int.Parse(this.tbData.Controls.Find("Data8", false)[0].Text) : 0;
+            gameObject.Data9 = this.tbData.Controls.ContainsKey("Data9") ? int.Parse(this.tbData.Controls.Find("Data9", false)[0].Text) : 0;
+            gameObject.Data10 = this.tbData.Controls.ContainsKey("Data10") ? int.Parse(this.tbData.Controls.Find("Data10", false)[0].Text) : 0;
+            gameObject.Data11 = this.tbData.Controls.ContainsKey("Data11") ? int.Parse(this.tbData.Controls.Find("Data11", false)[0].Text) : 0;
+            gameObject.Data12 = this.tbData.Controls.ContainsKey("Data12") ? int.Parse(this.tbData.Controls.Find("Data12", false)[0].Text) : 0;
+            gameObject.Data13 = this.tbData.Controls.ContainsKey("Data13") ? int.Parse(this.tbData.Controls.Find("Data13", false)[0].Text) : 0;
+            gameObject.Data14 = this.tbData.Controls.ContainsKey("Data14") ? int.Parse(this.tbData.Controls.Find("Data14", false)[0].Text) : 0;
+            gameObject.Data15 = this.tbData.Controls.ContainsKey("Data15") ? int.Parse(this.tbData.Controls.Find("Data15", false)[0].Text) : 0;
+            gameObject.Data16 = this.tbData.Controls.ContainsKey("Data16") ? int.Parse(this.tbData.Controls.Find("Data16", false)[0].Text) : 0;
+            gameObject.Data17 = this.tbData.Controls.ContainsKey("Data17") ? int.Parse(this.tbData.Controls.Find("Data17", false)[0].Text) : 0;
+            gameObject.Data18 = this.tbData.Controls.ContainsKey("Data18") ? int.Parse(this.tbData.Controls.Find("Data18", false)[0].Text) : 0;
+            gameObject.Data19 = this.tbData.Controls.ContainsKey("Data19") ? int.Parse(this.tbData.Controls.Find("Data19", false)[0].Text) : 0;
+            gameObject.Data20 = this.tbData.Controls.ContainsKey("Data20") ? int.Parse(this.tbData.Controls.Find("Data20", false)[0].Text) : 0;
+            gameObject.Data21 = this.tbData.Controls.ContainsKey("Data21") ? int.Parse(this.tbData.Controls.Find("Data21", false)[0].Text) : 0;
+            gameObject.Data22 = this.tbData.Controls.ContainsKey("Data22") ? int.Parse(this.tbData.Controls.Find("Data22", false)[0].Text) : 0;
+            gameObject.Data23 = this.tbData.Controls.ContainsKey("Data23") ? int.Parse(this.tbData.Controls.Find("Data23", false)[0].Text) : 0;
+            gameObject.AiName = this.AiName.Text;
+            gameObject.ScriptName = this.ScriptName.Text;
+            gameObject.VerifiedBuild = int.Parse(this.VerifiedBuild.Text);
 
             if (Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.GetGameObjectByEntry(gameObject.EntryId) == null)
             {
@@ -205,7 +257,7 @@ namespace Neo.UI.Dialog
 
         private void btnShowModelId1_Click(object sender, EventArgs e)
         {
-            showModelInRenderControl(ModelId.Text);
+            showModelInRenderControl(this.ModelId.Text);
         }
 
 
@@ -219,7 +271,7 @@ namespace Neo.UI.Dialog
         *  List = comboBox with data.startnbr to data.endnbr
         *  Always = Always data.startnbr
         */
-        enum type
+	    private enum type
         {
             Text = 0,
             List = 1,
@@ -227,7 +279,7 @@ namespace Neo.UI.Dialog
         }
 
         //Data
-        struct data
+	    private struct data
         {
             public type type;
             public int startNbr;
@@ -237,32 +289,36 @@ namespace Neo.UI.Dialog
 
         private void Type_SelectedIndexChanged(object sender, EventArgs e)
         {
-            WarningLabel1.Hide();
-            WarningLabel2.Hide();
+	        this.WarningLabel1.Hide();
+	        this.WarningLabel2.Hide();
 
-            for(int i = 0; i< nbData;i++)
+            for(int i = 0; i< this.nbData;i++)
             {
                 if (i < 12)
-                    tbData.Controls.RemoveByKey("Data" + i);
+                {
+	                this.tbData.Controls.RemoveByKey("Data" + i);
+                }
                 else
-                    tbData2.Controls.RemoveByKey("Data" + i);
+                {
+	                this.tbData2.Controls.RemoveByKey("Data" + i);
+                }
             }
 
-            nbData = 0;
+	        this.nbData = 0;
 
             List<data> list = new List<data>();
-            Label[] dataArray = { label6, label7, label8, label9, label10, label11, label12, label13, label14, label15, label16, label17, label18, label19, label20, label21, label22, label23, label24, label25, label26, label27, label28, label29 };
+            Label[] dataArray = {this.label6, this.label7, this.label8, this.label9, this.label10, this.label11, this.label12, this.label13, this.label14, this.label15, this.label16, this.label17, this.label18, this.label19, this.label20, this.label21, this.label22, this.label23, this.label24, this.label25, this.label26, this.label27, this.label28, this.label29 };
 
             foreach(Label item in dataArray)
             {
-                toolTip1.SetToolTip(item, "");
+	            this.toolTip1.SetToolTip(item, "");
                 item.Hide();
             }
 
-            switch(Type.Text)
+            switch(this.Type.Text)
             {
                 case "Door":
-                    nbData = 6;
+	                this.nbData = 6;
                     list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc="startOpen (Boolean flag)" });
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "autoClose (Time in milliseconds)" });
@@ -272,7 +328,7 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "Button":
-                    nbData = 9;
+	                this.nbData = 9;
                     list.Add(new data() { type = type.Text, desc = "startOpen (State)" }); //Maybe make it a list if the possible state are known.
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "autoClose (long unknown flag)" });
@@ -285,7 +341,7 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "QuestGiver":
-                    nbData = 10;
+	                this.nbData = 10;
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "questList (unknown ID)" });
                     list.Add(new data() { type = type.Text, desc = "pageMaterial (PageTextMaterial.dbc)" });
@@ -299,7 +355,7 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "Chest":
-                    nbData = 16;
+	                this.nbData = 16;
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "chestLoot (gameobject_loot_template.entry)" });
                     list.Add(new data() { type = type.Text, desc = "chestRestockTime (time in seconds)" });
@@ -319,11 +375,11 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "Binder":
-                    nbData = -1;
+	                this.nbData = -1;
                     break;
 
                 case "Generic":
-                    nbData = 6;
+	                this.nbData = 6;
                     list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "floatingTooltip (Boolean flag)" });
                     list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "highlight (Boolean flag)" });
                     list.Add(new data() { type = type.Always, startNbr = 0, desc = "serverOnly? (Always 0)" });
@@ -333,7 +389,7 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "Trap":
-                    nbData = 13;
+	                this.nbData = 13;
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "chestLoot (gameobject_loot_template.entry)" });
                     list.Add(new data() { type = type.Text, desc = "chestRestockTime (time in seconds)" });
@@ -350,13 +406,13 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "Chair":
-                    nbData = 2;
+	                this.nbData = 2;
                     list.Add(new data() { type = type.Text, desc = "chairslots (number of players that can sit down on it)" });
                     list.Add(new data() { type = type.Text, desc = "chairorientation? (number of usable side?)" });
                     break;
 
                 case "SpellFocus":
-                    nbData = 7;
+	                this.nbData = 7;
                     list.Add(new data() { type = type.Text, desc = "spellFocusType (from SpellFocusObject.dbc; value also appears as RequiresSpellFocus in Spell.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "diameter (so radius*2)" });
                     list.Add(new data() { type = type.Text, desc = "linkedTrap (gameobject_template.entry (Spawned GO type 6))" });
@@ -367,14 +423,14 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "Text":
-                    nbData = 3;
+	                this.nbData = 3;
                     list.Add(new data() { type = type.Text, desc = "pageID (page_text.entry)" });
                     list.Add(new data() { type = type.Text, desc = "language (from  Languages.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "pageMaterial (PageTextMaterial.dbc)" });
                     break;
 
                 case "Goober":
-                    nbData = 20;
+	                this.nbData = 20;
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "questID (Required active quest_template.id to work)" });
                     list.Add(new data() { type = type.Text, desc = "eventID (event_script id)" });
@@ -398,25 +454,25 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "Transport":
-                    nbData = 0;
+	                this.nbData = 0;
                     break;
 
                 case "AreaDamage":
-                    nbData = 0;
+	                this.nbData = 0;
                     break;
 
                 case "Camera":
-                    nbData = 2;
+	                this.nbData = 2;
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "camera (Cinematic entry from CinematicCamera.dbc)" });
                     break;
 
                 case "MapObject":
-                    nbData = 0;
+	                this.nbData = 0;
                     break;
 
                 case "MoTransport":
-                    nbData = 9;
+	                this.nbData = 9;
                     list.Add(new data() { type = type.Text, desc = "taxiPathID (Id from TaxiPath.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "moveSpeed" });
                     list.Add(new data() { type = type.Text, desc = "accelRate" });
@@ -429,15 +485,15 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "DuelArbiter":
-                    nbData = 0;
+	                this.nbData = 0;
                     break;
 
                 case "FishingNode":
-                    nbData = 0;
+	                this.nbData = 0;
                     break;
 
                 case "Ritual":
-                    nbData = 7;
+	                this.nbData = 7;
                     list.Add(new data() { type = type.Text, desc = "casters?" });
                     list.Add(new data() { type = type.Text, desc = "spell (Spell Id from Spell.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "animSpell (Spell Id from Spell.dbc)" });
@@ -448,36 +504,36 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "MailBox":
-                    nbData = 0;
+	                this.nbData = 0;
                     break;
 
                 case "AuctionHouse":
-                    nbData = 1;
+	                this.nbData = 1;
                     list.Add(new data() { type = type.Text, desc = "actionHouseID (From AuctionHouse.dbc ?)" });
                     break;
 
                 case "GuardPost":
-                    nbData = 2;
+	                this.nbData = 2;
                     list.Add(new data() { type = type.Text, desc = "CreatureID" });
                     list.Add(new data() { type = type.Text, desc = "unk" });
                     break;
 
                 case "SpellCaster":
-                    nbData = 3;
+	                this.nbData = 3;
                     list.Add(new data() { type = type.Text, desc = "spell (Spell Id from Spell.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "charges" });
                     list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "partyOnly (Boolean flag, need to be in group to use it)" });
                     break;
 
                 case "MeetingStone":
-                    nbData = 3;
+	                this.nbData = 3;
                     list.Add(new data() { type = type.Text, desc = "minLevel" });
                     list.Add(new data() { type = type.Text, desc = "maxLevel" });
                     list.Add(new data() { type = type.Text, desc = "areaID (From AreaTable.dbc)" });
                     break;
 
                 case "FlagStand":
-                    nbData = 8;
+	                this.nbData = 8;
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "pickupSpell (Spell Id from Spell.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "radius (distance)" });
@@ -489,7 +545,7 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "FishingPole":
-                    nbData = 4;
+	                this.nbData = 4;
                     list.Add(new data() { type = type.Text, desc = "radius (distance)" });
                     list.Add(new data() { type = type.Text, desc = "chestLoot (gameobject_loot_template.entry)" });
                     list.Add(new data() { type = type.Text, desc = "minRestock" });
@@ -497,7 +553,7 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "FlagDrop":
-                    nbData = 4;
+	                this.nbData = 4;
                     list.Add(new data() { type = type.Text, desc = "open (LockId from Lock.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "eventID (Unknown Event ID)" });
                     list.Add(new data() { type = type.Text, desc = "pickupSpell (Spell Id from Spell.dbc)" });
@@ -505,15 +561,15 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "MiniGame":
-                    nbData = -1;
+	                this.nbData = -1;
                     break;
 
                 case "LotteryKiosk":
-                    nbData = -1;
+	                this.nbData = -1;
                     break;
 
                 case "CapturePoint":
-                    nbData = 19;
+	                this.nbData = 19;
                     list.Add(new data() { type = type.Text, desc = "radius (Distance)" });
                     list.Add(new data() { type = type.Text, desc = "spell (Unknown ID, not a spell id in dbc file, maybe server only side spell)" });
                     list.Add(new data() { type = type.Text, desc = "worldState1" });
@@ -536,7 +592,7 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "AuraGenerator":
-                    nbData = 4;
+	                this.nbData = 4;
                     list.Add(new data() { type = type.List, startNbr = 0, endNbr = 1, desc = "startOpen (Boolean flag)" });
                     list.Add(new data() { type = type.Text, desc = "radius (Distance)" });
                     list.Add(new data() { type = type.Text, desc = "auraID1 (Spell Id from Spell.dbc)" });
@@ -544,17 +600,17 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "DungeonDifficulty":
-                    nbData = 2;
+	                this.nbData = 2;
                     list.Add(new data() { type = type.Text, desc = "mapID (From Map.dbc)" });
                     list.Add(new data() { type = type.Text, desc = "difficulty" });
                     break;
 
                 case "BarberChair":
-                    nbData = 0;
+	                this.nbData = 0;
                     break;
 
                 case "DestructibleBuilding":
-                    nbData = 24;
+	                this.nbData = 24;
                     list.Add(new data() { type = type.Text, desc = "intactNumHits" });
                     list.Add(new data() { type = type.Text, desc = "creditProxyCreature" });
                     list.Add(new data() { type = type.Text, desc = "state1Name" });
@@ -582,11 +638,11 @@ namespace Neo.UI.Dialog
                     break;
 
                 case "GuildBank":
-                    nbData = 0;
+	                this.nbData = 0;
                     break;
 
                 case "TrapDoor":
-                    nbData = 3;
+	                this.nbData = 3;
                     list.Add(new data() { type = type.Text, desc = "whenToPause" });
                     list.Add(new data() { type = type.Text, desc = "startOpen" });
                     list.Add(new data() { type = type.Text, desc = "autoClose" });
@@ -594,26 +650,26 @@ namespace Neo.UI.Dialog
 
             }
 
-            if (nbData == -1)
+            if (this.nbData == -1)
             {
-                WarningLabel1.Text = "Object type not used";
-                WarningLabel2.Text = "Object type not used";
-                WarningLabel1.Show();
-                WarningLabel2.Show();
+	            this.WarningLabel1.Text = "Object type not used";
+	            this.WarningLabel2.Text = "Object type not used";
+	            this.WarningLabel1.Show();
+	            this.WarningLabel2.Show();
             }
-            else if(nbData == 0)
+            else if(this.nbData == 0)
             {
-                WarningLabel1.Text = "All data are always 0";
-                WarningLabel2.Text = "All data are always 0";
-                WarningLabel1.Show();
-                WarningLabel2.Show();
+	            this.WarningLabel1.Text = "All data are always 0";
+	            this.WarningLabel2.Text = "All data are always 0";
+	            this.WarningLabel1.Show();
+	            this.WarningLabel2.Show();
             }
             else
             {
-                for (int i = 0; i < nbData; i++)
+                for (int i = 0; i < this.nbData; i++)
                 {
                     dataArray[i].Show();
-                    toolTip1.SetToolTip(dataArray[i], list[i].desc);
+	                this.toolTip1.SetToolTip(dataArray[i], list[i].desc);
                 }
 
                 int d = 0;
@@ -625,27 +681,27 @@ namespace Neo.UI.Dialog
                         case type.Text:
                             TextBox textBox = new TextBox();
                             textBox.Name = "Data"+d;
-                            textBox.Location = new System.Drawing.Point(73, 17 + d*30);
-                            textBox.Size = new System.Drawing.Size(456, 20);
+                            textBox.Location = new Point(73, 17 + d*30);
+                            textBox.Size = new Size(456, 20);
                             textBox.Text = "0";
 
                             if(d < 12)
                             {
-                                tbData.Controls.Add(textBox);
-                                textBox.Location = new System.Drawing.Point(73, 17 + d * 30);
+	                            this.tbData.Controls.Add(textBox);
+                                textBox.Location = new Point(73, 17 + d * 30);
                             }
                             else
                             {
-                                tbData2.Controls.Add(textBox);
-                                textBox.Location = new System.Drawing.Point(73, 17 + (d-12) * 30);
+	                            this.tbData2.Controls.Add(textBox);
+                                textBox.Location = new Point(73, 17 + (d-12) * 30);
                             }
                             break;
 
                         case type.List:
                             ComboBox comboBox = new ComboBox();
                             comboBox.Name = "Data" + d;
-                            comboBox.Location = new System.Drawing.Point(73, 17 + d * 30);
-                            comboBox.Size = new System.Drawing.Size(456, 20);
+                            comboBox.Location = new Point(73, 17 + d * 30);
+                            comboBox.Size = new Size(456, 20);
 
                             for(int a = item.startNbr; a <= item.endNbr; a++)
                             {
@@ -656,32 +712,32 @@ namespace Neo.UI.Dialog
 
                             if (d < 12)
                             {
-                                tbData.Controls.Add(comboBox);
-                                comboBox.Location = new System.Drawing.Point(73, 17 + d * 30);
+	                            this.tbData.Controls.Add(comboBox);
+                                comboBox.Location = new Point(73, 17 + d * 30);
                             }
                             else
                             {
-                                tbData2.Controls.Add(comboBox);
-                                comboBox.Location = new System.Drawing.Point(73, 17 + (d - 12) * 30);
+	                            this.tbData2.Controls.Add(comboBox);
+                                comboBox.Location = new Point(73, 17 + (d - 12) * 30);
                             }
                             break;
 
                         case type.Always:
                             TextBox alwaysTextBox = new TextBox();
                             alwaysTextBox.Name = "Data" + d;
-                            alwaysTextBox.Location = new System.Drawing.Point(73, 17 + d * 30);
-                            alwaysTextBox.Size = new System.Drawing.Size(456, 20);
+                            alwaysTextBox.Location = new Point(73, 17 + d * 30);
+                            alwaysTextBox.Size = new Size(456, 20);
                             alwaysTextBox.Text = Convert.ToString(item.startNbr);
                             alwaysTextBox.Enabled = false;
                             if (d < 12)
                             {
-                                tbData.Controls.Add(alwaysTextBox);
-                                alwaysTextBox.Location = new System.Drawing.Point(73, 17 + d * 30);
+	                            this.tbData.Controls.Add(alwaysTextBox);
+                                alwaysTextBox.Location = new Point(73, 17 + d * 30);
                             }
                             else
                             {
-                                tbData2.Controls.Add(alwaysTextBox);
-                                alwaysTextBox.Location = new System.Drawing.Point(73, 17 + (d - 12) * 30);
+	                            this.tbData2.Controls.Add(alwaysTextBox);
+                                alwaysTextBox.Location = new Point(73, 17 + (d - 12) * 30);
                             }
                             break;
                     }
@@ -693,16 +749,16 @@ namespace Neo.UI.Dialog
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            if (LoadEntry.Text != "")
+            if (this.LoadEntry.Text != "")
             {
-                if (Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.GetGameObjectByEntry(Convert.ToInt32(LoadEntry.Text)) == null)
+                if (Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.GetGameObjectByEntry(Convert.ToInt32(this.LoadEntry.Text)) == null)
                 {
                     MessageBox.Show("There is no gameObject with this id.");
                 }
 
                 Storage.Database.WotLk.TrinityCore.GameObject gameObjectLoaded = new Storage.Database.WotLk.TrinityCore.GameObject();
 
-                gameObjectLoaded = Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.GetGameObjectByEntry(int.Parse(LoadEntry.Text));
+                gameObjectLoaded = Storage.Database.WotLk.TrinityCore.GameObjectManager.Instance.GetGameObjectByEntry(int.Parse(this.LoadEntry.Text));
 
                 if (gameObjectLoaded != null)
                 {
@@ -714,13 +770,16 @@ namespace Neo.UI.Dialog
 
     internal class GameObjectEditorControlDesigner : ControlDesigner
     {
-        public override void Initialize(System.ComponentModel.IComponent component)
+        public override void Initialize(IComponent component)
         {
             base.Initialize(component);
 
             var ctl = (this.Control as GameObjectEditorControl).TabControl as TabControl;
             EnableDesignMode(ctl, "TabControl");
-            foreach (TabPage page in ctl.TabPages) EnableDesignMode(page, page.Name);
+            foreach (TabPage page in ctl.TabPages)
+            {
+	            EnableDesignMode(page, page.Name);
+            }
         }
     }
 }

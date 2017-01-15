@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Neo.IO.Files.Models.Wotlk
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct CreatureDisplayInfoEntry
+    internal struct CreatureDisplayInfoEntry
     {
         public readonly uint Id;
         public readonly uint ModelId;
@@ -25,7 +25,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct CreatureDisplayInfoExtraEntry
+    internal struct CreatureDisplayInfoExtraEntry
     {
         public readonly uint ID;
         public readonly int DisplayRaceID;
@@ -51,7 +51,7 @@ namespace Neo.IO.Files.Models.Wotlk
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct CreatureModelDataEntry
+    internal struct CreatureModelDataEntry
     {
         public readonly uint ID;
         public readonly uint Flags;

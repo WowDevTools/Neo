@@ -38,60 +38,60 @@ using GLchan = System.Byte;
 
 namespace Neo.Utils
 {
-    unsafe static class LibTxc
+	internal static unsafe class LibTxc
     {
         private const int Alphacut = 127;
-        private const GLboolean GlFalse = 0;
-        private const GLboolean GlTrue = 1;
+        private const byte GlFalse = 0;
+        private const byte GlTrue = 1;
         private const int Redweight = 4;
         private const int Greenweight = 16;
         private const int Blueweight = 1;
 
-        public const GLenum GlCompressedRgbS3TcDxt1Ext = 0x83F0;
-        public const GLenum GlCompressedRgbaS3TcDxt1Ext = 0x83F1;
-        public const GLenum GlCompressedRgbaS3TcDxt3Ext = 0x83F2;
-        public const GLenum GlCompressedRgbaS3TcDxt5Ext = 0x83F3;
+        public const uint GlCompressedRgbS3TcDxt1Ext = 0x83F0;
+        public const uint GlCompressedRgbaS3TcDxt1Ext = 0x83F1;
+        public const uint GlCompressedRgbaS3TcDxt3Ext = 0x83F2;
+        public const uint GlCompressedRgbaS3TcDxt5Ext = 0x83F3;
 
         // ReSharper disable once FunctionComplexityOverflow
-        public static void CompressDxtn(GLint width, GLint height,
-            GLubyte* srcPixData, GLenum destFormat,
-            GLubyte* dest, GLint dstRowStride)
+        public static void CompressDxtn(int width, int height,
+            byte* srcPixData, uint destFormat,
+            byte* dest, int dstRowStride)
         {
             const int srccomps = 4;
-            GLubyte* blkaddr = dest;
-            GLubyte*** srcpixels = stackalloc GLubyte**[4];
-            GLubyte** scpp0 = stackalloc GLubyte*[4];
-            GLubyte* scp0 = stackalloc GLubyte[4];
-            GLubyte* scp1 = stackalloc GLubyte[4];
-            GLubyte* scp2 = stackalloc GLubyte[4];
-            GLubyte* scp3 = stackalloc GLubyte[4];
+            byte* blkaddr = dest;
+            byte*** srcpixels = stackalloc byte**[4];
+            byte** scpp0 = stackalloc byte*[4];
+            byte* scp0 = stackalloc byte[4];
+            byte* scp1 = stackalloc byte[4];
+            byte* scp2 = stackalloc byte[4];
+            byte* scp3 = stackalloc byte[4];
             scpp0[0] = scp0;
             scpp0[1] = scp1;
             scpp0[2] = scp2;
             scpp0[3] = scp3;
-            GLubyte** scpp1 = stackalloc GLubyte*[4];
-            GLubyte* scp10 = stackalloc GLubyte[4];
-            GLubyte* scp11 = stackalloc GLubyte[4];
-            GLubyte* scp12 = stackalloc GLubyte[4];
-            GLubyte* scp13 = stackalloc GLubyte[4];
+            byte** scpp1 = stackalloc byte*[4];
+            byte* scp10 = stackalloc byte[4];
+            byte* scp11 = stackalloc byte[4];
+            byte* scp12 = stackalloc byte[4];
+            byte* scp13 = stackalloc byte[4];
             scpp1[0] = scp10;
             scpp1[1] = scp11;
             scpp1[2] = scp12;
             scpp1[3] = scp13;
-            GLubyte** scpp2 = stackalloc GLubyte*[4];
-            GLubyte* scp20 = stackalloc GLubyte[4];
-            GLubyte* scp21 = stackalloc GLubyte[4];
-            GLubyte* scp22 = stackalloc GLubyte[4];
-            GLubyte* scp23 = stackalloc GLubyte[4];
+            byte** scpp2 = stackalloc byte*[4];
+            byte* scp20 = stackalloc byte[4];
+            byte* scp21 = stackalloc byte[4];
+            byte* scp22 = stackalloc byte[4];
+            byte* scp23 = stackalloc byte[4];
             scpp2[0] = scp20;
             scpp2[1] = scp21;
             scpp2[2] = scp22;
             scpp2[3] = scp23;
-            GLubyte** scpp3 = stackalloc GLubyte*[4];
-            GLubyte* scp30 = stackalloc GLubyte[4];
-            GLubyte* scp31 = stackalloc GLubyte[4];
-            GLubyte* scp32 = stackalloc GLubyte[4];
-            GLubyte* scp33 = stackalloc GLubyte[4];
+            byte** scpp3 = stackalloc byte*[4];
+            byte* scp30 = stackalloc byte[4];
+            byte* scp31 = stackalloc byte[4];
+            byte* scp32 = stackalloc byte[4];
+            byte* scp33 = stackalloc byte[4];
             scpp3[0] = scp30;
             scpp3[1] = scp31;
             scpp3[2] = scp32;
@@ -100,10 +100,10 @@ namespace Neo.Utils
             srcpixels[1] = scpp1;
             srcpixels[2] = scpp2;
             srcpixels[3] = scpp3;
-            GLchan* srcaddr;
-            GLint numxpixels, numypixels;
-            GLint i, j;
-            GLint dstRowDiff;
+            byte* srcaddr;
+            int numxpixels, numypixels;
+            int i, j;
+            int dstRowDiff;
 
             switch (destFormat)
             {
@@ -112,14 +112,26 @@ namespace Neo.Utils
                     dstRowDiff = dstRowStride >= (width * 2) ? dstRowStride - (((width + 3) & ~3) * 2) : 0;
                     for (j = 0; j < height; j += 4)
                     {
-                        if (height > j + 3) numypixels = 4;
-                        else numypixels = height - j;
-                        srcaddr = srcPixData + j * width * srccomps;
+                        if (height > j + 3)
+                        {
+	                        numypixels = 4;
+                        }
+                        else
+                        {
+	                        numypixels = height - j;
+                        }
+	                    srcaddr = srcPixData + j * width * srccomps;
                         for (i = 0; i < width; i += 4)
                         {
-                            if (width > i + 3) numxpixels = 4;
-                            else numxpixels = width - i;
-                            Extractsrccolors(srcpixels, srcaddr, width, numxpixels, numypixels, srccomps);
+                            if (width > i + 3)
+                            {
+	                            numxpixels = 4;
+                            }
+                            else
+                            {
+	                            numxpixels = width - i;
+                            }
+	                        Extractsrccolors(srcpixels, srcaddr, width, numxpixels, numypixels, srccomps);
                             Encodedxtcolorblockfaster(blkaddr, srcpixels, numxpixels, numypixels, destFormat);
                             srcaddr += srccomps * numxpixels;
                             blkaddr += 8;
@@ -131,14 +143,26 @@ namespace Neo.Utils
                     dstRowDiff = dstRowStride >= (width * 4) ? dstRowStride - (((width + 3) & ~3) * 4) : 0;
                     for (j = 0; j < height; j += 4)
                     {
-                        if (height > j + 3) numypixels = 4;
-                        else numypixels = height - j;
-                        srcaddr = srcPixData + j * width * srccomps;
+                        if (height > j + 3)
+                        {
+	                        numypixels = 4;
+                        }
+                        else
+                        {
+	                        numypixels = height - j;
+                        }
+	                    srcaddr = srcPixData + j * width * srccomps;
                         for (i = 0; i < width; i += 4)
                         {
-                            if (width > i + 3) numxpixels = 4;
-                            else numxpixels = width - i;
-                            Extractsrccolors(srcpixels, srcaddr, width, numxpixels, numypixels, srccomps);
+                            if (width > i + 3)
+                            {
+	                            numxpixels = 4;
+                            }
+                            else
+                            {
+	                            numxpixels = width - i;
+                            }
+	                        Extractsrccolors(srcpixels, srcaddr, width, numxpixels, numypixels, srccomps);
                             *blkaddr++ = (byte) ((srcpixels[0][0][3] >> 4) | (srcpixels[0][1][3] & 0xf0));
                             *blkaddr++ = (byte) ((srcpixels[0][2][3] >> 4) | (srcpixels[0][3][3] & 0xf0));
                             *blkaddr++ = (byte) ((srcpixels[1][0][3] >> 4) | (srcpixels[1][1][3] & 0xf0));
@@ -158,14 +182,26 @@ namespace Neo.Utils
                     dstRowDiff = dstRowStride >= (width * 4) ? dstRowStride - (((width + 3) & ~3) * 4) : 0;
                     for (j = 0; j < height; j += 4)
                     {
-                        if (height > j + 3) numypixels = 4;
-                        else numypixels = height - j;
-                        srcaddr = srcPixData + j * width * srccomps;
+                        if (height > j + 3)
+                        {
+	                        numypixels = 4;
+                        }
+                        else
+                        {
+	                        numypixels = height - j;
+                        }
+	                    srcaddr = srcPixData + j * width * srccomps;
                         for (i = 0; i < width; i += 4)
                         {
-                            if (width > i + 3) numxpixels = 4;
-                            else numxpixels = width - i;
-                            Extractsrccolors(srcpixels, srcaddr, width, numxpixels, numypixels, srccomps);
+                            if (width > i + 3)
+                            {
+	                            numxpixels = 4;
+                            }
+                            else
+                            {
+	                            numxpixels = width - i;
+                            }
+	                        Extractsrccolors(srcpixels, srcaddr, width, numxpixels, numypixels, srccomps);
                             Encodedxt5Alpha(blkaddr, srcpixels, numxpixels, numypixels);
                             Encodedxtcolorblockfaster(blkaddr + 8, srcpixels, numxpixels, numypixels, destFormat);
                             srcaddr += srccomps * numxpixels;
@@ -180,19 +216,19 @@ namespace Neo.Utils
             }
         }
 
-        private static void Storedxtencodedblock(GLubyte* blkaddr, GLubyte*** srccolors, GLubyte** bestcolor,
-            GLint numxpixels, GLint numypixels, GLuint type, GLboolean haveAlpha)
+        private static void Storedxtencodedblock(byte* blkaddr, byte*** srccolors, byte** bestcolor,
+            int numxpixels, int numypixels, uint type, byte haveAlpha)
         {
-            GLint i, j, colors;
-            GLuint pixerror, pixerrorbest;
-            GLint colordist;
-            GLuint bits = 0, bits2 = 0;
-            GLubyte enc = 0;
-            GLubyte** cv = stackalloc GLubyte*[4];
-            GLubyte* cv0 = stackalloc GLubyte[4];
-            GLubyte* cv1 = stackalloc GLubyte[4];
-            GLubyte* cv2 = stackalloc GLubyte[4];
-            GLubyte* cv3 = stackalloc GLubyte[4];
+            int i, j, colors;
+            uint pixerror, pixerrorbest;
+            int colordist;
+            uint bits = 0, bits2 = 0;
+            byte enc = 0;
+            byte** cv = stackalloc byte*[4];
+            byte* cv0 = stackalloc byte[4];
+            byte* cv1 = stackalloc byte[4];
+            byte* cv2 = stackalloc byte[4];
+            byte* cv3 = stackalloc byte[4];
             cv[0] = cv0;
             cv[1] = cv1;
             cv[2] = cv2;
@@ -285,8 +321,14 @@ namespace Neo.Utils
                             {
                                 pixerrorbest = pixerror;
                                 /* need to exchange colors later */
-                                if (colors > 1) enc = (byte) colors;
-                                else enc = (byte) (colors ^ 1);
+                                if (colors > 1)
+                                {
+	                                enc = (byte) colors;
+                                }
+                                else
+                                {
+	                                enc = (byte) (colors ^ 1);
+                                }
                             }
                         }
                     }
@@ -322,30 +364,30 @@ namespace Neo.Utils
         }
 
         // ReSharper disable once FunctionComplexityOverflow
-        private static void Fancybasecolorsearch(GLubyte*** srccolors, GLubyte** bestcolor,
-            GLint numxpixels, GLint numypixels)
+        private static void Fancybasecolorsearch(byte*** srccolors, byte** bestcolor,
+            int numxpixels, int numypixels)
         {
-            GLint i, j;
-            GLint* blockerrlin0 = stackalloc GLint[3];
-            GLint* blockerrlin1 = stackalloc GLint[3];
-            GLint** blockerrlin = stackalloc GLint*[2];
+            int i, j;
+            int* blockerrlin0 = stackalloc int[3];
+            int* blockerrlin1 = stackalloc int[3];
+            int** blockerrlin = stackalloc int*[2];
             blockerrlin[0] = blockerrlin0;
             blockerrlin[1] = blockerrlin1;
-            GLubyte* nrcolor = stackalloc GLubyte[2];
-            GLint* pixerrorcolorbest = stackalloc GLint[3];
-            GLubyte enc = 0;
-            GLubyte** cv = stackalloc GLubyte*[4];
-            GLubyte* cv0 = stackalloc GLubyte[4];
-            GLubyte* cv1 = stackalloc GLubyte[4];
-            GLubyte* cv2 = stackalloc GLubyte[4];
-            GLubyte* cv3 = stackalloc GLubyte[4];
+            byte* nrcolor = stackalloc byte[2];
+            int* pixerrorcolorbest = stackalloc int[3];
+            byte enc = 0;
+            byte** cv = stackalloc byte*[4];
+            byte* cv0 = stackalloc byte[4];
+            byte* cv1 = stackalloc byte[4];
+            byte* cv2 = stackalloc byte[4];
+            byte* cv3 = stackalloc byte[4];
             cv[0] = cv0;
             cv[1] = cv1;
             cv[2] = cv2;
             cv[3] = cv3;
-            GLubyte** testcolor = stackalloc GLubyte*[2];
-            GLubyte* tc0 = stackalloc GLubyte[3];
-            GLubyte* tc1 = stackalloc GLubyte[3];
+            byte** testcolor = stackalloc byte*[2];
+            byte* tc0 = stackalloc byte[3];
+            byte* tc1 = stackalloc byte[3];
             testcolor[0] = tc0;
             testcolor[1] = tc1;
 
@@ -392,7 +434,7 @@ namespace Neo.Utils
                 for (i = 0; i < numxpixels; i++)
                 {
                     var pixerrorbest = 0xffffffff;
-                    GLint colors;
+                    int colors;
                     for (colors = 0; colors < 4; colors++)
                     {
                         var colordist = srccolors[j][i][0] - (cv[colors][0]);
@@ -413,7 +455,7 @@ namespace Neo.Utils
                             pixerrorcolorbest[2] = (int) pixerrorblue;
                         }
                     }
-                    GLint z;
+                    int z;
                     if (enc == 0)
                     {
                         for (z = 0; z < 3; z++)
@@ -458,18 +500,31 @@ namespace Neo.Utils
                     }
                 }
             }
-            if (nrcolor[0] == 0) nrcolor[0] = 1;
-            if (nrcolor[1] == 0) nrcolor[1] = 1;
-            for (j = 0; j < 2; j++)
+            if (nrcolor[0] == 0)
+            {
+	            nrcolor[0] = 1;
+            }
+	        if (nrcolor[1] == 0)
+	        {
+		        nrcolor[1] = 1;
+	        }
+	        for (j = 0; j < 2; j++)
             {
                 for (i = 0; i < 3; i++)
                 {
                     var newvalue = testcolor[j][i] + blockerrlin[j][i] / nrcolor[j];
                     if (newvalue <= 0)
-                        testcolor[j][i] = 0;
+                    {
+	                    testcolor[j][i] = 0;
+                    }
                     else if (newvalue >= 255)
-                        testcolor[j][i] = 255;
-                    else testcolor[j][i] = (byte) newvalue;
+                    {
+	                    testcolor[j][i] = 255;
+                    }
+                    else
+                    {
+	                    testcolor[j][i] = (byte) newvalue;
+                    }
                 }
             }
 
@@ -481,16 +536,31 @@ namespace Neo.Utils
                 var coldiffgreen = (byte) (2 * Math.Abs(testcolor[0][1] - testcolor[1][1]));
                 var coldiffblue = (byte) Math.Abs(testcolor[0][2] - testcolor[1][2]);
                 var coldiffmax = coldiffred;
-                if (coldiffmax < coldiffgreen) coldiffmax = coldiffgreen;
-                if (coldiffmax < coldiffblue) coldiffmax = coldiffblue;
-                if (coldiffmax > 0)
+                if (coldiffmax < coldiffgreen)
                 {
-                    GLubyte factor;
-                    if (coldiffmax > 4) factor = 2;
-                    else if (coldiffmax > 2) factor = 3;
-                    else factor = 4;
-                    GLubyte ind0;
-                    GLubyte ind1;
+	                coldiffmax = coldiffgreen;
+                }
+	            if (coldiffmax < coldiffblue)
+	            {
+		            coldiffmax = coldiffblue;
+	            }
+	            if (coldiffmax > 0)
+                {
+                    byte factor;
+                    if (coldiffmax > 4)
+                    {
+	                    factor = 2;
+                    }
+                    else if (coldiffmax > 2)
+                    {
+	                    factor = 3;
+                    }
+                    else
+                    {
+	                    factor = 4;
+                    }
+	                byte ind0;
+                    byte ind1;
                     if (testcolor[1][1] >= testcolor[0][1])
                     {
                         ind1 = 1;
@@ -502,31 +572,56 @@ namespace Neo.Utils
                         ind0 = 1;
                     }
                     if ((testcolor[ind1][1] + factor * coldiffgreen) <= 255)
-                        testcolor[ind1][1] += (byte) (factor * coldiffgreen);
-                    else testcolor[ind1][1] = 255;
-                    if ((testcolor[ind1][0] - testcolor[ind0][1]) > 0)
+                    {
+	                    testcolor[ind1][1] += (byte) (factor * coldiffgreen);
+                    }
+                    else
+                    {
+	                    testcolor[ind1][1] = 255;
+                    }
+	                if ((testcolor[ind1][0] - testcolor[ind0][1]) > 0)
                     {
                         if ((testcolor[ind1][0] + factor * coldiffred) <= 255)
-                            testcolor[ind1][0] += (byte) (factor * coldiffred);
-                        else testcolor[ind1][0] = 255;
+                        {
+	                        testcolor[ind1][0] += (byte) (factor * coldiffred);
+                        }
+                        else
+                        {
+	                        testcolor[ind1][0] = 255;
+                        }
                     }
                     else
                     {
                         if ((testcolor[ind0][0] + factor * coldiffred) <= 255)
-                            testcolor[ind0][0] += (byte) (factor * coldiffred);
-                        else testcolor[ind0][0] = 255;
+                        {
+	                        testcolor[ind0][0] += (byte) (factor * coldiffred);
+                        }
+                        else
+                        {
+	                        testcolor[ind0][0] = 255;
+                        }
                     }
                     if ((testcolor[ind1][2] - testcolor[ind0][2]) > 0)
                     {
                         if ((testcolor[ind1][2] + factor * coldiffblue) <= 255)
-                            testcolor[ind1][2] += (byte) (factor * coldiffblue);
-                        else testcolor[ind1][2] = 255;
+                        {
+	                        testcolor[ind1][2] += (byte) (factor * coldiffblue);
+                        }
+                        else
+                        {
+	                        testcolor[ind1][2] = 255;
+                        }
                     }
                     else
                     {
                         if ((testcolor[ind0][2] + factor * coldiffblue) <= 255)
-                            testcolor[ind0][2] += (byte) (factor * coldiffblue);
-                        else testcolor[ind0][2] = 255;
+                        {
+	                        testcolor[ind0][2] += (byte) (factor * coldiffblue);
+                        }
+                        else
+                        {
+	                        testcolor[ind0][2] = 255;
+                        }
                     }
                 }
             }
@@ -550,17 +645,17 @@ namespace Neo.Utils
             }
         }
 
-        private static void Encodedxtcolorblockfaster(GLubyte* blkaddr, GLubyte*** srccolors,
-            GLint numxpixels, GLint numypixels, GLuint type)
+        private static void Encodedxtcolorblockfaster(byte* blkaddr, byte*** srccolors,
+            int numxpixels, int numypixels, uint type)
         {
-            GLubyte** bestcolor = stackalloc GLubyte*[2];
-            GLubyte** basecolors = stackalloc GLubyte*[2];
-            var bc1 = stackalloc GLubyte[3];
-            var bc2 = stackalloc GLubyte[3];
+            byte** bestcolor = stackalloc byte*[2];
+            byte** basecolors = stackalloc byte*[2];
+            var bc1 = stackalloc byte[3];
+            var bc2 = stackalloc byte[3];
             basecolors[0] = bc1;
             basecolors[1] = bc2;
-            GLubyte i, j;
-            GLuint highcv;
+            byte i, j;
+            uint highcv;
             var haveAlpha = GlFalse;
 
             var lowcv = highcv = (uint) (srccolors[0][0][0] * srccolors[0][0][0] * Redweight +
@@ -587,7 +682,10 @@ namespace Neo.Utils
                             bestcolor[0] = srccolors[j][i];
                         }
                     }
-                    else haveAlpha = GlTrue;
+                    else
+                    {
+	                    haveAlpha = GlTrue;
+                    }
                 }
             }
 
@@ -605,8 +703,8 @@ namespace Neo.Utils
             Storedxtencodedblock(blkaddr, srccolors, bestcolor, numxpixels, numypixels, type, haveAlpha);
         }
 
-        private static void Writedxt5Encodedalphablock(GLubyte* blkaddr, GLubyte alphabase1, GLubyte alphabase2,
-            GLubyte* alphaenc)
+        private static void Writedxt5Encodedalphablock(byte* blkaddr, byte alphabase1, byte alphabase2,
+            byte* alphaenc)
         {
             *blkaddr++ = alphabase1;
             *blkaddr++ = alphabase2;
@@ -621,20 +719,20 @@ namespace Neo.Utils
         }
 
         // ReSharper disable once FunctionComplexityOverflow
-        private static void Encodedxt5Alpha(GLubyte* blkaddr, GLubyte*** srccolors,
-            GLint numxpixels, GLint numypixels)
+        private static void Encodedxt5Alpha(byte* blkaddr, byte*** srccolors,
+            int numxpixels, int numypixels)
         {
-            GLubyte* alphabase = stackalloc GLubyte[2];
-            GLubyte* alphause = stackalloc GLubyte[2];
-            GLshort* alphatest = stackalloc GLshort[2];
-            GLubyte* alphaenc1 = stackalloc GLubyte[16];
-            GLubyte* alphaenc2 = stackalloc GLubyte[16];
-            GLubyte* alphaenc3 = stackalloc GLubyte[16];
-            GLubyte* acutValues = stackalloc GLubyte[7];
-            GLubyte i, j, aindex;
+            byte* alphabase = stackalloc byte[2];
+            byte* alphause = stackalloc byte[2];
+            short* alphatest = stackalloc short[2];
+            byte* alphaenc1 = stackalloc byte[16];
+            byte* alphaenc2 = stackalloc byte[16];
+            byte* alphaenc3 = stackalloc byte[16];
+            byte* acutValues = stackalloc byte[7];
+            byte i, j, aindex;
             var alphaabsmin = GlFalse;
             var alphaabsmax = GlFalse;
-            GLshort alphadist;
+            short alphadist;
 
             alphabase[0] = 0xff;
             alphabase[1] = 0x0;
@@ -643,15 +741,23 @@ namespace Neo.Utils
                 for (i = 0; i < numxpixels; i++)
                 {
                     if (srccolors[j][i][3] == 0)
-                        alphaabsmin = GlTrue;
+                    {
+	                    alphaabsmin = GlTrue;
+                    }
                     else if (srccolors[j][i][3] == 255)
-                        alphaabsmax = GlTrue;
+                    {
+	                    alphaabsmax = GlTrue;
+                    }
                     else
                     {
                         if (srccolors[j][i][3] > alphabase[1])
-                            alphabase[1] = srccolors[j][i][3];
-                        if (srccolors[j][i][3] < alphabase[0])
-                            alphabase[0] = srccolors[j][i][3];
+                        {
+	                        alphabase[1] = srccolors[j][i][3];
+                        }
+	                    if (srccolors[j][i][3] < alphabase[0])
+	                    {
+		                    alphabase[0] = srccolors[j][i][3];
+	                    }
                     }
                 }
             }
@@ -673,11 +779,23 @@ namespace Neo.Utils
             uint alphablockerror1 = 0x0;
             var alphablockerror2 = 0xffffffff;
             var alphablockerror3 = 0xffffffff;
-            if (alphaabsmin != 0) alphause[0] = 0;
-            else alphause[0] = alphabase[0];
-            if (alphaabsmax != 0) alphause[1] = 255;
-            else alphause[1] = alphabase[1];
-            for (aindex = 0; aindex < 7; aindex++)
+            if (alphaabsmin != 0)
+            {
+	            alphause[0] = 0;
+            }
+            else
+            {
+	            alphause[0] = alphabase[0];
+            }
+	        if (alphaabsmax != 0)
+	        {
+		        alphause[1] = 255;
+	        }
+	        else
+	        {
+		        alphause[1] = alphabase[1];
+	        }
+	        for (aindex = 0; aindex < 7; aindex++)
             {
                 acutValues[aindex] =
                     (byte) ((alphause[0] * (2 * aindex + 1) + alphause[1] * (14 - (2 * aindex + 1))) / 14);
@@ -789,10 +907,10 @@ namespace Neo.Utils
 
                 if ((alphablockerror2 > 96) && (alphablockerror1 > 96))
                 {
-                    GLshort blockerrlin1 = 0;
-                    GLshort blockerrlin2 = 0;
-                    GLubyte nralphainrangelow = 0;
-                    GLubyte nralphainrangehigh = 0;
+                    short blockerrlin1 = 0;
+                    short blockerrlin2 = 0;
+                    byte nralphainrangelow = 0;
+                    byte nralphainrangehigh = 0;
                     alphatest[0] = 0xff;
                     alphatest[1] = 0x0;
                     for (j = 0; j < numypixels; j++)
@@ -801,10 +919,14 @@ namespace Neo.Utils
                         {
                             if ((srccolors[j][i][3] > alphatest[1]) &&
                                 (srccolors[j][i][3] < (255 - (alphabase[1] - alphabase[0]) / 28)))
-                                alphatest[1] = srccolors[j][i][3];
-                            if ((srccolors[j][i][3] < alphatest[0]) &&
+                            {
+	                            alphatest[1] = srccolors[j][i][3];
+                            }
+	                        if ((srccolors[j][i][3] < alphatest[0]) &&
                                 (srccolors[j][i][3] > (alphabase[1] - alphabase[0]) / 28))
-                                alphatest[0] = srccolors[j][i][3];
+	                        {
+		                        alphatest[0] = srccolors[j][i][3];
+	                        }
                         }
                     }
                     if (alphatest[1] <= alphatest[0])
@@ -877,9 +999,15 @@ namespace Neo.Utils
                         }
                     }
 
-                    if (nralphainrangelow == 0) nralphainrangelow = 1;
-                    if (nralphainrangehigh == 0) nralphainrangehigh = 1;
-                    alphatest[0] = (short) (alphatest[0] + (blockerrlin1 / nralphainrangelow));
+                    if (nralphainrangelow == 0)
+                    {
+	                    nralphainrangelow = 1;
+                    }
+	                if (nralphainrangehigh == 0)
+	                {
+		                nralphainrangehigh = 1;
+	                }
+	                alphatest[0] = (short) (alphatest[0] + (blockerrlin1 / nralphainrangelow));
                     if (alphatest[0] < 0)
                     {
                         alphatest[0] = 0;
@@ -956,27 +1084,31 @@ namespace Neo.Utils
             }
             else
             {
-                Writedxt5Encodedalphablock(blkaddr, (GLubyte) alphatest[0], (GLubyte) alphatest[1], alphaenc3);
+                Writedxt5Encodedalphablock(blkaddr, (byte) alphatest[0], (byte) alphatest[1], alphaenc3);
             }
         }
 
-        private static void Extractsrccolors(GLubyte*** srcpixels, GLchan* srcaddr,
-            GLint srcRowStride, GLint numxpixels, GLint numypixels, GLint comps)
+        private static void Extractsrccolors(byte*** srcpixels, byte* srcaddr,
+            int srcRowStride, int numxpixels, int numypixels, int comps)
         {
-            GLubyte j;
+            byte j;
             for (j = 0; j < numypixels; j++)
             {
                 var curaddr = srcaddr + j * srcRowStride * comps;
-                GLubyte i;
+                byte i;
                 for (i = 0; i < numxpixels; i++)
                 {
-                    GLubyte c;
+                    byte c;
                     for (c = 0; c < comps; c++)
                     {
                         if (c < 3)
-                            srcpixels[j][i][2 - c] = (*curaddr++);
+                        {
+	                        srcpixels[j][i][2 - c] = (*curaddr++);
+                        }
                         else
-                            srcpixels[j][i][c] = (*curaddr++);
+                        {
+	                        srcpixels[j][i][c] = (*curaddr++);
+                        }
                     }
                 }
             }

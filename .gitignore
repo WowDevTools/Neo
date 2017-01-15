@@ -218,3 +218,4 @@ DBC/
 
 # IntelliJ IDE files
 .idea*/
+*.DotSettings.user

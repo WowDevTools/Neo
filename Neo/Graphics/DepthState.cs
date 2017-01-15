@@ -57,7 +57,7 @@ namespace Neo.Graphics
 	    /// </summary>
 	    public void Activate()
 	    {
-		    if (DepthEnabled)
+		    if (this.DepthEnabled)
 		    {
 			    GL.Enable(EnableCap.DepthTest);
 		    }
@@ -66,7 +66,7 @@ namespace Neo.Graphics
 			    GL.Disable(EnableCap.DepthTest);
 		    }
 
-		    GL.DepthMask(DepthWriteEnabled);
+		    GL.DepthMask(this.DepthWriteEnabled);
 	    }
     }
 }

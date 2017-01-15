@@ -8,10 +8,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 CharTitles.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -21,11 +21,11 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 NamesProfanity.LoadData();
                 NamesReserved.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -35,7 +35,7 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 Spell.LoadData();
                 SkillLine.LoadData();
                 SkillLineAbility.LoadData();
@@ -44,7 +44,7 @@ namespace Neo.Dbc
                 ChrRaces.LoadData();
                 ChrClasses.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -54,14 +54,14 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 ChrClasses.LoadData();
                 ChrRaces.LoadData();
                 Faction.LoadData();
                 FactionGroup.LoadData();
                 FactionTemplate.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -71,7 +71,7 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 ChrClasses.LoadData();
                 ChrRaces.LoadData();
                 Spell.LoadData();
@@ -79,7 +79,7 @@ namespace Neo.Dbc
                 Talent.LoadData();
                 TalentTab.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -89,14 +89,14 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 Achievement.LoadData();
                 AchievementCategory.LoadData();
                 AchievementCriteria.LoadData();
                 Map.LoadData();
                 SpellIcon.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -106,10 +106,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 ChrRaces.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -119,10 +119,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 ChrClasses.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -132,7 +132,7 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 AreaPoi.LoadData();
                 AreaTable.LoadData();
                 DungeonMap.LoadData();
@@ -140,7 +140,7 @@ namespace Neo.Dbc
                 WorldMapArea.LoadData();
                 WorldMapOverlay.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -150,11 +150,11 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 WorldMapArea.LoadData();
                 WorldMapOverlay.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -164,10 +164,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 Item.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -177,10 +177,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 GameTips.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -190,12 +190,12 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 Item.LoadData();
                 GemProperties.LoadData();
                 SpellItemEnchantment.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -205,12 +205,12 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 CharBaseInfo.LoadData();
                 ChrClasses.LoadData();
                 ChrRaces.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -220,10 +220,10 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 ItemSet.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }
@@ -233,12 +233,12 @@ namespace Neo.Dbc
         {
             try
             {
-                DbcStores.InitFiles();
+                InitFiles();
                 CharStartOutfit.LoadData();
                 ChrRaces.LoadData();
                 ChrClasses.LoadData();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 	            Console.WriteLine(ex.Message);
             }

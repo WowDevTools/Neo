@@ -23,8 +23,8 @@ namespace Neo.IO.Files.Models.WoD
         private Vector3[] mNormals = new Vector3[0];
         private Vector2[] mTexCoords = new Vector2[0];
 
-        public Vector3 MinPosition { get { return BoundingBox.Minimum; } }
-        public Vector3 MaxPosition { get { return BoundingBox.Maximum; } }
+        public Vector3 MinPosition { get { return this.BoundingBox.Minimum; } }
+        public Vector3 MaxPosition { get { return this.BoundingBox.Maximum; } }
 
 	    public BoundingBox BoundingBox { get; private set; }
 	    public IList<ushort> Indices { get; private set; }
@@ -36,23 +36,23 @@ namespace Neo.IO.Files.Models.WoD
 
 	    public WorldModelGroup(string fileName, WorldModelRoot root)
         {
-            Batches = new List<WmoBatch>();
-            Indices = new List<ushort>();
-            Vertices = new WmoVertex[0];
+	        this.Batches = new List<WmoBatch>();
+	        this.Indices = new List<ushort>();
+	        this.Vertices = new WmoVertex[0];
 
-            DisableRendering = false;
+	        this.DisableRendering = false;
 
-            mFileName = fileName;
-            mParent = new WeakReference<WorldModelRoot>(root);
+            this.mFileName = fileName;
+            this.mParent = new WeakReference<WorldModelRoot>(root);
         }
 
         public bool Load()
         {
-            using (var file = FileManager.Instance.Provider.OpenFile(mFileName))
+            using (var file = FileManager.Instance.Provider.OpenFile(this.mFileName))
             {
                 if(file == null)
                 {
-                    Log.Error("Unable to load WMO group. File not found: " + mFileName);
+                    Log.Error("Unable to load WMO group. File not found: " + this.mFileName);
                     return false;
                 }
 
@@ -69,12 +69,13 @@ namespace Neo.IO.Files.Models.WoD
                         switch (signature)
                         {
                             case 0x4D4F4750:
-                                mHeader = reader.Read<Mogp>();
-                                IsIndoor = (mHeader.flags & 0x2000) != 0 && (mHeader.flags & 0x8) == 0;
+	                            this.mHeader = reader.Read<Mogp>();
+	                            this.IsIndoor = (this.mHeader.flags & 0x2000) != 0 && (this.mHeader.flags & 0x8) == 0;
                                 if (!LoadGroupChunks(reader, size - SizeCache<Mogp>.Size))
-                                    return false;
-
-                                readChunks = false;
+                                {
+	                                return false;
+                                }
+	                            readChunks = false;
                                 break;
                         }
 
@@ -93,12 +94,14 @@ namespace Neo.IO.Files.Models.WoD
             }
 
             WorldModelRoot root;
-            if (mParent.TryGetTarget(out root))
+            if (this.mParent.TryGetTarget(out root))
             {
-                Name = root.GetGroupNameByOffset(mHeader.groupName);
+	            this.Name = root.GetGroupNameByOffset(this.mHeader.groupName);
 
-                if (Name == "antiportal")
-                    DisableRendering = true;
+                if (this.Name == "antiportal")
+                {
+	                this.DisableRendering = true;
+                }
             }
 
             return true;
@@ -154,36 +157,41 @@ namespace Neo.IO.Files.Models.WoD
 
                     case 0x4D4F4241:
                         if (!LoadBatches(reader, chunkSize))
-                            return false;
-                        hasBatches = true;
+                        {
+	                        return false;
+                        }
+	                    hasBatches = true;
                         break;
                 }
 
                 reader.BaseStream.Position = curPos + chunkSize;
             }
 
-            if(mTexCoords.Length == 0 && mPositions.Length != 0)
+            if(this.mTexCoords.Length == 0 && this.mPositions.Length != 0)
             {
-                mTexCoords = new Vector2[mPositions.Length];
-                for (var i = 0; i < mTexCoords.Length; ++i)
-                    mTexCoords[i] = new Vector2(0, 0);
+	            this.mTexCoords = new Vector2[this.mPositions.Length];
+                for (var i = 0; i < this.mTexCoords.Length; ++i)
+                {
+	                this.mTexCoords[i] = new Vector2(0, 0);
+                }
             }
 
-            if(mPositions.Length == 0 || mPositions.Length != mNormals.Length || mNormals.Length != mTexCoords.Length)
+            if(this.mPositions.Length == 0 || this.mPositions.Length != this.mNormals.Length || this.mNormals.Length != this.mTexCoords.Length)
             {
                 Log.Error(
                     string.Format(
-                        "Invalid format in WMO group. Inconsistent sizes in positions, texture coordinates and normals. {0}/{1}/{2}",
-                        mPositions.Length, mTexCoords.Length, mNormals.Length));
+                        "Invalid format in WMO group. Inconsistent sizes in positions, texture coordinates and normals. {0}/{1}/{2}", this.mPositions.Length, this.mTexCoords.Length, this.mNormals.Length));
                 return false;
             }
 
             if (CombineVertexData() == false)
-                return false;
+            {
+	            return false;
+            }
 
-            mNormals = null;
-            mTexCoords = null;
-            mColors = null;
+	        this.mNormals = null;
+	        this.mTexCoords = null;
+	        this.mColors = null;
 
             return true;
         }
@@ -191,65 +199,73 @@ namespace Neo.IO.Files.Models.WoD
         private void LoadIndices(BinaryReader reader, int size)
         {
             var numIndices = size / 2;
-            mIndices = reader.ReadArray<ushort>(numIndices).ToList();
-            Indices = mIndices.AsReadOnly();
+	        this.mIndices = reader.ReadArray<ushort>(numIndices).ToList();
+	        this.Indices = this.mIndices.AsReadOnly();
         }
 
         private void LoadColors(BinaryReader reader, int size)
         {
             var numColors = size / 4;
-            mColors = reader.ReadArray<uint>(numColors);
+	        this.mColors = reader.ReadArray<uint>(numColors);
         }
 
         private void LoadTexCoords(BinaryReader reader, int size)
         {
-            if (mTexCoordsLoaded && mTexCoords.Length > 0)
-                return;
+            if (this.mTexCoordsLoaded && this.mTexCoords.Length > 0)
+            {
+	            return;
+            }
 
-            mTexCoordsLoaded = true;
+	        this.mTexCoordsLoaded = true;
 
             var numTexCoords = size / SizeCache<Vector2>.Size;
-            mTexCoords = reader.ReadArray<Vector2>(numTexCoords);
+	        this.mTexCoords = reader.ReadArray<Vector2>(numTexCoords);
         }
 
         private void LoadNormals(BinaryReader reader, int size)
         {
             var numNormals = size / SizeCache<Vector3>.Size;
-            mNormals = reader.ReadArray<Vector3>(numNormals);
+	        this.mNormals = reader.ReadArray<Vector3>(numNormals);
         }
 
         private void LoadVertices(BinaryReader reader, int size)
         {
             var numVertices = size / SizeCache<Vector3>.Size;
-            mPositions = reader.ReadArray<Vector3>(numVertices);
+	        this.mPositions = reader.ReadArray<Vector3>(numVertices);
         }
 
         private bool CombineVertexData()
         {
             WorldModelRoot parent;
-            if (!mParent.TryGetTarget(out parent))
+            if (!this.mParent.TryGetTarget(out parent))
             {
                 Log.Fatal("FATAL ERROR! Parent of WMO group is null!!");
                 return false;
             }
 
-            mVertices = new WmoVertex[mPositions.Length];
-            if (mColors == null)
+	        this.mVertices = new WmoVertex[this.mPositions.Length];
+            if (this.mColors == null)
             {
-                mColors = new uint[mPositions.Length];
-                for (var i = 0; i < mPositions.Length; ++i)
-                    mColors[i] = IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
+	            this.mColors = new uint[this.mPositions.Length];
+                for (var i = 0; i < this.mPositions.Length; ++i)
+                {
+	                this.mColors[i] = this.IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
+                }
             }
 
-            if (mColors.Length < mVertices.Length)
+            if (this.mColors.Length < this.mVertices.Length)
             {
-                var colors = mColors;
-                mColors = new uint[mVertices.Length];
+                var colors = this.mColors;
+	            this.mColors = new uint[this.mVertices.Length];
                 if (colors.Length > 0)
-                    Buffer.BlockCopy(colors, 0, mColors, 0, colors.Length * 4);
+                {
+	                Buffer.BlockCopy(colors, 0, this.mColors, 0, colors.Length * 4);
+                }
 
-                for (var i = colors.Length; i < mColors.Length; ++i)
-                    mColors[i] = IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
+	            for (var i = colors.Length; i < this.mColors.Length; ++i)
+	            {
+		            this.mColors[i] = this.IsIndoor ? 0xFF7F7F7Fu : 0x00000000u;
+	            }
             }
 
             var parentAmbient = parent.AmbientColor;
@@ -261,10 +277,10 @@ namespace Neo.IO.Files.Models.WoD
             var minPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var maxPos = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-            for (var i = 0; i < mVertices.Length; ++i)
+            for (var i = 0; i < this.mVertices.Length; ++i)
             {
-                var clr = mColors[i];
-                if (parent.UseParentAmbient && IsIndoor)
+                var clr = this.mColors[i];
+                if (parent.UseParentAmbient && this.IsIndoor)
                 {
                     var r = Math.Min((clr & 0xFF) + ar, 255);
                     var g = Math.Min(((clr >> 8) & 0xFF) + ag, 255);
@@ -272,26 +288,44 @@ namespace Neo.IO.Files.Models.WoD
                     var a = Math.Min(((clr >> 24) & 0xFF) + aa, 255);
                     clr = r | (g << 8) | (b << 16) | (a << 24);
                 }
-                var v = mPositions[i];
+                var v = this.mPositions[i];
 
-                mVertices[i] = new WmoVertex
+	            this.mVertices[i] = new WmoVertex
                 {
                     Position = v,
-                    Normal = mNormals[i],
-                    TexCoord = mTexCoords[i],
+                    Normal = this.mNormals[i],
+                    TexCoord = this.mTexCoords[i],
                     Color = clr
                 };
 
-                if (v.X < minPos.X) minPos.X = v.X;
-                if (v.Y < minPos.Y) minPos.Y = v.Y;
-                if (v.Z < minPos.Z) minPos.Z = v.Z;
-                if (v.X > maxPos.X) maxPos.X = v.X;
-                if (v.Y > maxPos.Y) maxPos.Y = v.Y;
-                if (v.Z > maxPos.Z) maxPos.Z = v.Z;
+                if (v.X < minPos.X)
+                {
+	                minPos.X = v.X;
+                }
+	            if (v.Y < minPos.Y)
+	            {
+		            minPos.Y = v.Y;
+	            }
+	            if (v.Z < minPos.Z)
+	            {
+		            minPos.Z = v.Z;
+	            }
+	            if (v.X > maxPos.X)
+	            {
+		            maxPos.X = v.X;
+	            }
+	            if (v.Y > maxPos.Y)
+	            {
+		            maxPos.Y = v.Y;
+	            }
+	            if (v.Z > maxPos.Z)
+	            {
+		            maxPos.Z = v.Z;
+	            }
             }
 
-            BoundingBox = new BoundingBox(minPos, maxPos);
-            Vertices = mVertices;
+	        this.BoundingBox = new BoundingBox(minPos, maxPos);
+	        this.Vertices = this.mVertices;
 
             return true;
         }
@@ -299,14 +333,14 @@ namespace Neo.IO.Files.Models.WoD
         private bool LoadBatches(BinaryReader reader, int size)
         {
             var numBatches = size / SizeCache<Moba>.Size;
-            if(numBatches != (mHeader.numBatchesA + mHeader.numBatchesB + mHeader.numBatchesC))
+            if(numBatches != (this.mHeader.numBatchesA + this.mHeader.numBatchesB + this.mHeader.numBatchesC))
             {
                 Log.Error("Group has inconsistent amount of batches.");
                 return false;
             }
 
             WorldModelRoot parent;
-            if(!mParent.TryGetTarget(out parent))
+            if(!this.mParent.TryGetTarget(out parent))
             {
                 Log.Fatal("FATAL ERROR! Parent of WMO group is null!!");
                 return false;
@@ -324,10 +358,10 @@ namespace Neo.IO.Files.Models.WoD
                     BlendMode = parent.GetMaterial(b.material).BlendMode,
                 };
 
-                mBatches.Add(batch);
+	            this.mBatches.Add(batch);
             }
 
-            Batches = mBatches.OrderBy(b => b.BlendMode).ToList().AsReadOnly();
+	        this.Batches = this.mBatches.OrderBy(b => b.BlendMode).ToList().AsReadOnly();
 
             return true;
         }

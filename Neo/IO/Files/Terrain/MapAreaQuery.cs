@@ -11,7 +11,7 @@ namespace Neo.IO.Files.Terrain
         {
             get
             {
-                return mResults[signature];
+                return this.mResults[signature];
             }
         }
 
@@ -23,18 +23,20 @@ namespace Neo.IO.Files.Terrain
 
         public MapAreaQuery(string continent, int indexX, int indexY, params uint[] chunks)
         {
-            IndexX = indexX;
-            IndexY = indexY;
-            Continent = continent;
-            RequestedChunks = chunks.ToList();
+	        this.IndexX = indexX;
+	        this.IndexY = indexY;
+	        this.Continent = continent;
+	        this.RequestedChunks = chunks.ToList();
         }
 
         public void AddResult(uint key, DataChunk chunk)
         {
-            if (mResults.ContainsKey(key))
-                return;
+            if (this.mResults.ContainsKey(key))
+            {
+	            return;
+            }
 
-            mResults.Add(key, chunk);
+	        this.mResults.Add(key, chunk);
         }
     }
 }

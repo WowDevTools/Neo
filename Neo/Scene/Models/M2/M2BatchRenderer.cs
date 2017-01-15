@@ -15,14 +15,14 @@ namespace Neo.Scene.Models.M2
     public sealed class M2BatchRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct PerInstanceBufferContent
+        private struct PerInstanceBufferContent
         {
             public Matrix4 matInstance;
             public Color4 colorMod;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct PerModelPassBufferContent
+        private struct PerModelPassBufferContent
         {
             public Matrix4 uvAnimMatrix1;
             public Matrix4 uvAnimMatrix2;
@@ -60,7 +60,7 @@ namespace Neo.Scene.Models.M2
 
         public M2BatchRenderer(M2File model)
         {
-            Model = model;
+	        this.Model = model;
         }
 
         ~M2BatchRenderer()
@@ -70,23 +70,25 @@ namespace Neo.Scene.Models.M2
 
         private void Dispose(bool disposing)
         {
-            if (mInstanceBuffer != null)
+            if (this.mInstanceBuffer != null)
             {
-                var ib = mInstanceBuffer;
+                var ib = this.mInstanceBuffer;
                 WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
                 {
                     if (ib != null)
-                        ib.Dispose();
+                    {
+	                    ib.Dispose();
+                    }
                 });
 
-                mInstanceBuffer = null;
+	            this.mInstanceBuffer = null;
             }
 
-            Model = null;
-            mActiveInstances = null;
+	        this.Model = null;
+	        this.mActiveInstances = null;
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -98,11 +100,15 @@ namespace Neo.Scene.Models.M2
 
             // TODO: Get rid of this switch
             if (FileManager.Instance.Version == FileDataVersion.Lichking)
-                gMesh.InitLayout(gNoBlendProgram);
+            {
+	            gMesh.InitLayout(gNoBlendProgram);
+            }
             else
-                gMesh.InitLayout(gCustomProgram);
+            {
+	            gMesh.InitLayout(gCustomProgram);
+            }
 
-            gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
+	        gMesh.Program.SetPixelSampler(0, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(1, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(2, gSamplerWrapBoth);
             gMesh.Program.SetPixelSampler(3, gSamplerWrapBoth);
@@ -113,21 +119,25 @@ namespace Neo.Scene.Models.M2
         public void OnFrame(M2Renderer renderer)
         {
             UpdateVisibleInstances(renderer);
-            if (mInstanceCount == 0)
-                return;
+            if (this.mInstanceCount == 0)
+            {
+	            return;
+            }
 
-            gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
+	        gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
-            gMesh.UpdateInstanceBuffer(mInstanceBuffer);
+            gMesh.UpdateInstanceBuffer(this.mInstanceBuffer);
             gMesh.Program.SetVertexUniformBuffer(1, renderer.AnimBuffer);
 
-            foreach (var pass in Model.Passes)
+            foreach (var pass in this.Model.Passes)
             {
                 // This renderer is only for opaque pass
                 if (pass.BlendMode != 0 && pass.BlendMode != 1)
-                    continue;
+                {
+	                continue;
+                }
 
-                // TODO: Since this isn't choosing among static programs anymore, cache a different way e.g. (comparison func)
+	            // TODO: Since this isn't choosing among static programs anymore, cache a different way e.g. (comparison func)
                 var ctx = WorldFrame.Instance.GraphicsContext;
                 gCustomProgram.SetVertexShader(ctx.M2Shaders.GetVertexShader_Instanced(pass.VertexShaderType));
                 gCustomProgram.SetFragmentShader(ctx.M2Shaders.GetPixelShader(pass.PixelShaderType));
@@ -146,19 +156,30 @@ namespace Neo.Scene.Models.M2
                 // These are per texture
                 var alphaValues = new float[] { 1, 1, 1, 1 };
                 for (var i = 0; i < pass.OpCount; ++i)
-                    alphaValues[i] = renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex + i);
+                {
+	                alphaValues[i] = renderer.Animator.GetAlphaValue(pass.AlphaAnimIndex + i);
+                }
 
-                var uvAnimMatrix1 = Matrix4.Identity;
+	            var uvAnimMatrix1 = Matrix4.Identity;
                 var uvAnimMatrix2 = Matrix4.Identity;
                 var uvAnimMatrix3 = Matrix4.Identity;
                 var uvAnimMatrix4 = Matrix4.Identity;
 
                 renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 0, out uvAnimMatrix1);
-                if (pass.OpCount >= 2) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
-                if (pass.OpCount >= 3) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
-                if (pass.OpCount >= 4) renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
+                if (pass.OpCount >= 2)
+                {
+	                renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 1, out uvAnimMatrix2);
+                }
+	            if (pass.OpCount >= 3)
+	            {
+		            renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 2, out uvAnimMatrix3);
+	            }
+	            if (pass.OpCount >= 4)
+	            {
+		            renderer.Animator.GetUvAnimMatrix(pass.TexAnimIndex + 3, out uvAnimMatrix4);
+	            }
 
-                gPerPassBuffer.BufferData(new PerModelPassBufferContent
+	            gPerPassBuffer.BufferData(new PerModelPassBufferContent
                 {
                     uvAnimMatrix1 = uvAnimMatrix1,
                     uvAnimMatrix2 = uvAnimMatrix2,
@@ -171,7 +192,7 @@ namespace Neo.Scene.Models.M2
 
                 for (var i = 0; i < pass.OpCount && i < 4; ++i)
                 {
-                    switch (Model.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
+                    switch (this.Model.TextureInfos[pass.TextureIndices[i]].SamplerFlags)
                     {
                         case SamplerFlagType.WrapBoth:
 	                    {
@@ -202,7 +223,7 @@ namespace Neo.Scene.Models.M2
                 gMesh.StartVertex = 0;
                 gMesh.StartIndex = pass.StartIndex;
                 gMesh.IndexCount = pass.IndexCount;
-                gMesh.Draw(mInstanceCount);
+                gMesh.Draw(this.mInstanceCount);
             }
         }
 
@@ -210,21 +231,25 @@ namespace Neo.Scene.Models.M2
         public void OnFrame_Old(M2Renderer renderer)
         {
             UpdateVisibleInstances(renderer);
-            if (mInstanceCount == 0)
-                return;
+            if (this.mInstanceCount == 0)
+            {
+	            return;
+            }
 
-            gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
+	        gMesh.UpdateIndexBuffer(renderer.IndexBuffer);
             gMesh.UpdateVertexBuffer(renderer.VertexBuffer);
-            gMesh.UpdateInstanceBuffer(mInstanceBuffer);
+            gMesh.UpdateInstanceBuffer(this.mInstanceBuffer);
             gMesh.Program.SetVertexUniformBuffer(1, renderer.AnimBuffer);
 
-            foreach (var pass in Model.Passes)
+            foreach (var pass in this.Model.Passes)
             {
                 // This renderer is only for opaque pass
                 if (pass.BlendMode != 0 && pass.BlendMode != 1)
-                    continue;
+                {
+	                continue;
+                }
 
-                var program = pass.BlendMode == 0 ? gNoBlendProgram : gMaskBlendProgram;
+	            var program = pass.BlendMode == 0 ? gNoBlendProgram : gMaskBlendProgram;
                 if (program != gMesh.Program)
                 {
                     gMesh.Program = program;
@@ -254,7 +279,7 @@ namespace Neo.Scene.Models.M2
                 gMesh.StartIndex = pass.StartIndex;
                 gMesh.IndexCount = pass.IndexCount;
                 gMesh.Program.SetFragmentTexture(0, pass.Textures.First());
-                gMesh.Draw(mInstanceCount);
+                gMesh.Draw(this.mInstanceCount);
             }
         }
 
@@ -262,26 +287,30 @@ namespace Neo.Scene.Models.M2
         {
             lock (renderer.VisibleInstances)
             {
-                if (mActiveInstances.Length < renderer.VisibleInstances.Count)
-                    mActiveInstances = new PerInstanceBufferContent[renderer.VisibleInstances.Count];
-
-                for (var i = 0; i < renderer.VisibleInstances.Count; ++i)
+                if (this.mActiveInstances.Length < renderer.VisibleInstances.Count)
                 {
-                    mActiveInstances[i].matInstance = renderer.VisibleInstances[i].InstanceMatrix;
-                    mActiveInstances[i].colorMod = renderer.VisibleInstances[i].HighlightColor;
+	                this.mActiveInstances = new PerInstanceBufferContent[renderer.VisibleInstances.Count];
                 }
 
-                mInstanceCount = renderer.VisibleInstances.Count;
-                if (mInstanceCount == 0)
-                    return;
+	            for (var i = 0; i < renderer.VisibleInstances.Count; ++i)
+                {
+	                this.mActiveInstances[i].matInstance = renderer.VisibleInstances[i].InstanceMatrix;
+	                this.mActiveInstances[i].colorMod = renderer.VisibleInstances[i].HighlightColor;
+                }
+
+	            this.mInstanceCount = renderer.VisibleInstances.Count;
+                if (this.mInstanceCount == 0)
+                {
+	                return;
+                }
             }
 
-            mInstanceBuffer.BufferData(mActiveInstances);
+	        this.mInstanceBuffer.BufferData(this.mActiveInstances);
         }
 
         public void OnSyncLoad()
         {
-            mInstanceBuffer = new VertexBuffer();
+	        this.mInstanceBuffer = new VertexBuffer();
         }
 
         public static void Initialize()

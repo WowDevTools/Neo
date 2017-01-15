@@ -24,23 +24,25 @@ namespace Neo.UI.Components
         public WdlLoadingDialog()
         {
             InitializeComponent();
-            ProgressIndicator.Minimum = 0;
-            ProgressIndicator.Maximum = 100;
+	        this.ProgressIndicator.Minimum = 0;
+	        this.ProgressIndicator.Maximum = 100;
         }
 
         public float Progress
         {
-            get { return (float) ProgressIndicator.Value; }
-            set { ProgressIndicator.Value = value; }
+            get { return (float) this.ProgressIndicator.Value; }
+            set { this.ProgressIndicator.Value = value; }
         }
 
-        public string Action { set { ActionIndicator.Content = value; } }
+        public string Action { set { this.ActionIndicator.Content = value; } }
         public bool ShouldClose { get; set; }
 
         private void OnClosing(object sender, CancelEventArgs e)
         {
-            if (!ShouldClose)
-                e.Cancel = true;
+            if (!this.ShouldClose)
+            {
+	            e.Cancel = true;
+            }
         }
     }
 }

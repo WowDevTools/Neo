@@ -32,9 +32,9 @@ namespace Neo.Scene
 
         public IntersectionParams(Matrix4 inverseView, Matrix4 inverseProjection, Vector2 screenPosition)
         {
-            InverseView = inverseView;
-            InverseProjection = inverseProjection;
-            ScreenPosition = screenPosition;
+	        this.InverseView = inverseView;
+	        this.InverseProjection = inverseProjection;
+	        this.ScreenPosition = screenPosition;
         }
     }
 }

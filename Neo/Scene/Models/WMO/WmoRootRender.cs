@@ -23,7 +23,7 @@ namespace Neo.Scene.Models.WMO
         private VertexBuffer mVertexBuffer;
         private IndexBuffer mIndexBuffer;
 
-        public BoundingBox BoundingBox { get { return mBoundingBox; } }
+        public BoundingBox BoundingBox { get { return this.mBoundingBox; } }
 
         public List<WmoGroupRender> Groups { get; private set; }
 
@@ -34,43 +34,49 @@ namespace Neo.Scene.Models.WMO
 
         private void Dispose(bool disposing)
         {
-            mIndices = null;
-            mVertices = null;
-            mAsyncLoaded = false;
+	        this.mIndices = null;
+	        this.mVertices = null;
+	        this.mAsyncLoaded = false;
 
-            var vb = mVertexBuffer;
-            var ib = mIndexBuffer;
+            var vb = this.mVertexBuffer;
+            var ib = this.mIndexBuffer;
             WorldFrame.Instance.Dispatcher.BeginInvoke(() =>
             {
                 if (vb != null)
-                    vb.Dispose();
-                if (ib != null)
-                    ib.Dispose();
+                {
+	                vb.Dispose();
+                }
+	            if (ib != null)
+	            {
+		            ib.Dispose();
+	            }
             });
 
-            mVertexBuffer = null;
-            mIndexBuffer = null;
+	        this.mVertexBuffer = null;
+	        this.mIndexBuffer = null;
 
-            if (Groups != null)
+            if (this.Groups != null)
             {
-                foreach (var group in Groups)
-                    group.Dispose();
+                foreach (var group in this.Groups)
+                {
+	                @group.Dispose();
+                }
 
-                Groups.Clear();
-                Groups = null;
+	            this.Groups.Clear();
+	            this.Groups = null;
             }
 
-            if (Data != null)
+            if (this.Data != null)
             {
-                Data.Dispose();
-                Data = null;
+	            this.Data.Dispose();
+	            this.Data = null;
             }
 
             // Sync load can be called even after the object has been disposed.
-            if (mSyncLoadToken != null)
+            if (this.mSyncLoadToken != null)
             {
-                WorldFrame.Instance.Dispatcher.Remove(mSyncLoadToken);
-                mSyncLoadToken = null;
+                WorldFrame.Instance.Dispatcher.Remove(this.mSyncLoadToken);
+	            this.mSyncLoadToken = null;
             }
         }
 
@@ -82,25 +88,27 @@ namespace Neo.Scene.Models.WMO
 
         public void OnFrame(IEnumerable<WmoInstance> instances)
         {
-	        if (mAsyncLoaded == false)
+	        if (this.mAsyncLoaded == false)
 	        {
 		        return;
 	        }
 
-	        if (mIndices.Length == 0 || mVertices.Length == 0)
+	        if (this.mIndices.Length == 0 || this.mVertices.Length == 0)
 	        {
 		        return;
 	        }
 
-            if (mIsSyncLoaded == false)
+            if (this.mIsSyncLoaded == false)
             {
                 if (!BeginSyncLoad())
-                    return;
+                {
+	                return;
+                }
             }
 
             var mesh = WmoGroupRender.Mesh;
-            mesh.UpdateVertexBuffer(mVertexBuffer);
-            mesh.UpdateIndexBuffer(mIndexBuffer);
+            mesh.UpdateVertexBuffer(this.mVertexBuffer);
+            mesh.UpdateIndexBuffer(this.mIndexBuffer);
             mesh.Program.SetVertexUniformBuffer(1, WmoGroupRender.InstanceBuffer);
 
             foreach (var instance in instances)
@@ -115,21 +123,21 @@ namespace Neo.Scene.Models.WMO
 
                 WmoGroupRender.InstanceBuffer.BufferData(instance.InstanceMatrix);
 
-                for(var i = 0; i < Groups.Count; ++i)
+                for(var i = 0; i < this.Groups.Count; ++i)
                 {
 	                if (WorldFrame.Instance.ActiveCamera.Contains(ref instance.GroupBoxes[i]) == false)
 	                {
 		                continue;
 	                }
 
-                    Groups[i].OnFrame();
+	                this.Groups[i].OnFrame();
                 }
             }
         }
 
         private bool BeginSyncLoad()
         {
-	        if (mSyncLoadToken != null)
+	        if (this.mSyncLoadToken != null)
 	        {
 		        return false;
 	        }
@@ -140,23 +148,23 @@ namespace Neo.Scene.Models.WMO
                 return true;
             }
 
-            mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
+	        this.mSyncLoadToken = WorldFrame.Instance.Dispatcher.BeginInvoke(SyncLoad);
             return false;
         }
 
         public void OnAsyncLoad(IWorldModelRoot root)
         {
-            mAsyncLoaded = true;
+	        this.mAsyncLoaded = true;
 
             var indices = new List<ushort>();
             var vertices = new List<WmoVertex>();
 
-            Data = root;
+	        this.Data = root;
 
-            Groups = root.Groups.Select(group => new WmoGroupRender(group, this)).ToList();
-            mBoundingBox = Data.BoundingBox;
+	        this.Groups = root.Groups.Select(group => new WmoGroupRender(group, this)).ToList();
+	        this.mBoundingBox = this.Data.BoundingBox;
 
-            foreach (var group in Groups)
+            foreach (var group in this.Groups)
             {
                 group.BaseIndex = indices.Count;
                 group.BaseVertex = vertices.Count;
@@ -164,30 +172,30 @@ namespace Neo.Scene.Models.WMO
                 vertices.AddRange(group.Data.Vertices);
             }
 
-            mVertices = vertices.ToArray();
-            mIndices = indices.Select(i => (uint) i).ToArray();
+	        this.mVertices = vertices.ToArray();
+	        this.mIndices = indices.Select(i => (uint) i).ToArray();
         }
 
         private void SyncLoad()
         {
-            mIsSyncLoaded = true;
-            mSyncLoadToken = null;
+	        this.mIsSyncLoaded = true;
+	        this.mSyncLoadToken = null;
 
-	        if (mVertices == null || mIndices == null || Groups == null)
+	        if (this.mVertices == null || this.mIndices == null || this.Groups == null)
 	        {
 		        return;
 	        }
 
-            mVertexBuffer = new VertexBuffer();
-	        mIndexBuffer = new IndexBuffer(DrawElementsType.UnsignedInt);
+	        this.mVertexBuffer = new VertexBuffer();
+	        this.mIndexBuffer = new IndexBuffer(DrawElementsType.UnsignedInt);
 
-            if (mVertices.Length != 0 && mIndices.Length != 0)
+            if (this.mVertices.Length != 0 && this.mIndices.Length != 0)
             {
-                mVertexBuffer.BufferData(mVertices);
-                mIndexBuffer.BufferData(mIndices);
+	            this.mVertexBuffer.BufferData(this.mVertices);
+	            this.mIndexBuffer.BufferData(this.mIndices);
             }
 
-	        foreach (var group in Groups)
+	        foreach (var group in this.Groups)
 	        {
 		        group.SyncLoad();
 	        }

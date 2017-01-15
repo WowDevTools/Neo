@@ -2,7 +2,7 @@
 
 namespace Neo.Storage.Database
 {
-    interface IMySqlConnector
+	internal interface IMySqlConnector
     {
         string MySqlServer { get; set; }
         string MySqlUser { get; set; }

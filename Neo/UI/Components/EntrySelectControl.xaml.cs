@@ -25,59 +25,65 @@ namespace Neo.UI.Components
             var group = new TransformGroup();
             group.Children.Add(new ScaleTransform());
             group.Children.Add(new TranslateTransform());
-            WdlPreviewImage.RenderTransform = group;
+	        this.WdlPreviewImage.RenderTransform = group;
         }
 
         public void MapSelected(int mapId)
         {
-            WdlPreviewImage.Source = WpfImageSource.FromBgra(17*64, 17*64, GetWdlColors(mapId));
-            mSelectedMap = mapId;
+	        this.WdlPreviewImage.Source = WpfImageSource.FromBgra(17*64, 17*64, GetWdlColors(mapId));
+	        this.mSelectedMap = mapId;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var g = (sender as Grid);
             if (g == null)
-                return;
+            {
+	            return;
+            }
 
-            var height = g.RowDefinitions[1].ActualHeight;
+	        var height = g.RowDefinitions[1].ActualHeight;
             var width = g.ColumnDefinitions[1].ActualWidth;
             if (height < width)
-                width = height;
+            {
+	            width = height;
+            }
             else if (width < height)
-                height = width;
+            {
+	            height = width;
+            }
 
-            WdlPreviewImage.Width = width;
-            WdlPreviewImage.Height = height;
+	        this.WdlPreviewImage.Width = width;
+	        this.WdlPreviewImage.Height = height;
         }
 
         private void WdlPreview_MouseMove(object sender, MouseEventArgs e)
         {
-            var pos = e.GetPosition(WdlPreviewImage);
-            var facx = pos.X / WdlPreviewImage.ActualWidth;
-            var facy = pos.Y / WdlPreviewImage.ActualHeight;
+            var pos = e.GetPosition(this.WdlPreviewImage);
+            var facx = pos.X / this.WdlPreviewImage.ActualWidth;
+            var facy = pos.Y / this.WdlPreviewImage.ActualHeight;
 
             var adtx = (int) (facx * 64);
             var adty = (int) (facy * 64);
 
-            AdtPreviewLabel.Text = string.Format("ADT: {0}/{1}", adtx, adty);
+	        this.AdtPreviewLabel.Text = string.Format("ADT: {0}/{1}", adtx, adty);
         }
 
         private void WdlPreview_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            mIsClicked = true;
-            WdlPreviewImage.CaptureMouse();
+	        this.mIsClicked = true;
+	        this.WdlPreviewImage.CaptureMouse();
         }
 
         private void WdlPreview_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var position = e.GetPosition(WdlPreviewImage);
+            var position = e.GetPosition(this.WdlPreviewImage);
 
-            if (position.X > 0 && position.Y > 0 && position.X < WdlPreviewImage.ActualWidth &&
-                position.Y < WdlPreviewImage.ActualHeight && mIsClicked)
+            if (position.X > 0 && position.Y > 0 && position.X < this.WdlPreviewImage.ActualWidth &&
+                position.Y < this.WdlPreviewImage.ActualHeight && this.mIsClicked)
             {
-                var facx = position.X / WdlPreviewImage.ActualWidth;
-                var facy = position.Y / WdlPreviewImage.ActualHeight;
+                var facx = position.X / this.WdlPreviewImage.ActualWidth;
+                var facy = position.Y / this.WdlPreviewImage.ActualHeight;
 
                 var entryx = facx * 64 * Metrics.TileSize;
                 var entryy = facy * 64 * Metrics.TileSize;
@@ -86,17 +92,19 @@ namespace Neo.UI.Components
             }
 
 
-            mIsClicked = false;
-            WdlPreviewImage.ReleaseMouseCapture();
+	        this.mIsClicked = false;
+	        this.WdlPreviewImage.ReleaseMouseCapture();
         }
 
         private void OnEnterWorld(float x, float y)
         {
-            var mapRow = DbcStorage.Map.GetRowById(mSelectedMap);
+            var mapRow = DbcStorage.Map.GetRowById(this.mSelectedMap);
             if (mapRow == null)
-                return;
+            {
+	            return;
+            }
 
-            var widescreen = false;
+	        var widescreen = false;
             var loadScreenPath = "Interface\\Glues\\loading.blp";
             var loadEntry = mapRow.GetInt32(MapFormatGuess.FieldMapLoadingScreen);
             if (loadEntry != 0)
@@ -123,12 +131,18 @@ namespace Neo.UI.Components
                 }
             }
 
-            if (string.IsNullOrEmpty(loadScreenPath)) return;
-            var wnd = DataContext as EditorWindow;
-            if (wnd == null) return;
-            Visibility = Visibility.Collapsed;
+            if (string.IsNullOrEmpty(loadScreenPath))
+            {
+	            return;
+            }
+	        var wnd = DataContext as EditorWindow;
+            if (wnd == null)
+            {
+	            return;
+            }
+	        Visibility = Visibility.Collapsed;
             wnd.LoadingScreenView.Visibility = Visibility.Visible;
-            wnd.LoadingScreenView.OnLoadStarted(mSelectedMap, loadScreenPath, widescreen, new Vector2(x, y));
+            wnd.LoadingScreenView.OnLoadStarted(this.mSelectedMap, loadScreenPath, widescreen, new Vector2(x, y));
         }
 
         private static uint[] GetWdlColors(int mapId)
@@ -136,7 +150,9 @@ namespace Neo.UI.Components
             var colors = new uint[17*64*17*64];
             var record = DbcStorage.Map.GetRowById(mapId);
             if (record == null)
-                return colors;
+            {
+	            return colors;
+            }
 
 	        WorldLOD wdlFile;
             var mapName = record.GetString(MapFormatGuess.FieldMapName);
@@ -156,9 +172,11 @@ namespace Neo.UI.Components
                 for (var j = 0; j < 64; ++j)
                 {
                     if (wdlFile.HasEntry(j, i) == false)
-                        continue;
+                    {
+	                    continue;
+                    }
 
-                    var entry = wdlFile.GetEntry(j, i);
+	                var entry = wdlFile.GetEntry(j, i);
                     LoadEntry(entry, colors, ref i, ref j);
                 }
             }
@@ -222,9 +240,11 @@ namespace Neo.UI.Components
                     }
 
                     if (k == 0 || l == 0)
-                        r = g = b = 0;
+                    {
+	                    r = g = b = 0;
+                    }
 
-                    textureData[(i * 17 + k) * (64 * 17) + j * 17 + l] = 0xFF000000 | (r << 16) | (g << 8) | (b << 0);
+	                textureData[(i * 17 + k) * (64 * 17) + j * 17 + l] = 0xFF000000 | (r << 16) | (g << 8) | (b << 0);
                 }
             }
         }

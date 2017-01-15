@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Neo.UI.Models
 {
-    class ObjectSpawnModel
+	internal class ObjectSpawnModel
     {
         public bool DeselectModelOnClick { get; set; }
 

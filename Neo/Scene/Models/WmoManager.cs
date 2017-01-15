@@ -6,7 +6,7 @@ using OpenTK;
 
 namespace Neo.Scene.Models
 {
-    class WmoManager
+	internal class WmoManager
     {
         private readonly Dictionary<int, WmoBatchRender> mRenderer = new Dictionary<int, WmoBatchRender>();
         private readonly object mAddLock = new object();
@@ -16,19 +16,19 @@ namespace Neo.Scene.Models
 
         public void Initialize()
         {
-            mUnloadThread = new Thread(UnloadThread);
-            mUnloadThread.Start();
+	        this.mUnloadThread = new Thread(UnloadThread);
+	        this.mUnloadThread.Start();
         }
 
         public void Shutdown()
         {
-            mIsRunning = false;
-            mUnloadThread.Join();
+	        this.mIsRunning = false;
+	        this.mUnloadThread.Join();
         }
 
         public void Intersect(IntersectionParams parameters)
         {
-	        if (mRenderer == null)
+	        if (this.mRenderer == null)
 	        {
 		        return;
 	        }
@@ -39,9 +39,9 @@ namespace Neo.Scene.Models
             var minDistance = float.MaxValue;
             WmoInstance wmoHit = null;
 
-            lock (mRenderer)
+            lock (this.mRenderer)
             {
-                foreach (var renderer in mRenderer)
+                foreach (var renderer in this.mRenderer)
                 {
                     WmoInstance hit;
                     float distance;
@@ -71,9 +71,9 @@ namespace Neo.Scene.Models
         private void PreloadModel(string model)
         {
             var hash = model.ToUpperInvariant().GetHashCode();
-            lock(mRenderer)
+            lock(this.mRenderer)
             {
-	            if (mRenderer.ContainsKey(hash))
+	            if (this.mRenderer.ContainsKey(hash))
 	            {
 		            return;
 	            }
@@ -90,9 +90,9 @@ namespace Neo.Scene.Models
 
                 var batch = new WmoBatchRender(renderer);
 
-	            lock (mAddLock)
+	            lock (this.mAddLock)
 	            {
-		            mRenderer.Add(hash, batch);
+		            this.mRenderer.Add(hash, batch);
 	            }
             }
         }
@@ -112,41 +112,41 @@ namespace Neo.Scene.Models
 
         public void RemoveInstance(int hash, int uuid,bool delete)
         {
-	        if (mRenderer == null)
+	        if (this.mRenderer == null)
 	        {
 		        return;
 	        }
 
-            lock (mRenderer)
+            lock (this.mRenderer)
             {
                 WmoBatchRender batch;
-	            if (!mRenderer.TryGetValue(hash, out batch))
+	            if (!this.mRenderer.TryGetValue(hash, out batch))
 	            {
 		            return;
 	            }
 
                 if (delete && batch.DeleteInstance(uuid))
                 {
-	                lock (mAddLock)
+	                lock (this.mAddLock)
 	                {
-		                mRenderer.Remove(hash);
+		                this.mRenderer.Remove(hash);
 	                }
 
-	                lock (mUnloadItems)
+	                lock (this.mUnloadItems)
 	                {
-		                mUnloadItems.Add(batch);
+		                this.mUnloadItems.Add(batch);
 	                }
                 }
                 else if (batch.RemoveInstance(uuid))
                 {
-	                lock (mAddLock)
+	                lock (this.mAddLock)
 	                {
-		                mRenderer.Remove(hash);
+		                this.mRenderer.Remove(hash);
 	                }
 
-	                lock (mUnloadItems)
+	                lock (this.mUnloadItems)
 	                {
-		                mUnloadItems.Add(batch);
+		                this.mUnloadItems.Add(batch);
 	                }
                 }
             }
@@ -157,12 +157,12 @@ namespace Neo.Scene.Models
             var hash = model.ToUpperInvariant().GetHashCode();
 
             WmoBatchRender batch;
-            lock(mRenderer)
+            lock(this.mRenderer)
             {
-                if(mRenderer.TryGetValue(hash, out batch) == false)
+                if(this.mRenderer.TryGetValue(hash, out batch) == false)
                 {
                     PreloadModel(model);
-                    mRenderer.TryGetValue(hash, out batch);
+	                this.mRenderer.TryGetValue(hash, out batch);
                 }
             }
 
@@ -179,9 +179,9 @@ namespace Neo.Scene.Models
         {
             WmoGroupRender.Mesh.BeginDraw();
             WmoGroupRender.Mesh.Program.SetPixelSampler(0, WmoGroupRender.Sampler);
-            lock(mAddLock)
+            lock(this.mAddLock)
             {
-	            foreach (var pair in mRenderer)
+	            foreach (var pair in this.mRenderer)
 	            {
 		            pair.Value.OnFrame();
 	            }
@@ -190,15 +190,15 @@ namespace Neo.Scene.Models
 
         private void UnloadThread()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
                 WmoBatchRender element = null;
-                lock (mUnloadItems)
+                lock (this.mUnloadItems)
                 {
-                    if (mUnloadItems.Count > 0)
+                    if (this.mUnloadItems.Count > 0)
                     {
-                        element = mUnloadItems[0];
-                        mUnloadItems.RemoveAt(0);
+                        element = this.mUnloadItems[0];
+	                    this.mUnloadItems.RemoveAt(0);
                     }
                 }
 

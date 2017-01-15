@@ -4,7 +4,7 @@ using Neo.IO.Files.Models;
 
 namespace Neo.Scene.Models.M2
 {
-    class StaticAnimationThread
+	internal class StaticAnimationThread
     {
         public static StaticAnimationThread Instance { get; private set; }
 
@@ -19,37 +19,43 @@ namespace Neo.Scene.Models.M2
 
         public void Initialize()
         {
-            mIsRunning = true;
-            mThread = new Thread(AnimationProc);
-            mThread.Start();
+	        this.mIsRunning = true;
+	        this.mThread = new Thread(AnimationProc);
+	        this.mThread.Start();
         }
 
         public void Shutdown()
         {
-            mIsRunning = false;
-            mThread.Join();
+	        this.mIsRunning = false;
+	        this.mThread.Join();
         }
 
         public void AddAnimator(IM2Animator animator)
         {
-            lock (mAnimators)
-                mAnimators.Add(animator);
+            lock (this.mAnimators)
+            {
+	            this.mAnimators.Add(animator);
+            }
         }
 
         public void RemoveAnimator(IM2Animator animator)
         {
-            lock (mAnimators)
-                mAnimators.Remove(animator);
+            lock (this.mAnimators)
+            {
+	            this.mAnimators.Remove(animator);
+            }
         }
 
         private void AnimationProc()
         {
-            while(mIsRunning)
+            while(this.mIsRunning)
             {
-                lock(mAnimators)
+                lock(this.mAnimators)
                 {
-                    foreach (var animator in mAnimators)
-                        animator.Update(null);
+                    foreach (var animator in this.mAnimators)
+                    {
+	                    animator.Update(null);
+                    }
                 }
 
                 Thread.Sleep(20);

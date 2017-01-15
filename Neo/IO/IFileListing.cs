@@ -10,7 +10,7 @@ namespace Neo.IO
 
         protected FileSystemEntry()
         {
-            Children = new Dictionary<string, FileSystemEntry>();
+	        this.Children = new Dictionary<string, FileSystemEntry>();
         }
     }
 

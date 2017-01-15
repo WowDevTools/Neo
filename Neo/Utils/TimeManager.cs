@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Neo.Utils
 {
-    class TimeManager
+	internal class TimeManager
     {
         public static TimeManager Instance { get; private set; }
 
@@ -16,12 +16,12 @@ namespace Neo.Utils
 
         public TimeSpan GetTime()
         {
-            return mTimer.Elapsed;
+            return this.mTimer.Elapsed;
         }
 
         public void Reset()
         {
-            mTimer.Restart();
+	        this.mTimer.Restart();
         }
     }
 }

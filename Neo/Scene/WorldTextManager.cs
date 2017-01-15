@@ -2,7 +2,7 @@
 
 namespace Neo.Scene
 {
-    class WorldTextManager
+	internal class WorldTextManager
     {
         private readonly List<WorldText> mWorldTexts = new List<WorldText>();
 
@@ -20,37 +20,41 @@ namespace Neo.Scene
         {
             WorldText.BeginDraw();
 
-            lock (mWorldTexts)
+            lock (this.mWorldTexts)
             {
-                foreach (var text in mWorldTexts)
-                    text.OnFrame(camera);
+                foreach (var text in this.mWorldTexts)
+                {
+	                text.OnFrame(camera);
+                }
             }
         }
 
         public void AddText(WorldText text)
         {
-            lock (mWorldTexts)
+            lock (this.mWorldTexts)
             {
-                mWorldTexts.Add(text);
+	            this.mWorldTexts.Add(text);
             }
         }
 
         public void RemoveText(WorldText text)
         {
-            lock (mWorldTexts)
+            lock (this.mWorldTexts)
             {
-                mWorldTexts.Remove(text);
+	            this.mWorldTexts.Remove(text);
             }
         }
 
         private void DisposeAll()
         {
-            lock (mWorldTexts)
+            lock (this.mWorldTexts)
             {
-                foreach (var text in mWorldTexts)
-                    text.Dispose();
+                foreach (var text in this.mWorldTexts)
+                {
+	                text.Dispose();
+                }
 
-                mWorldTexts.Clear();
+	            this.mWorldTexts.Clear();
             }
         }
     }

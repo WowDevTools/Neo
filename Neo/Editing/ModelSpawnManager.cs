@@ -15,7 +15,7 @@ using Point = System.Drawing.Point;
 
 namespace Neo.Editing
 {
-    class ModelSpawnManager
+	internal class ModelSpawnManager
     {
         public const int M2InstanceUuid = -1;
 
@@ -40,43 +40,47 @@ namespace Neo.Editing
 
         public void CopyClickedModel()
         {
-            if (ClickedInstance == null)
-                return;
+            if (this.ClickedInstance == null)
+            {
+	            return;
+            }
 
-            SelectModel(ClickedInstance.Model.FileName);
+	        SelectModel(this.ClickedInstance.Model.FileName);
         }
 
         public void SelectModel(string model)
         {
-            if (mHoveredInstance != null)
+            if (this.mHoveredInstance != null)
             {
-                WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
-                mHoveredInstance = null;
+                WorldFrame.Instance.M2Manager.RemoveInstance(this.mSelectedModel, M2InstanceUuid);
+	            this.mHoveredInstance = null;
             }
 
             var position = Vector3.Zero;
 
             if (WorldFrame.Instance.LastMouseIntersection != null &&
                 WorldFrame.Instance.LastMouseIntersection.TerrainHit)
-                position = WorldFrame.Instance.LastMouseIntersection.TerrainPosition;
-
-            mSelectedModel = model;
-            mHoveredInstance = WorldFrame.Instance.M2Manager.AddInstance(model, M2InstanceUuid, position, Vector3.Zero, Vector3.One);
-
-            if (mHoveredInstance == null)
             {
-                mSelectedModel = null;
+	            position = WorldFrame.Instance.LastMouseIntersection.TerrainPosition;
+            }
+
+	        this.mSelectedModel = model;
+	        this.mHoveredInstance = WorldFrame.Instance.M2Manager.AddInstance(model, M2InstanceUuid, position, Vector3.Zero, Vector3.One);
+
+            if (this.mHoveredInstance == null)
+            {
+	            this.mSelectedModel = null;
                 return;
             }
 
-            mInstanceRef = new[]
+	        this.mInstanceRef = new[]
             {
                 new M2Instance
                 {
-                    BoundingBox = mHoveredInstance.BoundingBox,
-                    Hash = mSelectedModel.ToUpperInvariant().GetHashCode(),
+                    BoundingBox = this.mHoveredInstance.BoundingBox,
+                    Hash = this.mSelectedModel.ToUpperInvariant().GetHashCode(),
                     MddfIndex = -1,
-                    RenderInstance = mHoveredInstance,
+                    RenderInstance = this.mHoveredInstance,
                     Uuid = M2InstanceUuid
                 }
             };
@@ -87,27 +91,27 @@ namespace Neo.Editing
         public void OnUpdate()
         {
 	        var cursor = InterfaceHelper.GetCursorPosition();
-	        if (mHoveredInstance == null)
+	        if (this.mHoveredInstance == null)
             {
-                mLastCursorPos = cursor;
+	            this.mLastCursorPos = cursor;
                 return;
             }
 
             var intersection = WorldFrame.Instance.LastMouseIntersection;
             if (intersection == null || intersection.TerrainHit == false)
             {
-                mLastCursorPos = cursor;
+	            this.mLastCursorPos = cursor;
                 return;
             }
 
             CheckUpdateScale(cursor);
 
-            mHoveredInstance.SetPosition(intersection.TerrainPosition);
-            mInstanceRef[0].BoundingBox = mHoveredInstance.BoundingBox;
+	        this.mHoveredInstance.SetPosition(intersection.TerrainPosition);
+	        this.mInstanceRef[0].BoundingBox = this.mHoveredInstance.BoundingBox;
 
-            WorldFrame.Instance.M2Manager.PushMapReferences(mInstanceRef);
+            WorldFrame.Instance.M2Manager.PushMapReferences(this.mInstanceRef);
 
-            mLastCursorPos = cursor;
+	        this.mLastCursorPos = cursor;
         }
 
         private void CheckUpdateScale(Point cursor)
@@ -115,10 +119,10 @@ namespace Neo.Editing
 	        MouseState mouseState = Mouse.GetState();
 	        if (mouseState.IsButtonDown(MouseButton.Right))
             {
-                var dx = cursor.X - mLastCursorPos.X;
-                var newScale = mHoveredInstance.Scale + dx * 0.05f;
+                var dx = cursor.X - this.mLastCursorPos.X;
+                var newScale = this.mHoveredInstance.Scale + dx * 0.05f;
                 newScale = Math.Max(newScale, 0);
-                mHoveredInstance.UpdateScale(newScale);
+	            this.mHoveredInstance.UpdateScale(newScale);
             }
         }
 
@@ -136,9 +140,9 @@ namespace Neo.Editing
 	                KeyboardState keyboardState = Keyboard.GetState();
                     if (keyboardState.IsKeyDown(Key.ControlLeft))
                     {
-                        WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
-                        mHoveredInstance = null;
-                        mSelectedModel = null;
+                        WorldFrame.Instance.M2Manager.RemoveInstance(this.mSelectedModel, M2InstanceUuid);
+	                    this.mHoveredInstance = null;
+	                    this.mSelectedModel = null;
                         WorldFrame.Instance.OnWorldClicked -= OnTerrainClicked;
                     }
                 }
@@ -152,7 +156,7 @@ namespace Neo.Editing
 		        return;
 	        }
 
-	        if (mHoveredInstance == null)
+	        if (this.mHoveredInstance == null)
 	        {
 		        return;
 	        }
@@ -163,17 +167,17 @@ namespace Neo.Editing
 
             if (!ModelEditManager.Instance.IsCopying)
             {
-                WorldFrame.Instance.M2Manager.RemoveInstance(mSelectedModel, M2InstanceUuid);
-                mHoveredInstance = null;
-                mSelectedModel = null;
+                WorldFrame.Instance.M2Manager.RemoveInstance(this.mSelectedModel, M2InstanceUuid);
+	            this.mHoveredInstance = null;
+	            this.mSelectedModel = null;
                 WorldFrame.Instance.OnWorldClicked -= OnTerrainClicked;
             }
         }
 
         private void SpawnModel(Vector3 rootPosition)
         {
-            var minPos = mHoveredInstance.BoundingBox.Minimum;
-            var maxPos = mHoveredInstance.BoundingBox.Maximum;
+            var minPos = this.mHoveredInstance.BoundingBox.Minimum;
+            var maxPos = this.mHoveredInstance.BoundingBox.Maximum;
 
             if (FileManager.Instance.Version == FileDataVersion.Warlords)
             {
@@ -205,10 +209,9 @@ namespace Neo.Editing
 		            return;
 	            }
 
-                mHoveredInstance.SetPosition(rootPosition);
+	            this.mHoveredInstance.SetPosition(rootPosition);
 
-                area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), mSelectedModel, mHoveredInstance.BoundingBox,
-                    mHoveredInstance.Position, new Vector3(0, 0, 0), mHoveredInstance.Scale);
+                area.AreaFile.AddDoodadInstance(area.AreaFile.GetFreeM2Uuid(), this.mSelectedModel, this.mHoveredInstance.BoundingBox, this.mHoveredInstance.Position, new Vector3(0, 0, 0), this.mHoveredInstance.Scale);
 
                 WorldFrame.Instance.M2Manager.ViewChanged();
             }
@@ -241,18 +244,26 @@ namespace Neo.Editing
                     if (testArea != null && testArea.AreaFile != null)
                     {
                         if (testArea.AreaFile.IsValid == false)
-                            continue;
+                        {
+	                        continue;
+                        }
 
-                        while (testArea.AreaFile.IsUuidAvailable(baseUuid) == false)
+	                    while (testArea.AreaFile.IsUuidAvailable(baseUuid) == false)
                         {
                             if ((baseUuid & 0xFFFFF) < 0xFFFFF)
-                                ++baseUuid;
+                            {
+	                            ++baseUuid;
+                            }
                             else
-                                return;
+                            {
+	                            return;
+                            }
                         }
                     }
                     else if (CheckUuidForFileArea(x, y, ref baseUuid) == false)
-                        return;
+                    {
+	                    return;
+                    }
                 }
             }
 
@@ -263,12 +274,12 @@ namespace Neo.Editing
                     var testArea = WorldFrame.Instance.MapManager.GetAreaByIndex(x, y);
                     if (testArea != null && testArea.AreaFile != null)
                     {
-                        testArea.AreaFile.AddDoodadInstance(baseUuid, mSelectedModel, mHoveredInstance.BoundingBox,
-                            mHoveredInstance.Position, mHoveredInstance.Rotation,
-                            mHoveredInstance.Scale);
+                        testArea.AreaFile.AddDoodadInstance(baseUuid, this.mSelectedModel, this.mHoveredInstance.BoundingBox, this.mHoveredInstance.Position, this.mHoveredInstance.Rotation, this.mHoveredInstance.Scale);
                     }
                     else
-                        AddDoodadToFileArea(x, y, baseUuid, mHoveredInstance.BoundingBox);
+                    {
+	                    AddDoodadToFileArea(x, y, baseUuid, this.mHoveredInstance.BoundingBox);
+                    }
                 }
             }
 
@@ -281,7 +292,7 @@ namespace Neo.Editing
             try
             {
                 area.AsyncLoad();
-                area.AddDoodadInstance(uuid, mSelectedModel, box, mHoveredInstance.Position, mHoveredInstance.Rotation, mHoveredInstance.Scale);
+                area.AddDoodadInstance(uuid, this.mSelectedModel, box, this.mHoveredInstance.Position, this.mHoveredInstance.Rotation, this.mHoveredInstance.Scale);
                 area.Save();
             }
             catch (Exception ex)

@@ -82,7 +82,7 @@ namespace Neo.Graphics
 	    /// </summary>
 	    public void Activate()
 	    {
-		    if (BackfaceCullingEnabled)
+		    if (this.BackfaceCullingEnabled)
 		    {
 			    GL.Enable(EnableCap.CullFace);
 			    GL.CullFace(this.CullingMode);

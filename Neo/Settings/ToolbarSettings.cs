@@ -77,7 +77,9 @@ namespace Neo.Settings
             finally
             {
                 if (strm != null)
-                    strm.Dispose();
+                {
+	                strm.Dispose();
+                }
             }
         }
     }

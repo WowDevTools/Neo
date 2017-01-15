@@ -14,7 +14,7 @@ namespace Neo.Scene.Models.M2
 	public sealed class M2PortraitRenderer : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        struct PerModelPassBufferContent
+        private struct PerModelPassBufferContent
         {
             public Matrix4 uvAnimMatrix1;
             public Matrix4 uvAnimMatrix2;
@@ -49,13 +49,13 @@ namespace Neo.Scene.Models.M2
 
         public M2PortraitRenderer(M2File model)
         {
-            Model = model;
-            Textures = model.TextureInfos.ToArray();
+	        this.Model = model;
+	        this.Textures = model.TextureInfos.ToArray();
 
-            mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
-            Animator = ModelFactory.Instance.CreateAnimator(model);
-            Animator.SetAnimation(AnimationType.Stand);
-            Animator.Update(null);
+	        this.mAnimationMatrices = new Matrix4[model.GetNumberOfBones()];
+	        this.Animator = ModelFactory.Instance.CreateAnimator(model);
+	        this.Animator.SetAnimation(AnimationType.Stand);
+	        this.Animator.Update(null);
         }
 
         ~M2PortraitRenderer()
@@ -65,22 +65,22 @@ namespace Neo.Scene.Models.M2
 
         private void Dispose(bool disposing)
         {
-            if (mAnimBuffer != null)
+            if (this.mAnimBuffer != null)
             {
-                mAnimBuffer.Dispose();
-                mAnimBuffer = null;
+	            this.mAnimBuffer.Dispose();
+	            this.mAnimBuffer = null;
             }
 
-            if (mPerPassBuffer != null)
+            if (this.mPerPassBuffer != null)
             {
-                mPerPassBuffer.Dispose();
-                mPerPassBuffer = null;
+	            this.mPerPassBuffer.Dispose();
+	            this.mPerPassBuffer = null;
             }
 
-            Model = null;
-            Textures = null;
-            Animator = null;
-            mAnimationMatrices = null;
+	        this.Model = null;
+	        this.Textures = null;
+	        this.Animator = null;
+	        this.mAnimationMatrices = null;
         }
 
         public void Dispose()
@@ -91,7 +91,7 @@ namespace Neo.Scene.Models.M2
 
         public void OnFrame(M2Renderer renderer)
         {
-            Animator.Update(null);
+	        this.Animator.Update(null);
 
             Mesh.InitLayout(Mesh.Program);
             Mesh.BlendState = null;
@@ -101,16 +101,16 @@ namespace Neo.Scene.Models.M2
             Mesh.UpdateIndexBuffer(renderer.IndexBuffer);
             Mesh.UpdateVertexBuffer(renderer.VertexBuffer);
 
-	        if (Animator.GetBones(mAnimationMatrices))
+	        if (this.Animator.GetBones(this.mAnimationMatrices))
 	        {
-		        mAnimBuffer.BufferData(mAnimationMatrices);
+		        this.mAnimBuffer.BufferData(this.mAnimationMatrices);
 	        }
 
-            Mesh.Program.SetVertexUniformBuffer(1, mAnimBuffer);
-            Mesh.Program.SetVertexUniformBuffer(2, mPerPassBuffer);
-            Mesh.Program.SetFragmentUniformBuffer(0, mPerPassBuffer);
+            Mesh.Program.SetVertexUniformBuffer(1, this.mAnimBuffer);
+            Mesh.Program.SetVertexUniformBuffer(2, this.mPerPassBuffer);
+            Mesh.Program.SetFragmentUniformBuffer(0, this.mPerPassBuffer);
 
-            foreach (var pass in Model.Passes)
+            foreach (var pass in this.Model.Passes)
             {
                 var cullingDisabled = (pass.RenderFlag & 0x04) != 0;
                 Mesh.UpdateRasterizerState(cullingDisabled ? gNoCullState : gCullState);
@@ -160,12 +160,12 @@ namespace Neo.Scene.Models.M2
                 var unfogged = ((pass.RenderFlag & 0x02) != 0) ? 0.0f : 1.0f;
 
                 Matrix4 uvAnimMat;
-                Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
-                var color = Animator.GetColorValue(pass.ColorAnimIndex);
-                var alpha = Animator.GetAlphaValue(pass.AlphaAnimIndex);
+	            this.Animator.GetUvAnimMatrix(pass.TexAnimIndex, out uvAnimMat);
+                var color = this.Animator.GetColorValue(pass.ColorAnimIndex);
+                var alpha = this.Animator.GetAlphaValue(pass.AlphaAnimIndex);
                 color.W *= alpha;
 
-                mPerPassBuffer.BufferData(new PerModelPassBufferContent
+	            this.mPerPassBuffer.BufferData(new PerModelPassBufferContent
                 {
                     uvAnimMatrix1 = uvAnimMat,
                     modelPassParams = new Vector4(unlit, unfogged, 0.0f, 0.0f),
@@ -176,19 +176,21 @@ namespace Neo.Scene.Models.M2
                 Mesh.StartIndex = pass.StartIndex;
                 Mesh.IndexCount = pass.IndexCount;
                 for(var i = 0; i < pass.TextureIndices.Count; ++i)
-                    Mesh.Program.SetFragmentTexture(i, Textures[pass.TextureIndices[i]].Texture);
+                {
+	                Mesh.Program.SetFragmentTexture(i, this.Textures[pass.TextureIndices[i]].Texture);
+                }
 
-                Mesh.Draw();
+	            Mesh.Draw();
             }
         }
 
         public void OnSyncLoad()
         {
-            mAnimBuffer = new UniformBuffer();
-            mAnimBuffer.BufferData(mAnimationMatrices);
+	        this.mAnimBuffer = new UniformBuffer();
+	        this.mAnimBuffer.BufferData(this.mAnimationMatrices);
 
-            mPerPassBuffer = new UniformBuffer();
-            mPerPassBuffer.BufferData(new PerModelPassBufferContent()
+	        this.mPerPassBuffer = new UniformBuffer();
+	        this.mPerPassBuffer.BufferData(new PerModelPassBufferContent()
             {
                 uvAnimMatrix1 = Matrix4.Identity,
                 modelPassParams = Vector4.Zero

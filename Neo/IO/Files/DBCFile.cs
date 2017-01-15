@@ -16,24 +16,28 @@ namespace Neo.IO.Files
         // ReSharper disable UnusedParameter.Local
         private void AssertValid(int offset, int size)
         {
-            if (offset + size > mSize)
-                throw new IndexOutOfRangeException("Trying to read past the end of a dbc record");
+            if (offset + size > this.mSize)
+            {
+	            throw new IndexOutOfRangeException("Trying to read past the end of a dbc record");
+            }
         }
 
         private void AssertString<T>() where T : struct
         {
             if (typeof(T).GetFields().Any(x => x.FieldType == typeof(string)))
-                throw new TypeLoadException();
+            {
+	            throw new TypeLoadException();
+            }
         }
 
 
         public DbcRecord(int size, int offset, BinaryReader reader, Dictionary<int, string> stringTable)
         {
-            mSize = size;
-            mData = new byte[size];
+	        this.mSize = size;
+	        this.mData = new byte[size];
             reader.BaseStream.Position = offset;
-            reader.BaseStream.Read(mData, 0, mSize);
-            mStringTable = stringTable;
+            reader.BaseStream.Read(this.mData, 0, this.mSize);
+	        this.mStringTable = stringTable;
         }
 
         /// <summary>
@@ -45,45 +49,47 @@ namespace Neo.IO.Files
         {
             ValueType ret = new T();
 
-            using (var ms = new MemoryStream(mData))
-            using (var br = new BinaryReader(ms))
+            using (var ms = new MemoryStream(this.mData))
             {
-                foreach (var field in typeof(T).GetFields())
-                {
-                    if (field.FieldType == typeof(string)) //StringTable
-                    {
-                        int strId = br.ReadInt32();
-                        string strVal = string.Empty;
-                        mStringTable.TryGetValue(strId, out strVal);
-                        field.SetValue(ret, strVal);
-                    }
-                    else if (field.FieldType == typeof(LocalisedString))
-                    {
-                        string[] strings = new string[16];
-                        for (int i = 0; i < 16; i++)
-                        {
-                            int strId = br.ReadInt32();
-                            string strVal = string.Empty;
-                            mStringTable.TryGetValue(strId, out strVal);
-                            strings[i] = strVal;
-                        }
-                        var loc = new LocalisedString(strings, br.ReadInt32());
-                        field.SetValue(ret, loc);
-                    }
-                    else
-                    {
-                        int sizeOf = Marshal.SizeOf(field.FieldType);
-                        byte[] bytes = br.ReadBytes(sizeOf);
-                        fixed (byte* dataPtr = bytes)
-                        {
-                            object val = Marshal.PtrToStructure(new IntPtr(dataPtr), field.FieldType);
-                            field.SetValue(ret, val);
-                        }
-                    }
-                }
+	            using (var br = new BinaryReader(ms))
+	            {
+		            foreach (var field in typeof(T).GetFields())
+		            {
+			            if (field.FieldType == typeof(string)) //StringTable
+			            {
+				            int strId = br.ReadInt32();
+				            string strVal = string.Empty;
+				            this.mStringTable.TryGetValue(strId, out strVal);
+				            field.SetValue(ret, strVal);
+			            }
+			            else if (field.FieldType == typeof(LocalisedString))
+			            {
+				            string[] strings = new string[16];
+				            for (int i = 0; i < 16; i++)
+				            {
+					            int strId = br.ReadInt32();
+					            string strVal = string.Empty;
+					            this.mStringTable.TryGetValue(strId, out strVal);
+					            strings[i] = strVal;
+				            }
+				            var loc = new LocalisedString(strings, br.ReadInt32());
+				            field.SetValue(ret, loc);
+			            }
+			            else
+			            {
+				            int sizeOf = Marshal.SizeOf(field.FieldType);
+				            byte[] bytes = br.ReadBytes(sizeOf);
+				            fixed (byte* dataPtr = bytes)
+				            {
+					            object val = Marshal.PtrToStructure(new IntPtr(dataPtr), field.FieldType);
+					            field.SetValue(ret, val);
+				            }
+			            }
+		            }
+	            }
             }
 
-            return (T)ret;
+	        return (T)ret;
         }
 
         /// <summary>
@@ -99,45 +105,57 @@ namespace Neo.IO.Files
 
             var ret = new T();
             var ptr = SizeCache<T>.GetUnsafePtr(ref ret);
-            fixed (byte* data = mData)
-                UnsafeNativeMethods.CopyMemory((byte*)ptr, data, SizeCache<T>.Size);
+            fixed (byte* data = this.mData)
+            {
+	            UnsafeNativeMethods.CopyMemory((byte*)ptr, data, SizeCache<T>.Size);
+            }
 
-            return ret;
+	        return ret;
         }
 
         public int GetInt32(int field)
         {
             AssertValid(field * 4, 4);
-            fixed (byte* ptr = mData)
-                return *(int*)(ptr + field * 4);
+            fixed (byte* ptr = this.mData)
+            {
+	            return *(int*)(ptr + field * 4);
+            }
         }
 
         public uint GetUint32(int field)
         {
             AssertValid(field * 4, 4);
-            fixed (byte* ptr = mData)
-                return *(uint*)(ptr + field * 4);
+            fixed (byte* ptr = this.mData)
+            {
+	            return *(uint*)(ptr + field * 4);
+            }
         }
 
         public float GetFloat(int field)
         {
             AssertValid(field * 4, 4);
-            fixed (byte* ptr = mData)
-                return *(float*)(ptr + field * 4);
+            fixed (byte* ptr = this.mData)
+            {
+	            return *(float*)(ptr + field * 4);
+            }
         }
 
         public string GetString(int field)
         {
             AssertValid(field * 4, 4);
             int offset;
-            fixed (byte* ptr = mData)
-                offset = *(int*)(ptr + field * 4);
+            fixed (byte* ptr = this.mData)
+            {
+	            offset = *(int*)(ptr + field * 4);
+            }
 
-            if (offset == 0)
-                return null;
+	        if (offset == 0)
+	        {
+		        return null;
+	        }
 
-            string str;
-            mStringTable.TryGetValue(offset, out str);
+	        string str;
+	        this.mStringTable.TryGetValue(offset, out str);
             return str;
         }
     }
@@ -161,24 +179,26 @@ namespace Neo.IO.Files
         {
             Stream stream = FileManager.Instance.Provider.OpenFile(file);
             if (stream == null)
-                throw new FileNotFoundException(file);
+            {
+	            throw new FileNotFoundException(file);
+            }
 
-            Load(stream);
+	        Load(stream);
         }
 
         public void Load(Stream stream)
         {
-            mStream = stream;
-            mReader = new BinaryReader(mStream);
-            mReader.BaseStream.Position = 0;
-            mReader.ReadInt32(); // signature
-            NumRows = mReader.ReadInt32();
-            NumFields = mReader.ReadInt32();
-            mRecordSize = mReader.ReadInt32();
-            mStringTableSize = mReader.ReadInt32();
+	        this.mStream = stream;
+	        this.mReader = new BinaryReader(this.mStream);
+	        this.mReader.BaseStream.Position = 0;
+	        this.mReader.ReadInt32(); // signature
+	        this.NumRows = this.mReader.ReadInt32();
+	        this.NumFields = this.mReader.ReadInt32();
+	        this.mRecordSize = this.mReader.ReadInt32();
+	        this.mStringTableSize = this.mReader.ReadInt32();
 
-            mStream.Position = NumRows * mRecordSize + HEADER;
-            var strBytes = mReader.ReadBytes(mStringTableSize);
+	        this.mStream.Position = this.NumRows * this.mRecordSize + HEADER;
+            var strBytes = this.mReader.ReadBytes(this.mStringTableSize);
             var curOffset = 0;
             var curBytes = new List<byte>();
             for (var i = 0; i < strBytes.Length; ++i)
@@ -189,31 +209,33 @@ namespace Neo.IO.Files
                     continue;
                 }
 
-                mStringTable.Add(curOffset, Encoding.UTF8.GetString(curBytes.ToArray()));
+	            this.mStringTable.Add(curOffset, Encoding.UTF8.GetString(curBytes.ToArray()));
                 curBytes.Clear();
                 curOffset = i + 1;
             }
 
-            for (var i = 0; i < NumRows; ++i)
-                mIdLookup.Add(GetRow(i).GetInt32(0), i);
+            for (var i = 0; i < this.NumRows; ++i)
+            {
+	            this.mIdLookup.Add(GetRow(i).GetInt32(0), i);
+            }
         }
 
         public void Save(string file)
         {
             using (var fs = new FileStream(file, FileMode.Create))
             {
-                mReader.BaseStream.Position = 0;
-                byte[] data = mReader.ReadBytes((int)mStream.Length);
+	            this.mReader.BaseStream.Position = 0;
+                byte[] data = this.mReader.ReadBytes((int) this.mStream.Length);
                 fs.Write(data, 0, data.Length);
             }
         }
 
         public void ReLoad(Stream stream)
         {
-            mStream.Dispose();
-            mReader.Dispose();
-            mStringTable.Clear();
-            mIdLookup.Clear();
+	        this.mStream.Dispose();
+	        this.mReader.Dispose();
+	        this.mStringTable.Clear();
+	        this.mIdLookup.Clear();
 
             Load(stream);
         }
@@ -221,68 +243,80 @@ namespace Neo.IO.Files
 
         public void BuildCache<T>() where T : struct
         {
-            for (int i = 0; i < NumRows; i++)
-                mCache.Add(GetRow(i).Get<T>());
+            for (int i = 0; i < this.NumRows; i++)
+            {
+	            this.mCache.Add(GetRow(i).Get<T>());
+            }
         }
 
         public void ClearCache()
         {
-            mCache.Clear();
-            mCache.TrimExcess();
+	        this.mCache.Clear();
+	        this.mCache.TrimExcess();
         }
 
 
         public IDataStorageRecord GetRow(int index)
         {
-            return new DbcRecord(mRecordSize, HEADER + index * mRecordSize, mReader, mStringTable);
+            return new DbcRecord(this.mRecordSize, HEADER + index * this.mRecordSize, this.mReader, this.mStringTable);
         }
 
         public IDataStorageRecord GetRowById(int id)
         {
             int index;
-            return mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
+            return this.mIdLookup.TryGetValue(id, out index) ? GetRow(index) : null;
         }
 
         public IList<IDataStorageRecord> GetAllRows()
         {
             List<IDataStorageRecord> files = new List<IDataStorageRecord>();
-            for (int i = 0; i < NumRows; i++)
-                files.Add(GetRow(i));
-            return files;
+            for (int i = 0; i < this.NumRows; i++)
+            {
+	            files.Add(GetRow(i));
+            }
+	        return files;
         }
 
         public IList<T> GetAllRows<T>() where T : struct
         {
-            if (mCache.Count > 0)
-                return mCache.Cast<T>().ToList();
+            if (this.mCache.Count > 0)
+            {
+	            return this.mCache.Cast<T>().ToList();
+            }
 
-            List<T> files = new List<T>();
-            for (int i = 0; i < NumRows; i++)
-                files.Add(GetRow(i).Get<T>());
-            return files;
+	        List<T> files = new List<T>();
+            for (int i = 0; i < this.NumRows; i++)
+            {
+	            files.Add(GetRow(i).Get<T>());
+            }
+	        return files;
         }
 
 
         public bool DeleteRow(int index)
         {
             //TODO remove strings from string table
-            if (!mIdLookup.ContainsValue(index))
-                return false;
+            if (!this.mIdLookup.ContainsValue(index))
+            {
+	            return false;
+            }
 
-            if (mCache.Count > 0)
-                mCache.RemoveAt(index);
+	        if (this.mCache.Count > 0)
+	        {
+		        this.mCache.RemoveAt(index);
+	        }
 
-            mReader.BaseStream.Position = 0;
-            byte[] data = mReader.ReadBytes((int)mStream.Length);
+	        this.mReader.BaseStream.Position = 0;
+            byte[] data = this.mReader.ReadBytes((int) this.mStream.Length);
 
             var ms = new MemoryStream();
-            int start = HEADER + index * mRecordSize;
-            int end = data.Length - start - mRecordSize;
+            int start = HEADER + index * this.mRecordSize;
+            int end = data.Length - start - this.mRecordSize;
             ms.Write(data, 0, start); //Header + rows before data
-            ms.Write(data, start + mRecordSize, end); //Skip row being removed's bytes
+            ms.Write(data, start + this.mRecordSize, end); //Skip row being removed's bytes
 
             ms.Position = 4;
-            ms.Write(BitConverter.GetBytes(NumRows - 1), 0, 4); //Update the record count
+            ms.Write(BitConverter.GetBytes(this.NumRows - 1), 0, 4); //Update the record count
 
             ReLoad(ms);
             return true;
@@ -291,7 +325,7 @@ namespace Neo.IO.Files
         public bool DeleteRowById(int id)
         {
             int index;
-            return mIdLookup.TryGetValue(id, out index) ? DeleteRow(index) : false;
+            return this.mIdLookup.TryGetValue(id, out index) ? DeleteRow(index) : false;
         }
 
 
@@ -300,31 +334,38 @@ namespace Neo.IO.Files
             var maxIndex = 0;
             var maxLen = 0;
 
-            foreach (var pair in mStringTable)
+            foreach (var pair in this.mStringTable)
             {
                 if (pair.Value.Equals(value))
-                    return pair.Key;
+                {
+	                return pair.Key;
+                }
 
-                if (pair.Key <= maxIndex) continue;
+	            if (pair.Key <= maxIndex)
+	            {
+		            continue;
+	            }
 
-                maxIndex = pair.Key;
+	            maxIndex = pair.Key;
                 maxLen = pair.Value.Length;
             }
 
             maxIndex += maxLen + 1;
-            mStringTable.Add(maxIndex, value);
+	        this.mStringTable.Add(maxIndex, value);
             return maxIndex;
         }
 
         public void AddRow<T>(T entry)
         {
-            typeof(T).GetFields().First().SetValue(entry, mIdLookup.Keys.Max() + 1); //Set Id
+            typeof(T).GetFields().First().SetValue(entry, this.mIdLookup.Keys.Max() + 1); //Set Id
 
-            if (mCache.Count > 0)
-                mCache.Add(entry);
+            if (this.mCache.Count > 0)
+            {
+	            this.mCache.Add(entry);
+            }
 
-            var newRecord = ParseRecord(entry);
-            NumRows += 1;
+	        var newRecord = ParseRecord(entry);
+	        this.NumRows += 1;
             Update(newRecord.Item1, newRecord.Item2);
         }
 
@@ -333,13 +374,15 @@ namespace Neo.IO.Files
         {
             var newRecord = ParseRecord(entry, true);
             var id = BitConverter.ToInt32(newRecord.Item1.Take(4).ToArray(), 0);
-            var index = mIdLookup[id];
+            var index = this.mIdLookup[id];
 
-            if (mCache.Count > 0)
-                mCache[index] = entry;
+            if (this.mCache.Count > 0)
+            {
+	            this.mCache[index] = entry;
+            }
 
-            mStream.Position = HEADER + index * mRecordSize;
-            mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length); //Overwrite existing data
+	        this.mStream.Position = HEADER + index * this.mRecordSize;
+	        this.mStream.Write(newRecord.Item1, 0, newRecord.Item1.Length); //Overwrite existing data
 
             Update(new byte[0], newRecord.Item2);
         }
@@ -356,63 +399,71 @@ namespace Neo.IO.Files
         {
             Type type = entry.GetType();
 
-            byte[] newRecord = new byte[mRecordSize];
+            byte[] newRecord = new byte[this.mRecordSize];
             List<string> newStrings = new List<string>();
 
             using (var ms = new MemoryStream(newRecord))
-            using (var bw = new BinaryWriter(ms))
             {
-                foreach (var field in type.GetFields())
-                {
-                    if (field.FieldType == typeof(string))
-                    {
-                        int stSize = mStringTable.Count;
-                        string strVal = Convert.ToString(field.GetValue(entry));
-                        int strID = AddString(strVal);
-                        bw.Write(strID);
+	            using (var bw = new BinaryWriter(ms))
+	            {
+		            foreach (var field in type.GetFields())
+		            {
+			            if (field.FieldType == typeof(string))
+			            {
+				            int stSize = this.mStringTable.Count;
+				            string strVal = Convert.ToString(field.GetValue(entry));
+				            int strID = AddString(strVal);
+				            bw.Write(strID);
 
-                        if (mStringTable.Count > stSize) //Append to our list of new strings
-                            newStrings.Add(strVal);
-                    }
-                    else if(field.FieldType == typeof(LocalisedString))
-                    {
-                        foreach(var locfield in typeof(LocalisedString).GetFields())
-                        {
-                            if (locfield.FieldType == typeof(string))
-                            {
-                                int stSize = mStringTable.Count;
-                                string strVal = Convert.ToString(locfield.GetValue(entry));
-                                int strID = AddString(strVal);
-                                bw.Write(strID);
+				            if (this.mStringTable.Count > stSize) //Append to our list of new strings
+				            {
+					            newStrings.Add(strVal);
+				            }
+			            }
+			            else if(field.FieldType == typeof(LocalisedString))
+			            {
+				            foreach(var locfield in typeof(LocalisedString).GetFields())
+				            {
+					            if (locfield.FieldType == typeof(string))
+					            {
+						            int stSize = this.mStringTable.Count;
+						            string strVal = Convert.ToString(locfield.GetValue(entry));
+						            int strID = AddString(strVal);
+						            bw.Write(strID);
 
-                                if (mStringTable.Count > stSize)
-                                    newStrings.Add(strVal);
-                            }
-                            else
-                                bw.Write(Convert.ToInt32(locfield.GetValue(entry)));
-                        }
-                    }
-                    else
-                    {
-                        int sizeOf = Marshal.SizeOf(field.FieldType);
-                        byte[] arr = new byte[sizeOf];
-                        IntPtr ptr = Marshal.AllocHGlobal(sizeOf);
-                        Marshal.StructureToPtr(field.GetValue(entry), ptr, true);
-                        Marshal.Copy(ptr, arr, 0, sizeOf);
-                        Marshal.FreeHGlobal(ptr);
-                        bw.Write(arr);
-                    }
-                }
+						            if (this.mStringTable.Count > stSize)
+						            {
+							            newStrings.Add(strVal);
+						            }
+					            }
+					            else
+					            {
+						            bw.Write(Convert.ToInt32(locfield.GetValue(entry)));
+					            }
+				            }
+			            }
+			            else
+			            {
+				            int sizeOf = Marshal.SizeOf(field.FieldType);
+				            byte[] arr = new byte[sizeOf];
+				            IntPtr ptr = Marshal.AllocHGlobal(sizeOf);
+				            Marshal.StructureToPtr(field.GetValue(entry), ptr, true);
+				            Marshal.Copy(ptr, arr, 0, sizeOf);
+				            Marshal.FreeHGlobal(ptr);
+				            bw.Write(arr);
+			            }
+		            }
+	            }
             }
 
-            return new Tuple<byte[], IEnumerable<string>>(newRecord, newStrings);
+	        return new Tuple<byte[], IEnumerable<string>>(newRecord, newStrings);
         }
 
         private void Update(byte[] newRecord, IEnumerable<string> newStrings)
         {
-            mReader.BaseStream.Position = 0;
-            byte[] curdata = mReader.ReadBytes((int)mStream.Length - mStringTableSize);
-            byte[] stringtable = mReader.ReadBytes(mStringTableSize);
+	        this.mReader.BaseStream.Position = 0;
+            byte[] curdata = this.mReader.ReadBytes((int) this.mStream.Length - this.mStringTableSize);
+            byte[] stringtable = this.mReader.ReadBytes(this.mStringTableSize);
 
             var ms = new MemoryStream();
             var bw = new BinaryWriter(ms, Encoding.UTF8);
@@ -426,13 +477,13 @@ namespace Neo.IO.Files
                 byte[] sd = Encoding.UTF8.GetBytes(s);
                 bw.Write(sd);
                 bw.Write((byte)0);
-                mStringTableSize += (sd.Length + 1);
+	            this.mStringTableSize += (sd.Length + 1);
             }
 
             bw.BaseStream.Position = 4;
-            bw.Write(NumRows); //Number of rows
+            bw.Write(this.NumRows); //Number of rows
             bw.BaseStream.Position = 0x10;
-            bw.Write(mStringTableSize); //StringTable size
+            bw.Write(this.mStringTableSize); //StringTable size
             bw.Flush();
 
             ReLoad(ms);
@@ -446,28 +497,28 @@ namespace Neo.IO.Files
 
         private void Dispose(bool disposing)
         {
-            if (mStream != null)
+            if (this.mStream != null)
             {
-                mStream.Dispose();
-                mStream = null;
+	            this.mStream.Dispose();
+	            this.mStream = null;
             }
 
-            if (mReader != null)
+            if (this.mReader != null)
             {
-                mReader.Dispose();
-                mReader = null;
+	            this.mReader.Dispose();
+	            this.mReader = null;
             }
 
-            if (mStringTable != null)
+            if (this.mStringTable != null)
             {
-                mStringTable.Clear();
-                mStringTable = null;
+	            this.mStringTable.Clear();
+	            this.mStringTable = null;
             }
 
-            if (mIdLookup != null)
+            if (this.mIdLookup != null)
             {
-                mIdLookup.Clear();
-                mIdLookup = null;
+	            this.mIdLookup.Clear();
+	            this.mIdLookup = null;
             }
         }
 

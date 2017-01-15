@@ -5,7 +5,7 @@ using SlimTK;
 
 namespace Neo.Scene.Models.WMO
 {
-    class WmoBatchRender : IDisposable
+	internal class WmoBatchRender : IDisposable
     {
         private WmoRootRender mRoot;
         private Dictionary<int, WmoInstance> mInstances = new Dictionary<int, WmoInstance>();
@@ -15,7 +15,7 @@ namespace Neo.Scene.Models.WMO
 
         public WmoBatchRender(WmoRootRender root)
         {
-            mRoot = root;
+	        this.mRoot = root;
         }
 
         public bool Intersect(IntersectionParams parameters, ref Ray globalRay, out float distance, out WmoInstance instance)
@@ -23,12 +23,14 @@ namespace Neo.Scene.Models.WMO
             distance = float.MaxValue;
             instance = null;
 
-            if (mInstances == null)
-                return false;
-
-            lock (mInstances)
+            if (this.mInstances == null)
             {
-                foreach (var inst in mInstances.Values)
+	            return false;
+            }
+
+	        lock (this.mInstances)
+            {
+                foreach (var inst in this.mInstances.Values)
                 {
                     float dist;
                     if (inst.Intersects(parameters, ref globalRay, out dist) && dist < distance)
@@ -49,25 +51,27 @@ namespace Neo.Scene.Models.WMO
 
         private void Dispose(bool disposing)
         {
-            if (mActiveInstances != null)
+            if (this.mActiveInstances != null)
             {
-                mActiveInstances.Clear();
-                mActiveInstances = null;
+	            this.mActiveInstances.Clear();
+	            this.mActiveInstances = null;
             }
 
-            if (mInstances != null)
+            if (this.mInstances != null)
             {
-                foreach (var inst in mInstances.Values)
-                    inst.Dispose();
+                foreach (var inst in this.mInstances.Values)
+                {
+	                inst.Dispose();
+                }
 
-                mInstances.Clear();
-                mInstances = null;
+	            this.mInstances.Clear();
+	            this.mInstances = null;
             }
 
-            if (mRoot != null)
+            if (this.mRoot != null)
             {
-                mRoot.Dispose();
-                mRoot = null;
+	            this.mRoot.Dispose();
+	            this.mRoot = null;
             }
         }
 
@@ -79,91 +83,105 @@ namespace Neo.Scene.Models.WMO
 
         public bool RemoveInstance(int uuid)
         {
-            if (mInstances == null)
-                return false;
+            if (this.mInstances == null)
+            {
+	            return false;
+            }
 
-            lock (mInstances)
+	        lock (this.mInstances)
             {
                 WmoInstance instance;
-                if (mInstances.TryGetValue(uuid, out instance) == false || instance == null)
-                    return false;
+                if (this.mInstances.TryGetValue(uuid, out instance) == false || instance == null)
+                {
+	                return false;
+                }
 
-                --instance.ReferenceCount;
+	            --instance.ReferenceCount;
                 if (instance.ReferenceCount > 0)
                 {
                     ++instance.ReferenceCount;
                     return false;
                 }
 
-                mInstances.Remove(uuid);
+	            this.mInstances.Remove(uuid);
                 instance.Dispose();
-                mInstancesChanged = true;
+	            this.mInstancesChanged = true;
                 return instance.ReferenceCount == 0;
             }
         }
 
         public bool DeleteInstance(int uuid)
         {
-            if (mInstances == null)
-                return false;
+            if (this.mInstances == null)
+            {
+	            return false;
+            }
 
-            lock (mInstances)
+	        lock (this.mInstances)
             {
                 WmoInstance instance;
-                if (mInstances.TryGetValue(uuid, out instance) == false || mInstances == null)
-                    return false;
+                if (this.mInstances.TryGetValue(uuid, out instance) == false || this.mInstances == null)
+                {
+	                return false;
+                }
 
-                mInstances.Remove(uuid);
+	            this.mInstances.Remove(uuid);
                 instance.Dispose();
-                mInstancesChanged = true;
+	            this.mInstancesChanged = true;
 
-                return mInstances.Count == 0;
+                return this.mInstances.Count == 0;
             }
         }
 
         public void OnFrame()
         {
-            if (mInstancesChanged)
-                UpdateVisibility();
+            if (this.mInstancesChanged)
+            {
+	            UpdateVisibility();
+            }
 
-            if (mActiveInstances.Count == 0)
-                return;
+	        if (this.mActiveInstances.Count == 0)
+	        {
+		        return;
+	        }
 
-            mRoot.OnFrame(mActiveInstances);
+	        this.mRoot.OnFrame(this.mActiveInstances);
         }
 
         public void AddInstance(int uuid, Vector3 position, Vector3 rotation)
         {
-            lock (mInstances)
+            lock (this.mInstances)
             {
                 WmoInstance instance;
-                if (mInstances.TryGetValue(uuid, out instance))
+                if (this.mInstances.TryGetValue(uuid, out instance))
                 {
                     ++instance.ReferenceCount;
                     return;
                 }
             }
 
-            var inst = new WmoInstance(uuid, position, rotation, mRoot);
+            var inst = new WmoInstance(uuid, position, rotation, this.mRoot);
 
-            lock (mInstances)
+            lock (this.mInstances)
             {
-                mInstances.Add(uuid,inst);
-                mInstancesChanged = true;
+	            this.mInstances.Add(uuid,inst);
+	            this.mInstancesChanged = true;
             }
         }
 
         private void UpdateVisibility()
         {
-            mInstancesChanged = false;
+	        this.mInstancesChanged = false;
 
-            lock (mInstances)
+            lock (this.mInstances)
             {
-                if (mInstances.Count == 0)
-                    return;
+                if (this.mInstances.Count == 0)
+                {
+	                return;
+                }
 
-                mActiveInstances.Clear();
-                mActiveInstances.AddRange(mInstances.Values);
+	            this.mActiveInstances.Clear();
+	            this.mActiveInstances.AddRange(this.mInstances.Values);
             }
         }
     }

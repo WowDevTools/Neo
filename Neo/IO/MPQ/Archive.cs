@@ -11,28 +11,32 @@ namespace Neo.IO.MPQ
 
         public Archive(IntPtr handle, string name)
         {
-            mHandle = handle;
-            Name = name;
+	        this.mHandle = handle;
+	        this.Name = name;
         }
 
         public bool Contains(string file)
         {
-            return Imports.SFileHasFile(mHandle, file);
+            return Imports.SFileHasFile(this.mHandle, file);
         }
 
         public Stream Open(string file)
         {
             IntPtr handle;
-            if (Imports.SFileOpenFileEx(mHandle, file, 0, out handle) == false)
-                return null;
+            if (Imports.SFileOpenFileEx(this.mHandle, file, 0, out handle) == false)
+            {
+	            return null;
+            }
 
-            uint sizeHigh;
+	        uint sizeHigh;
             var sizeLow = Imports.SFileGetFileSize(handle, out sizeHigh);
             var totalSize = ((ulong)sizeHigh << 32) | sizeLow;
             if (totalSize > int.MaxValue)
-                return null;
+            {
+	            return null;
+            }
 
-            var buffer = new byte[(int) totalSize];
+	        var buffer = new byte[(int) totalSize];
             int numRead;
             if(Imports.SFileReadFile(handle, buffer, (int)totalSize, out numRead, IntPtr.Zero) == false || numRead != (int)totalSize)
             {

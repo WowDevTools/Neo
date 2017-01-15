@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Neo.IO.CASC
 {
-    class TokenConfig
+	internal class TokenConfig
     {
         private readonly Dictionary<string, IEnumerable<string>> mValues = new Dictionary<string, IEnumerable<string>>();
 
@@ -13,7 +13,7 @@ namespace Neo.IO.CASC
             get
             {
                 IEnumerable<string> ret;
-                return mValues.TryGetValue(key.ToUpperInvariant(), out ret) ? ret : new string[0];
+                return this.mValues.TryGetValue(key.ToUpperInvariant(), out ret) ? ret : new string[0];
             }
         }
 
@@ -35,17 +35,21 @@ namespace Neo.IO.CASC
                         {
                             var subTokens = token.Split('!');
                             var elems = new List<string>();
-                            mValues.Add(subTokens.First().ToUpperInvariant(), elems);
+	                        this.mValues.Add(subTokens.First().ToUpperInvariant(), elems);
                             valuesOrdered.Add(elems);
                         }
                     }
                     else
                     {
                         if (tokens.Length != valuesOrdered.Count)
-                            throw new IOException("Invalid format of Config file");
+                        {
+	                        throw new IOException("Invalid format of Config file");
+                        }
 
-                        for (var i = 0; i < tokens.Length; ++i)
-                            valuesOrdered[i].Add(tokens[i]);
+	                    for (var i = 0; i < tokens.Length; ++i)
+	                    {
+		                    valuesOrdered[i].Add(tokens[i]);
+	                    }
                     }
                 }
             }

@@ -1,6 +1,6 @@
 ﻿namespace Neo.Scene
 {
-    class OrthoCamera
+	internal class OrthoCamera
     {
     }
 }
