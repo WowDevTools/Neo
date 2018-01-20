@@ -1,8 +1,7 @@
 # Neo
 
 [![Latest Download](https://img.shields.io/badge/Latest-Download-blue.svg)](https://ci.appveyor.com/api/projects/majorcyto/neo-xc5d9/artifacts/Neo.zip)
-
-[WoWDev on Discord](https://discord.gg/9aVwPpb)
+[![WoWDevDiscord](https://img.shields.io/badge/Discord-WoWDev-blue.svg)](https://discord.gg/EzKJjtv)
 
 
 ## Build Status
