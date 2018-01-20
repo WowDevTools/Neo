@@ -1,9 +1,8 @@
 # Neo
 
-[![Latest Download](https://img.shields.io/badge/Latest-Download-blue.svg)](https://ci.appveyor.com/api/projects/majorcyto/neo-xc5d9/artifacts/Neo.zip) [![Milestone](https://img.shields.io/badge/Latest%20Tasks-Milestone%200.5-F25CBE.svg)](https://github.com/WowDevTools/Neo/milestone/1)
+[![Latest Download](https://img.shields.io/badge/Latest-Download-blue.svg)](https://ci.appveyor.com/api/projects/majorcyto/neo-xc5d9/artifacts/Neo.zip)
 
-[![DoxygenDoc](https://img.shields.io/badge/Docs-Doxygen-red.svg)](http://neodocs.wowdev.info/) 
-[![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=44433103)](https://www.bountysource.com/trackers/44433103-wowdevtools-neo?utm_source=44433103&utm_medium=shield&utm_campaign=TRACKER_BADGE) [![WoWDev Tools on discord](https://img.shields.io/badge/Discord-WoWDev Tools-738bd7.svg)](https://discord.gg/9aVwPpb)
+[WoWDev on Discord](https://discord.gg/9aVwPpb)
 
 
 ## Build Status
@@ -26,7 +25,3 @@ This project requires Visual Studio if you wish to build it on your own. We also
 
 ### DEVELOPMENT
 We are open to adding collaborators on the project repo if you have previous code qualifying your skill level. Or, if you wish to contribute occasionally you may also send us pull requests which can be merged into the master. Please use the Github Issue tracker for requests and reports.
-
-You can also find us in Discord, anyone can join and talk with us!
-
-[![WoWDev Tools on discord](https://img.shields.io/badge/Discord-WoWDev Tools-738bd7.svg)](https://discord.gg/9aVwPpb)
